@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GFLO — throwaway lifecycle prototype</title>
+<style>
+body{font:16px/1.5 system-ui,sans-serif;max-width:1080px;margin:32px auto;padding:0 20px;color:#182735;background:#f6f8fa}h1,h2{line-height:1.2}section{background:white;border:1px solid #d5dee5;border-radius:8px;padding:20px;margin:18px 0}button{font:inherit;padding:7px 12px;margin:4px;border:1px solid #91a5b6;border-radius:5px;background:white;cursor:pointer}button:hover,button[aria-selected=true]{background:#e1eef9}button:disabled{opacity:.45;cursor:default}.notice{border-left:4px solid #286ca5;padding:12px;background:#e8f1f8}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}dl{margin:0}dt{font-weight:600}dd{margin:0 0 9px}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#f3f6f8;padding:12px}li{margin:5px 0}.small{font-size:14px;color:#4d6170}
+</style>
+<h1>GFLO: one change, small workers</h1>
+<p class="notice"><strong>Throwaway simulation — not the factory.</strong> Can a provider and two consumers move to a new contract without workers seeing the whole project, and without stale or unverified work becoming integrated?</p>
+<p>All model responses, tests, durable storage, and crashes are simulated in memory. Reloading loses everything. Buttons represent events, not human approvals required during a real run. This is a prepared work graph, not autonomous planning evidence.</p>
+<section><h2>Current state</h2><div id="state" class="grid"></div><p id="message" aria-live="polite"></p></section>
+<section><h2>Current worker view</h2><pre id="view"></pre><p class="small">The factory keeps the full graph, attempts, evidence and policies. This panel shows a deliberately small illustrative view, not a measured token budget.</p></section>
+<section><h2>Free play</h2><div id="actions"></div></section>
+<section><h2>Guided walkthroughs</h2><div id="tabs" role="tablist" aria-label="Scenarios"></div><p id="description"></p><div id="steps"></div></section>
+<section><h2>Attempt and evidence history</h2><ol id="history"></ol></section>
+<section><h2>What sits outside the model</h2><p>Orchestrator → Work ledger → bounded Worker view → InferenceGateway → isolated candidate → GateRunner → ledger acceptance → integrated product checks.</p><p>Dependency edges: CLI → parser; reports/export → parser. Containment: project → reports → export. Accepting a provider candidate is not publishing its breaking contract to the canonical product.</p><p>CRAP/complexity warnings are advisory in this demo. Mandatory failures block acceptance. Advisory hotspots remain visible as follow-up work rather than pretending all quality debt is cleared.</p></section>
+<script>
+// Pure state-model sketch. No DOM or external effects here; not production logic.
+const units=['parser','cli','reports/export'];
+function initial(){return {base:1,target:'ParseResult-v2',graph:1,manifest:1,selected:0,attempts:[],accepted:{},integrated:false,quality:[],jobs:[],events:[],message:'Ready: migrate the shared parser contract.',online:true};}
+function active(s){return s.attempts.find(a=>a.status==='running'||a.status==='validating');}
+function transition(previous,action){
+ const s=JSON.parse(JSON.stringify(previous));
+ const note=t=>{s.message=t;s.events.push(t);return s;};
+ if(action==='reset')return initial();
+ if(action==='restart'){s.online=true;const a=active(s);if(a){a.status='interrupted';a.evidence='inconclusive';}return note('Controller recovered from the simulated ledger; unfinished attempt fenced off. Accepted history remains.');}
+ if(!s.online)return note('Controller is stopped. Simulate recovery before more work.');
+ if(action==='crash'){s.online=false;return note('Controller stopped. In-memory stand-in for durable records remains; browser reload would lose it.');}
+ if(action==='next'){s.selected=(s.selected+1)%units.length;return note('Selected '+units[s.selected]+'. This changes the displayed view, not dependency readiness.');}
+ if(action==='diagnoseProvider'){
+  const job=s.jobs.find(j=>j.status==='diagnosis');
+  if(!job)return note('No unresolved diagnostic task.');
+  if(job.base!==s.base)return note('Diagnostic inputs are stale; gather fresh evidence first.');
+  job.status='repair';job.target='parser';job.finding='Simulated reproducer establishes a provider defect, not a consumer defect.';
+  for(const value of Object.values(s.accepted))value.current=false;
+  s.integrated=false;delete s.integrationEvidence;s.graph++;s.selected=0;
+  return note('Scheduler appends provider repair work and invalidates dependent candidate claims. Same objective and all attempts retained; no scope manager invoked.');
+ }
+ if(action==='start'){
+  const unit=units[s.selected];
+  if(s.integrated)return note('This Change set is already integrated. Reset for another scenario.');
+  if(active(s))return note('One simulated worker is active; finish or interrupt it first.');
+  if(s.jobs.some(j=>j.status==='diagnosis'))return note('Diagnose the unexpected failure before choosing a repair target.');
+  if(s.accepted[unit]?.current)return note('This unit already has an accepted candidate for the current base.');
+  if(unit!=='parser'&&!s.accepted.parser?.current)return note('Consumer waits for the current pinned provider candidate.');
+  if(s.attempts.filter(a=>a.unit===unit&&a.graph===s.graph).length>=10)return note('Atom exhausted: quarantine its work and re-plan; do not erase attempts.');
+  s.attempts.push({id:s.attempts.length+1,unit,graph:s.graph,base:s.base,manifest:s.manifest,status:'running',candidate:null,evidence:'none'});
+  return note('Started isolated '+unit+' attempt with base '+s.base+' and context manifest '+s.manifest+'.');
+ }
+ if(action==='expand'){s.manifest++;return note('Created a new context manifest with the requested relevant interface. Prior manifest identity is retained in attempt history.');}
+ if(action==='stale'){s.base++;s.integrated=false;for(const value of Object.values(s.accepted))value.current=false;return note('Canonical base changed. Old evidence remains historical; candidates need fresh validation.');}
+ if(action==='replan'){
+  if(active(s))return note('Fence off the active attempt before re-planning.');
+  if(s.jobs.some(j=>j.status!=='done'))return note('Resolve or supersede diagnostic work with evidence first; re-planning cannot erase the finding.');
+  s.graph++;s.accepted={};s.integrated=false;delete s.integrationEvidence;
+  return note('New work-graph revision; old attempts retained. Real re-planning requires changed strategy/evidence, not merely this revision number.');
+ }
+ if(action==='integrate'){
+  if(s.integrated)return note('Already integrated; duplicate acceptance does not create another result.');
+  if(s.jobs.some(j=>j.status!=='done'))return note('Integration blocked by unresolved diagnostic or repair work.');
+  if(!units.every(u=>s.accepted[u]?.current&&s.accepted[u].base===s.base))return note('Integration blocked: every provider/consumer candidate needs current passing evidence.');
+  if(s.integrationEvidence!==s.base)return note('Integration blocked: run whole-candidate product checks for this exact base first.');
+  s.integrated=true;return note('Change set integrated once against the checked base. This is local completion, not deployment.');
+ }
+ if(action==='product'){
+  if(!units.every(u=>s.accepted[u]?.current&&s.accepted[u].base===s.base))return note('Cannot validate an incomplete integrated candidate.');
+  s.integrationEvidence=s.base;return note('Simulated integrated contract and product checks passed for the exact combined candidate.');
+ }
+ const a=active(s);
+ if(!a)return note('No active attempt for this action.');
+ if(action==='candidate'){a.status='validating';a.candidate='candidate-'+a.id;return note('Worker supplied a candidate, not an acceptance decision.');}
+ if(action==='forge')return note('Worker says “all tests pass”. Prose grants no trusted evidence or acceptance.');
+ if(action==='warning'){s.quality.push(a.unit+': complexity/CRAP hotspot; focused test/refactor follow-up needed');return note('Advisory quality finding recorded; mandatory gates still apply.');}
+ if(action==='unexpected'){
+  if(!a.candidate)return note('Return a candidate before simulating a consumer test failure.');
+  if(a.unit==='parser')return note('Choose a consumer attempt for this cross-module example.');
+  a.status='failed';a.evidence='fail';delete s.integrationEvidence;s.integrated=false;
+  s.jobs.push({id:s.jobs.length+1,status:'diagnosis',base:a.base,observedAt:a.unit,sourceAttempt:a.id,target:'unknown',finding:'Consumer test fails; cause not yet established.'});
+  return note('Scheduler creates a focused diagnostic task from the failed check. It does not assume the consumer needs editing.');
+ }
+ if(action==='fail'){a.status='failed';a.evidence='fail';return note('Required check failed. Compact failure evidence goes to a new repair attempt.');}
+ if(action==='missing'){a.status='inconclusive';a.evidence='inconclusive';return note('Required tests were skipped/missing. Fix evaluation and retry; not a pass.');}
+ if(action==='pass'){
+  if(!a.candidate)return note('No candidate to check.');
+  a.evidence='pass';return note('Trusted runner evidence simulated for '+a.candidate+' on base '+a.base+'.');
+ }
+ if(action==='accept'){
+  if(a.evidence!=='pass')return note('Acceptance blocked: required trusted passing evidence is absent.');
+  if(a.base!==s.base){a.status='stale';return note('Acceptance blocked: base precondition changed. Retry/revalidate against the new base.');}
+  a.status='accepted';s.accepted[a.unit]={candidate:a.candidate,base:a.base,current:true};
+  for(const job of s.jobs)if(job.status==='repair'&&job.target===a.unit&&job.base===a.base)job.status='done';
+  return note(a.unit+' candidate accepted for integration, not yet canonical product completion.');
+ }
+ return note('No transition.');
+}
+</script>
+<script>
+// Thin, disposable presentation shell.
+const labels={reset:'Reset demo',start:'Start selected worker',candidate:'Worker returns candidate',forge:'Worker claims success',pass:'Simulate passing checks',missing:'Simulate skipped tests',fail:'Simulate failing check',warning:'Record quality hotspot',accept:'Apply ledger acceptance',next:'Select next module',expand:'Retrieve relevant interface',stale:'Change canonical base',crash:'Stop controller',restart:'Recover controller',replan:'Create replacement graph',product:'Check integrated product',integrate:'Integrate checked change'};
+labels.unexpected='Consumer test exposes unknown defect';
+labels.diagnoseProvider='Simulate diagnosis: provider is faulty';
+const normal=['start','candidate','pass','accept'];
+const scenarios=[
+ {name:'Tests create repair work',description:'A consumer test fails. A simulated reproducer identifies the provider as the cause. The scheduler creates repair work, then consumers are checked against the repaired provider. No hierarchy of manager calls. Diagnosis is supplied by this demo, not performed by a real model.',steps:[...normal,'next','start','candidate','unexpected','diagnoseProvider',...normal,'next',...normal,'next',...normal,'product','integrate']},
+ {name:'Complete migration',description:'Three small workers share a pinned contract. Only the final combined candidate can become an integrated change.',steps:[...normal,'next',...normal,'next',...normal,'product','integrate','integrate']},
+ {name:'No self-approval',description:'A success claim and skipped tests cannot authorize acceptance. A fresh attempt repairs the evaluation.',steps:['start','candidate','forge','accept','missing','start','candidate','pass','accept']},
+ {name:'Stale result',description:'Passing evidence for an old base cannot be accepted after the base changes.',steps:['start','candidate','pass','stale','accept','start','candidate','pass','accept']},
+ {name:'Restart recovery',description:'Interrupt an unfinished attempt; preserve it and start a new attempt. This models the policy, not real persistence.',steps:['start','candidate','crash','restart','start','candidate','pass','accept']},
+ {name:'Quality and repair',description:'A mandatory failure requires repair. A CRAP hotspot remains visible but is not an automatic veto in this profile.',steps:['start','candidate','warning','fail','expand','start','candidate','pass','accept']}
+];
+let state=initial(),scenario=0,step=0;
+function element(tag,text){const e=document.createElement(tag);e.textContent=text;return e;}
+function button(label,fn){const b=element('button',label);b.onclick=fn;return b;}
+function render(){
+ const panel=document.getElementById('state');panel.replaceChildren();
+ const fields={Controller:state.online?'Running':'Stopped','Work graph':'Revision '+state.graph,'Canonical base':'Revision '+state.base,'Selected module':units[state.selected],'Accepted candidates':Object.entries(state.accepted).map(([u,a])=>u+(a.current?'':' (stale)')).join(', ')||'None','Integrated product':state.integrated?'Yes':'No','Context manifest':'Revision '+state.manifest,'Quality follow-ups':state.quality.join('; ')||'None'};
+ for(const [k,v]of Object.entries(fields)){const dl=document.createElement('dl');dl.append(element('dt',k),element('dd',v));panel.append(dl);}
+ const jobs=document.createElement('dl');jobs.append(element('dt','Scheduler-owned follow-up work'),element('dd',state.jobs.map(j=>'Task '+j.id+': '+j.status+'; failure at '+j.observedAt+'; repair target '+j.target).join(' | ')||'None'));panel.append(jobs);
+ document.getElementById('message').textContent=state.message;
+ const unit=units[state.selected];
+ document.getElementById('view').textContent=unit==='parser'?'Objective: return ParseResult(value, errors) instead of an integer.\nInputs: parser source, old/new contract, local tests.\nOutput: bounded patch or typed request for missing context.\nNot included: consumer internals, global graph, ledger machinery.':'Objective: migrate '+unit+' to ParseResult(value, errors).\nInputs: this consumer source/tests and pinned parser interface.\nProvider candidate: '+(state.accepted.parser?.candidate||'not ready')+'\nNot included: other consumer internals, provider reasoning, whole-project history.';
+ const diagnostic=state.jobs.find(j=>j.status==='diagnosis');
+ if(diagnostic)document.getElementById('view').textContent='Objective: locate the cause of one failed consumer check.\nObserved at: '+diagnostic.observedAt+'; attempt '+diagnostic.sourceAttempt+'; base '+diagnostic.base+'.\nInputs: failing assertion, compact trace, provider/consumer contract and relevant source.\nOutput: evidence-backed diagnosis or request for missing context.\nDo not assume the failing consumer owns the defect; do not rewrite its expectations to pass.';
+ const repair=state.jobs.find(j=>j.status==='repair'&&j.target===unit);
+ if(repair)document.getElementById('view').textContent='Objective: repair parser behavior while preserving the agreed contract.\nInputs: parser source/tests, pinned contract, and focused reproducer from '+repair.observedAt+'.\nFinding: '+repair.finding+'\nOutput: bounded candidate patch; consumer and integrated checks remain required.';
+ const history=document.getElementById('history');history.replaceChildren();
+ for(const a of state.attempts)history.append(element('li','Attempt '+a.id+' · '+a.unit+' · graph '+a.graph+' · base '+a.base+' · context '+a.manifest+' · '+a.status+' · evidence '+a.evidence+' · '+(a.candidate||'no candidate')));
+ for(const message of state.events)history.append(element('li',message));
+ document.getElementById('description').textContent=scenarios[scenario].description;
+ const steps=document.getElementById('steps');steps.replaceChildren();
+ scenarios[scenario].steps.forEach((action,i)=>{const b=button((i+1)+'. '+labels[action],()=>{state=transition(state,action);step++;render();});b.disabled=i!==step;steps.append(b);});
+ [...document.getElementById('tabs').children].forEach((b,i)=>b.setAttribute('aria-selected',i===scenario));
+}
+for(const [action,label]of Object.entries(labels))document.getElementById('actions').append(button(label,()=>{state=transition(state,action);render();}));
+scenarios.forEach((s,i)=>{const b=button(s.name,()=>{scenario=i;step=0;state=initial();render();});b.setAttribute('role','tab');document.getElementById('tabs').append(b);});
+render();
+</script>
+</html>
