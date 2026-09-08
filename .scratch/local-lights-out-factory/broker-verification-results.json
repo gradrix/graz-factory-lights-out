@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-09-08T16:58:55.012896+00:00",
+  "evidence_root": ".gflo/evidence/broker-qualification-final",
+  "tests": {
+    "passed": 121,
+    "subtests_passed": 23,
+    "live_broker_tests": 8
+  },
+  "source_sha256": {
+    "gflo/broker.py": "2edaec685873421ed3a97dc473f89708017b9e152a8f6c33ad80cf4611b5fd61",
+    "gflo/gates.py": "daac482517a9e2048d9b6e8d6b12ebc5c4c9ee80a23d6fbdee52380deb3b2d4c",
+    "gflo/ledger.py": "af5f30a8788686190f89bbb43aeaa252f210c90302506b2d1fbc474d913a5f2f",
+    "tests/test_broker.py": "f92002d9da8ca508d9fda7b98792a7701e18fa0731d490e46fdf37356ff2011e"
+  },
+  "evidence_sha256": {
+    "ledger.db": "5658214c9c7996745205245099993c6575d7ddb35976f542bc47e31ef8334a8f",
+    "ledger.db.artifacts/06b23bd7f4dab8d66a9c4f8f0d222d51fce48fe0642d2590d5071de19d6bf220": "06b23bd7f4dab8d66a9c4f8f0d222d51fce48fe0642d2590d5071de19d6bf220",
+    "ledger.db.artifacts/128decb31d621c74204ffd6b109743d53e98702fb5fa96c2c07befe74d4cdd6f": "128decb31d621c74204ffd6b109743d53e98702fb5fa96c2c07befe74d4cdd6f",
+    "ledger.db.artifacts/2156fb28a29ea3c096d7979e28b105d105a21ac849290707f8ca428131d3d7c2": "2156fb28a29ea3c096d7979e28b105d105a21ac849290707f8ca428131d3d7c2",
+    "ledger.db.artifacts/3e2828dcd7d078e9ec617c408524887a37376e576c80d884d27328bf2d51bf96": "3e2828dcd7d078e9ec617c408524887a37376e576c80d884d27328bf2d51bf96",
+    "ledger.db.artifacts/3eec57d20a78dc6debad086f9c5952ccb819c665601d09e2b761f8c462b2c080": "3eec57d20a78dc6debad086f9c5952ccb819c665601d09e2b761f8c462b2c080",
+    "ledger.db.artifacts/43e39c52d5d3c1edbea8a9b5340770de0220b4713dde697e5b229634573ab0f2": "43e39c52d5d3c1edbea8a9b5340770de0220b4713dde697e5b229634573ab0f2",
+    "ledger.db.artifacts/44452e38ae7fcc192dff8c2309e0769fcbb702a2e2a1e9b4ea676ff20992bbb4": "44452e38ae7fcc192dff8c2309e0769fcbb702a2e2a1e9b4ea676ff20992bbb4",
+    "ledger.db.artifacts/521b8e3dfec69d3124929152a911bc1da3204a973eb01485e95eecbca2543529": "521b8e3dfec69d3124929152a911bc1da3204a973eb01485e95eecbca2543529",
+    "ledger.db.artifacts/548fbcbcdf809f2292263f3d24d877d7f7ea0f1845417adb4577cbf8b59d6058": "548fbcbcdf809f2292263f3d24d877d7f7ea0f1845417adb4577cbf8b59d6058",
+    "ledger.db.artifacts/57a62a56dd2fd6e7a17b3773dc256fc0ca337ec2c9505a8f159a0423851636a4": "57a62a56dd2fd6e7a17b3773dc256fc0ca337ec2c9505a8f159a0423851636a4",
+    "ledger.db.artifacts/5f1f01956f786c807cff7a9e498fd2c32c165b53b7e7730b924e3846b701c865": "5f1f01956f786c807cff7a9e498fd2c32c165b53b7e7730b924e3846b701c865",
+    "ledger.db.artifacts/6db389340fefca3e13aeeeaf57fc3dd32c4e3ab9b7cb25fba08fd44bb377713c": "6db389340fefca3e13aeeeaf57fc3dd32c4e3ab9b7cb25fba08fd44bb377713c",
+    "ledger.db.artifacts/6ebc314ea64939d862d27049ebf2c1013fed5a38eb19e47b72731c33be723083": "6ebc314ea64939d862d27049ebf2c1013fed5a38eb19e47b72731c33be723083",
+    "ledger.db.artifacts/7552bc05383c15dc421d14c3b9f8409b224bc21e9cce553ba324c8f0abf47367": "7552bc05383c15dc421d14c3b9f8409b224bc21e9cce553ba324c8f0abf47367",
+    "ledger.db.artifacts/9c6bb4b4e22226264184cf38632d8caad151b2fb0b4fa6115ce20b4f4304a9bf": "9c6bb4b4e22226264184cf38632d8caad151b2fb0b4fa6115ce20b4f4304a9bf",
+    "ledger.db.artifacts/b0578f19fd8d75791070ef26782f67b2250c430b881f3dff60400d54ffe9102a": "b0578f19fd8d75791070ef26782f67b2250c430b881f3dff60400d54ffe9102a",
+    "ledger.db.artifacts/c076dfa0ae94bc0d763d6915cb2230ff4261e5938a6f9e1f873725da63fccc86": "c076dfa0ae94bc0d763d6915cb2230ff4261e5938a6f9e1f873725da63fccc86",
+    "ledger.db.artifacts/c965242f4348374f285310112fdf3d74bae6c3e00fbdfab51aec861021985c79": "c965242f4348374f285310112fdf3d74bae6c3e00fbdfab51aec861021985c79",
+    "ledger.db.artifacts/df3503fb2ea5c123bdcf30514043ce1291d648a662bfec7a54b8067bb1648b1b": "df3503fb2ea5c123bdcf30514043ce1291d648a662bfec7a54b8067bb1648b1b",
+    "ledger.db.artifacts/e6eb6d82b8bf8951796d9f3b11ba816853eace503d2169f719c8dadf678f5076": "e6eb6d82b8bf8951796d9f3b11ba816853eace503d2169f719c8dadf678f5076",
+    "ledger.db.artifacts/fc5c8b829b3486d9707c66bea4f005292b9d2c76778007e23b6fccc4f274b2bd": "fc5c8b829b3486d9707c66bea4f005292b9d2c76778007e23b6fccc4f274b2bd"
+  },
+  "limitations": [
+    "Fixed small Python process-contract capability only",
+    "No local-model coding turn in these tests",
+    "No general checkout/export, package installation, controller supervision or complete task loop"
+  ],
+  "retained_failure": "First output-flood run exposed kill acknowledgement blocked by attached full output pipe; fixed by detaching capture before container kill. Prior artifacts retained under .gflo/evidence/broker-qualification-v1."
+}

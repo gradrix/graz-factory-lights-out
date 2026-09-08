@@ -3,3 +3,10 @@ __pycache__/
 .gflo/
 infra/serving/*.local.json
 .env
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+build/
+dist/

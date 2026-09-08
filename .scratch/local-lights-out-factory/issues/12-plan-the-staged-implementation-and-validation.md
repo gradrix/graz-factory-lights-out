@@ -1,7 +1,7 @@
 # Plan the staged implementation and validation
 
 Type: grilling
-Status: claimed
+Status: resolved
 Assignee: codex
 Blocked by: 10, 11
 
@@ -90,3 +90,13 @@ Stage the first real-model experiment around a shared provider and two consumers
 The plan must be iterative and empirical. Start with the smallest durable end-to-end slice and a few logical workers on the actual RTX 5090/Qwen service; add layers only after stage-specific measurements pass. Every stage must name which assumptions it tests, its falsification thresholds, and which later design decisions may be revised from the result.
 
 Include explicit calibration stages for Worker-view specialization, Context-policy tiers, retrieval/expansion behavior, Work-atom granularity, and autonomous capability discovery. Treat these as versioned policies learned from evidence rather than fixed constants.
+
+## Answer
+
+### Resolution — 2026-09-08
+
+The user accepted proceeding after the recommendation to finish this decision and limit the first implementation effort to Stage 0 target verification and Stage 1 durable task-to-evidence execution plus the twelve-task real-model pilot. Adopt the staged plan above. Later stages remain conditional on measured evidence; this does not authorize implementing the whole roadmap now.
+
+Start target checks on the available RTX 5090 and build deterministic controller mechanics alongside serving qualification. Preserve the SGLang/vLLM comparison, small Worker views, scheduler-owned evidence and diagnosis, profile-driven product technologies, and no automatic remote fallback. A successful infrastructure probe does not establish coding capability.
+
+Implementation work is tracked separately in [the implementation index](../implementation.md). These are build tasks beyond the planning map's destination, not new Wayfinder decision tickets.

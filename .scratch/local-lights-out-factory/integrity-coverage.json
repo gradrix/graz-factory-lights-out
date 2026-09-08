@@ -1,0 +1,611 @@
+{
+  "schema_version": 3,
+  "scope": "Retrospective 50-row coverage consolidation across retained runs; not a newly scored same-build 50-case campaign",
+  "full_integrity_campaign_passed": false,
+  "counts": {
+    "covered": 50,
+    "partial": 0,
+    "unimplemented": 0
+  },
+  "suite_counts": {
+    "passed": 234,
+    "subtests_passed": 25,
+    "skipped": 0
+  },
+  "rows": [
+    {
+      "id": "01-1",
+      "category": "Missing/skipped tests",
+      "variation": "absent receipt",
+      "coverage": "covered",
+      "evidence": {
+        "test": "test_missing_or_nonpassing_gates_never_accept",
+        "matching_passed_cases": 2,
+        "suite_receipt_sha256": "18e8147938578165985ca13ea68ed1bd0e69930769881ee3905cae684b8ed9a7"
+      },
+      "limits": "Absent receipt assertion"
+    },
+    {
+      "id": "01-2",
+      "category": "Missing/skipped tests",
+      "variation": "failed receipt",
+      "coverage": "covered",
+      "evidence": {
+        "test": "test_missing_or_nonpassing_gates_never_accept[fail]",
+        "matching_passed_cases": 1,
+        "suite_receipt_sha256": "18e8147938578165985ca13ea68ed1bd0e69930769881ee3905cae684b8ed9a7"
+      },
+      "limits": ""
+    },
+    {
+      "id": "01-3",
+      "category": "Missing/skipped tests",
+      "variation": "inconclusive receipt",
+      "coverage": "covered",
+      "evidence": {
+        "test": "test_missing_or_nonpassing_gates_never_accept[inconclusive]",
+        "matching_passed_cases": 1,
+        "suite_receipt_sha256": "18e8147938578165985ca13ea68ed1bd0e69930769881ee3905cae684b8ed9a7"
+      },
+      "limits": ""
+    },
+    {
+      "id": "01-4",
+      "category": "Missing/skipped tests",
+      "variation": "omitted mandatory case",
+      "coverage": "covered",
+      "evidence": {
+        "test": "test_later_mandatory_case_cannot_be_skipped_by_earlier_success",
+        "matching_passed_cases": 1,
+        "suite_receipt_sha256": "18e8147938578165985ca13ea68ed1bd0e69930769881ee3905cae684b8ed9a7"
+      },
+      "limits": ""
+    },
+    {
+      "id": "01-5",
+      "category": "Missing/skipped tests",
+      "variation": "empty/malformed gate report",
+      "coverage": "covered",
+      "evidence": {
+        "test": "test_malformed_execution_report_is_inconclusive",
+        "matching_passed_cases": 3,
+        "suite_receipt_sha256": "18e8147938578165985ca13ea68ed1bd0e69930769881ee3905cae684b8ed9a7"
+      },
+      "limits": ""
+    },
+    {
+      "id": "02-1",
+      "category": "Forged success",
+      "variation": "candidate prints PASS",
+      "coverage": "covered",
+      "evidence": {
+        "test": "test_printing_forged_pass_does_not_satisfy_gate",
+        "matching_passed_cases": 1,
+        "suite_receipt_sha256": "18e8147938578165985ca13ea68ed1bd0e69930769881ee3905cae684b8ed9a7"
+      },
+      "limits": ""
+    },
+    {
+      "id": "02-2",
+      "category": "Forged success",
+      "variation": "wrong validator digest",
+      "coverage": "covered",
+      "evidence": {
+        "test": "test_mismatched_gate_evidence_rejected[change4]",
+        "matching_passed_cases": 1,
+        "suite_receipt_sha256": "18e8147938578165985ca13ea68ed1bd0e69930769881ee3905cae684b8ed9a7"
+      },
+      "limits": ""
+    },
+    {
+      "id": "02-3",
+      "category": "Forged success",
+      "variation": "wrong candidate digest",
+      "coverage": "covered",
+      "evidence": {
+        "test": "test_mismatched_gate_evidence_rejected[change3]",
+        "matching_passed_cases": 1,
+        "suite_receipt_sha256": "18e8147938578165985ca13ea68ed1bd0e69930769881ee3905cae684b8ed9a7"
+      },
+      "limits": ""
+    },
+    {
+      "id": "02-4",
+      "category": "Forged success",
+      "variation": "wrong attempt receipt",
+      "coverage": "covered",
+      "evidence": {
+        "test": "test_mismatched_gate_evidence_rejected[change0]",
+        "matching_passed_cases": 1,
+        "suite_receipt_sha256": "18e8147938578165985ca13ea68ed1bd0e69930769881ee3905cae684b8ed9a7"
+      },
+      "limits": ""
+    },
+    {
+      "id": "02-5",
+      "category": "Forged success",
+      "variation": "edited artifact bytes",
+      "coverage": "covered",
+      "evidence": {
+        "test": "test_accept_reverifies_bytes_and_preserves_history",
+        "matching_passed_cases": 4,
+        "suite_receipt_sha256": "18e8147938578165985ca13ea68ed1bd0e69930769881ee3905cae684b8ed9a7"
+      },
+      "limits": "Corruption and missing bytes at acceptance"
+    },
+    {
+      "id": "03-1",
+      "category": "Stale inputs",
+      "variation": "source digest",
+      "coverage": "covered",
+      "evidence": {
+        "test": "test_stale_source_missing_and_unverified_diagnostics",
+        "matching_passed_cases": 1,
+        "suite_receipt_sha256": "18e8147938578165985ca13ea68ed1bd0e69930769881ee3905cae684b8ed9a7"
+      },
+      "limits": ""
+    },
+    {
+      "id": "03-2",
+      "category": "Stale inputs",
+      "variation": "input revision",
+      "coverage": "covered",
+      "evidence": {
+        "test": "test_preconditions_and_forged_lease_cannot_accept",
+        "matching_passed_cases": 1,
+        "suite_receipt_sha256": "18e8147938578165985ca13ea68ed1bd0e69930769881ee3905cae684b8ed9a7"
+      },
+      "limits": ""
+    },
+    {
+      "id": "03-3",
+      "category": "Stale inputs",
+      "variation": "changed dependency",
+      "coverage": "covered",
+      "evidence": {
+        "receipt": ".gflo/evidence/prepared-integration-live-v1/result.json",
+        "sha256": "49965515af0fc66defd1fe3de7efa395e293f73b777df98cbacf9973f0c6258a"
+      },
+      "limits": "Pinned consumer contracts and changed current provider identity; prepared artifact integration only."
+    },
+    {
+      "id": "03-4",
+      "category": "Stale inputs",
+      "variation": "stale model response",
+      "coverage": "covered",
+      "evidence": {
+        "test": "test_input_freshness_blocks_stale_result",
+        "matching_passed_cases": 2,
+        "suite_receipt_sha256": "18e8147938578165985ca13ea68ed1bd0e69930769881ee3905cae684b8ed9a7"
+      },
+      "limits": ""
+    },
+    {
+      "id": "03-5",
+      "category": "Stale inputs",
+      "variation": "combined candidate base",
+      "coverage": "covered",
+      "evidence": {
+        "receipt": ".gflo/evidence/prepared-integration-live-v1/result.json",
+        "sha256": "49965515af0fc66defd1fe3de7efa395e293f73b777df98cbacf9973f0c6258a"
+      },
+      "limits": "Exact common base, stale-base rejection and independent combined gates; no atomic Git promotion."
+    },
+    {
+      "id": "04-1",
+      "category": "Duplicate/expired delivery",
+      "variation": "duplicate claim",
+      "coverage": "covered",
+      "evidence": {
+        "test": "test_competing_connections_get_only_one_lease",
+        "matching_passed_cases": 1,
+        "suite_receipt_sha256": "18e8147938578165985ca13ea68ed1bd0e69930769881ee3905cae684b8ed9a7"
+      },
+      "limits": ""
+    },
+    {
+      "id": "04-2",
+      "category": "Duplicate/expired delivery",
+      "variation": "duplicate receipt",
+      "coverage": "covered",
+      "evidence": {
+        "test": "test_acceptance_is_atomic_and_idempotent_across_connections",
+        "matching_passed_cases": 1,
+        "suite_receipt_sha256": "18e8147938578165985ca13ea68ed1bd0e69930769881ee3905cae684b8ed9a7"
+      },
+      "limits": "Includes duplicate gate receipt"
+    },
+    {
+      "id": "04-3",
+      "category": "Duplicate/expired delivery",
+      "variation": "duplicate accept",
+      "coverage": "covered",
+      "evidence": {
+        "test": "test_acceptance_is_atomic_and_idempotent_across_connections",
+        "matching_passed_cases": 1,
+        "suite_receipt_sha256": "18e8147938578165985ca13ea68ed1bd0e69930769881ee3905cae684b8ed9a7"
+      },
+      "limits": ""
+    },
+    {
+      "id": "04-4",
+      "category": "Duplicate/expired delivery",
+      "variation": "late result after expiry",
+      "coverage": "covered",
+      "evidence": {
+        "test": "test_expiry_fences_late_results_and_requires_new_attempt",
+        "matching_passed_cases": 1,
+        "suite_receipt_sha256": "18e8147938578165985ca13ea68ed1bd0e69930769881ee3905cae684b8ed9a7"
+      },
+      "limits": ""
+    },
+    {
+      "id": "04-5",
+      "category": "Duplicate/expired delivery",
+      "variation": "expired final retry",
+      "coverage": "covered",
+      "evidence": {
+        "test": "test_expiry_of_final_attempt_quarantines_after_reopen",
+        "matching_passed_cases": 1,
+        "suite_receipt_sha256": "18e8147938578165985ca13ea68ed1bd0e69930769881ee3905cae684b8ed9a7"
+      },
+      "limits": "Bounded terminal outcome"
+    },
+    {
+      "id": "05-1",
+      "category": "Worker death",
+      "variation": "before request",
+      "coverage": "covered",
+      "evidence": {
+        "receipt": ".gflo/evidence/before-request-death-v1/results.json",
+        "sha256": "83e488cbadc3fe77018bd4dad881285f9054f82ed370ef9a1d2e85ad66552359"
+      },
+      "limits": "Actual SIGKILL of co-located controller/worker dispatch before request; no separate worker service."
+    },
+    {
+      "id": "05-2",
+      "category": "Worker death",
+      "variation": "during read expansion",
+      "coverage": "covered",
+      "evidence": {
+        "receipt": ".gflo/evidence/read-expansion-death-v1/results.json",
+        "sha256": "4fe5b9dc840d4d40a39dee22bd674233db098d99cc5ca93c31510912efdb1b42"
+      },
+      "limits": "Actual SIGKILL of co-located dispatch after retained read expansion; scripted proposal isolates recovery."
+    },
+    {
+      "id": "05-3",
+      "category": "Worker death",
+      "variation": "during candidate execution",
+      "coverage": "covered",
+      "evidence": {
+        "verification": "execution-death-verification.json",
+        "scope": "candidate KILL/TERM",
+        "sha256": "369e9ca2e913bc6e33cd938acf5b485b63d950258a6163912dc44a0651808a6e"
+      },
+      "limits": "Scripted proposal; real execution process"
+    },
+    {
+      "id": "05-4",
+      "category": "Worker death",
+      "variation": "after candidate publication",
+      "coverage": "covered",
+      "evidence": {
+        "verification": "controller-death-verification.json",
+        "scope": "before_launch",
+        "sha256": "4685a722133865e455800b9a7f5f04ba8ad12241b9565ed8e145f745cc8b9eb3"
+      },
+      "limits": "Controller owns this lifecycle; candidate retained"
+    },
+    {
+      "id": "05-5",
+      "category": "Worker death",
+      "variation": "before gate dispatch",
+      "coverage": "covered",
+      "evidence": {
+        "verification": "controller-death-verification.json",
+        "scope": "before_launch",
+        "sha256": "4685a722133865e455800b9a7f5f04ba8ad12241b9565ed8e145f745cc8b9eb3"
+      },
+      "limits": "Created gate container reclaimed"
+    },
+    {
+      "id": "06-1",
+      "category": "Model-server death",
+      "variation": "before models lookup",
+      "coverage": "covered",
+      "evidence": {
+        "receipt": ".gflo/evidence/model-lookup-death-v1/result.json",
+        "sha256": "19aab75a413b9d865fb9c5f61ce519be9c8380aa1cc5765ecfa048d6f0d14b40"
+      },
+      "limits": "Actual local EngineCore SIGKILL before models lookup, readiness recovery and ordinary resume."
+    },
+    {
+      "id": "06-2",
+      "category": "Model-server death",
+      "variation": "during tokenize",
+      "coverage": "covered",
+      "evidence": {
+        "receipt": ".gflo/evidence/model-tokenize-death-v1/result.json",
+        "sha256": "19aab75a413b9d865fb9c5f61ce519be9c8380aa1cc5765ecfa048d6f0d14b40"
+      },
+      "limits": "Actual EngineCore SIGKILL after tokenizer POST send, before client reads response. Client boundary coverage; exact tokenizer execution overlap is not proven."
+    },
+    {
+      "id": "06-3",
+      "category": "Model-server death",
+      "variation": "active prefill/decode request",
+      "coverage": "covered",
+      "evidence": {
+        "verification": "inflight-recovery-verification.json",
+        "scope": "active request SIGKILL",
+        "sha256": "182c13bc2110abe2de7919ed380bc85d69755832338ba41c14484265793279a7"
+      },
+      "limits": ""
+    },
+    {
+      "id": "06-4",
+      "category": "Model-server death",
+      "variation": "between read/edit turns",
+      "coverage": "covered",
+      "evidence": {
+        "receipt": ".gflo/evidence/model-between-turns-death-v1/result.json",
+        "sha256": "19aab75a413b9d865fb9c5f61ce519be9c8380aa1cc5765ecfa048d6f0d14b40"
+      },
+      "limits": "Actual EngineCore SIGKILL between a valid read request and next edit turn; ordinary resume."
+    },
+    {
+      "id": "06-5",
+      "category": "Model-server death",
+      "variation": "repeated failure exhausts budget",
+      "coverage": "covered",
+      "evidence": {
+        "test": "test_model_failure_windows_preserve_evidence_and_bounded_resume[persistent]",
+        "matching_passed_cases": 1,
+        "suite_receipt_sha256": "18e8147938578165985ca13ea68ed1bd0e69930769881ee3905cae684b8ed9a7"
+      },
+      "limits": "Deterministic persistent outage and bounded quarantine"
+    },
+    {
+      "id": "07-1",
+      "category": "Gate-runner death",
+      "variation": "before launch",
+      "coverage": "covered",
+      "evidence": {
+        "verification": "controller-death-verification.json",
+        "scope": "before_launch",
+        "sha256": "4685a722133865e455800b9a7f5f04ba8ad12241b9565ed8e145f745cc8b9eb3"
+      },
+      "limits": ""
+    },
+    {
+      "id": "07-2",
+      "category": "Gate-runner death",
+      "variation": "during case",
+      "coverage": "covered",
+      "evidence": {
+        "verification": "execution-death-verification.json",
+        "scope": "validation KILL/TERM",
+        "sha256": "369e9ca2e913bc6e33cd938acf5b485b63d950258a6163912dc44a0651808a6e"
+      },
+      "limits": ""
+    },
+    {
+      "id": "07-3",
+      "category": "Gate-runner death",
+      "variation": "after case before receipt",
+      "coverage": "covered",
+      "evidence": {
+        "verification": "controller-death-verification.json",
+        "scope": "before_receipt",
+        "sha256": "4685a722133865e455800b9a7f5f04ba8ad12241b9565ed8e145f745cc8b9eb3"
+      },
+      "limits": ""
+    },
+    {
+      "id": "07-4",
+      "category": "Gate-runner death",
+      "variation": "between mandatory cases",
+      "coverage": "covered",
+      "evidence": {
+        "verification": "controller-death-verification.json",
+        "scope": "between_cases",
+        "sha256": "4685a722133865e455800b9a7f5f04ba8ad12241b9565ed8e145f745cc8b9eb3"
+      },
+      "limits": ""
+    },
+    {
+      "id": "07-5",
+      "category": "Gate-runner death",
+      "variation": "after receipt before acceptance",
+      "coverage": "covered",
+      "evidence": {
+        "verification": "controller-death-verification.json",
+        "scope": "after_receipt",
+        "sha256": "4685a722133865e455800b9a7f5f04ba8ad12241b9565ed8e145f745cc8b9eb3"
+      },
+      "limits": "Gate runner currently resides in controller"
+    },
+    {
+      "id": "08-1",
+      "category": "Controller restart",
+      "variation": "artifact staging",
+      "coverage": "covered",
+      "evidence": {
+        "test": "test_process_crash_during_publication[before_link]",
+        "matching_passed_cases": 1,
+        "suite_receipt_sha256": "18e8147938578165985ca13ea68ed1bd0e69930769881ee3905cae684b8ed9a7"
+      },
+      "limits": ""
+    },
+    {
+      "id": "08-2",
+      "category": "Controller restart",
+      "variation": "publication before ledger bind",
+      "coverage": "covered",
+      "evidence": {
+        "test": "test_crash_between_publication_and_ledger_commit_leaves_orphan",
+        "matching_passed_cases": 1,
+        "suite_receipt_sha256": "18e8147938578165985ca13ea68ed1bd0e69930769881ee3905cae684b8ed9a7"
+      },
+      "limits": ""
+    },
+    {
+      "id": "08-3",
+      "category": "Controller restart",
+      "variation": "candidate commit",
+      "coverage": "covered",
+      "evidence": {
+        "verification": "candidate-commit-death-verification.json",
+        "scope": "after_candidate_commit",
+        "sha256": "0286904acad4a3e620d643ef8a8b77b413d048557cd136a72ba6b07eadfe60d0"
+      },
+      "limits": ""
+    },
+    {
+      "id": "08-4",
+      "category": "Controller restart",
+      "variation": "gate receipt commit",
+      "coverage": "covered",
+      "evidence": {
+        "verification": "controller-death-verification.json",
+        "scope": "after_receipt",
+        "sha256": "4685a722133865e455800b9a7f5f04ba8ad12241b9565ed8e145f745cc8b9eb3"
+      },
+      "limits": ""
+    },
+    {
+      "id": "08-5",
+      "category": "Controller restart",
+      "variation": "acceptance commit",
+      "coverage": "covered",
+      "evidence": {
+        "test": "test_process_death_and_resume_without_duplicate_acceptance[after-accept]",
+        "matching_passed_cases": 1,
+        "suite_receipt_sha256": "18e8147938578165985ca13ea68ed1bd0e69930769881ee3905cae684b8ed9a7"
+      },
+      "limits": "Actual subprocess death"
+    },
+    {
+      "id": "09-1",
+      "category": "Disk reserve",
+      "variation": "admission below reserve",
+      "coverage": "covered",
+      "evidence": {
+        "test": "test_low_reserve_rejects_publish_before_staging_and_recovers",
+        "matching_passed_cases": 1,
+        "suite_receipt_sha256": "18e8147938578165985ca13ea68ed1bd0e69930769881ee3905cae684b8ed9a7"
+      },
+      "limits": ""
+    },
+    {
+      "id": "09-2",
+      "category": "Disk reserve",
+      "variation": "staging ENOSPC",
+      "coverage": "covered",
+      "evidence": {
+        "test": "test_publication_enospc_retains_old_bytes_and_retries[staging]",
+        "matching_passed_cases": 1,
+        "suite_receipt_sha256": "18e8147938578165985ca13ea68ed1bd0e69930769881ee3905cae684b8ed9a7"
+      },
+      "limits": ""
+    },
+    {
+      "id": "09-3",
+      "category": "Disk reserve",
+      "variation": "publish/link ENOSPC",
+      "coverage": "covered",
+      "evidence": {
+        "test": "test_publication_enospc_retains_old_bytes_and_retries[link]",
+        "matching_passed_cases": 1,
+        "suite_receipt_sha256": "18e8147938578165985ca13ea68ed1bd0e69930769881ee3905cae684b8ed9a7"
+      },
+      "limits": ""
+    },
+    {
+      "id": "09-4",
+      "category": "Disk reserve",
+      "variation": "ledger commit ENOSPC",
+      "coverage": "covered",
+      "evidence": {
+        "test": "test_acceptance_commit_failure_resumes_without_duplicate_work[before_commit_full]",
+        "matching_passed_cases": 1,
+        "suite_receipt_sha256": "18e8147938578165985ca13ea68ed1bd0e69930769881ee3905cae684b8ed9a7"
+      },
+      "limits": "Injected SQLITE_FULL at commit, not physical storage exhaustion"
+    },
+    {
+      "id": "09-5",
+      "category": "Disk reserve",
+      "variation": "low reserve on resume",
+      "coverage": "covered",
+      "evidence": {
+        "test": "test_low_disk_resume_preserves_attempt_until_space_recovers[True]",
+        "matching_passed_cases": 1,
+        "suite_receipt_sha256": "18e8147938578165985ca13ea68ed1bd0e69930769881ee3905cae684b8ed9a7"
+      },
+      "limits": "Interrupted and fresh admission paths tested"
+    },
+    {
+      "id": "10-1",
+      "category": "Authority escape",
+      "variation": "path traversal",
+      "coverage": "covered",
+      "evidence": {
+        "test": "test_untrusted_results_cannot_expand_authority",
+        "matching_passed_cases": 10,
+        "suite_receipt_sha256": "18e8147938578165985ca13ea68ed1bd0e69930769881ee3905cae684b8ed9a7"
+      },
+      "limits": "Path traversal inputs"
+    },
+    {
+      "id": "10-2",
+      "category": "Authority escape",
+      "variation": "prohibited file edit",
+      "coverage": "covered",
+      "evidence": {
+        "test": "test_untrusted_results_cannot_expand_authority",
+        "matching_passed_cases": 10,
+        "suite_receipt_sha256": "18e8147938578165985ca13ea68ed1bd0e69930769881ee3905cae684b8ed9a7"
+      },
+      "limits": "Prohibited-path edit inputs"
+    },
+    {
+      "id": "10-3",
+      "category": "Authority escape",
+      "variation": "symlink escape",
+      "coverage": "covered",
+      "evidence": {
+        "test": "test_nonregular_objects_rejected_without_following_or_blocking[symlink]",
+        "matching_passed_cases": 1,
+        "suite_receipt_sha256": "18e8147938578165985ca13ea68ed1bd0e69930769881ee3905cae684b8ed9a7"
+      },
+      "limits": ""
+    },
+    {
+      "id": "10-4",
+      "category": "Authority escape",
+      "variation": "host/socket access",
+      "coverage": "covered",
+      "evidence": {
+        "test": "test_live_no_host_credentials_network_or_validator_access",
+        "matching_passed_cases": 1,
+        "suite_receipt_sha256": "18e8147938578165985ca13ea68ed1bd0e69930769881ee3905cae684b8ed9a7"
+      },
+      "limits": "Actual Docker isolation"
+    },
+    {
+      "id": "10-5",
+      "category": "Authority escape",
+      "variation": "forged control receipt",
+      "coverage": "covered",
+      "evidence": {
+        "test": "test_forged_lease_never_dispatches_gate",
+        "matching_passed_cases": 1,
+        "suite_receipt_sha256": "18e8147938578165985ca13ea68ed1bd0e69930769881ee3905cae684b8ed9a7"
+      },
+      "limits": "Forged authority rejected before dispatch"
+    }
+  ],
+  "latest_suite_receipt": ".gflo/evidence/integration-suite-v1/suite.xml"
+}

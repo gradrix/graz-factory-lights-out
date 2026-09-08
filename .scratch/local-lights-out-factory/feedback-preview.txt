@@ -1,0 +1,21 @@
+Validation did not pass.
+Gate: behavior
+Outcome: fail
+Last executed case: 1
+Command: ["python", "main.py"]
+Input (stdin):
+""
+
+Process outcome: completed
+Exit code: 1
+Observed stdout:
+
+Observed stderr:
+Traceback (most recent call last):
+  File "/workspace/main.py", line 22, in <module>
+    main()
+  File "/workspace/main.py", line 17, in main
+    s = data.get('s', '')
+        ^^^^^^^^
+AttributeError: 'str' object has no attribute 'get'
+

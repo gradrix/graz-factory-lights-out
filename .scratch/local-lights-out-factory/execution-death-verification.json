@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "scope": "Live disposable execution-process death; scripted proposal, no model inference",
+  "variations": [
+    {
+      "variation": "candidate-KILL",
+      "exit_code": 137,
+      "attempts": 1,
+      "passed": true
+    },
+    {
+      "variation": "candidate-TERM",
+      "exit_code": 143,
+      "attempts": 1,
+      "passed": true
+    },
+    {
+      "variation": "validation-KILL",
+      "exit_code": 137,
+      "attempts": 2,
+      "passed": true
+    },
+    {
+      "variation": "validation-TERM",
+      "exit_code": 143,
+      "attempts": 2,
+      "passed": true
+    }
+  ],
+  "full_integrity_campaign_passed": false,
+  "limitations": [
+    "TERM fixture explicitly installs an exit handler; does not establish behavior of arbitrary SIGTERM handlers",
+    "Candidate smoke is advisory; mandatory independent gate determines acceptance",
+    "Earlier injector failures retained in execution-death-v1 through v4"
+  ],
+  "evidence_root": ".gflo/evidence/execution-death-v5",
+  "evidence_sha256": {
+    "candidate-KILL/state.json": "0f02d8ce032c215d2c3bce4a8efaf1cf52b38f2c27fa3dd71d26c6ce37c41209",
+    "candidate-TERM/state.json": "87f700dbe546c305c706af918d02dcc55aa8a15d9258e4b03c6c98d9213db750",
+    "manifest.json": "e455f96478843d49b40cc7116c3cd9743689f0e5fa834e3f52128ffaeb381fa4",
+    "results.json": "e2ec48f131299472832dcfdc5e93a4f9ca8e4249151bdbccacb119b3b71d0b50",
+    "validation-KILL/state.json": "864326a93b6738a67b46ebed87fe9e5b645be182e426aa259839b2b7fbe7b6c3",
+    "validation-TERM/state.json": "89f124f44d72f9862cba342db3ee24c030ea1ef35046322de040e21c316339c0"
+  }
+}

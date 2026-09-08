@@ -1,0 +1,30 @@
+{
+  "mode": "managed",
+  "base_url": "http://127.0.0.1:30000/v1",
+  "model": "gflo-local",
+  "request_timeout": 120,
+  "startup_timeout": 300,
+  "managed": {
+    "backend": "vllm",
+    "image": "vllm/vllm-openai@sha256:ac259a0111c6cf462a72e449962b84f7a624b5cbec24bd7d9ec3b67d40ffd1bf",
+    "model_path": "Inferact/Qwen3.8-27B-NVFP4",
+    "revision": "6128240ebaf4eaa7bad2b3d1c72c37d677c5f462",
+    "name": "gflo-vllm-graphs",
+    "gpu": "0",
+    "context_length": 16384,
+    "memory_fraction": 0.85,
+    "shm_size": "4g",
+    "memory_limit": "36g",
+    "cpu_limit": 3,
+    "pids_limit": 1024,
+    "model_cache_volume": "local-vllm-huggingface-cache",
+    "offline": true,
+    "hf_token_env": "",
+    "server_options": {
+      "kv-cache-dtype": "bfloat16",
+      "reasoning-parser": "qwen3",
+      "tool-call-parser": "qwen3_coder"
+    },
+    "enforce_eager": false
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-09-08T17:17:23.355204+00:00",
+  "workload": "worker-coding-smoke-v1",
+  "status": "accepted",
+  "model": "gflo-local",
+  "prompt_tokens": 626,
+  "completion_tokens": 75,
+  "client_turn_seconds": 7.149406894999629,
+  "trusted_cases_passed": 3,
+  "baseline_wrong_output_verified": true,
+  "candidate_digest": "ecdc1affcd5a84789644436846b8be3b1031ac89859388ad285dde693ca9eec4",
+  "model_evidence_digest": "9dca253fa4af12e3463adabd59712a81686fb5be03c5d6520e647befceaafec6",
+  "evidence_root": ".gflo/evidence/worker-coding-smoke-final",
+  "earlier_passing_run": ".gflo/evidence/worker-coding-smoke-v1",
+  "source_sha256": {
+    "gflo/model.py": "8d4a4b5025965332f2d20456afc0cbdc1360228143d10097376b6581433b02b0",
+    "gflo/worker.py": "03883d669e2e37c51567a5ab381bbb4cf1654ad0ae4b2fa04b6b6214409f6882",
+    "scripts/check_worker.py": "a183868001b53af60970d683d673aa9674bb610f6b7ba74ec3cd71bd2366ec0a",
+    "tests/test_worker.py": "73e9ac01d79144ce2528efcb390f76ca7631f142457d2fa2bd7bbdf196ce0063"
+  },
+  "evidence_sha256": {
+    "ledger.db": "f48c81ff65df6ad350e51f6d57412943b31f1660a5d533f4b1c2a639d5c698c9",
+    "ledger.db.artifacts/0d70c174ea38c800c6c8fa881f5c5abf24ee250d878e7ad350559a0aa0b5eada": "0d70c174ea38c800c6c8fa881f5c5abf24ee250d878e7ad350559a0aa0b5eada",
+    "ledger.db.artifacts/172373570743870a51c9c39635b42f0e722df1c585f76d2720a5e08557f1a7e3": "172373570743870a51c9c39635b42f0e722df1c585f76d2720a5e08557f1a7e3",
+    "ledger.db.artifacts/1e3ee3c61861fba11751b8714d4a0f31ea0957a141a0c19a78a11156fa8cd6f2": "1e3ee3c61861fba11751b8714d4a0f31ea0957a141a0c19a78a11156fa8cd6f2",
+    "ledger.db.artifacts/25c28e7c408887a63339ca4543dc787efbe40da80d50d675fc395ce097a23929": "25c28e7c408887a63339ca4543dc787efbe40da80d50d675fc395ce097a23929",
+    "ledger.db.artifacts/2e7565739a498836f9e8bdc0246ced7b2970170065184a04f63a52915a46e7e8": "2e7565739a498836f9e8bdc0246ced7b2970170065184a04f63a52915a46e7e8",
+    "ledger.db.artifacts/2f6544ca878f2d39007f9562f2672868bd1ab583a7965c2b88d410d2a3ff4a9e": "2f6544ca878f2d39007f9562f2672868bd1ab583a7965c2b88d410d2a3ff4a9e",
+    "ledger.db.artifacts/3389cd1dd2e9ddac2009b1d817e6585f629892afd1fe1a35eaa7723f5c40d6f3": "3389cd1dd2e9ddac2009b1d817e6585f629892afd1fe1a35eaa7723f5c40d6f3",
+    "ledger.db.artifacts/3e2828dcd7d078e9ec617c408524887a37376e576c80d884d27328bf2d51bf96": "3e2828dcd7d078e9ec617c408524887a37376e576c80d884d27328bf2d51bf96",
+    "ledger.db.artifacts/4c554971aff723aeddffeec128704d40540a350f4b2bedea6544330ef5faffd8": "4c554971aff723aeddffeec128704d40540a350f4b2bedea6544330ef5faffd8",
+    "ledger.db.artifacts/564f699845350ba4e477733283cf9d8038ac5c6440ef47e45a1429e1af2dd1fe": "564f699845350ba4e477733283cf9d8038ac5c6440ef47e45a1429e1af2dd1fe",
+    "ledger.db.artifacts/7d1512758d531044680262cf5cd3ce0882bfdc2ee3e5cc3969c18a709af8e4dc": "7d1512758d531044680262cf5cd3ce0882bfdc2ee3e5cc3969c18a709af8e4dc",
+    "ledger.db.artifacts/7e822a564f1591e9ba807394c5ae964b59dcf84c62d2ea04aff9c1ff4cc379c5": "7e822a564f1591e9ba807394c5ae964b59dcf84c62d2ea04aff9c1ff4cc379c5",
+    "ledger.db.artifacts/8226d775d8a716e4c7ae0dae1191f55fb484d509f5b1e700368f587cd28ad98f": "8226d775d8a716e4c7ae0dae1191f55fb484d509f5b1e700368f587cd28ad98f",
+    "ledger.db.artifacts/92b4dbca2fe1819baa9319a0e0b023c638874dd241d289dd06afda46ce92fd46": "92b4dbca2fe1819baa9319a0e0b023c638874dd241d289dd06afda46ce92fd46",
+    "ledger.db.artifacts/9dca253fa4af12e3463adabd59712a81686fb5be03c5d6520e647befceaafec6": "9dca253fa4af12e3463adabd59712a81686fb5be03c5d6520e647befceaafec6",
+    "ledger.db.artifacts/c0b13ff293f5b72d19dda84efcdd519985985568bab5782635669fd1e41ef77f": "c0b13ff293f5b72d19dda84efcdd519985985568bab5782635669fd1e41ef77f",
+    "ledger.db.artifacts/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "ledger.db.artifacts/e7d80b533e677ff5085f877da428dc73c7f51f34be691352c576a2853fb44d50": "e7d80b533e677ff5085f877da428dc73c7f51f34be691352c576a2853fb44d50",
+    "ledger.db.artifacts/ecdc1affcd5a84789644436846b8be3b1031ac89859388ad285dde693ca9eec4": "ecdc1affcd5a84789644436846b8be3b1031ac89859388ad285dde693ca9eec4",
+    "ledger.db.artifacts/f482ffa004917493fe1b888f7e33b266cd4cc7fed26324a124d9ffc1ca1ca121": "f482ffa004917493fe1b888f7e33b266cd4cc7fed26324a124d9ffc1ca1ca121",
+    "runtime.json": "2a198797f8314f9691622ac92c0fa5f89b675cf4285292bf0503f7701e8d86a9",
+    "summary.json": "9cfddaa525446e797564b80a599556eeebefa9910efd017deb3028e196f22b5b"
+  },
+  "tests": {
+    "worker_client_passed": 34,
+    "full_default_passed": 147,
+    "subtests_passed": 23,
+    "optional_broker_skipped": 8
+  },
+  "limitations": [
+    "Single synthetic repair; not the twelve-task pilot or broad coding-capability evidence",
+    "No automatic tool loop, retry/resume or scheduler yet",
+    "Deployment provenance is configured; smoke separately checked container image/revision flags",
+    "Final smoke script received only line wrapping after execution; fixture string values are unchanged"
+  ]
+}

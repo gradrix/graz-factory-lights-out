@@ -1,0 +1,705 @@
+{
+  "schema_version": 1,
+  "comparison": "same twelve development fixtures; eager versus compilation and CUDA graphs",
+  "results": {
+    "twelve-task-pilot-v1": {
+      "summary": {
+        "schema_version": 1,
+        "workload": "twelve-task-development-pilot-v1",
+        "fixture_sha256": "4f0fb9eadb5e3b4213419cbb76fab484f678673dadc864fc7e6942e247d18826",
+        "tasks_completed": 12,
+        "accepted": 12,
+        "first_attempt_accepted": 11,
+        "categories": {
+          "implementation": {
+            "accepted": 3
+          },
+          "migration": {
+            "accepted": 3
+          },
+          "repair": {
+            "accepted": 3
+          },
+          "test-generation": {
+            "accepted": 3
+          }
+        },
+        "model_turns": 17,
+        "read_requests": 5,
+        "prompt_tokens": 12148,
+        "completion_tokens": 2135,
+        "turns_without_validated_token_usage": 0,
+        "max_actual_turn_tokens": 1085,
+        "generation_http_seconds_median": 9.71492170000056,
+        "generation_http_seconds_max": 42.43950919300005,
+        "task_seconds_sum": 295.45965530300236,
+        "sampled_peak_total_gpu_memory_mib": 31302.0,
+        "minimum_host_mem_available_kib": 40456784,
+        "tasks": [
+          {
+            "task": "01-slug",
+            "category": "implementation",
+            "status": "accepted",
+            "attempts": 1,
+            "elapsed_seconds": 16.040850048999346,
+            "model_turns": [
+              {
+                "evidence_digest": "a25e63e91b53fa64cab59192db9862a4b32abbf662b31e6f18d35ea9b2a6935c",
+                "error": null,
+                "client_seconds": 9.808226654000464,
+                "prompt_tokens": 648,
+                "completion_tokens": 101,
+                "kind": "candidate",
+                "generation_http_seconds": 9.71492170000056
+              }
+            ],
+            "error": null
+          },
+          {
+            "task": "02-counts",
+            "category": "implementation",
+            "status": "accepted",
+            "attempts": 1,
+            "elapsed_seconds": 15.028828170999986,
+            "model_turns": [
+              {
+                "evidence_digest": "651b54b1e3253ded67ee1ee7cf4f82a23cab9f955c7d3954d83efad44663525b",
+                "error": null,
+                "client_seconds": 9.352187548000074,
+                "prompt_tokens": 631,
+                "completion_tokens": 83,
+                "kind": "candidate",
+                "generation_http_seconds": 9.252557316000093
+              }
+            ],
+            "error": null
+          },
+          {
+            "task": "03-chunks",
+            "category": "implementation",
+            "status": "accepted",
+            "attempts": 1,
+            "elapsed_seconds": 22.400456899000346,
+            "model_turns": [
+              {
+                "evidence_digest": "a5fc24e301273354f1472c66212a91f6fc00566c2ec5818ebd1ae841ee642c6e",
+                "error": null,
+                "client_seconds": 16.12775838000016,
+                "prompt_tokens": 658,
+                "completion_tokens": 154,
+                "kind": "candidate",
+                "generation_http_seconds": 16.01249196199933
+              }
+            ],
+            "error": null
+          },
+          {
+            "task": "04-mean",
+            "category": "repair",
+            "status": "accepted",
+            "attempts": 1,
+            "elapsed_seconds": 14.060777816001064,
+            "model_turns": [
+              {
+                "evidence_digest": "693bb582e3991bb8daaa2cee5c4352795e6516a22f41dd8db9cd4c9c4f69db50",
+                "error": null,
+                "client_seconds": 7.872663856000145,
+                "prompt_tokens": 650,
+                "completion_tokens": 70,
+                "kind": "candidate",
+                "generation_http_seconds": 7.788112918999104
+              }
+            ],
+            "error": null
+          },
+          {
+            "task": "05-overlap",
+            "category": "repair",
+            "status": "accepted",
+            "attempts": 1,
+            "elapsed_seconds": 25.349174295999546,
+            "model_turns": [
+              {
+                "evidence_digest": "b2687aa9b7820e57fb49dc42b2ea5d433606827a6dddfb90898e7926aa7d3bc3",
+                "error": null,
+                "client_seconds": 19.11630041799981,
+                "prompt_tokens": 676,
+                "completion_tokens": 174,
+                "kind": "candidate",
+                "generation_http_seconds": 19.030002994000824
+              }
+            ],
+            "error": null
+          },
+          {
+            "task": "06-last-unique",
+            "category": "repair",
+            "status": "accepted",
+            "attempts": 1,
+            "elapsed_seconds": 23.806738690000202,
+            "model_turns": [
+              {
+                "evidence_digest": "1a4ccac64953d13c3a3cca4b484b2e9ad457b60ffc7e30fa58cb92f4f18d804e",
+                "error": null,
+                "client_seconds": 17.600477672000125,
+                "prompt_tokens": 660,
+                "completion_tokens": 177,
+                "kind": "candidate",
+                "generation_http_seconds": 17.517232972000784
+              }
+            ],
+            "error": null
+          },
+          {
+            "task": "07-lookup-consumer",
+            "category": "migration",
+            "status": "accepted",
+            "attempts": 1,
+            "elapsed_seconds": 15.42402650800068,
+            "model_turns": [
+              {
+                "evidence_digest": "e98b33a6176f82d075c17ab0761405666fb3c962c88714507cb468956b6db0c9",
+                "error": null,
+                "client_seconds": 1.6239631080006802,
+                "prompt_tokens": 696,
+                "completion_tokens": 17,
+                "kind": "read_file",
+                "generation_http_seconds": 1.5394676750001963
+              },
+              {
+                "evidence_digest": "2fc99d188d2de605268bc347db176e5c7a38a3a016d537d83be0dc8b82af2d87",
+                "error": null,
+                "client_seconds": 8.215349120999235,
+                "prompt_tokens": 798,
+                "completion_tokens": 78,
+                "kind": "candidate",
+                "generation_http_seconds": 8.128519539999616
+              }
+            ],
+            "error": null
+          },
+          {
+            "task": "08-price-consumer",
+            "category": "migration",
+            "status": "accepted",
+            "attempts": 1,
+            "elapsed_seconds": 23.81559896699946,
+            "model_turns": [
+              {
+                "evidence_digest": "306dadc382a1149fcc1bfda14a712c92e0e72f37fd5f49b2ac3cb62536038fcf",
+                "error": null,
+                "client_seconds": 1.8921412689996941,
+                "prompt_tokens": 700,
+                "completion_tokens": 17,
+                "kind": "read_file",
+                "generation_http_seconds": 1.8011313729984977
+              },
+              {
+                "evidence_digest": "9d4e8bf8f9c2ec1e85b52c6df6aca1ae92759a88fcd0fcf5017668498dddf51e",
+                "error": null,
+                "client_seconds": 16.417262412998753,
+                "prompt_tokens": 804,
+                "completion_tokens": 156,
+                "kind": "candidate",
+                "generation_http_seconds": 16.33318934900126
+              }
+            ],
+            "error": null
+          },
+          {
+            "task": "09-page-consumer",
+            "category": "migration",
+            "status": "accepted",
+            "attempts": 2,
+            "elapsed_seconds": 24.02732527400076,
+            "model_turns": [
+              {
+                "evidence_digest": "67dfd687b43b78defc831f29ea4bce257288284f63d024943845a409ecb9ec00",
+                "error": null,
+                "client_seconds": 2.0680937730012374,
+                "prompt_tokens": 675,
+                "completion_tokens": 17,
+                "kind": "read_file",
+                "generation_http_seconds": 1.9789726529998006
+              },
+              {
+                "evidence_digest": "2032c4f556724fb8e2d5649c675baa47491c4ee8cc1c8b2448112c05eb70a1c7",
+                "error": null,
+                "client_seconds": 1.8055653880001046,
+                "prompt_tokens": 791,
+                "completion_tokens": 17,
+                "kind": "read_file",
+                "generation_http_seconds": 1.7251310970004852
+              },
+              {
+                "evidence_digest": "5150033f87dd6a715ac348d6a47b940866ea8c5b150599ecefbde387a98cdd41",
+                "error": null,
+                "client_seconds": 1.8415850490000594,
+                "prompt_tokens": 818,
+                "completion_tokens": 17,
+                "kind": "read_file",
+                "generation_http_seconds": 1.7561910830008856
+              },
+              {
+                "evidence_digest": "4a487426fc5fa7d9eafc58204642177c8b8d72db84846ad7743844322e727154",
+                "error": null,
+                "client_seconds": 12.669685146998745,
+                "prompt_tokens": 934,
+                "completion_tokens": 123,
+                "kind": "candidate",
+                "generation_http_seconds": 12.586344254999858
+              }
+            ],
+            "error": null
+          },
+          {
+            "task": "10-tests-age",
+            "category": "test-generation",
+            "status": "accepted",
+            "attempts": 1,
+            "elapsed_seconds": 24.064916577000986,
+            "model_turns": [
+              {
+                "evidence_digest": "c6814f752df968554a7e9536483a0bd9d5def4dde82e50f60c2bf97b091f5791",
+                "error": null,
+                "client_seconds": 17.89953918900028,
+                "prompt_tokens": 666,
+                "completion_tokens": 177,
+                "kind": "candidate",
+                "generation_http_seconds": 17.814103648999662
+              }
+            ],
+            "error": null
+          },
+          {
+            "task": "11-tests-shipping",
+            "category": "test-generation",
+            "status": "accepted",
+            "attempts": 1,
+            "elapsed_seconds": 48.9418961880001,
+            "model_turns": [
+              {
+                "evidence_digest": "ea40321764e2917a15c8f3fbf79a806c5c5e83d609e68646e4d21dd364f220f2",
+                "error": null,
+                "client_seconds": 42.54653744699863,
+                "prompt_tokens": 668,
+                "completion_tokens": 417,
+                "kind": "candidate",
+                "generation_http_seconds": 42.43950919300005
+              }
+            ],
+            "error": null
+          },
+          {
+            "task": "12-tests-boolean",
+            "category": "test-generation",
+            "status": "accepted",
+            "attempts": 1,
+            "elapsed_seconds": 42.49906586799989,
+            "model_turns": [
+              {
+                "evidence_digest": "d921ca1fad7ff2a0644195b104638081ec3f2f13fbb9e43832c5ea90fb451691",
+                "error": null,
+                "client_seconds": 36.27857669700097,
+                "prompt_tokens": 675,
+                "completion_tokens": 340,
+                "kind": "candidate",
+                "generation_http_seconds": 36.19486374799999
+              }
+            ],
+            "error": null
+          }
+        ],
+        "failures": [
+          {
+            "task": "09-page-consumer",
+            "attempt_id": "f993b3ffbb254af49548776e03db1f95",
+            "reason": "Invalid worker result: Worker repeated a read for a file already in its view"
+          }
+        ],
+        "engine_comparison_complete": false,
+        "limitations": [
+          "Development fixtures, one run per task, not a held-out campaign",
+          "Test generation is declarative JSON cases evaluated by a trusted immutable driver",
+          "One vLLM serving profile; no optimized-engine comparison",
+          "Resource samples include desktop/preflight; energy is not attributed to tasks"
+        ]
+      },
+      "evidence_sha256": {
+        "manifest.json": "6e46b42ef3c094f3c1a3dd59f1403947642e690d9244d8b6dbc19a38b70b7955",
+        "summary.json": "86db0d5d2c00f8ab9253f241ef615e6526bd9d6818b1fb9cee48c59f8d4bbd16",
+        "results.json": "088c1f7d150cf6cf3433728426d541659708fe6fc2f0555d6f5db665126222b5",
+        "sha256.json": "0db08ac95c71962c6f82ff088bf73115f807dad6ac9fcd8df7442f1995980715"
+      }
+    },
+    "twelve-task-pilot-graphs-v1": {
+      "summary": {
+        "schema_version": 1,
+        "workload": "twelve-task-development-pilot-v1",
+        "fixture_sha256": "4f0fb9eadb5e3b4213419cbb76fab484f678673dadc864fc7e6942e247d18826",
+        "tasks_completed": 12,
+        "accepted": 12,
+        "first_attempt_accepted": 11,
+        "categories": {
+          "implementation": {
+            "accepted": 3
+          },
+          "migration": {
+            "accepted": 3
+          },
+          "repair": {
+            "accepted": 3
+          },
+          "test-generation": {
+            "accepted": 3
+          }
+        },
+        "model_turns": 17,
+        "read_requests": 5,
+        "prompt_tokens": 12166,
+        "completion_tokens": 2061,
+        "turns_without_validated_token_usage": 0,
+        "max_actual_turn_tokens": 1086,
+        "generation_http_seconds_median": 1.9389539869989676,
+        "generation_http_seconds_max": 7.487078150999878,
+        "task_seconds_sum": 111.37997912100218,
+        "sampled_peak_total_gpu_memory_mib": 30828.0,
+        "minimum_host_mem_available_kib": 40566144,
+        "tasks": [
+          {
+            "task": "01-slug",
+            "category": "implementation",
+            "status": "accepted",
+            "attempts": 1,
+            "elapsed_seconds": 8.359165674999531,
+            "model_turns": [
+              {
+                "evidence_digest": "847863a3e9e80baf02f66917c3f1212c7292afe8a82768b9825b2fa45b342452",
+                "error": null,
+                "client_seconds": 2.0513052139995125,
+                "prompt_tokens": 648,
+                "completion_tokens": 101,
+                "kind": "candidate",
+                "generation_http_seconds": 1.9389539869989676
+              }
+            ],
+            "error": null
+          },
+          {
+            "task": "02-counts",
+            "category": "implementation",
+            "status": "accepted",
+            "attempts": 1,
+            "elapsed_seconds": 6.865672698000708,
+            "model_turns": [
+              {
+                "evidence_digest": "57cdd935bf2564d7a1d973e3b2f1f6729f16dea04606ea750edc9d9e7206fdab",
+                "error": null,
+                "client_seconds": 1.2198151809989213,
+                "prompt_tokens": 631,
+                "completion_tokens": 56,
+                "kind": "candidate",
+                "generation_http_seconds": 1.130506826000783
+              }
+            ],
+            "error": null
+          },
+          {
+            "task": "03-chunks",
+            "category": "implementation",
+            "status": "accepted",
+            "attempts": 1,
+            "elapsed_seconds": 9.247354894001546,
+            "model_turns": [
+              {
+                "evidence_digest": "aa4fb1ad4787dead336d5c4ee30f7886ed9bb5396dd5b1d1357e3e2faa2ee22e",
+                "error": null,
+                "client_seconds": 2.9158842880005977,
+                "prompt_tokens": 658,
+                "completion_tokens": 154,
+                "kind": "candidate",
+                "generation_http_seconds": 2.8045311180012504
+              }
+            ],
+            "error": null
+          },
+          {
+            "task": "04-mean",
+            "category": "repair",
+            "status": "accepted",
+            "attempts": 1,
+            "elapsed_seconds": 7.624077575999763,
+            "model_turns": [
+              {
+                "evidence_digest": "01318123756980a18bd9b1584a8e67a767ef00405248df7d9458bf73d1a0d351",
+                "error": null,
+                "client_seconds": 1.4802136640009849,
+                "prompt_tokens": 650,
+                "completion_tokens": 70,
+                "kind": "candidate",
+                "generation_http_seconds": 1.3973696699995344
+              }
+            ],
+            "error": null
+          },
+          {
+            "task": "05-overlap",
+            "category": "repair",
+            "status": "accepted",
+            "attempts": 1,
+            "elapsed_seconds": 8.73288988099921,
+            "model_turns": [
+              {
+                "evidence_digest": "e7814eb14bb813da050680bbf8c9ca9470e43644d322170bab8acacb69412694",
+                "error": null,
+                "client_seconds": 2.6103056720003224,
+                "prompt_tokens": 676,
+                "completion_tokens": 138,
+                "kind": "candidate",
+                "generation_http_seconds": 2.5264669000007416
+              }
+            ],
+            "error": null
+          },
+          {
+            "task": "06-last-unique",
+            "category": "repair",
+            "status": "accepted",
+            "attempts": 1,
+            "elapsed_seconds": 9.44802389600045,
+            "model_turns": [
+              {
+                "evidence_digest": "98102fe78126f0f23747d82290f5cca9757a565f18d9dbb3d77d79b78d23a4d0",
+                "error": null,
+                "client_seconds": 3.2903133780000644,
+                "prompt_tokens": 660,
+                "completion_tokens": 178,
+                "kind": "candidate",
+                "generation_http_seconds": 3.204255169001044
+              }
+            ],
+            "error": null
+          },
+          {
+            "task": "07-lookup-consumer",
+            "category": "migration",
+            "status": "accepted",
+            "attempts": 1,
+            "elapsed_seconds": 7.173480624000149,
+            "model_turns": [
+              {
+                "evidence_digest": "cdbfafe1651b2d44b4509966789165b44619c9abec10732a7fcaac9dce7b7487",
+                "error": null,
+                "client_seconds": 0.5221078100003069,
+                "prompt_tokens": 696,
+                "completion_tokens": 17,
+                "kind": "read_file",
+                "generation_http_seconds": 0.44142134400135546
+              },
+              {
+                "evidence_digest": "74c246d618edd7e1fc35c3b1485108630f94a7fb5652de7b8633c16c688dfb5f",
+                "error": null,
+                "client_seconds": 1.2689395289999084,
+                "prompt_tokens": 798,
+                "completion_tokens": 60,
+                "kind": "candidate",
+                "generation_http_seconds": 1.1849797960003343
+              }
+            ],
+            "error": null
+          },
+          {
+            "task": "08-price-consumer",
+            "category": "migration",
+            "status": "accepted",
+            "attempts": 2,
+            "elapsed_seconds": 9.666856967998683,
+            "model_turns": [
+              {
+                "evidence_digest": "36da6e212d999bdbd152af1243c158c68f28d9cd67f1bf5d95e707226f89237d",
+                "error": null,
+                "client_seconds": 0.5279433409996273,
+                "prompt_tokens": 700,
+                "completion_tokens": 17,
+                "kind": "read_file",
+                "generation_http_seconds": 0.44557044400062296
+              },
+              {
+                "evidence_digest": "f190be65b56b7aaddebe7e776be8d0777800e091b1e967dc6d15beef3cffa4c5",
+                "error": null,
+                "client_seconds": 0.5064609339988237,
+                "prompt_tokens": 804,
+                "completion_tokens": 17,
+                "kind": "read_file",
+                "generation_http_seconds": 0.4241842489991541
+              },
+              {
+                "evidence_digest": "7158c20ed3983813ecd9c8e225014347f7f11c4226388e414502b674028a1cda",
+                "error": null,
+                "client_seconds": 0.5054075359985291,
+                "prompt_tokens": 833,
+                "completion_tokens": 17,
+                "kind": "read_file",
+                "generation_http_seconds": 0.42353283900047245
+              },
+              {
+                "evidence_digest": "d1896fc623ecf012ec4b18aa83f08e499b9e95060793af514f0c04bb99cfecf3",
+                "error": null,
+                "client_seconds": 2.7313765670005523,
+                "prompt_tokens": 937,
+                "completion_tokens": 149,
+                "kind": "candidate",
+                "generation_http_seconds": 2.6510252360003506
+              }
+            ],
+            "error": null
+          },
+          {
+            "task": "09-page-consumer",
+            "category": "migration",
+            "status": "accepted",
+            "attempts": 1,
+            "elapsed_seconds": 8.63285753800119,
+            "model_turns": [
+              {
+                "evidence_digest": "c313fde883e69f3ec9c3a6b1094c911ca271b4199cc650a3416efb08c0789292",
+                "error": null,
+                "client_seconds": 0.5832955549994949,
+                "prompt_tokens": 675,
+                "completion_tokens": 17,
+                "kind": "read_file",
+                "generation_http_seconds": 0.4995417959999031
+              },
+              {
+                "evidence_digest": "055a8abc7a52c8f8b62493f9cd1cdc3b33cf9423756e57648aa0ed0b575a5681",
+                "error": null,
+                "client_seconds": 2.631026283999745,
+                "prompt_tokens": 791,
+                "completion_tokens": 141,
+                "kind": "candidate",
+                "generation_http_seconds": 2.546359587999177
+              }
+            ],
+            "error": null
+          },
+          {
+            "task": "10-tests-age",
+            "category": "test-generation",
+            "status": "accepted",
+            "attempts": 1,
+            "elapsed_seconds": 9.500473971000247,
+            "model_turns": [
+              {
+                "evidence_digest": "a48e9ecd6742163b56dafb7c221fbd44c2f9f6c49bc506141bb9f1fc334facf4",
+                "error": null,
+                "client_seconds": 3.301527707000787,
+                "prompt_tokens": 666,
+                "completion_tokens": 178,
+                "kind": "candidate",
+                "generation_http_seconds": 3.2156221229997755
+              }
+            ],
+            "error": null
+          },
+          {
+            "task": "11-tests-shipping",
+            "category": "test-generation",
+            "status": "accepted",
+            "attempts": 1,
+            "elapsed_seconds": 13.715788969000641,
+            "model_turns": [
+              {
+                "evidence_digest": "28f7ca4165a475aac33ce4757bb9199203bfbb0bf539ba803ea2f0bbbb4b24ff",
+                "error": null,
+                "client_seconds": 7.571697305000271,
+                "prompt_tokens": 668,
+                "completion_tokens": 415,
+                "kind": "candidate",
+                "generation_http_seconds": 7.487078150999878
+              }
+            ],
+            "error": null
+          },
+          {
+            "task": "12-tests-boolean",
+            "category": "test-generation",
+            "status": "accepted",
+            "attempts": 1,
+            "elapsed_seconds": 12.413336431000062,
+            "model_turns": [
+              {
+                "evidence_digest": "e3d4fc0476eb61faba450d63e240120b42d36d6f0230cc1e9662d7411bb1cd14",
+                "error": null,
+                "client_seconds": 6.141403535999416,
+                "prompt_tokens": 675,
+                "completion_tokens": 336,
+                "kind": "candidate",
+                "generation_http_seconds": 6.0576064249999035
+              }
+            ],
+            "error": null
+          }
+        ],
+        "failures": [
+          {
+            "task": "08-price-consumer",
+            "attempt_id": "0624c38d8a434782b34bdb4322f4f61d",
+            "reason": "Invalid worker result: Worker repeated a read for a file already in its view"
+          }
+        ],
+        "engine_comparison_complete": false,
+        "limitations": [
+          "Development fixtures, one run per task, not a held-out campaign",
+          "Test generation is declarative JSON cases evaluated by a trusted immutable driver",
+          "One vLLM serving profile; no optimized-engine comparison",
+          "Resource samples include desktop/preflight; energy is not attributed to tasks"
+        ]
+      },
+      "evidence_sha256": {
+        "manifest.json": "a37d490c686e30411f4b6a6ca2b62f3ad36cf5a753c0eb933d053302613ec421",
+        "summary.json": "528b3ce22a594991942ea74d4e8614c52bdfd45771c2bee71adb971c0abdbd92",
+        "results.json": "f3e6ee2e910987727b752f10f9215ea279274b819a5ac12ab3257343a69ea4c3",
+        "sha256.json": "bcb98ea70b8e291a2d273e994c823c7fcc9483fec546a91a058f95d606db1bcc"
+      }
+    }
+  },
+  "verification": {
+    "tests": 163,
+    "subtests": 25,
+    "optional_skipped": 8,
+    "ruff": "passed",
+    "mypy": "passed"
+  },
+  "policy_v2": {
+    "paging": {
+      "status": "accepted",
+      "attempts": 1,
+      "result_sha256": "bdb31f7b5bf033bf9ae5ac544c41072a1a3442ada50eb0ad1909ae6135194000"
+    },
+    "price": {
+      "status": "accepted",
+      "attempts": 1,
+      "result_sha256": "3697e918705963e9f1d8c79e8952df18ae32c1e19f3799f57056ac7ff30539bb"
+    }
+  },
+  "warm_fixed_request": {
+    "http_seconds": 1.4427697510000144,
+    "usage": {
+      "prompt_tokens": 623,
+      "total_tokens": 698,
+      "completion_tokens": 75,
+      "prompt_tokens_details": null,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      }
+    },
+    "metric_deltas": {
+      "vllm:request_queue_time_seconds_sum": 1.6610998500254937e-05,
+      "vllm:request_prefill_time_seconds_sum": 0.10334908000004361,
+      "vllm:request_decode_time_seconds_sum": 1.3330757820003782,
+      "vllm:e2e_request_latency_seconds_sum": 1.439901351928711
+    },
+    "request_digest": "77143deb700c63bc388d19750541bfb90127e41e83d4c73c1fed2ed8966ac7d0",
+    "slow_symptom_reproduced": false
+  }
+}

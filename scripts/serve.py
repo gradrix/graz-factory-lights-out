@@ -59,9 +59,14 @@ def load(path):
     m = c.get("managed", {})
     require(isinstance(m, dict), "managed must be an object")
     require(not set(m) - {"image", "model_path", "revision", "name", "gpu", "context_length",
-                         "memory_fraction", "shm_size", "hf_token_env", "server_options"}, "Unknown managed fields")
+                         "memory_fraction", "shm_size", "hf_token_env", "server_options",
+                         "backend", "model_cache_volume", "offline", "memory_limit",
+                         "cpu_limit", "pids_limit", "server_flags", "enforce_eager"}, "Unknown managed fields")
+    require(m.setdefault("backend", "sglang") in ("sglang", "vllm"), "Unsupported managed backend")
+    require(type(m.get("enforce_eager", True)) is bool, "enforce_eager must be boolean")
+    require("enforce_eager" not in m or m["backend"] == "vllm", "enforce_eager requires vllm")
     m["image"] = os.environ.get("GFLO_SERVING_IMAGE", m.get("image", ""))
-    require(re.fullmatch(r"[^\s]+@sha256:[a-f0-9]{64}", m["image"]), "Set managed.image or GFLO_SERVING_IMAGE to a verified SGLang image@sha256:digest")
+    require(re.fullmatch(r"[^\s]+@sha256:[a-f0-9]{64}", m["image"]), "Set managed.image or GFLO_SERVING_IMAGE to a verified backend image@sha256:digest")
     require(re.fullmatch(r"[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+", m.get("model_path", "")), "model_path must be a Hub repository ID")
     require(re.fullmatch(r"[a-f0-9]{40}", m.get("revision", "")), "revision must be a full checkpoint commit hash")
     require(re.fullmatch(r"gflo-[a-z0-9-]+", m.get("name", "")), "Container name must start with gflo-")
@@ -69,11 +74,30 @@ def load(path):
     require(type(m.get("context_length")) is int and m["context_length"] > 0, "context_length must be positive")
     require(type(m.get("memory_fraction")) in (float, int) and 0 < m["memory_fraction"] < 1, "memory_fraction must be between 0 and 1")
     require(re.fullmatch(r"[1-9][0-9]*[mg]", m.get("shm_size", "")), "shm_size must use m or g")
+    memory_limit = m.setdefault("memory_limit", "36g")
+    require(isinstance(memory_limit, str) and re.fullmatch(r"[1-9][0-9]*[mg]", memory_limit), "memory_limit must use m or g")
+    require(type(m.setdefault("cpu_limit", 3)) in (int, float) and 0 < m["cpu_limit"] <= 256, "cpu_limit must be in (0, 256]")
+    require(type(m.setdefault("pids_limit", 1024)) is int and 1 <= m["pids_limit"] <= 65536, "pids_limit must be in [1, 65536]")
+    cache_volume = m.setdefault("model_cache_volume", m["name"] + "-models")
+    require(isinstance(cache_volume, str) and re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]*", cache_volume), "Invalid model cache volume")
+    require(type(m.setdefault("offline", False)) is bool, "offline must be boolean")
     env = m.get("hf_token_env", "")
     require(isinstance(env, str) and (not env or re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", env)), "Invalid Hub token environment name")
+    require(not m["offline"] or not env, "Offline mode must not receive Hub credentials")
     opts = m.get("server_options", {})
-    require(isinstance(opts, dict) and not set(opts) - {"quantization", "kv-cache-dtype", "attention-backend", "reasoning-parser", "tool-call-parser"}, "Unsupported server_options")
+    allowed_options = {"quantization", "kv-cache-dtype", "attention-backend", "reasoning-parser", "tool-call-parser"}
+    if m["backend"] == "sglang":
+        allowed_options |= {"mamba-ssm-dtype", "max-mamba-cache-size", "chunked-prefill-size",
+                            "cuda-graph-backend-decode", "cuda-graph-backend-prefill"}
+    require(isinstance(opts, dict) and not set(opts) - allowed_options, "Unsupported server_options")
     require(all(isinstance(v, str) and re.fullmatch(r"[A-Za-z0-9_.-]+", v) for v in opts.values()), "Invalid server option value")
+    for key in ("max-mamba-cache-size", "chunked-prefill-size"):
+        if key in opts:
+            require(opts[key].isdigit() and 0 < int(opts[key]) <= 65536, "Invalid cache/prefill size")
+    flags = m.get("server_flags", [])
+    allowed_flags = {"language-only", "disable-radix-cache"} if m["backend"] == "sglang" else set()
+    require(isinstance(flags, list) and all(isinstance(flag, str) and flag in allowed_flags for flag in flags), "Unsupported server_flags")
+    require(len(flags) == len(set(flags)), "Duplicate server_flags")
     return c
 
 
@@ -216,6 +240,9 @@ def up(c):
             docker("start", existing["Id"])
             return wait_ready(c)
     doctor(c)
+    if m.get("offline", False):
+        # Do not create an empty volume and mistake it for a pinned local checkpoint.
+        docker("volume", "inspect", m["model_cache_volume"])
     child_env = os.environ.copy()
     token_env = m.get("hf_token_env")
     if token_env:
@@ -229,16 +256,38 @@ def up(c):
             "--label", "org.gflo.spec=" + spec, "--gpus", "device=" + str(m["gpu"]),
             "--restart", "unless-stopped", "--security-opt", "no-new-privileges:true",
             "--cap-drop", "ALL", "--shm-size", m["shm_size"], "--log-opt", "max-size=10m", "--log-opt", "max-file=3",
+            "--memory", m.get("memory_limit", "36g"), "--memory-swap", m.get("memory_limit", "36g"),
+            "--cpus", str(m.get("cpu_limit", 3)), "--pids-limit", str(m.get("pids_limit", 1024)),
             "-p", "127.0.0.1:" + str(urllib.parse.urlsplit(c["base_url"]).port) + ":30000",
-            "--mount", "type=volume,source=" + m["name"] + "-models,target=/root/.cache/huggingface"]
+            "--mount", "type=volume,source=" + m.get("model_cache_volume", m["name"] + "-models") +
+            ",target=/root/.cache/huggingface" + (",readonly" if m.get("offline", False) else ""),
+            "--mount", "type=volume,source=" + m["name"] + "-runtime,target=/runtime",
+            "-e", "XDG_CACHE_HOME=/runtime/cache", "-e", "TRITON_CACHE_DIR=/runtime/triton",
+            "-e", "VLLM_CACHE_ROOT=/runtime/vllm", "-e", "HF_HOME=/root/.cache/huggingface"]
+    if m.get("offline", False):
+        args += ["-e", "HF_HUB_OFFLINE=1", "-e", "TRANSFORMERS_OFFLINE=1"]
     if token_env:
         args += ["-e", "HF_TOKEN"]
-    args += ["--entrypoint", "python3", m["image"], "-m", "sglang.launch_server", "--model-path", m["model_path"],
-             "--revision", m["revision"], "--served-model-name", c["model"], "--host", "0.0.0.0", "--port", "30000",
-             "--context-length", str(m["context_length"]), "--mem-fraction-static", str(m["memory_fraction"]),
-             "--max-running-requests", "1", "--cuda-graph-max-bs", "1"]
+    if m.get("backend", "sglang") == "sglang":
+        args += ["--mount", "type=volume,source=" + m["name"] + "-kernels,target=/root/.cache/sglang"]
+    if m.get("backend", "sglang") == "vllm":
+        args += ["--entrypoint", "python3", m["image"], "-m", "vllm.entrypoints.openai.api_server",
+                 "--model", m["model_path"], "--revision", m["revision"], "--tokenizer-revision", m["revision"],
+                 "--served-model-name", c["model"], "--host", "0.0.0.0", "--port", "30000",
+                 "--max-model-len", str(m["context_length"]), "--gpu-memory-utilization", str(m["memory_fraction"]),
+                 "--max-num-seqs", "1", "--max-num-batched-tokens", "2048",
+                 *(["--enforce-eager"] if m.get("enforce_eager", True) else []),
+                 "--language-model-only", "--no-enable-prefix-caching", "--generation-config", "vllm"]
+        if "tool-call-parser" in m.get("server_options", {}):
+            args += ["--enable-auto-tool-choice"]
+    else:
+        args += ["--entrypoint", "python3", m["image"], "-m", "sglang.launch_server", "--model-path", m["model_path"],
+                 "--revision", m["revision"], "--served-model-name", c["model"], "--host", "0.0.0.0", "--port", "30000",
+                 "--context-length", str(m["context_length"]), "--mem-fraction-static", str(m["memory_fraction"]),
+                 "--max-running-requests", "1", "--cuda-graph-max-bs", "1"]
     for key, value in sorted(m.get("server_options", {}).items()):
         args += ["--" + key, value]
+    args += ["--" + flag for flag in m.get("server_flags", [])]
     docker(*args, env=child_env)
     return wait_ready(c)
 

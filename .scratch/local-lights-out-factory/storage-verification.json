@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "scope": "Configurable storage admission and isolated storage-failure recovery",
+  "tests": {
+    "passed": 173,
+    "subtests_passed": 25,
+    "optional_skipped": 8
+  },
+  "checks": {
+    "ruff": "passed",
+    "format": "passed",
+    "mypy": "passed",
+    "diff_whitespace": "passed"
+  },
+  "fault_methods": [
+    "mock free-space observation",
+    "injected staging/link ENOSPC",
+    "real SQLite max_page_count limit on temporary test database"
+  ],
+  "fixed_failure": "SQLite automatic rollback masked by redundant explicit rollback",
+  "remaining": [
+    "COMMIT/fsync exhaustion",
+    "full fifty-variation integrity campaign",
+    "calibrated campaign storage reserve"
+  ],
+  "sha256": {
+    "gflo/storage.py": "00550ea704d06e73632a09dc5b49704ec2aee7854b49f9c2f1bc8b3ef9c80cfb",
+    "gflo/artifacts.py": "ea9a66915ae66e13d10c45c31ae900c95d13b5b02e9c6c708253e55e00cce7e2",
+    "gflo/ledger.py": "d4e130e38524b846523e81e8abe4d0aaf3b16804a7e588c6d984cc86e027a09e",
+    "gflo/controller.py": "1283a0c451e38433f54dccf9a66d91e8c2886dba35f9ddec6a205683a495f03c",
+    "gflo/cli.py": "b504610e5364d5005274e4aec16e67b5867c26862329326697ef7343509f00dd",
+    "tests/test_storage.py": "cd860db782092622d7c5b57245aa80ae6f115b8818ce5bfc90b5cf375cec50f0",
+    "tests/test_controller.py": "ad18f2dad37e6af1d70382b0e1e51da2f92fa34e10b7ac1986c201f7f1114b64"
+  }
+}

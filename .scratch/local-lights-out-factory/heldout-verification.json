@@ -1,0 +1,17 @@
+{
+  "qualification_passed": false,
+  "verified_runs": 109,
+  "total_runs": 120,
+  "false_acceptances": 2,
+  "suite_passed": 253,
+  "subtests_passed": 25,
+  "skipped": 0,
+  "evidence": {
+    ".gflo/evidence/heldout-v1-qualified/evaluation.json": "022496e004204f5e7054029547ec3fe35a342f6cc24b00499ebfa39a8ba86aa9",
+    ".gflo/evidence/heldout-v1-qualified/acceptance-findings.json": "c6e84243166669b1735c7d6094684bfe2ea5d52b236135337c0bb691e5f55be0",
+    ".gflo/evidence/feedback-recovery-v1/evaluation.json": "9a093dc59bb51dfd7a912cb3c196a95bce5bdd9dc3f5c0bccd1df881874e2d04",
+    ".gflo/evidence/semantic-repairs-v1/results.json": "c78fd53641d1b1c06f684e24aa9a0fdd0a4bb19be78eedaaf47cdb9ecb30d1b6",
+    ".gflo/evidence/version-sort-clarified-v1/result.json": "8b0ccd0135367ee31f0931fe95534dda604ea249efb1765268905291737a73a4",
+    ".gflo/evidence/factory-final-v1/suite.xml": "e1b8ebeef90817b07fd74eac4aef4d1d9944185c16ddf7dc2dd77ae8a22c8d96"
+  }
+}

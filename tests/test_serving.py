@@ -36,6 +36,24 @@ class ConfigTests(unittest.TestCase):
             with patch.dict(os.environ, {}, clear=True):
                 return serve.load(p)
 
+    def test_managed_backend_and_resource_validation(self):
+        for change in ({"backend": "unknown"}, {"cpu_limit": True}, {"pids_limit": 0},
+                       {"memory_limit": 36}, {"model_cache_volume": "/host/path"},
+                       {"offline": "yes"}, {"offline": True, "hf_token_env": "TOKEN"},
+                       {"server_flags": ["privileged"]},
+                       {"server_flags": ["language-only", "language-only"]},
+                       {"backend": "vllm", "server_flags": ["language-only"]},
+                       {"enforce_eager": False}, {"backend": "vllm", "enforce_eager": "false"},
+                       {"server_options": {"chunked-prefill-size": "0"}}):
+            with self.subTest(change=change):
+                c = managed()
+                c["managed"].update(change)
+                with self.assertRaises(serve.Failure):
+                    self.read(c)
+        c = managed()
+        c["managed"]["backend"] = "vllm"
+        self.assertEqual(self.read(c)["managed"]["backend"], "vllm")
+
     def test_local_default(self):
         self.assertEqual(self.read(external())["mode"], "external")
 
@@ -69,6 +87,40 @@ class ConfigTests(unittest.TestCase):
 
 
 class LifecycleTests(unittest.TestCase):
+    def test_vllm_graph_experiment_is_explicit(self):
+        c = managed()
+        c["managed"].update(backend="vllm", enforce_eager=False)
+        with patch.object(serve, "inspect", return_value=None), patch.object(serve, "doctor"), patch.object(serve, "docker") as docker, patch.object(serve, "wait_ready"):
+            serve.up(c)
+        self.assertNotIn("--enforce-eager", docker.call_args_list[-1].args)
+
+    def test_vllm_offline_profile_is_pinned_and_bounded(self):
+        c = managed()
+        c["managed"].update(backend="vllm", offline=True, model_cache_volume="verified-cache",
+                            server_options={"tool-call-parser": "qwen3_coder", "kv-cache-dtype": "bfloat16"})
+        with patch.object(serve, "inspect", return_value=None), patch.object(serve, "doctor"), patch.object(serve, "docker") as docker, patch.object(serve, "wait_ready"):
+            serve.up(c)
+        self.assertEqual(docker.call_args_list[0].args, ("volume", "inspect", "verified-cache"))
+        command = docker.call_args_list[-1].args
+        self.assertIn("vllm.entrypoints.openai.api_server", command)
+        self.assertNotIn("sglang.launch_server", command)
+        self.assertIn("--enforce-eager", command)
+        self.assertIn("--enable-auto-tool-choice", command)
+        self.assertEqual(command[command.index("--tokenizer-revision") + 1], c["managed"]["revision"])
+        self.assertIn("HF_HUB_OFFLINE=1", command)
+        self.assertIn("type=volume,source=verified-cache,target=/root/.cache/huggingface,readonly", command)
+        self.assertEqual(command[command.index("--memory") + 1], "36g")
+        self.assertEqual(command[command.index("--memory-swap") + 1], "36g")
+        self.assertEqual(command[command.index("--pids-limit") + 1], "1024")
+
+    def test_missing_offline_cache_does_not_launch(self):
+        c = managed()
+        c["managed"].update(offline=True, model_cache_volume="missing")
+        with patch.object(serve, "inspect", return_value=None), patch.object(serve, "doctor"), patch.object(serve, "docker", side_effect=serve.Failure("missing cache")) as docker:
+            with self.assertRaises(serve.Failure):
+                serve.up(c)
+        docker.assert_called_once_with("volume", "inspect", "missing")
+
     def container(self, c, running=True, fingerprint=None):
         return {"Id": "owned-id", "State": {"Running": running}, "Config": {"Labels": {
             "org.gflo.serving": c["managed"]["name"], "org.gflo.spec": fingerprint or serve.fingerprint(c)}}}

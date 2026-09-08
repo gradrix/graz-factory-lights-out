@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "atom_id": "example-provider-edit",
+  "graph_revision": "example-graph-v1",
+  "objective": "Implement the prepared provider change against its pinned requirements",
+  "non_goals": ["Deployment", "Autonomous product planning"],
+  "requirement_ids": ["example-requirement-v1"],
+  "product_modules": ["provider"],
+  "source_revision": "EXAMPLE-REPLACE-WITH-EXACT-SOURCE-REVISION",
+  "inputs_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+  "writable_paths": ["src/provider"],
+  "prohibited_paths": ["tests/acceptance"],
+  "dependency_artifacts": [],
+  "upstream_contracts": [],
+  "capability_profile": "python-pilot-v1",
+  "network_profile": "none-v1",
+  "credential_profile": "none-v1",
+  "sandbox_profile": "pilot-v1",
+  "allowed_tools": ["read", "edit"],
+  "required_gates": [
+    {"gate_id": "acceptance", "validator_digest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
+    {"gate_id": "scope", "validator_digest": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"}
+  ],
+  "context_budget": {"total_tokens": 8192, "output_tokens": 2048},
+  "max_attempts": 10,
+  "expected_outputs": [{"name": "candidate", "schema_digest": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"}],
+  "idempotency_key": "example-provider-edit-v1",
+  "integration_key": "example-integration-v1"
+}

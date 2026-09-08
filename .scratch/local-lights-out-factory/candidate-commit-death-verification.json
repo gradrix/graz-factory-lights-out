@@ -1,0 +1,23 @@
+{
+  "schema_version": 1,
+  "scope": "Actual SIGKILL after candidate commit; scripted proposal, real ledger and broker",
+  "results": [
+    {
+      "window": "after_candidate_commit",
+      "passed": true,
+      "child_exit": -9
+    }
+  ],
+  "evidence_root": ".gflo/evidence/candidate-commit-death-v1",
+  "evidence_sha256": {
+    "after_candidate_commit/accepted.json": "604c669f7e5fc7cc938457c5db15f0ac1161588f9ae31829dbf04d5aaeba51d1",
+    "after_candidate_commit/audit.json": "0c7733ef6478cf66473733c7f3ac5f5c3bf4033519f3df4e9b707ae9b786e69a",
+    "after_candidate_commit/death.json": "f30fad162e20a216236343d1ca62ca5041b9ce6814740630de11470acde0fd52",
+    "after_candidate_commit/interrupted.json": "3eb095e679dc360f7f66e1b5f24191d239763f188f95934bc81a4b07146271ff",
+    "after_candidate_commit/leftovers.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "after_candidate_commit/plan.json": "39e6c3933bcb95d1280cfb485e699e4a2e417734134d5f6934e9f42e5ad6eddc",
+    "manifest.json": "c4f0d805c968194190840ed1cae60a49fa79bec64e91b757a3c5523af44546d0",
+    "results.json": "0c7ea9d1c201e3b9789f4841b828e0456934eca0647a7df7feb1159694339931"
+  },
+  "full_integrity_campaign_passed": false
+}

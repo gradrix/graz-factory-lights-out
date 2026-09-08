@@ -1,17 +1,40 @@
-# GFLO — local-first software factory
+# GFLO — local software factory
 
-GFLO is an independent, staged experiment in autonomous software production with small-context local models. Most of the factory remains a research and implementation plan, not a finished runtime.
+GFLO runs prepared Python coding tasks with a local LLM, validates their output in
+isolated containers, and keeps a durable history of changes, failures, and evidence.
+It can combine accepted changes against pinned inputs and validate the combined result.
 
-- [Model-serving launcher](infra/serving/README.md): use an existing local endpoint, explicitly configure a remote endpoint, or manage a pinned SGLang container on an NVIDIA host.
-- [Planning map](.scratch/local-lights-out-factory/map.md)
-- [GPU handoff](.scratch/local-lights-out-factory/HANDOFF.md)
-- [Proposed staged implementation](.scratch/local-lights-out-factory/issues/12-plan-the-staged-implementation-and-validation.md)
+**Experimental developer preview.** The latest evaluation verified 109 of 120 runs
+and discovered two false acceptances. Larger-build reliability is still unqualified.
+Read the [evaluation](docs/evaluation.md) before relying on the results.
 
-Run dependency-launcher checks without a GPU:
+## Start here
+
+Requires Python 3.11+; the development environment was tested with Python 3.13.5.
+From a source checkout:
 
 ```sh
-python3 -m unittest discover -s tests -v
-python3 scripts/serve.py config
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements-dev.lock -e .
+.venv/bin/python examples/prepare_demo.py > /tmp/gflo-demo-plan.json
+.venv/bin/gflo --db .gflo/demo/ledger.db submit-run /tmp/gflo-demo-plan.json
+.venv/bin/gflo --db .gflo/demo/ledger.db status pilot-v1-01-slug
 ```
 
-SFLO and Gas City are architectural references only. No automatic cloud fallback is included. Real-model coding capability and RTX 5090 operation have not yet been validated in this repository.
+This prepares real, hash-bound work without contacting a model or Docker. To execute
+it, follow [Getting started](docs/getting-started.md) for the local GPU service and broker.
+
+## Documentation
+
+- [Getting started](docs/getting-started.md): installation, first run, and prerequisites.
+- [Architecture](docs/architecture.md): authority, isolation, and supported boundaries.
+- [Operations](docs/operations.md): run, resume, inspect changes, integrate, and audit.
+- [Evaluation](docs/evaluation.md): measured results and reproduction limits.
+- [Roadmap](docs/roadmap.md): next workload and public-release readiness.
+- [Contributing](CONTRIBUTING.md): development checks and repository layout.
+
+The documentation follows the short entry point and linked guides used by
+[SFLO](https://github.com/simonasrazm/simon-factory-lights-out) and
+[Gas City](https://github.com/gastownhall/gascity). GFLO is a separate experiment.
+
+No license has been selected yet. Publication and license selection remain pending.

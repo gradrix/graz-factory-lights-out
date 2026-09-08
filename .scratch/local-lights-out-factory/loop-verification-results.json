@@ -1,0 +1,78 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-09-08T17:34:14.982241+00:00",
+  "status": "accepted",
+  "attempts": 1,
+  "resume_history_unchanged": true,
+  "trusted_cases_passed": 3,
+  "pilot_complete": false,
+  "latency_replay": {
+    "http_seconds": 11.325682183000026,
+    "usage": {
+      "prompt_tokens": 623,
+      "total_tokens": 735,
+      "completion_tokens": 112,
+      "prompt_tokens_details": null,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      }
+    },
+    "metric_deltas": {
+      "vllm:request_queue_time_seconds_sum": 1.5120000171009451e-05,
+      "vllm:request_prefill_time_seconds_sum": 0.2099849930000346,
+      "vllm:request_decode_time_seconds_sum": 11.109108167000159,
+      "vllm:e2e_request_latency_seconds_sum": 11.32270884513855
+    },
+    "request_digest": "77143deb700c63bc388d19750541bfb90127e41e83d4c73c1fed2ed8966ac7d0",
+    "slow_symptom_reproduced": true
+  },
+  "tests": {
+    "default_passed": 162,
+    "subtests_passed": 23,
+    "optional_broker_skipped": 8,
+    "controller_tests": 15
+  },
+  "evidence_root": ".gflo/evidence/durable-loop-smoke-v1",
+  "source_sha256": {
+    "gflo/controller.py": "44daa009af7307d35aa6df98d534a1e9c28f1765e9ace841ce5ba4c2acd739ba",
+    "gflo/model.py": "3b9a8fdcfd87d09ffa28a1b8bcec1cd24c0127af8ed3be2760fe866c7ace44d8",
+    "gflo/ledger.py": "164ec115db88fd4dfb3ee0d4d4cd289eeb75df747c4eb6b5e0d3d8db55c82343",
+    "gflo/cli.py": "6371a350100a6a05df9082b7b8955689f1f221c8a4b45b4af74bc3be5c4e0e8a",
+    "tests/test_controller.py": "ac40df103eedf9b31a39f93f67844d0f5738702abd8794fce410c1b5cc5378de"
+  },
+  "evidence_sha256": {
+    "latency-probe-response.json": "b7493e4ccddb8edae5fdd652c5426e11f2f9bfab124b3f52f4ad151fc8624629",
+    "latency-probe.json": "39037cab61ba0d4acf8b9fca2246bc6bca90e87a9eb76df72c4c9c7bc48e3358",
+    "ledger.db": "1d5a8f191613b72597edab9c1530e45c489f4abf43aa491368a280bec3aa7398",
+    "ledger.db.artifacts/157e18169aae0da3a7f2e396782e099a960658516c6336bfb5361f472b4ecd83": "157e18169aae0da3a7f2e396782e099a960658516c6336bfb5361f472b4ecd83",
+    "ledger.db.artifacts/1e3ee3c61861fba11751b8714d4a0f31ea0957a141a0c19a78a11156fa8cd6f2": "1e3ee3c61861fba11751b8714d4a0f31ea0957a141a0c19a78a11156fa8cd6f2",
+    "ledger.db.artifacts/3634aadb9c798da680b9e9b5157aac1dea51c7da8f32243fc2b7edbdce452fe2": "3634aadb9c798da680b9e9b5157aac1dea51c7da8f32243fc2b7edbdce452fe2",
+    "ledger.db.artifacts/38f97de1908ba1b1d1979e0c85adfde907f63bf59a96cd1739ec859ce8a515ca": "38f97de1908ba1b1d1979e0c85adfde907f63bf59a96cd1739ec859ce8a515ca",
+    "ledger.db.artifacts/3e2828dcd7d078e9ec617c408524887a37376e576c80d884d27328bf2d51bf96": "3e2828dcd7d078e9ec617c408524887a37376e576c80d884d27328bf2d51bf96",
+    "ledger.db.artifacts/5270deddda76dbff6afa63ff38995648f63ef5bd2f29a698d8ba4bce7c192736": "5270deddda76dbff6afa63ff38995648f63ef5bd2f29a698d8ba4bce7c192736",
+    "ledger.db.artifacts/699e8780e8fc864b7585bb5b800b5a0b420b54e6cdfbf73ec49ac82ab1e071ff": "699e8780e8fc864b7585bb5b800b5a0b420b54e6cdfbf73ec49ac82ab1e071ff",
+    "ledger.db.artifacts/742ecbf655ca5398f5ec89ea02592f384eee3fdaaa9f7c73a38a1d1439cd29f2": "742ecbf655ca5398f5ec89ea02592f384eee3fdaaa9f7c73a38a1d1439cd29f2",
+    "ledger.db.artifacts/77143deb700c63bc388d19750541bfb90127e41e83d4c73c1fed2ed8966ac7d0": "77143deb700c63bc388d19750541bfb90127e41e83d4c73c1fed2ed8966ac7d0",
+    "ledger.db.artifacts/80129615524a792c677859301533fdeddd82359392fed956e7d092dd914a1a9e": "80129615524a792c677859301533fdeddd82359392fed956e7d092dd914a1a9e",
+    "ledger.db.artifacts/856df51927615a48a427a639d52375dc59bf232d383818adb0756aa75057da7e": "856df51927615a48a427a639d52375dc59bf232d383818adb0756aa75057da7e",
+    "ledger.db.artifacts/882e1abad435067769fefbee44ff77e1fae86aac14adf2844d3b3630daa4be2e": "882e1abad435067769fefbee44ff77e1fae86aac14adf2844d3b3630daa4be2e",
+    "ledger.db.artifacts/92b4dbca2fe1819baa9319a0e0b023c638874dd241d289dd06afda46ce92fd46": "92b4dbca2fe1819baa9319a0e0b023c638874dd241d289dd06afda46ce92fd46",
+    "ledger.db.artifacts/9c6bb9ebf693b1e94262442652fa15f888e807eca6fb2690f3c07886ab6d0f9d": "9c6bb9ebf693b1e94262442652fa15f888e807eca6fb2690f3c07886ab6d0f9d",
+    "ledger.db.artifacts/c05201a934ab83abdde6c017571e457cf1fedfa78d4e6c345eabab060acbe92e": "c05201a934ab83abdde6c017571e457cf1fedfa78d4e6c345eabab060acbe92e",
+    "ledger.db.artifacts/cc2860eb50c11c49296912d519091590463f847605c93d4ead6b5459d39c1cc7": "cc2860eb50c11c49296912d519091590463f847605c93d4ead6b5459d39c1cc7",
+    "ledger.db.artifacts/cc380f6e88981400dc113ea7a840703d291d81c74840c0e6ccb3e20731b24089": "cc380f6e88981400dc113ea7a840703d291d81c74840c0e6ccb3e20731b24089",
+    "ledger.db.artifacts/d568511d76d0ac4d7c950146d81f6921039c19e5153a7a4098450bc28f253223": "d568511d76d0ac4d7c950146d81f6921039c19e5153a7a4098450bc28f253223",
+    "ledger.db.artifacts/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "ledger.db.artifacts/f09179da21e41b11e7edf672b412b924ab01aebbf69896c2fb47f3cc0632ea26": "f09179da21e41b11e7edf672b412b924ab01aebbf69896c2fb47f3cc0632ea26",
+    "ledger.db.artifacts/f4a137c6352914e3d10ee7ca1c4a7335387fc35f5dde53c77b41f331f5f0f1d0": "f4a137c6352914e3d10ee7ca1c4a7335387fc35f5dde53c77b41f331f5f0f1d0",
+    "plan.json": "151f0b5604c7ad839edcbae4084e047231d92e6c68361205677026bbfac55f18",
+    "resume-result.json": "a5fe1a6ac9874e9c248e11cae90d8553672c6a2aa3869e346be34fe9da2205f5",
+    "run-result.json": "a5fe1a6ac9874e9c248e11cae90d8553672c6a2aa3869e346be34fe9da2205f5",
+    "source-sha256.json": "334e1690a1c4af3d5f9e483e7e41401f35d047b4510674895049adaf820dfe7d"
+  },
+  "limitations": [
+    "Single live coding smoke, not twelve-task pilot",
+    "Decode performance issue remains open",
+    "Latest source adds leased-retry diagnostic restoration, covered by deterministic tests after the live run"
+  ]
+}

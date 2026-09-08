@@ -1,0 +1,39 @@
+{
+  "mode": "managed",
+  "base_url": "http://127.0.0.1:30000/v1",
+  "model": "gflo-local",
+  "request_timeout": 120,
+  "startup_timeout": 1800,
+  "managed": {
+    "backend": "sglang",
+    "image": "lmsysorg/sglang@sha256:616a3e97f45191af975896cfa644279096cb31bd408a071c2e99ca7209c3cafe",
+    "model_path": "Inferact/Qwen3.8-27B-NVFP4",
+    "revision": "6128240ebaf4eaa7bad2b3d1c72c37d677c5f462",
+    "name": "gflo-sglang",
+    "gpu": "0",
+    "context_length": 16384,
+    "memory_fraction": 0.9,
+    "shm_size": "4g",
+    "memory_limit": "36g",
+    "cpu_limit": 3,
+    "pids_limit": 1024,
+    "model_cache_volume": "local-vllm-huggingface-cache",
+    "offline": true,
+    "hf_token_env": "",
+    "server_options": {
+      "kv-cache-dtype": "bfloat16",
+      "reasoning-parser": "qwen3",
+      "tool-call-parser": "qwen3_coder",
+      "attention-backend": "flashinfer",
+      "mamba-ssm-dtype": "float32",
+      "max-mamba-cache-size": "1",
+      "chunked-prefill-size": "2048",
+      "cuda-graph-backend-decode": "disabled",
+      "cuda-graph-backend-prefill": "disabled"
+    },
+    "server_flags": [
+      "language-only",
+      "disable-radix-cache"
+    ]
+  }
+}

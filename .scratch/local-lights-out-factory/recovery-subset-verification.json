@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "selected_subset_passed": true,
+  "full_integrity_campaign_passed": false,
+  "groups": [
+    {
+      "category": "model-protocol",
+      "passed": true,
+      "cases": 5
+    },
+    {
+      "category": "gate-controller-interruption",
+      "passed": true,
+      "cases": 5
+    },
+    {
+      "category": "acceptance-commit",
+      "passed": true,
+      "cases": 2
+    },
+    {
+      "category": "storage",
+      "passed": true,
+      "cases": 9
+    }
+  ],
+  "full_suite": {
+    "passed": 191,
+    "subtests": 25,
+    "optional_skipped": 8
+  },
+  "evidence_root": ".gflo/evidence/recovery-subset-v2",
+  "evidence_sha256": {
+    "acceptance-commit.log": "f4c61c0ac8f55c6c9a2d6c593731bf5f8c4a6c5bebbe514284fd4f899818f9e0",
+    "acceptance-commit.xml": "ee8ee4099859e5edeee0ccdc6c07d1a26a09cc795786688c21e2ab0e7ecb9bec",
+    "gate-controller-interruption.log": "6b9ffd6b9a3baa1f0f65b43fd8e9939ac47909d796917593222ef0ccd5a23556",
+    "gate-controller-interruption.xml": "f456c588b4441ea1a7c63614b8bfdb7fc62536f43875bb0611bd7848b82a9007",
+    "manifest.json": "97b5ff972746c9fc05845b4250faee6a8677af186373054a7b9f9b931efed2cf",
+    "model-protocol.log": "6b9ffd6b9a3baa1f0f65b43fd8e9939ac47909d796917593222ef0ccd5a23556",
+    "model-protocol.xml": "0cd5e5f527aa92d07dc72acf056f7bfac0caad445f7748dc5a95db784930286b",
+    "results.json": "489ebcb04794e371c359bba7eebe6e2bf1700be8ae883ea4165544bb9fcc2b3b",
+    "storage.log": "edea1fe2e925f38d64cba1ee0f8ba3f25b2723ff28e7e65063c9b7b3e2414e63",
+    "storage.xml": "906728e568ac62695883e6d7c0073842e1a4add30c58722089d3fa011a5cb596",
+    "summary.json": "f9b78ead3e2045eadedd6700236a07a07d8bdc5b87d6e8c00901a9215881be44"
+  },
+  "scope": "Deterministic injected protocol/controller/storage checks, distinct from live engine death",
+  "remaining": "Other required categories/variations, physical death qualification and combined-input integration are not established by this subset."
+}

@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "scope": "Actual SIGKILL of dedicated fixture controller with real SQLite/artifacts/Docker; scripted proposal, no inference",
+  "results": [
+    {
+      "window": "before_launch",
+      "passed": true,
+      "child_exit": -9
+    },
+    {
+      "window": "during_case",
+      "passed": true,
+      "child_exit": -9
+    },
+    {
+      "window": "between_cases",
+      "passed": true,
+      "child_exit": -9
+    },
+    {
+      "window": "before_receipt",
+      "passed": true,
+      "child_exit": -9
+    },
+    {
+      "window": "after_receipt",
+      "passed": true,
+      "child_exit": -9
+    }
+  ],
+  "full_integrity_campaign_passed": false,
+  "assertions": [
+    "no acceptance before resume",
+    "one Attempt and one acceptance after resume",
+    "no regenerated candidate",
+    "pre-death events unchanged",
+    "repeated accepted resume unchanged",
+    "no missing/corrupt referenced artifact",
+    "owned leftover containers removed"
+  ],
+  "evidence_root": ".gflo/evidence/controller-death-v1",
+  "evidence_sha256": {
+    "after_receipt/accepted.json": "3f1d66ae875188f2072347c8cea8b847974e0dc056a2a237090b726aafb69e01",
+    "after_receipt/audit.json": "43ecbc7d57d59ca1fcdb9e73793fc19fcd65a8148b5e50237102ad76b40886a1",
+    "after_receipt/death.json": "0e379f97a71a82c0e0aaef00cefd3c7c8fedefaa22659dd044b59b6c790d5913",
+    "after_receipt/interrupted.json": "702c00a67a7a7850271c8575597245101de47d0de90fd08c284b2c2e068338e4",
+    "after_receipt/leftovers.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "after_receipt/plan.json": "39e6c3933bcb95d1280cfb485e699e4a2e417734134d5f6934e9f42e5ad6eddc",
+    "before_launch/accepted.json": "c2aa453c054e65d3575a957f85b1d41da51a274a1014bb60e6c98cc7ca4b2ee1",
+    "before_launch/audit.json": "541c0c83d6834ec451f1abdc37cb49968dca9090eb2eda9b4a7d588f5b08a838",
+    "before_launch/death.json": "2e54fae14024d74b80c6d7d1468529c155dc7fefa49905b5f0f74f10bafd1034",
+    "before_launch/interrupted.json": "30c58216c3683a8f40f38b36b602f7188aecb98dc3951c5f22531cee3338004f",
+    "before_launch/leftovers.json": "5f137a692ec3b21b575dc111b163384d663e6aaa890309633473adea6994f39f",
+    "before_launch/plan.json": "39e6c3933bcb95d1280cfb485e699e4a2e417734134d5f6934e9f42e5ad6eddc",
+    "before_receipt/accepted.json": "41db2181385d68417b630a865a0d2e18f239d572bdba05056cab1eb95cd1bac7",
+    "before_receipt/audit.json": "24c2221fb5cb3f84fb4fbc9bd24e7f51f62fd04e6a3b0118ca495864fceb9eae",
+    "before_receipt/death.json": "60f53f215838397fcefa42d43987e65c70cb75c9e8747bf8137865be14be8f29",
+    "before_receipt/interrupted.json": "378abd530c96051bde06e9fb2c6dc83419a2f124b2f2c528eb61580d71bad8b3",
+    "before_receipt/leftovers.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "before_receipt/plan.json": "39e6c3933bcb95d1280cfb485e699e4a2e417734134d5f6934e9f42e5ad6eddc",
+    "between_cases/accepted.json": "637b324673b1c89c750f306aa4f4536cc5bba7aab254fb9d3ff245c7e9a9dd81",
+    "between_cases/audit.json": "89a8be9ead282497db4b1c91b13db301dc8ceeed9eb5f2692b6c8f6a903a80af",
+    "between_cases/death.json": "9cf0572a6e6a979008ee5a58fc27d7c41e7aeb89db50a6dae4802d5a7705869a",
+    "between_cases/interrupted.json": "a7f432d29649e39d73d1484f3bf4b7f1f55e7ebd25005608aa6b334642844acf",
+    "between_cases/leftovers.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "between_cases/plan.json": "39e6c3933bcb95d1280cfb485e699e4a2e417734134d5f6934e9f42e5ad6eddc",
+    "during_case/accepted.json": "0d08aa9b6f1fd332b7834ffcd1bf611df5bf01d6a99d82b3692f9a367c434241",
+    "during_case/audit.json": "9dff0742ccae600e31288ac7a71f01cb7e45251fabc48f1784ac4597176f7520",
+    "during_case/death.json": "e9dc73549df548f1da3bcc2628a37d1c66040e1e7dcf985f7c85ae94a11b0db6",
+    "during_case/interrupted.json": "dad2e6c8771e2b88d1733864062344e8c41f85de2b95cc95d892945ecc625623",
+    "during_case/leftovers.json": "dacaf0a08444ca1de72f1b7c8f107204dce05370afa6d4c0da6e4b11a271c666",
+    "during_case/plan.json": "39e6c3933bcb95d1280cfb485e699e4a2e417734134d5f6934e9f42e5ad6eddc",
+    "manifest.json": "b365416cd395c2e59047b214e1733c989bf59f40ba14009e5bd0f714893bb353",
+    "results.json": "81421bbe434192038a17e2c6890c63434ec518b3d150190bb393f82256d6f450"
+  },
+  "scripted_model_sha256": "053c91362485234ab22a9c96c122d377a00c47f75b0145f014e948d5dbe7690b",
+  "limits": [
+    "Five validation lifecycle windows, not all original fifty integrity variations",
+    "Model proposals scripted to isolate recovery",
+    "Resume explicitly invoked by the harness; no unattended supervisor added"
+  ]
+}

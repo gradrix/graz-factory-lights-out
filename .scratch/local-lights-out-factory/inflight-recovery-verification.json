@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "variation": "model-server death during active coding request",
+  "result": {
+    "passed": true,
+    "attempts": 2,
+    "automatic_service_recovery": true,
+    "resume": "harness-triggered after readiness; no candidate repair"
+  },
+  "automatic_service_recovery_seconds": 31.59036831100093,
+  "cost": {
+    "attempts": 2,
+    "model_observations": 2,
+    "validated_prompt_tokens": 849,
+    "validated_completion_tokens": 314,
+    "observed_model_seconds": 6.675679090998528,
+    "observations_without_validated_usage": 1,
+    "observations_without_timing": 0,
+    "usage_complete_for_recorded_observations": false,
+    "timing_complete_for_recorded_observations": true
+  },
+  "invariants": {
+    "failed_attempt_unchanged": true,
+    "no_candidate_before_resume": true,
+    "repeated_accepted_resume_unchanged": true,
+    "no_missing_or_corrupt_referenced_artifacts": true
+  },
+  "scope": "One development fixture, not full integrity campaign or autonomous infrastructure supervisor",
+  "evidence_sha256": {
+    "audit.json": "29962b361b4fff623e1a23cdb4e70e5443be27b3568502b49897e9909b9e4bb9",
+    "before.json": "0d513adaacfe61818ac4bbea5d5766dee6180b669e4b6a5a868f83b642b5fc55",
+    "final-ready.json": "90c6277e0c5be77c473ad3468cb7be79cc17f0bac8bda708b0900fc8478b8c43",
+    "injection.json": "054a7648447e08a522780da584f6f088c19947d69dedad7c617fbe31107c89a3",
+    "interrupted-cost.json": "0bfd605c300e10d0fd6bd2c50d898f2f387c7e15ecf4e66060eb6524f428dfa4",
+    "interrupted.json": "b42db2b3a68e5c9beec96cfce0953113f3ea6115aaa5252848e79f7c6ea8b640",
+    "manifest.json": "37a714ab9d5bb645b987ac00b86acb0ecb4fcf86f994c8419386f914b5225ca2",
+    "recovered-service.json": "b75e57e05d975b0e4d5044450676a3518898ff9267dedebc4b7bb32b7fcc865c",
+    "result.json": "19aab75a413b9d865fb9c5f61ce519be9c8380aa1cc5765ecfa048d6f0d14b40",
+    "resumed-cost.json": "c6bdf937c48aa10a4fe35dde67b8e5a3a87fcb3f1c9278073b00b6a20c390969",
+    "resumed.json": "77ec1d3266f5927ce9cab798faa0ac01971cef8dfb0b27644fd9bfa95fecd5d2"
+  },
+  "implementation_sha256": {
+    "gflo/__init__.py": "4edfc8597f32029cb8a3d5f1703f53d33438b42b36d9459b683200519eb9871f",
+    "gflo/__main__.py": "2483ac5d313aa93167d08ef411ec64668e111afa3cbd4af1e09d29cf0cf6f318",
+    "gflo/artifacts.py": "30b1e7073c0d2126cde304c90706093a2b564e423c7dac5dae900b9788dcb7c4",
+    "gflo/broker.py": "2edaec685873421ed3a97dc473f89708017b9e152a8f6c33ad80cf4611b5fd61",
+    "gflo/cli.py": "d1e0e34138a050c28427ac51006164c46b691bffd4334648629c9ae0cc7f1172",
+    "gflo/controller.py": "44daa009af7307d35aa6df98d534a1e9c28f1765e9ace841ce5ba4c2acd739ba",
+    "gflo/gates.py": "daac482517a9e2048d9b6e8d6b12ebc5c4c9ee80a23d6fbdee52380deb3b2d4c",
+    "gflo/ledger.py": "164ec115db88fd4dfb3ee0d4d4cd289eeb75df747c4eb6b5e0d3d8db55c82343",
+    "gflo/model.py": "3b9a8fdcfd87d09ffa28a1b8bcec1cd24c0127af8ed3be2760fe866c7ace44d8",
+    "gflo/pilot.py": "c0bbc5655a14b79237b209e05c962886917727718994ca1b84bbe7767a79b2ce",
+    "gflo/records.py": "cb46f817bac80a34f60ea03867440bffb7c01e7f5db19d08b2d58266fd0b82cf",
+    "gflo/reporting.py": "2dbf193fb4541af38b64fc79e6267bf6f01f6a0b8d5a005380ec60466f5ddb02",
+    "gflo/worker.py": "81344b798d99cf5934a34986600b8b025ad16657f6fc8a587f6514df47f735df"
+  }
+}

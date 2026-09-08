@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "scope": "idle graph-enabled vLLM serving recovery and subsequent coding task",
+  "stopped_restart": {
+    "seconds": 35.14258731100017
+  },
+  "engine_crash": {
+    "seconds": 33.45210962099918,
+    "automatic_restart": true
+  },
+  "same_container_image_mounts": true,
+  "structured_smoke_after_each": true,
+  "coding_after_recovery": {
+    "status": "accepted",
+    "attempts": 1,
+    "evidence": ".gflo/evidence/graph-recovery-coding-v1"
+  },
+  "earlier_failed_run": {
+    "path": ".gflo/evidence/graph-recovery-v1",
+    "reason": "Harness compared Docker mount arrays in order; normalization added. Not scored as pass."
+  },
+  "evidence_sha256": {
+    ".gflo/evidence/graph-recovery-v2/baseline-smoke.json": "3ab8d329c2f9765a78ab53bde45b7c5b1f200eee6a2292090ea1486f85d1a04c",
+    ".gflo/evidence/graph-recovery-v2/baseline-up.json": "90c6277e0c5be77c473ad3468cb7be79cc17f0bac8bda708b0900fc8478b8c43",
+    ".gflo/evidence/graph-recovery-v2/before.json": "8611ef51f0d3092bcdce165b25e4507f3c1c9aaf92ac11e73692d02e8b38fb6a",
+    ".gflo/evidence/graph-recovery-v2/config.json": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+    ".gflo/evidence/graph-recovery-v2/crash-observations.json": "ae8018be2fa382e80d700967e2142bf6ea3e00bf6081a62e3c163d629269a817",
+    ".gflo/evidence/graph-recovery-v2/crash-result.json": "a030af7b2cc551fb61657df9264582b1cb2dedbc2e3d5c504e27361f007f0a9b",
+    ".gflo/evidence/graph-recovery-v2/crash-smoke.json": "3ab8d329c2f9765a78ab53bde45b7c5b1f200eee6a2292090ea1486f85d1a04c",
+    ".gflo/evidence/graph-recovery-v2/drift-refused.json": "dad85c6b84c65357557449e5d45d5641d69707e0818de5540e3fc0864f59d207",
+    ".gflo/evidence/graph-recovery-v2/final-up.json": "90c6277e0c5be77c473ad3468cb7be79cc17f0bac8bda708b0900fc8478b8c43",
+    ".gflo/evidence/graph-recovery-v2/final.json": "284992cd7b4087fab64dbe99c3d47b1a6a6a41ba04773c4e0d0ab3290682a68e",
+    ".gflo/evidence/graph-recovery-v2/injected-fault.json": "dee238bff8d27525548bb682dbfe1032dc6feff17b654cabb96589bdbe82439c",
+    ".gflo/evidence/graph-recovery-v2/restart-result.json": "ee3dc2e2be26f3d1b075f049a508469c4bf42348f47535d67b3a874ae1ce9a40",
+    ".gflo/evidence/graph-recovery-v2/restart-smoke.json": "3ab8d329c2f9765a78ab53bde45b7c5b1f200eee6a2292090ea1486f85d1a04c",
+    ".gflo/evidence/graph-recovery-v2/restart-up.json": "90c6277e0c5be77c473ad3468cb7be79cc17f0bac8bda708b0900fc8478b8c43",
+    ".gflo/evidence/graph-recovery-v2/restarted.json": "3540554f13fae82a85dee05f735afa367d0932718ac02a1b8f0942371b290c94",
+    ".gflo/evidence/graph-recovery-v2/result.json": "929f64b2feb727d210324037f4848970cd9f2b529c2054ec66237e7f053163a2",
+    ".gflo/evidence/graph-recovery-v2/stopped.json": "adef7dbee464062d38d67f4d4191c28079b7de0356e34d6c66344013a4d840ee"
+  },
+  "limitations": [
+    "Idle service crash, not interruption of an in-flight Work atom",
+    "Not the five-variants-per-category integrity campaign",
+    "No host reboot, GPU OOM or long soak qualification",
+    "Compilation/graphs jointly changed; exact kernel bottleneck not profiled"
+  ]
+}

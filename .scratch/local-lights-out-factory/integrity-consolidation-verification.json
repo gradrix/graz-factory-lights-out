@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "tests_passed": 202,
+  "subtests_passed": 25,
+  "skipped": 0,
+  "full_integrity_campaign_passed": false,
+  "coverage_counts": {
+    "covered": 39,
+    "partial": 10,
+    "unimplemented": 1
+  },
+  "suite_sha256": "7127d4a2c8edea0923ad17cafbaeb4ccec78ec06512946fef81d52fc9de66630",
+  "source_sha256": {
+    "gflo/__init__.py": "4edfc8597f32029cb8a3d5f1703f53d33438b42b36d9459b683200519eb9871f",
+    "gflo/__main__.py": "2483ac5d313aa93167d08ef411ec64668e111afa3cbd4af1e09d29cf0cf6f318",
+    "gflo/artifacts.py": "892f9beb769007637c212058b25470ef79151b29def27b0d69360a03743b217c",
+    "gflo/broker.py": "2edaec685873421ed3a97dc473f89708017b9e152a8f6c33ad80cf4611b5fd61",
+    "gflo/cli.py": "a5c82861b3f2dcb0538c0b3c019d1a0446c8ea621a7b873e0d0bccb1328cfed0",
+    "gflo/controller.py": "1283a0c451e38433f54dccf9a66d91e8c2886dba35f9ddec6a205683a495f03c",
+    "gflo/gates.py": "daac482517a9e2048d9b6e8d6b12ebc5c4c9ee80a23d6fbdee52380deb3b2d4c",
+    "gflo/history.py": "0c92b67ccd21a81a0612ea2fb2cee64c0f5b70902d3a228869f1c97f8d2a5c1c",
+    "gflo/ledger.py": "d4e130e38524b846523e81e8abe4d0aaf3b16804a7e588c6d984cc86e027a09e",
+    "gflo/model.py": "3b9a8fdcfd87d09ffa28a1b8bcec1cd24c0127af8ed3be2760fe866c7ace44d8",
+    "gflo/pilot.py": "c0bbc5655a14b79237b209e05c962886917727718994ca1b84bbe7767a79b2ce",
+    "gflo/records.py": "cb46f817bac80a34f60ea03867440bffb7c01e7f5db19d08b2d58266fd0b82cf",
+    "gflo/reporting.py": "2dbf193fb4541af38b64fc79e6267bf6f01f6a0b8d5a005380ec60466f5ddb02",
+    "gflo/storage.py": "00550ea704d06e73632a09dc5b49704ec2aee7854b49f9c2f1bc8b3ef9c80cfb",
+    "gflo/worker.py": "81344b798d99cf5934a34986600b8b025ad16657f6fc8a587f6514df47f735df"
+  },
+  "test_sha256": "ac78c3c2d527fa72c816b83143df9dcf60fa34867dc06fcdc2a0983b3cb44a7b"
+}

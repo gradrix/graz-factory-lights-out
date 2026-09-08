@@ -1,0 +1,102 @@
+{
+  "schema_version": 1,
+  "decision": "vllm working default; optimized engine comparison deferred",
+  "reason": "Retain the existing live-qualified managed service while implementing the worker loop; no optimal-engine claim. Free VRAM is confounded by cache reservation and unequal memory fractions.",
+  "checkpoint": {
+    "id": "Inferact/Qwen3.8-27B-NVFP4",
+    "sha": "6128240ebaf4eaa7bad2b3d1c72c37d677c5f462",
+    "private": false,
+    "gated": false,
+    "library_name": "transformers"
+  },
+  "runtime_identities": {
+    "vllm": {
+      "version": "0.28.0",
+      "torch": "2.13.0+cu129",
+      "transformers": "5.15.1",
+      "image_id": "sha256:249ed60fdd67b96db472e16f945af5aaba565b20159d192ba378035b6d136a1c",
+      "repo_digests": [
+        "vllm/vllm-openai@sha256:ac259a0111c6cf462a72e449962b84f7a624b5cbec24bd7d9ec3b67d40ffd1bf"
+      ]
+    },
+    "sglang": {
+      "version": "0.0.0.dev1+g5f55db35e",
+      "torch": "2.13.0+cu130",
+      "transformers": "5.12.1",
+      "image_id": "sha256:6b454775d5e28e8a16d890fa9f3d7b4f442f41c78ed16fd1551c428cc1ccf80c",
+      "repo_digests": [
+        "lmsysorg/sglang@sha256:616a3e97f45191af975896cfa644279096cb31bd408a071c2e99ca7209c3cafe"
+      ]
+    }
+  },
+  "results": [
+    {
+      "context_tier": 8192,
+      "passed_requests": 12,
+      "total_requests": 12,
+      "peak_gpu_used_mib": 29969,
+      "median_seconds": {
+        "json": 1.1620028940001248,
+        "long_json": 1.742769572999805,
+        "tool": 2.664259991000108,
+        "plain": 0.30219544999999925
+      },
+      "engine": "vllm"
+    },
+    {
+      "context_tier": 16384,
+      "passed_requests": 12,
+      "total_requests": 12,
+      "peak_gpu_used_mib": 30119,
+      "median_seconds": {
+        "plain": 0.43251615000008314,
+        "long_json": 3.2050778599996192,
+        "json": 1.533806449000167,
+        "tool": 2.618198166000184
+      },
+      "engine": "vllm"
+    },
+    {
+      "context_tier": 8192,
+      "passed_requests": 12,
+      "total_requests": 12,
+      "peak_gpu_used_mib": 31631,
+      "median_seconds": {
+        "tool": 2.671692731999883,
+        "plain": 0.2904906469998423,
+        "json": 0.9566357640001115,
+        "long_json": 1.4432786379998106
+      },
+      "engine": "sglang"
+    },
+    {
+      "context_tier": 16384,
+      "passed_requests": 12,
+      "total_requests": 12,
+      "peak_gpu_used_mib": 31639,
+      "median_seconds": {
+        "json": 1.1913662910001221,
+        "long_json": 2.4080509300001722,
+        "plain": 0.2493959729999915,
+        "tool": 2.681599694000397
+      },
+      "engine": "sglang"
+    }
+  ],
+  "managed_validation": {
+    "repeated_up_and_drift_refusal": true,
+    "stopped_restart_same_container_and_mounts": true,
+    "restart_seconds": 30.078452104999997,
+    "engine_crash_recovered": true,
+    "engine_crash_recovery_seconds": 36.05578068599971,
+    "post_crash_smoke_passed": true
+  },
+  "limitations": [
+    "Synthetic probes only; coding capability awaits the twelve-task pilot",
+    "No deliberate GPU OOM or host-memory/PID exhaustion test",
+    "Different runtime builds/defaults and memory-fraction settings; not an isolated engine microbenchmark",
+    "Total-device VRAM sampled once per second; includes desktop activity",
+    "SGLang managed profile config-validated; live SGLang comparison used direct pinned snapshot containers"
+  ],
+  "tuning_review": "serving-tuning-review.md"
+}

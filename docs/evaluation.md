@@ -1,0 +1,78 @@
+# Evaluation
+
+Results recorded on 2026-09-08. GFLO is an experimental developer preview.
+**The larger-build progression gate failed:** numerical targets passed, but review
+found two false acceptances. Finite checks cannot rule out further defects.
+
+## Local-model campaign
+
+Forty distinct small Python tasks, ten per category, ran three fresh repetitions.
+Repetitions are not additional independent tasks. Fixtures, gates, runtime, model,
+and policy were frozen before scoring; all reference candidates passed preflight
+and every starting candidate failed at least one gate.
+
+| Category | Runs | Gate accepted | Verified after review | Target |
+| --- | ---: | ---: | ---: | ---: |
+| Implementation | 30 | 29 | 29 | 24 |
+| Defect repair | 30 | 30 | 28 | 24 |
+| Consumer API migration | 30 | 25 | 25 | 24 |
+| Requirements-derived test data | 30 | 27 | 27 | 24 |
+| Total | 120 | 111 | 109 | 108 |
+
+The RTX 5090 ran the [pinned graph-enabled vLLM profile](../infra/serving/vllm-5090-graphs.example.json):
+Inferact/Qwen3.8-27B-NVFP4, temperature 0, seed 42, thinking disabled, and an 8K
+worker budget with 2K output reserve. Across 228 attempts, recorded usage was
+252,944 prompt tokens, 51,496 completion tokens, and 950.1 seconds of model time.
+Cumulative atom time was 1,903.0 seconds; median atom time was 9.57 seconds.
+The maximum prompt was 2,087 tokens. Larger-context policies were not compared.
+
+Supplemental probes checked all 84 accepted non-test-generation runs. All 27
+accepted test-generation runs passed a known-good implementation and three seeded
+mutants each, with additional domain inspection. The two discovered defects were
+incorrect deduplication when several IDs repeated, and unstable ordering of
+numerically equivalent versions with different component counts.
+
+Both defective acceptances now have immutable findings that block reuse. Nine
+other runs exhausted their ten-attempt budgets. Some API migration failures also
+exposed ambiguous task wording, so model capability alone does not explain them.
+
+## Follow-up evidence
+
+- Readable validation feedback repaired 3/3 matched cases versus 1/3 with legacy
+  feedback on the already-seen bracket task. This small comparison is diagnostic,
+  not a fresh held-out improvement score.
+- Strengthened gates reject both known bad candidates and accept reference fixes.
+  The local model repaired deduplication on its second attempt. Version-sort repair
+  exhausted ten attempts, then three more under a clarified replacement contract.
+- One live prepared integration accepted a provider and two consumers on their
+  first attempts, then passed independent combined gates. This does not establish
+  large-project planning or general integration reliability.
+- The latest enabled test suite passed 253 tests and 25 subtests with no skips.
+  Recovery evidence covers controller/execution deaths and storage boundaries.
+  The accumulated integrity matrix has 50 covered rows, but it is not a fresh
+  same-build 50-case campaign. Tokenizer-death overlap was checked at the client
+  boundary, not proven inside a running GPU kernel.
+
+The full 120-run campaign predates the latest feedback and finding changes; its
+score must not be presented as a fresh evaluation of the current runtime.
+
+## Reproduction
+
+Install the development environment and [model service](../infra/serving/README.md)
+and pull the broker image as described in [Getting started](getting-started.md).
+The harnesses write their own manifests and evidence to a new output directory:
+
+```sh
+mkdir -p .gflo/evidence
+.venv/bin/python scripts/review_heldout.py --manifest .gflo/evidence/probes-new.json
+.venv/bin/python scripts/run_heldout.py --output .gflo/evidence/heldout-new --config infra/serving/vllm-5090-graphs.example.json
+.venv/bin/python scripts/review_heldout.py --manifest .gflo/evidence/probes-new.json --campaign .gflo/evidence/heldout-new
+```
+
+These are sustained GPU/Docker workloads, not documentation smoke tests. Read each
+script's `--help` before running follow-up or fault-injection harnesses. Current
+source can reproduce the procedure but cannot recreate the old runtime merely by
+rerunning it. Historical raw model responses, ledgers, source snapshots, and host
+telemetry remain local; they are not included in this public summary. An audited,
+sanitized evidence bundle remains a release task, so readers cannot yet independently
+verify every historical claim from a clean checkout.

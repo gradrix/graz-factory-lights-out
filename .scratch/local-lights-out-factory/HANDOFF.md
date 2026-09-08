@@ -1,57 +1,110 @@
-# GFLO handoff — await the RTX 5090 target
+# GFLO handoff — qualification exposed semantic-gate limits
 
-## Current state
+## Documentation and next workload — 2026-09-08
 
-Research and architecture planning are recorded in [the map](map.md). Decisions through [Prototype the reference architecture](issues/11-prototype-the-reference-architecture.md) are resolved as design choices, not hardware-tested feasibility claims. [Plan the staged implementation and validation](issues/12-plan-the-staged-implementation-and-validation.md) contains the proposed stage sequence and remains claimed pending final agreement.
+Public navigation is now README.md → docs/getting-started.md, architecture.md,
+operations.md, evaluation.md, and roadmap.md. CONTRIBUTING.md covers development.
+The next proposed workload is a stateful inventory/reservation application; the
+roadmap defines semantic prerequisites, a three-module slice, and ten prepared
+changes in dependency waves. This turn planned that workload; it did not execute it.
 
-The HTML lifecycle demo is a throwaway in-memory simulation, not a running factory. JavaScript syntax and Git whitespace checks have passed. Browser behavior, real inference, isolation, durable recovery, and coding capability have not been validated here. No production factory implementation or model runtime has been installed as part of this checkpoint.
+Clean public snapshot verification: pinned install, prepared-demo submission,
+245 tests + 25 subtests passed, eight optional Docker tests skipped; ruff, mypy,
+and all public Markdown links passed. GPU onboarding was not rerun this turn.
 
-## Latest user constraint
+Old public component guides and the former glossary are preserved in
+`documentation-archive-2026-09-08/`. The initial removal of `.scratch/` from Git
+tracking was reversed to preserve cross-machine development. Commit new handoff,
+issue, research, and source files together; untracked files will not travel with
+a clone. Raw `.gflo/` evidence and model caches need separate transfer or recreation.
+Existing Git commits still contain the old files. Do not publish history without
+review. Public release remains pending owner license choice, history/source review,
+fresh-host GPU onboarding, and an audited historical evidence bundle.
 
-The user is away from the RTX 5090 until later and considered temporary inference on this Acer or an M3 Pro MacBook. Recommended course: preserve this checkpoint and wait for the intended GPU target for the first model-capability experiment. A temporary backend may later help with transport/plumbing tests, but its results must not qualify the intended RTX 5090 model/runtime profile. Do not install a temporary model merely to keep activity going.
 
-## Accepted deployment decision
+## Current checkpoint — 2026-09-08
 
-- Keep the small Python bootstrap/serving launcher on the host. Containerizing it solely to give it a Docker socket is not required.
-- Build the initial controller as ordinary testable Python, then package it into its own versioned container with persistent ledger/artifact storage before unattended operational validation. This controller is not implemented yet.
-- Run managed inference in a separate GPU container, or connect to an independently operated endpoint. Local inference is first-class; remote/cloud-compatible endpoints require explicit configuration and no automatic fallback exists.
-- Run generated product code in disposable isolated development containers from the first live pilot. Execute acceptance tests in separate clean environments, with trusted evidence collection outside candidate control.
-- Keep container-management authority in a narrow trusted broker; coding workers must not receive its Docker socket, credentials, writable ledger, or active controller files. A container with broad Docker access is not a sufficient isolation guarantee.
-- Factory self-development operates on a candidate Generation in isolated environments. The separate launcher may eventually promote a validated candidate or roll back; workers do not modify the active controller in place. Automatic self-upgrade is not implemented.
+The user authorized continuing implementation and verification until meaningful questions
+arise. Planning is already recorded in [the map](map.md); no new Wayfinder pass is needed
+to resume the current implementation work. No commits or pushes were made in this run.
+The working tree includes earlier untracked runtime files; preserve that work.
 
-## Current implemented slice
+**Read [the completed evaluation](heldout-results.md) before expanding scope.** Forty
+small Python tasks ran three fresh repetitions: 111 original gate acceptances, 109 verified
+by the campaign checks, nine exhausted runs, two discovered false acceptances. Numerical
+targets passed; the zero-false-acceptance criterion failed. Larger-build feasibility is
+not established. The historical checkpoint narrative is [archived](handoff-history-2026-09-08.md).
 
-The [serving launcher](../../scripts/serve.py) and [usage documentation](../../infra/serving/README.md) provide `config`, `doctor`, `up`, `status`, `smoke-test`, and `down`, using Python 3.10+ standard library only. This is explicitly authorized infrastructure preparation, not completion of the wider factory stages.
+## Implemented and verified
 
-External mode defaults to loopback and never manages Docker. Non-loopback endpoints require explicit opt-in and HTTPS; private HTTP GPU endpoints can be reached through an independently configured SSH tunnel. Credentials are referenced by environment-variable name, not stored in tracked configuration. Redirects and ambient HTTP proxies are disabled. Readiness checks send no generation prompt; the explicit smoke test sends only fixed synthetic content. Full cloud-provider compatibility and product-data egress policy are not implemented.
+- Durable prepared-task ledger, immutable artifacts, fenced Attempts, Docker broker,
+  independent process gates, bounded local-model turns, retries/resume, cumulative costs
+  and worker candidate diffs.
+- Prepared integration of accepted disjoint edits from one exact base. Pinned provider
+  contracts, stale-input rejection and independent combined gates. The live provider/two-
+  consumer fixture passed first attempt for every child and produced combined outputs
+  42 and 84. [Task 24](issues/24-validate-prepared-integration.md).
+- Context policy `bounded-python-v4`: bounded verified contract excerpts plus readable
+  observed validation feedback. Three matched seen-failure pairs repaired 3/3 with readable
+  feedback versus 1/3 with legacy feedback. [Task 25](issues/25-improve-bounded-validation-feedback.md).
+- Acceptance findings append contradictory evidence while preserving original acceptance.
+  Replay/integration reuse is blocked. Status/history expose the challenge. Ledgers with
+  findings require reader version 3; stop older open controllers before upgrading.
+  The two actual campaign findings are recorded and blocked.
+- Latest full enabled suite: **253 tests + 25 subtests, no skips**. Ruff and mypy pass.
+  Evidence: `.gflo/evidence/factory-final-v1/suite.xml`.
 
-Managed mode supports SGLang only, with a pinned image digest and checkpoint revision, one GPU and one inference request at a time. It reuses a matching running container, restarts a matching stopped container, refuses running configuration drift, and checks ownership before lifecycle changes. Model-cache volumes survive stops/replacement. A per-user/service lock serializes launcher mutations. It rejects remote Docker daemons, does not install host drivers, and is not the worker sandbox.
+## Important retained evidence
 
-The managed example intentionally requires selecting a verified image digest; its researched Qwen checkpoint and settings are not a validated GPU recipe. No runtime image or model weights have been pulled or launched here. Host preflight is partial: actual container GPU access, disk reserves, enforced memory/PID limits, restart behavior, credential rotation, model fit, and numerical quality still need target validation or further implementation.
+- `.gflo/evidence/heldout-v1-qualified/`: frozen manifests, all 120 results and costs,
+  semantic probes prepared before scoring, full semantic review, evaluation, findings.
+- Its `frozen-ledger/` and `runtime-source/` preserve the pre-finding ledger/artifacts and
+  the exact scoring implementation. Do not overwrite or describe seen tasks as fresh.
+- `.gflo/evidence/prepared-integration-live-v1/`: actual local-model integration fixture.
+- `.gflo/evidence/feedback-recovery-v1/`: three paired seen bracket-repair comparisons.
+- `.gflo/evidence/dedupe-regression-v1/` and `version-sort-regression-v1/`: strengthened
+  gates reject retained bad candidates and accept known-good references.
+- `.gflo/evidence/semantic-repairs-v1/`: deduplication repaired on Attempt 2; version
+  sorting exhausted ten attempts. `version-sort-clarified-v1/` is a separately counted
+  replacement with a public tie example and extra private gate; all three attempts failed.
+- [Integrity coverage](integrity-coverage.md): all fifty original rows have scoped
+  accumulated evidence, not a newly scored same-build fifty-case campaign. Precise
+  live tokenizer injection is a client boundary, not proof of kernel execution overlap.
 
-## Verification and limitations
+## Current limitation and next work
 
-Run `python3 -W error::ResourceWarning -m unittest discover -s tests -v` from the repository root. The suite uses mocked Docker and a loopback-only HTTP server to exercise configuration validation, lifecycle reuse/drift/ownership, deadlines, external-mode separation, authentication handling, redirect refusal, and synthetic response validation. Also run `python3 scripts/serve.py config`, Python/HTML-script syntax checks, and `git diff --check`.
+Tasks [22](issues/22-expand-integrity-and-recovery-campaign.md) and
+[26](issues/26-strengthen-semantic-gates.md) remain claimed. Stronger gates now detect the
+observed bugs, but persistent version-sort repair remains a real model/worker limitation.
+It repeatedly ignores zero-padding and stable-tie requirements, even with one public
+counterexample. Preserve exhausted attempts and separate replacement costs. Do not add
+blind retries, manually replace generated candidates, or erase Acceptance findings.
 
-These checks do not qualify actual Docker/SGLang startup, GPU loading, downloads/cache reuse, container security, large-context operation, or coding quality. No browser behavior test of the throwaway HTML prototype has been performed. The checkpoint is suitable for continuing development and target verification, not a claim that every integration path was tested.
+Next bounded work is diagnosis of semantic repair (including a prospectively declared
+reasoning/profile comparison if appropriate), clearer public input/output contracts,
+and broader gate qualification before fresh held-out scoring. Prepared integration
+accepts immutable artifacts; Git promotion, automatic graph planning, cross-ledger finding
+propagation and already-exported product revocation are not implemented.
 
-Checkpoint result: 25 launcher tests passed with resource warnings treated as errors; external configuration validation, Python compilation, prototype JavaScript syntax, and Git whitespace checks passed. No real GPU service was started to obtain these results.
+The user was asked which real product/repository should shape the next integrated-build
+workload, with a small Python reference application as the suggested default. No answer
+has arrived. Product planning can proceed separately; it must not bypass failed qualification.
 
-## Remaining work and resume path
+## Runtime and commands
 
-### TODO: compare vLLM and SGLang on the actual RTX 5090
+`gflo-vllm-graphs` remains running at loopback port 30000, model `gflo-local`, using
+`infra/serving/vllm-5090-graphs.example.json`: pinned Inferact/Qwen3.8-27B-NVFP4,
+RTX 5090, 16K server context, graph execution, one sequence. The older eager container
+is stopped. All campaign/follow-up harness processes have finished.
 
-The user accepted benchmarking both before choosing a permanent managed-backend default. Keep SGLang available; add a focused vLLM launch profile as a comparison candidate, not a general multi-backend framework. External mode can already probe a compatible vLLM endpoint, but no vLLM managed launcher or live backend comparison has been implemented.
+```sh
+.venv/bin/python -m pytest -q
+.venv/bin/ruff check gflo
+.venv/bin/mypy gflo
+.venv/bin/python -m gflo --db .gflo/evidence/heldout-v1-qualified/ledger.db history heldout-v1-r1-dedupe-last
+```
 
-Re-check the current [vLLM Qwen3.8-27B recipe](https://recipes.vllm.ai/Qwen/Qwen3.8-27B) and [SGLang cookbook](https://docs.sglang.io/cookbook/autoregressive/Qwen/Qwen3.8-27B) before pinning configurations. The reviewed vLLM single-5090 recipe required eager execution to avoid CUDA-graph startup OOM; that observation is specific to its checkpoint/runtime configuration, not a universal limitation. Neither engine is an established winner for this factory.
-
-Compare identical small-worker workloads at supported 8K and 16K context tiers, concurrency one: verified coding completion, tool/structured-output correctness, peak VRAM, latency, OOM/restart recovery, and setup reproducibility. Use the same checkpoint/quantization where supported; otherwise label the comparison as two complete serving configurations and record their differences. Preserve exact image/model/tokenizer/settings and raw evidence. Choose from measured reliability and useful work, not engine reputation, aggregate throughput or maximum advertised context. Initial serving probes precede the live-worker pilot; coding-quality comparison follows once the worker loop exists.
-
-1. Pull the latest checkpoint from `origin/main` on the destination checkout after the requested push is verified. Git transports repository artifacts, not local conversation/session state or credentials. The preceding planning checkpoint was `0f6704a`; the new launcher/handoff checkpoint follows it.
-2. Read this handoff, the map, and the staged-plan ticket. Preserve the accepted defaults: small worker views; tests-first dynamic diagnosis/repair; scheduler-owned work and evidence; on-demand planning; no SFLO/Gas City runtime dependency; profile-driven output languages.
-3. Confirm the proposed first implementation scope: Stage 0 target verification and Stage 1 durable worker loop plus the twelve-task live pilot. Do not implement later layers before pilot evidence.
-4. Locate the actual GPU host and endpoint; inspect driver/runtime/checkpoint/tokenizer, memory, cache storage and enforced execution controls. Choose external mode for an existing service, or set the verified managed image/checkpoint pins. Run preflight, startup, readiness and synthetic inference there. Test repeated startup, stopped restart, drift refusal and preserved cache on the actual backend. Do not assume the destination is already provisioned or the researched checkpoint is available.
-5. Create bounded implementation tasks for the durable controller/ledger, artifacts, execution broker, worker views, model client and gate runner. Validate mechanics with deterministic doubles, then run the twelve-task real-model pilot. Retain failed results and revise context/tool/task policies before expanding.
-6. Add dynamic diagnosis/repair and dependency-aware integration only as the staged evidence supports them. Containerize the controller before unattended validation, then progress through maintenance, another language, mixed-stack changes, scale, operational recovery and eventual candidate self-upgrades. No manager hierarchy or general multi-backend platform is needed for the first pilot.
-
-The user requested committing and pushing this repository checkpoint. That does not authorize production deployment, host migration, or publication of generated products. The benchmark thresholds are versioned experimental targets, not claims already achieved.
+Enable real broker tests with the pinned `GFLO_BROKER_TEST_IMAGE` from `gflo/pilot.py`.
+Campaigns declared a 256 MiB storage admission reserve; ordinary development still
+uses the documented zero default. [Integration](../../docs/integration.md),
+[findings](../../docs/acceptance-findings.md), [feedback](../../docs/validation-feedback.md).

@@ -1,0 +1,31 @@
+{
+  "scope": "Lifecycle gap closure and prepared integration qualification",
+  "suite": {
+    "passed": 234,
+    "subtests": 25,
+    "skipped": 0
+  },
+  "live_model_children": 3,
+  "first_attempt_children": 3,
+  "combined_expected_outputs": [
+    42,
+    84
+  ],
+  "coverage_rows": 50,
+  "fresh_same_build_50_case_campaign": false,
+  "context_policy": "bounded-python-v3",
+  "evidence": {
+    ".gflo/evidence/before-request-death-v1/results.json": "83e488cbadc3fe77018bd4dad881285f9054f82ed370ef9a1d2e85ad66552359",
+    ".gflo/evidence/read-expansion-death-v1/results.json": "4fe5b9dc840d4d40a39dee22bd674233db098d99cc5ca93c31510912efdb1b42",
+    ".gflo/evidence/model-lookup-death-v1/result.json": "19aab75a413b9d865fb9c5f61ce519be9c8380aa1cc5765ecfa048d6f0d14b40",
+    ".gflo/evidence/model-tokenize-death-v1/result.json": "19aab75a413b9d865fb9c5f61ce519be9c8380aa1cc5765ecfa048d6f0d14b40",
+    ".gflo/evidence/model-between-turns-death-v1/result.json": "19aab75a413b9d865fb9c5f61ce519be9c8380aa1cc5765ecfa048d6f0d14b40",
+    ".gflo/evidence/prepared-integration-live-v1/result.json": "49965515af0fc66defd1fe3de7efa395e293f73b777df98cbacf9973f0c6258a",
+    ".gflo/evidence/integration-suite-v1/suite.xml": "7e140ca2e0b113505a3e34e4d08995d7a27ab37708e6dcd0eeba709473e4b6c9"
+  },
+  "limits": [
+    "Co-located controller/worker dispatch death, not separate worker service.",
+    "Tokenizer client boundary; exact execution overlap not proven.",
+    "Prepared immutable integration, not Git promotion or autonomous graph planning."
+  ]
+}

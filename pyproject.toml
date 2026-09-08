@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools==80.9.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gflo"
+version = "0.1.0"
+description = "Durable local software factory experiment"
+requires-python = ">=3.11"
+dependencies = ["pydantic==2.13.5"]
+
+[project.scripts]
+gflo = "gflo.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["gflo*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+filterwarnings = ["error::ResourceWarning"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+include = ["gflo/**/*.py", "tests/test_ledger.py", "tests/test_artifacts.py", "tests/test_broker.py", "tests/test_worker.py", "tests/test_controller.py"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+files = ["gflo"]
