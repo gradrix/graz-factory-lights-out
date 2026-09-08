@@ -1,0 +1,22 @@
+{
+  "mode": "managed",
+  "base_url": "http://127.0.0.1:30000/v1",
+  "model": "gflo-local",
+  "request_timeout": 15,
+  "startup_timeout": 1800,
+  "managed": {
+    "image": "SET_SGLANG_IMAGE_AT_SHA256_DIGEST",
+    "model_path": "RadixArk/Qwen3.8-27B-NVFP4",
+    "revision": "319f741cce68d7914884900c138a1fbb70a42f30",
+    "name": "gflo-sglang",
+    "gpu": "0",
+    "context_length": 8192,
+    "memory_fraction": 0.85,
+    "shm_size": "4g",
+    "hf_token_env": "",
+    "server_options": {
+      "reasoning-parser": "qwen3",
+      "tool-call-parser": "qwen3_coder"
+    }
+  }
+}

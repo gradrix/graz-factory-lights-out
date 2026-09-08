@@ -1,0 +1,9 @@
+{
+  "mode": "external",
+  "base_url": "http://127.0.0.1:30000/v1",
+  "model": "gflo-local",
+  "allow_remote": false,
+  "api_key_env": "",
+  "request_timeout": 15,
+  "startup_timeout": 1800
+}
