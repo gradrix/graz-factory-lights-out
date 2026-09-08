@@ -39,6 +39,14 @@ Checkpoint result: 25 launcher tests passed with resource warnings treated as er
 
 ## Remaining work and resume path
 
+### TODO: compare vLLM and SGLang on the actual RTX 5090
+
+The user accepted benchmarking both before choosing a permanent managed-backend default. Keep SGLang available; add a focused vLLM launch profile as a comparison candidate, not a general multi-backend framework. External mode can already probe a compatible vLLM endpoint, but no vLLM managed launcher or live backend comparison has been implemented.
+
+Re-check the current [vLLM Qwen3.8-27B recipe](https://recipes.vllm.ai/Qwen/Qwen3.8-27B) and [SGLang cookbook](https://docs.sglang.io/cookbook/autoregressive/Qwen/Qwen3.8-27B) before pinning configurations. The reviewed vLLM single-5090 recipe required eager execution to avoid CUDA-graph startup OOM; that observation is specific to its checkpoint/runtime configuration, not a universal limitation. Neither engine is an established winner for this factory.
+
+Compare identical small-worker workloads at supported 8K and 16K context tiers, concurrency one: verified coding completion, tool/structured-output correctness, peak VRAM, latency, OOM/restart recovery, and setup reproducibility. Use the same checkpoint/quantization where supported; otherwise label the comparison as two complete serving configurations and record their differences. Preserve exact image/model/tokenizer/settings and raw evidence. Choose from measured reliability and useful work, not engine reputation, aggregate throughput or maximum advertised context. Initial serving probes precede the live-worker pilot; coding-quality comparison follows once the worker loop exists.
+
 1. Pull the latest checkpoint from `origin/main` on the destination checkout after the requested push is verified. Git transports repository artifacts, not local conversation/session state or credentials. The preceding planning checkpoint was `0f6704a`; the new launcher/handoff checkpoint follows it.
 2. Read this handoff, the map, and the staged-plan ticket. Preserve the accepted defaults: small worker views; tests-first dynamic diagnosis/repair; scheduler-owned work and evidence; on-demand planning; no SFLO/Gas City runtime dependency; profile-driven output languages.
 3. Confirm the proposed first implementation scope: Stage 0 target verification and Stage 1 durable worker loop plus the twelve-task live pilot. Do not implement later layers before pilot evidence.
