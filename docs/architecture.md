@@ -77,23 +77,30 @@ semantics see [Operations](operations.md).
 
 ## Repository-scale source access
 
-[ADR 0001](adr/0001-repository-snapshots-and-bounded-task-inputs.md) separates future
-repository identity from bounded task inputs. Today, `FeatureRequest.source`,
-`RunPlan.source`, and candidate construction still use embedded `SourceBundle`
-objects. The planner's two-file reading window and AST hints are a small-source
-implementation, not a repository index.
+[ADR 0001](adr/0001-repository-snapshots-and-bounded-task-inputs.md) separates
+repository identity from bounded task inputs. `gflo.repository` now provides real
+legacy-bundle and immutable-snapshot backends: scoped listing, exact line reads,
+bounded literal search, context/execution selection, and digest-bound edits.
+Results identify the snapshot and files and report incomplete coverage. Edits
+preserve every unselected file, rejecting stale bases and missing source evidence.
+Historical bundle and record identities remain unchanged.
 
-The planned repository access module owns snapshot reads, bounded search and
-context selection, and execution-input preparation. Search results carry snapshot
-and file identities, locations, provenance, and explicit coverage/omission information.
-Text search is the initial implementation; symbol and dependency queries can be
-added behind the same module without coupling scheduling to a graph database.
-The task dependency graph and the repository dependency graph remain distinct:
-one orders work, the other supplies evidence for impact analysis.
+Capture inventories Git-visible UTF-8 text, including dirty and nonignored untracked
+files, and checks inventory/content again before publishing. It requires a quiescent
+checkout; it is not an atomic filesystem snapshot. Symlinks, submodules, binaries,
+unresolved merges, and unsupported paths are rejected. Limits are 100,000 files,
+8 MiB per file, and 512 MiB total. Same-store edit assembly verifies all original
+file bytes but stores only changed blobs and a new manifest. No garbage collection
+or cross-store snapshot export is implemented.
 
-Migration starts with versioned snapshot references and parity against existing
-bundles. Candidate edits must preserve files outside the selected inputs and bind
-to original content. Incremental indexing then updates derived data for changed
-files; semantic impact across dependents still needs validation. A million-line
-repository trial must measure context sufficiency, index freshness, resource cost,
-and whole-feature correctness—not merely whether a search returns results.
+`FeatureRequest.source`, `RunPlan.source`, and existing candidate construction still
+embed `SourceBundle`. Wiring reviewed plans through snapshot references is the next
+migration slice. Execution selections retain the broker's 100-file/256-KiB limits;
+a selected subset is explicitly not a full-repository validation.
+
+Search currently scans text with explicit file/byte/hit budgets; no symbol or graph
+index exists. Revision-bound symbol and dependency queries can be added behind the
+module without coupling scheduling to graph storage. The task dependency graph
+orders work; repository dependencies provide impact evidence. Large-repository
+qualification still needs selection sufficiency, freshness, resource measurements,
+and repeated whole-feature correctness on real repositories.

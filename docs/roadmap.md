@@ -42,9 +42,11 @@ feature success, retries, cost, and discovered false acceptances across repetiti
 Large-repository support is an architectural requirement, not an assumed property
 of the current bundles. [ADR 0001](adr/0001-repository-snapshots-and-bounded-task-inputs.md)
 records the migration: immutable repository identity, bounded context selections,
-and separately prepared execution inputs. Introduce this source-access module
-before generalizing the plan-to-execution bridge; retain the existing bundle adapter
-and historical record identities.
+and separately prepared execution inputs. The first source-access slice is implemented:
+immutable snapshots, bounded reads/search/selections, legacy-bundle parity, and
+digest-bound edits preserving omitted files. A real 193-file, 1.53-MB GFLO snapshot
+yielded a 238-KB execution subset. Next, wire reviewed plans through snapshot-bound
+preparation while preserving historical records; larger execution inputs remain future work.
 
 The sequence is snapshot-backed access and text search, revision-bound symbol
 lookup, then dependency/impact queries and incremental indexing. Graph storage is

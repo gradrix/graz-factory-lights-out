@@ -22,6 +22,8 @@ from gflo.model import LocalModel, ModelError, ModelProfile
 from gflo.planning import FeatureRequest, PlanProposal, draft_feature, validate_proposal
 from gflo.records import WorkAtom
 from gflo.reporting import cost_report
+from gflo.repository_cli import configure as configure_repository
+from gflo.repository_cli import execute as execute_repository
 
 
 def main() -> int:
@@ -69,8 +71,14 @@ def main() -> int:
     )
     check_plan.add_argument("request", type=Path)
     check_plan.add_argument("proposal", type=Path)
+    configure_repository(
+        commands.add_parser("repository", help="Capture and query repository snapshots")
+    )
     args = parser.parse_args()
     try:
+        if args.command == "repository":
+            print(json.dumps(execute_repository(args), indent=2))
+            return 0
         if args.command in ("plan-feature", "check-plan"):
             request = FeatureRequest.model_validate_json(args.request.read_bytes())
             if args.command == "plan-feature":

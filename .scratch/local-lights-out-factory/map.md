@@ -123,3 +123,8 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
   separates repository snapshots from task bundles; [issue 32](issues/32-separate-repository-access-from-task-bundles.md)
   defines the first migration slice before generalized scheduling. Indexes remain
   derived, revision-bound data; no graph technology selected or scale claim made.
+
+- [Issue 32](issues/32-separate-repository-access-from-task-bundles.md) resolved:
+  snapshot/bundle access and CLI implemented; real 1.53-MB source selected within
+  current broker budget. Next: snapshot-bound reviewed-plan preparation. See
+  [results](repository-access-results.json); no large-build qualification claimed.

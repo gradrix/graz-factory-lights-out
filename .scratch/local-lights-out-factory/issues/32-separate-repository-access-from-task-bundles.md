@@ -1,12 +1,12 @@
 # Separate repository access from bounded task bundles
 
 Type: task
-Status: ready-for-agent
+Status: resolved
 
 ## Requirement
 
 The owner requires a path to large repositories without a rewrite of planning and
-execution around demo-only assumptions. Follow [ADR 0001](../../../docs/adr/0001-repository-snapshots-and-bounded-task-inputs.md).
+execution around demo-only assumptions. Follow [ADR 0001](../../../../docs/adr/0001-repository-snapshots-and-bounded-task-inputs.md).
 Do not add a speculative graph framework or merely increase existing bundle limits.
 
 ## First implementation slice
@@ -55,3 +55,19 @@ selection sufficiency, stale-data rejection, index time/memory/disk, model cost,
 and repeated whole-feature success. Set numerical targets before each trial.
 A synthetic million-line lookup exercise is a performance probe, not software-build
 qualification. No million-line capability claim until real work is demonstrated.
+
+## Answer
+
+Implemented the first access slice in `gflo/repository.py` and the `gflo repository`
+CLI: real bundle/snapshot adapters, bounded scoped queries/selections, dirty capture,
+and base/file-bound edits preserving omitted content. Existing records are unchanged.
+21 targeted tests and the complete host suite (321 tests, 25 subtests, eight optional
+skips) passed. A 193-file, 1,534,270-byte GFLO snapshot yielded a 237,538-byte bundle.
+All untouched identities survived a derived edit. Docker consumption passed 14 tests;
+seven Git-dependent capture tests passed on host and failed in the Git-free image.
+Both attempts are retained in [results](../repository-access-results.json).
+
+This closes the first implementation slice, not all later migration work. Next:
+route reviewed plan preparation through snapshot references with trusted independent
+gates and accepted-base progression. Existing planner/run records still embed bundles;
+no automatic materialization, graph index, or larger broker workspace is claimed.

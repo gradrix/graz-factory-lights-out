@@ -1,0 +1,47 @@
+{
+  "snapshot": {
+    "schema_version": 1,
+    "kind": "repository-snapshot-v1",
+    "artifact_digest": "90b53b8ea9da1e2a645c5a21d0edb1d4acdd372899379fcf1559495f02c018f2"
+  },
+  "repository_files": 193,
+  "repository_bytes": 1534270,
+  "selected_files": 22,
+  "selected_bundle_bytes": 237538,
+  "selection_and_probe_seconds": 0.04340635799962911,
+  "whole_repository": false,
+  "untouched_file_identities_preserved": true,
+  "derived_probe_snapshot": {
+    "schema_version": 1,
+    "kind": "repository-snapshot-v1",
+    "artifact_digest": "c026bff3f4684a514530918bd885e20b83886b11d7e26a8db14acba68bc5cfec"
+  },
+  "execution_digest": "510f89e5f3fa1c6dd0bece8602ddf8d28f34f6866314ab0aa8f5376043f779e8",
+  "broker_passed": false,
+  "initial_broker_failure": "7 capture tests failed because pinned worker image has no Git; 14 passed. All 21 repository tests passed on host.",
+  "consumer_trial": {
+    "command": [
+      "python",
+      "-m",
+      "pytest",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "tests/test_repository.py",
+      "-k",
+      "not capture and not repository_larger and not cli_capture"
+    ],
+    "exit_code": 0,
+    "image_id": "sha256:695d05883b15326aea01e9266067ff58c41f3eaa4f647cfc9424b403dbe9548d",
+    "output": "..............                                                           [100%]\n14 passed, 7 deselected in 0.08s\n",
+    "whole_repository_validation": false
+  },
+  "host_suite": "321 passed, 8 skipped, 25 subtests passed",
+  "raw_evidence": ".gflo/evidence/repository-access-v1",
+  "limitations": [
+    "No model work exercised in this infrastructure trial",
+    "Existing planner and run records still embed SourceBundle",
+    "No symbol/graph index or larger execution workspace",
+    "Capture requires quiescent Git worktree; edit verification reads all original files"
+  ]
+}

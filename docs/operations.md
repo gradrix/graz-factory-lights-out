@@ -128,3 +128,41 @@ no implicit restart or budget reset. Raw calls and observations remain in the ru
 artifact store. Interrupted runs can have incomplete summary files; immutable
 artifacts are the retained evidence. Transport/model errors halt explicitly.
 A `needs-review` result may contain unanswered questions and is always a draft.
+
+## Repository snapshots
+
+Capture source on the trusted host, which requires Git and a quiescent checkout.
+Keep the artifact store ignored or outside the captured repository:
+
+```sh
+gflo repository --store .gflo/repository-artifacts capture .
+gflo repository --store .gflo/repository-artifacts list SNAPSHOT_DIGEST --scope gflo
+gflo repository --store .gflo/repository-artifacts read SNAPSHOT_DIGEST gflo/cli.py --max-lines 80
+gflo repository --store .gflo/repository-artifacts search SNAPSHOT_DIGEST validate --scope gflo
+gflo repository --store .gflo/repository-artifacts select SNAPSHOT_DIGEST gflo/cli.py --purpose context
+```
+
+Use `artifact_digest` from capture as `SNAPSHOT_DIGEST`. Commands return JSON without
+creating a work ledger. Search returns one hit per matching line (first occurrence),
+with source/file identities and explicit completeness and budget reasons. Listing
+supports `--after`; reads preserve complete lines within byte/line budgets. No scope
+means all snapshot paths for this trusted API. Worker access is not enabled implicitly.
+
+Context selection reports omitted requested files. `--purpose execution` refuses
+any omitted requested file; an explicit subset still does not validate the whole
+repository. Both selections retain existing bundle limits. Capture rejects unsupported
+files rather than silently dropping them; see [architecture](architecture.md#repository-scale-source-access).
+
+To propose edits, create a JSON mapping from path to
+`{"expected_digest": "ORIGINAL_FILE_DIGEST", "content": "replacement text"}`.
+Use `null` as expected digest only for a new file. Then run:
+
+```sh
+gflo repository --store .gflo/repository-artifacts apply SNAPSHOT_DIGEST edits.json --current SNAPSHOT_DIGEST --writable gflo/cli.py
+```
+
+The caller supplies the trusted current identity; this command cannot establish
+checkout freshness for them. It publishes a derived snapshot in the same store,
+preserves omitted files and executable metadata, and changes no checkout or acceptance.
+Deletion and cross-store export are not implemented. Raw artifacts in `.gflo/` must
+be transferred separately to reuse snapshots on another machine.

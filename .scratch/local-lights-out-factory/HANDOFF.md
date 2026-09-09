@@ -1,6 +1,25 @@
-# GFLO handoff — planning drafts and simpler setup
+# GFLO handoff — repository access foundation
 
-## Current checkpoint — 2026-09-09
+## Current checkpoint — 2026-09-10
+
+Repository access first slice complete: `gflo/repository.py`, `repository_cli.py`,
+and 21 tests. CLI captures immutable Git-visible dirty source, reads/searches/selects
+within scope and budgets, and applies digest-bound edits preserving omitted files.
+Legacy bundle identities remain unchanged. See [results](repository-access-results.json).
+Actual GFLO capture: 193 files / 1,534,270 bytes; execution subset: 22 files /
+237,538 serialized bytes. Untouched identities preserved. Host: 321 tests passed,
+25 subtests, eight optional skips; Docker consumer subset: 14 passed. Initial Docker
+capture tests failed because its pinned image lacks Git; retain that evidence.
+No LLM was exercised by this source-infrastructure trial.
+
+Next actionable slice: migrate reviewed-plan preparation to snapshot references and
+explicit context/execution selections, with independently trusted gates and current
+base checks. Existing `FeatureRequest`, `RunPlan`, and candidate construction still
+use bundles. Do not enlarge broker limits or claim full-repository validation from
+selected inputs. Symbol/dependency indexing remains future work. Capture requires a
+quiescent worktree; edits verify all original bytes; no cross-store export or GC.
+
+## Previous checkpoint — 2026-09-09
 
 Owner authorized merging and pushing all completed work. History filter `091654a`
 was merged into main at `0d30d48` and pushed. No further merge/push permission is
@@ -37,9 +56,9 @@ scores and findings remain unchanged. Huge-system capability remains unqualified
 
 - Owner requires a migration path to large repositories. [ADR 0001](../../docs/adr/0001-repository-snapshots-and-bounded-task-inputs.md)
   and [issue 32](issues/32-separate-repository-access-from-task-bundles.md) define
-  repository snapshots, bounded context, and separate execution inputs. Introduce
-  source access with a real snapshot adapter before generalizing plan materialization;
-  preserve old digests. No index/graph capability is implemented by this decision.
+  repository snapshots, bounded context, and separate execution inputs. The first
+  source-access slice is complete. Wire plan materialization through it next; preserve
+  old digests. No index/graph capability is implemented.
 
 - [Issue 30](issues/30-diagnose-memory-qualification-halts.md): reproduce intermittent
   exit-137/no-OOM-flag resource checks without weakening enforcement.
