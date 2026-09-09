@@ -42,6 +42,12 @@ def main() -> int:
     history = commands.add_parser("history", help="Review retained candidate diffs and outcomes")
     history.add_argument("atom_id")
     history.add_argument("--format", choices=("text", "json"), default="text")
+    history.add_argument(
+        "--attempt",
+        type=int,
+        default=None,
+        help="Display only the attempt with the given positive one-based ordinal",
+    )
     resume = commands.add_parser("resume", help="Resume a prepared run, or reconcile leases only")
     resume.add_argument("atom_id", nargs="?")
     run = commands.add_parser("run", help="Execute a previously submitted prepared run")
@@ -91,6 +97,19 @@ def main() -> int:
                 output = cost_report(ledger, args.atom_id)
             elif args.command == "history":
                 output = change_history(ledger, args.atom_id)
+                if args.attempt is not None:
+                    if args.attempt < 1:
+                        raise ValueError(
+                            f"--attempt must be a positive integer, got {args.attempt}"
+                        )
+                    filtered = [
+                        a for a in output["attempts"] if a["ordinal"] == args.attempt
+                    ]
+                    if not filtered:
+                        raise ValueError(
+                            f"No attempt with ordinal {args.attempt} found"
+                        )
+                    output = {**output, "attempts": filtered}
                 if args.format == "text":
                     print(render_history(output), end="")
                     return 0
