@@ -11,7 +11,7 @@ All commands operate on a local ledger and its associated artifact store. Run
 | `resume ATOM` | Reconcile and continue a prepared run. |
 | `resume` | Reconcile expired leases only; dispatch no workers. |
 | `status ATOM` | Inspect attempts, receipts, events, and acceptance findings. |
-| `history ATOM` | Review retained candidate diffs and outcomes; supports `--format json`. |
+| `history ATOM` | Review retained candidate diffs and outcomes; supports `--format json` and `--attempt N` for a positive attempt ordinal. |
 | `report ATOM` | Sum recorded model time and tokens across attempts, including failures. |
 | `audit-artifacts` | Report missing, corrupt, unreferenced, and staged bytes; delete nothing. |
 | `integrate PLAN --current-state STATE` | Validate a prepared combination of accepted changes. |
@@ -95,3 +95,8 @@ JSON stdout, up to eight `error` fields are surfaced before truncated logs, with
 JSON paths to locate them in the workflow. These fields can include deliberate
 invalid-request cases; their presence alone does not identify a gate mismatch.
 Expected outputs remain private, and complete raw output remains in artifacts.
+
+To inspect only the second attempt, use `gflo --db PATH history ATOM --attempt 2`.
+Add `--format json` for structured output. The filter preserves task-level status,
+accepted candidate identity, and acceptance warnings. Unknown ordinals fail;
+all retained history integrity checks still run, including unselected attempts.
