@@ -15,13 +15,18 @@ instructions and bounded observed-error feedback preceded the successful campaig
 this combined trial does not isolate their individual contribution. The original
 120-run campaign score and its false-acceptance findings remain unchanged.
 
-## Next: choose a representative repository
+## Current: supervised GFLO self-trial
 
-Choose an existing Python repository and a concrete multi-module feature or API
-migration with owner-defined acceptance criteria. Start with a bounded slice that
-fits the current standard-library broker and 100-file/256-KiB source-bundle limit.
-A dependency-heavy or larger target first requires explicit dependency provisioning
-and source-selection work; do not silently raise those limits.
+A bounded history-filter feature was trialled on GFLO itself. An explicit provider
+result contract led to three accepted runs; every candidate passed 279 tests and
+25 subtests in bounded batches. The selected change is isolated on local branch
+`trial/history-attempt-filter`, awaiting human review before merge. The main CLI
+is unchanged. This is one feature repeated, not a broad repository benchmark.
+
+The trusted dependency-image recipe is documented in [infra/worker](../infra/worker/README.md).
+Workers remain offline and restricted. Full repository tests required bounded
+batches under the existing 256-KiB limit. Next engineering investigation is an
+intermittent memory-qualification halt; retain strict controls while diagnosing it.
 
 Prepare the task graph and provider contracts, independent per-task gates, and
 whole-feature checks before model work. Split workers where ownership and validation

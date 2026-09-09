@@ -108,3 +108,8 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
 - [Issue 28](issues/28-qualify-stateful-inventory-build.md) resolved: fresh stateful
   campaign passed 3/3 builds, 30 tasks in 32 attempts; retained failure repaired
   3/3. Earlier failures unchanged. Next decision: real repository and feature.
+
+- [Issue 29](issues/29-trial-history-attempt-filter.md): supervised history filter
+  trial passed 3/3, reviewed candidate `091654a` ready for human merge review.
+- [Issue 30](issues/30-diagnose-memory-qualification-halts.md): diagnose repeated
+  memory-probe OOM-flag halts without weakening resource enforcement.

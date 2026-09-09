@@ -1,0 +1,780 @@
+{
+  "initial_failed_trial": {
+    "manifest": {
+      "source_digest": "9650ca730f632063714ee72e3e69d83bef73c373ea376196160ee75e8834bb7a",
+      "gate_digest": "470c52b735b10729fd1f13a01b68c1bd6bb2426a9d0b44b7b494f199faec2d63",
+      "objective": "Add optional --attempt N to gflo history ATOM, where N is a positive one-based attempt ordinal. With no option, preserve text and JSON output exactly. With the option, display only that attempt but preserve all task-level metadata and acceptance warnings in both formats. Reject non-positive, noninteger, or absent ordinals with a nonzero exit and explanatory stderr. Always call existing change_history before filtering so all integrity checks still run, including unselected evidence. Filter the attempts list for presentation; do not change history storage or other commands. Only gflo/cli.py is writable. Return its complete replacement, preserving unrelated code.",
+      "image": "sha256:695d05883b15326aea01e9266067ff58c41f3eaa4f647cfc9424b403dbe9548d",
+      "repetitions": 3,
+      "max_attempts": 2,
+      "max_turns_per_attempt": 3,
+      "git_base": "3cdd83ea696f1fb3a435c8407ca2a3d271b70cee",
+      "runtime_hashes": {
+        "gflo/controller.py": "c7755832365bb89f033308ea09bb73612134c4f29410118bc51f83522408b83e",
+        "gflo/gates.py": "91f54d9055a146e407a3af33215a8bfb1d38431ba8925eb291a202a950aa6d34",
+        "gflo/model.py": "c327754181cd5aec30a69c13a6b8b8f1f956af81c5dddcc3426e548045237fce",
+        "gflo/reporting.py": "2dbf193fb4541af38b64fc79e6267bf6f01f6a0b8d5a005380ec60466f5ddb02",
+        "gflo/ledger.py": "ec87958b1cef36c954f85f46367308ca71ef57963f57f7f5c7eecd7799e42ca0",
+        "gflo/integration.py": "0bbc072d820fc236dbf5be1133727bad9621759d8de5f2fbd2abcbff1b66df25",
+        "gflo/history.py": "bbaeb0ba333b2aed164a9a99db42ff025c6986e79cf3f59fc0ab79879ca74969",
+        "gflo/heldout.py": "b91215592b5e994d27ea71a4edabb8980a6e7f50e2f6b5395c2818690b497993",
+        "gflo/feedback.py": "12d780bfe9e2603276cf6419149e783b529f4455450af531e55155c1443a1d3b",
+        "gflo/worker.py": "46433341669bbb1d40e199f82b34b39ca201c012c030980be127d2f761fc228f",
+        "gflo/records.py": "f2da9331ae96622448b50676875b08033f446245dd3cc4999fd4f01f73ccd55a",
+        "gflo/storage.py": "00550ea704d06e73632a09dc5b49704ec2aee7854b49f9c2f1bc8b3ef9c80cfb",
+        "gflo/__main__.py": "2483ac5d313aa93167d08ef411ec64668e111afa3cbd4af1e09d29cf0cf6f318",
+        "gflo/__init__.py": "4edfc8597f32029cb8a3d5f1703f53d33438b42b36d9459b683200519eb9871f",
+        "gflo/cli.py": "68e7257529085641c88204cf46b2e77299428b73ee0e483b41be2f888c4ed5b5",
+        "gflo/broker.py": "5110c955d7f2a3f3b58e25fbee5a09e159af20a2fb83500e07099efe775e8a57",
+        "gflo/pilot.py": "c0bbc5655a14b79237b209e05c962886917727718994ca1b84bbe7767a79b2ce",
+        "gflo/artifacts.py": "892f9beb769007637c212058b25470ef79151b29def27b0d69360a03743b217c"
+      }
+    },
+    "summary": {
+      "qualified": false,
+      "runs": 1,
+      "attempts": 2,
+      "source_drift": false
+    },
+    "runs": [
+      {
+        "atom_id": "history-filter-r1",
+        "status": "quarantined",
+        "candidate_digest": "fa43a0617efa8d2dac93969c820e2463f4838fe4fae0a9c2291a264979d93b4c",
+        "cost": {
+          "schema_version": 1,
+          "atom_id": "history-filter-r1",
+          "status": "quarantined",
+          "totals": {
+            "attempts": 2,
+            "model_observations": 2,
+            "validated_prompt_tokens": 5784,
+            "validated_completion_tokens": 4092,
+            "observed_model_seconds": 67.69990906000021,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          },
+          "retries": {
+            "attempts": 1,
+            "model_observations": 1,
+            "validated_prompt_tokens": 3260,
+            "validated_completion_tokens": 2450,
+            "observed_model_seconds": 40.409274146000826,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          },
+          "attempts": [
+            {
+              "attempt_id": "c4ea7e497ed94157aa54a2a3bca26ee7",
+              "ordinal": 1,
+              "failures": [
+                {
+                  "reason": "Validation did not pass.\nGate: behavior\nOutcome: fail\nLast executed case: 1\nCommand: [\"python\", \"-c\", \"import subprocess,sys; p=subprocess.run([sys.executable,'-m','pytest','-q','-p','no:cacheprovider','tests/test_history_filter.py','tests/test_controller.py'],capture_output=True,text=True); print('checks passed' if p.returncode==0 else p.stdout+p.stderr); sys.exit(p.returncode)\"]\nInput (stdin):\n\nProcess outcome: completed\nExit code: 1\nObserved stdout:\nFFFF..F..................................................                [100%]\n=================================== FAILURES ===================================\n________________ test_selected_json_preserves_task_metadata[1] _________________\n\nhistory_db = (PosixPath('/tmp/pytest-of-nobody/pytest-0/test_selected_json_preserves_t0/ledger.db'), 'example-provider-edit')\nmonkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x727e5a9e2f10>\ncapsys = <_pytest.capture.CaptureFixture object at 0x727e59415850>, ordinal = 1\n\n    @pytest.mark.parametrize(\"ordinal\", [1, 2])\n    def test_selected_json_preserves_task_metadata(history_db, monkeypatch, capsys, ordinal):\n        path, identity = history_db\n        with WorkLedger(path) as ledger:\n            before = ledger.status(identity)\n            expected = change_history(ledger, identity)\n        expected[\"attempts\"] = [a for a in expected[\"attempts\"] if a[\"ordinal\"] == ordinal]\n        code, out, err = invoke(\n            monkeypatch, capsys, path, identity, \"--attempt\", str(ordinal), \"--format\", \"json\"\n        )\n        assert code == 0 and not err\n>       assert json.loads(out) == expected\nE       AssertionError: assert {'schema_vers...rements', ...} == {'schema_vers...rements', ...}\nE         \nE         Omitting 11 identical items, use -vv to show\nE         Differing items:\nE         {'attempts': []} != {'attempts': [{'attempt_id': 'e8931193164f4c6a8c29089b06109a88', 'ordinal': 1, 'controller_owner': 'durable-controller-v1', 'outcome': 'failed', ...}]}\nE         Us\n[trunc",
+                  "state": "retry-ready"
+                }
+              ],
+              "observations": [
+                {
+                  "event_id": 3,
+                  "evidence_digest": "9c04a871a016c2060f5073b43a3bbcab963edbfe79238418cc1eb2f758155841",
+                  "model_seconds": 27.290634913999384,
+                  "error": null,
+                  "prompt_tokens": 2524,
+                  "completion_tokens": 1642
+                }
+              ]
+            },
+            {
+              "attempt_id": "86a02e7639c04a728bbbe7d11e7d0052",
+              "ordinal": 2,
+              "failures": [
+                {
+                  "reason": "Validation did not pass.\nGate: behavior\nOutcome: fail\nLast executed case: 1\nCommand: [\"python\", \"-c\", \"import subprocess,sys; p=subprocess.run([sys.executable,'-m','pytest','-q','-p','no:cacheprovider','tests/test_history_filter.py','tests/test_controller.py'],capture_output=True,text=True); print('checks passed' if p.returncode==0 else p.stdout+p.stderr); sys.exit(p.returncode)\"]\nInput (stdin):\n\nProcess outcome: completed\nExit code: 1\nObserved stdout:\n......F..................................................                [100%]\n=================================== FAILURES ===================================\n___________________ test_invalid_or_missing_ordinal_fails[3] ___________________\n\nhistory_db = (PosixPath('/tmp/pytest-of-nobody/pytest-0/test_invalid_or_missing_ordina2/ledger.db'), 'example-provider-edit')\nmonkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x7e6928c1ccd0>\ncapsys = <_pytest.capture.CaptureFixture object at 0x7e6928c1d150>\nordinal = '3'\n\n    @pytest.mark.parametrize(\"ordinal\", [\"0\", \"-1\", \"3\", \"nonsense\", \"1.0\"])\n    def test_invalid_or_missing_ordinal_fails(history_db, monkeypatch, capsys, ordinal):\n        code, out, err = invoke(monkeypatch, capsys, *history_db, \"--attempt\", ordinal)\n>       assert code != 0 and err\nE       assert (0 != 0)\n\ntests/test_history_filter.py:86: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_history_filter.py::test_invalid_or_missing_ordinal_fails[3]\n1 failed, 56 passed in 0.77s\n\n\nObserved stderr:\n",
+                  "state": "quarantined"
+                }
+              ],
+              "observations": [
+                {
+                  "event_id": 11,
+                  "evidence_digest": "c58e8ea827d17a279e0ee88551b4e0c7382fa533f3ab911b76ac07ccb220ff7b",
+                  "model_seconds": 40.409274146000826,
+                  "error": null,
+                  "prompt_tokens": 3260,
+                  "completion_tokens": 2450
+                }
+              ]
+            }
+          ],
+          "measurement_scope": "Recorded model observations only; validated token sums are lower bounds when usage is missing. Model duration includes client work and waiting, not broker time. Unrecorded work lost during process death, energy and replanning are not measured."
+        }
+      }
+    ]
+  },
+  "explicit_contract_trial": {
+    "manifest": {
+      "source_digest": "9650ca730f632063714ee72e3e69d83bef73c373ea376196160ee75e8834bb7a",
+      "gate_digest": "470c52b735b10729fd1f13a01b68c1bd6bb2426a9d0b44b7b494f199faec2d63",
+      "objective": "Add optional --attempt N to gflo history ATOM, where N is a positive one-based attempt ordinal. With no option, preserve text and JSON output exactly. With the option, display only that attempt but preserve all task-level metadata and acceptance warnings in both formats. Reject non-positive, noninteger, or absent ordinals with a nonzero exit and explanatory stderr. Always call existing change_history before filtering so all integrity checks still run, including unselected evidence. Filter the attempts list for presentation; do not change history storage or other commands. Only gflo/cli.py is writable. Return its complete replacement, preserving unrelated code. Provider contract: change_history returns a dictionary whose attempts list contains dictionaries keyed by ordinal (integer), attempt_id, outcome, failures, candidates, and gate_receipts. Match ordinal, not attempt_id or list position. If N matches no ordinal (for example 3 when only ordinals 1 and 2 exist), raise ValueError with an explanatory message; the existing CLI exception handler emits stderr and a nonzero exit. Never return success with an empty filtered list. No --attempt option means display all attempts as before.",
+      "image": "sha256:695d05883b15326aea01e9266067ff58c41f3eaa4f647cfc9424b403dbe9548d",
+      "repetitions": 3,
+      "max_attempts": 2,
+      "max_turns_per_attempt": 3,
+      "git_base": "3cdd83ea696f1fb3a435c8407ca2a3d271b70cee",
+      "runtime_hashes": {
+        "gflo/controller.py": "c7755832365bb89f033308ea09bb73612134c4f29410118bc51f83522408b83e",
+        "gflo/gates.py": "91f54d9055a146e407a3af33215a8bfb1d38431ba8925eb291a202a950aa6d34",
+        "gflo/model.py": "c327754181cd5aec30a69c13a6b8b8f1f956af81c5dddcc3426e548045237fce",
+        "gflo/reporting.py": "2dbf193fb4541af38b64fc79e6267bf6f01f6a0b8d5a005380ec60466f5ddb02",
+        "gflo/ledger.py": "ec87958b1cef36c954f85f46367308ca71ef57963f57f7f5c7eecd7799e42ca0",
+        "gflo/integration.py": "0bbc072d820fc236dbf5be1133727bad9621759d8de5f2fbd2abcbff1b66df25",
+        "gflo/history.py": "bbaeb0ba333b2aed164a9a99db42ff025c6986e79cf3f59fc0ab79879ca74969",
+        "gflo/heldout.py": "b91215592b5e994d27ea71a4edabb8980a6e7f50e2f6b5395c2818690b497993",
+        "gflo/feedback.py": "12d780bfe9e2603276cf6419149e783b529f4455450af531e55155c1443a1d3b",
+        "gflo/worker.py": "46433341669bbb1d40e199f82b34b39ca201c012c030980be127d2f761fc228f",
+        "gflo/records.py": "f2da9331ae96622448b50676875b08033f446245dd3cc4999fd4f01f73ccd55a",
+        "gflo/storage.py": "00550ea704d06e73632a09dc5b49704ec2aee7854b49f9c2f1bc8b3ef9c80cfb",
+        "gflo/__main__.py": "2483ac5d313aa93167d08ef411ec64668e111afa3cbd4af1e09d29cf0cf6f318",
+        "gflo/__init__.py": "4edfc8597f32029cb8a3d5f1703f53d33438b42b36d9459b683200519eb9871f",
+        "gflo/cli.py": "68e7257529085641c88204cf46b2e77299428b73ee0e483b41be2f888c4ed5b5",
+        "gflo/broker.py": "5110c955d7f2a3f3b58e25fbee5a09e159af20a2fb83500e07099efe775e8a57",
+        "gflo/pilot.py": "c0bbc5655a14b79237b209e05c962886917727718994ca1b84bbe7767a79b2ce",
+        "gflo/artifacts.py": "892f9beb769007637c212058b25470ef79151b29def27b0d69360a03743b217c"
+      }
+    },
+    "summary": {
+      "qualified": true,
+      "runs": 3,
+      "attempts": 5,
+      "source_drift": false
+    },
+    "runs": [
+      {
+        "atom_id": "history-filter-r1",
+        "status": "accepted",
+        "candidate_digest": "1b304c2249023f21bbd9814e9fd30d115209a0fee03311bc3b20dfad82ace548",
+        "cost": {
+          "schema_version": 1,
+          "atom_id": "history-filter-r1",
+          "status": "accepted",
+          "totals": {
+            "attempts": 2,
+            "model_observations": 3,
+            "validated_prompt_tokens": 9738,
+            "validated_completion_tokens": 3115,
+            "observed_model_seconds": 52.368153389001236,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          },
+          "retries": {
+            "attempts": 1,
+            "model_observations": 1,
+            "validated_prompt_tokens": 2792,
+            "validated_completion_tokens": 3077,
+            "observed_model_seconds": 50.618850316001044,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          },
+          "attempts": [
+            {
+              "attempt_id": "71c3af48173245d1a27690bb9ae73e72",
+              "ordinal": 1,
+              "failures": [
+                {
+                  "reason": "Invalid worker result: Worker repeated a read for a file already in its view",
+                  "state": "retry-ready"
+                }
+              ],
+              "observations": [
+                {
+                  "event_id": 3,
+                  "evidence_digest": "d5598b7aea980f500e4c5210487fbeb9f7bd17f47eb851cee16949cbda6d41a0",
+                  "model_seconds": 0.8298059459993965,
+                  "error": null,
+                  "prompt_tokens": 2624,
+                  "completion_tokens": 19
+                },
+                {
+                  "event_id": 4,
+                  "evidence_digest": "ddd8eee5fb57a77a89e5ab6fd026676a1c5ecdf3aae3cc346157f33b25360023",
+                  "model_seconds": 0.9194971270007954,
+                  "error": null,
+                  "prompt_tokens": 4322,
+                  "completion_tokens": 19
+                }
+              ]
+            },
+            {
+              "attempt_id": "d98574c6062d4696a00743a402eba24d",
+              "ordinal": 2,
+              "failures": [],
+              "observations": [
+                {
+                  "event_id": 9,
+                  "evidence_digest": "b1b85dbbe4f6a34fa89f931f28e23993254e70116db839bf8024207770d532f9",
+                  "model_seconds": 50.618850316001044,
+                  "error": null,
+                  "prompt_tokens": 2792,
+                  "completion_tokens": 3077
+                }
+              ]
+            }
+          ],
+          "measurement_scope": "Recorded model observations only; validated token sums are lower bounds when usage is missing. Model duration includes client work and waiting, not broker time. Unrecorded work lost during process death, energy and replanning are not measured."
+        }
+      },
+      {
+        "atom_id": "history-filter-r2",
+        "status": "accepted",
+        "candidate_digest": "b3e5e06478939880c519a0708a7689b1f0cbec57ff28e062d551a4c84060f1a2",
+        "cost": {
+          "schema_version": 1,
+          "atom_id": "history-filter-r2",
+          "status": "accepted",
+          "totals": {
+            "attempts": 1,
+            "model_observations": 1,
+            "validated_prompt_tokens": 2625,
+            "validated_completion_tokens": 1594,
+            "observed_model_seconds": 26.444680534001236,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          },
+          "retries": {
+            "attempts": 0,
+            "model_observations": 0,
+            "validated_prompt_tokens": 0,
+            "validated_completion_tokens": 0,
+            "observed_model_seconds": 0,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          },
+          "attempts": [
+            {
+              "attempt_id": "680da93362da46b8a66a3774be49b6f6",
+              "ordinal": 1,
+              "failures": [],
+              "observations": [
+                {
+                  "event_id": 16,
+                  "evidence_digest": "215685fd6505d8ef604469083b524232780f6da5f35759b14913689acc19fea6",
+                  "model_seconds": 26.444680534001236,
+                  "error": null,
+                  "prompt_tokens": 2625,
+                  "completion_tokens": 1594
+                }
+              ]
+            }
+          ],
+          "measurement_scope": "Recorded model observations only; validated token sums are lower bounds when usage is missing. Model duration includes client work and waiting, not broker time. Unrecorded work lost during process death, energy and replanning are not measured."
+        }
+      },
+      {
+        "atom_id": "history-filter-r3",
+        "status": "accepted",
+        "candidate_digest": "5471d7a7116b7dbbfc9cb37eec2158cf2a6c2318e7b7d0c4590cb7f425f7ba97",
+        "cost": {
+          "schema_version": 1,
+          "atom_id": "history-filter-r3",
+          "status": "accepted",
+          "totals": {
+            "attempts": 2,
+            "model_observations": 3,
+            "validated_prompt_tokens": 9740,
+            "validated_completion_tokens": 3059,
+            "observed_model_seconds": 51.22466656899633,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          },
+          "retries": {
+            "attempts": 1,
+            "model_observations": 1,
+            "validated_prompt_tokens": 2790,
+            "validated_completion_tokens": 3021,
+            "observed_model_seconds": 49.708552341999166,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          },
+          "attempts": [
+            {
+              "attempt_id": "ba0d372dd7994000bdd656698d060477",
+              "ordinal": 1,
+              "failures": [
+                {
+                  "reason": "Invalid worker result: Worker repeated a read for a file already in its view",
+                  "state": "retry-ready"
+                }
+              ],
+              "observations": [
+                {
+                  "event_id": 23,
+                  "evidence_digest": "b7c84263417da7a548c14113d224046cf1863b316f2ab01ea72a7cb0784fe4a9",
+                  "model_seconds": 0.6759046359984495,
+                  "error": null,
+                  "prompt_tokens": 2626,
+                  "completion_tokens": 19
+                },
+                {
+                  "event_id": 24,
+                  "evidence_digest": "54b1b13a8ce119601296f40578de064e8b9f7bdb890eae2ec7bb9d61fa31cdbb",
+                  "model_seconds": 0.8402095909987111,
+                  "error": null,
+                  "prompt_tokens": 4324,
+                  "completion_tokens": 19
+                }
+              ]
+            },
+            {
+              "attempt_id": "899572ba43c44f23b43c6f751425bfc2",
+              "ordinal": 2,
+              "failures": [],
+              "observations": [
+                {
+                  "event_id": 29,
+                  "evidence_digest": "6ff38c234306f697029a07800d7e5effbb9168e996c9a455de828c1147b680f1",
+                  "model_seconds": 49.708552341999166,
+                  "error": null,
+                  "prompt_tokens": 2790,
+                  "completion_tokens": 3021
+                }
+              ]
+            }
+          ],
+          "measurement_scope": "Recorded model observations only; validated token sums are lower bounds when usage is missing. Model duration includes client work and waiting, not broker time. Unrecorded work lost during process death, energy and replanning are not measured."
+        }
+      }
+    ]
+  },
+  "regression_reviews": [
+    {
+      "atom_id": "history-filter-r1",
+      "candidate_digest": "1b304c2249023f21bbd9814e9fd30d115209a0fee03311bc3b20dfad82ace548",
+      "test": "tests/test_reporting.py",
+      "passed": true,
+      "execution_digest": "458e9fbd6543fd2ed2c36ac309132bc177458466683f8f62df3ec34d07ca7529",
+      "stdout": "...                                                                      [100%]\n3 passed in 0.07s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r1",
+      "candidate_digest": "1b304c2249023f21bbd9814e9fd30d115209a0fee03311bc3b20dfad82ace548",
+      "test": "tests/test_serving.py",
+      "passed": true,
+      "execution_digest": "beed55d20e18a195648211419b70eb520db94b1065ec2b98b5872131e5d7d2bb",
+      "stdout": ".............................                       [100%]\n29 passed, 21 subtests passed in 2.57s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r1",
+      "candidate_digest": "1b304c2249023f21bbd9814e9fd30d115209a0fee03311bc3b20dfad82ace548",
+      "test": "tests/test_integration.py",
+      "passed": true,
+      "execution_digest": "471fc94d1652477440b8deb4b7586b6f34e7522b9a1060e05c016f65b151e8c3",
+      "stdout": "..........                                                               [100%]\n10 passed in 0.15s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r1",
+      "candidate_digest": "1b304c2249023f21bbd9814e9fd30d115209a0fee03311bc3b20dfad82ace548",
+      "test": "tests/test_feedback.py",
+      "passed": true,
+      "execution_digest": "fdac02f199f10d8dea46d2cee5b434137a26a5dcc37997d1f423c90b9bafdd0c",
+      "stdout": "..............                                                           [100%]\n14 passed in 0.03s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r1",
+      "candidate_digest": "1b304c2249023f21bbd9814e9fd30d115209a0fee03311bc3b20dfad82ace548",
+      "test": "tests/test_ledger.py",
+      "passed": true,
+      "execution_digest": "df2267663998660e5ef0cd9b0b374b8dc22f20151a88dca307b9521ff767ab2d",
+      "stdout": ".............................................                            [100%]\n45 passed in 2.05s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r1",
+      "candidate_digest": "1b304c2249023f21bbd9814e9fd30d115209a0fee03311bc3b20dfad82ace548",
+      "test": "tests/test_broker.py",
+      "passed": true,
+      "execution_digest": "ee9e0c669327032d8c73398982d31abef67f1946696bd60cbc5bf1cba6459156",
+      "stdout": ".................sssss.sss.............                                  [100%]\n31 passed, 8 skipped in 0.14s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r1",
+      "candidate_digest": "1b304c2249023f21bbd9814e9fd30d115209a0fee03311bc3b20dfad82ace548",
+      "test": "tests/test_controller.py",
+      "passed": true,
+      "execution_digest": "c6a86ba8f98956856980370738ad0deccaaf5c3a9ab5184374ee219d7e504d5b",
+      "stdout": "..............................................                           [100%]\n46 passed in 0.66s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r1",
+      "candidate_digest": "1b304c2249023f21bbd9814e9fd30d115209a0fee03311bc3b20dfad82ace548",
+      "test": "tests/test_benchmark_serving.py",
+      "passed": true,
+      "execution_digest": "23952a624a62de0492b98fc4b30ed3ede37cf5f36885da7a7870633674cf9e5b",
+      "stdout": "......                                                                   [100%]\n6 passed in 0.03s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r1",
+      "candidate_digest": "1b304c2249023f21bbd9814e9fd30d115209a0fee03311bc3b20dfad82ace548",
+      "test": "tests/test_artifacts.py",
+      "passed": true,
+      "execution_digest": "9f05b704eb2fc7fa6a6549a1cb322dc5d684b025b6d42236eb0e0b8c3c41fb09",
+      "stdout": "...........                                                              [100%]\n11 passed in 0.07s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r1",
+      "candidate_digest": "1b304c2249023f21bbd9814e9fd30d115209a0fee03311bc3b20dfad82ace548",
+      "test": "tests/test_storage.py",
+      "passed": true,
+      "execution_digest": "6d7a4c84234f26017d3b3c072be46978bfa04bfe9778405837d14e3d377f011d",
+      "stdout": ".........                                                                [100%]\n9 passed in 0.06s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r1",
+      "candidate_digest": "1b304c2249023f21bbd9814e9fd30d115209a0fee03311bc3b20dfad82ace548",
+      "test": "tests/test_findings.py",
+      "passed": true,
+      "execution_digest": "a271f160268742dfb9876cba26d516b84523a1f549e07cdbf8cfa2fbc601dcb9",
+      "stdout": "..........                                                               [100%]\n10 passed in 0.15s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r1",
+      "candidate_digest": "1b304c2249023f21bbd9814e9fd30d115209a0fee03311bc3b20dfad82ace548",
+      "test": "tests/test_worker.py",
+      "passed": true,
+      "execution_digest": "beff8f9012e7b906e30cc0ab051afd4515ec409cf9d60205bf76ba6b5f67a6c0",
+      "stdout": "................................................                         [100%]\n48 passed in 12.86s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r1",
+      "candidate_digest": "1b304c2249023f21bbd9814e9fd30d115209a0fee03311bc3b20dfad82ace548",
+      "test": "tests/test_target.py",
+      "passed": true,
+      "execution_digest": "a81da25d5162e91d3ac99d6280c371c09d64e856744a97cd9acbaa366fe0fabe",
+      "stdout": "....                                                                 [100%]\n4 passed, 4 subtests passed in 0.02s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r1",
+      "candidate_digest": "1b304c2249023f21bbd9814e9fd30d115209a0fee03311bc3b20dfad82ace548",
+      "test": "tests/test_history_filter.py",
+      "passed": true,
+      "execution_digest": "49535f142ea159891890512e8a8bed486bcda85fbc4366151335883b1cfda12d",
+      "stdout": "...........                                                              [100%]\n11 passed in 0.19s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r1",
+      "candidate_digest": "1b304c2249023f21bbd9814e9fd30d115209a0fee03311bc3b20dfad82ace548",
+      "test": "tests/test_history_filter_review.py",
+      "passed": true,
+      "execution_digest": "b06b10b443cd68ecd87814e9753e9463eae0efedccd32664c80ddee2eec91c6c",
+      "stdout": "..                                                                       [100%]\n2 passed in 0.12s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r2",
+      "candidate_digest": "b3e5e06478939880c519a0708a7689b1f0cbec57ff28e062d551a4c84060f1a2",
+      "test": "tests/test_reporting.py",
+      "passed": true,
+      "execution_digest": "e6bc47db4eaed445826a4ac7aaccf27a17a009f559d4536c3a58cdee75c64c76",
+      "stdout": "...                                                                      [100%]\n3 passed in 0.07s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r2",
+      "candidate_digest": "b3e5e06478939880c519a0708a7689b1f0cbec57ff28e062d551a4c84060f1a2",
+      "test": "tests/test_serving.py",
+      "passed": true,
+      "execution_digest": "316b5661e23d0e10bb1e12bacf7dde216fb81d91e152c6a5bd78dc846cc31466",
+      "stdout": ".............................                       [100%]\n29 passed, 21 subtests passed in 2.57s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r2",
+      "candidate_digest": "b3e5e06478939880c519a0708a7689b1f0cbec57ff28e062d551a4c84060f1a2",
+      "test": "tests/test_integration.py",
+      "passed": true,
+      "execution_digest": "6af806cd364fc92cf54bf5b92228fa8e9ff275c06bd4ef3f010c09c38ba2f616",
+      "stdout": "..........                                                               [100%]\n10 passed in 0.14s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r2",
+      "candidate_digest": "b3e5e06478939880c519a0708a7689b1f0cbec57ff28e062d551a4c84060f1a2",
+      "test": "tests/test_feedback.py",
+      "passed": true,
+      "execution_digest": "3f6ae7371183649ddd168c3aeb71fee8a41732fc4cebb65dc6dbbb3f04124b13",
+      "stdout": "..............                                                           [100%]\n14 passed in 0.03s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r2",
+      "candidate_digest": "b3e5e06478939880c519a0708a7689b1f0cbec57ff28e062d551a4c84060f1a2",
+      "test": "tests/test_ledger.py",
+      "passed": true,
+      "execution_digest": "e1b18f26472f546ddaa8fea16ab4e4995e97afe4690d351f209c97e4cb54eee8",
+      "stdout": ".............................................                            [100%]\n45 passed in 2.11s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r2",
+      "candidate_digest": "b3e5e06478939880c519a0708a7689b1f0cbec57ff28e062d551a4c84060f1a2",
+      "test": "tests/test_broker.py",
+      "passed": true,
+      "execution_digest": "b37b0057d10567b54ace1abd7462b7c2ab3c20402304d2a91bba38e7cbaa3232",
+      "stdout": ".................sssss.sss.............                                  [100%]\n31 passed, 8 skipped in 0.15s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r2",
+      "candidate_digest": "b3e5e06478939880c519a0708a7689b1f0cbec57ff28e062d551a4c84060f1a2",
+      "test": "tests/test_controller.py",
+      "passed": true,
+      "execution_digest": "36c5ac3cdb3c88b8ac53ed319861d3404d6c006ec3a4428fb037f44a45b974db",
+      "stdout": "..............................................                           [100%]\n46 passed in 0.67s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r2",
+      "candidate_digest": "b3e5e06478939880c519a0708a7689b1f0cbec57ff28e062d551a4c84060f1a2",
+      "test": "tests/test_benchmark_serving.py",
+      "passed": true,
+      "execution_digest": "19f07d8a2cf5819e038993835608d343a0aa8e64c0062294ad963c077467948f",
+      "stdout": "......                                                                   [100%]\n6 passed in 0.03s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r2",
+      "candidate_digest": "b3e5e06478939880c519a0708a7689b1f0cbec57ff28e062d551a4c84060f1a2",
+      "test": "tests/test_artifacts.py",
+      "passed": true,
+      "execution_digest": "11b54ef9ff08524da93b7766091698f3d07c6e8a128fb832fc1a1d6c88a369a2",
+      "stdout": "...........                                                              [100%]\n11 passed in 0.06s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r2",
+      "candidate_digest": "b3e5e06478939880c519a0708a7689b1f0cbec57ff28e062d551a4c84060f1a2",
+      "test": "tests/test_storage.py",
+      "passed": true,
+      "execution_digest": "588079fa741981c904b2f9cd8b9eebcb7606067bcbd50facf143db07d807322f",
+      "stdout": ".........                                                                [100%]\n9 passed in 0.06s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r2",
+      "candidate_digest": "b3e5e06478939880c519a0708a7689b1f0cbec57ff28e062d551a4c84060f1a2",
+      "test": "tests/test_findings.py",
+      "passed": true,
+      "execution_digest": "8cd459e16374c116bb701417d592bace1d5b5d4760a80a1d5122d3b829135906",
+      "stdout": "..........                                                               [100%]\n10 passed in 0.14s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r2",
+      "candidate_digest": "b3e5e06478939880c519a0708a7689b1f0cbec57ff28e062d551a4c84060f1a2",
+      "test": "tests/test_worker.py",
+      "passed": true,
+      "execution_digest": "ae4a1236b8e3f798a17a74e3595df4bbe3ec062f0fe66a151c5d2c80ce1ead7b",
+      "stdout": "................................................                         [100%]\n48 passed in 12.86s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r2",
+      "candidate_digest": "b3e5e06478939880c519a0708a7689b1f0cbec57ff28e062d551a4c84060f1a2",
+      "test": "tests/test_target.py",
+      "passed": true,
+      "execution_digest": "931092e332870b90d7bf418b589aa4f4249836d1fa0de20a2d789f55fe0dac4e",
+      "stdout": "....                                                                 [100%]\n4 passed, 4 subtests passed in 0.02s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r2",
+      "candidate_digest": "b3e5e06478939880c519a0708a7689b1f0cbec57ff28e062d551a4c84060f1a2",
+      "test": "tests/test_history_filter.py",
+      "passed": true,
+      "execution_digest": "1299faa547b2380520a6f58cc19d9ee9716b171d014ea6fbfbd6cff9e41f8296",
+      "stdout": "...........                                                              [100%]\n11 passed in 0.21s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r2",
+      "candidate_digest": "b3e5e06478939880c519a0708a7689b1f0cbec57ff28e062d551a4c84060f1a2",
+      "test": "tests/test_history_filter_review.py",
+      "passed": true,
+      "execution_digest": "c5f062e69d8397740724720fac40f6f601681f9c59de80bc596d915c26046c77",
+      "stdout": "..                                                                       [100%]\n2 passed in 0.12s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r3",
+      "candidate_digest": "5471d7a7116b7dbbfc9cb37eec2158cf2a6c2318e7b7d0c4590cb7f425f7ba97",
+      "test": "tests/test_reporting.py",
+      "passed": true,
+      "execution_digest": "497f7d51532645bceddcf09137c0e9afdeadeb3281293557de19d2f4832c02e0",
+      "stdout": "...                                                                      [100%]\n3 passed in 0.07s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r3",
+      "candidate_digest": "5471d7a7116b7dbbfc9cb37eec2158cf2a6c2318e7b7d0c4590cb7f425f7ba97",
+      "test": "tests/test_serving.py",
+      "passed": true,
+      "execution_digest": "1c5b1a2664de227ebb40a2216cf26896b5b190e50b07b6980ad0535783d1c43f",
+      "stdout": ".............................                       [100%]\n29 passed, 21 subtests passed in 2.57s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r3",
+      "candidate_digest": "5471d7a7116b7dbbfc9cb37eec2158cf2a6c2318e7b7d0c4590cb7f425f7ba97",
+      "test": "tests/test_integration.py",
+      "passed": true,
+      "execution_digest": "06a6e9848e695c1fd5e5727dc4b247a95c47d329b3143e90db08b5db30065120",
+      "stdout": "..........                                                               [100%]\n10 passed in 0.15s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r3",
+      "candidate_digest": "5471d7a7116b7dbbfc9cb37eec2158cf2a6c2318e7b7d0c4590cb7f425f7ba97",
+      "test": "tests/test_feedback.py",
+      "passed": true,
+      "execution_digest": "5dd48cb19efa25009b26bf7988a797c8b89d4e592d2cad8499a5a268e9682c52",
+      "stdout": "..............                                                           [100%]\n14 passed in 0.02s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r3",
+      "candidate_digest": "5471d7a7116b7dbbfc9cb37eec2158cf2a6c2318e7b7d0c4590cb7f425f7ba97",
+      "test": "tests/test_ledger.py",
+      "passed": true,
+      "execution_digest": "c74a3709ff183b088d4a7f0aae541483dc36f892787d34c0c1e111c2211377b5",
+      "stdout": ".............................................                            [100%]\n45 passed in 2.07s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r3",
+      "candidate_digest": "5471d7a7116b7dbbfc9cb37eec2158cf2a6c2318e7b7d0c4590cb7f425f7ba97",
+      "test": "tests/test_broker.py",
+      "passed": true,
+      "execution_digest": "992a6bf62fe24565eb69ea1b8349abfdd2210b9bb291e555ca4551434c838288",
+      "stdout": ".................sssss.sss.............                                  [100%]\n31 passed, 8 skipped in 0.15s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r3",
+      "candidate_digest": "5471d7a7116b7dbbfc9cb37eec2158cf2a6c2318e7b7d0c4590cb7f425f7ba97",
+      "test": "tests/test_controller.py",
+      "passed": true,
+      "execution_digest": "135819841fbf8f46abb0f194f114c9c41d76aeb1c9618f5aca54a79c01776662",
+      "stdout": "..............................................                           [100%]\n46 passed in 0.60s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r3",
+      "candidate_digest": "5471d7a7116b7dbbfc9cb37eec2158cf2a6c2318e7b7d0c4590cb7f425f7ba97",
+      "test": "tests/test_benchmark_serving.py",
+      "passed": true,
+      "execution_digest": "56440c2843b7e5231021e374974ed57b7fc2fc84117ff2ce7f1d25b67de8f629",
+      "stdout": "......                                                                   [100%]\n6 passed in 0.03s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r3",
+      "candidate_digest": "5471d7a7116b7dbbfc9cb37eec2158cf2a6c2318e7b7d0c4590cb7f425f7ba97",
+      "test": "tests/test_artifacts.py",
+      "passed": true,
+      "execution_digest": "084779bee07f2eee69836d124d6a1deab73ddf1ff409b145a8ce7f8f7fd6b487",
+      "stdout": "...........                                                              [100%]\n11 passed in 0.06s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r3",
+      "candidate_digest": "5471d7a7116b7dbbfc9cb37eec2158cf2a6c2318e7b7d0c4590cb7f425f7ba97",
+      "test": "tests/test_storage.py",
+      "passed": true,
+      "execution_digest": "4a26129a05cb05a19c5aec67e028d64aa50ce67e3a635bc0bcc4343d68d7384a",
+      "stdout": ".........                                                                [100%]\n9 passed in 0.06s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r3",
+      "candidate_digest": "5471d7a7116b7dbbfc9cb37eec2158cf2a6c2318e7b7d0c4590cb7f425f7ba97",
+      "test": "tests/test_findings.py",
+      "passed": true,
+      "execution_digest": "f001f7dcf75a14ba8e009c2b74bb9f7868cbb7d4db58d9b9043ae90c45821b16",
+      "stdout": "..........                                                               [100%]\n10 passed in 0.13s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r3",
+      "candidate_digest": "5471d7a7116b7dbbfc9cb37eec2158cf2a6c2318e7b7d0c4590cb7f425f7ba97",
+      "test": "tests/test_worker.py",
+      "passed": true,
+      "execution_digest": "f82f7ec28c6298824dee8f20dadcf3cfa185023e410368ce59a9766e1f969c28",
+      "stdout": "................................................                         [100%]\n48 passed in 12.87s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r3",
+      "candidate_digest": "5471d7a7116b7dbbfc9cb37eec2158cf2a6c2318e7b7d0c4590cb7f425f7ba97",
+      "test": "tests/test_target.py",
+      "passed": true,
+      "execution_digest": "bbc7af44577a81c64fca0bf5cf518c1b388397bb8e879a359d3b23770e1e0ea6",
+      "stdout": "....                                                                 [100%]\n4 passed, 4 subtests passed in 0.02s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r3",
+      "candidate_digest": "5471d7a7116b7dbbfc9cb37eec2158cf2a6c2318e7b7d0c4590cb7f425f7ba97",
+      "test": "tests/test_history_filter.py",
+      "passed": true,
+      "execution_digest": "c7f3100d338e2f11b83f04ae7e646d3bc1302a8df99dc90af78f92600e8346fd",
+      "stdout": "...........                                                              [100%]\n11 passed in 0.20s\n",
+      "stderr": ""
+    },
+    {
+      "atom_id": "history-filter-r3",
+      "candidate_digest": "5471d7a7116b7dbbfc9cb37eec2158cf2a6c2318e7b7d0c4590cb7f425f7ba97",
+      "test": "tests/test_history_filter_review.py",
+      "passed": true,
+      "execution_digest": "2e9c3ac02c9f4a654279d61fec3f40903008cdf8b8e7b8a3b64456bd4e31d070",
+      "stdout": "..                                                                       [100%]\n2 passed in 0.12s\n",
+      "stderr": ""
+    }
+  ],
+  "selected_commit": "091654a",
+  "branch": "trial/history-attempt-filter",
+  "baseline_commit": "3cdd83e",
+  "notes": [
+    "Three runs of one seen task, not three different features or large-system qualification",
+    "279 passed, 25 subtests, 8 optional Docker skips per candidate in bounded batches",
+    "Review v1 stopped on harness stderr field bug; v2 stopped on OOM qualification flag; v3 completed with identical controls",
+    "Selected candidate lint and mypy passed; control-plane implementation unchanged",
+    "No merge or push; raw evidence and image need separate transfer or recreation"
+  ]
+}
