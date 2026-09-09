@@ -74,3 +74,26 @@ accuracy. Integration produces an artifact, not an atomic Git or deployment upda
 
 For the domain vocabulary see [CONTEXT.md](../CONTEXT.md); for commands and recovery
 semantics see [Operations](operations.md).
+
+## Repository-scale source access
+
+[ADR 0001](adr/0001-repository-snapshots-and-bounded-task-inputs.md) separates future
+repository identity from bounded task inputs. Today, `FeatureRequest.source`,
+`RunPlan.source`, and candidate construction still use embedded `SourceBundle`
+objects. The planner's two-file reading window and AST hints are a small-source
+implementation, not a repository index.
+
+The planned repository access module owns snapshot reads, bounded search and
+context selection, and execution-input preparation. Search results carry snapshot
+and file identities, locations, provenance, and explicit coverage/omission information.
+Text search is the initial implementation; symbol and dependency queries can be
+added behind the same module without coupling scheduling to a graph database.
+The task dependency graph and the repository dependency graph remain distinct:
+one orders work, the other supplies evidence for impact analysis.
+
+Migration starts with versioned snapshot references and parity against existing
+bundles. Candidate edits must preserve files outside the selected inputs and bind
+to original content. Incremental indexing then updates derived data for changed
+files; semantic impact across dependents still needs validation. A million-line
+repository trial must measure context sufficiency, index freshness, resource cost,
+and whole-feature correctness—not merely whether a search returns results.

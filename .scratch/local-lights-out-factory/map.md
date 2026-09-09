@@ -118,3 +118,8 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
 - [Issue 31](issues/31-draft-bounded-feature-plans.md) resolved: bounded draft planner
   trial produced four reviewed tasks, not execution authority. Setup now has one
   CPU bootstrap command. Next: trusted materialization and resource-probe diagnosis.
+
+- Large repositories are an explicit architectural requirement. [ADR 0001](../../docs/adr/0001-repository-snapshots-and-bounded-task-inputs.md)
+  separates repository snapshots from task bundles; [issue 32](issues/32-separate-repository-access-from-task-bundles.md)
+  defines the first migration slice before generalized scheduling. Indexes remain
+  derived, revision-bound data; no graph technology selected or scale claim made.

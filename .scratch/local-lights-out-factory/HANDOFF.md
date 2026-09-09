@@ -35,6 +35,12 @@ scores and findings remain unchanged. Huge-system capability remains unqualified
 
 ## Continue
 
+- Owner requires a migration path to large repositories. [ADR 0001](../../docs/adr/0001-repository-snapshots-and-bounded-task-inputs.md)
+  and [issue 32](issues/32-separate-repository-access-from-task-bundles.md) define
+  repository snapshots, bounded context, and separate execution inputs. Introduce
+  source access with a real snapshot adapter before generalizing plan materialization;
+  preserve old digests. No index/graph capability is implemented by this decision.
+
 - [Issue 30](issues/30-diagnose-memory-qualification-halts.md): reproduce intermittent
   exit-137/no-OOM-flag resource checks without weakening enforcement.
 - Materialize reviewed plans into WorkAtoms with independently reviewed ProcessGates,

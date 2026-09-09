@@ -37,10 +37,26 @@ whole-feature checks before model work. Split workers where ownership and valida
 are independent; retain combined checks at shared interfaces. Measure complete
 feature success, retries, cost, and discovered false acceptances across repetitions.
 
-Remaining architectural work includes transitive invalidation across evolving bases,
-native graph scheduling and promotion, larger-source navigation, and supported
-third-party build dependencies. Prioritize these against the chosen repository.
-The reference workload does not establish huge-system reliability.
+## Large-repository migration requirement
+
+Large-repository support is an architectural requirement, not an assumed property
+of the current bundles. [ADR 0001](adr/0001-repository-snapshots-and-bounded-task-inputs.md)
+records the migration: immutable repository identity, bounded context selections,
+and separately prepared execution inputs. Introduce this source-access module
+before generalizing the plan-to-execution bridge; retain the existing bundle adapter
+and historical record identities.
+
+The sequence is snapshot-backed access and text search, revision-bound symbol
+lookup, then dependency/impact queries and incremental indexing. Graph storage is
+an implementation choice rather than a scheduler dependency. Changes must preserve
+unselected files and reject stale source/index bindings. See the concrete
+[implementation slice](../.scratch/local-lights-out-factory/issues/32-separate-repository-access-from-task-bundles.md).
+
+Qualify progressively on real repositories, measuring source-selection sufficiency,
+index freshness and resource use, model cost, and repeated whole-feature correctness.
+A large index alone does not establish large-build reliability. Transitive acceptance
+invalidation, native scheduling/promotion, and larger isolated build environments
+remain separate requirements. No million-line support is currently implemented.
 
 ## Potential public release
 

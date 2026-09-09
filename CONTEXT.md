@@ -33,3 +33,9 @@ Vocabulary for prepared, bounded software work and its evidence.
 **Upstream contract**: A pinned provider interface or behavior specification on which a consumer's work depends.
 
 **Quarantine**: The terminal state of work that exhausted its permitted attempts without acceptance.
+
+**Repository snapshot**: The immutable source state against which work is planned and changes are proposed, including the identities of files outside a worker's view.
+
+**Context selection**: The bounded source and supporting evidence shown to a worker for a task; omission does not imply that a file is absent from the repository.
+
+**Execution inputs**: The source and dependencies made available to an isolated build or validation process; they may differ from the worker's context selection.
