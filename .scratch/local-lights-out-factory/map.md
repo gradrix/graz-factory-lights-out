@@ -88,3 +88,23 @@ None blocking the planning handoff. Exact serving settings and later operational
 - [Forty-task evaluation](heldout-results.md): 109/120 verified after review, but two false acceptances block progression. All raw failures and frozen source/ledger are retained.
 - [Readable validation feedback](issues/25-improve-bounded-validation-feedback.md): bounded-python-v4; seen matched repair comparison 3/3 versus 1/3, no held-out rescore.
 - [Semantic gates and Acceptance findings](issues/26-strengthen-semantic-gates.md): immutable later evidence blocks reuse; deduplication repaired, version-sort repair still exhausted its declared budgets. Next diagnose semantics and strengthen contracts/gates.
+
+## 2026-09-09 — bounded repair diagnosis
+
+Explicit reasoning plus a 4K output reserve repaired the seen version-sort task
+3/3, with broader semantic checks passing. Default policy unchanged; qualify
+escalation across tasks before scaling. [Evidence](version-sort-diagnosis.md).
+
+## 2026-09-09 — escalation qualification
+
+[Task 27](issues/27-qualify-bounded-reasoning-escalation.md) resolved: explicit
+low-effort escalation qualified 23/24 runs with no discovered false acceptances.
+The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-stateful-inventory-build.md).
+
+- Stateful campaign: one complete build, second blocked at final migration, third
+  unscored. [Issue 28](issues/28-qualify-stateful-inventory-build.md) remains open;
+  bounded repair diagnostics are the next investigation.
+
+- [Issue 28](issues/28-qualify-stateful-inventory-build.md) resolved: fresh stateful
+  campaign passed 3/3 builds, 30 tasks in 32 attempts; retained failure repaired
+  3/3. Earlier failures unchanged. Next decision: real repository and feature.

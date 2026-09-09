@@ -1,0 +1,137 @@
+{
+  "scope": "Replacement prepared task after ten-attempt seen regression failure; public contract clarification plus additional private gate. Costs and results separate from original tasks.",
+  "superseded_task": "regression-version-sort-v1",
+  "plan": {
+    "schema_version": 1,
+    "atom": {
+      "schema_version": 1,
+      "atom_id": "regression-version-sort-clarified-v1",
+      "graph_revision": "example-graph-v1",
+      "objective": "Fix sorting dotted nonnegative integer version strings numerically by components, zero-padding missing components; ties preserve input order. Read stdin using json.load(sys.stdin); print only json.dumps(result, sort_keys=True). Public contract example: input [\"1.0.0\", \"1\"] must output [\"1.0.0\", \"1\"], because missing components are zero and numerically equal versions retain their original order.",
+      "non_goals": [
+        "Deployment",
+        "Autonomous product planning"
+      ],
+      "requirement_ids": [
+        "example-requirement-v1"
+      ],
+      "product_modules": [
+        "provider"
+      ],
+      "source_revision": "retained-false-acceptance-0aa10e4504cd4bdf65792111d1e7d441aa00fcd6c52dbfc918a518de34de4477",
+      "inputs_digest": "4c0327820561e751bfc1b46d03cf825056bdb1611d06827aa287f6553230f035",
+      "writable_paths": [
+        "main.py"
+      ],
+      "prohibited_paths": [],
+      "dependency_artifacts": [],
+      "upstream_contracts": [],
+      "capability_profile": "python-pilot-v1",
+      "network_profile": "none-v1",
+      "credential_profile": "none-v1",
+      "sandbox_profile": "pilot-v1",
+      "allowed_tools": [
+        "read",
+        "edit"
+      ],
+      "required_gates": [
+        {
+          "schema_version": 1,
+          "gate_id": "behavior",
+          "validator_digest": "c91e16854334bde7b9e640ae73898caf0185d9f974daa2ac8364d37eb4e81e18"
+        }
+      ],
+      "context_budget": {
+        "schema_version": 1,
+        "total_tokens": 8192,
+        "output_tokens": 2048
+      },
+      "max_attempts": 3,
+      "expected_outputs": [
+        {
+          "schema_version": 1,
+          "name": "candidate",
+          "schema_digest": "888c109fc99f38b0cec8912262c8ce74f38ac64b05ba8ddf4f19cfd17409d482"
+        }
+      ],
+      "idempotency_key": "regression-version-sort-clarified-v1",
+      "integration_key": "example-integration-v1"
+    },
+    "source": {
+      "schema_version": 1,
+      "files": {
+        "main.py": "import json, sys\n\ndef parse_version(s):\n    parts = s.split('.')\n    nums = []\n    for p in parts:\n        nums.append(int(p))\n    return nums\n\ndef compare_versions(a, b):\n    pa = parse_version(a)\n    pb = parse_version(b)\n    max_len = max(len(pa), len(pb))\n    for i in range(max_len):\n        va = pa[i] if i < len(pa) else 0\n        vb = pb[i] if i < len(pb) else 0\n        if va < vb:\n            return -1\n        if va > vb:\n            return 1\n    return 0\n\ndef main():\n    x = json.load(sys.stdin)\n    result = sorted(x, key=lambda s: parse_version(s))\n    print(json.dumps(result, sort_keys=True))\n\nif __name__ == '__main__':\n    main()\n"
+      }
+    },
+    "gates": {
+      "behavior": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "main.py"
+            ],
+            "stdin": "[]\n",
+            "expected_stdout": "[]\n",
+            "seconds": 10.0
+          },
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "main.py"
+            ],
+            "stdin": "[\"1.10\", \"1.2\", \"1\", \"1.0\", \"0.9\"]\n",
+            "expected_stdout": "[\"0.9\", \"1\", \"1.0\", \"1.2\", \"1.10\"]\n",
+            "seconds": 10.0
+          },
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "main.py"
+            ],
+            "stdin": "[\"2.0.1\", \"2\", \"2.0.0\", \"10\"]\n",
+            "expected_stdout": "[\"2\", \"2.0.0\", \"2.0.1\", \"10\"]\n",
+            "seconds": 10.0
+          },
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "main.py"
+            ],
+            "stdin": "[\"1.0.0\", \"1\", \"01.00\", \"1.0.1\", \"1.0\", \"0.99\"]\n",
+            "expected_stdout": "[\"0.99\", \"1.0.0\", \"1\", \"01.00\", \"1.0\", \"1.0.1\"]\n",
+            "seconds": 10.0
+          },
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "main.py"
+            ],
+            "stdin": "[\"2.0\", \"02\", \"2.0.0\", \"2.0.1\", \"2\"]\n",
+            "expected_stdout": "[\"2.0\", \"02\", \"2.0.0\", \"2\", \"2.0.1\"]\n",
+            "seconds": 10.0
+          }
+        ]
+      }
+    },
+    "model_profile": {
+      "schema_version": 1,
+      "profile_id": "vllm-python-worker-v1",
+      "base_url": "http://127.0.0.1:30000/v1",
+      "model": "gflo-local",
+      "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+      "context_limit": 16384,
+      "timeout_seconds": 120.0
+    },
+    "deployment": "{\n  \"mode\": \"managed\",\n  \"base_url\": \"http://127.0.0.1:30000/v1\",\n  \"model\": \"gflo-local\",\n  \"request_timeout\": 120,\n  \"startup_timeout\": 300,\n  \"managed\": {\n    \"backend\": \"vllm\",\n    \"image\": \"vllm/vllm-openai@sha256:ac259a0111c6cf462a72e449962b84f7a624b5cbec24bd7d9ec3b67d40ffd1bf\",\n    \"model_path\": \"Inferact/Qwen3.8-27B-NVFP4\",\n    \"revision\": \"6128240ebaf4eaa7bad2b3d1c72c37d677c5f462\",\n    \"name\": \"gflo-vllm-graphs\",\n    \"gpu\": \"0\",\n    \"context_length\": 16384,\n    \"memory_fraction\": 0.85,\n    \"shm_size\": \"4g\",\n    \"memory_limit\": \"36g\",\n    \"cpu_limit\": 3,\n    \"pids_limit\": 1024,\n    \"model_cache_volume\": \"local-vllm-huggingface-cache\",\n    \"offline\": true,\n    \"hf_token_env\": \"\",\n    \"server_options\": {\n      \"kv-cache-dtype\": \"bfloat16\",\n      \"reasoning-parser\": \"qwen3\",\n      \"tool-call-parser\": \"qwen3_coder\"\n    },\n    \"enforce_eager\": false\n  }\n}\n",
+    "broker_image": "python@sha256:ae52c5bef62a6bdd42cd1e8dffef86b9cd284bde9427da79839de7a4b983e7ca",
+    "max_model_turns": 3,
+    "selected_paths": null
+  }
+}

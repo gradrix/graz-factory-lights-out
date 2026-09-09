@@ -32,7 +32,11 @@ Opaque cross-bundle dependency artifacts are not supported by this worker profil
 
 The model client accepts a numeric-loopback HTTP endpoint, serializes requests,
 and checks the server's tokenizer and usage. The routine budget is 8K tokens with
-2K reserved for output, temperature 0, seed 42, and thinking disabled. Malformed or
+2K reserved for output, temperature 0, seed 42, and thinking disabled. The explicit
+`vllm-python-worker-reasoning-v1` model profile enables thinking for both exact
+tokenization and generation. Its reasoning and final answer share the atom's output
+reserve; changing the profile does not enlarge that reserve. Reasoning text is
+retained as untrusted response evidence, never parsed as a candidate. Malformed or
 truncated responses retain diagnostic evidence. There is no cloud fallback.
 
 ## Execution and validation

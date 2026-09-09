@@ -1,0 +1,86 @@
+{
+  "qualified": false,
+  "completed_builds": 1,
+  "completed_atoms": 20,
+  "failed_atom": "inventory-build-r2-10-consumers-v2",
+  "build_reviews": [
+    {
+      "build": 1,
+      "candidate_digest": "543ce2122602c6e2ffc09e986618d25c6cdf42f0b84ee07e254dece96a9196ac",
+      "review": {
+        "passed": true,
+        "cases": [
+          {
+            "passed": true,
+            "execution_digest": "e4acc9de971cdba1186b012b33b0c7648b28bd3ac4566537aca8165783cf4549"
+          },
+          {
+            "passed": true,
+            "execution_digest": "40c8a987a6c393ed37543f6ea151710c70e085c9c409d248e72b67903b02abf6"
+          },
+          {
+            "passed": true,
+            "execution_digest": "261edd37f319794da538eeb5c095feee049f6e93ae03683b8ae8f9df8cd7031e"
+          },
+          {
+            "passed": true,
+            "execution_digest": "1fac107dec7d97259cffead661d49c46ff8084c471e5d440a42ab31534012de9"
+          },
+          {
+            "passed": true,
+            "execution_digest": "ee97327dbbae60adc8afca2820a3f7fe205768a968c7faea810d1078162ef03c"
+          },
+          {
+            "passed": true,
+            "execution_digest": "3c61abe0e910d6a324ff358aa1194d576b89a8279e58e111f0da704402d59b02"
+          }
+        ]
+      }
+    }
+  ],
+  "source_drift": false,
+  "attempts": 22,
+  "audit": {
+    "missing": [],
+    "corrupt": [],
+    "staging": []
+  },
+  "unreferenced_artifact_count": 245,
+  "cost_totals": {
+    "attempts": 22,
+    "model_observations": 23,
+    "validated_prompt_tokens": 39047,
+    "validated_completion_tokens": 7986,
+    "observed_model_seconds": 203.95021947199984,
+    "observations_without_validated_usage": 1
+  },
+  "boundary_review": [
+    {
+      "build": 1,
+      "candidate_digest": "543ce2122602c6e2ffc09e986618d25c6cdf42f0b84ee07e254dece96a9196ac",
+      "review": {
+        "passed": true,
+        "cases": [
+          {
+            "passed": true,
+            "execution_digest": "7665d2e18f08bbab91a780b72b7a22c87a700a6819766bb674810cdbfdd4b8f6"
+          },
+          {
+            "passed": true,
+            "execution_digest": "94b4b4dcf5bf404fb624747045093a0c9e1624d84813820327ecc6f7184a9656"
+          },
+          {
+            "passed": true,
+            "execution_digest": "61e8d8285cfceed9dc8421e662d123b84743cb71a4678f9f940bef09259b4451"
+          }
+        ]
+      }
+    }
+  ],
+  "failure": {
+    "first_attempt": "CLI passes sqlite connection to reports.summary(path); report returns invalid error; gate rejects",
+    "retry": "finish_reason=length; 4096 completion tokens, all reasoning; no candidate",
+    "candidate_digest": "a95ccf89b7946d560a21538edcf83ab03606bb0b33068b0216856439e282b5a4"
+  },
+  "scope": "One completed build; second failed; third unscored. Not qualified. Token sums lower bounds. Trusted harness advances bases; no autonomous planning or Git promotion."
+}

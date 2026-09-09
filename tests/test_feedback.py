@@ -81,3 +81,42 @@ def test_inconclusive_malformed_report_still_has_feedback(executions):
         {"outcome": "inconclusive", "executions": executions, "error": "bad identity"}
     )
     assert "inconclusive" in text and "bad identity" in text
+
+
+def test_late_workflow_error_visible_before_truncated_output():
+    import json
+
+    output = {"padding": "x" * 3000, "responses": [{"ok": True}] * 12 + [{"error": "invalid"}]}
+    result = validation_feedback(
+        {
+            "executions": [
+                execution(
+                    stdout_base64=base64.b64encode(json.dumps(output).encode()).decode(),
+                    stderr_base64="",
+                    exit_code=0,
+                )
+            ]
+        }
+    )
+    assert '$["responses"][12]["error"]: "invalid"' in result
+    assert result.index("Observed JSON error fields") < result.index("Observed stdout:")
+
+
+@pytest.mark.parametrize("raw", [b"[" * 2000 + b"]" * 2000, b"{bad", b"\xff"])
+def test_error_summary_ignores_unparseable_json(raw):
+    result = validation_feedback(
+        {"executions": [execution(stdout_base64=base64.b64encode(raw).decode(), stderr_base64="")]}
+    )
+    assert "Observed JSON error fields" not in result
+
+
+def test_json_error_summary_is_bounded_and_does_not_claim_gate_mismatch():
+    import json
+
+    raw = json.dumps([{"error": "\x1b" * 100}] * 8).encode()
+    result = validation_feedback(
+        {"executions": [execution(stdout_base64=base64.b64encode(raw).decode(), stderr_base64="")]}
+    )
+    assert "may include expected rejections" in result
+    assert len(result) <= 8192
+    assert "\x1b" not in result

@@ -75,3 +75,23 @@ have a RunPlan; integration of integration children is not implemented.
 Repeated integration resumes retained validation or reuses a verified acceptance.
 Semantic failure retains evidence and requires new prepared repair work. Current
 input checks do not provide an external compare-and-swap or Git promotion.
+
+## Opt-in bounded escalation
+
+`vllm-python-worker-escalating-low-v1` uses one model turn per attempt.
+`vllm-python-worker-escalating-tools-v1` permits three turns, allowing source reads
+before an edit. Both require exactly two attempts, an 8,192-token context budget,
+and a 4,096-token output reserve in the WorkAtom. Initial turns use at most 2,048
+output tokens without thinking; retry turns use at most 4,096 including reasoning
+with explicit low effort. RunPlan validates these limits. Resume preserves attempts
+and the pinned profile; changing a failed run's profile in place is rejected.
+
+These profiles are opt-in. The low-effort single-turn profile passed a scoped
+23/24-task qualification; the tool-capable profile passed the scoped three-build
+stateful qualification after feedback and interface-context improvements. The default worker profile remains unchanged.
+
+Failed process gates provide bounded feedback from observed execution data. For
+JSON stdout, up to eight `error` fields are surfaced before truncated logs, with
+JSON paths to locate them in the workflow. These fields can include deliberate
+invalid-request cases; their presence alone does not identify a gate mismatch.
+Expected outputs remain private, and complete raw output remains in artifacts.

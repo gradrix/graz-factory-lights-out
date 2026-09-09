@@ -37,6 +37,43 @@ def _output(value: Any, limit: int) -> str:
     return _text(data.decode("utf-8", errors="backslashreplace"), limit)
 
 
+def _json_errors(value: Any) -> str:
+    """Surface observed error fields, without interpreting them as gate failures."""
+    if not isinstance(value, str) or len(value) > 87384:
+        return ""
+    try:
+        decoded = base64.b64decode(value, validate=True)
+        if len(decoded) > 65536:
+            return ""
+        root = json.loads(decoded)
+    except (ValueError, UnicodeError, RecursionError):
+        return ""
+    pending = [("$", root, 0)]
+    found: list[str] = []
+    visited = 0
+    while pending and visited < 2048 and len(found) < 8:
+        path, node, depth = pending.pop()
+        visited += 1
+        if depth > 16:
+            continue
+        if isinstance(node, dict):
+            for key, child in reversed(list(node.items())[:128]):
+                location = path + "[" + json.dumps(key, ensure_ascii=True) + "]"
+                if key == "error":
+                    found.append(_text(location + ": " + json.dumps(child, ensure_ascii=True), 192))
+                else:
+                    pending.append((location, child, depth + 1))
+        elif isinstance(node, list):
+            pending.extend(
+                (path + f"[{i}]", node[i], depth + 1) for i in reversed(range(min(len(node), 128)))
+            )
+    if not found:
+        return ""
+    return "Observed JSON error fields (may include expected rejections):\n" + _text(
+        "\n".join(found), 768
+    )
+
+
 def validation_feedback(observation: dict[str, Any]) -> str:
     """Describe the last executed case; gate expected outputs remain private."""
     lines = [
@@ -49,6 +86,9 @@ def validation_feedback(observation: dict[str, Any]) -> str:
         last = executions[-1]
         lines.append(f"Last executed case: {len(executions)}")
         if isinstance(last, dict):
+            summary = _json_errors(last.get("stdout_base64"))
+            if summary:
+                lines.append(summary)
             lines.extend(
                 [
                     "Command: " + _text(json.dumps(last.get("command")), 512),
@@ -56,7 +96,7 @@ def validation_feedback(observation: dict[str, Any]) -> str:
                     "Process outcome: " + _text(last.get("outcome"), 128),
                     "Exit code: " + _text(last.get("exit_code"), 128),
                     "Observed stdout:\n" + _output(last.get("stdout_base64"), 1536),
-                    "Observed stderr:\n" + _output(last.get("stderr_base64"), 3072),
+                    "Observed stderr:\n" + _output(last.get("stderr_base64"), 2048),
                 ]
             )
         else:

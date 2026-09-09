@@ -397,3 +397,68 @@ def test_invalid_contract_excerpts_fail_closed(prepared, case):
         pins = [store.publish(str(i).encode()) for i in range(17)]
     with pytest.raises((ArtifactError, WorkerError, ValidationError, UnicodeError)):
         compose_view(store, change_atom(atom, upstream_contracts=pins), digest)
+
+
+@pytest.mark.parametrize("reasoning", [False, True])
+def test_explicit_reasoning_profile_binds_tokenizer_and_generation(prepared, server, reasoning):
+    store, atom, source, digest = prepared
+    legacy = client_for(prepared, server)
+    fields = legacy.profile.model_dump(mode="json")
+    if reasoning:
+        fields["profile_id"] = "vllm-python-worker-reasoning-v1"
+    profile = ModelProfile.model_validate_json(json.dumps(fields))
+    client = LocalModel(store, profile)
+
+    def with_reasoning(response):
+        response["choices"][0]["message"]["reasoning"] = "untrusted reasoning text"
+        return response
+
+    server[0]["mutate"] = with_reasoning
+    turn = client.turn(atom, digest, current_inputs=lambda: atom.inputs_digest)
+    tokenize = server[0]["calls"][1][1]
+    generate = server[0]["calls"][2][1]
+    assert tokenize["chat_template_kwargs"] == {"enable_thinking": reasoning}
+    assert generate["chat_template_kwargs"] == tokenize["chat_template_kwargs"]
+    assert turn.completion_tokens == 20
+    assert turn.result.changes == {"main.py": "print(42)"}
+    assert "untrusted reasoning text" in store.read(turn.response_digest).decode()
+    assert (profile.digest() != legacy.profile.digest()) == reasoning
+
+
+@pytest.mark.parametrize("retry", [False, True])
+@pytest.mark.parametrize("low_effort", [False, True, "tools"])
+def test_escalation_profile_uses_bounded_failure_evidence(prepared, server, retry, low_effort):
+    store, atom, source, digest = prepared
+    atom = change_atom(
+        atom, max_attempts=2, context_budget={"total_tokens": 8192, "output_tokens": 4096}
+    )
+    original = client_for(prepared, server)
+    fields = original.profile.model_dump(mode="json")
+    fields["profile_id"] = (
+        "vllm-python-worker-escalating-low-v1" if low_effort else "vllm-python-worker-escalating-v1"
+    )
+    profile = ModelProfile.model_validate_json(json.dumps(fields))
+    diagnostic = store.publish(
+        Diagnostic(
+            source_digest=store.publish(b"retained failed gate observation"),
+            text="Previous candidate failed validation",
+        )
+        .canonical()
+        .encode()
+    )
+    client = LocalModel(store, profile)
+    turn = client.turn(
+        atom,
+        digest,
+        current_inputs=lambda: atom.inputs_digest,
+        diagnostic_digests=(diagnostic,) if retry else (),
+    )
+    tokenize, request = server[0]["calls"][1][1], server[0]["calls"][2][1]
+    assert request["chat_template_kwargs"] == (
+        {"enable_thinking": retry} | ({"reasoning_effort": "low"} if low_effort and retry else {})
+    )
+    assert tokenize["chat_template_kwargs"] == request["chat_template_kwargs"]
+    assert request["max_tokens"] == (4096 if retry else 2048)
+    manifest = json.loads(store.read(turn.manifest_digest))
+    assert manifest["output_reserved"] == request["max_tokens"]
+    assert manifest["total_limit"] == 8192

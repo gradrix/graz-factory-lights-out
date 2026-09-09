@@ -1,5 +1,9 @@
 # Retained semantic-repair exception
 
+Update 2026-09-09: explicit reasoning with a 4K output reserve repaired 3/3 new
+seen-task runs, all passing broader checks. See [diagnosis](version-sort-diagnosis.md).
+The failures below remain historical evidence; original findings are unchanged.
+
 The local model repeatedly sorts unpadded numeric component lists. This violates the
 prepared requirement that missing components are zero and numerical ties preserve
 input order. The strengthened gate rejects it. The original false acceptance is

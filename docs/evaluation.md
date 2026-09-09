@@ -76,3 +76,45 @@ rerunning it. Historical raw model responses, ledgers, source snapshots, and hos
 telemetry remain local; they are not included in this public summary. An audited,
 sanitized evidence bundle remains a release task, so readers cannot yet independently
 verify every historical claim from a clean checkout.
+
+## Repair diagnosis — 2026-09-09
+
+On the already-seen version-sort failure, three one-attempt repetitions per
+treatment found baseline 0/3 at both 2K and 4K output reserves. Reasoning truncated
+3/3 at 2K, but repaired 3/3 at 4K; targeted human-written repair guidance passed
+2/3 at each budget. Gates and the total 8K budget stayed fixed. All seven accepted
+repairs passed 69 supplemental inputs each. The reasoning repairs took 24–60
+seconds end to end, so this is a candidate escalation profile, not a default-policy
+change or large-build qualification. The interrupted partial comparison is retained
+separately, with unknown lost inference cost. The original campaign score is unchanged.
+
+The explicit reasoning profile now has protocol regression coverage. Current CPU
+suite: 247 tests and 25 subtests passed, eight optional Docker checks skipped. Live
+repair and supplemental gates used actual Docker containers.
+
+## Stateful workload qualification — 2026-09-09
+
+The opt-in low-effort escalation profile verified 23/24 small task runs, and the
+three-module inventory migration passed. The initial tool-capable stateful campaign
+completed one build, then failed the second build's final migration; the third was
+unscored. That failed score is preserved.
+
+After bounded observed-error feedback and explicit reporting-interface instructions,
+a new frozen campaign completed all three ten-step builds: 30 accepted tasks in
+32 attempts and 33 model turns. All three final migrations passed first attempt.
+Each build passed six supplemental workflows and three additional boundary
+workflows. No false acceptances were discovered in those checks. Source hashes
+matched; referenced artifacts were present and uncorrupted.
+
+Recorded usage: 59,084 prompt tokens, 12,878 completion tokens, and 219.51 seconds
+of observed model-call time; no recorded observations lacked validated usage.
+This is not total elapsed build time or GPU-only inference time. One Docker memory
+qualification probe lacked its OOM flag, halting before work; explicit resume
+rechecked the same controls successfully without resetting worker attempts.
+
+This is a seen reference workload with fresh candidates, not an unseen repository
+benchmark. Feedback and interface wording changed together, so their individual
+contributions are not established. Gates and bounded retry limits were retained.
+Prepared tasks and advancing source bases still come from a trusted harness.
+Original 120-run scores and findings remain unchanged; large-system reliability
+remains unqualified. See the [portable results](../.scratch/local-lights-out-factory/stateful-inventory-feedback-results.json).

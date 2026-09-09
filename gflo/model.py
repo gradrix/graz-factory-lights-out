@@ -36,7 +36,13 @@ class ModelError(RuntimeError):
 
 
 class ModelProfile(Record):
-    profile_id: Literal["vllm-python-worker-v1"] = "vllm-python-worker-v1"
+    profile_id: Literal[
+        "vllm-python-worker-v1",
+        "vllm-python-worker-reasoning-v1",
+        "vllm-python-worker-escalating-v1",
+        "vllm-python-worker-escalating-low-v1",
+        "vllm-python-worker-escalating-tools-v1",
+    ] = "vllm-python-worker-v1"
     base_url: str
     model: str
     deployment_digest: Digest
@@ -217,11 +223,32 @@ class LocalModel:
                 if isinstance(m, dict)
             ):
                 raise ModelError("Configured local model is not served")
+            escalating = self.profile.profile_id in (
+                "vllm-python-worker-escalating-v1",
+                "vllm-python-worker-escalating-low-v1",
+                "vllm-python-worker-escalating-tools-v1",
+            )
+            if escalating and (
+                atom.max_attempts != 2
+                or atom.context_budget.total_tokens != 8192
+                or atom.context_budget.output_tokens != 4096
+            ):
+                raise ModelError("Escalation requires two attempts and an 8K/4K contract budget")
+            thinking = self.profile.profile_id == "vllm-python-worker-reasoning-v1" or (
+                escalating and bool(diagnostic_digests)
+            )
+            reserve = 2048 if escalating and not thinking else atom.context_budget.output_tokens
+            template_kwargs: dict[str, Any] = {"enable_thinking": thinking}
             chat = {
                 "model": self.profile.model,
                 "messages": messages(view),
-                "chat_template_kwargs": {"enable_thinking": False},
+                "chat_template_kwargs": template_kwargs,
             }
+            if thinking and self.profile.profile_id in (
+                "vllm-python-worker-escalating-low-v1",
+                "vllm-python-worker-escalating-tools-v1",
+            ):
+                template_kwargs["reasoning_effort"] = "low"
             tokens = self._request(
                 "/tokenize", chat | {"add_generation_prompt": True}, deadline, exchanges
             )
@@ -231,7 +258,6 @@ class LocalModel:
             if type(count) is not int or count <= 0:
                 raise ModelError("Tokenizer did not return an exact positive token count")
             limit = min(atom.context_budget.total_tokens, self.profile.context_limit)
-            reserve = atom.context_budget.output_tokens
             if count + reserve > limit:
                 raise ModelError("Worker context exceeds its input/output budget")
             request = chat | {

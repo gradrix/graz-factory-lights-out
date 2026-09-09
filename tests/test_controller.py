@@ -716,3 +716,107 @@ def test_invalid_evaluator_report_halts_and_recovers_with_new_evidence(tmp_path,
         assert model.calls[-1]["diagnostic_digests"]
         assert controller.run(plan.atom.atom_id) == accepted
         assert ledger._db.execute("SELECT count(*) FROM acceptances").fetchone()[0] == 1
+
+
+def escalating(plan, profile_id="vllm-python-worker-escalating-v1", **changes):
+    fields = plan.model_dump(mode="json")
+    fields["model_profile"]["profile_id"] = profile_id
+    fields["max_model_turns"] = 3 if profile_id == "vllm-python-worker-escalating-tools-v1" else 1
+    fields["atom"]["max_attempts"] = 2
+    fields["atom"]["context_budget"] = {"total_tokens": 8192, "output_tokens": 4096}
+    for key, value in changes.items():
+        if key == "max_model_turns":
+            fields[key] = value
+        elif key in ("total_tokens", "output_tokens"):
+            fields["atom"]["context_budget"][key] = value
+        else:
+            fields["atom"][key] = value
+    return RunPlan.model_validate_json(json.dumps(fields))
+
+
+@pytest.mark.parametrize(
+    "changes",
+    [
+        {"max_attempts": 3},
+        {"max_model_turns": 2},
+        {"total_tokens": 16384},
+        {"output_tokens": 2048},
+    ],
+)
+def test_escalation_rejects_unbounded_or_ambiguous_schedule(plan, changes):
+    from pydantic import ValidationError
+
+    with pytest.raises(ValidationError):
+        escalating(plan, **changes)
+
+
+def test_escalation_resume_keeps_aggregate_attempt_allowance(tmp_path, plan):
+    plan = escalating(plan)
+    with WorkLedger(tmp_path / "ledger.db") as ledger:
+        controller, model, broker = setup(ledger, plan, [ModelError("service stopped")])
+        assert controller.run(plan.atom.atom_id)["status"] == "retry-ready"
+        assert len(model.calls) == 1
+        model.actions = [CandidateResult(kind="candidate", changes={"main.py": "print(0)"})]
+        result = controller.run(plan.atom.atom_id)
+        assert result["status"] == "quarantined"
+        assert len(result["attempts"]) == 2
+        assert model.calls[0]["diagnostic_digests"] == ()
+        assert model.calls[1]["diagnostic_digests"]
+        controller.run(plan.atom.atom_id)
+        assert len(model.calls) == 2
+
+
+def test_failed_escalation_cannot_change_profile_in_place(tmp_path, plan):
+    plan = escalating(plan)
+    with WorkLedger(tmp_path / "ledger.db") as ledger:
+        controller, model, broker = setup(ledger, plan, [ModelError("offline")])
+        assert controller.run(plan.atom.atom_id)["status"] == "retry-ready"
+        changed = escalating(plan, profile_id="vllm-python-worker-escalating-low-v1")
+        with pytest.raises(Conflict, match="immutable"):
+            prepare_run(ledger, changed)
+        assert RunPlan.model_validate_json(ledger.run_plan(plan.atom.atom_id)) == plan
+        assert len(ledger.status(plan.atom.atom_id)["attempts"]) == 1
+
+
+def test_tool_escalation_can_read_then_edit_in_one_attempt(tmp_path, plan):
+    plan = escalating(plan, profile_id="vllm-python-worker-escalating-tools-v1")
+    with WorkLedger(tmp_path / "ledger.db") as ledger:
+        controller, model, broker = setup(
+            ledger,
+            plan,
+            [
+                ReadFileRequest(kind="read_file", path="helper.py"),
+                CandidateResult(kind="candidate", changes={"main.py": "print(42)"}),
+            ],
+        )
+        result = controller.run(plan.atom.atom_id)
+        assert result["status"] == "accepted"
+        assert len(result["attempts"]) == 1 and len(model.calls) == 2
+        assert model.calls[1]["selected_paths"] == ("helper.py", "main.py")
+        assert all(call["diagnostic_digests"] == () for call in model.calls)
+        controller.run(plan.atom.atom_id)
+        assert len(model.calls) == 2
+
+
+def test_tool_escalation_cannot_exceed_six_turns(tmp_path, plan):
+    fields = plan.model_dump(mode="json")
+    fields["source"]["files"].update({"x.py": "X=1", "y.py": "Y=2"})
+    source = SourceBundle.model_validate_json(json.dumps(fields["source"]))
+    fields["atom"]["inputs_digest"] = InputSnapshot(
+        source_digest=source.digest(), source_revision=plan.atom.source_revision
+    ).digest()
+    plan = escalating(
+        RunPlan.model_validate_json(json.dumps(fields)),
+        profile_id="vllm-python-worker-escalating-tools-v1",
+    )
+    actions = [
+        ReadFileRequest(kind="read_file", path=p)
+        for p in ("helper.py", "x.py", "y.py", "helper.py", "x.py", "y.py")
+    ]
+    with WorkLedger(tmp_path / "ledger.db") as ledger:
+        controller, model, broker = setup(ledger, plan, actions)
+        result = controller.run(plan.atom.atom_id)
+        assert result["status"] == "quarantined"
+        assert len(result["attempts"]) == 2 and len(model.calls) == 6
+        controller.run(plan.atom.atom_id)
+        assert len(model.calls) == 6

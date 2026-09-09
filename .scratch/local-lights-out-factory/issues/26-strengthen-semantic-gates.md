@@ -44,3 +44,17 @@ or manual candidate replacement were performed. Stronger gates prevented false a
 throughout these follow-ups. Task remains claimed for broader semantic qualification;
 next diagnose this persistent failure and explicit task-contract composition. See
 [results](../heldout-results.md). Original campaign progression remains failed.
+
+## Comments
+
+2026-09-09: Resumed bounded diagnosis. Replayed the final clarified candidate in
+a broker container: ["1.0.0", "1"] incorrectly reverses; each singleton passes.
+Testing three rotated repetitions of baseline, explicit reasoning, and targeted
+contract guidance, one attempt/turn each, with identical source/gates/token budgets.
+The guidance arm is human-authored repair localization, not autonomous decomposition.
+Evidence: `.gflo/evidence/version-sort-comparison-v1/`. Original scores unchanged.
+
+2026-09-09 outcome: explicit reasoning with a 4K output reserve repaired 3/3;
+baseline remained 0/3 at both budgets. All seven accepted treatment repairs passed
+69 additional inputs. Profile remains opt-in; broader qualification is still open.
+See [diagnosis and reproduction](../version-sort-diagnosis.md).

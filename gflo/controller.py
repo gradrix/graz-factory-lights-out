@@ -39,6 +39,24 @@ class RunPlan(Record):
 
     @model_validator(mode="after")
     def bindings(self) -> RunPlan:
+        if self.model_profile.profile_id in (
+            "vllm-python-worker-escalating-v1",
+            "vllm-python-worker-escalating-low-v1",
+            "vllm-python-worker-escalating-tools-v1",
+        ) and (
+            self.atom.max_attempts != 2
+            or self.max_model_turns
+            != (
+                3
+                if self.model_profile.profile_id == "vllm-python-worker-escalating-tools-v1"
+                else 1
+            )
+            or self.atom.context_budget.total_tokens != 8192
+            or self.atom.context_budget.output_tokens != 4096
+        ):
+            raise ValueError(
+                "Escalation requires its fixed turn allowance, two attempts and an 8K/4K budget"
+            )
         if not re.fullmatch(r"(?:[A-Za-z0-9_./:-]+@)?sha256:[a-f0-9]{64}", self.broker_image):
             raise ValueError("Run requires a pinned broker image")
         if (

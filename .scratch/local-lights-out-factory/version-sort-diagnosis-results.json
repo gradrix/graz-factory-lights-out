@@ -1,0 +1,607 @@
+{
+  "2k": {
+    "evidence_directory": ".gflo/evidence/version-sort-comparison-v1",
+    "completed": {
+      "source_drift": false,
+      "runs": 9
+    },
+    "runs": [
+      {
+        "atom_id": "version-diagnosis-r1-baseline",
+        "treatment": "baseline",
+        "status": "quarantined",
+        "candidate_digest": "6fa087670b292e83fadee37f52c3b16d32fa28dacf7e608aa4d400b4cda3e295",
+        "elapsed_seconds": 5.633124456000019,
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 952,
+          "validated_completion_tokens": 121,
+          "observed_model_seconds": 2.644591183999978,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "server_reported_usage": {
+          "prompt_tokens": 952,
+          "total_tokens": 1073,
+          "completion_tokens": 121,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "finish_reason": "stop"
+      },
+      {
+        "atom_id": "version-diagnosis-r1-reasoning",
+        "treatment": "reasoning",
+        "status": "quarantined",
+        "candidate_digest": null,
+        "elapsed_seconds": 35.069370140000046,
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 0,
+          "validated_completion_tokens": 0,
+          "observed_model_seconds": 33.423411531000056,
+          "observations_without_validated_usage": 1,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": false,
+          "timing_complete_for_recorded_observations": true
+        },
+        "server_reported_usage": {
+          "prompt_tokens": 991,
+          "total_tokens": 3039,
+          "completion_tokens": 2048,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": {
+            "reasoning_tokens": 2048
+          }
+        },
+        "finish_reason": "length"
+      },
+      {
+        "atom_id": "version-diagnosis-r1-contract-guidance",
+        "treatment": "contract-guidance",
+        "status": "accepted",
+        "candidate_digest": "e9a7e4e5b6e2b757ccca163457c07d4dbb09d849ed6653ed8d1bb40f52469108",
+        "elapsed_seconds": 7.636518408000029,
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 998,
+          "validated_completion_tokens": 236,
+          "observed_model_seconds": 4.187831305999907,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "server_reported_usage": {
+          "prompt_tokens": 998,
+          "total_tokens": 1234,
+          "completion_tokens": 236,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "finish_reason": "stop"
+      },
+      {
+        "atom_id": "version-diagnosis-r2-reasoning",
+        "treatment": "reasoning",
+        "status": "quarantined",
+        "candidate_digest": null,
+        "elapsed_seconds": 34.766814822000015,
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 0,
+          "validated_completion_tokens": 0,
+          "observed_model_seconds": 33.55644901799997,
+          "observations_without_validated_usage": 1,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": false,
+          "timing_complete_for_recorded_observations": true
+        },
+        "server_reported_usage": {
+          "prompt_tokens": 990,
+          "total_tokens": 3038,
+          "completion_tokens": 2048,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": {
+            "reasoning_tokens": 2034
+          }
+        },
+        "finish_reason": "length"
+      },
+      {
+        "atom_id": "version-diagnosis-r2-contract-guidance",
+        "treatment": "contract-guidance",
+        "status": "quarantined",
+        "candidate_digest": "eddb6b8884b55cfdba8a0c5796497d8fbfb48e5a1b0c4d92bf07dd0bd56acccd",
+        "elapsed_seconds": 5.96986169999991,
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 997,
+          "validated_completion_tokens": 229,
+          "observed_model_seconds": 3.9384161630000563,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "server_reported_usage": {
+          "prompt_tokens": 997,
+          "total_tokens": 1226,
+          "completion_tokens": 229,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "finish_reason": "stop"
+      },
+      {
+        "atom_id": "version-diagnosis-r2-baseline",
+        "treatment": "baseline",
+        "status": "quarantined",
+        "candidate_digest": "6fa087670b292e83fadee37f52c3b16d32fa28dacf7e608aa4d400b4cda3e295",
+        "elapsed_seconds": 5.258778735000078,
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 947,
+          "validated_completion_tokens": 121,
+          "observed_model_seconds": 2.2273807340000076,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "server_reported_usage": {
+          "prompt_tokens": 947,
+          "total_tokens": 1068,
+          "completion_tokens": 121,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "finish_reason": "stop"
+      },
+      {
+        "atom_id": "version-diagnosis-r3-contract-guidance",
+        "treatment": "contract-guidance",
+        "status": "accepted",
+        "candidate_digest": "e9a7e4e5b6e2b757ccca163457c07d4dbb09d849ed6653ed8d1bb40f52469108",
+        "elapsed_seconds": 7.392123460999983,
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 998,
+          "validated_completion_tokens": 236,
+          "observed_model_seconds": 4.057007098999975,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "server_reported_usage": {
+          "prompt_tokens": 998,
+          "total_tokens": 1234,
+          "completion_tokens": 236,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "finish_reason": "stop"
+      },
+      {
+        "atom_id": "version-diagnosis-r3-baseline",
+        "treatment": "baseline",
+        "status": "quarantined",
+        "candidate_digest": "5918b5f7254e062c3dbc423a2ed7cf942658e124924396abca9454a9175cba11",
+        "elapsed_seconds": 5.395931350999945,
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 957,
+          "validated_completion_tokens": 117,
+          "observed_model_seconds": 2.1853352379998796,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "server_reported_usage": {
+          "prompt_tokens": 957,
+          "total_tokens": 1074,
+          "completion_tokens": 117,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "finish_reason": "stop"
+      },
+      {
+        "atom_id": "version-diagnosis-r3-reasoning",
+        "treatment": "reasoning",
+        "status": "quarantined",
+        "candidate_digest": null,
+        "elapsed_seconds": 34.7686369139999,
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 0,
+          "validated_completion_tokens": 0,
+          "observed_model_seconds": 33.56912679099992,
+          "observations_without_validated_usage": 1,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": false,
+          "timing_complete_for_recorded_observations": true
+        },
+        "server_reported_usage": {
+          "prompt_tokens": 988,
+          "total_tokens": 3036,
+          "completion_tokens": 2048,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": {
+            "reasoning_tokens": 2048
+          }
+        },
+        "finish_reason": "length"
+      }
+    ],
+    "supplemental_review": {
+      "input_count": 69,
+      "results": [
+        {
+          "candidate": "retained-bad",
+          "passed": false,
+          "execution_digest": "21f1d753c177de09f3bc72c3e330924cc5f2030d8a934b1012082b50cddf0873",
+          "source_digest": "0aa10e4504cd4bdf65792111d1e7d441aa00fcd6c52dbfc918a518de34de4477"
+        },
+        {
+          "candidate": "reference-control",
+          "passed": true,
+          "execution_digest": "6780a6f800df9ede52b5d7ad5529b871357dd7fa5cdd30812d49539a39e52e9f",
+          "source_digest": "54e01c16240ea0e8968993fecca72a8bca29ce5f4fbef1efc38eb9b7836b1adb"
+        },
+        {
+          "candidate": "version-diagnosis-r1-contract-guidance",
+          "passed": true,
+          "execution_digest": "0e8c3186b44071f24cf27cabd94e1390206128eac785b04894772718ceaec648",
+          "source_digest": "e9a7e4e5b6e2b757ccca163457c07d4dbb09d849ed6653ed8d1bb40f52469108"
+        },
+        {
+          "candidate": "version-diagnosis-r3-contract-guidance",
+          "passed": true,
+          "execution_digest": "dab0ab00b771d9e136faab19db9077a895802f37d799e1a6dae22a8aa32f8f45",
+          "source_digest": "e9a7e4e5b6e2b757ccca163457c07d4dbb09d849ed6653ed8d1bb40f52469108"
+        }
+      ]
+    }
+  },
+  "4k": {
+    "evidence_directory": ".gflo/evidence/version-sort-comparison-4k-v2",
+    "completed": {
+      "source_drift": false,
+      "runs": 9
+    },
+    "runs": [
+      {
+        "atom_id": "version-diagnosis-r1-baseline",
+        "treatment": "baseline",
+        "status": "quarantined",
+        "candidate_digest": "515c3d1d1c8a333465c2d7a40a38a00f95fbdc039318cd95497b0e5b2e4c4e72",
+        "elapsed_seconds": 6.025556421000033,
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 952,
+          "validated_completion_tokens": 142,
+          "observed_model_seconds": 3.062923283000032,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "server_reported_usage": {
+          "prompt_tokens": 952,
+          "total_tokens": 1094,
+          "completion_tokens": 142,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "finish_reason": "stop"
+      },
+      {
+        "atom_id": "version-diagnosis-r1-reasoning",
+        "treatment": "reasoning",
+        "status": "accepted",
+        "candidate_digest": "7b70cb8176568812bdfa80844c8664e9622a80e816ace55acf8481d7499672f0",
+        "elapsed_seconds": 60.183664496000006,
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 987,
+          "validated_completion_tokens": 3482,
+          "observed_model_seconds": 56.82952967599999,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "server_reported_usage": {
+          "prompt_tokens": 987,
+          "total_tokens": 4469,
+          "completion_tokens": 3482,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": {
+            "reasoning_tokens": 3244
+          }
+        },
+        "finish_reason": "stop"
+      },
+      {
+        "atom_id": "version-diagnosis-r1-contract-guidance",
+        "treatment": "contract-guidance",
+        "status": "accepted",
+        "candidate_digest": "26a775b3d895b8dd260013dc2a0131323c4a50c5d2ad9d510b1da4b4f956e46d",
+        "elapsed_seconds": 7.635273417999997,
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 999,
+          "validated_completion_tokens": 254,
+          "observed_model_seconds": 4.3961463489999915,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "server_reported_usage": {
+          "prompt_tokens": 999,
+          "total_tokens": 1253,
+          "completion_tokens": 254,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "finish_reason": "stop"
+      },
+      {
+        "atom_id": "version-diagnosis-r2-reasoning",
+        "treatment": "reasoning",
+        "status": "accepted",
+        "candidate_digest": "889ef33fcd25fab3d1a6889a3c0c61f62023143f89ec5265d9572287cbd9505c",
+        "elapsed_seconds": 23.809723749,
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 988,
+          "validated_completion_tokens": 1245,
+          "observed_model_seconds": 20.541105205000008,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "server_reported_usage": {
+          "prompt_tokens": 988,
+          "total_tokens": 2233,
+          "completion_tokens": 1245,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": {
+            "reasoning_tokens": 1009
+          }
+        },
+        "finish_reason": "stop"
+      },
+      {
+        "atom_id": "version-diagnosis-r2-contract-guidance",
+        "treatment": "contract-guidance",
+        "status": "accepted",
+        "candidate_digest": "e9a7e4e5b6e2b757ccca163457c07d4dbb09d849ed6653ed8d1bb40f52469108",
+        "elapsed_seconds": 7.787231585000086,
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 1000,
+          "validated_completion_tokens": 257,
+          "observed_model_seconds": 4.484684432999984,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "server_reported_usage": {
+          "prompt_tokens": 1000,
+          "total_tokens": 1257,
+          "completion_tokens": 257,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "finish_reason": "stop"
+      },
+      {
+        "atom_id": "version-diagnosis-r2-baseline",
+        "treatment": "baseline",
+        "status": "quarantined",
+        "candidate_digest": "9701c5c24fde7be527d4b35bc44956a92bac68794f4c70981553dc457efc4ed9",
+        "elapsed_seconds": 5.854893531000016,
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 959,
+          "validated_completion_tokens": 156,
+          "observed_model_seconds": 2.8582637520000844,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "server_reported_usage": {
+          "prompt_tokens": 959,
+          "total_tokens": 1115,
+          "completion_tokens": 156,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "finish_reason": "stop"
+      },
+      {
+        "atom_id": "version-diagnosis-r3-contract-guidance",
+        "treatment": "contract-guidance",
+        "status": "quarantined",
+        "candidate_digest": "0d215eb3bc01afd96a624a847f7d9a05e6b23ff4f56cbe7d5deb6d131e6bf644",
+        "elapsed_seconds": 6.948176110000077,
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 999,
+          "validated_completion_tokens": 230,
+          "observed_model_seconds": 3.9929726700000856,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "server_reported_usage": {
+          "prompt_tokens": 999,
+          "total_tokens": 1229,
+          "completion_tokens": 230,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "finish_reason": "stop"
+      },
+      {
+        "atom_id": "version-diagnosis-r3-baseline",
+        "treatment": "baseline",
+        "status": "quarantined",
+        "candidate_digest": "6fa087670b292e83fadee37f52c3b16d32fa28dacf7e608aa4d400b4cda3e295",
+        "elapsed_seconds": 5.231096094999998,
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 956,
+          "validated_completion_tokens": 121,
+          "observed_model_seconds": 2.273383343999967,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "server_reported_usage": {
+          "prompt_tokens": 956,
+          "total_tokens": 1077,
+          "completion_tokens": 121,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        },
+        "finish_reason": "stop"
+      },
+      {
+        "atom_id": "version-diagnosis-r3-reasoning",
+        "treatment": "reasoning",
+        "status": "accepted",
+        "candidate_digest": "830439b7c1866552a0291904c764b96aa92ae50e6ffb1ffdcb7e66ea64c2b67f",
+        "elapsed_seconds": 59.362615092000055,
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 987,
+          "validated_completion_tokens": 3433,
+          "observed_model_seconds": 56.07182900300006,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "server_reported_usage": {
+          "prompt_tokens": 987,
+          "total_tokens": 4420,
+          "completion_tokens": 3433,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": {
+            "reasoning_tokens": 3253
+          }
+        },
+        "finish_reason": "stop"
+      }
+    ],
+    "supplemental_review": {
+      "input_count": 69,
+      "results": [
+        {
+          "candidate": "retained-bad",
+          "passed": false,
+          "execution_digest": "9121f19791fcf0c115438909a21f8b952c2c7d3343738e45da79660f6363ccae",
+          "source_digest": "0aa10e4504cd4bdf65792111d1e7d441aa00fcd6c52dbfc918a518de34de4477"
+        },
+        {
+          "candidate": "reference-control",
+          "passed": true,
+          "execution_digest": "0b2089d576e0cf4e835bdc04ca1719345bd7d3c39236a5ab78a1ac66a4aee1e7",
+          "source_digest": "54e01c16240ea0e8968993fecca72a8bca29ce5f4fbef1efc38eb9b7836b1adb"
+        },
+        {
+          "candidate": "version-diagnosis-r1-reasoning",
+          "passed": true,
+          "execution_digest": "b804807997833891ca7424a2b41952499ccd4ec6b0b1eaa2261db04116c5bf81",
+          "source_digest": "7b70cb8176568812bdfa80844c8664e9622a80e816ace55acf8481d7499672f0"
+        },
+        {
+          "candidate": "version-diagnosis-r1-contract-guidance",
+          "passed": true,
+          "execution_digest": "ce6677407adab53dc04569ac26e7b0e45686a83b353ffb5e15dde448e34e1cf9",
+          "source_digest": "26a775b3d895b8dd260013dc2a0131323c4a50c5d2ad9d510b1da4b4f956e46d"
+        },
+        {
+          "candidate": "version-diagnosis-r2-reasoning",
+          "passed": true,
+          "execution_digest": "6f9d7ab8f0cffe0d304871aab1098ae7d8d35777314e4617d63c219925feda8e",
+          "source_digest": "889ef33fcd25fab3d1a6889a3c0c61f62023143f89ec5265d9572287cbd9505c"
+        },
+        {
+          "candidate": "version-diagnosis-r2-contract-guidance",
+          "passed": true,
+          "execution_digest": "5e71a2656897a57c592343962702160afae31af1997f4eff50c5f0b3ad8d3054",
+          "source_digest": "e9a7e4e5b6e2b757ccca163457c07d4dbb09d849ed6653ed8d1bb40f52469108"
+        },
+        {
+          "candidate": "version-diagnosis-r3-reasoning",
+          "passed": true,
+          "execution_digest": "4a085e3bcf4b7c44a296c30e7b715fefdd48d4eda0eee21c52b914c5588fccc7",
+          "source_digest": "830439b7c1866552a0291904c764b96aa92ae50e6ffb1ffdcb7e66ea64c2b67f"
+        }
+      ]
+    }
+  },
+  "interruption": {
+    "evidence_directory": ".gflo/evidence/version-sort-comparison-4k-v1",
+    "completed_baselines": 1,
+    "interrupted_reasoning_attempts": 1,
+    "note": "Retained and reconciled; lost in-flight inference usage is unknown. This partial run is excluded from treatment success rates, not erased."
+  },
+  "scope": "Seen repair diagnosis only; guidance is human-authored, not autonomous decomposition; raw server usage on truncated responses is not validated worker usage."
+}

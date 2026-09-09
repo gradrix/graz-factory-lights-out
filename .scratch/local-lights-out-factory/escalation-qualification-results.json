@@ -1,0 +1,1007 @@
+{
+  "xhigh": {
+    "summary": {
+      "qualified": false,
+      "stopped_early": "Three completed failures make minimum 22/24 unreachable",
+      "runs": 15,
+      "verified": 12,
+      "unscored": 9,
+      "false_acceptances": [],
+      "note": "Interrupted usage may be incomplete. Gates and original results unchanged."
+    },
+    "manifest_sha256": "d9172225f498f4bd6002b3ec3f09f7c8be40b3696560968186d9fdc6df0d14e4",
+    "runs": [
+      {
+        "atom": "escalation-v1-r1-casefold-counts",
+        "category": "implementation",
+        "status": "accepted",
+        "attempts": 1,
+        "review": {
+          "passed": true,
+          "kind": "additional-input-review",
+          "case_count": 20,
+          "execution_digest": "287ac86e7ef161a761805faa50c4acd0fd2d4bba003492c04c713dcd1bedc537"
+        },
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 686,
+          "validated_completion_tokens": 76,
+          "observed_model_seconds": 1.6293274419999761,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "seconds": 5.872175888999891
+      },
+      {
+        "atom": "escalation-v1-r1-consecutive-groups",
+        "category": "implementation",
+        "status": "accepted",
+        "attempts": 1,
+        "review": {
+          "passed": true,
+          "kind": "additional-input-review",
+          "case_count": 20,
+          "execution_digest": "e2cb2ce9c63fa59017b16fe97dffe8ba08c76530475decf543c3dde9888d9c7e"
+        },
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 688,
+          "validated_completion_tokens": 101,
+          "observed_model_seconds": 1.9195251609999104,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "seconds": 6.00280072999999
+      },
+      {
+        "atom": "escalation-v1-r1-stable-top-k",
+        "category": "repair",
+        "status": "accepted",
+        "attempts": 1,
+        "review": {
+          "passed": true,
+          "kind": "additional-input-review",
+          "case_count": 20,
+          "execution_digest": "27336a39404d19c08ab469a106924d8eb33fdb5701ae3c08a191a9e0beecdc19"
+        },
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 703,
+          "validated_completion_tokens": 138,
+          "observed_model_seconds": 2.4662603019999096,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "seconds": 6.908111337000037
+      },
+      {
+        "atom": "escalation-v1-r1-ceiling-multiple",
+        "category": "repair",
+        "status": "accepted",
+        "attempts": 1,
+        "review": {
+          "passed": true,
+          "kind": "additional-input-review",
+          "case_count": 20,
+          "execution_digest": "cde05833da36c447b73a644c9d6066d8cba78325f6147d604669767bda618435"
+        },
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 694,
+          "validated_completion_tokens": 133,
+          "observed_model_seconds": 2.351961554000127,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "seconds": 6.4336270559999775
+      },
+      {
+        "atom": "escalation-v1-r1-keyword-lookup-pair",
+        "category": "migration",
+        "status": "accepted",
+        "attempts": 2,
+        "review": {
+          "passed": true,
+          "kind": "additional-input-review",
+          "case_count": 16,
+          "execution_digest": "2b62cebd6dc909a5c749a2a08ddccac9605e7c7317247477bd78f8dab4c12dfa"
+        },
+        "cost": {
+          "attempts": 2,
+          "model_observations": 2,
+          "validated_prompt_tokens": 920,
+          "validated_completion_tokens": 1358,
+          "observed_model_seconds": 22.848150583999995,
+          "observations_without_validated_usage": 1,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": false,
+          "timing_complete_for_recorded_observations": true
+        },
+        "seconds": 27.20715322000001
+      },
+      {
+        "atom": "escalation-v1-r1-generator-pages",
+        "category": "migration",
+        "status": "quarantined",
+        "attempts": 2,
+        "review": null,
+        "cost": {
+          "attempts": 2,
+          "model_observations": 2,
+          "validated_prompt_tokens": 740,
+          "validated_completion_tokens": 87,
+          "observed_model_seconds": 68.59050330100013,
+          "observations_without_validated_usage": 1,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": false,
+          "timing_complete_for_recorded_observations": true
+        },
+        "seconds": 70.59665426499987
+      },
+      {
+        "atom": "escalation-v1-r1-tests-divisible-three",
+        "category": "test-generation",
+        "status": "accepted",
+        "attempts": 1,
+        "review": {
+          "passed": true,
+          "kind": "independent-domain-and-oracle-review",
+          "case_count": 20
+        },
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 661,
+          "validated_completion_tokens": 356,
+          "observed_model_seconds": 6.006288687999813,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "seconds": 9.029014976000099
+      },
+      {
+        "atom": "escalation-v1-r1-tests-ascii-prefix",
+        "category": "test-generation",
+        "status": "quarantined",
+        "attempts": 2,
+        "review": null,
+        "cost": {
+          "attempts": 2,
+          "model_observations": 2,
+          "validated_prompt_tokens": 663,
+          "validated_completion_tokens": 412,
+          "observed_model_seconds": 73.78927176699995,
+          "observations_without_validated_usage": 1,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": false,
+          "timing_complete_for_recorded_observations": true
+        },
+        "seconds": 76.18449950500008
+      },
+      {
+        "atom": "escalation-v1-r2-casefold-counts",
+        "category": "implementation",
+        "status": "accepted",
+        "attempts": 1,
+        "review": {
+          "passed": true,
+          "kind": "additional-input-review",
+          "case_count": 20,
+          "execution_digest": "15a8bd333f50ac2a24fdefe1fdf60d50819c13d8c549dedf628829a098bf4337"
+        },
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 684,
+          "validated_completion_tokens": 63,
+          "observed_model_seconds": 1.273614261000148,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "seconds": 5.291481253000256
+      },
+      {
+        "atom": "escalation-v1-r2-consecutive-groups",
+        "category": "implementation",
+        "status": "accepted",
+        "attempts": 1,
+        "review": {
+          "passed": true,
+          "kind": "additional-input-review",
+          "case_count": 20,
+          "execution_digest": "6a5356556c08886f6272e22546c41a7c7cc483162eb1cb190b5f4f0747923ddf"
+        },
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 688,
+          "validated_completion_tokens": 101,
+          "observed_model_seconds": 1.9683762029999343,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "seconds": 6.016832528000123
+      },
+      {
+        "atom": "escalation-v1-r2-stable-top-k",
+        "category": "repair",
+        "status": "accepted",
+        "attempts": 1,
+        "review": {
+          "passed": true,
+          "kind": "additional-input-review",
+          "case_count": 20,
+          "execution_digest": "43ffa5d62f2d3a9f7a726260a915cefad0294bb9ce1d54c3a190780f442de1ae"
+        },
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 707,
+          "validated_completion_tokens": 137,
+          "observed_model_seconds": 2.497584506000294,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "seconds": 6.523419338000167
+      },
+      {
+        "atom": "escalation-v1-r2-ceiling-multiple",
+        "category": "repair",
+        "status": "accepted",
+        "attempts": 1,
+        "review": {
+          "passed": true,
+          "kind": "additional-input-review",
+          "case_count": 20,
+          "execution_digest": "93b6ef799461a02030b1c4fd46191fa5d17a822cfea474e4a793b97b44c30512"
+        },
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 694,
+          "validated_completion_tokens": 187,
+          "observed_model_seconds": 3.351893478999955,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "seconds": 7.3983114470001965
+      },
+      {
+        "atom": "escalation-v1-r2-keyword-lookup-pair",
+        "category": "migration",
+        "status": "accepted",
+        "attempts": 2,
+        "review": {
+          "passed": true,
+          "kind": "additional-input-review",
+          "case_count": 16,
+          "execution_digest": "63177dd1d70920446c8e84ba7389f1dea4a194b16be55bd273e5085ee2fa36f2"
+        },
+        "cost": {
+          "attempts": 2,
+          "model_observations": 2,
+          "validated_prompt_tokens": 922,
+          "validated_completion_tokens": 1136,
+          "observed_model_seconds": 19.26492641599998,
+          "observations_without_validated_usage": 1,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": false,
+          "timing_complete_for_recorded_observations": true
+        },
+        "seconds": 23.719636248999905
+      },
+      {
+        "atom": "escalation-v1-r2-generator-pages",
+        "category": "migration",
+        "status": "quarantined",
+        "attempts": 2,
+        "review": null,
+        "cost": {
+          "attempts": 2,
+          "model_observations": 2,
+          "validated_prompt_tokens": 909,
+          "validated_completion_tokens": 2976,
+          "observed_model_seconds": 49.30792340900007,
+          "observations_without_validated_usage": 1,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": false,
+          "timing_complete_for_recorded_observations": true
+        },
+        "seconds": 51.73079976600002
+      },
+      {
+        "atom": "escalation-v1-r2-tests-divisible-three",
+        "category": "test-generation",
+        "status": "accepted",
+        "attempts": 1,
+        "review": {
+          "passed": true,
+          "kind": "independent-domain-and-oracle-review",
+          "case_count": 20
+        },
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 662,
+          "validated_completion_tokens": 348,
+          "observed_model_seconds": 5.905044878999888,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "seconds": 8.924466644000404
+      }
+    ],
+    "interrupted_attempts": [
+      {
+        "atom": "escalation-v1-r2-tests-ascii-prefix",
+        "cost": {
+          "attempts": 2,
+          "model_observations": 2,
+          "validated_prompt_tokens": 661,
+          "validated_completion_tokens": 607,
+          "observed_model_seconds": 59.0171602559999,
+          "observations_without_validated_usage": 1,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": false,
+          "timing_complete_for_recorded_observations": true
+        }
+      }
+    ]
+  },
+  "low": {
+    "summary": {
+      "qualified": true,
+      "runs": 24,
+      "unscored": 0,
+      "verified": 23,
+      "per_class": {
+        "implementation": 6,
+        "repair": 6,
+        "migration": 6,
+        "test-generation": 5
+      },
+      "false_acceptances": [],
+      "source_drift": false,
+      "attempts": 32
+    },
+    "manifest_sha256": "8e1bdf4815a3f3a05db0f69686ec1a4207a22177d2245702b1a902bbf6395a12",
+    "runs": [
+      {
+        "atom": "escalation-v1-r1-casefold-counts",
+        "category": "implementation",
+        "status": "accepted",
+        "attempts": 1,
+        "review": {
+          "passed": true,
+          "kind": "additional-input-review",
+          "case_count": 20,
+          "execution_digest": "af03f6855afbf200ba20511de7c19378c72fe26dfe345c4731c14be8cc1bede0"
+        },
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 686,
+          "validated_completion_tokens": 76,
+          "observed_model_seconds": 1.6254707650000455,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "seconds": 5.798779556000227
+      },
+      {
+        "atom": "escalation-v1-r1-consecutive-groups",
+        "category": "implementation",
+        "status": "accepted",
+        "attempts": 1,
+        "review": {
+          "passed": true,
+          "kind": "additional-input-review",
+          "case_count": 20,
+          "execution_digest": "91cf38837f2904a89ffa9729f35d9a6bdaa086edd314a45312e5315731b99432"
+        },
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 688,
+          "validated_completion_tokens": 101,
+          "observed_model_seconds": 1.922046410999883,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "seconds": 6.002093760000207
+      },
+      {
+        "atom": "escalation-v1-r1-stable-top-k",
+        "category": "repair",
+        "status": "accepted",
+        "attempts": 1,
+        "review": {
+          "passed": true,
+          "kind": "additional-input-review",
+          "case_count": 20,
+          "execution_digest": "ba2a205d20e80cc0a871dbb45938054516ccf1c72b93312e389a78f10aa2652a"
+        },
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 703,
+          "validated_completion_tokens": 138,
+          "observed_model_seconds": 2.517680600999938,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "seconds": 6.523921932000121
+      },
+      {
+        "atom": "escalation-v1-r1-ceiling-multiple",
+        "category": "repair",
+        "status": "accepted",
+        "attempts": 1,
+        "review": {
+          "passed": true,
+          "kind": "additional-input-review",
+          "case_count": 20,
+          "execution_digest": "ded3aae34ea37bcbc2bf9eed5d50985422312d96109c234cf422314b1b76b042"
+        },
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 694,
+          "validated_completion_tokens": 133,
+          "observed_model_seconds": 2.444844586999807,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "seconds": 6.457686540000395
+      },
+      {
+        "atom": "escalation-v1-r1-keyword-lookup-pair",
+        "category": "migration",
+        "status": "accepted",
+        "attempts": 2,
+        "review": {
+          "passed": true,
+          "kind": "additional-input-review",
+          "case_count": 16,
+          "execution_digest": "02220f63fedb885e55522d28f99cd4eb9a871e95be7bcc1e1c2a27828e2f2fb6"
+        },
+        "cost": {
+          "attempts": 2,
+          "model_observations": 2,
+          "validated_prompt_tokens": 907,
+          "validated_completion_tokens": 802,
+          "observed_model_seconds": 13.75994920500034,
+          "observations_without_validated_usage": 1,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": false,
+          "timing_complete_for_recorded_observations": true
+        },
+        "seconds": 18.180744029999914
+      },
+      {
+        "atom": "escalation-v1-r1-generator-pages",
+        "category": "migration",
+        "status": "accepted",
+        "attempts": 2,
+        "review": {
+          "passed": true,
+          "kind": "additional-input-review",
+          "case_count": 20,
+          "execution_digest": "6c0fb5bbae2d0bd707d086413aa670e38e8fc240c4949b9e7d1800194f3c38c5"
+        },
+        "cost": {
+          "attempts": 2,
+          "model_observations": 2,
+          "validated_prompt_tokens": 2072,
+          "validated_completion_tokens": 686,
+          "observed_model_seconds": 11.693211945999792,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "seconds": 17.06409159299983
+      },
+      {
+        "atom": "escalation-v1-r1-tests-divisible-three",
+        "category": "test-generation",
+        "status": "accepted",
+        "attempts": 1,
+        "review": {
+          "passed": true,
+          "kind": "independent-domain-and-oracle-review",
+          "case_count": 20
+        },
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 661,
+          "validated_completion_tokens": 356,
+          "observed_model_seconds": 6.023568669999804,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "seconds": 9.034119726999961
+      },
+      {
+        "atom": "escalation-v1-r1-tests-ascii-prefix",
+        "category": "test-generation",
+        "status": "quarantined",
+        "attempts": 2,
+        "review": null,
+        "cost": {
+          "attempts": 2,
+          "model_observations": 2,
+          "validated_prompt_tokens": 1541,
+          "validated_completion_tokens": 1648,
+          "observed_model_seconds": 27.246851837000122,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "seconds": 30.3995557129997
+      },
+      {
+        "atom": "escalation-v1-r2-casefold-counts",
+        "category": "implementation",
+        "status": "accepted",
+        "attempts": 1,
+        "review": {
+          "passed": true,
+          "kind": "additional-input-review",
+          "case_count": 20,
+          "execution_digest": "65e26904851f4e5b14065af396552333c444b64c6e7ebdccbec6de10425ab178"
+        },
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 684,
+          "validated_completion_tokens": 63,
+          "observed_model_seconds": 1.2869018410001445,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "seconds": 5.323339658999885
+      },
+      {
+        "atom": "escalation-v1-r2-consecutive-groups",
+        "category": "implementation",
+        "status": "accepted",
+        "attempts": 1,
+        "review": {
+          "passed": true,
+          "kind": "additional-input-review",
+          "case_count": 20,
+          "execution_digest": "b42f7433d62ad0eb26f9f7ab92daf3fc11804bdfec2a309c006e5332ea66ff1f"
+        },
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 688,
+          "validated_completion_tokens": 101,
+          "observed_model_seconds": 1.986568883000018,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "seconds": 6.175102820999655
+      },
+      {
+        "atom": "escalation-v1-r2-stable-top-k",
+        "category": "repair",
+        "status": "accepted",
+        "attempts": 1,
+        "review": {
+          "passed": true,
+          "kind": "additional-input-review",
+          "case_count": 20,
+          "execution_digest": "7e3025e636bd0f145591accbabb98b88ac124b3b7b93e6e00f1567bcb77ba5ea"
+        },
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 707,
+          "validated_completion_tokens": 137,
+          "observed_model_seconds": 2.587149031000081,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "seconds": 6.902963129
+      },
+      {
+        "atom": "escalation-v1-r2-ceiling-multiple",
+        "category": "repair",
+        "status": "accepted",
+        "attempts": 1,
+        "review": {
+          "passed": true,
+          "kind": "additional-input-review",
+          "case_count": 20,
+          "execution_digest": "8980a733f1a594723ea0f5925785efbbfe6f3353ebf39c816d56408fa7979aa1"
+        },
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 694,
+          "validated_completion_tokens": 187,
+          "observed_model_seconds": 3.3387628360001145,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "seconds": 7.4022137319998365
+      },
+      {
+        "atom": "escalation-v1-r2-keyword-lookup-pair",
+        "category": "migration",
+        "status": "accepted",
+        "attempts": 2,
+        "review": {
+          "passed": true,
+          "kind": "additional-input-review",
+          "case_count": 16,
+          "execution_digest": "366299b4e2813638991ed7f6f843ce7d68c873dc75c720c67e218d013095491b"
+        },
+        "cost": {
+          "attempts": 2,
+          "model_observations": 2,
+          "validated_prompt_tokens": 910,
+          "validated_completion_tokens": 596,
+          "observed_model_seconds": 10.535515869999927,
+          "observations_without_validated_usage": 1,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": false,
+          "timing_complete_for_recorded_observations": true
+        },
+        "seconds": 14.898170338
+      },
+      {
+        "atom": "escalation-v1-r2-generator-pages",
+        "category": "migration",
+        "status": "accepted",
+        "attempts": 2,
+        "review": {
+          "passed": true,
+          "kind": "additional-input-review",
+          "case_count": 20,
+          "execution_digest": "5ad09f2766ddec7e0ff608548fb252ebfd99d2f1321222da05fe5df677105054"
+        },
+        "cost": {
+          "attempts": 2,
+          "model_observations": 2,
+          "validated_prompt_tokens": 896,
+          "validated_completion_tokens": 525,
+          "observed_model_seconds": 9.567351744000007,
+          "observations_without_validated_usage": 1,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": false,
+          "timing_complete_for_recorded_observations": true
+        },
+        "seconds": 14.155531070000052
+      },
+      {
+        "atom": "escalation-v1-r2-tests-divisible-three",
+        "category": "test-generation",
+        "status": "accepted",
+        "attempts": 1,
+        "review": {
+          "passed": true,
+          "kind": "independent-domain-and-oracle-review",
+          "case_count": 20
+        },
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 662,
+          "validated_completion_tokens": 348,
+          "observed_model_seconds": 6.039687789000254,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "seconds": 9.20605337699999
+      },
+      {
+        "atom": "escalation-v1-r2-tests-ascii-prefix",
+        "category": "test-generation",
+        "status": "accepted",
+        "attempts": 2,
+        "review": {
+          "passed": true,
+          "kind": "independent-domain-and-oracle-review",
+          "case_count": 20
+        },
+        "cost": {
+          "attempts": 2,
+          "model_observations": 2,
+          "validated_prompt_tokens": 1545,
+          "validated_completion_tokens": 2135,
+          "observed_model_seconds": 35.1226364690001,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "seconds": 39.3331236869999
+      },
+      {
+        "atom": "escalation-v1-r3-casefold-counts",
+        "category": "implementation",
+        "status": "accepted",
+        "attempts": 1,
+        "review": {
+          "passed": true,
+          "kind": "additional-input-review",
+          "case_count": 20,
+          "execution_digest": "dca79974ad027cc690e26101a41846ff0be83d6ebc7258d465906fb704b61d2c"
+        },
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 686,
+          "validated_completion_tokens": 63,
+          "observed_model_seconds": 1.3638383289999183,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "seconds": 5.397898836999957
+      },
+      {
+        "atom": "escalation-v1-r3-consecutive-groups",
+        "category": "implementation",
+        "status": "accepted",
+        "attempts": 1,
+        "review": {
+          "passed": true,
+          "kind": "additional-input-review",
+          "case_count": 20,
+          "execution_digest": "6752dfc89121f5900cedf27904ddfd849755206fa44b24a802d8c20efd792d88"
+        },
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 688,
+          "validated_completion_tokens": 90,
+          "observed_model_seconds": 1.8551773780000076,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "seconds": 5.917195551000077
+      },
+      {
+        "atom": "escalation-v1-r3-stable-top-k",
+        "category": "repair",
+        "status": "accepted",
+        "attempts": 1,
+        "review": {
+          "passed": true,
+          "kind": "additional-input-review",
+          "case_count": 20,
+          "execution_digest": "46a9ba3fb846906447488b7fff8293b4c24ea33be24160f59296882d6559c076"
+        },
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 706,
+          "validated_completion_tokens": 136,
+          "observed_model_seconds": 2.491657563999979,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "seconds": 6.509092186000089
+      },
+      {
+        "atom": "escalation-v1-r3-ceiling-multiple",
+        "category": "repair",
+        "status": "accepted",
+        "attempts": 1,
+        "review": {
+          "passed": true,
+          "kind": "additional-input-review",
+          "case_count": 20,
+          "execution_digest": "444850bcdeeffa6f6bf505d06dcfe8f2097ba83e6e6003a934f77248ffb4b6d8"
+        },
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 695,
+          "validated_completion_tokens": 601,
+          "observed_model_seconds": 10.007115573000192,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "seconds": 14.124722636000115
+      },
+      {
+        "atom": "escalation-v1-r3-keyword-lookup-pair",
+        "category": "migration",
+        "status": "accepted",
+        "attempts": 1,
+        "review": {
+          "passed": true,
+          "kind": "additional-input-review",
+          "case_count": 16,
+          "execution_digest": "6c5ffd9529df68e7bca8984ea8ebd0a02c1085e2db006a085828b498c780c18a"
+        },
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 748,
+          "validated_completion_tokens": 113,
+          "observed_model_seconds": 2.216284817000087,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "seconds": 6.5282178329998715
+      },
+      {
+        "atom": "escalation-v1-r3-generator-pages",
+        "category": "migration",
+        "status": "accepted",
+        "attempts": 2,
+        "review": {
+          "passed": true,
+          "kind": "additional-input-review",
+          "case_count": 20,
+          "execution_digest": "b09eb4918c5472f2d79a3d5ca2d371223c7ecfa78ab63c6898dc6db11b51ff9e"
+        },
+        "cost": {
+          "attempts": 2,
+          "model_observations": 2,
+          "validated_prompt_tokens": 898,
+          "validated_completion_tokens": 673,
+          "observed_model_seconds": 11.973845070000152,
+          "observations_without_validated_usage": 1,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": false,
+          "timing_complete_for_recorded_observations": true
+        },
+        "seconds": 16.5575144190002
+      },
+      {
+        "atom": "escalation-v1-r3-tests-divisible-three",
+        "category": "test-generation",
+        "status": "accepted",
+        "attempts": 1,
+        "review": {
+          "passed": true,
+          "kind": "independent-domain-and-oracle-review",
+          "case_count": 20
+        },
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 659,
+          "validated_completion_tokens": 335,
+          "observed_model_seconds": 5.7426071499999125,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "seconds": 8.713728683000227
+      },
+      {
+        "atom": "escalation-v1-r3-tests-ascii-prefix",
+        "category": "test-generation",
+        "status": "accepted",
+        "attempts": 2,
+        "review": {
+          "passed": true,
+          "kind": "independent-domain-and-oracle-review",
+          "case_count": 15
+        },
+        "cost": {
+          "attempts": 2,
+          "model_observations": 2,
+          "validated_prompt_tokens": 1537,
+          "validated_completion_tokens": 1662,
+          "observed_model_seconds": 27.438102060000347,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "seconds": 32.37514012499969
+      }
+    ]
+  },
+  "inventory_slice": {
+    "passed": true,
+    "stale_probes": [
+      "Integration base or dependency contract changed",
+      "Integration base or dependency contract changed"
+    ],
+    "restart_idempotent": true,
+    "finding_probe": "Accepted result has contradictory evidence; prepare new repair work",
+    "costs": {
+      "inventory-provider": {
+        "attempts": 1,
+        "model_observations": 1,
+        "validated_prompt_tokens": 1047,
+        "validated_completion_tokens": 207,
+        "observed_model_seconds": 3.749219581000034,
+        "observations_without_validated_usage": 0,
+        "observations_without_timing": 0,
+        "usage_complete_for_recorded_observations": true,
+        "timing_complete_for_recorded_observations": true
+      },
+      "inventory-main": {
+        "attempts": 1,
+        "model_observations": 1,
+        "validated_prompt_tokens": 1082,
+        "validated_completion_tokens": 89,
+        "observed_model_seconds": 1.7861649319997923,
+        "observations_without_validated_usage": 0,
+        "observations_without_timing": 0,
+        "usage_complete_for_recorded_observations": true,
+        "timing_complete_for_recorded_observations": true
+      },
+      "inventory-report": {
+        "attempts": 1,
+        "model_observations": 1,
+        "validated_prompt_tokens": 1107,
+        "validated_completion_tokens": 233,
+        "observed_model_seconds": 4.152237733999755,
+        "observations_without_validated_usage": 0,
+        "observations_without_timing": 0,
+        "usage_complete_for_recorded_observations": true,
+        "timing_complete_for_recorded_observations": true
+      }
+    },
+    "candidate_digest": "704b076eca46ac1d8856ff6d513fcaffc48db2a765f2745860c4343e3438f759",
+    "source_drift": false
+  }
+}

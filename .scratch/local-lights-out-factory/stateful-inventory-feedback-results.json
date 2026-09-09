@@ -1,0 +1,1963 @@
+{
+  "qualified": true,
+  "completed_builds": 3,
+  "completed_atoms": 30,
+  "failed_atom": null,
+  "build_reviews": [
+    {
+      "build": 1,
+      "candidate_digest": "543ce2122602c6e2ffc09e986618d25c6cdf42f0b84ee07e254dece96a9196ac",
+      "review": {
+        "passed": true,
+        "cases": [
+          {
+            "passed": true,
+            "execution_digest": "3a2a9efa95184c12750d8aa7162e133a959da5383e198e72641a52dd03afdbfe"
+          },
+          {
+            "passed": true,
+            "execution_digest": "0de3ed138809802885fb7e563de30db383f3a1b5cf0d557fd40fba97fef31e75"
+          },
+          {
+            "passed": true,
+            "execution_digest": "c308ef6684468f4c26184fe3aaf1832c6f956b4952129e6a735be23de25cc38f"
+          },
+          {
+            "passed": true,
+            "execution_digest": "62e3f503190ed19b966c9617665fa6d1db096de62a87e05a760a37ff5da440db"
+          },
+          {
+            "passed": true,
+            "execution_digest": "f4cf68781aa6ebafdd615dc2398ecc524ea79f56ff1ccb27fc6ee27fe0bf2927"
+          },
+          {
+            "passed": true,
+            "execution_digest": "c23f0f515403ae3596160e2e7f10930dd157d087ba1bd82de416db897191fd3f"
+          }
+        ]
+      }
+    },
+    {
+      "build": 2,
+      "candidate_digest": "a6bde2c27aafe6acf7dd77e20b9b2a776b5d01dceed0510b943313370365b78f",
+      "review": {
+        "passed": true,
+        "cases": [
+          {
+            "passed": true,
+            "execution_digest": "02cfa0889ee9546bc5e7c5506a6f560478d84aa49125599da36f75f9f3d923ba"
+          },
+          {
+            "passed": true,
+            "execution_digest": "22871461db390de66aeac8e73f792dca9745ecbc55eb9ead6fb735c166ed010e"
+          },
+          {
+            "passed": true,
+            "execution_digest": "59bc38f5ca3efd182c8f94c791b8b90511c4420d875aba2e7e37a49f025e37f9"
+          },
+          {
+            "passed": true,
+            "execution_digest": "6316fa42307a602c993c43762cc8eb9292a34a0bc91877bc72877b9c673625cf"
+          },
+          {
+            "passed": true,
+            "execution_digest": "aef0175569cd27576796274b254116085d65428dee6c8ecc2732fc15caf0b211"
+          },
+          {
+            "passed": true,
+            "execution_digest": "e5babac67a89768a8adcd6e2e5d208c7975c69e10ecc47d54f24beff6aaf43cc"
+          }
+        ]
+      }
+    },
+    {
+      "build": 3,
+      "candidate_digest": "26e3dbc2ee6495c23675677267b09390a6969319055ff19902d0cdfd3163c222",
+      "review": {
+        "passed": true,
+        "cases": [
+          {
+            "passed": true,
+            "execution_digest": "2eb68c608a047352b24b4da5290fdde9fb4b9e7fb750496bd19a9b7847446b1a"
+          },
+          {
+            "passed": true,
+            "execution_digest": "ea117922fcbe6a7cf8ccd0088922421b91419f0b04e9a0fdc867793dd2043dc5"
+          },
+          {
+            "passed": true,
+            "execution_digest": "20511c85f2cc0df0a750c0d0568015a2c321d88429e3a89fbf6087a7deeba924"
+          },
+          {
+            "passed": true,
+            "execution_digest": "9cead04f1d380ebab19c2e714f4523c402e1428817d8d1b69901b6ee72dda069"
+          },
+          {
+            "passed": true,
+            "execution_digest": "0aa0f7c89ba269ae2ffc85082ffbc960fea52a407907acf21ca35378e3f14fc4"
+          },
+          {
+            "passed": true,
+            "execution_digest": "e2ebbda0cb6aada46cf4b6f39c11772855fe4ef300920575051b9367a1d70a26"
+          }
+        ]
+      }
+    }
+  ],
+  "source_drift": false,
+  "attempts": 32,
+  "audit": {
+    "missing": [],
+    "corrupt": [],
+    "staging": []
+  },
+  "unreferenced_artifact_count": 365,
+  "cost_totals": {
+    "attempts": 32,
+    "model_observations": 33,
+    "validated_prompt_tokens": 59084,
+    "validated_completion_tokens": 12878,
+    "observed_model_seconds": 219.50853466799708,
+    "observations_without_validated_usage": 0
+  },
+  "boundary_reviews": [
+    {
+      "build": 1,
+      "candidate_digest": "543ce2122602c6e2ffc09e986618d25c6cdf42f0b84ee07e254dece96a9196ac",
+      "review": {
+        "passed": true,
+        "cases": [
+          {
+            "passed": true,
+            "execution_digest": "8dcc8a0da52c84bec16a1e78595322fb95400c6abe5ba3b392814e06634cf44e"
+          },
+          {
+            "passed": true,
+            "execution_digest": "4f8eb75245a48edf5a9085599f26627ce4e83f9dfc6c81ebe7369190607d65a3"
+          },
+          {
+            "passed": true,
+            "execution_digest": "df100e182a71935cd0c958acdb23b2d2afa4a4bab36cfb55ba509ba4484f5365"
+          }
+        ]
+      }
+    },
+    {
+      "build": 2,
+      "candidate_digest": "a6bde2c27aafe6acf7dd77e20b9b2a776b5d01dceed0510b943313370365b78f",
+      "review": {
+        "passed": true,
+        "cases": [
+          {
+            "passed": true,
+            "execution_digest": "430ca40fc2219743845f3c3f660c56ef6fa66405e26fc8d215540b53123b33c3"
+          },
+          {
+            "passed": true,
+            "execution_digest": "eb0b76e8aee9c006b088fb809c77ce4bddb31c51b6b7f5a2b4a373c362a4ffe4"
+          },
+          {
+            "passed": true,
+            "execution_digest": "52db98b9ce3966b8503005edc68ef924fdc8cf3b70793e9447f9866cc44fdfb7"
+          }
+        ]
+      }
+    },
+    {
+      "build": 3,
+      "candidate_digest": "26e3dbc2ee6495c23675677267b09390a6969319055ff19902d0cdfd3163c222",
+      "review": {
+        "passed": true,
+        "cases": [
+          {
+            "passed": true,
+            "execution_digest": "f68bbeb4f482d0053ee93e87024f64ee35295b9557de44aaa3cf06246dd7c4a9"
+          },
+          {
+            "passed": true,
+            "execution_digest": "213091ba0ad4c4fb8f8d4a9c6ff95fc7cd50ae3ad3094b61022de4e9eff112fa"
+          },
+          {
+            "passed": true,
+            "execution_digest": "fca113c3adf3d10bde9d3328caef389f2e132bbfd1ea486b8318ee938902bda5"
+          }
+        ]
+      }
+    }
+  ],
+  "manifest": {
+    "scope": "Three ten-step stateful prepared builds; trusted harness advances source bases, not autonomous product planning",
+    "policy": {
+      "builds": 3,
+      "atoms_per_build": 10,
+      "attempts_per_atom": 2,
+      "model_turns_per_attempt": 3,
+      "maximum_model_turns": 180,
+      "profile": "vllm-python-worker-escalating-tools-v1",
+      "context": 8192,
+      "first_output": 2048,
+      "retry_output": 4096,
+      "required_complete_builds": 3,
+      "maximum_false_acceptances": 0,
+      "stop_on_first_failed_build": true
+    },
+    "base": {
+      "quantities.py": "def require_stock(value): return value\ndef require_quantity(value): return value\n",
+      "storage.py": "import sqlite3\n\ndef connect(path):\n    conn = sqlite3.connect(\":memory:\")\n    conn.row_factory = sqlite3.Row\n    conn.execute('PRAGMA foreign_keys=ON')\n    conn.executescript(\"\"\"\n        CREATE TABLE IF NOT EXISTS items(sku TEXT PRIMARY KEY, stock INTEGER NOT NULL CHECK(stock>=0));\n        CREATE TABLE IF NOT EXISTS reservations(request_id TEXT PRIMARY KEY, sku TEXT NOT NULL REFERENCES items(sku), quantity INTEGER NOT NULL CHECK(quantity>0), status TEXT NOT NULL CHECK(status IN ('active','cancelled')));\n        CREATE TABLE IF NOT EXISTS events(seq INTEGER PRIMARY KEY AUTOINCREMENT, kind TEXT NOT NULL, request_id TEXT NOT NULL, quantity INTEGER NOT NULL);\n    \"\"\")\n    return conn\n",
+      "requests.py": "def existing(conn,request_id,sku,quantity): return None\n",
+      "reserve.py": "def reserve(conn,request_id,sku,quantity): raise NotImplementedError\n",
+      "cancel.py": "def cancel(conn,request_id): raise NotImplementedError\n",
+      "reports.py": "def summary(path): return {\"available\":0,\"reserved\":0}\n",
+      "audit.py": "def export(conn): return []\n",
+      "cli.py": "print(\"{}\")\n"
+    },
+    "contract": "Stateful inventory contracts v1. Use only the Python standard library.\nquantities.require_stock(x) returns x for exact integers 0..1_000_000_000; require_quantity(x)\nreturns x for exact integers 1..1_000_000_000. Booleans and all other values raise ValueError.\nstorage.connect(path) returns an open SQLite connection with sqlite3.Row rows, foreign keys\non and the declared tables. It must preserve committed data across connections/processes.\nitems(sku TEXT PRIMARY KEY,stock INTEGER NOT NULL CHECK(stock>=0)); reservations(request_id\nTEXT PRIMARY KEY,sku TEXT REFERENCES items(sku),quantity INTEGER CHECK(quantity>0),status\nTEXT either active or cancelled); events(seq INTEGER PRIMARY KEY AUTOINCREMENT,kind TEXT,\nrequest_id TEXT,quantity INTEGER). A fresh path creates those tables; existing data survives.\nrequests.existing(conn,id,sku,q) returns None for an unused ID, a dict with request_id,sku,\nquantity,status for the same payload even if cancelled, or raises ValueError for a changed\nsku or quantity. reserve.reserve(conn,id,sku,q) returns that record and uses the quantities\nand requests helpers. Require nonempty string IDs/SKUs, valid quantity, and enough stock.\nA new reservation atomically decrements items.stock, inserts an active reservation and one\nreserve event. Replays return the existing record without stock/event changes. Invalid\nrequests raise ValueError and leave all state unchanged. Transactions must serialize\ncompeting reservations (BEGIN IMMEDIATE). Callers supply an idle connection.\ncancel.cancel(conn,id) refunds an active reservation exactly once, marks it cancelled and\nadds one cancel event; repeated cancellation returns the cancelled record with no effects.\nUnknown IDs raise ValueError. Both operations own and finish their transactions.\nreports.summary(path) returns {available:sum(items.stock),reserved:sum(active quantities)};\nempty sums are zero. audit.export(conn) returns event dicts with exactly seq, kind, request_id, quantity,\nincluding the seq field in every returned dict, in increasing seq order.\nCLI: python cli.py DB_PATH, one JSON object on stdin, one JSON value plus newline on stdout.\nOperations: create {sku,stock} -> {sku,stock}; reserve {request_id,sku,quantity} -> reservation\nrecord; cancel {request_id} -> cancelled record; report -> summary; audit -> event list.\nInvalid operations/payloads and duplicate SKU creation return {error:\"invalid\"}. CLI must\nuse the supplied domain functions; errors must not partially change persistent state.\n",
+    "steps": [
+      [
+        "quantities",
+        [
+          "quantities.py"
+        ],
+        [
+          "quantities.py"
+        ],
+        "Implement the two exact integer validators in quantities.py.",
+        [
+          [
+            [
+              "python",
+              "-c",
+              "import json,quantities\nx=json.load(__import__('sys').stdin); out=[]\nfor v in x['values']:\n try: out.append({'value':getattr(quantities,x['function'])(v)})\n except ValueError: out.append({'error':'invalid'})\nprint(json.dumps(out,sort_keys=True))\n"
+            ],
+            {
+              "function": "require_stock",
+              "values": [
+                -1,
+                0,
+                1,
+                1000000000,
+                1000000001,
+                true,
+                false,
+                1.0,
+                "1",
+                null
+              ]
+            },
+            [
+              {
+                "error": "invalid"
+              },
+              {
+                "value": 0
+              },
+              {
+                "value": 1
+              },
+              {
+                "value": 1000000000
+              },
+              {
+                "error": "invalid"
+              },
+              {
+                "error": "invalid"
+              },
+              {
+                "error": "invalid"
+              },
+              {
+                "error": "invalid"
+              },
+              {
+                "error": "invalid"
+              },
+              {
+                "error": "invalid"
+              }
+            ]
+          ],
+          [
+            [
+              "python",
+              "-c",
+              "import json,quantities\nx=json.load(__import__('sys').stdin); out=[]\nfor v in x['values']:\n try: out.append({'value':getattr(quantities,x['function'])(v)})\n except ValueError: out.append({'error':'invalid'})\nprint(json.dumps(out,sort_keys=True))\n"
+            ],
+            {
+              "function": "require_quantity",
+              "values": [
+                -1,
+                0,
+                1,
+                1000000000,
+                1000000001,
+                true,
+                false,
+                1.0,
+                "1",
+                null
+              ]
+            },
+            [
+              {
+                "error": "invalid"
+              },
+              {
+                "error": "invalid"
+              },
+              {
+                "value": 1
+              },
+              {
+                "value": 1000000000
+              },
+              {
+                "error": "invalid"
+              },
+              {
+                "error": "invalid"
+              },
+              {
+                "error": "invalid"
+              },
+              {
+                "error": "invalid"
+              },
+              {
+                "error": "invalid"
+              },
+              {
+                "error": "invalid"
+              }
+            ]
+          ]
+        ]
+      ],
+      [
+        "storage",
+        [
+          "storage.py"
+        ],
+        [
+          "storage.py"
+        ],
+        "Fix storage.connect so committed state persists at the supplied path, preserving the schema and row/foreign-key settings.",
+        [
+          [
+            [
+              "python",
+              "-c",
+              "import json,storage\nconnect=getattr(storage,__import__('sys').argv[1])\na=connect('store.db'); a.execute(\"INSERT INTO items VALUES('A',11)\"); a.commit(); a.close()\nb=connect('store.db'); row=b.execute(\"SELECT stock FROM items WHERE sku='A'\").fetchone()\nprint(json.dumps({'stock':None if row is None else row['stock'],'foreign_keys':b.execute('PRAGMA foreign_keys').fetchone()[0],'legacy_present':hasattr(storage,'connect')},sort_keys=True)); b.close()\n",
+              "connect"
+            ],
+            null,
+            {
+              "stock": 11,
+              "foreign_keys": 1,
+              "legacy_present": true
+            }
+          ]
+        ]
+      ],
+      [
+        "requests",
+        [
+          "requests.py"
+        ],
+        [
+          "requests.py",
+          "storage.py"
+        ],
+        "Implement existing() so exact request replays return the persisted record, including cancelled status, and changed payloads raise ValueError.",
+        [
+          [
+            [
+              "python",
+              "-c",
+              "import json,storage,requests\nc=storage.connect('store.db')\nc.execute(\"INSERT INTO items VALUES('A',7)\")\nc.execute(\"INSERT INTO reservations VALUES('active','A',3,'active')\")\nc.execute(\"INSERT INTO reservations VALUES('cancelled','A',2,'cancelled')\")\nc.commit(); out=[]\nfor args in json.load(__import__('sys').stdin):\n try: out.append(requests.existing(c,*args))\n except ValueError: out.append({'error':'invalid'})\nprint(json.dumps({'results':out,'stock':c.execute(\"SELECT stock FROM items WHERE sku='A'\").fetchone()[0],'rows':c.execute('SELECT COUNT(*) FROM reservations').fetchone()[0]},sort_keys=True)); c.close()\n"
+            ],
+            [
+              [
+                "missing",
+                "A",
+                3
+              ],
+              [
+                "active",
+                "A",
+                3
+              ],
+              [
+                "cancelled",
+                "A",
+                2
+              ],
+              [
+                "active",
+                "A",
+                4
+              ],
+              [
+                "active",
+                "B",
+                3
+              ]
+            ],
+            {
+              "results": [
+                null,
+                {
+                  "request_id": "active",
+                  "sku": "A",
+                  "quantity": 3,
+                  "status": "active"
+                },
+                {
+                  "request_id": "cancelled",
+                  "sku": "A",
+                  "quantity": 2,
+                  "status": "cancelled"
+                },
+                {
+                  "error": "invalid"
+                },
+                {
+                  "error": "invalid"
+                }
+              ],
+              "stock": 7,
+              "rows": 2
+            }
+          ]
+        ]
+      ],
+      [
+        "reserve",
+        [
+          "reserve.py"
+        ],
+        [
+          "reserve.py",
+          "requests.py",
+          "quantities.py"
+        ],
+        "Implement atomic reserve() using the quantities and requests helpers and the declared SQLite schema. Use BEGIN IMMEDIATE. Invalid requests must raise ValueError without effects.",
+        [
+          [
+            [
+              "python",
+              "-c",
+              "import json,sys,storage,reserve,cancel,reports,audit\nx=json.load(sys.stdin); c=storage.connect('store.db'); out=[]\nfor op in x['operations']:\n try:\n  if op['op']=='create':\n   with c: c.execute('INSERT INTO items VALUES(?,?)',(op['sku'],op['stock']))\n   r={'sku':op['sku'],'stock':op['stock']}\n  elif op['op']=='reserve': r=reserve.reserve(c,op['request_id'],op['sku'],op['quantity'])\n  elif op['op']=='cancel': r=cancel.cancel(c,op['request_id'])\n  else: raise ValueError('invalid')\n except ValueError: r={'error':'invalid'}\n out.append(r)\nr={'responses':out,'items':[dict(v) for v in c.execute('SELECT * FROM items ORDER BY sku')], 'reservations':[dict(v) for v in c.execute('SELECT * FROM reservations ORDER BY request_id')], 'events':[dict(v) for v in c.execute('SELECT * FROM events ORDER BY seq')]}\nif x.get('report'): r['report']=reports.summary('store.db')\nif x.get('audit'): r['audit']=audit.export(c)\nc.close(); print(json.dumps(r,sort_keys=True))\n"
+            ],
+            {
+              "operations": [
+                {
+                  "op": "create",
+                  "sku": "A",
+                  "stock": 10
+                },
+                {
+                  "op": "reserve",
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3
+                },
+                {
+                  "op": "reserve",
+                  "request_id": "too-much",
+                  "sku": "A",
+                  "quantity": 8
+                },
+                {
+                  "op": "reserve",
+                  "request_id": "r2",
+                  "sku": "A",
+                  "quantity": 2
+                }
+              ],
+              "report": false,
+              "audit": false
+            },
+            {
+              "responses": [
+                {
+                  "sku": "A",
+                  "stock": 10
+                },
+                {
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3,
+                  "status": "active"
+                },
+                {
+                  "error": "invalid"
+                },
+                {
+                  "request_id": "r2",
+                  "sku": "A",
+                  "quantity": 2,
+                  "status": "active"
+                }
+              ],
+              "items": [
+                {
+                  "sku": "A",
+                  "stock": 5
+                }
+              ],
+              "reservations": [
+                {
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3,
+                  "status": "active"
+                },
+                {
+                  "request_id": "r2",
+                  "sku": "A",
+                  "quantity": 2,
+                  "status": "active"
+                }
+              ],
+              "events": [
+                {
+                  "seq": 1,
+                  "kind": "reserve",
+                  "request_id": "r1",
+                  "quantity": 3
+                },
+                {
+                  "seq": 2,
+                  "kind": "reserve",
+                  "request_id": "r2",
+                  "quantity": 2
+                }
+              ]
+            }
+          ],
+          [
+            [
+              "python",
+              "-c",
+              "import json,sys,storage,reserve,cancel,reports,audit\nx=json.load(sys.stdin); c=storage.connect('store.db'); out=[]\nfor op in x['operations']:\n try:\n  if op['op']=='create':\n   with c: c.execute('INSERT INTO items VALUES(?,?)',(op['sku'],op['stock']))\n   r={'sku':op['sku'],'stock':op['stock']}\n  elif op['op']=='reserve': r=reserve.reserve(c,op['request_id'],op['sku'],op['quantity'])\n  elif op['op']=='cancel': r=cancel.cancel(c,op['request_id'])\n  else: raise ValueError('invalid')\n except ValueError: r={'error':'invalid'}\n out.append(r)\nr={'responses':out,'items':[dict(v) for v in c.execute('SELECT * FROM items ORDER BY sku')], 'reservations':[dict(v) for v in c.execute('SELECT * FROM reservations ORDER BY request_id')], 'events':[dict(v) for v in c.execute('SELECT * FROM events ORDER BY seq')]}\nif x.get('report'): r['report']=reports.summary('store.db')\nif x.get('audit'): r['audit']=audit.export(c)\nc.close(); print(json.dumps(r,sort_keys=True))\n"
+            ],
+            {
+              "operations": [
+                {
+                  "op": "create",
+                  "sku": "Z",
+                  "stock": 0
+                },
+                {
+                  "op": "reserve",
+                  "request_id": "x",
+                  "sku": "Z",
+                  "quantity": 1
+                }
+              ],
+              "report": false,
+              "audit": false
+            },
+            {
+              "responses": [
+                {
+                  "sku": "Z",
+                  "stock": 0
+                },
+                {
+                  "error": "invalid"
+                }
+              ],
+              "items": [
+                {
+                  "sku": "Z",
+                  "stock": 0
+                }
+              ],
+              "reservations": [],
+              "events": []
+            }
+          ]
+        ]
+      ],
+      [
+        "cancel",
+        [
+          "cancel.py"
+        ],
+        [
+          "cancel.py",
+          "reserve.py"
+        ],
+        "Implement atomic cancellation, refunding stock and appending a cancel event exactly once. Repeated cancellation returns the same cancelled record.",
+        [
+          [
+            [
+              "python",
+              "-c",
+              "import json,sys,storage,reserve,cancel,reports,audit\nx=json.load(sys.stdin); c=storage.connect('store.db'); out=[]\nfor op in x['operations']:\n try:\n  if op['op']=='create':\n   with c: c.execute('INSERT INTO items VALUES(?,?)',(op['sku'],op['stock']))\n   r={'sku':op['sku'],'stock':op['stock']}\n  elif op['op']=='reserve': r=reserve.reserve(c,op['request_id'],op['sku'],op['quantity'])\n  elif op['op']=='cancel': r=cancel.cancel(c,op['request_id'])\n  else: raise ValueError('invalid')\n except ValueError: r={'error':'invalid'}\n out.append(r)\nr={'responses':out,'items':[dict(v) for v in c.execute('SELECT * FROM items ORDER BY sku')], 'reservations':[dict(v) for v in c.execute('SELECT * FROM reservations ORDER BY request_id')], 'events':[dict(v) for v in c.execute('SELECT * FROM events ORDER BY seq')]}\nif x.get('report'): r['report']=reports.summary('store.db')\nif x.get('audit'): r['audit']=audit.export(c)\nc.close(); print(json.dumps(r,sort_keys=True))\n"
+            ],
+            {
+              "operations": [
+                {
+                  "op": "create",
+                  "sku": "A",
+                  "stock": 10
+                },
+                {
+                  "op": "reserve",
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3
+                },
+                {
+                  "op": "reserve",
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3
+                },
+                {
+                  "op": "reserve",
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 4
+                },
+                {
+                  "op": "reserve",
+                  "request_id": "too-much",
+                  "sku": "A",
+                  "quantity": 8
+                },
+                {
+                  "op": "cancel",
+                  "request_id": "r1"
+                },
+                {
+                  "op": "cancel",
+                  "request_id": "r1"
+                },
+                {
+                  "op": "reserve",
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3
+                },
+                {
+                  "op": "reserve",
+                  "request_id": "r2",
+                  "sku": "A",
+                  "quantity": 10
+                },
+                {
+                  "op": "create",
+                  "sku": "B",
+                  "stock": 0
+                },
+                {
+                  "op": "reserve",
+                  "request_id": "bad",
+                  "sku": "A",
+                  "quantity": true
+                },
+                {
+                  "op": "cancel",
+                  "request_id": "missing"
+                }
+              ],
+              "report": false,
+              "audit": false
+            },
+            {
+              "responses": [
+                {
+                  "sku": "A",
+                  "stock": 10
+                },
+                {
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3,
+                  "status": "active"
+                },
+                {
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3,
+                  "status": "active"
+                },
+                {
+                  "error": "invalid"
+                },
+                {
+                  "error": "invalid"
+                },
+                {
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3,
+                  "status": "cancelled"
+                },
+                {
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3,
+                  "status": "cancelled"
+                },
+                {
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3,
+                  "status": "cancelled"
+                },
+                {
+                  "request_id": "r2",
+                  "sku": "A",
+                  "quantity": 10,
+                  "status": "active"
+                },
+                {
+                  "sku": "B",
+                  "stock": 0
+                },
+                {
+                  "error": "invalid"
+                },
+                {
+                  "error": "invalid"
+                }
+              ],
+              "items": [
+                {
+                  "sku": "A",
+                  "stock": 0
+                },
+                {
+                  "sku": "B",
+                  "stock": 0
+                }
+              ],
+              "reservations": [
+                {
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3,
+                  "status": "cancelled"
+                },
+                {
+                  "request_id": "r2",
+                  "sku": "A",
+                  "quantity": 10,
+                  "status": "active"
+                }
+              ],
+              "events": [
+                {
+                  "seq": 1,
+                  "kind": "reserve",
+                  "request_id": "r1",
+                  "quantity": 3
+                },
+                {
+                  "seq": 2,
+                  "kind": "cancel",
+                  "request_id": "r1",
+                  "quantity": 3
+                },
+                {
+                  "seq": 3,
+                  "kind": "reserve",
+                  "request_id": "r2",
+                  "quantity": 10
+                }
+              ]
+            }
+          ]
+        ]
+      ],
+      [
+        "reports",
+        [
+          "reports.py"
+        ],
+        [
+          "reports.py",
+          "storage.py"
+        ],
+        "Implement summary(path) with persistent aggregate available and active-reserved counts; close its connection.",
+        [
+          [
+            [
+              "python",
+              "-c",
+              "import json,sys,storage,reserve,cancel,reports,audit\nx=json.load(sys.stdin); c=storage.connect('store.db'); out=[]\nfor op in x['operations']:\n try:\n  if op['op']=='create':\n   with c: c.execute('INSERT INTO items VALUES(?,?)',(op['sku'],op['stock']))\n   r={'sku':op['sku'],'stock':op['stock']}\n  elif op['op']=='reserve': r=reserve.reserve(c,op['request_id'],op['sku'],op['quantity'])\n  elif op['op']=='cancel': r=cancel.cancel(c,op['request_id'])\n  else: raise ValueError('invalid')\n except ValueError: r={'error':'invalid'}\n out.append(r)\nr={'responses':out,'items':[dict(v) for v in c.execute('SELECT * FROM items ORDER BY sku')], 'reservations':[dict(v) for v in c.execute('SELECT * FROM reservations ORDER BY request_id')], 'events':[dict(v) for v in c.execute('SELECT * FROM events ORDER BY seq')]}\nif x.get('report'): r['report']=reports.summary('store.db')\nif x.get('audit'): r['audit']=audit.export(c)\nc.close(); print(json.dumps(r,sort_keys=True))\n"
+            ],
+            {
+              "operations": [
+                {
+                  "op": "create",
+                  "sku": "A",
+                  "stock": 10
+                },
+                {
+                  "op": "reserve",
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3
+                },
+                {
+                  "op": "reserve",
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3
+                },
+                {
+                  "op": "reserve",
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 4
+                },
+                {
+                  "op": "reserve",
+                  "request_id": "too-much",
+                  "sku": "A",
+                  "quantity": 8
+                },
+                {
+                  "op": "cancel",
+                  "request_id": "r1"
+                },
+                {
+                  "op": "cancel",
+                  "request_id": "r1"
+                },
+                {
+                  "op": "reserve",
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3
+                },
+                {
+                  "op": "reserve",
+                  "request_id": "r2",
+                  "sku": "A",
+                  "quantity": 10
+                },
+                {
+                  "op": "create",
+                  "sku": "B",
+                  "stock": 0
+                },
+                {
+                  "op": "reserve",
+                  "request_id": "bad",
+                  "sku": "A",
+                  "quantity": true
+                },
+                {
+                  "op": "cancel",
+                  "request_id": "missing"
+                }
+              ],
+              "report": true,
+              "audit": false
+            },
+            {
+              "responses": [
+                {
+                  "sku": "A",
+                  "stock": 10
+                },
+                {
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3,
+                  "status": "active"
+                },
+                {
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3,
+                  "status": "active"
+                },
+                {
+                  "error": "invalid"
+                },
+                {
+                  "error": "invalid"
+                },
+                {
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3,
+                  "status": "cancelled"
+                },
+                {
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3,
+                  "status": "cancelled"
+                },
+                {
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3,
+                  "status": "cancelled"
+                },
+                {
+                  "request_id": "r2",
+                  "sku": "A",
+                  "quantity": 10,
+                  "status": "active"
+                },
+                {
+                  "sku": "B",
+                  "stock": 0
+                },
+                {
+                  "error": "invalid"
+                },
+                {
+                  "error": "invalid"
+                }
+              ],
+              "items": [
+                {
+                  "sku": "A",
+                  "stock": 0
+                },
+                {
+                  "sku": "B",
+                  "stock": 0
+                }
+              ],
+              "reservations": [
+                {
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3,
+                  "status": "cancelled"
+                },
+                {
+                  "request_id": "r2",
+                  "sku": "A",
+                  "quantity": 10,
+                  "status": "active"
+                }
+              ],
+              "events": [
+                {
+                  "seq": 1,
+                  "kind": "reserve",
+                  "request_id": "r1",
+                  "quantity": 3
+                },
+                {
+                  "seq": 2,
+                  "kind": "cancel",
+                  "request_id": "r1",
+                  "quantity": 3
+                },
+                {
+                  "seq": 3,
+                  "kind": "reserve",
+                  "request_id": "r2",
+                  "quantity": 10
+                }
+              ],
+              "report": {
+                "available": 0,
+                "reserved": 10
+              }
+            }
+          ],
+          [
+            [
+              "python",
+              "-c",
+              "import json,sys,storage,reserve,cancel,reports,audit\nx=json.load(sys.stdin); c=storage.connect('store.db'); out=[]\nfor op in x['operations']:\n try:\n  if op['op']=='create':\n   with c: c.execute('INSERT INTO items VALUES(?,?)',(op['sku'],op['stock']))\n   r={'sku':op['sku'],'stock':op['stock']}\n  elif op['op']=='reserve': r=reserve.reserve(c,op['request_id'],op['sku'],op['quantity'])\n  elif op['op']=='cancel': r=cancel.cancel(c,op['request_id'])\n  else: raise ValueError('invalid')\n except ValueError: r={'error':'invalid'}\n out.append(r)\nr={'responses':out,'items':[dict(v) for v in c.execute('SELECT * FROM items ORDER BY sku')], 'reservations':[dict(v) for v in c.execute('SELECT * FROM reservations ORDER BY request_id')], 'events':[dict(v) for v in c.execute('SELECT * FROM events ORDER BY seq')]}\nif x.get('report'): r['report']=reports.summary('store.db')\nif x.get('audit'): r['audit']=audit.export(c)\nc.close(); print(json.dumps(r,sort_keys=True))\n"
+            ],
+            {
+              "operations": [],
+              "report": true,
+              "audit": false
+            },
+            {
+              "responses": [],
+              "items": [],
+              "reservations": [],
+              "events": [],
+              "report": {
+                "available": 0,
+                "reserved": 0
+              }
+            }
+          ]
+        ]
+      ],
+      [
+        "audit",
+        [
+          "audit.py"
+        ],
+        [
+          "audit.py"
+        ],
+        "Implement export(conn) returning every event as a dict with exactly seq, kind, request_id, quantity. Include seq in each returned dict and order by ascending seq.",
+        [
+          [
+            [
+              "python",
+              "-c",
+              "import json,sys,storage,reserve,cancel,reports,audit\nx=json.load(sys.stdin); c=storage.connect('store.db'); out=[]\nfor op in x['operations']:\n try:\n  if op['op']=='create':\n   with c: c.execute('INSERT INTO items VALUES(?,?)',(op['sku'],op['stock']))\n   r={'sku':op['sku'],'stock':op['stock']}\n  elif op['op']=='reserve': r=reserve.reserve(c,op['request_id'],op['sku'],op['quantity'])\n  elif op['op']=='cancel': r=cancel.cancel(c,op['request_id'])\n  else: raise ValueError('invalid')\n except ValueError: r={'error':'invalid'}\n out.append(r)\nr={'responses':out,'items':[dict(v) for v in c.execute('SELECT * FROM items ORDER BY sku')], 'reservations':[dict(v) for v in c.execute('SELECT * FROM reservations ORDER BY request_id')], 'events':[dict(v) for v in c.execute('SELECT * FROM events ORDER BY seq')]}\nif x.get('report'): r['report']=reports.summary('store.db')\nif x.get('audit'): r['audit']=audit.export(c)\nc.close(); print(json.dumps(r,sort_keys=True))\n"
+            ],
+            {
+              "operations": [
+                {
+                  "op": "create",
+                  "sku": "A",
+                  "stock": 10
+                },
+                {
+                  "op": "reserve",
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3
+                },
+                {
+                  "op": "reserve",
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3
+                },
+                {
+                  "op": "reserve",
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 4
+                },
+                {
+                  "op": "reserve",
+                  "request_id": "too-much",
+                  "sku": "A",
+                  "quantity": 8
+                },
+                {
+                  "op": "cancel",
+                  "request_id": "r1"
+                },
+                {
+                  "op": "cancel",
+                  "request_id": "r1"
+                },
+                {
+                  "op": "reserve",
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3
+                },
+                {
+                  "op": "reserve",
+                  "request_id": "r2",
+                  "sku": "A",
+                  "quantity": 10
+                },
+                {
+                  "op": "create",
+                  "sku": "B",
+                  "stock": 0
+                },
+                {
+                  "op": "reserve",
+                  "request_id": "bad",
+                  "sku": "A",
+                  "quantity": true
+                },
+                {
+                  "op": "cancel",
+                  "request_id": "missing"
+                }
+              ],
+              "report": false,
+              "audit": true
+            },
+            {
+              "responses": [
+                {
+                  "sku": "A",
+                  "stock": 10
+                },
+                {
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3,
+                  "status": "active"
+                },
+                {
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3,
+                  "status": "active"
+                },
+                {
+                  "error": "invalid"
+                },
+                {
+                  "error": "invalid"
+                },
+                {
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3,
+                  "status": "cancelled"
+                },
+                {
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3,
+                  "status": "cancelled"
+                },
+                {
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3,
+                  "status": "cancelled"
+                },
+                {
+                  "request_id": "r2",
+                  "sku": "A",
+                  "quantity": 10,
+                  "status": "active"
+                },
+                {
+                  "sku": "B",
+                  "stock": 0
+                },
+                {
+                  "error": "invalid"
+                },
+                {
+                  "error": "invalid"
+                }
+              ],
+              "items": [
+                {
+                  "sku": "A",
+                  "stock": 0
+                },
+                {
+                  "sku": "B",
+                  "stock": 0
+                }
+              ],
+              "reservations": [
+                {
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3,
+                  "status": "cancelled"
+                },
+                {
+                  "request_id": "r2",
+                  "sku": "A",
+                  "quantity": 10,
+                  "status": "active"
+                }
+              ],
+              "events": [
+                {
+                  "seq": 1,
+                  "kind": "reserve",
+                  "request_id": "r1",
+                  "quantity": 3
+                },
+                {
+                  "seq": 2,
+                  "kind": "cancel",
+                  "request_id": "r1",
+                  "quantity": 3
+                },
+                {
+                  "seq": 3,
+                  "kind": "reserve",
+                  "request_id": "r2",
+                  "quantity": 10
+                }
+              ],
+              "audit": [
+                {
+                  "seq": 1,
+                  "kind": "reserve",
+                  "request_id": "r1",
+                  "quantity": 3
+                },
+                {
+                  "seq": 2,
+                  "kind": "cancel",
+                  "request_id": "r1",
+                  "quantity": 3
+                },
+                {
+                  "seq": 3,
+                  "kind": "reserve",
+                  "request_id": "r2",
+                  "quantity": 10
+                }
+              ]
+            }
+          ]
+        ]
+      ],
+      [
+        "cli",
+        [
+          "cli.py"
+        ],
+        [
+          "cli.py",
+          "storage.py",
+          "quantities.py"
+        ],
+        "Implement the declared JSON CLI. Use the supplied functions rather than duplicating domain rules. Each invocation is a separate process sharing the path in argv[1].",
+        [
+          [
+            [
+              "python",
+              "-c",
+              "import json,sys,subprocess,sqlite3\nout=[]\nfor op in json.load(sys.stdin):\n p=subprocess.run([sys.executable,'cli.py','store.db'],input=json.dumps(op),text=True,capture_output=True,check=True,timeout=3)\n out.append(json.loads(p.stdout))\nc=sqlite3.connect('store.db'); c.row_factory=sqlite3.Row\nr={'responses':out,'items':[dict(v) for v in c.execute('SELECT * FROM items ORDER BY sku')], 'reservations':[dict(v) for v in c.execute('SELECT * FROM reservations ORDER BY request_id')], 'events':[dict(v) for v in c.execute('SELECT * FROM events ORDER BY seq')]}\nc.close(); print(json.dumps(r,sort_keys=True))\n"
+            ],
+            [
+              {
+                "op": "create",
+                "sku": "A",
+                "stock": 10
+              },
+              {
+                "op": "reserve",
+                "request_id": "r1",
+                "sku": "A",
+                "quantity": 3
+              },
+              {
+                "op": "reserve",
+                "request_id": "r1",
+                "sku": "A",
+                "quantity": 3
+              },
+              {
+                "op": "reserve",
+                "request_id": "r1",
+                "sku": "A",
+                "quantity": 4
+              },
+              {
+                "op": "reserve",
+                "request_id": "too-much",
+                "sku": "A",
+                "quantity": 8
+              },
+              {
+                "op": "cancel",
+                "request_id": "r1"
+              },
+              {
+                "op": "cancel",
+                "request_id": "r1"
+              },
+              {
+                "op": "reserve",
+                "request_id": "r1",
+                "sku": "A",
+                "quantity": 3
+              },
+              {
+                "op": "reserve",
+                "request_id": "r2",
+                "sku": "A",
+                "quantity": 10
+              },
+              {
+                "op": "create",
+                "sku": "B",
+                "stock": 0
+              },
+              {
+                "op": "reserve",
+                "request_id": "bad",
+                "sku": "A",
+                "quantity": true
+              },
+              {
+                "op": "cancel",
+                "request_id": "missing"
+              }
+            ],
+            {
+              "responses": [
+                {
+                  "sku": "A",
+                  "stock": 10
+                },
+                {
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3,
+                  "status": "active"
+                },
+                {
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3,
+                  "status": "active"
+                },
+                {
+                  "error": "invalid"
+                },
+                {
+                  "error": "invalid"
+                },
+                {
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3,
+                  "status": "cancelled"
+                },
+                {
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3,
+                  "status": "cancelled"
+                },
+                {
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3,
+                  "status": "cancelled"
+                },
+                {
+                  "request_id": "r2",
+                  "sku": "A",
+                  "quantity": 10,
+                  "status": "active"
+                },
+                {
+                  "sku": "B",
+                  "stock": 0
+                },
+                {
+                  "error": "invalid"
+                },
+                {
+                  "error": "invalid"
+                }
+              ],
+              "items": [
+                {
+                  "sku": "A",
+                  "stock": 0
+                },
+                {
+                  "sku": "B",
+                  "stock": 0
+                }
+              ],
+              "reservations": [
+                {
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3,
+                  "status": "cancelled"
+                },
+                {
+                  "request_id": "r2",
+                  "sku": "A",
+                  "quantity": 10,
+                  "status": "active"
+                }
+              ],
+              "events": [
+                {
+                  "seq": 1,
+                  "kind": "reserve",
+                  "request_id": "r1",
+                  "quantity": 3
+                },
+                {
+                  "seq": 2,
+                  "kind": "cancel",
+                  "request_id": "r1",
+                  "quantity": 3
+                },
+                {
+                  "seq": 3,
+                  "kind": "reserve",
+                  "request_id": "r2",
+                  "quantity": 10
+                }
+              ]
+            }
+          ]
+        ]
+      ],
+      [
+        "storage-v2",
+        [
+          "storage.py"
+        ],
+        [
+          "storage.py"
+        ],
+        "Revise the provider API: rename storage.connect(path) to storage.open_database(path), remove the old connect export, preserve all database behavior. Consumers migrate in the next prepared task.",
+        [
+          [
+            [
+              "python",
+              "-c",
+              "import json,storage\nconnect=getattr(storage,__import__('sys').argv[1])\na=connect('store.db'); a.execute(\"INSERT INTO items VALUES('A',11)\"); a.commit(); a.close()\nb=connect('store.db'); row=b.execute(\"SELECT stock FROM items WHERE sku='A'\").fetchone()\nprint(json.dumps({'stock':None if row is None else row['stock'],'foreign_keys':b.execute('PRAGMA foreign_keys').fetchone()[0],'legacy_present':hasattr(storage,'connect')},sort_keys=True)); b.close()\n",
+              "open_database"
+            ],
+            null,
+            {
+              "stock": 11,
+              "foreign_keys": 1,
+              "legacy_present": false
+            }
+          ]
+        ]
+      ],
+      [
+        "consumers-v2",
+        [
+          "cli.py",
+          "reports.py"
+        ],
+        [
+          "cli.py",
+          "reports.py",
+          "storage.py"
+        ],
+        "Migrate both consumers from removed storage.connect to storage.open_database. Preserve every CLI and report behavior; do not add compatibility shims to storage.py. Interface obligations: storage.open_database(path) returns a connection; reports.summary(path) takes the database file path, opens and closes its own connection, and returns available/reserved counts. Preserve this path-based reporting interface at every call site.",
+        [
+          [
+            [
+              "python",
+              "-c",
+              "import json,sys,subprocess,sqlite3\nout=[]\nfor op in json.load(sys.stdin):\n p=subprocess.run([sys.executable,'cli.py','store.db'],input=json.dumps(op),text=True,capture_output=True,check=True,timeout=3)\n out.append(json.loads(p.stdout))\nc=sqlite3.connect('store.db'); c.row_factory=sqlite3.Row\nr={'responses':out,'items':[dict(v) for v in c.execute('SELECT * FROM items ORDER BY sku')], 'reservations':[dict(v) for v in c.execute('SELECT * FROM reservations ORDER BY request_id')], 'events':[dict(v) for v in c.execute('SELECT * FROM events ORDER BY seq')]}\nc.close(); print(json.dumps(r,sort_keys=True))\n"
+            ],
+            [
+              {
+                "op": "create",
+                "sku": "A",
+                "stock": 10
+              },
+              {
+                "op": "reserve",
+                "request_id": "r1",
+                "sku": "A",
+                "quantity": 3
+              },
+              {
+                "op": "reserve",
+                "request_id": "r1",
+                "sku": "A",
+                "quantity": 3
+              },
+              {
+                "op": "reserve",
+                "request_id": "r1",
+                "sku": "A",
+                "quantity": 4
+              },
+              {
+                "op": "reserve",
+                "request_id": "too-much",
+                "sku": "A",
+                "quantity": 8
+              },
+              {
+                "op": "cancel",
+                "request_id": "r1"
+              },
+              {
+                "op": "cancel",
+                "request_id": "r1"
+              },
+              {
+                "op": "reserve",
+                "request_id": "r1",
+                "sku": "A",
+                "quantity": 3
+              },
+              {
+                "op": "reserve",
+                "request_id": "r2",
+                "sku": "A",
+                "quantity": 10
+              },
+              {
+                "op": "create",
+                "sku": "B",
+                "stock": 0
+              },
+              {
+                "op": "reserve",
+                "request_id": "bad",
+                "sku": "A",
+                "quantity": true
+              },
+              {
+                "op": "cancel",
+                "request_id": "missing"
+              },
+              {
+                "op": "report"
+              },
+              {
+                "op": "audit"
+              }
+            ],
+            {
+              "responses": [
+                {
+                  "sku": "A",
+                  "stock": 10
+                },
+                {
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3,
+                  "status": "active"
+                },
+                {
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3,
+                  "status": "active"
+                },
+                {
+                  "error": "invalid"
+                },
+                {
+                  "error": "invalid"
+                },
+                {
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3,
+                  "status": "cancelled"
+                },
+                {
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3,
+                  "status": "cancelled"
+                },
+                {
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3,
+                  "status": "cancelled"
+                },
+                {
+                  "request_id": "r2",
+                  "sku": "A",
+                  "quantity": 10,
+                  "status": "active"
+                },
+                {
+                  "sku": "B",
+                  "stock": 0
+                },
+                {
+                  "error": "invalid"
+                },
+                {
+                  "error": "invalid"
+                },
+                {
+                  "available": 0,
+                  "reserved": 10
+                },
+                [
+                  {
+                    "seq": 1,
+                    "kind": "reserve",
+                    "request_id": "r1",
+                    "quantity": 3
+                  },
+                  {
+                    "seq": 2,
+                    "kind": "cancel",
+                    "request_id": "r1",
+                    "quantity": 3
+                  },
+                  {
+                    "seq": 3,
+                    "kind": "reserve",
+                    "request_id": "r2",
+                    "quantity": 10
+                  }
+                ]
+              ],
+              "items": [
+                {
+                  "sku": "A",
+                  "stock": 0
+                },
+                {
+                  "sku": "B",
+                  "stock": 0
+                }
+              ],
+              "reservations": [
+                {
+                  "request_id": "r1",
+                  "sku": "A",
+                  "quantity": 3,
+                  "status": "cancelled"
+                },
+                {
+                  "request_id": "r2",
+                  "sku": "A",
+                  "quantity": 10,
+                  "status": "active"
+                }
+              ],
+              "events": [
+                {
+                  "seq": 1,
+                  "kind": "reserve",
+                  "request_id": "r1",
+                  "quantity": 3
+                },
+                {
+                  "seq": 2,
+                  "kind": "cancel",
+                  "request_id": "r1",
+                  "quantity": 3
+                },
+                {
+                  "seq": 3,
+                  "kind": "reserve",
+                  "request_id": "r2",
+                  "quantity": 10
+                }
+              ]
+            }
+          ],
+          [
+            [
+              "python",
+              "-c",
+              "import json,sys,subprocess\nsubprocess.run([sys.executable,'cli.py','store.db'],input=json.dumps({'op':'create','sku':'A','stock':10}),text=True,capture_output=True,check=True)\nchildren=[]\nfor identity in ['a','b']:\n p=subprocess.Popen([sys.executable,'cli.py','store.db'],stdin=subprocess.PIPE,stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True)\n p.stdin.write(json.dumps({'op':'reserve','request_id':identity,'sku':'A','quantity':6})); p.stdin.close(); children.append(p)\nrows=[]\nfor p in children:\n text=p.stdout.read(); p.wait(timeout=5); rows.append(json.loads(text))\np=subprocess.run([sys.executable,'cli.py','store.db'],input='{\"op\":\"report\"}',text=True,capture_output=True,check=True)\nprint(json.dumps({'active':sum(r.get('status')=='active' for r in rows),'errors':sum(r.get('error')=='invalid' for r in rows),'report':json.loads(p.stdout)},sort_keys=True))\n"
+            ],
+            null,
+            {
+              "active": 1,
+              "errors": 1,
+              "report": {
+                "available": 4,
+                "reserved": 6
+              }
+            }
+          ]
+        ]
+      ]
+    ],
+    "review_gate": {
+      "schema_version": 1,
+      "cases": [
+        {
+          "schema_version": 1,
+          "command": [
+            "python",
+            "-c",
+            "import json,sys,subprocess,sqlite3\nout=[]\nfor op in json.load(sys.stdin):\n p=subprocess.run([sys.executable,'cli.py','store.db'],input=json.dumps(op),text=True,capture_output=True,check=True,timeout=3)\n out.append(json.loads(p.stdout))\nc=sqlite3.connect('store.db'); c.row_factory=sqlite3.Row\nr={'responses':out,'items':[dict(v) for v in c.execute('SELECT * FROM items ORDER BY sku')], 'reservations':[dict(v) for v in c.execute('SELECT * FROM reservations ORDER BY request_id')], 'events':[dict(v) for v in c.execute('SELECT * FROM events ORDER BY seq')]}\nc.close(); print(json.dumps(r,sort_keys=True))\n"
+          ],
+          "stdin": "[{\"op\": \"create\", \"sku\": \"A\", \"stock\": 24}, {\"op\": \"reserve\", \"request_id\": \"repeat\", \"sku\": \"A\", \"quantity\": 12}, {\"op\": \"reserve\", \"request_id\": \"repeat\", \"sku\": \"A\", \"quantity\": 12}, {\"op\": \"reserve\", \"request_id\": \"repeat\", \"sku\": \"A\", \"quantity\": 13}, {\"op\": \"cancel\", \"request_id\": \"repeat\"}, {\"op\": \"cancel\", \"request_id\": \"repeat\"}, {\"op\": \"reserve\", \"request_id\": \"repeat\", \"sku\": \"A\", \"quantity\": 12}, {\"op\": \"create\", \"sku\": \"B\", \"stock\": 0}, {\"op\": \"reserve\", \"request_id\": \"other\", \"sku\": \"B\", \"quantity\": 1}, {\"op\": \"reserve\", \"request_id\": \"negative\", \"sku\": \"A\", \"quantity\": -1}, {\"op\": \"create\", \"sku\": \"bad\", \"stock\": true}, {\"op\": \"unknown\"}, {\"op\": \"report\"}, {\"op\": \"audit\"}]\n",
+          "expected_stdout": "{\"events\": [{\"kind\": \"reserve\", \"quantity\": 12, \"request_id\": \"repeat\", \"seq\": 1}, {\"kind\": \"cancel\", \"quantity\": 12, \"request_id\": \"repeat\", \"seq\": 2}], \"items\": [{\"sku\": \"A\", \"stock\": 24}, {\"sku\": \"B\", \"stock\": 0}], \"reservations\": [{\"quantity\": 12, \"request_id\": \"repeat\", \"sku\": \"A\", \"status\": \"cancelled\"}], \"responses\": [{\"sku\": \"A\", \"stock\": 24}, {\"quantity\": 12, \"request_id\": \"repeat\", \"sku\": \"A\", \"status\": \"active\"}, {\"quantity\": 12, \"request_id\": \"repeat\", \"sku\": \"A\", \"status\": \"active\"}, {\"error\": \"invalid\"}, {\"quantity\": 12, \"request_id\": \"repeat\", \"sku\": \"A\", \"status\": \"cancelled\"}, {\"quantity\": 12, \"request_id\": \"repeat\", \"sku\": \"A\", \"status\": \"cancelled\"}, {\"quantity\": 12, \"request_id\": \"repeat\", \"sku\": \"A\", \"status\": \"cancelled\"}, {\"sku\": \"B\", \"stock\": 0}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"available\": 24, \"reserved\": 0}, [{\"kind\": \"reserve\", \"quantity\": 12, \"request_id\": \"repeat\", \"seq\": 1}, {\"kind\": \"cancel\", \"quantity\": 12, \"request_id\": \"repeat\", \"seq\": 2}]]}\n",
+          "seconds": 30.0
+        },
+        {
+          "schema_version": 1,
+          "command": [
+            "python",
+            "-c",
+            "import json,sys,subprocess,sqlite3\nout=[]\nfor op in json.load(sys.stdin):\n p=subprocess.run([sys.executable,'cli.py','store.db'],input=json.dumps(op),text=True,capture_output=True,check=True,timeout=3)\n out.append(json.loads(p.stdout))\nc=sqlite3.connect('store.db'); c.row_factory=sqlite3.Row\nr={'responses':out,'items':[dict(v) for v in c.execute('SELECT * FROM items ORDER BY sku')], 'reservations':[dict(v) for v in c.execute('SELECT * FROM reservations ORDER BY request_id')], 'events':[dict(v) for v in c.execute('SELECT * FROM events ORDER BY seq')]}\nc.close(); print(json.dumps(r,sort_keys=True))\n"
+          ],
+          "stdin": "[{\"op\": \"create\", \"sku\": \"A\", \"stock\": 5}, {\"op\": \"reserve\", \"request_id\": \"repeat\", \"sku\": \"A\", \"quantity\": 4}, {\"op\": \"reserve\", \"request_id\": \"repeat\", \"sku\": \"A\", \"quantity\": 4}, {\"op\": \"reserve\", \"request_id\": \"repeat\", \"sku\": \"A\", \"quantity\": 5}, {\"op\": \"cancel\", \"request_id\": \"repeat\"}, {\"op\": \"cancel\", \"request_id\": \"repeat\"}, {\"op\": \"reserve\", \"request_id\": \"repeat\", \"sku\": \"A\", \"quantity\": 4}, {\"op\": \"create\", \"sku\": \"B\", \"stock\": 1}, {\"op\": \"reserve\", \"request_id\": \"other\", \"sku\": \"B\", \"quantity\": 2}, {\"op\": \"reserve\", \"request_id\": \"negative\", \"sku\": \"A\", \"quantity\": -1}, {\"op\": \"create\", \"sku\": \"bad\", \"stock\": true}, {\"op\": \"unknown\"}, {\"op\": \"report\"}, {\"op\": \"audit\"}]\n",
+          "expected_stdout": "{\"events\": [{\"kind\": \"reserve\", \"quantity\": 4, \"request_id\": \"repeat\", \"seq\": 1}, {\"kind\": \"cancel\", \"quantity\": 4, \"request_id\": \"repeat\", \"seq\": 2}], \"items\": [{\"sku\": \"A\", \"stock\": 5}, {\"sku\": \"B\", \"stock\": 1}], \"reservations\": [{\"quantity\": 4, \"request_id\": \"repeat\", \"sku\": \"A\", \"status\": \"cancelled\"}], \"responses\": [{\"sku\": \"A\", \"stock\": 5}, {\"quantity\": 4, \"request_id\": \"repeat\", \"sku\": \"A\", \"status\": \"active\"}, {\"quantity\": 4, \"request_id\": \"repeat\", \"sku\": \"A\", \"status\": \"active\"}, {\"error\": \"invalid\"}, {\"quantity\": 4, \"request_id\": \"repeat\", \"sku\": \"A\", \"status\": \"cancelled\"}, {\"quantity\": 4, \"request_id\": \"repeat\", \"sku\": \"A\", \"status\": \"cancelled\"}, {\"quantity\": 4, \"request_id\": \"repeat\", \"sku\": \"A\", \"status\": \"cancelled\"}, {\"sku\": \"B\", \"stock\": 1}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"available\": 6, \"reserved\": 0}, [{\"kind\": \"reserve\", \"quantity\": 4, \"request_id\": \"repeat\", \"seq\": 1}, {\"kind\": \"cancel\", \"quantity\": 4, \"request_id\": \"repeat\", \"seq\": 2}]]}\n",
+          "seconds": 30.0
+        },
+        {
+          "schema_version": 1,
+          "command": [
+            "python",
+            "-c",
+            "import json,sys,subprocess,sqlite3\nout=[]\nfor op in json.load(sys.stdin):\n p=subprocess.run([sys.executable,'cli.py','store.db'],input=json.dumps(op),text=True,capture_output=True,check=True,timeout=3)\n out.append(json.loads(p.stdout))\nc=sqlite3.connect('store.db'); c.row_factory=sqlite3.Row\nr={'responses':out,'items':[dict(v) for v in c.execute('SELECT * FROM items ORDER BY sku')], 'reservations':[dict(v) for v in c.execute('SELECT * FROM reservations ORDER BY request_id')], 'events':[dict(v) for v in c.execute('SELECT * FROM events ORDER BY seq')]}\nc.close(); print(json.dumps(r,sort_keys=True))\n"
+          ],
+          "stdin": "[{\"op\": \"create\", \"sku\": \"A\", \"stock\": 7}, {\"op\": \"reserve\", \"request_id\": \"repeat\", \"sku\": \"A\", \"quantity\": 6}, {\"op\": \"reserve\", \"request_id\": \"repeat\", \"sku\": \"A\", \"quantity\": 6}, {\"op\": \"reserve\", \"request_id\": \"repeat\", \"sku\": \"A\", \"quantity\": 7}, {\"op\": \"cancel\", \"request_id\": \"repeat\"}, {\"op\": \"cancel\", \"request_id\": \"repeat\"}, {\"op\": \"reserve\", \"request_id\": \"repeat\", \"sku\": \"A\", \"quantity\": 6}, {\"op\": \"create\", \"sku\": \"B\", \"stock\": 2}, {\"op\": \"reserve\", \"request_id\": \"other\", \"sku\": \"B\", \"quantity\": 3}, {\"op\": \"reserve\", \"request_id\": \"negative\", \"sku\": \"A\", \"quantity\": -1}, {\"op\": \"create\", \"sku\": \"bad\", \"stock\": true}, {\"op\": \"unknown\"}, {\"op\": \"report\"}, {\"op\": \"audit\"}]\n",
+          "expected_stdout": "{\"events\": [{\"kind\": \"reserve\", \"quantity\": 6, \"request_id\": \"repeat\", \"seq\": 1}, {\"kind\": \"cancel\", \"quantity\": 6, \"request_id\": \"repeat\", \"seq\": 2}], \"items\": [{\"sku\": \"A\", \"stock\": 7}, {\"sku\": \"B\", \"stock\": 2}], \"reservations\": [{\"quantity\": 6, \"request_id\": \"repeat\", \"sku\": \"A\", \"status\": \"cancelled\"}], \"responses\": [{\"sku\": \"A\", \"stock\": 7}, {\"quantity\": 6, \"request_id\": \"repeat\", \"sku\": \"A\", \"status\": \"active\"}, {\"quantity\": 6, \"request_id\": \"repeat\", \"sku\": \"A\", \"status\": \"active\"}, {\"error\": \"invalid\"}, {\"quantity\": 6, \"request_id\": \"repeat\", \"sku\": \"A\", \"status\": \"cancelled\"}, {\"quantity\": 6, \"request_id\": \"repeat\", \"sku\": \"A\", \"status\": \"cancelled\"}, {\"quantity\": 6, \"request_id\": \"repeat\", \"sku\": \"A\", \"status\": \"cancelled\"}, {\"sku\": \"B\", \"stock\": 2}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"available\": 9, \"reserved\": 0}, [{\"kind\": \"reserve\", \"quantity\": 6, \"request_id\": \"repeat\", \"seq\": 1}, {\"kind\": \"cancel\", \"quantity\": 6, \"request_id\": \"repeat\", \"seq\": 2}]]}\n",
+          "seconds": 30.0
+        },
+        {
+          "schema_version": 1,
+          "command": [
+            "python",
+            "-c",
+            "import json,sys,subprocess,sqlite3\nout=[]\nfor op in json.load(sys.stdin):\n p=subprocess.run([sys.executable,'cli.py','store.db'],input=json.dumps(op),text=True,capture_output=True,check=True,timeout=3)\n out.append(json.loads(p.stdout))\nc=sqlite3.connect('store.db'); c.row_factory=sqlite3.Row\nr={'responses':out,'items':[dict(v) for v in c.execute('SELECT * FROM items ORDER BY sku')], 'reservations':[dict(v) for v in c.execute('SELECT * FROM reservations ORDER BY request_id')], 'events':[dict(v) for v in c.execute('SELECT * FROM events ORDER BY seq')]}\nc.close(); print(json.dumps(r,sort_keys=True))\n"
+          ],
+          "stdin": "[{\"op\": \"create\", \"sku\": \"A\", \"stock\": 10}, {\"op\": \"reserve\", \"request_id\": \"repeat\", \"sku\": \"A\", \"quantity\": 9}, {\"op\": \"reserve\", \"request_id\": \"repeat\", \"sku\": \"A\", \"quantity\": 9}, {\"op\": \"reserve\", \"request_id\": \"repeat\", \"sku\": \"A\", \"quantity\": 10}, {\"op\": \"cancel\", \"request_id\": \"repeat\"}, {\"op\": \"cancel\", \"request_id\": \"repeat\"}, {\"op\": \"reserve\", \"request_id\": \"repeat\", \"sku\": \"A\", \"quantity\": 9}, {\"op\": \"create\", \"sku\": \"B\", \"stock\": 3}, {\"op\": \"reserve\", \"request_id\": \"other\", \"sku\": \"B\", \"quantity\": 4}, {\"op\": \"reserve\", \"request_id\": \"negative\", \"sku\": \"A\", \"quantity\": -1}, {\"op\": \"create\", \"sku\": \"bad\", \"stock\": true}, {\"op\": \"unknown\"}, {\"op\": \"report\"}, {\"op\": \"audit\"}]\n",
+          "expected_stdout": "{\"events\": [{\"kind\": \"reserve\", \"quantity\": 9, \"request_id\": \"repeat\", \"seq\": 1}, {\"kind\": \"cancel\", \"quantity\": 9, \"request_id\": \"repeat\", \"seq\": 2}], \"items\": [{\"sku\": \"A\", \"stock\": 10}, {\"sku\": \"B\", \"stock\": 3}], \"reservations\": [{\"quantity\": 9, \"request_id\": \"repeat\", \"sku\": \"A\", \"status\": \"cancelled\"}], \"responses\": [{\"sku\": \"A\", \"stock\": 10}, {\"quantity\": 9, \"request_id\": \"repeat\", \"sku\": \"A\", \"status\": \"active\"}, {\"quantity\": 9, \"request_id\": \"repeat\", \"sku\": \"A\", \"status\": \"active\"}, {\"error\": \"invalid\"}, {\"quantity\": 9, \"request_id\": \"repeat\", \"sku\": \"A\", \"status\": \"cancelled\"}, {\"quantity\": 9, \"request_id\": \"repeat\", \"sku\": \"A\", \"status\": \"cancelled\"}, {\"quantity\": 9, \"request_id\": \"repeat\", \"sku\": \"A\", \"status\": \"cancelled\"}, {\"sku\": \"B\", \"stock\": 3}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"available\": 13, \"reserved\": 0}, [{\"kind\": \"reserve\", \"quantity\": 9, \"request_id\": \"repeat\", \"seq\": 1}, {\"kind\": \"cancel\", \"quantity\": 9, \"request_id\": \"repeat\", \"seq\": 2}]]}\n",
+          "seconds": 30.0
+        },
+        {
+          "schema_version": 1,
+          "command": [
+            "python",
+            "-c",
+            "import json,sys,subprocess,sqlite3\nout=[]\nfor op in json.load(sys.stdin):\n p=subprocess.run([sys.executable,'cli.py','store.db'],input=json.dumps(op),text=True,capture_output=True,check=True,timeout=3)\n out.append(json.loads(p.stdout))\nc=sqlite3.connect('store.db'); c.row_factory=sqlite3.Row\nr={'responses':out,'items':[dict(v) for v in c.execute('SELECT * FROM items ORDER BY sku')], 'reservations':[dict(v) for v in c.execute('SELECT * FROM reservations ORDER BY request_id')], 'events':[dict(v) for v in c.execute('SELECT * FROM events ORDER BY seq')]}\nc.close(); print(json.dumps(r,sort_keys=True))\n"
+          ],
+          "stdin": "[{\"op\": \"create\", \"sku\": \"A\", \"stock\": 18}, {\"op\": \"reserve\", \"request_id\": \"repeat\", \"sku\": \"A\", \"quantity\": 11}, {\"op\": \"reserve\", \"request_id\": \"repeat\", \"sku\": \"A\", \"quantity\": 11}, {\"op\": \"reserve\", \"request_id\": \"repeat\", \"sku\": \"A\", \"quantity\": 12}, {\"op\": \"cancel\", \"request_id\": \"repeat\"}, {\"op\": \"cancel\", \"request_id\": \"repeat\"}, {\"op\": \"reserve\", \"request_id\": \"repeat\", \"sku\": \"A\", \"quantity\": 11}, {\"op\": \"create\", \"sku\": \"B\", \"stock\": 4}, {\"op\": \"reserve\", \"request_id\": \"other\", \"sku\": \"B\", \"quantity\": 5}, {\"op\": \"reserve\", \"request_id\": \"negative\", \"sku\": \"A\", \"quantity\": -1}, {\"op\": \"create\", \"sku\": \"bad\", \"stock\": true}, {\"op\": \"unknown\"}, {\"op\": \"report\"}, {\"op\": \"audit\"}]\n",
+          "expected_stdout": "{\"events\": [{\"kind\": \"reserve\", \"quantity\": 11, \"request_id\": \"repeat\", \"seq\": 1}, {\"kind\": \"cancel\", \"quantity\": 11, \"request_id\": \"repeat\", \"seq\": 2}], \"items\": [{\"sku\": \"A\", \"stock\": 18}, {\"sku\": \"B\", \"stock\": 4}], \"reservations\": [{\"quantity\": 11, \"request_id\": \"repeat\", \"sku\": \"A\", \"status\": \"cancelled\"}], \"responses\": [{\"sku\": \"A\", \"stock\": 18}, {\"quantity\": 11, \"request_id\": \"repeat\", \"sku\": \"A\", \"status\": \"active\"}, {\"quantity\": 11, \"request_id\": \"repeat\", \"sku\": \"A\", \"status\": \"active\"}, {\"error\": \"invalid\"}, {\"quantity\": 11, \"request_id\": \"repeat\", \"sku\": \"A\", \"status\": \"cancelled\"}, {\"quantity\": 11, \"request_id\": \"repeat\", \"sku\": \"A\", \"status\": \"cancelled\"}, {\"quantity\": 11, \"request_id\": \"repeat\", \"sku\": \"A\", \"status\": \"cancelled\"}, {\"sku\": \"B\", \"stock\": 4}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"available\": 22, \"reserved\": 0}, [{\"kind\": \"reserve\", \"quantity\": 11, \"request_id\": \"repeat\", \"seq\": 1}, {\"kind\": \"cancel\", \"quantity\": 11, \"request_id\": \"repeat\", \"seq\": 2}]]}\n",
+          "seconds": 30.0
+        },
+        {
+          "schema_version": 1,
+          "command": [
+            "python",
+            "-c",
+            "import json,sys,subprocess,sqlite3\nout=[]\nfor op in json.load(sys.stdin):\n p=subprocess.run([sys.executable,'cli.py','store.db'],input=json.dumps(op),text=True,capture_output=True,check=True,timeout=3)\n out.append(json.loads(p.stdout))\nc=sqlite3.connect('store.db'); c.row_factory=sqlite3.Row\nr={'responses':out,'items':[dict(v) for v in c.execute('SELECT * FROM items ORDER BY sku')], 'reservations':[dict(v) for v in c.execute('SELECT * FROM reservations ORDER BY request_id')], 'events':[dict(v) for v in c.execute('SELECT * FROM events ORDER BY seq')]}\nc.close(); print(json.dumps(r,sort_keys=True))\n"
+          ],
+          "stdin": "[{\"op\": \"create\", \"sku\": \"A\", \"stock\": 20}, {\"op\": \"reserve\", \"request_id\": \"repeat\", \"sku\": \"A\", \"quantity\": 9}, {\"op\": \"reserve\", \"request_id\": \"repeat\", \"sku\": \"A\", \"quantity\": 9}, {\"op\": \"reserve\", \"request_id\": \"repeat\", \"sku\": \"A\", \"quantity\": 10}, {\"op\": \"cancel\", \"request_id\": \"repeat\"}, {\"op\": \"cancel\", \"request_id\": \"repeat\"}, {\"op\": \"reserve\", \"request_id\": \"repeat\", \"sku\": \"A\", \"quantity\": 9}, {\"op\": \"create\", \"sku\": \"B\", \"stock\": 5}, {\"op\": \"reserve\", \"request_id\": \"other\", \"sku\": \"B\", \"quantity\": 6}, {\"op\": \"reserve\", \"request_id\": \"negative\", \"sku\": \"A\", \"quantity\": -1}, {\"op\": \"create\", \"sku\": \"bad\", \"stock\": true}, {\"op\": \"unknown\"}, {\"op\": \"report\"}, {\"op\": \"audit\"}]\n",
+          "expected_stdout": "{\"events\": [{\"kind\": \"reserve\", \"quantity\": 9, \"request_id\": \"repeat\", \"seq\": 1}, {\"kind\": \"cancel\", \"quantity\": 9, \"request_id\": \"repeat\", \"seq\": 2}], \"items\": [{\"sku\": \"A\", \"stock\": 20}, {\"sku\": \"B\", \"stock\": 5}], \"reservations\": [{\"quantity\": 9, \"request_id\": \"repeat\", \"sku\": \"A\", \"status\": \"cancelled\"}], \"responses\": [{\"sku\": \"A\", \"stock\": 20}, {\"quantity\": 9, \"request_id\": \"repeat\", \"sku\": \"A\", \"status\": \"active\"}, {\"quantity\": 9, \"request_id\": \"repeat\", \"sku\": \"A\", \"status\": \"active\"}, {\"error\": \"invalid\"}, {\"quantity\": 9, \"request_id\": \"repeat\", \"sku\": \"A\", \"status\": \"cancelled\"}, {\"quantity\": 9, \"request_id\": \"repeat\", \"sku\": \"A\", \"status\": \"cancelled\"}, {\"quantity\": 9, \"request_id\": \"repeat\", \"sku\": \"A\", \"status\": \"cancelled\"}, {\"sku\": \"B\", \"stock\": 5}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"error\": \"invalid\"}, {\"available\": 25, \"reserved\": 0}, [{\"kind\": \"reserve\", \"quantity\": 9, \"request_id\": \"repeat\", \"seq\": 1}, {\"kind\": \"cancel\", \"quantity\": 9, \"request_id\": \"repeat\", \"seq\": 2}]]}\n",
+          "seconds": 30.0
+        }
+      ]
+    },
+    "source_sha256": {
+      "gflo/__init__.py": "4edfc8597f32029cb8a3d5f1703f53d33438b42b36d9459b683200519eb9871f",
+      "gflo/__main__.py": "2483ac5d313aa93167d08ef411ec64668e111afa3cbd4af1e09d29cf0cf6f318",
+      "gflo/artifacts.py": "892f9beb769007637c212058b25470ef79151b29def27b0d69360a03743b217c",
+      "gflo/broker.py": "5110c955d7f2a3f3b58e25fbee5a09e159af20a2fb83500e07099efe775e8a57",
+      "gflo/cli.py": "68e7257529085641c88204cf46b2e77299428b73ee0e483b41be2f888c4ed5b5",
+      "gflo/controller.py": "c7755832365bb89f033308ea09bb73612134c4f29410118bc51f83522408b83e",
+      "gflo/feedback.py": "12d780bfe9e2603276cf6419149e783b529f4455450af531e55155c1443a1d3b",
+      "gflo/gates.py": "91f54d9055a146e407a3af33215a8bfb1d38431ba8925eb291a202a950aa6d34",
+      "gflo/heldout.py": "b91215592b5e994d27ea71a4edabb8980a6e7f50e2f6b5395c2818690b497993",
+      "gflo/history.py": "bbaeb0ba333b2aed164a9a99db42ff025c6986e79cf3f59fc0ab79879ca74969",
+      "gflo/integration.py": "0bbc072d820fc236dbf5be1133727bad9621759d8de5f2fbd2abcbff1b66df25",
+      "gflo/ledger.py": "ec87958b1cef36c954f85f46367308ca71ef57963f57f7f5c7eecd7799e42ca0",
+      "gflo/model.py": "c327754181cd5aec30a69c13a6b8b8f1f956af81c5dddcc3426e548045237fce",
+      "gflo/pilot.py": "c0bbc5655a14b79237b209e05c962886917727718994ca1b84bbe7767a79b2ce",
+      "gflo/records.py": "f2da9331ae96622448b50676875b08033f446245dd3cc4999fd4f01f73ccd55a",
+      "gflo/reporting.py": "2dbf193fb4541af38b64fc79e6267bf6f01f6a0b8d5a005380ec60466f5ddb02",
+      "gflo/storage.py": "00550ea704d06e73632a09dc5b49704ec2aee7854b49f9c2f1bc8b3ef9c80cfb",
+      "gflo/worker.py": "46433341669bbb1d40e199f82b34b39ca201c012c030980be127d2f761fc228f",
+      "scripts/run_inventory_workload.py": "d9caf55c46435d9fabf3d10edd87dcb36225c46f0756c8ef14d101cc677075e7",
+      "scripts/inventory_workload.py": "07036f640ae14d86b1aa26a623d6a057ba2854f11f1df7f504395ba2933c8211"
+    },
+    "runtime": {
+      "image_id": "sha256:249ed60fdd67b96db472e16f945af5aaba565b20159d192ba378035b6d136a1c",
+      "command": [
+        "-m",
+        "vllm.entrypoints.openai.api_server",
+        "--model",
+        "Inferact/Qwen3.8-27B-NVFP4",
+        "--revision",
+        "6128240ebaf4eaa7bad2b3d1c72c37d677c5f462",
+        "--tokenizer-revision",
+        "6128240ebaf4eaa7bad2b3d1c72c37d677c5f462",
+        "--served-model-name",
+        "gflo-local",
+        "--host",
+        "0.0.0.0",
+        "--port",
+        "30000",
+        "--max-model-len",
+        "16384",
+        "--gpu-memory-utilization",
+        "0.85",
+        "--max-num-seqs",
+        "1",
+        "--max-num-batched-tokens",
+        "2048",
+        "--language-model-only",
+        "--no-enable-prefix-caching",
+        "--generation-config",
+        "vllm",
+        "--enable-auto-tool-choice",
+        "--kv-cache-dtype",
+        "bfloat16",
+        "--reasoning-parser",
+        "qwen3",
+        "--tool-call-parser",
+        "qwen3_coder"
+      ]
+    },
+    "slice_result_sha256": "5def67c61292afb52edbce2905eb6b391a745f8bc4d49ccc6ff6bb6b0cbc0f5a"
+  },
+  "limitations": [
+    "Seen workload, new model candidates; combined feedback and objective change does not isolate causality",
+    "One explicit infrastructure resume after memory probe lacked OOM flag; no policy relaxed",
+    "Trusted harness advances sequential bases; no autonomous graph planner or native promotion",
+    "Original campaign scores unchanged; raw evidence requires separate transfer"
+  ],
+  "seen_failure_repairs": {
+    "manifest": {
+      "scope": "Seen failure, three fresh bounded repairs; not held-out qualification",
+      "source_digest": "a95ccf89b7946d560a21538edcf83ab03606bb0b33068b0216856439e282b5a4",
+      "gate_digest": "dd80fefcbf9c673ceae5ad2de15285a700cf98773cea4e9950742879bcde6d97",
+      "profile": {
+        "schema_version": 1,
+        "profile_id": "vllm-python-worker-escalating-tools-v1",
+        "base_url": "http://127.0.0.1:30000/v1",
+        "model": "gflo-local",
+        "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+        "context_limit": 16384,
+        "timeout_seconds": 120.0
+      },
+      "objective": "Migrate both consumers from removed storage.connect to storage.open_database. Preserve every CLI and report behavior; do not add compatibility shims to storage.py. Interface obligations: storage.open_database(path) returns a connection; reports.summary(path) takes the database file path, opens and closes its own connection, and returns available/reserved counts. Preserve this path-based reporting interface at every call site.",
+      "source_hashes": {
+        "gflo/controller.py": "c7755832365bb89f033308ea09bb73612134c4f29410118bc51f83522408b83e",
+        "gflo/gates.py": "91f54d9055a146e407a3af33215a8bfb1d38431ba8925eb291a202a950aa6d34",
+        "gflo/model.py": "c327754181cd5aec30a69c13a6b8b8f1f956af81c5dddcc3426e548045237fce",
+        "gflo/reporting.py": "2dbf193fb4541af38b64fc79e6267bf6f01f6a0b8d5a005380ec60466f5ddb02",
+        "gflo/ledger.py": "ec87958b1cef36c954f85f46367308ca71ef57963f57f7f5c7eecd7799e42ca0",
+        "gflo/integration.py": "0bbc072d820fc236dbf5be1133727bad9621759d8de5f2fbd2abcbff1b66df25",
+        "gflo/history.py": "bbaeb0ba333b2aed164a9a99db42ff025c6986e79cf3f59fc0ab79879ca74969",
+        "gflo/heldout.py": "b91215592b5e994d27ea71a4edabb8980a6e7f50e2f6b5395c2818690b497993",
+        "gflo/feedback.py": "12d780bfe9e2603276cf6419149e783b529f4455450af531e55155c1443a1d3b",
+        "gflo/worker.py": "46433341669bbb1d40e199f82b34b39ca201c012c030980be127d2f761fc228f",
+        "gflo/records.py": "f2da9331ae96622448b50676875b08033f446245dd3cc4999fd4f01f73ccd55a",
+        "gflo/storage.py": "00550ea704d06e73632a09dc5b49704ec2aee7854b49f9c2f1bc8b3ef9c80cfb",
+        "gflo/__main__.py": "2483ac5d313aa93167d08ef411ec64668e111afa3cbd4af1e09d29cf0cf6f318",
+        "gflo/__init__.py": "4edfc8597f32029cb8a3d5f1703f53d33438b42b36d9459b683200519eb9871f",
+        "gflo/cli.py": "68e7257529085641c88204cf46b2e77299428b73ee0e483b41be2f888c4ed5b5",
+        "gflo/broker.py": "5110c955d7f2a3f3b58e25fbee5a09e159af20a2fb83500e07099efe775e8a57",
+        "gflo/pilot.py": "c0bbc5655a14b79237b209e05c962886917727718994ca1b84bbe7767a79b2ce",
+        "gflo/artifacts.py": "892f9beb769007637c212058b25470ef79151b29def27b0d69360a03743b217c",
+        "/home/gradrix/repos/graz-factory-lights-out/scripts/recheck_inventory_migration.py": "905f2217c3a25c3e742974514ab22eec94ec900ba5a6b71cc2442af04e27d54e",
+        "scripts/inventory_workload.py": "07036f640ae14d86b1aa26a623d6a057ba2854f11f1df7f504395ba2933c8211",
+        "scripts/run_inventory_workload.py": "d9caf55c46435d9fabf3d10edd87dcb36225c46f0756c8ef14d101cc677075e7"
+      }
+    },
+    "control": {
+      "passed": false,
+      "cases": [
+        {
+          "passed": false,
+          "execution_digest": "251cabe9a4cd534e35360315f2e67f226e8faa99d51acebb964d690bce394fc2"
+        }
+      ]
+    },
+    "results": [
+      {
+        "atom_id": "migration-repair-r1",
+        "status": "accepted",
+        "attempts": 1,
+        "candidate_digest": "56f167f18bd1305d55a05d2b0f16558903ee1bcf282436d7728484fade179666",
+        "review": {
+          "passed": true,
+          "cases": [
+            {
+              "passed": true,
+              "execution_digest": "847b70857c4976294032e31e045de2907afbbe3d573651fc0113b2738a058cd5"
+            },
+            {
+              "passed": true,
+              "execution_digest": "c9cb11b25dabdf184841f56e186dffbff753c2e56ba5708202b5755c70f87742"
+            },
+            {
+              "passed": true,
+              "execution_digest": "adfbcd550fb78cd4bdc159c5982347417d4caef08353ea4a3ff5da696b885c01"
+            },
+            {
+              "passed": true,
+              "execution_digest": "443bfb6989a2a5c4141ddf12bab4360cbdb91dcc5127b6a2c3d1cfbc703c41f3"
+            },
+            {
+              "passed": true,
+              "execution_digest": "324b990b6ef013548f7ed1edee64a64bb9d88ff5ecca62881035630c16cff2bc"
+            },
+            {
+              "passed": true,
+              "execution_digest": "ff5f69e267b3c77e7fcf6e340437335700deedb3df280ce82b7383777317c145"
+            }
+          ]
+        }
+      },
+      {
+        "atom_id": "migration-repair-r2",
+        "status": "accepted",
+        "attempts": 1,
+        "candidate_digest": "56f167f18bd1305d55a05d2b0f16558903ee1bcf282436d7728484fade179666",
+        "review": {
+          "passed": true,
+          "cases": [
+            {
+              "passed": true,
+              "execution_digest": "0f79818083f8c5f777724a076f2a80f25bc4ebc438ea63163965be6426b92f03"
+            },
+            {
+              "passed": true,
+              "execution_digest": "7159612243ca260f563597e9f9d9a3627570dd89d1dbc2ee12a003cc7e80748b"
+            },
+            {
+              "passed": true,
+              "execution_digest": "e43b1c692213e4ae62d10cae9c35afd3be01982c3cb1cf522cae48e7d8ab4219"
+            },
+            {
+              "passed": true,
+              "execution_digest": "9e6f74faf2e6a12d1f5c8c410e37d904b083dd0d3f1942a6352888dcc7f041e9"
+            },
+            {
+              "passed": true,
+              "execution_digest": "c6b920d943e1841c52220334b9c9e9db0f2c4fdd5f664f9666395165e8ddc214"
+            },
+            {
+              "passed": true,
+              "execution_digest": "5912c7257169bd7d1c95b42d589eb090ffe08facf963da9df54c17b9b49a891c"
+            }
+          ]
+        }
+      },
+      {
+        "atom_id": "migration-repair-r3",
+        "status": "accepted",
+        "attempts": 1,
+        "candidate_digest": "debe21e9d94325294664834c62b8b3cad60334d9f29e08090bafd7009bd71656",
+        "review": {
+          "passed": true,
+          "cases": [
+            {
+              "passed": true,
+              "execution_digest": "a132d58cf1b8e2c17f2369589ec28256d5fe3ce02201f2c07ab03961d0610262"
+            },
+            {
+              "passed": true,
+              "execution_digest": "c40d50bb4c133fbed8d17b3a9462da6805b8d67f95e464e769f177d54d0d09c8"
+            },
+            {
+              "passed": true,
+              "execution_digest": "36052b15abf306a6d868db54c10f6f45faf6e3634e1c57c8c5bd95f1c5f9669f"
+            },
+            {
+              "passed": true,
+              "execution_digest": "9b5786f69f39b2eaadbefd3de1aad364bb3707f1abb92f90687be22179108737"
+            },
+            {
+              "passed": true,
+              "execution_digest": "83fe9624a1614e77b710331381abba8fd2828608816766dfda4a923a4941f779"
+            },
+            {
+              "passed": true,
+              "execution_digest": "4021eb5652cd2503a18bb269006fcdda1bc0f2e47a33a9367941d6c5884f90b8"
+            }
+          ]
+        }
+      }
+    ],
+    "note": "v1 harness stopped on strict JSON loading before any model calls; v2 fixed the loader"
+  }
+}

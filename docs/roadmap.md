@@ -1,62 +1,37 @@
 # Roadmap and release readiness
 
-## Next qualification workload
+## Completed scoped qualifications
 
-Build a small Python inventory/reservation application with a shared domain library,
-a JSON command-line interface, and a reporting consumer. Use SQLite persistence and
-the standard library so the first experiment fits the existing Python broker.
-This is a proposed reference workload, not an implemented application.
+The low-effort escalation profile verified 23/24 small task runs. A three-module
+inventory migration passed independent integration, stale-input, restart, and
+finding checks. A subsequent stateful campaign built an eight-module SQLite
+inventory application through ten prepared changes, three times: all 30 tasks
+accepted in 32 attempts. Each build passed six supplemental workflows and three
+additional boundary workflows. The trusted harness advanced immutable accepted
+bases sequentially; autonomous planning and native promotion were not exercised.
 
-It tests coupled changes and state transitions while giving us clear independent
-oracles: stock never becomes negative, a request ID reserves at most once, failed
-operations leave state unchanged, and cancelling twice cannot inflate stock.
+Earlier stateful campaigns failed and remain recorded separately. Clearer interface
+instructions and bounded observed-error feedback preceded the successful campaign;
+this combined trial does not isolate their individual contribution. The original
+120-run campaign score and its false-acceptance findings remain unchanged.
 
-### 1. Close the semantic validation gap
+## Next: choose a representative repository
 
-Keep the original evaluation score frozen. Expand gates using repeated identifiers,
-equivalent values, boundary inputs, and seeded faulty implementations. Investigate
-the unresolved version-sort repair with a bounded comparison of reasoning-enabled
-inference and smaller repair tasks. This requires an explicit new model profile;
-current client requests disable thinking. Record all attempts and costs separately.
+Choose an existing Python repository and a concrete multi-module feature or API
+migration with owner-defined acceptance criteria. Start with a bounded slice that
+fits the current standard-library broker and 100-file/256-KiB source-bundle limit.
+A dependency-heavy or larger target first requires explicit dependency provisioning
+and source-selection work; do not silently raise those limits.
 
-Exit: both known faulty candidates fail, reference implementations pass, repair
-results are independently checked, and a fresh qualification campaign has zero
-discovered false acceptances. If this fails, continue validation/repair work rather
-than scaling the workload or relaxing the criterion.
+Prepare the task graph and provider contracts, independent per-task gates, and
+whole-feature checks before model work. Split workers where ownership and validation
+are independent; retain combined checks at shared interfaces. Measure complete
+feature success, retries, cost, and discovered false acceptances across repetitions.
 
-### 2. Qualify a three-module slice
-
-Prepare one domain provider, one CLI consumer, and one report consumer from a common
-base. Freeze public contracts and independent integration gates before inference.
-Exercise one provider API change and both consumer migrations. Reuse the current
-prepared integration mechanism; do not assume it can schedule the product itself.
-
-Exit: all three accepted contributions compose correctly, a stale consumer is
-rejected, restart preserves history, and a later child finding blocks reuse.
-
-### 3. Run the stateful application campaign
-
-Prepare ten bounded changes in these dependency waves:
-
-| Wave | Prepared changes | Independent checks |
-| --- | --- | --- |
-| A | Stock value rules; SQLite repository; reservation transitions | Invalid quantities, rollback, reopen persistence |
-| B | Idempotent request handling; cancellation; JSON CLI | Replayed requests, double cancellation, malformed input |
-| C | Availability report; audit export | Agreement with authoritative state, stable ordering |
-| D | Provider API revision; both-consumer migration as one bounded change | Old consumers rejected, full end-to-end workflow |
-
-Each wave uses one immutable common base for its contributions. Until nested
-integration and promotion exist, the trusted harness explicitly prepares the next
-base from a verified combined artifact and records that provenance. Model-generated
-code does not choose its own acceptance gates. Persistence checks launch multiple
-application processes within a gate's isolated workspace; they require no host mounts.
-
-Freeze ten contracts, reference solutions, hidden gates, and faulty variants before
-scoring. Run three fresh repetitions with at most three attempts per atom (90 total),
-8K/2K routine context/output budgets, and separate cumulative cost reporting. Any
-budget change starts a new campaign. Require all end-to-end invariants, no discovered
-false acceptances, and verified recovery. Report task success and whole-application
-success separately; a partial application is not a successful build.
+Remaining architectural work includes transitive invalidation across evolving bases,
+native graph scheduling and promotion, larger-source navigation, and supported
+third-party build dependencies. Prioritize these against the chosen repository.
+The reference workload does not establish huge-system reliability.
 
 ## Potential public release
 
