@@ -19,14 +19,18 @@ this combined trial does not isolate their individual contribution. The original
 
 A bounded history-filter feature was trialled on GFLO itself. An explicit provider
 result contract led to three accepted runs; every candidate passed 279 tests and
-25 subtests in bounded batches. The selected change is isolated on local branch
-`trial/history-attempt-filter`, awaiting human review before merge. The main CLI
-is unchanged. This is one feature repeated, not a broad repository benchmark.
+25 subtests in bounded batches. The selected change was merged after owner approval.
+This is one feature repeated, not a broad repository benchmark.
 
 The trusted dependency-image recipe is documented in [infra/worker](../infra/worker/README.md).
 Workers remain offline and restricted. Full repository tests required bounded
 batches under the existing 256-KiB limit. Next engineering investigation is an
 intermittent memory-qualification halt; retain strict controls while diagnosing it.
+
+A new bounded planner has produced a four-task feature proposal from repository
+context. Structural checks passed and proposed interfaces were reviewed; tasks
+are not yet materialized or executed automatically. The next milestone is a trusted
+bridge from reviewed drafts to WorkAtoms and independent gates.
 
 Prepare the task graph and provider contracts, independent per-task gates, and
 whole-feature checks before model work. Split workers where ownership and validation
@@ -52,7 +56,7 @@ Its prepared demo submitted without GPU access; 245 tests and 25 subtests passed
 with eight optional Docker checks skipped. Ruff, mypy, and local Markdown links
 also passed. This verifies the CPU onboarding path, not fresh-host GPU setup.
 
-Before publication:
+Before a supported release:
 
 - Owner selects a license and confirms attribution requirements.
 - Review the exact staged source and Git history for private material. Excluding
@@ -65,5 +69,5 @@ Before publication:
 - Document and verify model-cache provisioning on a fresh GPU host. The measured
   profile currently assumes a populated offline cache.
 
-Publication, remote pushes, and repository visibility changes are separate owner
-actions. No release or larger-build qualification is implied by this cleanup.
+The repository is public; owner-authorized merges and pushes are underway.
+Public visibility does not imply a supported release or larger-build qualification.

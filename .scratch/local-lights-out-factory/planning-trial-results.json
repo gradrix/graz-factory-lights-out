@@ -1,0 +1,929 @@
+{
+  "scope": "Exploratory planning development, not a frozen pass-rate qualification. Earlier attempts retained; final proposal has four tasks and no blocking questions. Tasks have not been executed.",
+  "final_review": "Provider precedes CLI; tests/docs cover requirements; proposed render_history keyword-only summary parameter agrees with consumer call; trusted environment selected; scope bounded. Text checks still require trusted gate preparation.",
+  "request": {
+    "allowed_paths": [
+      "gflo/history.py",
+      "gflo/cli.py",
+      "tests",
+      "docs/operations.md"
+    ],
+    "environments": {
+      "gflo-python-dev": {
+        "description": "Pinned Python 3.11 with Pydantic, pytest, ruff and mypy. Offline broker; trusted independent process gates. No package installation or network.",
+        "image": "sha256:695d05883b15326aea01e9266067ff58c41f3eaa4f647cfc9424b403dbe9548d",
+        "schema_version": 1
+      }
+    },
+    "feature_id": "compact-history-summary",
+    "objective": "Make retained worker history easier to scan by adding an opt-in compact summary mode. Inspect existing history rendering and CLI behavior, and plan implementation, regression tests, and documentation. Choose a useful bounded task breakdown.",
+    "requirements": {
+      "compatibility": "Without --summary, existing text and JSON outputs remain unchanged. Reject --summary with --format json clearly. For --summary with --format json use the existing ValueError handler and exit code 1; the message must explain that summary requires text output.",
+      "integrity": "Preserve task status and acceptance-finding warnings, verify all existing history evidence, and combine correctly with --attempt N.",
+      "summary": "An opt-in --summary on history text output lists each selected attempt ordinal, outcome, candidate count, and changed file paths without full unified diffs. Preserve existing gate receipt lines and the scope footer. Use a keyword-only summary: bool = False parameter on render_history.",
+      "tests-docs": "Plan independent regression checks for these behaviors, including attempts without candidates, and document usage."
+    },
+    "schema_version": 1,
+    "selected_paths": [
+      "gflo/history.py"
+    ],
+    "source_revision": "0d30d48dcaf6acf0a5263ae5c26bed7a4e09b1be-planning-working-tree",
+    "source_file_hashes": {
+      "docs/operations.md": "39601d76dcd52444a1753d0781cb0a856bda97c2342079f37d9e31e0f22bd006",
+      "gflo/__init__.py": "4edfc8597f32029cb8a3d5f1703f53d33438b42b36d9459b683200519eb9871f",
+      "gflo/__main__.py": "2483ac5d313aa93167d08ef411ec64668e111afa3cbd4af1e09d29cf0cf6f318",
+      "gflo/artifacts.py": "892f9beb769007637c212058b25470ef79151b29def27b0d69360a03743b217c",
+      "gflo/broker.py": "5110c955d7f2a3f3b58e25fbee5a09e159af20a2fb83500e07099efe775e8a57",
+      "gflo/cli.py": "3273b6bc005ea1fe5d2617bec895a6564b62efd0141a95de97e5f8bf27741e36",
+      "gflo/controller.py": "c7755832365bb89f033308ea09bb73612134c4f29410118bc51f83522408b83e",
+      "gflo/feedback.py": "12d780bfe9e2603276cf6419149e783b529f4455450af531e55155c1443a1d3b",
+      "gflo/gates.py": "91f54d9055a146e407a3af33215a8bfb1d38431ba8925eb291a202a950aa6d34",
+      "gflo/heldout.py": "b91215592b5e994d27ea71a4edabb8980a6e7f50e2f6b5395c2818690b497993",
+      "gflo/history.py": "bbaeb0ba333b2aed164a9a99db42ff025c6986e79cf3f59fc0ab79879ca74969",
+      "gflo/integration.py": "0bbc072d820fc236dbf5be1133727bad9621759d8de5f2fbd2abcbff1b66df25",
+      "gflo/ledger.py": "ec87958b1cef36c954f85f46367308ca71ef57963f57f7f5c7eecd7799e42ca0",
+      "gflo/model.py": "c327754181cd5aec30a69c13a6b8b8f1f956af81c5dddcc3426e548045237fce",
+      "gflo/pilot.py": "c0bbc5655a14b79237b209e05c962886917727718994ca1b84bbe7767a79b2ce",
+      "gflo/planning.py": "a9142df82ca873c52000db0f4c84454cd0a49b66d4030e213b8b3da24ce3ae44",
+      "gflo/records.py": "f2da9331ae96622448b50676875b08033f446245dd3cc4999fd4f01f73ccd55a",
+      "gflo/reporting.py": "2dbf193fb4541af38b64fc79e6267bf6f01f6a0b8d5a005380ec60466f5ddb02",
+      "gflo/storage.py": "00550ea704d06e73632a09dc5b49704ec2aee7854b49f9c2f1bc8b3ef9c80cfb",
+      "gflo/worker.py": "46433341669bbb1d40e199f82b34b39ca201c012c030980be127d2f761fc228f",
+      "tests/test_history_filter.py": "bcdf92add32c554ea27b3da1538c6bc0d6b9ba7ad3659eb0ee0c5d3e7f94b416",
+      "tests/test_history_filter_review.py": "8f1f455563e0fcc3b8e5adfaeee20b1a7dce4c3ed6abc1617bc4f49d96e9ea8a"
+    }
+  },
+  "runs": [
+    {
+      "run": "run-1",
+      "manifest": {
+        "request_digest": "1df5ea74f90b458492afecd6269fb2ca4d46592699e50501785e0aa1df39b358",
+        "atom_digest": "4a9f462a1fa573598cf3896caf5d3678aba17cb51f1c2f334b0a54ad64d9b0d9",
+        "profile": {
+          "schema_version": 1,
+          "profile_id": "vllm-python-worker-v1",
+          "base_url": "http://127.0.0.1:30000/v1",
+          "model": "gflo-local",
+          "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+          "context_limit": 16384,
+          "timeout_seconds": 120.0
+        },
+        "max_attempts": 2,
+        "max_turns_per_attempt": 3
+      },
+      "context_budget": {
+        "output_tokens": 2048,
+        "schema_version": 1,
+        "total_tokens": 8192
+      },
+      "result": {
+        "status": "exhausted",
+        "proposal_digest": null,
+        "execution_authorized": false,
+        "observations": [
+          {
+            "attempt": 1,
+            "turn": 1,
+            "error": "Cannot read artifact: 74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+            "model_evidence_digest": "1db1e018f208ecb77f11274efc0425f3f59cc7d21f05e8aad1a531a5b960debb",
+            "observation_digest": "16eee485df1f9f03358b2a9754b0f67fccfc973601f204fc7245e06c386fc020"
+          },
+          {
+            "attempt": 2,
+            "turn": 1,
+            "error": "Cannot read artifact: 74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+            "model_evidence_digest": "4db444531da22af544076fbab990481e78194e899fcd657dc22175a7396b4b02",
+            "observation_digest": "4928a07978c4d6fc5035a410c8c27a571d5a0ca01154917db969a21c5eaf7767"
+          }
+        ]
+      },
+      "validated_prompt_tokens": 0,
+      "validated_completion_tokens": 0,
+      "observed_model_seconds": 0.000166205001733033,
+      "observations_without_validated_usage": 2
+    },
+    {
+      "run": "run-2",
+      "manifest": {
+        "request_digest": "1df5ea74f90b458492afecd6269fb2ca4d46592699e50501785e0aa1df39b358",
+        "atom_digest": "4d3107809551586037778c756cdb59950ffb0a749edc556a90f0e93c4dbc55df",
+        "profile": {
+          "schema_version": 1,
+          "profile_id": "vllm-python-worker-v1",
+          "base_url": "http://127.0.0.1:30000/v1",
+          "model": "gflo-local",
+          "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+          "context_limit": 16384,
+          "timeout_seconds": 120.0
+        },
+        "max_attempts": 2,
+        "max_turns_per_attempt": 3
+      },
+      "context_budget": {
+        "output_tokens": 2048,
+        "schema_version": 1,
+        "total_tokens": 8192
+      },
+      "result": {
+        "status": "infrastructure-halt",
+        "proposal_digest": null,
+        "execution_authorized": false,
+        "observations": [
+          {
+            "attempt": 1,
+            "turn": 1,
+            "read_path": "gflo/cli.py",
+            "model_evidence_digest": "a5f75802f6f8feff47ff85040fac4e2584d1ebf8e40e400c2c58bb728f63c9a3",
+            "observation_digest": "b4fad921753f53faf2131ed45c417726559adab0975737da2a0e4c4ddbb752ad"
+          },
+          {
+            "attempt": 1,
+            "turn": 2,
+            "read_path": "docs/operations.md",
+            "model_evidence_digest": "b4e2a780a9897a3f9174c3a90a1519c255007fee0717e46a2a6ebc19480bcff2",
+            "observation_digest": "5a6eba57c280aafc3231bfe16cbff2cde4ee38aab88c00ad0788ae5f8c564d88"
+          },
+          {
+            "attempt": 1,
+            "turn": 3,
+            "model_evidence_digest": "42c0baf70de687f801153433951524279d057b356c13a219b6bcc4023a0447f3",
+            "observation_digest": "06d35fb86417c0fe570e385e427eca5337539ff96f4da5572333b5d5ea68625b"
+          }
+        ]
+      },
+      "validated_prompt_tokens": 9921,
+      "validated_completion_tokens": 38,
+      "observed_model_seconds": 1.9744556859986915,
+      "observations_without_validated_usage": 1
+    },
+    {
+      "run": "run-compact-1",
+      "manifest": {
+        "request_digest": "1df5ea74f90b458492afecd6269fb2ca4d46592699e50501785e0aa1df39b358",
+        "atom_digest": "e5147517e07eae740ade7ec844f268a143b0a61f213fe948e41cac1c802158c9",
+        "profile": {
+          "schema_version": 1,
+          "profile_id": "vllm-python-worker-v1",
+          "base_url": "http://127.0.0.1:30000/v1",
+          "model": "gflo-local",
+          "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+          "context_limit": 16384,
+          "timeout_seconds": 120.0
+        },
+        "max_attempts": 2,
+        "max_turns_per_attempt": 3
+      },
+      "context_budget": {
+        "output_tokens": 2048,
+        "schema_version": 1,
+        "total_tokens": 8192
+      },
+      "result": {
+        "status": "needs-review",
+        "proposal_digest": "6de4946be7e549fafcbbcf24eb6f9c97e8930cbbc5d75ecab34852750905da0d",
+        "execution_authorized": false,
+        "task_order": [
+          "history-summary-render",
+          "cli-summary-flag",
+          "docs-summary-usage",
+          "tests-summary-mode"
+        ],
+        "questions": [
+          "Should --summary also suppress gate receipt lines, or only unified diff content? The requirement says 'without full unified diffs' but does not specify gate receipts.",
+          "Should the summary mode include the scope footer line, or omit it for compactness?",
+          "What is the exact error message and exit code when --summary is combined with --format json? Should it be a ValueError caught by the existing handler, or a dedicated argparse error?"
+        ],
+        "observations": [
+          {
+            "attempt": 1,
+            "turn": 1,
+            "read_path": "gflo/cli.py",
+            "model_evidence_digest": "c3f39778c0087b52fcfee7141ff7cb6052d1a1701d93a0cea48bf30be21b0f1c",
+            "observation_digest": "4c551bb44ca113832949b2ad6a1d5d3479ad119bff6a8dd466fa95c4f3a6ee16"
+          },
+          {
+            "attempt": 1,
+            "turn": 2,
+            "model_evidence_digest": "363a364b257ba259e2cba3b3b4f00431fe9552e6519aa6ac0fe418918f9b6c38",
+            "observation_digest": "2169e871dc2deb16e526538a9b5bf865851475a84dd7bd6a837eeb77682caad6"
+          }
+        ]
+      },
+      "validated_prompt_tokens": 10081,
+      "validated_completion_tokens": 1742,
+      "observed_model_seconds": 31.1636826440008,
+      "observations_without_validated_usage": 0,
+      "proposal": {
+        "questions": [
+          "Should --summary also suppress gate receipt lines, or only unified diff content? The requirement says 'without full unified diffs' but does not specify gate receipts.",
+          "Should the summary mode include the scope footer line, or omit it for compactness?",
+          "What is the exact error message and exit code when --summary is combined with --format json? Should it be a ValueError caught by the existing handler, or a dedicated argparse error?"
+        ],
+        "rationale": "The existing render_history function builds a list of lines and joins them. Adding a summary mode requires a new parameter or a separate rendering path that skips the _diff output while preserving structural lines (ordinal, outcome, candidate count, changed file paths, warnings, gate receipts). The CLI already has --attempt filtering logic that operates on the history dict before rendering, so --summary can be passed to render_history after filtering. The --format json rejection is a simple guard in the CLI before calling render_history. Tests should mirror the existing test_history_filter.py and test_history_filter_review.py patterns, using the history_db fixture and invoke helper. Documentation should be added to docs/operations.md alongside existing history command documentation.",
+        "request_digest": "1df5ea74f90b458492afecd6269fb2ca4d46592699e50501785e0aa1df39b358",
+        "schema_version": 1,
+        "tasks": [
+          {
+            "acceptance_checks": [
+              "render_history with summary=True produces output containing attempt ordinal, outcome, candidate count, and changed file paths",
+              "render_history with summary=True does not include unified diff content (no lines starting with '---' or '+++')",
+              "render_history with summary=True preserves acceptance-finding warnings (lines containing 'Reuse blocked by later evidence')",
+              "render_history with summary=False produces identical output to current behavior",
+              "render_history with summary=True handles attempts with no candidates (prints 'No published candidate.')",
+              "render_history with summary=True handles candidates with no changes (prints 'No source changes.')",
+              "render_history with summary=True preserves gate receipt lines",
+              "render_history with summary=True preserves the scope footer"
+            ],
+            "depends_on": [],
+            "environment_id": "gflo-python-dev",
+            "interface_contracts": [
+              "render_history(history: dict[str, Any]) -> str",
+              "change_history(ledger: WorkLedger, atom_id: str) -> dict[str, Any]",
+              "_diff(path: str, before: str | None, after: str | None) -> str"
+            ],
+            "objective": "Add an opt-in compact summary mode to history text output that lists each selected attempt ordinal, outcome, candidate count, and changed file paths without full unified diffs, while preserving task status and acceptance-finding warnings.",
+            "read_paths": [
+              "gflo/history.py",
+              "gflo/cli.py"
+            ],
+            "requirement_ids": [
+              "summary",
+              "integrity",
+              "compatibility"
+            ],
+            "schema_version": 1,
+            "task_id": "history-summary-render",
+            "writable_paths": [
+              "gflo/history.py"
+            ]
+          },
+          {
+            "acceptance_checks": [
+              "history --summary produces compact text output without unified diffs",
+              "history --summary --format json prints an error to stderr and returns non-zero exit code",
+              "history without --summary produces identical output to current behavior",
+              "history --summary --attempt N filters to the specified attempt and renders compact summary",
+              "history --summary --attempt N with invalid ordinal raises ValueError as before",
+              "history --format json without --summary produces unchanged JSON output"
+            ],
+            "depends_on": [
+              "history-summary-render"
+            ],
+            "environment_id": "gflo-python-dev",
+            "interface_contracts": [
+              "main() -> int",
+              "render_history(history: dict[str, Any]) -> str",
+              "change_history(ledger: WorkLedger, atom_id: str) -> dict[str, Any]"
+            ],
+            "objective": "Add --summary flag to the history subcommand in the CLI, reject --summary with --format json, and pass the flag through to render_history.",
+            "read_paths": [
+              "gflo/cli.py",
+              "gflo/history.py"
+            ],
+            "requirement_ids": [
+              "summary",
+              "compatibility"
+            ],
+            "schema_version": 1,
+            "task_id": "cli-summary-flag",
+            "writable_paths": [
+              "gflo/cli.py"
+            ]
+          },
+          {
+            "acceptance_checks": [
+              "test_summary_text_contains_ordinal_outcome_candidate_count_and_paths passes",
+              "test_summary_text_has_no_unified_diff_lines passes",
+              "test_summary_preserves_acceptance_finding_warnings passes",
+              "test_summary_with_attempt_filter passes",
+              "test_summary_attempt_without_candidate passes",
+              "test_summary_rejected_with_json_format passes",
+              "test_default_output_unchanged passes (regression)",
+              "test_summary_preserves_gate_receipts passes",
+              "test_summary_preserves_scope_footer passes"
+            ],
+            "depends_on": [
+              "history-summary-render",
+              "cli-summary-flag"
+            ],
+            "environment_id": "gflo-python-dev",
+            "interface_contracts": [
+              "render_history(history: dict[str, Any]) -> str",
+              "change_history(ledger: WorkLedger, atom_id: str) -> dict[str, Any]",
+              "main() -> int"
+            ],
+            "objective": "Write regression tests for the --summary mode covering: compact output content, absence of diffs, preservation of warnings and status, combination with --attempt N, attempts without candidates, and rejection of --summary with --format json.",
+            "read_paths": [
+              "gflo/history.py",
+              "gflo/cli.py",
+              "tests/test_history_filter.py",
+              "tests/test_history_filter_review.py"
+            ],
+            "requirement_ids": [
+              "tests-docs",
+              "summary",
+              "compatibility",
+              "integrity"
+            ],
+            "schema_version": 1,
+            "task_id": "tests-summary-mode",
+            "writable_paths": [
+              "tests/test_history_summary.py"
+            ]
+          },
+          {
+            "acceptance_checks": [
+              "docs/operations.md contains a section describing the --summary flag",
+              "The documentation states that --summary is rejected with --format json",
+              "The documentation shows an example command: gflo history <atom_id> --summary",
+              "The documentation explains that --summary omits unified diffs but preserves status, warnings, and gate receipts"
+            ],
+            "depends_on": [
+              "cli-summary-flag"
+            ],
+            "environment_id": "gflo-python-dev",
+            "interface_contracts": [
+              "main() -> int",
+              "render_history(history: dict[str, Any]) -> str"
+            ],
+            "objective": "Document the --summary flag in docs/operations.md, including its purpose, usage syntax, interaction with --attempt and --format, and the rejection behavior with --format json.",
+            "read_paths": [
+              "gflo/cli.py",
+              "gflo/history.py"
+            ],
+            "requirement_ids": [
+              "tests-docs"
+            ],
+            "schema_version": 1,
+            "task_id": "docs-summary-usage",
+            "writable_paths": [
+              "docs/operations.md"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "run": "run-resolved-1",
+      "manifest": {
+        "request_digest": "15f856dac295beaba136d5ba9c443434bd7132abbe9dd6a9033d12c1563751cf",
+        "atom_digest": "65f73cd260a1c238eedf975c749c816f2960f8e54116fdd3efa312806a46c675",
+        "profile": {
+          "schema_version": 1,
+          "profile_id": "vllm-python-worker-v1",
+          "base_url": "http://127.0.0.1:30000/v1",
+          "model": "gflo-local",
+          "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+          "context_limit": 16384,
+          "timeout_seconds": 120.0
+        },
+        "max_attempts": 2,
+        "max_turns_per_attempt": 3
+      },
+      "context_budget": {
+        "output_tokens": 2048,
+        "schema_version": 1,
+        "total_tokens": 8192
+      },
+      "result": {
+        "status": "infrastructure-halt",
+        "proposal_digest": null,
+        "execution_authorized": false,
+        "observations": [
+          {
+            "attempt": 1,
+            "turn": 1,
+            "read_path": "gflo/cli.py",
+            "model_evidence_digest": "25f539ff1f004a3efb96baf95f874ee62ee4545c87251ad39157475ea9516be7",
+            "observation_digest": "63cb6aeb458aa0fcaefeca847b3b26b4714ad92e343264dd8eaf3d481cf81336"
+          },
+          {
+            "attempt": 1,
+            "turn": 2,
+            "evicted_path": "gflo/history.py",
+            "read_path": "tests/test_history_filter.py",
+            "model_evidence_digest": "8f81cfa19c1c090020194c9291abba8597dca85e14dc8a546ebbda9966643605",
+            "observation_digest": "ac2f6a270294698901cda9fe91998ae6c13ceedbe9c070b27947b2aaf118d444"
+          },
+          {
+            "attempt": 1,
+            "turn": 3,
+            "evicted_path": "gflo/cli.py",
+            "read_path": "gflo/history.py",
+            "model_evidence_digest": "cab0b03a6aab10dd3c726dde7c8c91bd014ce8000b6d005cb9794f2e887fb52f",
+            "observation_digest": "76393bdb8401e58facf616a27ebca5b62a69d1ea34d77f42acf6502bdaa14492"
+          },
+          {
+            "attempt": 2,
+            "turn": 1,
+            "model_evidence_digest": "f41df39feae0286df651619f731c62cda63c06770f5e2e6460d837ead7e72177",
+            "observation_digest": "b14d4a918e6ab82f946b585164adbef5d92ecf84a194ba1f264aec0390dad637"
+          }
+        ]
+      },
+      "validated_prompt_tokens": 15827,
+      "validated_completion_tokens": 72,
+      "observed_model_seconds": 39.93393507300061,
+      "observations_without_validated_usage": 1
+    },
+    {
+      "run": "run-v2-1",
+      "manifest": {
+        "request_digest": "15f856dac295beaba136d5ba9c443434bd7132abbe9dd6a9033d12c1563751cf",
+        "atom_digest": "1c38632288f346e496271438a28d7eb86deafcd1a162718c8d6e554f997b3ac1",
+        "profile": {
+          "schema_version": 1,
+          "profile_id": "vllm-python-worker-v1",
+          "base_url": "http://127.0.0.1:30000/v1",
+          "model": "gflo-local",
+          "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+          "context_limit": 16384,
+          "timeout_seconds": 120.0
+        },
+        "max_attempts": 2,
+        "max_turns_per_attempt": 3,
+        "context_budget": {
+          "total_tokens": 12288,
+          "output_tokens": 4096
+        }
+      },
+      "context_budget": {
+        "output_tokens": 4096,
+        "schema_version": 1,
+        "total_tokens": 12288
+      },
+      "result": {
+        "status": "needs-review",
+        "proposal_digest": "dae48697b4229f7a2993d33b8ad8acfe57df97ba9d58352621108d1b4a5e5900",
+        "execution_authorized": false,
+        "task_order": [
+          "history-summary-render",
+          "cli-summary-flag",
+          "documentation",
+          "regression-tests"
+        ],
+        "questions": [
+          "Should the summary mode include the candidate digest hash, or only the changed file paths? The requirement says 'candidate count and changed file paths' but does not specify whether the digest should appear.",
+          "Should the summary mode include the failure reason lines (from attempt['failures'])? The requirement mentions 'outcome' but does not explicitly address failure details.",
+          "What exact format should the per-attempt summary line use? For example: 'Attempt 1 (abc123): accepted, 2 candidates, 3 files changed' vs a multi-line block."
+        ],
+        "observations": [
+          {
+            "attempt": 1,
+            "turn": 1,
+            "read_path": "gflo/cli.py",
+            "model_evidence_digest": "a714b566b5d7ff13979e2e153102a31a6f69e50fe6511b2284e2fa261aee185c",
+            "observation_digest": "667838b35d7e67b42668543f6592cb6f101c5033f22d5fdfc1b6756c8946b85f"
+          },
+          {
+            "attempt": 1,
+            "turn": 2,
+            "model_evidence_digest": "a477d9aaefcacee560049aaf7654b9f14c74004af6d0cac9ee0d9fbfea07ed09",
+            "observation_digest": "ec2ac21e8c6a70f6a1df00ad7ffe1fb7415afd77572dfe38d2e8efc4e97c873b"
+          }
+        ]
+      },
+      "validated_prompt_tokens": 10233,
+      "validated_completion_tokens": 2203,
+      "observed_model_seconds": 40.28882211400196,
+      "observations_without_validated_usage": 0,
+      "proposal": {
+        "questions": [
+          "Should the summary mode include the candidate digest hash, or only the changed file paths? The requirement says 'candidate count and changed file paths' but does not specify whether the digest should appear.",
+          "Should the summary mode include the failure reason lines (from attempt['failures'])? The requirement mentions 'outcome' but does not explicitly address failure details.",
+          "What exact format should the per-attempt summary line use? For example: 'Attempt 1 (abc123): accepted, 2 candidates, 3 files changed' vs a multi-line block."
+        ],
+        "rationale": "The plan splits into four independently testable tasks: (1) render_history gains a keyword-only summary parameter that produces compact output without unified diffs while preserving all structural elements; (2) the CLI wires --summary to render_history and rejects the json+summary combination via the existing ValueError handler; (3) regression tests cover all new and existing behaviors including edge cases like attempts without candidates; (4) documentation updates describe the new flag. The tasks are ordered so that the render change precedes the CLI wiring, which precedes tests and docs. The interface contracts specify the exact AFTER-change signature for render_history and the CLI behavior, ensuring consumers match. All acceptance checks are concrete and verifiable in the gflo-python-dev environment.",
+        "request_digest": "15f856dac295beaba136d5ba9c443434bd7132abbe9dd6a9033d12c1563751cf",
+        "schema_version": 1,
+        "tasks": [
+          {
+            "acceptance_checks": [
+              "render_history(history, summary=False) produces identical output to the current implementation for all existing test fixtures.",
+              "render_history(history, summary=True) omits unified diff text but includes changed file paths, attempt ordinals, outcomes, candidate counts, gate receipts, acceptance-finding warnings, and scope footer.",
+              "Summary mode correctly handles attempts with zero candidates (prints 'No published candidate.' or equivalent).",
+              "Summary mode correctly handles attempts with multiple candidates, listing each candidate's changed file paths without diff content.",
+              "Summary mode preserves the exact scope footer text from the history dict.",
+              "Summary mode preserves acceptance-finding warning lines (reason and evidence digest)."
+            ],
+            "depends_on": [],
+            "environment_id": "gflo-python-dev",
+            "interface_contracts": [
+              "def render_history(history: dict[str, Any], *, summary: bool = False) -> str",
+              "When summary=True, output includes: task status line, objective, base revision, acceptance-finding warnings, per-attempt ordinal/outcome/candidate-count/changed-file-paths (no unified diff text), gate receipt lines, and scope footer.",
+              "When summary=False, output is byte-for-byte identical to the current render_history behavior."
+            ],
+            "objective": "Add an opt-in compact summary mode to history text output that lists each selected attempt ordinal, outcome, candidate count, and changed file paths without full unified diffs, while preserving task status, acceptance-finding warnings, gate receipt lines, and the scope footer.",
+            "read_paths": [
+              "gflo/history.py"
+            ],
+            "requirement_ids": [
+              "summary",
+              "integrity",
+              "compatibility"
+            ],
+            "schema_version": 1,
+            "task_id": "history-summary-render",
+            "writable_paths": [
+              "gflo/history.py"
+            ]
+          },
+          {
+            "acceptance_checks": [
+              "Running 'history --summary --format json' raises ValueError with a message containing 'summary requires text output' and exits with code 1.",
+              "Running 'history --summary --format text' produces compact summary output via render_history.",
+              "Running 'history' without --summary produces output identical to the current behavior (no regression).",
+              "Running 'history --summary --attempt N' correctly filters to the selected attempt before rendering summary.",
+              "The --summary flag is a store_true with default False, so omitting it preserves existing behavior."
+            ],
+            "depends_on": [
+              "history-summary-render"
+            ],
+            "environment_id": "gflo-python-dev",
+            "interface_contracts": [
+              "argparse: history subparser gains --summary (store_true, default False).",
+              "In the history command branch, if args.summary and args.format == 'json', raise ValueError('summary requires text output; use --format text').",
+              "In the history command branch, if args.format == 'text', call render_history(output, summary=args.summary).",
+              "The ValueError is caught by the existing except (OSError, sqlite3.Error, Conflict, ValueError, KeyError, ModelError, BrokerError, subprocess.SubprocessError) handler, printing JSON error to stderr and returning exit code 1."
+            ],
+            "objective": "Add --summary flag to the history CLI subcommand, wire it to render_history, and reject --summary with --format json using the existing ValueError handler with exit code 1 and a message explaining that summary requires text output.",
+            "read_paths": [
+              "gflo/cli.py",
+              "gflo/history.py"
+            ],
+            "requirement_ids": [
+              "summary",
+              "compatibility"
+            ],
+            "schema_version": 1,
+            "task_id": "cli-summary-flag",
+            "writable_paths": [
+              "gflo/cli.py"
+            ]
+          },
+          {
+            "acceptance_checks": [
+              "All new tests pass in the gflo-python-dev environment.",
+              "Existing tests in test_history_filter.py and test_history_filter_review.py continue to pass unchanged.",
+              "test_summary_json_rejected asserts exit code 1 and stderr contains 'summary requires text output'.",
+              "test_summary_no_candidates asserts the output includes a 'No published candidate' line or equivalent for attempts with zero candidates.",
+              "test_default_output_unchanged asserts byte-for-byte identical output when --summary is not passed."
+            ],
+            "depends_on": [
+              "history-summary-render",
+              "cli-summary-flag"
+            ],
+            "environment_id": "gflo-python-dev",
+            "interface_contracts": [
+              "Test fixtures reuse the history_db and invoke helpers from test_history_filter.py patterns.",
+              "test_summary_omits_diffs: verify no unified diff lines in summary output.",
+              "test_summary_includes_changed_paths: verify changed file paths appear in summary output.",
+              "test_summary_with_attempt_filter: verify --summary --attempt N filters correctly.",
+              "test_summary_no_candidates: verify attempts with zero candidates render correctly in summary mode.",
+              "test_summary_json_rejected: verify --summary --format json exits with code 1 and error message.",
+              "test_default_output_unchanged: verify output without --summary matches current behavior.",
+              "test_summary_preserves_gate_receipts: verify gate receipt lines appear in summary output.",
+              "test_summary_preserves_scope_footer: verify scope footer text appears in summary output."
+            ],
+            "objective": "Add independent regression tests covering: (1) summary mode output structure, (2) summary mode with --attempt N filtering, (3) summary mode with attempts that have no candidates, (4) --summary with --format json rejection, (5) default output unchanged, (6) unselected corruption still fails, (7) attempts without candidates in summary mode.",
+            "read_paths": [
+              "tests/test_history_filter.py",
+              "tests/test_history_filter_review.py",
+              "gflo/history.py",
+              "gflo/cli.py"
+            ],
+            "requirement_ids": [
+              "tests-docs",
+              "summary",
+              "compatibility",
+              "integrity"
+            ],
+            "schema_version": 1,
+            "task_id": "regression-tests",
+            "writable_paths": [
+              "tests/test_history_summary.py"
+            ]
+          },
+          {
+            "acceptance_checks": [
+              "docs/operations.md contains a section describing the --summary flag for the history command.",
+              "The documentation explicitly states that --summary is incompatible with --format json.",
+              "The documentation shows an example command: 'gflo history --summary --attempt 2'.",
+              "The documentation mentions that summary output preserves gate receipts and scope footer."
+            ],
+            "depends_on": [
+              "cli-summary-flag"
+            ],
+            "environment_id": "gflo-python-dev",
+            "interface_contracts": [
+              "Document: 'gflo history --summary' produces a compact summary without unified diffs.",
+              "Document: '--summary requires --format text; combining with --format json is rejected with exit code 1.'",
+              "Document: '--summary combines with --attempt N to show only the selected attempt in summary form.'",
+              "Document: 'Summary output includes attempt ordinal, outcome, candidate count, changed file paths, gate receipts, acceptance-finding warnings, and scope footer.'"
+            ],
+            "objective": "Document the --summary flag usage in docs/operations.md, including the interaction with --format json (rejection) and --attempt N (filtering before summary rendering).",
+            "read_paths": [
+              "docs/operations.md",
+              "gflo/cli.py"
+            ],
+            "requirement_ids": [
+              "tests-docs"
+            ],
+            "schema_version": 1,
+            "task_id": "documentation",
+            "writable_paths": [
+              "docs/operations.md"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "run": "run-v2-defaults-1",
+      "manifest": {
+        "request_digest": "15f856dac295beaba136d5ba9c443434bd7132abbe9dd6a9033d12c1563751cf",
+        "atom_digest": "2a6177407ecb2a5b1e93eb129cdee51dc96d4470741794005fe764bba0335cd7",
+        "profile": {
+          "schema_version": 1,
+          "profile_id": "vllm-python-worker-v1",
+          "base_url": "http://127.0.0.1:30000/v1",
+          "model": "gflo-local",
+          "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+          "context_limit": 16384,
+          "timeout_seconds": 120.0
+        },
+        "max_attempts": 2,
+        "max_turns_per_attempt": 3,
+        "context_budget": {
+          "total_tokens": 12288,
+          "output_tokens": 4096
+        }
+      },
+      "context_budget": {
+        "output_tokens": 4096,
+        "schema_version": 1,
+        "total_tokens": 12288
+      },
+      "result": {
+        "status": "needs-review",
+        "proposal_digest": "9fc69c1294a2932cd0850b3550c9b4a440c69cec8dc6115792022fa5c48daa83",
+        "execution_authorized": false,
+        "task_order": [
+          "history-summary-render",
+          "cli-summary-flag",
+          "docs-summary-usage",
+          "tests-summary-regression"
+        ],
+        "questions": [],
+        "observations": [
+          {
+            "attempt": 1,
+            "turn": 1,
+            "read_path": "gflo/cli.py",
+            "model_evidence_digest": "de42d4e23cd394dbec5552dfeb97c514cf1c3c11256b1f391b3bab2f0d5613be",
+            "observation_digest": "f13ed23bd9892d75e2eb09a748f010b61a310ccf766c67daa258c48c6c1c5bf9"
+          },
+          {
+            "attempt": 1,
+            "turn": 2,
+            "evicted_path": "gflo/history.py",
+            "read_path": "tests/test_history_filter.py",
+            "model_evidence_digest": "ae78d2e0c72183b9e82c2a11f7c52631f156dbfc8aa35580657dc6adb52b8f55",
+            "observation_digest": "5c0f9dd69677408628488db43a1885fbb2a0860b16b5730ff2df2bad72964ad5"
+          },
+          {
+            "attempt": 1,
+            "turn": 3,
+            "evicted_path": "gflo/cli.py",
+            "read_path": "gflo/history.py",
+            "model_evidence_digest": "ddfdedbd38b3a9fe2ff1f76a0895ac1a85342b7aa6418191f5f93f82ffdbf6f5",
+            "observation_digest": "c17978d74a7bee9b23937074caa675203a36f6ec260cc18387b8997cb2cb5d40"
+          },
+          {
+            "attempt": 2,
+            "turn": 1,
+            "read_path": "gflo/cli.py",
+            "model_evidence_digest": "049ce2a3765fb100f643f32906820065eadb735ec78052db6c225410593d7f23",
+            "observation_digest": "7e9cd59e666f479792fcf7fe87d0198060a10be5ec9d36b276b53685f0829f0f"
+          },
+          {
+            "attempt": 2,
+            "turn": 2,
+            "model_evidence_digest": "637003697f387669ea92d07a98902eabedbca31d4ed575396e8330e2ef9efb20",
+            "observation_digest": "39b963c94798c308702ab110e21f4bb19a8fdd0d9307ef9be28f1fa4e83b5aec"
+          }
+        ]
+      },
+      "validated_prompt_tokens": 26434,
+      "validated_completion_tokens": 2014,
+      "observed_model_seconds": 38.705137483000726,
+      "observations_without_validated_usage": 0,
+      "proposal": {
+        "questions": [],
+        "rationale": "The plan splits into four independently testable tasks: (1) render_history summary mode in history.py, (2) CLI --summary flag in cli.py, (3) regression tests, and (4) documentation. The render_history change is a keyword-only parameter (summary: bool = False) so existing callers are unaffected. The CLI task depends on the render change because it must pass the new keyword. Tests and docs depend on both. The --summary --format json rejection uses the existing ValueError handler (exit code 1) as specified. Summary mode preserves gate receipts, acceptance findings, and the scope footer per the integrity requirement. The environment is the pinned gflo-python-dev with pytest, ruff, and mypy. No blocking questions are needed; the requirements are unambiguous and the source interface is clear from the provided files.",
+        "request_digest": "15f856dac295beaba136d5ba9c443434bd7132abbe9dd6a9033d12c1563751cf",
+        "schema_version": 1,
+        "tasks": [
+          {
+            "acceptance_checks": [
+              "render_history(history, summary=False) produces byte-identical output to the current implementation for all existing test fixtures",
+              "render_history(history, summary=True) omits unified diff lines but includes attempt ordinal, outcome, candidate count, and changed file paths",
+              "Summary output includes all gate receipt lines and acceptance-finding warnings present in the full output",
+              "Summary output includes the scope footer text",
+              "Summary mode handles attempts with zero candidates correctly (prints 'No published candidate.')",
+              "Summary mode handles candidates with zero changes correctly (prints 'No source changes.')"
+            ],
+            "depends_on": [],
+            "environment_id": "gflo-python-dev",
+            "interface_contracts": [
+              "def render_history(history: dict[str, Any], *, summary: bool = False) -> str",
+              "When summary=True, output includes attempt ordinal, outcome, candidate count, and changed file paths; excludes full unified diff text",
+              "When summary=False, output is identical to the current render_history behavior",
+              "Summary mode preserves gate receipt lines, acceptance-finding warnings, and the scope footer"
+            ],
+            "objective": "Add an opt-in compact summary mode to render_history that lists attempt ordinals, outcomes, candidate counts, and changed file paths without full unified diffs, while preserving gate receipts, acceptance findings, and the scope footer.",
+            "read_paths": [
+              "gflo/history.py"
+            ],
+            "requirement_ids": [
+              "summary",
+              "integrity",
+              "compatibility"
+            ],
+            "schema_version": 1,
+            "task_id": "history-summary-render",
+            "writable_paths": [
+              "gflo/history.py"
+            ]
+          },
+          {
+            "acceptance_checks": [
+              "Running 'history --summary' with --format text produces compact summary output",
+              "Running 'history --summary --format json' prints a JSON error to stderr and exits with code 1",
+              "The error message for --summary --format json explains that summary requires text output",
+              "Running 'history' without --summary produces output identical to the current behavior",
+              "Running 'history --summary --attempt N' correctly filters to the specified attempt before rendering summary",
+              "The --summary flag is not accepted when --format json is specified (clear rejection, not silent ignore)"
+            ],
+            "depends_on": [
+              "history-summary-render"
+            ],
+            "environment_id": "gflo-python-dev",
+            "interface_contracts": [
+              "history.add_argument('--summary', action='store_true', help='Compact summary mode for text output')",
+              "When args.summary is True and args.format is 'json', raise ValueError with a message explaining that summary requires text output",
+              "When args.summary is True and args.format is 'text', call render_history(output, summary=True)",
+              "When args.summary is False, call render_history(output) with no summary keyword (default False)",
+              "The ValueError is caught by the existing except (OSError, sqlite3.Error, Conflict, ValueError, ...) handler and exits with code 1"
+            ],
+            "objective": "Add a --summary flag to the history CLI subcommand that passes summary=True to render_history, and reject --summary with --format json using the existing ValueError handler with exit code 1.",
+            "read_paths": [
+              "gflo/cli.py",
+              "gflo/history.py"
+            ],
+            "requirement_ids": [
+              "summary",
+              "compatibility"
+            ],
+            "schema_version": 1,
+            "task_id": "cli-summary-flag",
+            "writable_paths": [
+              "gflo/cli.py"
+            ]
+          },
+          {
+            "acceptance_checks": [
+              "pytest tests/test_history_summary.py passes in the gflo-python-dev environment",
+              "Test for summary text output verifies absence of unified diff lines and presence of file paths",
+              "Test for --summary --format json verifies exit code 1 and error message on stderr",
+              "Test for --summary --attempt N verifies only the selected attempt is rendered in summary form",
+              "Test for attempts without candidates verifies 'No published candidate.' appears in summary output",
+              "Test for candidates without changes verifies 'No source changes.' appears in summary output",
+              "Test for default (no --summary) output verifies byte-identical output to pre-change behavior",
+              "Test for gate receipts verifies they appear in summary output"
+            ],
+            "depends_on": [
+              "history-summary-render",
+              "cli-summary-flag"
+            ],
+            "environment_id": "gflo-python-dev",
+            "interface_contracts": [
+              "Test module follows the same fixture pattern as tests/test_history_filter.py (history_db, invoke helpers)",
+              "Tests cover: summary text output omits diffs, summary includes attempt/outcome/candidate-count/paths, summary with --attempt N, summary --format json rejection, no-candidate attempts, no-change candidates",
+              "Tests verify that without --summary, output is unchanged (regression)",
+              "Tests verify gate receipts and acceptance findings are present in summary output"
+            ],
+            "objective": "Add regression tests for the --summary flag and render_history summary mode, covering attempts without candidates, candidates without changes, --attempt filtering with --summary, and the --summary --format json rejection.",
+            "read_paths": [
+              "gflo/history.py",
+              "gflo/cli.py",
+              "tests/test_history_filter.py"
+            ],
+            "requirement_ids": [
+              "tests-docs",
+              "summary",
+              "compatibility",
+              "integrity"
+            ],
+            "schema_version": 1,
+            "task_id": "tests-summary-regression",
+            "writable_paths": [
+              "tests/test_history_summary.py"
+            ]
+          },
+          {
+            "acceptance_checks": [
+              "docs/operations.md contains a section or entry describing the --summary flag for the history command",
+              "The documentation states that --summary is incompatible with --format json",
+              "The documentation states what information summary mode includes (ordinal, outcome, candidate count, file paths)",
+              "The documentation states that --summary can be combined with --attempt N",
+              "The documentation is consistent with the actual CLI behavior (no contradictions)"
+            ],
+            "depends_on": [
+              "cli-summary-flag"
+            ],
+            "environment_id": "gflo-python-dev",
+            "interface_contracts": [
+              "Document 'gflo history --summary' as an opt-in compact mode",
+              "State that --summary lists attempt ordinal, outcome, candidate count, and changed file paths",
+              "State that --summary is incompatible with --format json and will produce an error",
+              "State that --summary can be combined with --attempt N",
+              "Document that without --summary, output is unchanged"
+            ],
+            "objective": "Document the --summary flag in docs/operations.md, including usage syntax, what it shows, and the incompatibility with --format json.",
+            "read_paths": [
+              "docs/operations.md",
+              "gflo/cli.py"
+            ],
+            "requirement_ids": [
+              "tests-docs"
+            ],
+            "schema_version": 1,
+            "task_id": "docs-summary-usage",
+            "writable_paths": [
+              "docs/operations.md"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "run": "run-window-1",
+      "manifest": {
+        "request_digest": "1df5ea74f90b458492afecd6269fb2ca4d46592699e50501785e0aa1df39b358",
+        "atom_digest": "d599135d386fa8c536b0be543138d16ba61e576054bd46badb79d76c680bae9c",
+        "profile": {
+          "schema_version": 1,
+          "profile_id": "vllm-python-worker-v1",
+          "base_url": "http://127.0.0.1:30000/v1",
+          "model": "gflo-local",
+          "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+          "context_limit": 16384,
+          "timeout_seconds": 120.0
+        },
+        "max_attempts": 2,
+        "max_turns_per_attempt": 3
+      },
+      "context_budget": {
+        "output_tokens": 2048,
+        "schema_version": 1,
+        "total_tokens": 8192
+      },
+      "result": {
+        "status": "infrastructure-halt",
+        "proposal_digest": null,
+        "execution_authorized": false,
+        "observations": [
+          {
+            "attempt": 1,
+            "turn": 1,
+            "read_path": "gflo/cli.py",
+            "model_evidence_digest": "4675fbd397ed08ea268a1a948d40b5c2951ad7d050342c124ba69ace573a337f",
+            "observation_digest": "0daef8b53ca394478149eb08f3e2c9dadec75ac1e250900944e4fb48bb9874eb"
+          },
+          {
+            "attempt": 1,
+            "turn": 2,
+            "model_evidence_digest": "4a554e457f0847c22fc407ff337261f0aaad06b0441ca2e2ae2a450adcfa7640",
+            "observation_digest": "754436148daa348b744fb6a773c671dc9cbb6298cb19bd4ff650fdbd3bf7f92a"
+          }
+        ]
+      },
+      "validated_prompt_tokens": 4277,
+      "validated_completion_tokens": 19,
+      "observed_model_seconds": 0.9203437049982313,
+      "observations_without_validated_usage": 1
+    }
+  ],
+  "setup_checks": [
+    "Clean virtual environment installed and prepared demo successfully",
+    "Repeated setup reused environment and submitted the same demo idempotently",
+    "Check-only made no installation changes"
+  ],
+  "remaining": [
+    "Trusted execution preparation from reviewed plan",
+    "Independent acceptance gates for generated tests",
+    "Automatic dependency provisioning and large repository context selection",
+    "Intermittent memory qualification OOM flag investigation"
+  ]
+}

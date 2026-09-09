@@ -1,0 +1,218 @@
+"""Plans are bounded proposals; structural validity is not execution permission."""
+
+import hashlib
+import json
+from types import SimpleNamespace
+
+import pytest
+
+from gflo.model import ModelError, ModelProfile
+from gflo.planning import FeatureRequest, PlanProposal, draft_feature, validate_proposal
+from gflo.worker import CandidateResult, ReadFileRequest
+
+
+@pytest.fixture
+def feature():
+    return FeatureRequest.model_validate_json(
+        json.dumps(
+            {
+                "feature_id": "summary",
+                "objective": "Summarize retained history",
+                "requirements": {"read": "Preserve task warnings", "format": "Show compact output"},
+                "source_revision": "fixed-base",
+                "source": {"files": {"history.py": "pass", "cli.py": "pass"}},
+                "allowed_paths": ["history.py", "cli.py", "tests"],
+                "selected_paths": ["history.py"],
+                "environments": {
+                    "python": {"image": "sha256:" + "a" * 64, "description": "Pinned Python"}
+                },
+            }
+        )
+    )
+
+
+def proposal(feature):
+    return {
+        "request_digest": feature.digest(),
+        "questions": [],
+        "rationale": "Provider before consumer",
+        "tasks": [
+            {
+                "task_id": "provider",
+                "objective": "Summarize",
+                "requirement_ids": ["read"],
+                "depends_on": [],
+                "writable_paths": ["history.py"],
+                "read_paths": ["history.py"],
+                "environment_id": "python",
+                "interface_contracts": ["summary(data) returns text"],
+                "acceptance_checks": ["Warnings retained"],
+            },
+            {
+                "task_id": "cli",
+                "objective": "Wire CLI",
+                "requirement_ids": ["format"],
+                "depends_on": ["provider"],
+                "writable_paths": ["cli.py"],
+                "read_paths": ["cli.py"],
+                "environment_id": "python",
+                "interface_contracts": ["Call summary(data)"],
+                "acceptance_checks": ["Compact output omits full diffs"],
+            },
+        ],
+    }
+
+
+def test_dependency_order_and_questions_do_not_authorize_execution(feature):
+    data = proposal(feature)
+    data["tasks"].reverse()
+    data["questions"] = ["Which summary layout is preferred?"]
+    plan = PlanProposal.model_validate_json(json.dumps(data))
+    assert validate_proposal(feature, plan) == ("provider", "cli")
+
+
+@pytest.mark.parametrize(
+    "mutation,match",
+    [
+        (lambda d: d.update(request_digest="b" * 64), "another request"),
+        (lambda d: d["tasks"][1].update(task_id="provider"), "Duplicate task"),
+        (lambda d: d["tasks"][0].update(depends_on=["cli"]), "Cyclic"),
+        (lambda d: d["tasks"][1].update(depends_on=["missing"]), "missing dependency"),
+        (lambda d: d["tasks"][1].update(depends_on=["cli"]), "self or missing"),
+        (lambda d: d["tasks"][1].update(requirement_ids=["read"]), "no planned task"),
+        (lambda d: d["tasks"][1].update(requirement_ids=["unknown"]), "unknown requirement"),
+        (lambda d: d["tasks"][1].update(environment_id="network"), "unknown environment"),
+        (lambda d: d["tasks"][1].update(read_paths=["missing.py"]), "missing source"),
+        (lambda d: d["tasks"][1].update(writable_paths=["../secret"]), "normalized"),
+        (lambda d: d["tasks"][1].update(writable_paths=["ledger.py"]), "outside allowed"),
+        (
+            lambda d: d["tasks"][1].update(writable_paths=["history.py"], depends_on=[]),
+            "Overlapping",
+        ),
+    ],
+)
+def test_invalid_graphs_rejected(feature, mutation, match):
+    data = proposal(feature)
+    mutation(data)
+    with pytest.raises(ValueError, match=match):
+        validate_proposal(feature, PlanProposal.model_validate_json(json.dumps(data)))
+
+
+def fake_model(monkeypatch, answers):
+    instances = []
+
+    class Model:
+        def __init__(self, artifacts, profile):
+            self.artifacts = artifacts
+            self.last_evidence_digest = None
+            self.calls = []
+            instances.append(self)
+
+        def turn(self, *args, **kwargs):
+            self.calls.append(kwargs)
+            self.last_evidence_digest = self.artifacts.publish(b"observed model call")
+            answer = answers.pop(0)
+            if isinstance(answer, Exception):
+                raise answer
+            return SimpleNamespace(result=answer)
+
+    monkeypatch.setattr("gflo.planning.LocalModel", Model)
+    return instances
+
+
+def profile():
+    return ModelProfile(
+        base_url="http://127.0.0.1:30000/v1",
+        model="local",
+        deployment_digest=hashlib.sha256(b"fixture").hexdigest(),
+    )
+
+
+def test_reads_then_proposal_retains_evidence_and_refuses_rerun(feature, tmp_path, monkeypatch):
+    answer = CandidateResult(
+        kind="candidate", changes={"factory-plan.json": json.dumps(proposal(feature))}
+    )
+    instances = fake_model(monkeypatch, [ReadFileRequest(kind="read_file", path="cli.py"), answer])
+    output = tmp_path / "draft"
+    result = draft_feature(feature, profile(), output, deployment="fixture")
+    assert result["status"] == "needs-review" and result["execution_authorized"] is False
+    assert len(result["observations"]) == 2
+    assert instances[0].calls[1]["selected_paths"] == ("cli.py", "history.py")
+    assert json.loads((output / "result.json").read_text()) == result
+    with pytest.raises(FileExistsError):
+        draft_feature(feature, profile(), output, deployment="fixture")
+    assert len(instances) == 1
+
+
+def test_invalid_proposals_exhaust_without_acceptance(feature, tmp_path, monkeypatch):
+    bad = CandidateResult(kind="candidate", changes={"cli.py": "unapproved source change"})
+    instances = fake_model(monkeypatch, [bad, bad])
+    result = draft_feature(feature, profile(), tmp_path / "draft", deployment="fixture")
+    assert result["status"] == "exhausted" and result["proposal_digest"] is None
+    assert len(instances[0].calls) == 2
+    assert instances[0].calls[1]["diagnostic_digests"]
+    assert not (tmp_path / "draft/proposal.json").exists()
+
+
+def test_transport_failure_stops_without_retry(feature, tmp_path, monkeypatch):
+    instances = fake_model(monkeypatch, [ModelError("offline")])
+    with pytest.raises(ModelError):
+        draft_feature(feature, profile(), tmp_path / "draft", deployment="fixture")
+    assert len(instances[0].calls) == 1
+    result = json.loads((tmp_path / "draft/result.json").read_text())
+    assert result["status"] == "infrastructure-halt" and len(result["observations"]) == 1
+
+
+def test_read_window_is_bounded_and_records_eviction(feature, tmp_path, monkeypatch):
+    data = json.loads(feature.canonical())
+    data["source"]["files"]["notes.md"] = "Local documentation"
+    feature = FeatureRequest.model_validate_json(json.dumps(data))
+    answer = CandidateResult(
+        kind="candidate", changes={"factory-plan.json": json.dumps(proposal(feature))}
+    )
+    instances = fake_model(
+        monkeypatch,
+        [
+            ReadFileRequest(kind="read_file", path="cli.py"),
+            ReadFileRequest(kind="read_file", path="notes.md"),
+            answer,
+        ],
+    )
+    result = draft_feature(feature, profile(), tmp_path / "draft", deployment="fixture")
+    assert result["status"] == "needs-review"
+    assert instances[0].calls[2]["selected_paths"] == ("cli.py", "notes.md")
+    assert result["observations"][1]["evicted_path"] == "history.py"
+
+
+def test_wrong_deployment_rejected_before_creating_run(feature, tmp_path):
+    with pytest.raises(ValueError, match="Deployment"):
+        draft_feature(feature, profile(), tmp_path / "draft", deployment="different")
+    assert not (tmp_path / "draft").exists()
+
+
+def test_check_plan_cli_requires_no_work_ledger(feature, tmp_path, monkeypatch, capsys):
+    import sys
+
+    from gflo.cli import main
+
+    request_file = tmp_path / "request.json"
+    proposal_file = tmp_path / "proposal.json"
+    request_file.write_text(feature.canonical())
+    proposal_file.write_text(json.dumps(proposal(feature)))
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "gflo",
+            "--db",
+            str(tmp_path / "missing.db"),
+            "check-plan",
+            str(request_file),
+            str(proposal_file),
+        ],
+    )
+    assert main() == 0
+    result = json.loads(capsys.readouterr().out)
+    assert result["task_order"] == ["provider", "cli"]
+    assert result["execution_authorized"] is False
+    assert not (tmp_path / "missing.db").exists()

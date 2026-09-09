@@ -14,14 +14,18 @@ Requires Python 3.11+; the development environment was tested with Python 3.13.5
 From a source checkout:
 
 ```sh
-python3 -m venv .venv
-.venv/bin/python -m pip install -r requirements-dev.lock -e .
-.venv/bin/python examples/prepare_demo.py > /tmp/gflo-demo-plan.json
-.venv/bin/gflo --db .gflo/demo/ledger.db submit-run /tmp/gflo-demo-plan.json
-.venv/bin/gflo --db .gflo/demo/ledger.db status pilot-v1-01-slug
+python3 scripts/setup.py
 ```
 
-This prepares real, hash-bound work without contacting a model or Docker. To execute
+This creates `.venv`, installs pinned dependencies, prepares the demo, and reports
+CPU/Docker readiness. To inspect prerequisites without installing:
+
+```sh
+python3 scripts/setup.py --check-only
+```
+
+The default setup downloads Python packages and checks Docker availability, but
+does not start a model or execute worker code. It prepares real, hash-bound work. To execute
 it, follow [Getting started](docs/getting-started.md) for the local GPU service and broker.
 
 ## Documentation
@@ -37,4 +41,5 @@ The documentation follows the short entry point and linked guides used by
 [SFLO](https://github.com/simonasrazm/simon-factory-lights-out) and
 [Gas City](https://github.com/gastownhall/gascity). GFLO is a separate experiment.
 
-No license has been selected yet. Publication and license selection remain pending.
+The repository is public as an experimental developer preview. No license has
+been selected yet; a supported release and license choice remain pending.

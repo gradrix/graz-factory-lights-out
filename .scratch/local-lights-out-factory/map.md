@@ -113,3 +113,8 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
   trial passed 3/3, reviewed candidate `091654a` ready for human merge review.
 - [Issue 30](issues/30-diagnose-memory-qualification-halts.md): diagnose repeated
   memory-probe OOM-flag halts without weakening resource enforcement.
+
+- Owner authorized merges/pushes; history filter merged and pushed at `0d30d48`.
+- [Issue 31](issues/31-draft-bounded-feature-plans.md) resolved: bounded draft planner
+  trial produced four reviewed tasks, not execution authority. Setup now has one
+  CPU bootstrap command. Next: trusted materialization and resource-probe diagnosis.

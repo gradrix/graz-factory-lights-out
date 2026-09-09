@@ -2,7 +2,14 @@
 
 ## Prepare a task without a GPU
 
-Use the installation and preparation commands in the [README](../README.md).
+Run `python3 scripts/setup.py` from the repository root. It installs into `.venv`,
+prepares `.gflo/demo/run-plan.json`, and submits the demo idempotently. Existing
+virtual environments are reused; other existing directories are refused. Choose
+`--venv PATH` or `--demo-dir PATH` for a separate setup. A changed demo plan needs
+a new demo directory so existing work is preserved.
+
+Use `python3 scripts/setup.py --check-only` to inspect CPU and Docker readiness
+without installation. The readiness report does not claim GPU execution is ready.
 `examples/prepare_demo.py` produces a complete `RunPlan` for a small slug-normalization
 program: source, objective, immutable input identities, independent process gates,
 model profile, and broker image. Submission persists the plan and source artifacts;
@@ -32,6 +39,14 @@ broker image explicitly (the broker never pulls images):
 ```sh
 docker pull python@sha256:ae52c5bef62a6bdd42cd1e8dffef86b9cd284bde9427da79839de7a4b983e7ca
 ```
+
+After provisioning the model cache and NVIDIA runtime,
+`python3 scripts/setup.py --start-model --config PATH` runs the existing service
+doctor, pulls the pinned broker image, and starts/checks the selected model service.
+The default profile is the measured RTX 5090 configuration; it is not a universal
+hardware detector. Model-cache download and host NVIDIA/Docker installation remain
+manual prerequisites. The control plane runs in the virtual environment; model and
+worker execution are containerized.
 
 Run the prepared task and inspect its result:
 

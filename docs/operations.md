@@ -100,3 +100,31 @@ To inspect only the second attempt, use `gflo --db PATH history ATOM --attempt 2
 Add `--format json` for structured output. The filter preserves task-level status,
 accepted candidate identity, and acceptance warnings. Unknown ordinals fail;
 all retained history integrity checks still run, including unselected attempts.
+
+## Draft a feature plan
+
+`gflo plan-feature REQUEST --profile PROFILE --deployment DEPLOYMENT --output NEW_DIR`
+asks the local model to propose tasks, dependencies, interface contracts, tests,
+and documentation work from a pinned source snapshot. REQUEST is a `FeatureRequest`:
+feature ID, objective, requirement mapping, source revision and SourceBundle, allowed
+paths, initially selected paths, and a catalog of named pinned environments.
+PROFILE is the existing default non-thinking ModelProfile; DEPLOYMENT must match
+its recorded digest. Environments are selected from the trusted catalog, not installed
+by the model. Generate the request schema with:
+
+```sh
+.venv/bin/python -c 'import json; from gflo.planning import FeatureRequest; print(json.dumps(FeatureRequest.model_json_schema(), indent=2))'
+```
+
+`gflo check-plan REQUEST PROPOSAL` checks binding, requirement coverage, source
+references, scopes, known environments, dependency cycles, and unordered overlapping
+writes. It does not assess semantic quality or authorize execution. Review proposed
+interfaces and test adequacy before preparing WorkAtoms and trusted gates.
+
+Planning v2 uses two attempts, three turns each, 12K total / 4K output tokens,
+without thinking. Source reads retain the two most recent files, with a bounded
+interface index for navigation. Existing output directories are refused: there is
+no implicit restart or budget reset. Raw calls and observations remain in the run's
+artifact store. Interrupted runs can have incomplete summary files; immutable
+artifacts are the retained evidence. Transport/model errors halt explicitly.
+A `needs-review` result may contain unanswered questions and is always a draft.

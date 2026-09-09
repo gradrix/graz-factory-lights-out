@@ -1,41 +1,54 @@
-# GFLO handoff — supervised self-trial ready for review
+# GFLO handoff — planning drafts and simpler setup
 
 ## Current checkpoint — 2026-09-09
 
-User asked to observe and improve a bounded GFLO self-modification trial. Completed
-qualification checkpoint was committed locally as `3cdd83e`. The main CLI is unchanged.
-A reviewed local-model candidate adds `history ATOM --attempt N` on branch
-`trial/history-attempt-filter`, commit `091654a`, in `.gflo/self-trial-checkout`.
-Await owner review before merging, per the agreed supervised trial. Nothing pushed.
+Owner authorized merging and pushing all completed work. History filter `091654a`
+was merged into main at `0d30d48` and pushed. No further merge/push permission is
+needed for this authorized work. GitHub repository is already PUBLIC; no license
+selected. Keep the experimental-preview wording; a supported release is not ready.
 
-First campaign failed on a guessed provider field and missing-ordinal handling.
-A new campaign with exact result shape and explicit missing-ordinal behavior passed
-3/3 runs in five attempts. All candidates passed 279 tests + 25 subtests each,
-eight optional Docker skips. Selected candidate lint and mypy passed. This is one
-seen feature repeated, not large-system qualification or autonomous self-improvement.
+Added `gflo plan-feature` and `gflo check-plan`. The model proposes tasks,
+dependencies, interfaces, acceptance descriptions, and unresolved questions from
+an immutable FeatureRequest. Trusted validation checks structural coverage, scope,
+source references, environment catalog, dependency cycles, and overlapping writes.
+A valid draft does NOT authorize execution or create trusted acceptance gates.
 
-Added a pinned CPython 3.11/Linux x86-64 dependency image recipe and wheel-hash lock
-under `infra/worker/`. Trusted acquisition/build only; candidate containers remain
-restricted and offline. Full repository/tests exceed 256 KiB; reviews used bounded
-batches without increasing limits. All runtime source was available in each batch.
+One live compact-summary feature trial produced four tasks (renderer, CLI, tests,
+docs) with matching proposed interfaces and no blocking questions after iterative
+improvements. Earlier failures exposed deployment artifact omission, context
+accumulation, truncation, and excessive routine questions. All results retained.
+Planning v2: 12K/4K non-thinking, two attempts × three turns, two-file reading window,
+bounded AST interface index. Implementation-worker budgets are unchanged.
+No implicit resume; existing output directories refused. Raw immutable observations
+remain even when a run halts; summary files can be incomplete after process death.
 
-## Next actions
+Added `python3 scripts/setup.py`: creates/reuses a venv, installs pinned dependencies,
+prepares/submits a demo, reports CPU/Docker readiness. `--check-only` does not install.
+`--start-model` uses existing service doctor/up and pulls the pinned broker image;
+model cache and NVIDIA/Docker host prerequisites still need provisioning. Clean
+venv setup and repeat setup passed; the default path runs no model/worker code.
 
-1. Owner reviews `git diff 3cdd83e..091654a` and chooses whether to merge the CLI
-   feature. Branch includes the 19-line implementation, tests, and usage docs.
-2. Diagnose recurring resource-probe halts in [issue 30](issues/30-diagnose-memory-qualification-halts.md).
-   Memory probe can exit 137 without Docker OOMKilled. Do not accept exit code alone
-   or weaken controls. Explicit unchanged requalification succeeded.
-3. Apply exact provider-result contracts systematically when preparing further tasks;
-   only split workers where independently validated ownership justifies it.
+Verification: 300 passed, eight optional Docker skips, 25 subtests; ruff and mypy
+passed. The previous history self-trial passed 279 tests per generated candidate
+in Docker; previous stateful campaign passed three builds. Original failed campaign
+scores and findings remain unchanged. Huge-system capability remains unqualified.
 
-[Portable trial results](self-history-trial-results.json) retain manifests, costs,
-candidate hashes, and complete regression summaries. Raw evidence under `.gflo/evidence/`:
-`self-history-filter-v1` (failed), `self-history-filter-contract-v1` (passed),
-`self-history-review-v3` (passed). Earlier review v1 failed on a harness field access;
-v2 halted on resource qualification. Both preserved. Image and raw evidence need
-separate transfer or recreation. Git branch/commits preserve the actual feature.
+## Continue
 
-[Issue 29](issues/29-trial-history-attempt-filter.md) is ready-for-human, trial work
-complete. [Previous checkpoint](handoff-before-self-trial-2026-09-09.md) preserves
-stateful workload results and reproduction commands. Keep `.scratch/` tracked.
+- [Issue 30](issues/30-diagnose-memory-qualification-halts.md): reproduce intermittent
+  exit-137/no-OOM-flag resource checks without weakening enforcement.
+- Materialize reviewed plans into WorkAtoms with independently reviewed ProcessGates,
+  pinned environment/source bindings, and dependency-aware accepted-base progression.
+  Do not execute arbitrary commands or treat model-written tests as sole acceptance.
+- Qualify generated test tasks against trusted reference and faulty implementations,
+  then broaden planning trials beyond this seen feature.
+- GPU/model-cache provisioning remains the main onboarding gap. License selection
+  remains an owner decision before a supported release.
+
+[Planning results](planning-trial-results.json), [self-trial results](self-history-trial-results.json),
+and [stateful results](stateful-inventory-feedback-results.json) are portable.
+Raw planning evidence: `.gflo/evidence/planning-trial-v1/`, final `run-v2-defaults-1`.
+Requests and deployment/profile files are retained there; source hashes/proposals
+are in portable results. Raw artifacts/images require separate transfer/recreation.
+The isolated history checkout remains at `.gflo/self-trial-checkout` for reference.
+Keep `.scratch/` version-controlled. Issues 29 and 31 resolved; 30 ready-for-agent.

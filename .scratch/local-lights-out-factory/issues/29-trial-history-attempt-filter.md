@@ -1,7 +1,7 @@
 # Qualify an attempt filter on GFLO history
 
 Type: task
-Status: ready-for-human
+Status: resolved
 
 ## Scope
 
@@ -48,3 +48,5 @@ independent tests and usage documentation. Main CLI remains unchanged. Ready for
 human review before merging, as agreed for supervised self-modification. No push.
 See [portable evidence](../self-history-trial-results.json). Broker qualification
 follow-up is [issue 30](30-diagnose-memory-qualification-halts.md).
+
+Owner authorized merge and push. Feature merged into main at `0d30d48` and pushed.

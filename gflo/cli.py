@@ -18,7 +18,8 @@ from gflo.controller import Controller, RunPlan, prepare_run
 from gflo.history import change_history, render_history
 from gflo.integration import IntegrationPlan, IntegrationState, integrate
 from gflo.ledger import Conflict, WorkLedger
-from gflo.model import LocalModel, ModelError
+from gflo.model import LocalModel, ModelError, ModelProfile
+from gflo.planning import FeatureRequest, PlanProposal, draft_feature, validate_proposal
 from gflo.records import WorkAtom
 from gflo.reporting import cost_report
 
@@ -58,8 +59,42 @@ def main() -> int:
     prepared = commands.add_parser("submit-run", help="Validate and persist a complete run plan")
     prepared.add_argument("plan", type=Path)
     commands.add_parser("audit-artifacts", help="Verify stored references; never delete content")
+    planning = commands.add_parser("plan-feature", help="Draft a bounded feature plan for review")
+    planning.add_argument("request", type=Path)
+    planning.add_argument("--profile", type=Path, required=True)
+    planning.add_argument("--output", type=Path, required=True)
+    planning.add_argument("--deployment", type=Path, required=True)
+    check_plan = commands.add_parser(
+        "check-plan", help="Validate plan structure and source binding"
+    )
+    check_plan.add_argument("request", type=Path)
+    check_plan.add_argument("proposal", type=Path)
     args = parser.parse_args()
     try:
+        if args.command in ("plan-feature", "check-plan"):
+            request = FeatureRequest.model_validate_json(args.request.read_bytes())
+            if args.command == "plan-feature":
+                result = draft_feature(
+                    request,
+                    ModelProfile.model_validate_json(args.profile.read_bytes()),
+                    args.output,
+                    deployment=args.deployment.read_text(),
+                )
+                print(json.dumps(result, indent=2))
+                return 0 if result["status"] == "needs-review" else 2
+            proposal = PlanProposal.model_validate_json(args.proposal.read_bytes())
+            order = validate_proposal(request, proposal)
+            print(
+                json.dumps(
+                    {
+                        "task_order": order,
+                        "questions": proposal.questions,
+                        "execution_authorized": False,
+                    },
+                    indent=2,
+                )
+            )
+            return 0
         # Reject malformed submissions before opening or creating the ledger.
         atom = (
             WorkAtom.model_validate_json(args.contract.read_bytes())
@@ -102,13 +137,9 @@ def main() -> int:
                         raise ValueError(
                             f"--attempt must be a positive integer, got {args.attempt}"
                         )
-                    filtered = [
-                        a for a in output["attempts"] if a["ordinal"] == args.attempt
-                    ]
+                    filtered = [a for a in output["attempts"] if a["ordinal"] == args.attempt]
                     if not filtered:
-                        raise ValueError(
-                            f"No attempt with ordinal {args.attempt} found"
-                        )
+                        raise ValueError(f"No attempt with ordinal {args.attempt} found")
                     output = {**output, "attempts": filtered}
                 if args.format == "text":
                     print(render_history(output), end="")
