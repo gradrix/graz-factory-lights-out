@@ -108,3 +108,19 @@ module without coupling scheduling to graph storage. The task dependency graph
 orders work; repository dependencies provide impact evidence. Large-repository
 qualification still needs selection sufficiency, freshness, resource measurements,
 and repeated whole-feature correctness on real repositories.
+
+## Relationship to SFLO and Gas City
+
+The original [foundation decision](../.scratch/local-lights-out-factory/research/orchestration-foundations.md)
+selected a small GFLO core borrowing contracts rather than adopting either runtime.
+SFLO documents artifact-gated product stages with distinct PM, developer, QA and
+security roles. Gas City provides configurable multi-agent orchestration primitives,
+including work tracking/routing and reconciliation. See their current
+[SFLO](https://github.com/simonasrazm/simon-factory-lights-out) and
+[Gas City](https://github.com/gastownhall/gascity) descriptions (checked 2026-09-10).
+
+GFLO follows those ideas through bounded work, retained artifacts, separate validation,
+and durable progress. It does not implement SFLO's exact pipeline or Gas City's
+runtime. The optional specialist board is a GFLO planning-policy experiment above
+that core. Its consensus has no acceptance authority. More roles become defaults
+only when measured outcomes justify the additional coordination and model cost.

@@ -176,3 +176,13 @@ accepted-base bindings and stopping on task or combined-validation failure.
 flags; `needs-info` means the model returned clarification questions without a plan.
 See [product intake](product-intake.md) for the complete flow, schemas, source-store
 requirements, current-state ownership, and qualification limits.
+
+For the opt-in planning comparison, add `--board` to a snapshot `plan-feature` command.
+Inspect each role's `report.json`, the coordinator's `synthesis.json`, and the top-level
+`result.json`. An advisory-budget halt or specialist failure produces no executable
+plan. The single-planner path remains the normal default; see
+[the board experiment](product-intake.md#optional-specialist-board-experiment).
+
+A specialist question or blocker returns `needs-info` immediately. Inspect root
+`questions.json` and the completed role reports; no coordinator synthesis is
+expected on this path.

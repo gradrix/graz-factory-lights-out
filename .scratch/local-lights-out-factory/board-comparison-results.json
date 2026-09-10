@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "raw_evidence": ".gflo/evidence/board-comparison-v1",
+  "scope": "One compatibility-sensitive feature, one deliberately unresolved rounding-policy variant; exploratory paired probes, no statistical generalization. Same local model across roles.",
+  "initial": {
+    "specified-single": {
+      "status": "exhausted",
+      "usage": {
+        "recorded_calls": 2,
+        "server_prompt_tokens": 6006,
+        "server_completion_tokens": 3575,
+        "model_seconds": 59.36433137499989,
+        "calls_without_usage": 0
+      },
+      "execution_authorized": false
+    },
+    "specified-board": {
+      "status": "advice-budget-halt",
+      "usage": {
+        "recorded_calls": 4,
+        "server_prompt_tokens": 9133,
+        "server_completion_tokens": 4384,
+        "model_seconds": 73.00436384800196,
+        "calls_without_usage": 0
+      },
+      "execution_authorized": false
+    },
+    "ambiguous-single": {
+      "status": "needs-info",
+      "usage": {
+        "recorded_calls": 1,
+        "server_prompt_tokens": 2837,
+        "server_completion_tokens": 306,
+        "model_seconds": 5.43284665200008,
+        "calls_without_usage": 0
+      },
+      "execution_authorized": false,
+      "questions": [
+        "What is the rounding rule for the discounted total: round the final payable total, round each line item before summation, or use a specific rounding mode (e.g., floor, ceil, banker's rounding)?",
+        "Should the discount be applied per line item before summing, or applied to the summed total after all line items are aggregated?"
+      ]
+    },
+    "ambiguous-board": {
+      "status": "advice-budget-halt",
+      "usage": {
+        "recorded_calls": 5,
+        "server_prompt_tokens": 11642,
+        "server_completion_tokens": 4700,
+        "model_seconds": 78.65832705900175,
+        "calls_without_usage": 0
+      },
+      "execution_authorized": false
+    }
+  },
+  "compact_followup": {
+    "specified-single": {
+      "status": "needs-review",
+      "usage": {
+        "recorded_calls": 2,
+        "server_prompt_tokens": 6146,
+        "server_completion_tokens": 2148,
+        "model_seconds": 36.08511742600058,
+        "calls_without_usage": 0
+      },
+      "execution_authorized": false,
+      "task_count": 3,
+      "questions": [],
+      "execution_status": "accepted",
+      "accepted_tasks": 3,
+      "worker_attempts": 3
+    },
+    "specified-board": {
+      "status": "needs-review",
+      "usage": {
+        "recorded_calls": 7,
+        "server_prompt_tokens": 22887,
+        "server_completion_tokens": 6741,
+        "model_seconds": 113.83024239099723,
+        "calls_without_usage": 0
+      },
+      "execution_authorized": false,
+      "task_count": 3,
+      "questions": [],
+      "execution_status": "accepted",
+      "accepted_tasks": 3,
+      "worker_attempts": 3
+    },
+    "ambiguous-single": {
+      "status": "needs-info",
+      "usage": {
+        "recorded_calls": 1,
+        "server_prompt_tokens": 2851,
+        "server_completion_tokens": 241,
+        "model_seconds": 4.3142924950007,
+        "calls_without_usage": 0
+      },
+      "execution_authorized": false,
+      "questions": [
+        "What rounding rule applies when the discounted total is not an integer (e.g., round half up, round half down, floor, ceil, or banker's rounding)?",
+        "Is the discount applied per line item before summation, or to the summed total after all line items are added?"
+      ]
+    },
+    "ambiguous-board": {
+      "status": "exhausted",
+      "usage": {
+        "recorded_calls": 7,
+        "server_prompt_tokens": 23325,
+        "server_completion_tokens": 5613,
+        "model_seconds": 95.262352740001,
+        "calls_without_usage": 0
+      },
+      "execution_authorized": false
+    }
+  },
+  "decision": "Keep single planning as default. Board remains opt-in; no demonstrated incremental quality gain.",
+  "followup_changes": [
+    "Concise finding/check instructions applied within unchanged limits",
+    "Same provider-first initial source ordering for both modes"
+  ],
+  "execution_gates": "Identical trusted compatibility, exact integer rounding, validation, non-mutation, provider delegation, API and CLI gates; 25 seeded valid and six invalid CLI inputs per combined gate.",
+  "early_blocker_followup": {
+    "status": "needs-info",
+    "stopped_at": "product",
+    "questions": [
+      "What is the rounding rule for the discounted total (e.g., round half up, round down, banker's rounding)?",
+      "Is the rounding applied per line item or after summing all line totals before applying the discount?",
+      "Resolve product:PRD-001: The business has not supplied the rounding rule or whether rounding is per line or after summation. This is a financial policy decision that cannot be inferred from the source or requirements."
+    ],
+    "usage": {
+      "recorded_calls": 1,
+      "server_prompt_tokens": 2327,
+      "server_completion_tokens": 610,
+      "model_seconds": 10.529194397000538,
+      "calls_without_usage": 0
+    },
+    "interpretation": "Specialist blockers route directly to questions; no coordinator call. Earlier failures remain unchanged."
+  },
+  "host_suite": "360 passed, 8 optional Docker skips, 25 subtests passed"
+}

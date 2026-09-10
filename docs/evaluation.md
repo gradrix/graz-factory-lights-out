@@ -161,3 +161,36 @@ retained reviewed plan. A new planner run is a separate observation, using the
 emitted request/profile/deployment and the ledger's artifact store. Historical raw
 model exchanges and process receipts remain under ignored `.gflo/evidence/feature-progression-v1/`
 and need separate transfer for forensic replay.
+
+## Specialist-board comparison (2026-09-10)
+
+Single planning remains the default; `plan-feature --board` is experimental.
+On one unfamiliar checkout-quote feature, both reviewed three-task plans passed
+identical independent task and whole-feature gates in three worker attempts each.
+The board showed no additional quality benefit in this small comparison.
+
+| Compact follow-up | Planning calls | Total planning tokens | Model time | Outcome |
+| --- | ---: | ---: | ---: | --- |
+| Single | 2 | 8,294 | 36.1 s | Three tasks accepted |
+| Board | 7 | 29,628 | 113.8 s | Three tasks accepted |
+
+The board used 3.6 times the planning tokens. Counts include failed calls and use
+server-reported usage; execution costs are separate. All roles used the same local
+Qwen model/profile, so these are not independent model opinions.
+
+Initial single planning exhausted its attempts; initial boards exceeded the 12,000-byte
+advice limit. More concise instructions and changed ordering of the same four context
+files preceded the paired follow-up; their effects cannot be isolated. The ambiguous
+request correctly stopped single planning, while board specialists found the missing
+rounding policy but coordinator output failed the response envelope twice.
+Those failures remain recorded. A subsequent deterministic early-blocker gate returned
+the product specialist’s clarification after one live call (2,937 tokens, 10.5 s),
+without synthesis. This follow-up does not replace the earlier failed result.
+
+[Portable results](../.scratch/local-lights-out-factory/board-comparison-results.json)
+retain each trial. The [fixture](../.scratch/local-lights-out-factory/board-comparison-fixture.json)
+contains source files, requests, proposals and trusted reviews/gates. Recreate source
+with `snapshot_bundle(store, SourceBundle(files=fixture["source_files"]))` and verify
+the request’s snapshot reference before execution. Raw exchanges and receipts live
+in ignored `.gflo/evidence/board-comparison-v1/` and need separate transfer.
+This is one feature and one ambiguity probe, not a large-repository qualification.

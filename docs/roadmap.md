@@ -39,6 +39,13 @@ recursive delegation. Keep per-task and whole-feature checks independent of mode
 prose. Measure complete feature success, retries, costs, and discovered false
 acceptances across repetitions. See [product intake](product-intake.md).
 
+The optional specialist-board comparison completed on a second, unfamiliar product.
+Both modes passed the same three-task execution gates; the board used 3.6 times
+as many planning tokens without demonstrated quality improvement. Single planning
+stays default. Specialist blockers now return questions before synthesis. Preserve
+failed trials and broaden navigation/ambiguity qualifications before adding a
+recursive organization. See [evaluation](evaluation.md).
+
 ## Large-repository migration requirement
 
 Large-repository support is an architectural requirement, not an assumed property

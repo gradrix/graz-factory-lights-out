@@ -14,6 +14,7 @@ from typing import Any
 from pydantic import ValidationError
 
 from gflo.artifacts import ArtifactStore
+from gflo.board import draft_board
 from gflo.broker import BrokerError, DockerBroker
 from gflo.controller import Controller, RunPlan, prepare_run
 from gflo.history import change_history, render_history
@@ -78,6 +79,7 @@ def main() -> int:
     planning.add_argument("--deployment", type=Path, required=True)
     planning.add_argument("--store", type=Path)
     planning.add_argument("--context-path", action="append", default=[])
+    planning.add_argument("--board", action="store_true")
     feature = commands.add_parser("run-feature", help="Execute/replay a reviewed feature graph")
     feature.add_argument("plan", type=Path)
     feature.add_argument("--current", required=True)
@@ -140,6 +142,21 @@ def main() -> int:
             else:
                 request = FeatureRequest.model_validate_json(request_data)
             if args.command == "plan-feature":
+                if args.board:
+                    if not isinstance(request, RepositoryFeatureRequest) or not args.store:
+                        raise ValueError("Board planning requires a snapshot request and --store")
+                    board_result = draft_board(
+                        request,
+                        ModelProfile.model_validate_json(args.profile.read_bytes()),
+                        args.output,
+                        deployment=args.deployment.read_text(),
+                        repository=Repository(
+                            SnapshotSource(ArtifactStore(args.store), request.source)
+                        ),
+                        context_paths=tuple(args.context_path),
+                    )
+                    print(json.dumps(board_result, indent=2))
+                    return 0 if board_result["status"] == "needs-review" else 2
                 result = draft_feature(
                     request,
                     ModelProfile.model_validate_json(args.profile.read_bytes()),

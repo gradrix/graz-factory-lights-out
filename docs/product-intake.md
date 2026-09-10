@@ -121,3 +121,31 @@ Symbol/dependency indexing, larger isolated builds, automatic environment setup,
 and million-line product work remain unqualified. Snapshot capture/edit replay
 still reads original source bytes; current measurements do not establish efficient
 large-repository execution.
+
+## Optional specialist-board experiment
+
+`plan-feature --board` runs four independent perspectives (product, architecture,
+validation, operations), then a coordinator if no specialist raises questions or
+blockers. A blocker immediately returns `needs-info` with the specialist’s questions;
+remaining roles and synthesis are skipped. It requires a snapshot request and the
+same `--store`/`--context-path` arguments as single planning. It is opt-in; ordinary
+`plan-feature` remains the default. These are sequential calls to the configured
+local model, not statistically independent models or parallel GPU workers.
+
+Reports bind the exact request and contain bounded findings, requirement IDs,
+source-path references, and questions. Paths are checked against available source;
+that does not prove the interpretation of a cited file is correct. The coordinator
+must reference all four report digests and account for every finding. Any unresolved
+specialist question or blocker prevents a question-free plan. Reports, dispositions,
+and disagreements remain reviewable even when synthesis fails.
+
+Each stage retains the existing two-attempt/three-turn, 12K/4K planning limits. The
+whole board therefore permits at most 30 model calls and 368,640 reserved total
+tokens across calls. Combined reports must fit 12,000 serialized bytes; an oversized
+board stops instead of silently discarding findings. This costs substantially more
+than one planner unless improved outcomes justify it. A new output directory is
+required, and every stage retains its observations on failure.
+
+A board proposal still needs a controller-authored PlanReview and independent gates.
+It does not alter leases, workers, acceptance, recovery, or repository promotion.
+Recursive manager trees are not implemented by this option.

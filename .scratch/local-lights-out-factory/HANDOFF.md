@@ -1,6 +1,29 @@
 # GFLO handoff — repository access foundation
 
-## Current checkpoint — reviewed feature progression, 2026-09-10
+## Current checkpoint — optional specialist board, 2026-09-10
+
+Issue 35 implemented `plan-feature --board`: bounded independent specialist reports,
+exact synthesis references/dispositions, and immediate clarification on any specialist
+question/blocker. This is optional planning policy above the existing core; execution,
+independent review/gates, and recovery are unchanged. It follows the original decision
+to borrow SFLO/Gas City contracts without adopting their runtimes.
+
+Both single and board plans passed all three tasks on an unfamiliar checkout feature.
+Board planning cost 29,628 versus 8,294 tokens; no additional quality benefit was shown.
+Single stays default. Initial protocol/advice-limit failures and the board ambiguity
+synthesis failure remain recorded. A later early-blocker live probe returned questions
+in one call. See [results](board-comparison-results.json),
+[fixture](board-comparison-fixture.json), and [evaluation](../../docs/evaluation.md).
+Raw evidence is ignored under `.gflo/evidence/board-comparison-v1/`.
+
+Validation: 360 tests, eight optional Docker skips, 25 subtests; ruff/mypy passed.
+Next: repeated varied product and navigation/selection trials, then revision-bound
+symbol lookup and larger isolated builds. No recursive management or million-line
+qualification is claimed. Issue 30 memory qualification remains open; no enforcement
+was weakened. License selection remains an owner decision for a supported release.
+
+
+## Previous checkpoint — reviewed feature progression, 2026-09-10
 
 Owner asked to continue implementation and test whether the local model can handle
 manager responsibility. Implemented `gflo.progression`/`run-feature`: sequential

@@ -141,3 +141,8 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
   retained; explicit clarification output then passed the narrow escalation probe.
   See [results](feature-progression-results.json). Next: diverse-product/manager
   qualification and measured source-selection failures before recursive delegation.
+
+- [Issue 35](issues/35-qualify-specialist-board.md): optional board implemented and
+  compared on an unfamiliar product. Both plans passed; board cost 3.6 times the
+  planning tokens without demonstrated improvement. Keep single default, stop
+  immediately on specialist blockers, retain every failed trial before follow-ups.
