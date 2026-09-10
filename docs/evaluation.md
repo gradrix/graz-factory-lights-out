@@ -598,3 +598,37 @@ This resolves the observed algorithm-advice boundary and missing dependency cont
 The repeat's unnecessary questions remain an unattended-planning reliability gap.
 Future work must distinguish unanswered policy from questions already grounded in
 requirements, while preserving real `needs-info` stops and unchanged acceptance gates.
+
+## Question grounding and large-file probe, 2026-09-10
+
+Structured planning now has one bounded review of proposed questions against original
+requirements. Exact quotes, request/question identities and complete question coverage
+are checked; source reads are disabled during review. Unresolved, invalid or repeated
+questions retain `needs-info`. Covered questions can replan within the original budget.
+Semantic coverage remains a model judgment; matching quotes only proves provenance.
+
+A fresh modes build accepted. A targeted replay seeded the exact eight-question record
+from the previous failure, then used the real local model for review, replanning and
+workers. The final replay accepted implementation, generated tests and integration
+after a planning coverage retry. No human answers, code edits or plan corrections were
+provided. Two fixtures with genuinely unspecified retention/rounding policy stayed
+`needs-info` in both reviewer iterations. Earlier failed replays remain recorded:
+source-reading was still offered by the transport, then schema feedback was dropped
+after successful review. Both defects were corrected and regression-tested.
+
+[Feature runs](../.scratch/local-lights-out-factory/question-grounding-feature-results.json),
+[missing-policy cases](../.scratch/local-lights-out-factory/question-grounding-ambiguity-results.json),
+and [combined target tests](../.scratch/local-lights-out-factory/question-grounding-combined-results.json)
+retain responses, assistance and outcomes. Seeded first observations are fixture replays,
+not GPU calls or fresh planning successes. Final factory checks: **480 tests and 25
+subtests** with Docker; ruff/mypy pass. All **28 target tests** pass together. Historical
+accepted, halted and challenged results replay with unchanged outcomes and no new events.
+
+The user's large-file concern was also measured: a 207,814-byte, 10,002-line Python
+file was indexed successfully, and its target function read as a two-line excerpt.
+The current coding projection still included the whole writable file and tokenized to
+**128,684 tokens**, exceeding the 16,384-token deployment limit. No generation request
+was sent. The [probe](../.scratch/local-lights-out-factory/large-file-context-results.json)
+includes an exact source recipe. This establishes a concrete need for bounded edit
+windows; it does not establish large-file coding capability. Full-file validation and
+unseen-byte preservation must accompany that next protocol.

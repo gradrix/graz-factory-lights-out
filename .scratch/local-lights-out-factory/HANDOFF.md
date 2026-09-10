@@ -1,6 +1,37 @@
 # GFLO handoff — repository access foundation
 
-## Current checkpoint — structured contracts qualified, 2026-09-10
+## Current checkpoint — grounded questions and large-file limit, 2026-09-10
+
+Issue 56 resolved. Structured planners can review one proposed question set against
+exact original requirement quotes, with no source reads. Unresolved/invalid/repeated
+questions remain needs-info; supported questions can replan within existing budgets.
+Grounding and later schema feedback both persist. Legacy planning paths stay unchanged.
+
+Fresh modes build accepted. A targeted replay seeded the exact old 8-question record,
+then the real local model grounded, replanned and completed implementation/tests/
+integration. No manually supplied answers, edits or plan corrections. Two truly
+ambiguous fixtures retained needs-info. Initial reviewer/source-read and subsequent
+schema-feedback failures remain in [feature evidence](question-grounding-feature-results.json).
+[Ambiguity evidence](question-grounding-ambiguity-results.json) and
+[all 28 target tests](question-grounding-combined-results.json) are portable.
+480 factory tests/25 subtests with Docker, ruff/mypy and historical replay pass.
+No model/deployment/gate changes; no target PR. Quote provenance is verified, while
+semantic coverage remains model judgment; this does not prove unattended reliability.
+
+Next: [issue 57](issues/57-edit-bounded-windows-in-large-files.md). The user's large-file
+concern is real: an indexed two-line function in a 10,002-line/207,814-byte file was
+located, but the worker's whole-file projection cost 128,684 tokens versus 16,384.
+Generation correctly did not run. [Probe and reproduction recipe](large-file-context-results.json).
+Implement bounded visible edit windows with full-file binding/preservation and complete
+validation. Do not raise context limits. SourceBundle's 256 KiB execution limit is a
+separate later constraint. No human decision is needed to start this task.
+
+Raw evidence: .gflo/evidence/question-grounding-v1/v2/v3 (campaign.py retains seeded
+replay harness), .gflo/evidence/leds-modes-grounding-v1. Transfer raw stores for exact
+replay; original modes fixture plus contracts-v2 reconstructs fresh builds. Same-model
+constraint and push authorization persist.
+
+## Previous checkpoint — structured contracts qualified, 2026-09-10
 
 Issue 55 resolved. New opt-in `vllm-python-worker-contracts-v2` separates declaration
 syntax from planner advice and supplies original requirements of read dependency

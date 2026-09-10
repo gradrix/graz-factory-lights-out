@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "file_lines": 10002,
+  "file_bytes": 207814,
+  "source_digest": "493c679598120dbd01368590f02e45e4bfb9e348a53d444efb8d6e20b3c72e3b",
+  "index": {
+    "schema_version": 1,
+    "index_digest": "d0c3a89def6e2bdc5ad5eba83215cc2d4cf9d3e468699967b33a2c2adfe3fffe",
+    "parsed_files": 1,
+    "reused_files": 0,
+    "skipped_files": 0
+  },
+  "excerpt": {
+    "schema_version": 1,
+    "source": {
+      "schema_version": 1,
+      "kind": "repository-snapshot-v1",
+      "artifact_digest": "4803c8073c92f43f6525546e17b5b9e2fa8ae67f3fe488ae9fbfdf5e63a4d423"
+    },
+    "path": "large.py",
+    "file_digest": "cc7b0ee275c8a21e168b8addc693bd3369abe586009e3c8a2bd8439665fba4d2",
+    "start_line": 5001,
+    "end_line": 5002,
+    "content": "def chosen_value():\n    return 41\n",
+    "complete": false
+  },
+  "tokenizer": {
+    "count": 128684,
+    "max_model_len": 16384
+  },
+  "whole_file_result": "Worker context exceeds its input/output budget",
+  "generation_calls": 0,
+  "model_evidence_digest": "dcbccd985f72b1ccba126bff9e96f0b6719df3a86c76981189da50fb84b97525",
+  "reproduction": "10000 numbered constant assignments, with the two-line chosen_value function inserted after assignment 4999; script retained in .gflo/evidence/question-grounding-v1/large_file_probe.py",
+  "source_recipe": "''.join(f'constant_{i} = {i}\\n' for i in range(5000)) + 'def chosen_value():\\n    return 41\\n' + ''.join(f'constant_{i} = {i}\\n' for i in range(5000,10000))"
+}

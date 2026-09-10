@@ -461,3 +461,17 @@ fresh structured planning; an old untyped reviewed proposal is rejected.
 Structured planning can retry an accounted output truncation within its existing
 two-attempt limit. It retains the incomplete response and supplies compactness
 feedback. No partial JSON is repaired or treated as a valid proposal.
+
+### Checking whether planning questions are already answered
+
+Structured planning may spend one of its remaining turns reviewing proposed questions
+against the original requirements. The review has no source-read permission and must
+account for every question with exact requirement quotes, or an empty citation list
+for unresolved policy. All bindings and quotes are checked; any unresolved question,
+invalid review, or repeated questions retain a `needs-info` stop. The original question
+record and the review remain artifacts. No additional attempts or turns are granted.
+
+When every question is supported, planning can continue using the original requirements
+and cited text. Quote matching proves provenance; whether text fully answers a question
+is still a model judgment. Independent policy compilation and acceptance gates remain
+necessary. Review does not add policy or authorize execution.

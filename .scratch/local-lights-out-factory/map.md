@@ -238,3 +238,10 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
 - [Issue 56](issues/56-ground-planning-questions-in-requirements.md): next bounded design
   and qualification for questions already answered by the immutable request, while
   preserving genuine missing-policy stops.
+
+- [Issue 56](issues/56-ground-planning-questions-in-requirements.md) resolved: bounded
+  exact-quote review recovers the retained questions without suppressing two real
+  policy gaps. Whole-feature qualification and 480 tests pass; semantic judgment
+  remains model-dependent.
+- [Issue 57](issues/57-edit-bounded-windows-in-large-files.md) next: source-window edits.
+  Index lookup works on 10,002 lines; existing whole-file worker exceeds context.

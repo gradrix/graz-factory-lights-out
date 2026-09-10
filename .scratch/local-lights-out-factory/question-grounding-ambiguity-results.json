@@ -1,0 +1,470 @@
+[
+  {
+    "run": ".gflo/evidence/question-grounding-v1/retention",
+    "request": {
+      "allowed_paths": [
+        "service.py"
+      ],
+      "environments": {
+        "python": {
+          "description": "Pinned offline CPython 3.11, standard library; no installation needed.",
+          "image": "sha256:695d05883b15326aea01e9266067ff58c41f3eaa4f647cfc9424b403dbe9548d",
+          "schema_version": 1
+        }
+      },
+      "feature_id": "retention",
+      "objective": "Plan this feature without inventing missing product policy.",
+      "requirements": {
+        "policy": "Archive completed jobs. The retention duration requires an owner decision."
+      },
+      "schema_version": 1,
+      "selected_paths": [
+        "service.py"
+      ],
+      "source": {
+        "files": {
+          "service.py": "pass\n"
+        },
+        "schema_version": 1
+      },
+      "source_revision": "fixture-v1"
+    },
+    "result": {
+      "status": "needs-info",
+      "proposal_digest": null,
+      "execution_authorized": false,
+      "questions": [
+        "How long should archived jobs be retained?"
+      ],
+      "questions_digest": "0e830b2d9fae599716f2fced8b7100fc3ee283f4bc3beb182cb6718d27ed287f",
+      "grounding_digest": "0ab3d1e9866eb42f921aac65ffe5757d80c32fee89eb6c4ff3ea890dcb1b3c62",
+      "observations": [
+        {
+          "attempt": 1,
+          "turn": 1,
+          "model_evidence_digest": "caeb1b5744926f4842238f125c92f720d0cf86149e05cafeca254b8aebb30e78",
+          "observation_digest": "cc13a4662975b47da08ddbe051572b9ad821a9502470c1ecc148c3d1fbb7b719"
+        },
+        {
+          "attempt": 1,
+          "turn": 2,
+          "grounding_digest": "0ab3d1e9866eb42f921aac65ffe5757d80c32fee89eb6c4ff3ea890dcb1b3c62",
+          "model_evidence_digest": "0782ae50dff98f7982577a858399e114014792fad6acb7dc9b9fbac5f56216ef",
+          "observation_digest": "cc310dbb481bef8420804e42710bad1f74a464d3e55436de3cac7180cdae50a9"
+        }
+      ]
+    },
+    "grounding": {
+      "dispositions": [
+        {
+          "question_index": 0,
+          "quotes": [],
+          "schema_version": 1
+        }
+      ],
+      "kind": "question-grounding-v1",
+      "questions_digest": "0e830b2d9fae599716f2fced8b7100fc3ee283f4bc3beb182cb6718d27ed287f",
+      "request_digest": "d5845fe86d5a48a65e154bbdfd66bb71ce245c1a3b2d8af6ff8bda0ff0215d2c",
+      "schema_version": 1
+    },
+    "responses": [
+      {
+        "seconds": 3.543650321000314,
+        "response": {
+          "id": "chatcmpl-959c0db1985fbbac",
+          "object": "chat.completion",
+          "created": 1789042034,
+          "model": "gflo-local",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "{\n  \"schema_version\": 1,\n  \"kind\": \"question-grounding-v1\",\n  \"request_digest\": \"d5845fe86d5a48a65e154bbdfd66bb71ce245c1a3b2d8af6ff8bda0ff0215d2c\",\n  \"questions_digest\": \"0e830b2d9fae599716f2fced8b7100fc3ee283f4bc3beb182cb6718d27ed287f\",\n  \"dispositions\": [\n    {\n      \"schema_version\": 1,\n      \"question_index\": 0,\n      \"quotes\": []\n    }\n  ]\n}",
+                "refusal": null,
+                "annotations": null,
+                "audio": null,
+                "function_call": null,
+                "reasoning": null
+              },
+              "logprobs": null,
+              "finish_reason": "stop",
+              "stop_reason": null,
+              "token_ids": null,
+              "routed_experts": null
+            }
+          ],
+          "service_tier": null,
+          "system_fingerprint": "vllm-0.28.0-1411bf1b",
+          "usage": {
+            "prompt_tokens": 1058,
+            "total_tokens": 1247,
+            "completion_tokens": 189,
+            "prompt_tokens_details": null,
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            }
+          },
+          "prompt_logprobs": null,
+          "prompt_token_ids": null,
+          "prompt_text": null,
+          "kv_transfer_params": null,
+          "ec_transfer_params": null,
+          "metrics": null
+        }
+      }
+    ],
+    "assistance": "One explicit missing-policy question seeded for the reviewer; no answer supplied. The first observation is a fixture replay, not a GPU call."
+  },
+  {
+    "run": ".gflo/evidence/question-grounding-v1/rounding",
+    "request": {
+      "allowed_paths": [
+        "service.py"
+      ],
+      "environments": {
+        "python": {
+          "description": "Pinned offline CPython 3.11, standard library; no installation needed.",
+          "image": "sha256:695d05883b15326aea01e9266067ff58c41f3eaa4f647cfc9424b403dbe9548d",
+          "schema_version": 1
+        }
+      },
+      "feature_id": "rounding",
+      "objective": "Plan this feature without inventing missing product policy.",
+      "requirements": {
+        "policy": "Report the invoice total. Currency rounding policy has not been chosen."
+      },
+      "schema_version": 1,
+      "selected_paths": [
+        "service.py"
+      ],
+      "source": {
+        "files": {
+          "service.py": "pass\n"
+        },
+        "schema_version": 1
+      },
+      "source_revision": "fixture-v1"
+    },
+    "result": {
+      "status": "needs-info",
+      "proposal_digest": null,
+      "execution_authorized": false,
+      "questions": [
+        "Which rounding rule should invoice totals use?"
+      ],
+      "questions_digest": "0563837678fdd3bd014208f4f3a07500fa6f16cef4dcd51cc0097082c4ba7b13",
+      "grounding_digest": "6b9d724106ae2e6a3d017246d7e905fa3c4e243b0a0a613532fd5084160b7ec1",
+      "observations": [
+        {
+          "attempt": 1,
+          "turn": 1,
+          "model_evidence_digest": "cc696ef255eb09f91d92eadb0f7108ac10cfa6633d18588d5930efe00e7cdbfa",
+          "observation_digest": "90104d05473c08bd966250f695f1104018e4a52dd0eac6992140ecaa73907e15"
+        },
+        {
+          "attempt": 1,
+          "turn": 2,
+          "grounding_digest": "6b9d724106ae2e6a3d017246d7e905fa3c4e243b0a0a613532fd5084160b7ec1",
+          "model_evidence_digest": "ca88a7b34450178d95382a7f1d84523429a4a875f6977ef2670c943eca6f868a",
+          "observation_digest": "fdd81214b1c735bb2696da22e7e2b7aa03589089d9cbe0eaf1e76677a4356a3d"
+        }
+      ]
+    },
+    "grounding": {
+      "dispositions": [
+        {
+          "question_index": 0,
+          "quotes": [],
+          "schema_version": 1
+        }
+      ],
+      "kind": "question-grounding-v1",
+      "questions_digest": "0563837678fdd3bd014208f4f3a07500fa6f16cef4dcd51cc0097082c4ba7b13",
+      "request_digest": "a533007be2cdbf0f618fe238e16e7e21b0273e756d008b1f61074f9935e74e45",
+      "schema_version": 1
+    },
+    "responses": [
+      {
+        "seconds": 2.5878900259995135,
+        "response": {
+          "id": "chatcmpl-8d50f973c1902c3a",
+          "object": "chat.completion",
+          "created": 1789042038,
+          "model": "gflo-local",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "{\"kind\":\"question-grounding-v1\",\"request_digest\":\"a533007be2cdbf0f618fe238e16e7e21b0273e756d008b1f61074f9935e74e45\",\"questions_digest\":\"0563837678fdd3bd014208f4f3a07500fa6f16cef4dcd51cc0097082c4ba7b13\",\"dispositions\":[{\"question_index\":0,\"quotes\":[]}]}",
+                "refusal": null,
+                "annotations": null,
+                "audio": null,
+                "function_call": null,
+                "reasoning": null
+              },
+              "logprobs": null,
+              "finish_reason": "stop",
+              "stop_reason": null,
+              "token_ids": null,
+              "routed_experts": null
+            }
+          ],
+          "service_tier": null,
+          "system_fingerprint": "vllm-0.28.0-1411bf1b",
+          "usage": {
+            "prompt_tokens": 1069,
+            "total_tokens": 1215,
+            "completion_tokens": 146,
+            "prompt_tokens_details": null,
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            }
+          },
+          "prompt_logprobs": null,
+          "prompt_token_ids": null,
+          "prompt_text": null,
+          "kv_transfer_params": null,
+          "ec_transfer_params": null,
+          "metrics": null
+        }
+      }
+    ],
+    "assistance": "One explicit missing-policy question seeded for the reviewer; no answer supplied. The first observation is a fixture replay, not a GPU call."
+  },
+  {
+    "run": ".gflo/evidence/question-grounding-v2/retention",
+    "request": {
+      "allowed_paths": [
+        "service.py"
+      ],
+      "environments": {
+        "python": {
+          "description": "Pinned offline CPython 3.11, standard library; no installation needed.",
+          "image": "sha256:695d05883b15326aea01e9266067ff58c41f3eaa4f647cfc9424b403dbe9548d",
+          "schema_version": 1
+        }
+      },
+      "feature_id": "retention",
+      "objective": "Plan this feature without inventing missing product policy.",
+      "requirements": {
+        "policy": "Archive completed jobs. The retention duration requires an owner decision."
+      },
+      "schema_version": 1,
+      "selected_paths": [
+        "service.py"
+      ],
+      "source": {
+        "files": {
+          "service.py": "pass\n"
+        },
+        "schema_version": 1
+      },
+      "source_revision": "fixture-v1"
+    },
+    "result": {
+      "status": "needs-info",
+      "proposal_digest": null,
+      "execution_authorized": false,
+      "questions": [
+        "How long should archived jobs be retained?"
+      ],
+      "questions_digest": "0e830b2d9fae599716f2fced8b7100fc3ee283f4bc3beb182cb6718d27ed287f",
+      "grounding_digest": "0ab3d1e9866eb42f921aac65ffe5757d80c32fee89eb6c4ff3ea890dcb1b3c62",
+      "observations": [
+        {
+          "attempt": 1,
+          "turn": 1,
+          "model_evidence_digest": "caeb1b5744926f4842238f125c92f720d0cf86149e05cafeca254b8aebb30e78",
+          "observation_digest": "cc13a4662975b47da08ddbe051572b9ad821a9502470c1ecc148c3d1fbb7b719"
+        },
+        {
+          "attempt": 1,
+          "turn": 2,
+          "grounding_digest": "0ab3d1e9866eb42f921aac65ffe5757d80c32fee89eb6c4ff3ea890dcb1b3c62",
+          "model_evidence_digest": "709f3b623f50e47cfda7c1a3553347da1a64f7ca575dd8f43d77601ee1934c79",
+          "observation_digest": "a4d168fa59b942ed150c9b45868b14dae72978374d3d3e88fbed7fdc1249b1bd"
+        }
+      ]
+    },
+    "grounding": {
+      "dispositions": [
+        {
+          "question_index": 0,
+          "quotes": [],
+          "schema_version": 1
+        }
+      ],
+      "kind": "question-grounding-v1",
+      "questions_digest": "0e830b2d9fae599716f2fced8b7100fc3ee283f4bc3beb182cb6718d27ed287f",
+      "request_digest": "d5845fe86d5a48a65e154bbdfd66bb71ce245c1a3b2d8af6ff8bda0ff0215d2c",
+      "schema_version": 1
+    },
+    "responses": [
+      {
+        "seconds": 2.744122667998454,
+        "response": {
+          "id": "chatcmpl-98048f1b89bb48b6",
+          "object": "chat.completion",
+          "created": 1789042161,
+          "model": "gflo-local",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "{\"kind\":\"question-grounding-v1\",\"request_digest\":\"d5845fe86d5a48a65e154bbdfd66bb71ce245c1a3b2d8af6ff8bda0ff0215d2c\",\"questions_digest\":\"0e830b2d9fae599716f2fced8b7100fc3ee283f4bc3beb182cb6718d27ed287f\",\"schema_version\":1,\"dispositions\":[{\"question_index\":0,\"quotes\":[],\"schema_version\":1}]}",
+                "refusal": null,
+                "annotations": null,
+                "audio": null,
+                "function_call": null,
+                "reasoning": null
+              },
+              "logprobs": null,
+              "finish_reason": "stop",
+              "stop_reason": null,
+              "token_ids": null,
+              "routed_experts": null
+            }
+          ],
+          "service_tier": null,
+          "system_fingerprint": "vllm-0.28.0-1411bf1b",
+          "usage": {
+            "prompt_tokens": 1057,
+            "total_tokens": 1205,
+            "completion_tokens": 148,
+            "prompt_tokens_details": null,
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            }
+          },
+          "prompt_logprobs": null,
+          "prompt_token_ids": null,
+          "prompt_text": null,
+          "kv_transfer_params": null,
+          "ec_transfer_params": null,
+          "metrics": null
+        }
+      }
+    ],
+    "assistance": "One explicit missing-policy question seeded for the reviewer; no answer supplied. The first observation is a fixture replay, not a GPU call."
+  },
+  {
+    "run": ".gflo/evidence/question-grounding-v2/rounding",
+    "request": {
+      "allowed_paths": [
+        "service.py"
+      ],
+      "environments": {
+        "python": {
+          "description": "Pinned offline CPython 3.11, standard library; no installation needed.",
+          "image": "sha256:695d05883b15326aea01e9266067ff58c41f3eaa4f647cfc9424b403dbe9548d",
+          "schema_version": 1
+        }
+      },
+      "feature_id": "rounding",
+      "objective": "Plan this feature without inventing missing product policy.",
+      "requirements": {
+        "policy": "Report the invoice total. Currency rounding policy has not been chosen."
+      },
+      "schema_version": 1,
+      "selected_paths": [
+        "service.py"
+      ],
+      "source": {
+        "files": {
+          "service.py": "pass\n"
+        },
+        "schema_version": 1
+      },
+      "source_revision": "fixture-v1"
+    },
+    "result": {
+      "status": "needs-info",
+      "proposal_digest": null,
+      "execution_authorized": false,
+      "questions": [
+        "Which rounding rule should invoice totals use?"
+      ],
+      "questions_digest": "0563837678fdd3bd014208f4f3a07500fa6f16cef4dcd51cc0097082c4ba7b13",
+      "grounding_digest": "6b9d724106ae2e6a3d017246d7e905fa3c4e243b0a0a613532fd5084160b7ec1",
+      "observations": [
+        {
+          "attempt": 1,
+          "turn": 1,
+          "model_evidence_digest": "cc696ef255eb09f91d92eadb0f7108ac10cfa6633d18588d5930efe00e7cdbfa",
+          "observation_digest": "90104d05473c08bd966250f695f1104018e4a52dd0eac6992140ecaa73907e15"
+        },
+        {
+          "attempt": 1,
+          "turn": 2,
+          "grounding_digest": "6b9d724106ae2e6a3d017246d7e905fa3c4e243b0a0a613532fd5084160b7ec1",
+          "model_evidence_digest": "14159eeb6ab0a27bbeafb93ab05889a17b3913c54ef3cd021ff9d7f824c681f0",
+          "observation_digest": "7f1e375024e00fe6656d0cc508f920318ab14184ef46fec4f888ebd239efecdb"
+        }
+      ]
+    },
+    "grounding": {
+      "dispositions": [
+        {
+          "question_index": 0,
+          "quotes": [],
+          "schema_version": 1
+        }
+      ],
+      "kind": "question-grounding-v1",
+      "questions_digest": "0563837678fdd3bd014208f4f3a07500fa6f16cef4dcd51cc0097082c4ba7b13",
+      "request_digest": "a533007be2cdbf0f618fe238e16e7e21b0273e756d008b1f61074f9935e74e45",
+      "schema_version": 1
+    },
+    "responses": [
+      {
+        "seconds": 3.1874960729983286,
+        "response": {
+          "id": "chatcmpl-a12becea61a7457a",
+          "object": "chat.completion",
+          "created": 1789042164,
+          "model": "gflo-local",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "{\n  \"kind\": \"question-grounding-v1\",\n  \"request_digest\": \"a533007be2cdbf0f618fe238e16e7e21b0273e756d008b1f61074f9935e74e45\",\n  \"questions_digest\": \"0563837678fdd3bd014208f4f3a07500fa6f16cef4dcd51cc0097082c4ba7b13\",\n  \"dispositions\": [\n    {\n      \"question_index\": 0,\n      \"quotes\": []\n    }\n  ]\n}",
+                "refusal": null,
+                "annotations": null,
+                "audio": null,
+                "function_call": null,
+                "reasoning": null
+              },
+              "logprobs": null,
+              "finish_reason": "stop",
+              "stop_reason": null,
+              "token_ids": null,
+              "routed_experts": null
+            }
+          ],
+          "service_tier": null,
+          "system_fingerprint": "vllm-0.28.0-1411bf1b",
+          "usage": {
+            "prompt_tokens": 1061,
+            "total_tokens": 1240,
+            "completion_tokens": 179,
+            "prompt_tokens_details": null,
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            }
+          },
+          "prompt_logprobs": null,
+          "prompt_token_ids": null,
+          "prompt_text": null,
+          "kv_transfer_params": null,
+          "ec_transfer_params": null,
+          "metrics": null
+        }
+      }
+    ],
+    "assistance": "One explicit missing-policy question seeded for the reviewer; no answer supplied. The first observation is a fixture replay, not a GPU call."
+  }
+]

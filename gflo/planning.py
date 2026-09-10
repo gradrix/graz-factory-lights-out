@@ -16,6 +16,7 @@ from gflo.board_records import Role, ShortText, SpecialistReport
 from gflo.broker import SourceBundle
 from gflo.contracts import ContractProposal, InterfaceBundle, task_interfaces
 from gflo.model import IncompleteModelResult, LocalModel, ModelError, ModelProfile
+from gflo.question_grounding import QuestionGrounding, grounding_instruction
 from gflo.records import Digest, Identifier, Record, Text, WorkAtom
 from gflo.repository import Repository, SourceRef
 from gflo.worker import CandidateResult, Diagnostic, InputSnapshot, ReadFileRequest, within
@@ -527,6 +528,9 @@ def draft_feature(
         "proposal_digest": None,
         "execution_authorized": False,
     }
+    pending_questions: PlanQuestions | None = None
+    grounding_done = False
+    grounding_active = False
     try:
         for attempt in range(1, 3):
             selected = set(selected_paths[-2:])
@@ -552,15 +556,74 @@ def draft_feature(
                         .canonical()
                         .encode()
                     )
+                    turn_atom = atom
+                    if grounding_active:
+                        assert pending_questions is not None
+                        turn_atom = atom.model_copy(
+                            update={
+                                "allowed_tools": ("edit",),
+                                "objective": grounding_instruction(
+                                    request.digest(),
+                                    pending_questions.digest(),
+                                    pending_questions.questions,
+                                    request.requirements,
+                                ),
+                            }
+                        )
+                    artifacts.publish(turn_atom.canonical().encode())
                     response = model.turn(
-                        atom,
+                        turn_atom,
                         source_digest,
                         current_inputs=lambda: atom.inputs_digest,
-                        selected_paths=tuple(sorted(selected)),
-                        diagnostic_digests=diagnostics + (note_digest,),
+                        selected_paths=() if grounding_active else tuple(sorted(selected)),
+                        diagnostic_digests=() if grounding_active else diagnostics + (note_digest,),
                         **(dict[str, Any](planning_document=True) if structured_interfaces else {}),
                     )
                     answer = response.result
+                    if grounding_active:
+                        assert pending_questions is not None
+                        grounding_done = True
+                        if not isinstance(answer, CandidateResult) or set(answer.changes) != {
+                            "factory-plan.json"
+                        }:
+                            row["error"] = "Question review must return a grounding document"
+                            return result
+                        try:
+                            grounding = QuestionGrounding.model_validate_json(
+                                answer.changes["factory-plan.json"]
+                            )
+                            digest = artifacts.publish(grounding.canonical().encode())
+                            row["grounding_digest"] = digest
+                            result["grounding_digest"] = digest
+                            covered = grounding.covered(
+                                request.digest(),
+                                pending_questions.digest(),
+                                pending_questions.questions,
+                                request.requirements,
+                            )
+                        except ValueError as error:
+                            row["error"] = str(error)[:2048]
+                            return result
+                        (output / "question-grounding.json").write_text(
+                            grounding.canonical() + "\n"
+                        )
+                        if not covered:
+                            return result
+                        grounding_active = False
+                        result.update(status="exhausted", questions=[])
+                        text = (
+                            "Question review located these exact original requirement quotes. "
+                            "Use original requirements to plan; these citations add no policy. "
+                            + grounding.canonical()
+                        )
+                        diagnostics = (
+                            artifacts.publish(
+                                Diagnostic(source_digest=digest, text=text[:8192])
+                                .canonical()
+                                .encode()
+                            ),
+                        )
+                        continue
                     if isinstance(answer, ReadFileRequest):
                         if answer.path in visited or answer.path not in source.files:
                             raise ValueError("Read must select an existing omitted source file")
@@ -580,6 +643,15 @@ def draft_feature(
                     }:
                         raise ValueError("Only factory-plan.json may be proposed")
                     answer_record = adapter.validate_json(answer.changes["factory-plan.json"])
+                    if isinstance(answer_record, ContractProposal) and answer_record.questions:
+                        row["questioned_proposal_digest"] = artifacts.publish(
+                            answer_record.canonical().encode()
+                        )
+                        answer_record = PlanQuestions(
+                            request_digest=answer_record.request_digest,
+                            questions=answer_record.questions,
+                            rationale=answer_record.rationale,
+                        )
                     if isinstance(answer_record, SpecialistReport):
                         assert specialist is not None and isinstance(
                             request, RepositoryFeatureRequest
@@ -607,6 +679,10 @@ def draft_feature(
                             questions_digest=digest,
                         )
                         (output / "questions.json").write_text(answer_record.canonical() + "\n")
+                        if structured_interfaces and not grounding_done:
+                            pending_questions = answer_record
+                            grounding_active = True
+                            continue
                         return result
                     if isinstance(answer_record, ContractProposal):
                         raw = answer_record.canonical()
@@ -634,6 +710,9 @@ def draft_feature(
                     (output / "proposal.json").write_text(proposal.canonical() + "\n")
                     return result
                 except IncompleteModelResult as error:
+                    if grounding_active:
+                        row["error"] = str(error)
+                        return result
                     if not structured_interfaces:
                         result["status"] = "infrastructure-halt"
                         raise
@@ -648,6 +727,9 @@ def draft_feature(
                     result["status"] = "infrastructure-halt"
                     raise
                 except ValueError as error:
+                    if grounding_active:
+                        row["error"] = str(error)[:2048]
+                        return result
                     failure = str(error)[:2048]
                     row["error"] = failure
                     break
@@ -660,7 +742,8 @@ def draft_feature(
                     )
             raw = artifacts.publish(failure.encode())
             diagnostic = Diagnostic(source_digest=raw, text=failure)
-            diagnostics = (artifacts.publish(diagnostic.canonical().encode()),)
+            failure_digest = artifacts.publish(diagnostic.canonical().encode())
+            diagnostics = (diagnostics[:1] if grounding_done else ()) + (failure_digest,)
         return result
     except BaseException:
         if result["status"] != "infrastructure-halt":

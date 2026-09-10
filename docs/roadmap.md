@@ -18,12 +18,11 @@ are recorded in [evaluation](evaluation.md) and portable development evidence.
 
 ## Next priorities
 
-1. Ground planner questions in the original request and broaden structured-contract qualification.
-   Declarations are separated from planner advice; contradiction reports and repeated
-   failed drafts stop for review. Sparse-mode implementation now passes, and dependent
-   tests receive the provider's original requirements. Measure planning truncation,
-   semantic failures and review effort across new tasks before making unattended claims.
-   A repeat still asked questions already answered by its immutable requirements.
+1. Add bounded source-window editing for large individual files. Keep full-file identity,
+   unseen-byte preservation and complete-candidate validation. The index can locate a
+   small function in a 10,002-line file, while the current worker cannot fit that file.
+   Question grounding now recovers a retained redundant-question failure and preserves
+   tested missing-policy stops; broader semantic reliability remains unqualified.
 2. Qualify repeated features across different real repositories and uncertain
    interfaces. Measure complete feature success, retries, model cost and review
    effort. Planning JSON reliability and source-selection sufficiency remain open.
@@ -72,3 +71,12 @@ Before a supported release:
 The CPU setup helper prepares the demo without a model call. Existing GPU trials
 assume provisioned host dependencies and a populated offline model cache. See
 [evaluation](evaluation.md) for the scope of completed checks.
+
+## Large individual files
+
+Repository search and symbol reads can return bounded excerpts, but the current coding
+worker still includes whole writable files. A 10,002-line synthetic file required
+128,684 prompt tokens and was refused before inference; its two-line target function
+was successfully located by the index. The next implementation is bounded source-window
+editing with full-file identity checks and complete-candidate validation. The existing
+256 KiB SourceBundle execution limit also needs a separate migration for larger inputs.
