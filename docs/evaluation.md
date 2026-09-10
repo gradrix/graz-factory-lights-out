@@ -509,3 +509,36 @@ planning reliability score; workers and product code were not re-executed.
 [Results](../.scratch/local-lights-out-factory/planner-paths-results.json) retain the
 historical rejection, proposal, raw response and compiled-plan identity. All 451 tests
 and 25 subtests passed with Docker enabled; ruff/mypy passed.
+
+## Sparse mode selection: semantic planning failure, 2026-09-10
+
+A prospective leds-service stateful feature tested sparse mode IDs, directional
+wraparound, empty-registry behavior and controlled activation. Before model calls,
+216 independent cases and two reference-qualified generated faults were frozen.
+Preflight excluded the original implementation from the assertion-only mutation set
+because it crashes on valid activation inputs; a separate oracle rejects the original.
+The reference checks still cover those activation cases. Portable reconstruction passed.
+
+Planning returned a structurally valid plan in one response. Its acceptance prose
+specified wraparound, but its interface_contracts contained a concrete algorithm with
+clamping defaults. The worker copied that algorithm, failed the oracle, and proposed
+five unchanged repairs. Six responses across two attempts exhausted its budget.
+No implementation was accepted; tests and integration never ran. There were no
+repair-target protocol errors.
+
+A separately prepared trial reused the same proposal/source/gates/budgets with a
+general instruction prioritizing requirements over planner implementation advice.
+It produced the same six-response failure, including five unchanged edits. The prompt
+addition was reverted. No runtime change or target-product change was shipped.
+Both trials remain separate in [initial results](../.scratch/local-lights-out-factory/leds-modes-results.json)
+and [instruction experiment](../.scratch/local-lights-out-factory/leds-modes-priority-results.json).
+The [fixture](../.scratch/local-lights-out-factory/leds-modes-fixture.json) preserves
+requirements, reference tests, fault qualification and gates.
+
+This is a negative whole-feature qualification. Structural plan validity and working
+repair transport do not establish semantic consistency between requirements and
+planner advice. The next design task is to separate interface declarations from
+implementation advice and prevent contradictory algorithms from acquiring contract
+authority. Stronger prose alone did not resolve this example. The factory's 451 tests
+and 25 subtests passed with Docker during the experiment; the reverted source matches
+the preceding validated runtime, and its transport regression passed again afterward.

@@ -223,3 +223,10 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
   state and explicit input/output rules prevent ambiguity about new task outputs.
   Retained bad plan still rejected with precise feedback; fresh seen plan valid first
   response. Broader end-to-end qualifications remain needed.
+
+- [Issue 53](issues/53-qualify-sparse-mode-selection.md): negative stateful feature trial.
+  Planner embeds wrong algorithm despite correct requirements; worker makes five
+  unchanged repairs and quarantines. No protocol errors or target changes.
+- [Issue 54](issues/54-prioritize-requirements-over-plan-advice.md): requirement-priority
+  prompt did not fix semantic anchoring; reverted after separate failed trial. Next
+  separate interface declarations from planner implementation advice structurally.

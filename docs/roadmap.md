@@ -18,16 +18,11 @@ are recorded in [evaluation](evaluation.md) and portable development evidence.
 
 ## Next priorities
 
-1. Broaden prospective pytest-adequacy qualifications. The color-parser trial
-   completed after reference-test preparation was corrected; planning and repair
-   protocol reliability remain measured limitations. The repair system-message
-   contradiction is fixed and turn-bound targets remove the need to copy hashes.
-   Planner briefs now distinguish new outputs from existing inputs explicitly.
-   Broader end-to-end qualification of these changes is next.
-   Bounded Python faults can now be generated and filtered against trusted reference
-   tests. Correct reference behavior and sufficient mutation coverage still need
-   trusted preparation. Preserve findings and measure first-pass
-   acceptance separately from reviewed correction.
+1. Separate planner interface declarations from implementation advice. The sparse-mode
+   trial produced a contradictory algorithm that workers repeatedly copied despite
+   failing gates; a priority-instruction experiment also failed. Preserve old plan
+   identities while introducing an explicit way to handle semantic contradictions.
+   Current repair transport works, but this limits unattended feature reliability.
 2. Qualify repeated features across different real repositories and uncertain
    interfaces. Measure complete feature success, retries, model cost and review
    effort. Planning JSON reliability and source-selection sufficiency remain open.

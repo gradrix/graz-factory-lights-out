@@ -1,6 +1,34 @@
 # GFLO handoff — repository access foundation
 
-## Current checkpoint — planner path semantics, 2026-09-10
+## Current checkpoint — semantic plan conflict, 2026-09-10
+
+Issues 53/54 are completed negative experiments. Sparse mode-selection feature on
+leds-service baseline d02622a865333d3044859aba22ffdc4303b188b1 froze 216 reference cases
+and two qualified generated faults before calls. Original crashes on valid activation
+inputs, so preflight excluded it from assertion-only fault set; separate oracle rejects
+original. Final worker gates still cover activation and preserve state/registry checks.
+
+Planner passed first response with correct wraparound prose but a wrong clamping
+algorithm in interface_contracts. Worker copied it, then made five unchanged repairs
+across six responses/two attempts. Quarantined; tests/integration never started.
+A fresh same-plan/source/gate/budget trial with priority prose failed identically.
+Prompt/test changes were reverted. No factory runtime or product edits shipped.
+Repair target protocol worked; semantic planning/repair remains a blocker to unattended
+whole-feature reliability, not an infrastructure or hardware failure.
+
+[Initial results](leds-modes-results.json), [follow-up](leds-modes-priority-results.json),
+[fixture](leds-modes-fixture.json). Reconstruct via prepare_repository_trial.py against
+.gflo/targets/leds-modes-baseline or pinned revision. Raw .gflo/evidence/leds-modes-v1
+and leds-modes-priority-v1; exhausted states must remain retained. Factory suite passed
+451 tests/25 subtests with Docker during experiment; runtime is reverted to preceding
+validated source and transport regression passes after revert.
+
+Next: design structural separation of interface declarations from planner-generated
+implementation advice and an explicit contradiction path. Do not solve this by more
+priority prose, silently editing rejected plans, or relaxing gates. Keep old digest/
+replay semantics. Same-model constraint and push/merge authorization persist.
+
+## Previous checkpoint — planner path semantics, 2026-09-10
 
 Issue 52: retained color plan read its own new test output. Added explicit read_paths
 versus writable_paths rules and allowed_path_state from full source metadata. Missing
