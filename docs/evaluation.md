@@ -632,3 +632,20 @@ was sent. The [probe](../.scratch/local-lights-out-factory/large-file-context-re
 includes an exact source recipe. This establishes a concrete need for bounded edit
 windows; it does not establish large-file coding capability. Full-file validation and
 unseen-byte preservation must accompany that next protocol.
+
+## Bounded source-window worker (2026-09-10)
+
+The opt-in windows-v1 profile passed a 10,002-line / 207,814-byte function edit and a
+568-line repository.py argument-validation edit on the same pinned local deployment.
+Maximum prompts were 3,276 and 4,814 tokens respectively; the prior whole-file large
+fixture required 128,684 tokens and was refused. Each accepted run used one attempt and
+three responses: read, edit, then repair after an integer-subclass test failed. Complete
+candidate checks verified behavior and preservation; accepted replay added no events.
+
+Codex wrote the tasks/gates and generic protocol. Initial fixtures had an incomplete
+subclass check, a missing dependency, a cross-runtime AST comparison, and an erroneous
+newline correction. Those failures remain recorded; the incomplete acceptance has a
+finding. No manual candidate edits or model changes were used. The real-file candidate
+remains a qualification artifact. [Portable responses, recipes and outcomes](../.scratch/local-lights-out-factory/window-qualification/README.md)
+show the assistance and failures. Large-file planning and execution above 256 KiB remain
+unqualified; this is not evidence of unattended whole-product reliability.

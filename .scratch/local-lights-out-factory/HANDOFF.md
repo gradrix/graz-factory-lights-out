@@ -1,6 +1,23 @@
 # GFLO handoff — repository access foundation
 
-## Current checkpoint — grounded questions and large-file limit, 2026-09-10
+## Current checkpoint — bounded worker windows, 2026-09-10
+
+Issue 57 resolved. Opt-in windows-v1 edits existing files through revision-bound ranges,
+with explicit omissions, bounded definition lookup and full-candidate gates. Prepared
+contexts now support windows; old profile records retain their interpretation.
+The 10,002-line trial accepted with a 3,276-token largest prompt. The real repository.py
+trial accepted with 4,814. Both repaired an integer-subclass bug using development feedback.
+No model/deployment changes or manually supplied candidate edits. Accepted replay added
+no events. See [all qualification outcomes](window-qualification/README.md), including
+fixture errors and the challenged original large-file acceptance.
+
+Regression: 486 tests / 25 subtests passed with Docker, followed by all seven window
+tests passing after an additional oversized-line case; ruff/mypy pass.
+Next: window-based planning and a complete large-file feature qualification, then larger
+execution inputs. Worker windows alone do not establish million-line autonomy.
+No human decision is currently required. Same-model and push authorization persist.
+
+## Previous checkpoint — grounded questions and large-file limit, 2026-09-10
 
 Issue 56 resolved. Structured planners can review one proposed question set against
 exact original requirement quotes, with no source reads. Unresolved/invalid/repeated

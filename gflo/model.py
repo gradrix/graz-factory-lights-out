@@ -21,6 +21,7 @@ from gflo.artifacts import ArtifactStore
 from gflo.broker import SourceBundle
 from gflo.contracts import CONTRACT_PROFILES
 from gflo.records import Digest, Record, WorkAtom
+from gflo.windows import WINDOW_PROFILE, WINDOW_SYSTEM, WindowRead, parse_window_result, window_view
 from gflo.worker import (
     CandidateResult,
     ContractConflict,
@@ -47,6 +48,7 @@ class ModelProfile(Record):
     profile_id: Literal[
         "vllm-python-worker-v1",
         "vllm-python-worker-repair-v1",
+        "vllm-python-worker-windows-v1",
         "vllm-python-worker-contracts-v1",
         "vllm-python-worker-contracts-v2",
         "vllm-python-worker-reasoning-v1",
@@ -95,7 +97,7 @@ class ContextManifest(Record):
 class ModelTurn(Record):
     manifest_digest: Digest
     response_digest: Digest
-    result: CandidateResult | ReadFileRequest | ContractConflict
+    result: CandidateResult | ReadFileRequest | ContractConflict | WindowRead
     prompt_tokens: int
     completion_tokens: int
     elapsed_seconds: float
@@ -198,6 +200,7 @@ class LocalModel:
         remaining_model_turns: int | None = None,
         draft_digest: str | None = None,
         planning_document: bool = False,
+        window_reads: tuple[WindowRead, ...] = (),
     ) -> ModelTurn:
         """Produce a validated proposal only; no file write, tool dispatch or acceptance."""
         atom = WorkAtom.model_validate(atom)
@@ -232,14 +235,17 @@ class LocalModel:
             self.artifacts.verify(self.profile.deployment_digest)
             if current_inputs() != atom.inputs_digest:
                 raise WorkerError("Stale inputs before model turn")
+            windows = self.profile.profile_id == WINDOW_PROFILE
+            if window_reads and not windows:
+                raise WorkerError("Window reads require the window profile")
             view = compose_view(
                 self.artifacts,
                 atom,
                 source_digest,
-                selected_paths=selected_paths,
+                selected_paths=None if windows else selected_paths,
                 diagnostic_digests=diagnostic_digests,
             )
-            contracts = self.profile.profile_id in CONTRACT_PROFILES
+            contracts = windows or self.profile.profile_id in CONTRACT_PROFILES
             repair = contracts or self.profile.profile_id == "vllm-python-worker-repair-v1"
             source = SourceBundle.model_validate_json(self.artifacts.read(source_digest))
             current = source
@@ -249,7 +255,7 @@ class LocalModel:
                 current = SourceBundle.model_validate_json(self.artifacts.read(draft_digest))
                 view = project_draft(view, atom, source, current)
             targets = None
-            if repair:
+            if repair and not windows:
                 targets = repair_targets(atom, current, tuple(view.source_files))
                 evidence["repair_targets_digest"] = self.artifacts.publish(
                     targets.canonical().encode()
@@ -270,6 +276,20 @@ class LocalModel:
                         "Repair only failing cases; do not expand the test suite during repair. "
                         "A development check is not acceptance."
                     ),
+                )
+            window_targets = None
+            if windows:
+                view, window_targets = window_view(
+                    self.artifacts,
+                    atom,
+                    source_digest,
+                    current,
+                    selected_paths=selected_paths,
+                    reads=window_reads,
+                    diagnostic_digests=diagnostic_digests,
+                )
+                evidence["window_targets_digest"] = self.artifacts.publish(
+                    window_targets.canonical().encode()
                 )
             models = self._request("/v1/models", None, deadline, exchanges)
             if not isinstance(models.get("data"), list) or not any(
@@ -305,11 +325,20 @@ class LocalModel:
                         "Keep replacement files concise enough for the output allowance."
                     ),
                 )
+            if windows and remaining_model_turns is not None:
+                view.instruction["turn_guidance"] = (
+                    "Each read_window consumes a turn. Submit edits before the last turn ends."
+                )
             evidence["view_digest"] = self.artifacts.publish(view.canonical().encode())
             template_kwargs: dict[str, Any] = {"enable_thinking": thinking}
             chat = {
                 "model": self.profile.model,
-                "messages": messages(
+                "messages": [
+                    {"role": "system", "content": WINDOW_SYSTEM},
+                    {"role": "user", "content": view.canonical()},
+                ]
+                if windows
+                else messages(
                     view,
                     repair=repair,
                     handles=repair,
@@ -404,14 +433,18 @@ class LocalModel:
                     content = json.dumps(
                         {"kind": "candidate", "changes": {"factory-plan.json": content}}
                     )
-            result = parse_result(
-                content,
-                atom,
-                current,
-                allow_repair=repair,
-                allow_conflicts=contracts,
-                targets=targets,
-            )
+            result: CandidateResult | ReadFileRequest | ContractConflict | WindowRead
+            if window_targets is not None:
+                result = parse_window_result(content, atom, current, window_targets)
+            else:
+                result = parse_result(
+                    content,
+                    atom,
+                    current,
+                    allow_repair=repair,
+                    allow_conflicts=contracts,
+                    targets=targets,
+                )
             turn = ModelTurn(
                 manifest_digest=manifest.digest(),
                 response_digest=exchanges[-1]["response_digest"],

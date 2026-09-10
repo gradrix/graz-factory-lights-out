@@ -245,3 +245,7 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
   remains model-dependent.
 - [Issue 57](issues/57-edit-bounded-windows-in-large-files.md) next: source-window edits.
   Index lookup works on 10,002 lines; existing whole-file worker exceeds context.
+
+- Issue 57 resolved: bounded worker windows qualified on a 10,002-line synthetic file
+  and the real repository reader. [Evidence and failures](window-qualification/README.md).
+  Next boundary: whole-file planning and the 256 KiB execution bundle.

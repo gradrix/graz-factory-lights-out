@@ -18,11 +18,10 @@ are recorded in [evaluation](evaluation.md) and portable development evidence.
 
 ## Next priorities
 
-1. Add bounded source-window editing for large individual files. Keep full-file identity,
-   unseen-byte preservation and complete-candidate validation. The index can locate a
-   small function in a 10,002-line file, while the current worker cannot fit that file.
-   Question grounding now recovers a retained redundant-question failure and preserves
-   tested missing-policy stops; broader semantic reliability remains unqualified.
+1. Extend bounded source windows into large-file planning and qualify a complete feature.
+   Worker window edits now pass the 10,002-line trial and a real repository-file trial.
+   Keep revision binding, explicit omissions and full-candidate checks as execution
+   inputs grow beyond the existing 256 KiB bundle limit.
 2. Qualify repeated features across different real repositories and uncertain
    interfaces. Measure complete feature success, retries, model cost and review
    effort. Planning JSON reliability and source-selection sufficiency remain open.
@@ -74,9 +73,8 @@ assume provisioned host dependencies and a populated offline model cache. See
 
 ## Large individual files
 
-Repository search and symbol reads can return bounded excerpts, but the current coding
-worker still includes whole writable files. A 10,002-line synthetic file required
-128,684 prompt tokens and was refused before inference; its two-line target function
-was successfully located by the index. The next implementation is bounded source-window
-editing with full-file identity checks and complete-candidate validation. The existing
-256 KiB SourceBundle execution limit also needs a separate migration for larger inputs.
+The opt-in windows-v1 worker edited the recorded 10,002-line file with a maximum
+3,276-token prompt and complete-source checks; a real repository-file trial also passed.
+Both required development feedback and a repair. Whole-file planning and the 256 KiB
+SourceBundle execution limit remain. See [evaluation](evaluation.md) for retained failures
+and the limits of this qualification.

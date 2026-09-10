@@ -1,0 +1,3005 @@
+{
+  "baseline_commit": "17b3ad0",
+  "trials": [
+    {
+      "name": "window-large-v1",
+      "snapshot": {
+        "atom_id": "window-large-v1",
+        "status": "accepted",
+        "active_attempt": "7b19c2dbb210497f8d9960f737917e34",
+        "candidate_digest": "09973d737aee95109ba4a76214d1f5ce1bbf767448093f5c2ae32e42c49b9626",
+        "contract": {
+          "schema_version": 1,
+          "atom_id": "window-large-v1",
+          "graph_revision": "example-graph-v1",
+          "objective": "In large.py extend chosen_value(value=42) to clamp built-in integers to 0..100 inclusive. With no argument return 42. Reject booleans and every non-built-in-integer input with TypeError. Preserve all other source text exactly. consumer.render is a read-only caller and must work unchanged.",
+          "non_goals": [
+            "Deployment",
+            "Autonomous product planning"
+          ],
+          "requirement_ids": [
+            "clamp"
+          ],
+          "product_modules": [
+            "provider"
+          ],
+          "source_revision": "EXAMPLE-REPLACE-WITH-EXACT-SOURCE-REVISION",
+          "inputs_digest": "f296aaaa11e6c6917080889bb41a636a247d9dc1ecff165254313143b3d54f28",
+          "writable_paths": [
+            "large.py"
+          ],
+          "prohibited_paths": [],
+          "dependency_artifacts": [],
+          "upstream_contracts": [],
+          "capability_profile": "python-pilot-v1",
+          "network_profile": "none-v1",
+          "credential_profile": "none-v1",
+          "sandbox_profile": "pilot-v1",
+          "allowed_tools": [
+            "read",
+            "edit"
+          ],
+          "required_gates": [
+            {
+              "schema_version": 1,
+              "gate_id": "behavior-preservation",
+              "validator_digest": "34d850f6ce7e15ff81a3bb13bcfd974a34ebd69e26fc7c598ecadbda4e1d1f6e"
+            }
+          ],
+          "context_budget": {
+            "schema_version": 1,
+            "total_tokens": 12288,
+            "output_tokens": 4096
+          },
+          "max_attempts": 2,
+          "expected_outputs": [
+            {
+              "schema_version": 1,
+              "name": "candidate",
+              "schema_digest": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+            }
+          ],
+          "idempotency_key": "example-provider-edit-v1",
+          "integration_key": "example-integration-v1"
+        },
+        "attempts": [
+          {
+            "attempt_id": "7b19c2dbb210497f8d9960f737917e34",
+            "ordinal": 1,
+            "owner": "durable-controller-v1",
+            "expires_at": 1789044955.314963,
+            "strategy": "initial",
+            "retry_plan": null,
+            "events": [
+              {
+                "event_id": 1,
+                "attempt_id": "7b19c2dbb210497f8d9960f737917e34",
+                "kind": "leased",
+                "details": {
+                  "ordinal": 1
+                },
+                "recorded_at": 1789043155.314963
+              },
+              {
+                "event_id": 2,
+                "attempt_id": "7b19c2dbb210497f8d9960f737917e34",
+                "kind": "running",
+                "details": {},
+                "recorded_at": 1789043155.319258
+              },
+              {
+                "event_id": 3,
+                "attempt_id": "7b19c2dbb210497f8d9960f737917e34",
+                "kind": "observation",
+                "details": {
+                  "digest": "c728db2b7f7320bb878cf158824d5cca65fe6a049662085f4a586c670c88ecf2",
+                  "kind": "model"
+                },
+                "recorded_at": 1789043156.2391658
+              },
+              {
+                "event_id": 4,
+                "attempt_id": "7b19c2dbb210497f8d9960f737917e34",
+                "kind": "observation",
+                "details": {
+                  "digest": "add0122b4cb40667cc43bed66effa18039207389ce7541496af622cf297ee970",
+                  "kind": "model"
+                },
+                "recorded_at": 1789043158.4982247
+              },
+              {
+                "event_id": 5,
+                "attempt_id": "7b19c2dbb210497f8d9960f737917e34",
+                "kind": "observation",
+                "details": {
+                  "digest": "7c255ff02a6f3270b2ef65c50d1151150240a1827a72d699fafbd63227bf9205",
+                  "kind": "development"
+                },
+                "recorded_at": 1789043158.5251665
+              },
+              {
+                "event_id": 6,
+                "attempt_id": "7b19c2dbb210497f8d9960f737917e34",
+                "kind": "observation",
+                "details": {
+                  "digest": "2c18eaa343fff43e94c9f81f1a7d34751586f540be5391acfd0262198527bed3",
+                  "kind": "development"
+                },
+                "recorded_at": 1789043158.9452806
+              },
+              {
+                "event_id": 7,
+                "attempt_id": "7b19c2dbb210497f8d9960f737917e34",
+                "kind": "candidate",
+                "details": {
+                  "digest": "09973d737aee95109ba4a76214d1f5ce1bbf767448093f5c2ae32e42c49b9626"
+                },
+                "recorded_at": 1789043158.9486656
+              },
+              {
+                "event_id": 8,
+                "attempt_id": "7b19c2dbb210497f8d9960f737917e34",
+                "kind": "observation",
+                "details": {
+                  "digest": "74b12dca30e7443aed80aa8785ece4d2e713f8a76dded67dccecf2df6a2d6263",
+                  "kind": "candidate-execution"
+                },
+                "recorded_at": 1789043159.3301847
+              },
+              {
+                "event_id": 9,
+                "attempt_id": "7b19c2dbb210497f8d9960f737917e34",
+                "kind": "gate",
+                "details": {
+                  "receipt_digest": "461447777a13a677fed79c246144d4c2c6f55e99ec90b06be972ebb8244120dc"
+                },
+                "recorded_at": 1789043159.712556
+              },
+              {
+                "event_id": 10,
+                "attempt_id": "7b19c2dbb210497f8d9960f737917e34",
+                "kind": "accepted",
+                "details": {
+                  "receipt": {
+                    "atom_id": "window-large-v1",
+                    "attempt_id": "7b19c2dbb210497f8d9960f737917e34",
+                    "candidate_digest": "09973d737aee95109ba4a76214d1f5ce1bbf767448093f5c2ae32e42c49b9626",
+                    "contract_digest": "cf19af91e6c5ed2509ea205bb495085044e82410312e262b7ab640f6a854da8a",
+                    "gate_receipts": [
+                      "461447777a13a677fed79c246144d4c2c6f55e99ec90b06be972ebb8244120dc"
+                    ],
+                    "inputs_digest": "f296aaaa11e6c6917080889bb41a636a247d9dc1ecff165254313143b3d54f28",
+                    "schema_version": 1
+                  }
+                },
+                "recorded_at": 1789043159.7179778
+              },
+              {
+                "event_id": 11,
+                "attempt_id": "7b19c2dbb210497f8d9960f737917e34",
+                "kind": "acceptance-finding",
+                "details": {
+                  "atom_id": "window-large-v1",
+                  "candidate_digest": "09973d737aee95109ba4a76214d1f5ce1bbf767448093f5c2ae32e42c49b9626",
+                  "contract_digest": "cf19af91e6c5ed2509ea205bb495085044e82410312e262b7ab640f6a854da8a",
+                  "evidence_digest": "92a4cad00ff82b38f4b0ead28f567fdd45c013ac06443f71143f4dc8eea8f7ac",
+                  "reason": "Independent review: chosen_value accepts integer subclasses, contrary to the built-in-integer-only requirement. Initial oracle omitted this case.",
+                  "schema_version": 1
+                },
+                "recorded_at": 1789043491.6864347
+              }
+            ],
+            "gate_receipts": [
+              {
+                "schema_version": 1,
+                "attempt_id": "7b19c2dbb210497f8d9960f737917e34",
+                "contract_digest": "cf19af91e6c5ed2509ea205bb495085044e82410312e262b7ab640f6a854da8a",
+                "inputs_digest": "f296aaaa11e6c6917080889bb41a636a247d9dc1ecff165254313143b3d54f28",
+                "candidate_digest": "09973d737aee95109ba4a76214d1f5ce1bbf767448093f5c2ae32e42c49b9626",
+                "gate_id": "behavior-preservation",
+                "validator_digest": "34d850f6ce7e15ff81a3bb13bcfd974a34ebd69e26fc7c598ecadbda4e1d1f6e",
+                "outcome": "pass",
+                "evidence_digest": "b7390e123e08cc96852fdc35c3357341650a2a424e6c95b562c8139b5631bf2e",
+                "runner_id": "python-process-gate-v2"
+              }
+            ]
+          }
+        ],
+        "acceptance_findings": [
+          {
+            "atom_id": "window-large-v1",
+            "candidate_digest": "09973d737aee95109ba4a76214d1f5ce1bbf767448093f5c2ae32e42c49b9626",
+            "contract_digest": "cf19af91e6c5ed2509ea205bb495085044e82410312e262b7ab640f6a854da8a",
+            "evidence_digest": "92a4cad00ff82b38f4b0ead28f567fdd45c013ac06443f71143f4dc8eea8f7ac",
+            "reason": "Independent review: chosen_value accepts integer subclasses, contrary to the built-in-integer-only requirement. Initial oracle omitted this case.",
+            "schema_version": 1
+          }
+        ],
+        "acceptance_challenged": true
+      },
+      "source_digest": "71cae656decbcbd2f3d0d9c5af17f1ce526f024744379a30c3e41e0f3b768e05",
+      "source_sizes": {
+        "consumer.py": 97,
+        "large.py": 207814
+      },
+      "turns": [
+        {
+          "evidence": {
+            "contract_digest": "cf19af91e6c5ed2509ea205bb495085044e82410312e262b7ab640f6a854da8a",
+            "elapsed_seconds": 0.9024142890011717,
+            "exchanges": [
+              {
+                "elapsed_seconds": 0.022453296998719452,
+                "path": "/v1/models",
+                "request_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "response_digest": "a52c43b5f356958550e12ecd14591f347d0575c80d1eb890b8cb947560c2859c",
+                "status": 200
+              },
+              {
+                "elapsed_seconds": 0.025507385998935206,
+                "path": "/tokenize",
+                "request_digest": "d9347969bddd75f1b4c63caaed8d5aee1412eba32e30ebdb1d0531e5c815d87c",
+                "response_digest": "51a020238d8c6dbf6edea2ad30b1671e2077ab5dfb55dd9eb74851b6de7f6db4",
+                "status": 200
+              },
+              {
+                "elapsed_seconds": 0.6834922769994591,
+                "path": "/v1/chat/completions",
+                "request_digest": "22fef6dc28b7983c4de7f5194318357f357a85f40a6b6dfcb6d77ed89837b95a",
+                "response_digest": "ba2faa21c87ffa1e766165e987192f104d491291d84a3129c9e581963fb364bd",
+                "status": 200
+              }
+            ],
+            "manifest_digest": "6e311d0c2b0e4983480daaf539fc1239c2f8e411274090e86875f6e6272d56e8",
+            "profile": {
+              "base_url": "http://127.0.0.1:30000/v1",
+              "context_limit": 16384,
+              "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+              "model": "gflo-local",
+              "profile_id": "vllm-python-worker-windows-v1",
+              "schema_version": 1,
+              "timeout_seconds": 120.0
+            },
+            "turn_digest": "424a098708f18b429368b3ac8e4f7d08cac8e71ebbaaa172c4663149081bc8ac",
+            "view_digest": "302072b902694717235dc4af0a4824ce415a534e05270be5acab98bae10e0a73",
+            "window_targets_digest": "a62beb7782f5ad188ed6ad84709184e668bf9502ec5c1cd0fd3ee38d021a7b45"
+          },
+          "response": {
+            "id": "chatcmpl-a1cc4fb476389d8a",
+            "object": "chat.completion",
+            "created": 1789043155,
+            "model": "gflo-local",
+            "choices": [
+              {
+                "index": 0,
+                "message": {
+                  "role": "assistant",
+                  "content": "{\"kind\":\"read_window\",\"path\":\"large.py\",\"start_line\":5001,\"max_lines\":100}",
+                  "refusal": null,
+                  "annotations": null,
+                  "audio": null,
+                  "function_call": null,
+                  "reasoning": null
+                },
+                "logprobs": null,
+                "finish_reason": "stop",
+                "stop_reason": null,
+                "token_ids": null,
+                "routed_experts": null
+              }
+            ],
+            "service_tier": null,
+            "system_fingerprint": "vllm-0.28.0-1411bf1b",
+            "usage": {
+              "prompt_tokens": 1470,
+              "total_tokens": 1497,
+              "completion_tokens": 27,
+              "prompt_tokens_details": null,
+              "completion_tokens_details": {
+                "reasoning_tokens": 0
+              }
+            },
+            "prompt_logprobs": null,
+            "prompt_token_ids": null,
+            "prompt_text": null,
+            "kv_transfer_params": null,
+            "ec_transfer_params": null,
+            "metrics": null
+          }
+        },
+        {
+          "evidence": {
+            "contract_digest": "cf19af91e6c5ed2509ea205bb495085044e82410312e262b7ab640f6a854da8a",
+            "elapsed_seconds": 2.245682463999401,
+            "exchanges": [
+              {
+                "elapsed_seconds": 0.02782806399773108,
+                "path": "/v1/models",
+                "request_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "response_digest": "e4c3678cc235678326069188f58c424adae5ab2395f67a810b7c4acd48cd3449",
+                "status": 200
+              },
+              {
+                "elapsed_seconds": 0.024946986999566434,
+                "path": "/tokenize",
+                "request_digest": "821a8f49655a1b5a9950855dc5a52fa0e04532eee9fd7113633e3f435079eb31",
+                "response_digest": "e0af16492ec43a8c0c7e6ff3a251157229292289982e11ed67733fcf1c0f701e",
+                "status": 200
+              },
+              {
+                "elapsed_seconds": 1.9846569129986165,
+                "path": "/v1/chat/completions",
+                "request_digest": "a38a49f681b565eaf8a336a4b467f8d8f03fffdba738f15d74ef5cfcbd9e5c47",
+                "response_digest": "dfe0b4b21824e84df6b97356425eb125c1da646d1a89cf80642507f51a2852b7",
+                "status": 200
+              }
+            ],
+            "manifest_digest": "2737d5747c55151ccb37b9435f8bfff78b772ad9110afe4ad27790c6af7781fa",
+            "profile": {
+              "base_url": "http://127.0.0.1:30000/v1",
+              "context_limit": 16384,
+              "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+              "model": "gflo-local",
+              "profile_id": "vllm-python-worker-windows-v1",
+              "schema_version": 1,
+              "timeout_seconds": 120.0
+            },
+            "turn_digest": "6d35f0e9e476536ccb04103f62306e4fe0b1fa93dcea6c170862441cb5b11025",
+            "view_digest": "af859dd79a98b6c95c37bf16dbb752fbcc99b673407f2a5c58e6e14adc46510e",
+            "window_targets_digest": "80eb60052e306e436bb23b9b8085b9e1e091033845ba663b95b97ee460f556ba"
+          },
+          "response": {
+            "id": "chatcmpl-8feca2d57401b163",
+            "object": "chat.completion",
+            "created": 1789043156,
+            "model": "gflo-local",
+            "choices": [
+              {
+                "index": 0,
+                "message": {
+                  "role": "assistant",
+                  "content": "{\"kind\":\"repair_window\",\"edits\":[{\"target\":\"wb4f1d669\",\"old\":\"def chosen_value():\\n    return 41\",\"new\":\"def chosen_value(value=42):\\n    if isinstance(value, bool):\\n        raise TypeError(\\\"bool is not a built-in integer\\\")\\n    if not isinstance(value, int):\\n        raise TypeError(\\\"expected built-in integer\\\")\\n    return max(0, min(100, value))\"}]}",
+                  "refusal": null,
+                  "annotations": null,
+                  "audio": null,
+                  "function_call": null,
+                  "reasoning": null
+                },
+                "logprobs": null,
+                "finish_reason": "stop",
+                "stop_reason": null,
+                "token_ids": null,
+                "routed_experts": null
+              }
+            ],
+            "service_tier": null,
+            "system_fingerprint": "vllm-0.28.0-1411bf1b",
+            "usage": {
+              "prompt_tokens": 2886,
+              "total_tokens": 2990,
+              "completion_tokens": 104,
+              "prompt_tokens_details": null,
+              "completion_tokens_details": {
+                "reasoning_tokens": 0
+              }
+            },
+            "prompt_logprobs": null,
+            "prompt_token_ids": null,
+            "prompt_text": null,
+            "kv_transfer_params": null,
+            "ec_transfer_params": null,
+            "metrics": null
+          }
+        }
+      ]
+    },
+    {
+      "name": "window-large-v2",
+      "snapshot": {
+        "atom_id": "window-large-v2",
+        "status": "accepted",
+        "active_attempt": "022a12e096a9447f97a6d1b67517dba6",
+        "candidate_digest": "c36c65dff9373bf3e67956c465c99cc077a66d7bb328b86e5f260538dae2c6b1",
+        "contract": {
+          "schema_version": 1,
+          "atom_id": "window-large-v2",
+          "graph_revision": "example-graph-v1",
+          "objective": "In large.py extend chosen_value(value=42) to clamp built-in integers to 0..100 inclusive. With no argument return 42. Reject booleans and every non-built-in-integer input with TypeError. Preserve all other source text exactly. consumer.render is a read-only caller and must work unchanged.",
+          "non_goals": [
+            "Deployment",
+            "Autonomous product planning"
+          ],
+          "requirement_ids": [
+            "clamp"
+          ],
+          "product_modules": [
+            "provider"
+          ],
+          "source_revision": "EXAMPLE-REPLACE-WITH-EXACT-SOURCE-REVISION",
+          "inputs_digest": "f296aaaa11e6c6917080889bb41a636a247d9dc1ecff165254313143b3d54f28",
+          "writable_paths": [
+            "large.py"
+          ],
+          "prohibited_paths": [],
+          "dependency_artifacts": [],
+          "upstream_contracts": [],
+          "capability_profile": "python-pilot-v1",
+          "network_profile": "none-v1",
+          "credential_profile": "none-v1",
+          "sandbox_profile": "pilot-v1",
+          "allowed_tools": [
+            "read",
+            "edit"
+          ],
+          "required_gates": [
+            {
+              "schema_version": 1,
+              "gate_id": "behavior-preservation",
+              "validator_digest": "1ab20bc12d442dae3893ba50e4f0753c59e2d68ede5b059035e4fdfe4fb1e21f"
+            }
+          ],
+          "context_budget": {
+            "schema_version": 1,
+            "total_tokens": 12288,
+            "output_tokens": 4096
+          },
+          "max_attempts": 2,
+          "expected_outputs": [
+            {
+              "schema_version": 1,
+              "name": "candidate",
+              "schema_digest": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+            }
+          ],
+          "idempotency_key": "example-provider-edit-v1",
+          "integration_key": "example-integration-v1"
+        },
+        "attempts": [
+          {
+            "attempt_id": "022a12e096a9447f97a6d1b67517dba6",
+            "ordinal": 1,
+            "owner": "durable-controller-v1",
+            "expires_at": 1789045292.9107285,
+            "strategy": "initial",
+            "retry_plan": null,
+            "events": [
+              {
+                "event_id": 1,
+                "attempt_id": "022a12e096a9447f97a6d1b67517dba6",
+                "kind": "leased",
+                "details": {
+                  "ordinal": 1
+                },
+                "recorded_at": 1789043492.9107285
+              },
+              {
+                "event_id": 2,
+                "attempt_id": "022a12e096a9447f97a6d1b67517dba6",
+                "kind": "running",
+                "details": {},
+                "recorded_at": 1789043492.9153388
+              },
+              {
+                "event_id": 3,
+                "attempt_id": "022a12e096a9447f97a6d1b67517dba6",
+                "kind": "observation",
+                "details": {
+                  "digest": "522c8e81b24055137d182e5acfb7eae7c36e137a6b9f72a7ad0e8cf037973bae",
+                  "kind": "model"
+                },
+                "recorded_at": 1789043493.8482153
+              },
+              {
+                "event_id": 4,
+                "attempt_id": "022a12e096a9447f97a6d1b67517dba6",
+                "kind": "observation",
+                "details": {
+                  "digest": "0b0a068c8e4d5a73be413bf2727520cd1b1cf81e766ad3afbd1edc45595e745f",
+                  "kind": "model"
+                },
+                "recorded_at": 1789043496.0354044
+              },
+              {
+                "event_id": 5,
+                "attempt_id": "022a12e096a9447f97a6d1b67517dba6",
+                "kind": "observation",
+                "details": {
+                  "digest": "6102d98340ae475da7811be2bc7b6cb66b51511d3e64a40709f73f901a874641",
+                  "kind": "development"
+                },
+                "recorded_at": 1789043496.0605938
+              },
+              {
+                "event_id": 6,
+                "attempt_id": "022a12e096a9447f97a6d1b67517dba6",
+                "kind": "observation",
+                "details": {
+                  "digest": "229fa84ff806460e0d1cea61f10560f8c356dcc3f3674a0baa481fe32bfde2ea",
+                  "kind": "development"
+                },
+                "recorded_at": 1789043496.391032
+              },
+              {
+                "event_id": 7,
+                "attempt_id": "022a12e096a9447f97a6d1b67517dba6",
+                "kind": "observation",
+                "details": {
+                  "digest": "113c4d8b983789cbe22cf9fed84e4f499f815407ae532ee8798d1e324db3ae2b",
+                  "kind": "diagnostic"
+                },
+                "recorded_at": 1789043496.415768
+              },
+              {
+                "event_id": 8,
+                "attempt_id": "022a12e096a9447f97a6d1b67517dba6",
+                "kind": "observation",
+                "details": {
+                  "digest": "220032668bb58eb1de1bafc9eff091f919dea449cc80bd8863266b80783effa7",
+                  "kind": "model"
+                },
+                "recorded_at": 1789043499.527013
+              },
+              {
+                "event_id": 9,
+                "attempt_id": "022a12e096a9447f97a6d1b67517dba6",
+                "kind": "observation",
+                "details": {
+                  "digest": "bc1968fc5a5d1365ea6edde24f64f00640a89a08791e2fc7f1d8ca4064418efc",
+                  "kind": "development"
+                },
+                "recorded_at": 1789043499.5531356
+              },
+              {
+                "event_id": 10,
+                "attempt_id": "022a12e096a9447f97a6d1b67517dba6",
+                "kind": "candidate",
+                "details": {
+                  "digest": "c36c65dff9373bf3e67956c465c99cc077a66d7bb328b86e5f260538dae2c6b1"
+                },
+                "recorded_at": 1789043499.5567245
+              },
+              {
+                "event_id": 11,
+                "attempt_id": "022a12e096a9447f97a6d1b67517dba6",
+                "kind": "observation",
+                "details": {
+                  "digest": "6963107cfc19bcbcac38f055dee06f0917ba4f509d442250a979e83dfcaae0cf",
+                  "kind": "candidate-execution"
+                },
+                "recorded_at": 1789043499.9219363
+              },
+              {
+                "event_id": 12,
+                "attempt_id": "022a12e096a9447f97a6d1b67517dba6",
+                "kind": "gate",
+                "details": {
+                  "receipt_digest": "18ae0d6e8ba3eb4e23bdc20d33f7635c1fb2c27827d81e6c3df111f4a9e7186e"
+                },
+                "recorded_at": 1789043500.2665424
+              },
+              {
+                "event_id": 13,
+                "attempt_id": "022a12e096a9447f97a6d1b67517dba6",
+                "kind": "accepted",
+                "details": {
+                  "receipt": {
+                    "atom_id": "window-large-v2",
+                    "attempt_id": "022a12e096a9447f97a6d1b67517dba6",
+                    "candidate_digest": "c36c65dff9373bf3e67956c465c99cc077a66d7bb328b86e5f260538dae2c6b1",
+                    "contract_digest": "5954dc3c3f30f7e2acb2b362a6b4fb9eae47d91614fd5a556d7552bd7938494f",
+                    "gate_receipts": [
+                      "18ae0d6e8ba3eb4e23bdc20d33f7635c1fb2c27827d81e6c3df111f4a9e7186e"
+                    ],
+                    "inputs_digest": "f296aaaa11e6c6917080889bb41a636a247d9dc1ecff165254313143b3d54f28",
+                    "schema_version": 1
+                  }
+                },
+                "recorded_at": 1789043500.2699733
+              }
+            ],
+            "gate_receipts": [
+              {
+                "schema_version": 1,
+                "attempt_id": "022a12e096a9447f97a6d1b67517dba6",
+                "contract_digest": "5954dc3c3f30f7e2acb2b362a6b4fb9eae47d91614fd5a556d7552bd7938494f",
+                "inputs_digest": "f296aaaa11e6c6917080889bb41a636a247d9dc1ecff165254313143b3d54f28",
+                "candidate_digest": "c36c65dff9373bf3e67956c465c99cc077a66d7bb328b86e5f260538dae2c6b1",
+                "gate_id": "behavior-preservation",
+                "validator_digest": "1ab20bc12d442dae3893ba50e4f0753c59e2d68ede5b059035e4fdfe4fb1e21f",
+                "outcome": "pass",
+                "evidence_digest": "197d28b4c10bc7861c5ecdb0a622d64bce3484eec2127f374f2d6032f96e9c5e",
+                "runner_id": "python-process-gate-v2"
+              }
+            ]
+          }
+        ],
+        "acceptance_findings": [],
+        "acceptance_challenged": false
+      },
+      "source_digest": "71cae656decbcbd2f3d0d9c5af17f1ce526f024744379a30c3e41e0f3b768e05",
+      "source_sizes": {
+        "consumer.py": 97,
+        "large.py": 207814
+      },
+      "turns": [
+        {
+          "evidence": {
+            "contract_digest": "5954dc3c3f30f7e2acb2b362a6b4fb9eae47d91614fd5a556d7552bd7938494f",
+            "elapsed_seconds": 0.9196161719992233,
+            "exchanges": [
+              {
+                "elapsed_seconds": 0.023503847001848044,
+                "path": "/v1/models",
+                "request_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "response_digest": "af181b2f0c4e7f299e15b1aaa291318e99c32efacbaf6b903a3d9e6439926333",
+                "status": 200
+              },
+              {
+                "elapsed_seconds": 0.02498156300134724,
+                "path": "/tokenize",
+                "request_digest": "82a0ddea36d8c4b48d2fd0a9c4a2ca70e2ca29697ed5bbc414646b6f3761d150",
+                "response_digest": "b70b55484e18a1bd1cc0ba7ee6bcbf5c20784ea6ec420b8f6c98006529a78619",
+                "status": 200
+              },
+              {
+                "elapsed_seconds": 0.6951697759977833,
+                "path": "/v1/chat/completions",
+                "request_digest": "dd18fe7d62be3bef127bd0f31e781d1d87a984895fca093814d415b0feb6866e",
+                "response_digest": "673f8c761e2b9f282abab6c4f57f8cca12fb36a3fee75f644525c3cb245a85d9",
+                "status": 200
+              }
+            ],
+            "manifest_digest": "45fcb41095d57fb9f4f99160ed049512b2297ad24fe148b1569448d690bb39be",
+            "profile": {
+              "base_url": "http://127.0.0.1:30000/v1",
+              "context_limit": 16384,
+              "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+              "model": "gflo-local",
+              "profile_id": "vllm-python-worker-windows-v1",
+              "schema_version": 1,
+              "timeout_seconds": 120.0
+            },
+            "turn_digest": "639064fd006637441f9fbb2b9831553efb3843cf53676c3303d22becdd3d4998",
+            "view_digest": "1c0d6e6bd733e928dc8c01f356f2254773d5cecf6375d5a22e8dc51ca99be2be",
+            "window_targets_digest": "72c0e4da1eb895dcfd0f51b2f850a28bbecdc80d7adef00d4fac5c7cb39bb613"
+          },
+          "response": {
+            "id": "chatcmpl-971545c48f3dbafa",
+            "object": "chat.completion",
+            "created": 1789043493,
+            "model": "gflo-local",
+            "choices": [
+              {
+                "index": 0,
+                "message": {
+                  "role": "assistant",
+                  "content": "{\"kind\":\"read_window\",\"path\":\"large.py\",\"start_line\":5001,\"max_lines\":100}",
+                  "refusal": null,
+                  "annotations": null,
+                  "audio": null,
+                  "function_call": null,
+                  "reasoning": null
+                },
+                "logprobs": null,
+                "finish_reason": "stop",
+                "stop_reason": null,
+                "token_ids": null,
+                "routed_experts": null
+              }
+            ],
+            "service_tier": null,
+            "system_fingerprint": "vllm-0.28.0-1411bf1b",
+            "usage": {
+              "prompt_tokens": 1466,
+              "total_tokens": 1493,
+              "completion_tokens": 27,
+              "prompt_tokens_details": null,
+              "completion_tokens_details": {
+                "reasoning_tokens": 0
+              }
+            },
+            "prompt_logprobs": null,
+            "prompt_token_ids": null,
+            "prompt_text": null,
+            "kv_transfer_params": null,
+            "ec_transfer_params": null,
+            "metrics": null
+          }
+        },
+        {
+          "evidence": {
+            "contract_digest": "5954dc3c3f30f7e2acb2b362a6b4fb9eae47d91614fd5a556d7552bd7938494f",
+            "elapsed_seconds": 2.173914879000222,
+            "exchanges": [
+              {
+                "elapsed_seconds": 0.021495909000805113,
+                "path": "/v1/models",
+                "request_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "response_digest": "4ae1da10377bafd447a2553cba96b2cc149522f1f5bf96afc8124d48d2d2975f",
+                "status": 200
+              },
+              {
+                "elapsed_seconds": 0.025251708000723738,
+                "path": "/tokenize",
+                "request_digest": "f3eecd1bab2c192aec9455e1ceafd8d06a31920b6c7f3729bddf23f871269316",
+                "response_digest": "0bbc1969763482128f81a47948b49033889020cf2de4881a267532263a8fa8b8",
+                "status": 200
+              },
+              {
+                "elapsed_seconds": 1.9747463220010104,
+                "path": "/v1/chat/completions",
+                "request_digest": "517a452eaec76f38223daa024a00e541a8837f0116ae011b8d330560023b1e85",
+                "response_digest": "b56024bff5c10fe913e90194a7ba750d5b62d0e179d62dbad664c23f98f9f23b",
+                "status": 200
+              }
+            ],
+            "manifest_digest": "e86bc061b112e9b95694d86a7ddf88c13adc4141f4eeee813fcf64f0afd0db81",
+            "profile": {
+              "base_url": "http://127.0.0.1:30000/v1",
+              "context_limit": 16384,
+              "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+              "model": "gflo-local",
+              "profile_id": "vllm-python-worker-windows-v1",
+              "schema_version": 1,
+              "timeout_seconds": 120.0
+            },
+            "turn_digest": "c17aa5be24e7459403be561e3b26af0d46d4981db6d3246ad571ed65f559f9e6",
+            "view_digest": "8eef7f1b52a84f9094d6a07ae2d79243cffde138c27f5318342edd40ec1e6917",
+            "window_targets_digest": "07e673c3c5e3537e93d23c0f51aab34e42d0559c0ceca76da4b86a3ace532bc4"
+          },
+          "response": {
+            "id": "chatcmpl-bfeb89770a273928",
+            "object": "chat.completion",
+            "created": 1789043494,
+            "model": "gflo-local",
+            "choices": [
+              {
+                "index": 0,
+                "message": {
+                  "role": "assistant",
+                  "content": "{\"kind\":\"repair_window\",\"edits\":[{\"target\":\"we94af284\",\"old\":\"def chosen_value():\\n    return 41\",\"new\":\"def chosen_value(value=42):\\n    if isinstance(value, bool):\\n        raise TypeError(\\\"bool is not a built-in integer\\\")\\n    if not isinstance(value, int):\\n        raise TypeError(\\\"expected built-in integer\\\")\\n    return max(0, min(100, value))\"}]}",
+                  "refusal": null,
+                  "annotations": null,
+                  "audio": null,
+                  "function_call": null,
+                  "reasoning": null
+                },
+                "logprobs": null,
+                "finish_reason": "stop",
+                "stop_reason": null,
+                "token_ids": null,
+                "routed_experts": null
+              }
+            ],
+            "service_tier": null,
+            "system_fingerprint": "vllm-0.28.0-1411bf1b",
+            "usage": {
+              "prompt_tokens": 2884,
+              "total_tokens": 2987,
+              "completion_tokens": 103,
+              "prompt_tokens_details": null,
+              "completion_tokens_details": {
+                "reasoning_tokens": 0
+              }
+            },
+            "prompt_logprobs": null,
+            "prompt_token_ids": null,
+            "prompt_text": null,
+            "kv_transfer_params": null,
+            "ec_transfer_params": null,
+            "metrics": null
+          }
+        },
+        {
+          "evidence": {
+            "contract_digest": "5954dc3c3f30f7e2acb2b362a6b4fb9eae47d91614fd5a556d7552bd7938494f",
+            "elapsed_seconds": 3.0985184439996374,
+            "exchanges": [
+              {
+                "elapsed_seconds": 0.018035252000117907,
+                "path": "/v1/models",
+                "request_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "response_digest": "29dc66324fd0aade702f7ce54aaaad72266ff2df7688b9f0cd24ab7ebdd37024",
+                "status": 200
+              },
+              {
+                "elapsed_seconds": 0.025665895998827182,
+                "path": "/tokenize",
+                "request_digest": "4459914a0f3d171fb33f9a51de6a10121f4744cf07d4102de4682943a18e5d41",
+                "response_digest": "95f6431b4b2621f197f51f040171f406a245482ba0b2d0989c08b582bedf8407",
+                "status": 200
+              },
+              {
+                "elapsed_seconds": 2.8862814720014285,
+                "path": "/v1/chat/completions",
+                "request_digest": "4825d71d72e25560e4ad98d6dfaaab78918da8ba535fadc0877c1cefa469ad0c",
+                "response_digest": "3233a059887d4ab950208a71fc4ee852288959c42eca2625c0017b0c518c960a",
+                "status": 200
+              }
+            ],
+            "manifest_digest": "041832e8330fe515eb26f590d229c38bc01423f77a9dfbaecd04e3b9525dbdb3",
+            "profile": {
+              "base_url": "http://127.0.0.1:30000/v1",
+              "context_limit": 16384,
+              "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+              "model": "gflo-local",
+              "profile_id": "vllm-python-worker-windows-v1",
+              "schema_version": 1,
+              "timeout_seconds": 120.0
+            },
+            "turn_digest": "55ce8318c6048394b2397a5d935ca64d86e8185b290011721fbc19ab0e2c2231",
+            "view_digest": "6e43b1ce5ae390f973a4e0f5906d6c60f7cc8e1322312312488d5e404f147fdc",
+            "window_targets_digest": "dbdae7bfdb13096228d253ab6a14d231bd868cf6de093269b033a9c4671c6a96"
+          },
+          "response": {
+            "id": "chatcmpl-8c55782b01845667",
+            "object": "chat.completion",
+            "created": 1789043496,
+            "model": "gflo-local",
+            "choices": [
+              {
+                "index": 0,
+                "message": {
+                  "role": "assistant",
+                  "content": "{\"kind\":\"repair_window\",\"edits\":[{\"target\":\"w91ce2fe6\",\"old\":\"def chosen_value(value=42):\\n    if isinstance(value, bool):\\n        raise TypeError(\\\"bool is not a built-in integer\\\")\\n    if not isinstance(value, int):\\n        raise TypeError(\\\"expected built-in integer\\\")\\n    return max(0, min(100, value))\",\"new\":\"def chosen_value(value=42):\\n    if isinstance(value, bool):\\n        raise TypeError(\\\"bool is not a built-in integer\\\")\\n    if type(value) is not int:\\n        raise TypeError(\\\"expected built-in integer\\\")\\n    return max(0, min(100, value))\"}]}",
+                  "refusal": null,
+                  "annotations": null,
+                  "audio": null,
+                  "function_call": null,
+                  "reasoning": null
+                },
+                "logprobs": null,
+                "finish_reason": "stop",
+                "stop_reason": null,
+                "token_ids": null,
+                "routed_experts": null
+              }
+            ],
+            "service_tier": null,
+            "system_fingerprint": "vllm-0.28.0-1411bf1b",
+            "usage": {
+              "prompt_tokens": 3276,
+              "total_tokens": 3434,
+              "completion_tokens": 158,
+              "prompt_tokens_details": null,
+              "completion_tokens_details": {
+                "reasoning_tokens": 0
+              }
+            },
+            "prompt_logprobs": null,
+            "prompt_token_ids": null,
+            "prompt_text": null,
+            "kv_transfer_params": null,
+            "ec_transfer_params": null,
+            "metrics": null
+          }
+        }
+      ],
+      "replay_unchanged": true
+    },
+    {
+      "name": "window-repository-v1",
+      "snapshot": {
+        "atom_id": "window-repository-v1",
+        "status": "retry-ready",
+        "active_attempt": "2188619920124ea6b85cb312133990df",
+        "candidate_digest": null,
+        "contract": {
+          "schema_version": 1,
+          "atom_id": "window-repository-v1",
+          "graph_revision": "example-graph-v1",
+          "objective": "In gflo/repository.py Repository.read, require start_line, max_lines and max_bytes to be actual built-in ints (type is int), rejecting booleans and all other types with RepositoryError before range comparisons or source access. Preserve existing numeric bounds, valid reads and all other methods. Use the existing error message. Edit only this method.",
+          "non_goals": [
+            "Deployment",
+            "Autonomous product planning"
+          ],
+          "requirement_ids": [
+            "read-inputs"
+          ],
+          "product_modules": [
+            "provider"
+          ],
+          "source_revision": "EXAMPLE-REPLACE-WITH-EXACT-SOURCE-REVISION",
+          "inputs_digest": "5db31880bd6308025b4f6651400fd92efee48b671c1f225b3b49bc1ffda2bf3b",
+          "writable_paths": [
+            "gflo/repository.py"
+          ],
+          "prohibited_paths": [],
+          "dependency_artifacts": [],
+          "upstream_contracts": [],
+          "capability_profile": "python-pilot-v1",
+          "network_profile": "none-v1",
+          "credential_profile": "none-v1",
+          "sandbox_profile": "pilot-v1",
+          "allowed_tools": [
+            "read",
+            "edit"
+          ],
+          "required_gates": [
+            {
+              "schema_version": 1,
+              "gate_id": "input-validation-preservation",
+              "validator_digest": "dd7a1a834b71928c11654292f0ed81319fac3ffd55cec9ee034d906f54b62b7f"
+            }
+          ],
+          "context_budget": {
+            "schema_version": 1,
+            "total_tokens": 12288,
+            "output_tokens": 4096
+          },
+          "max_attempts": 2,
+          "expected_outputs": [
+            {
+              "schema_version": 1,
+              "name": "candidate",
+              "schema_digest": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+            }
+          ],
+          "idempotency_key": "example-provider-edit-v1",
+          "integration_key": "example-integration-v1"
+        },
+        "attempts": [
+          {
+            "attempt_id": "2188619920124ea6b85cb312133990df",
+            "ordinal": 1,
+            "owner": "durable-controller-v1",
+            "expires_at": 1789045067.6586967,
+            "strategy": "initial",
+            "retry_plan": null,
+            "events": [
+              {
+                "event_id": 1,
+                "attempt_id": "2188619920124ea6b85cb312133990df",
+                "kind": "leased",
+                "details": {
+                  "ordinal": 1
+                },
+                "recorded_at": 1789043267.6586967
+              },
+              {
+                "event_id": 2,
+                "attempt_id": "2188619920124ea6b85cb312133990df",
+                "kind": "running",
+                "details": {},
+                "recorded_at": 1789043267.6631544
+              },
+              {
+                "event_id": 3,
+                "attempt_id": "2188619920124ea6b85cb312133990df",
+                "kind": "observation",
+                "details": {
+                  "digest": "0013c0419974076666709b8a4e3fe10783799098d99e28629f50d67008754356",
+                  "kind": "model"
+                },
+                "recorded_at": 1789043268.8842938
+              },
+              {
+                "event_id": 4,
+                "attempt_id": "2188619920124ea6b85cb312133990df",
+                "kind": "observation",
+                "details": {
+                  "digest": "603ad2eb1ad5923048d34d0658831cb0f452450f0116b17cdc8922ccefc9f4dc",
+                  "kind": "model"
+                },
+                "recorded_at": 1789043274.7513447
+              },
+              {
+                "event_id": 5,
+                "attempt_id": "2188619920124ea6b85cb312133990df",
+                "kind": "observation",
+                "details": {
+                  "digest": "83e6affe439118621068e18cb116f81db88e2bf1795caf368d6dfd66814a33af",
+                  "kind": "development"
+                },
+                "recorded_at": 1789043274.775645
+              },
+              {
+                "event_id": 6,
+                "attempt_id": "2188619920124ea6b85cb312133990df",
+                "kind": "observation",
+                "details": {
+                  "digest": "f843ae68e74b32a56fbea1b121495f185fa2c387ff98761fda21b0e790f126ba",
+                  "kind": "development"
+                },
+                "recorded_at": 1789043275.1627274
+              },
+              {
+                "event_id": 7,
+                "attempt_id": "2188619920124ea6b85cb312133990df",
+                "kind": "observation",
+                "details": {
+                  "digest": "b37176687d4e1b509b7725af142b770faf1e06512d464ad79cc74da79b5e4f09",
+                  "kind": "diagnostic"
+                },
+                "recorded_at": 1789043275.1862795
+              },
+              {
+                "event_id": 8,
+                "attempt_id": "2188619920124ea6b85cb312133990df",
+                "kind": "observation",
+                "details": {
+                  "digest": "1b25129cf059d7159405c903ee782da3abf8c7853890e92373b548645b600373",
+                  "kind": "model"
+                },
+                "recorded_at": 1789043277.9278493
+              },
+              {
+                "event_id": 9,
+                "attempt_id": "2188619920124ea6b85cb312133990df",
+                "kind": "observation",
+                "details": {
+                  "digest": "8fdc93149b6415bbf90062ed7bbe724bb36dd07b2122d491624a450f97b6ce78",
+                  "kind": "review-request"
+                },
+                "recorded_at": 1789043277.9492939
+              },
+              {
+                "event_id": 10,
+                "attempt_id": "2188619920124ea6b85cb312133990df",
+                "kind": "observation",
+                "details": {
+                  "digest": "1dc4f9f48e1175625d3042da9da26878395e806502c246c26118d6d3aff48aa8",
+                  "kind": "diagnostic"
+                },
+                "recorded_at": 1789043277.976102
+              },
+              {
+                "event_id": 11,
+                "attempt_id": "2188619920124ea6b85cb312133990df",
+                "kind": "failed",
+                "details": {
+                  "reason": "Worker reported a contract contradiction: The visible window w53a75cbf already contains the exact type-checking logic required by the objective (rejecting booleans and non-int types with RepositoryError before range comparisons or source access). The diagnostic failure is caused by a missing module 'gflo.storage' imported by gflo/artifacts.py, which is outside the writable scope (only gflo/repository.py is writable) and outside the objective's scope (edit only Repository.read). The required edit is already present; the failure cannot be resolved within the allowed scope.",
+                  "state": "retry-ready"
+                },
+                "recorded_at": 1789043277.9789412
+              }
+            ],
+            "gate_receipts": []
+          }
+        ],
+        "acceptance_findings": [],
+        "acceptance_challenged": false
+      },
+      "source_digest": "8170174b96320ce571f9eb6e5f8d2601baf2bfe9c3558a1f26e9a206581ffad0",
+      "source_sizes": {
+        "gflo/__init__.py": 86,
+        "gflo/artifacts.py": 4725,
+        "gflo/broker.py": 20818,
+        "gflo/records.py": 4846,
+        "gflo/repository.py": 21162
+      },
+      "turns": [
+        {
+          "evidence": {
+            "contract_digest": "b2c3e12e6b48c627e06e0e753e76bb9d559ce77d08916721d649720172956c08",
+            "elapsed_seconds": 1.207189920998644,
+            "exchanges": [
+              {
+                "elapsed_seconds": 0.022483215001557255,
+                "path": "/v1/models",
+                "request_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "response_digest": "99edcc3b28096c3e15539a74e18a1c571e8291aafd318f1a5b7a8a5fe9174968",
+                "status": 200
+              },
+              {
+                "elapsed_seconds": 0.027860824000526918,
+                "path": "/tokenize",
+                "request_digest": "c6823d10cf31c60e45561c41320751dcf0c9145a91b4a1c7f0741ba16a8fbef1",
+                "response_digest": "6ba294b8914eca95703d30617669e4e5d2e8f68c9a8dc6bd948fcaf702522bcd",
+                "status": 200
+              },
+              {
+                "elapsed_seconds": 0.9650615259997721,
+                "path": "/v1/chat/completions",
+                "request_digest": "98ca5b86e79a08b736e45e192983d010809e760ab0a9e01d8bbbb9136d4372bc",
+                "response_digest": "cc2fe6f1f14c2b056b2e366b4917c0300c68430e90f324557e6cd21a0ab2eb5d",
+                "status": 200
+              }
+            ],
+            "manifest_digest": "279fde41643c4faf61eb5e0c9315ba319d2e83d28b92c7793e191748d8469d22",
+            "profile": {
+              "base_url": "http://127.0.0.1:30000/v1",
+              "context_limit": 16384,
+              "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+              "model": "gflo-local",
+              "profile_id": "vllm-python-worker-windows-v1",
+              "schema_version": 1,
+              "timeout_seconds": 120.0
+            },
+            "turn_digest": "7c1fd612855375d27080adc20e491d30a225bb891b5d2ab6cf538834a80e8467",
+            "view_digest": "796f53883a9bfdabb64dd860d532366f992b00fedd1a39601e1846d986ed0266",
+            "window_targets_digest": "551d3363e93e616846dca9a379e8311d5c69bc846ced5dbe628f0f264b0d777d"
+          },
+          "response": {
+            "id": "chatcmpl-88cbd7f6e23139f2",
+            "object": "chat.completion",
+            "created": 1789043267,
+            "model": "gflo-local",
+            "choices": [
+              {
+                "index": 0,
+                "message": {
+                  "role": "assistant",
+                  "content": "{\"kind\":\"read_window\",\"path\":\"gflo/repository.py\",\"start_line\":394,\"max_lines\":30}",
+                  "refusal": null,
+                  "annotations": null,
+                  "audio": null,
+                  "function_call": null,
+                  "reasoning": null
+                },
+                "logprobs": null,
+                "finish_reason": "stop",
+                "stop_reason": null,
+                "token_ids": null,
+                "routed_experts": null
+              }
+            ],
+            "service_tier": null,
+            "system_fingerprint": "vllm-0.28.0-1411bf1b",
+            "usage": {
+              "prompt_tokens": 3856,
+              "total_tokens": 3883,
+              "completion_tokens": 27,
+              "prompt_tokens_details": null,
+              "completion_tokens_details": {
+                "reasoning_tokens": 0
+              }
+            },
+            "prompt_logprobs": null,
+            "prompt_token_ids": null,
+            "prompt_text": null,
+            "kv_transfer_params": null,
+            "ec_transfer_params": null,
+            "metrics": null
+          }
+        },
+        {
+          "evidence": {
+            "contract_digest": "b2c3e12e6b48c627e06e0e753e76bb9d559ce77d08916721d649720172956c08",
+            "elapsed_seconds": 5.85369989299943,
+            "exchanges": [
+              {
+                "elapsed_seconds": 0.022777909001888474,
+                "path": "/v1/models",
+                "request_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "response_digest": "20843d6e33d6b7bd4563a5dbd2f9208833a3308d4c5a9c8a9b475a81c8af914e",
+                "status": 200
+              },
+              {
+                "elapsed_seconds": 0.028078368999558734,
+                "path": "/tokenize",
+                "request_digest": "9c96974cf071af0eff8f2758de226f325b87d9c5170feb91e03553781e8e10a4",
+                "response_digest": "86d0b660d72502e30c1e515437673348769f85de4fcdfad63b0f707a9eed918f",
+                "status": 200
+              },
+              {
+                "elapsed_seconds": 5.643137021001166,
+                "path": "/v1/chat/completions",
+                "request_digest": "6030ba971c42cf2b474a48afee62ff65b4500365189610397cd2f584f170e572",
+                "response_digest": "f259a9f15d59a1963d41f5e8a85ec2e90f5939743fa8dc99cb0af6b4a016fed5",
+                "status": 200
+              }
+            ],
+            "manifest_digest": "9be59c0f5057c284df4c7bfc5983f5d404227eb380d8f193df2c0f500e6cf38c",
+            "profile": {
+              "base_url": "http://127.0.0.1:30000/v1",
+              "context_limit": 16384,
+              "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+              "model": "gflo-local",
+              "profile_id": "vllm-python-worker-windows-v1",
+              "schema_version": 1,
+              "timeout_seconds": 120.0
+            },
+            "turn_digest": "30c480f30ac626f2a74b4de992a4ecf4fb648ebdcf441701b71b822dc64a800a",
+            "view_digest": "0f585a0c9af5bd1f60b64d91f6b6c477152bf731b35ef3830b3eb5f820627c14",
+            "window_targets_digest": "735c7c4ad60825211b055ad002bae807acde4ced4da0f9b95932f0a764c07aee"
+          },
+          "response": {
+            "id": "chatcmpl-b5d3c7477e888cf9",
+            "object": "chat.completion",
+            "created": 1789043269,
+            "model": "gflo-local",
+            "choices": [
+              {
+                "index": 0,
+                "message": {
+                  "role": "assistant",
+                  "content": "{\"kind\":\"repair_window\",\"edits\":[{\"target\":\"w0ae305b4\",\"old\":\"    def read(\\n        self, path: str, *, start_line: int = 1, max_lines: int = 200, max_bytes: int = 65536\\n    ) -> SourceRead:\\n        if not 1 <= max_lines <= 10000 or not 1 <= max_bytes <= 1048576 or start_line < 1:\\n            raise RepositoryError(\\\"Invalid read budget or line\\\")\",\"new\":\"    def read(\\n        self, path: str, *, start_line: int = 1, max_lines: int = 200, max_bytes: int = 65536\\n    ) -> SourceRead:\\n        if not isinstance(start_line, int) or isinstance(start_line, bool):\\n            raise RepositoryError(\\\"Invalid read budget or line\\\")\\n        if not isinstance(max_lines, int) or isinstance(max_lines, bool):\\n            raise RepositoryError(\\\"Invalid read budget or line\\\")\\n        if not isinstance(max_bytes, int) or isinstance(max_bytes, bool):\\n            raise RepositoryError(\\\"Invalid read budget or line\\\")\\n        if not 1 <= max_lines <= 10000 or not 1 <= max_bytes <= 1048576 or start_line < 1:\\n            raise RepositoryError(\\\"Invalid read budget or line\\\")\"}]}",
+                  "refusal": null,
+                  "annotations": null,
+                  "audio": null,
+                  "function_call": null,
+                  "reasoning": null
+                },
+                "logprobs": null,
+                "finish_reason": "stop",
+                "stop_reason": null,
+                "token_ids": null,
+                "routed_experts": null
+              }
+            ],
+            "service_tier": null,
+            "system_fingerprint": "vllm-0.28.0-1411bf1b",
+            "usage": {
+              "prompt_tokens": 4311,
+              "total_tokens": 4629,
+              "completion_tokens": 318,
+              "prompt_tokens_details": null,
+              "completion_tokens_details": {
+                "reasoning_tokens": 0
+              }
+            },
+            "prompt_logprobs": null,
+            "prompt_token_ids": null,
+            "prompt_text": null,
+            "kv_transfer_params": null,
+            "ec_transfer_params": null,
+            "metrics": null
+          }
+        },
+        {
+          "evidence": {
+            "contract_digest": "b2c3e12e6b48c627e06e0e753e76bb9d559ce77d08916721d649720172956c08",
+            "elapsed_seconds": 2.7287896990019362,
+            "exchanges": [
+              {
+                "elapsed_seconds": 0.017500951998954406,
+                "path": "/v1/models",
+                "request_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "response_digest": "24ee752d5eda94c55e981fb3ecab2199e8656786bc175ab9ef21e63cdab9597b",
+                "status": 200
+              },
+              {
+                "elapsed_seconds": 0.027004679999663495,
+                "path": "/tokenize",
+                "request_digest": "57a9c6dd9d01ad33ffee29c9ddcf74d2d8a2616ca0f3ec8276713ff552a0d2ff",
+                "response_digest": "9abaff49675797030a47e4bbe6fb260c04b711d723aea0617326e0065e2f341a",
+                "status": 200
+              },
+              {
+                "elapsed_seconds": 2.519583919998695,
+                "path": "/v1/chat/completions",
+                "request_digest": "1bbefa663f98c7835a287e5e26e04ebca02c0762199ac70389cef83fa7599732",
+                "response_digest": "948da39316e6a61b9095e9fc64e9e22708d94c7a3a81754891005b1072c6cd68",
+                "status": 200
+              }
+            ],
+            "manifest_digest": "3e8df36b3feef2ca2f2df38258a8cc20cf09f64d1e57dc26aecbdf346c1be242",
+            "profile": {
+              "base_url": "http://127.0.0.1:30000/v1",
+              "context_limit": 16384,
+              "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+              "model": "gflo-local",
+              "profile_id": "vllm-python-worker-windows-v1",
+              "schema_version": 1,
+              "timeout_seconds": 120.0
+            },
+            "turn_digest": "f7f137dfd970936a7fec28e560809a38c068a5d6715e311bf2845049595458a2",
+            "view_digest": "6a01ff4ded0fcaa1db74792df9769b8f66a3b54826770b079ec6a7014c91588d",
+            "window_targets_digest": "c2a80a6cd77b503b2d15ae1775efbb0c7ee571064fb6ce3f4089dd64c51a3043"
+          },
+          "response": {
+            "id": "chatcmpl-bfb3d31cebc9decf",
+            "object": "chat.completion",
+            "created": 1789043275,
+            "model": "gflo-local",
+            "choices": [
+              {
+                "index": 0,
+                "message": {
+                  "role": "assistant",
+                  "content": "{\"kind\":\"contract_conflict\",\"reason\":\"The visible window w53a75cbf already contains the exact type-checking logic required by the objective (rejecting booleans and non-int types with RepositoryError before range comparisons or source access). The diagnostic failure is caused by a missing module 'gflo.storage' imported by gflo/artifacts.py, which is outside the writable scope (only gflo/repository.py is writable) and outside the objective's scope (edit only Repository.read). The required edit is already present; the failure cannot be resolved within the allowed scope.\",\"requirement_ids\":[\"read-inputs\"]}",
+                  "refusal": null,
+                  "annotations": null,
+                  "audio": null,
+                  "function_call": null,
+                  "reasoning": null
+                },
+                "logprobs": null,
+                "finish_reason": "stop",
+                "stop_reason": null,
+                "token_ids": null,
+                "routed_experts": null
+              }
+            ],
+            "service_tier": null,
+            "system_fingerprint": "vllm-0.28.0-1411bf1b",
+            "usage": {
+              "prompt_tokens": 4788,
+              "total_tokens": 4914,
+              "completion_tokens": 126,
+              "prompt_tokens_details": null,
+              "completion_tokens_details": {
+                "reasoning_tokens": 0
+              }
+            },
+            "prompt_logprobs": null,
+            "prompt_token_ids": null,
+            "prompt_text": null,
+            "kv_transfer_params": null,
+            "ec_transfer_params": null,
+            "metrics": null
+          }
+        }
+      ]
+    },
+    {
+      "name": "window-repository-v2",
+      "snapshot": {
+        "atom_id": "window-repository-v2",
+        "status": "quarantined",
+        "active_attempt": "76a823f7f20c44bd90e2da80c9656ded",
+        "candidate_digest": null,
+        "contract": {
+          "schema_version": 1,
+          "atom_id": "window-repository-v2",
+          "graph_revision": "example-graph-v1",
+          "objective": "In gflo/repository.py Repository.read, require start_line, max_lines and max_bytes to be actual built-in ints (type is int), rejecting booleans and all other types with RepositoryError before range comparisons or source access. Preserve existing numeric bounds, valid reads and all other methods. Use the existing error message. Edit only this method.",
+          "non_goals": [
+            "Deployment",
+            "Autonomous product planning"
+          ],
+          "requirement_ids": [
+            "read-inputs"
+          ],
+          "product_modules": [
+            "provider"
+          ],
+          "source_revision": "EXAMPLE-REPLACE-WITH-EXACT-SOURCE-REVISION",
+          "inputs_digest": "260dfd6bd0051c39ad8824431696303ae3e0b71080f382cf28e004470fcff86d",
+          "writable_paths": [
+            "gflo/repository.py"
+          ],
+          "prohibited_paths": [],
+          "dependency_artifacts": [],
+          "upstream_contracts": [],
+          "capability_profile": "python-pilot-v1",
+          "network_profile": "none-v1",
+          "credential_profile": "none-v1",
+          "sandbox_profile": "pilot-v1",
+          "allowed_tools": [
+            "read",
+            "edit"
+          ],
+          "required_gates": [
+            {
+              "schema_version": 1,
+              "gate_id": "input-validation-preservation",
+              "validator_digest": "41082ff054d9d4cc669f46e596fb378c9f93ca791706072915653d8f9b558a11"
+            }
+          ],
+          "context_budget": {
+            "schema_version": 1,
+            "total_tokens": 12288,
+            "output_tokens": 4096
+          },
+          "max_attempts": 2,
+          "expected_outputs": [
+            {
+              "schema_version": 1,
+              "name": "candidate",
+              "schema_digest": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+            }
+          ],
+          "idempotency_key": "example-provider-edit-v1",
+          "integration_key": "example-integration-v1"
+        },
+        "attempts": [
+          {
+            "attempt_id": "66fa2b96ad914d2e9702aec8c6b8e8e9",
+            "ordinal": 1,
+            "owner": "durable-controller-v1",
+            "expires_at": 1789045301.4810033,
+            "strategy": "initial",
+            "retry_plan": null,
+            "events": [
+              {
+                "event_id": 1,
+                "attempt_id": "66fa2b96ad914d2e9702aec8c6b8e8e9",
+                "kind": "leased",
+                "details": {
+                  "ordinal": 1
+                },
+                "recorded_at": 1789043501.4810033
+              },
+              {
+                "event_id": 2,
+                "attempt_id": "66fa2b96ad914d2e9702aec8c6b8e8e9",
+                "kind": "running",
+                "details": {},
+                "recorded_at": 1789043501.4842317
+              },
+              {
+                "event_id": 3,
+                "attempt_id": "66fa2b96ad914d2e9702aec8c6b8e8e9",
+                "kind": "observation",
+                "details": {
+                  "digest": "6a03c0d7544623d4fdcd1734403acbde6c2c65be181b474f40f5152006fd49bd",
+                  "kind": "model"
+                },
+                "recorded_at": 1789043502.561663
+              },
+              {
+                "event_id": 4,
+                "attempt_id": "66fa2b96ad914d2e9702aec8c6b8e8e9",
+                "kind": "observation",
+                "details": {
+                  "digest": "9813366443924346c33942ad27e1f11b24295f9f417781d2aae0959ee043dbf8",
+                  "kind": "model"
+                },
+                "recorded_at": 1789043507.623355
+              },
+              {
+                "event_id": 5,
+                "attempt_id": "66fa2b96ad914d2e9702aec8c6b8e8e9",
+                "kind": "observation",
+                "details": {
+                  "digest": "489ef553d8c24edcd0dcc2d6371d15b089318ca2298d9ea491edb061aa2bfa67",
+                  "kind": "development"
+                },
+                "recorded_at": 1789043507.6481345
+              },
+              {
+                "event_id": 6,
+                "attempt_id": "66fa2b96ad914d2e9702aec8c6b8e8e9",
+                "kind": "observation",
+                "details": {
+                  "digest": "e206da590e469913f8eadb5f39c6c5667fe8ce4c53a0349a04742ca480e3895b",
+                  "kind": "development"
+                },
+                "recorded_at": 1789043508.045692
+              },
+              {
+                "event_id": 7,
+                "attempt_id": "66fa2b96ad914d2e9702aec8c6b8e8e9",
+                "kind": "observation",
+                "details": {
+                  "digest": "f208e12017f72e7c7d5716c8528856d041a39cf7c2ee851ad60be660e83390ab",
+                  "kind": "diagnostic"
+                },
+                "recorded_at": 1789043508.0718071
+              },
+              {
+                "event_id": 8,
+                "attempt_id": "66fa2b96ad914d2e9702aec8c6b8e8e9",
+                "kind": "observation",
+                "details": {
+                  "digest": "4fbc9dee613eac76d25e31934bd4454beeb5250f442dcc8c50e947de341e53d6",
+                  "kind": "model"
+                },
+                "recorded_at": 1789043511.0281367
+              },
+              {
+                "event_id": 9,
+                "attempt_id": "66fa2b96ad914d2e9702aec8c6b8e8e9",
+                "kind": "observation",
+                "details": {
+                  "digest": "ffbc732d2ef6170dab16adebb766058eea4ccbd546254626f310c5618f485212",
+                  "kind": "development"
+                },
+                "recorded_at": 1789043511.0525815
+              },
+              {
+                "event_id": 10,
+                "attempt_id": "66fa2b96ad914d2e9702aec8c6b8e8e9",
+                "kind": "candidate",
+                "details": {
+                  "digest": "8502c970a794568c152de63dcb0fcfcf752cd3670cffcc17bc04f8dfbca2bc44"
+                },
+                "recorded_at": 1789043511.055623
+              },
+              {
+                "event_id": 11,
+                "attempt_id": "66fa2b96ad914d2e9702aec8c6b8e8e9",
+                "kind": "observation",
+                "details": {
+                  "digest": "4a71f2e93512726fde84affbb9e3c7ea727a2e870047294e5e21e3d21b2afb94",
+                  "kind": "candidate-execution"
+                },
+                "recorded_at": 1789043511.4447591
+              },
+              {
+                "event_id": 12,
+                "attempt_id": "66fa2b96ad914d2e9702aec8c6b8e8e9",
+                "kind": "gate",
+                "details": {
+                  "receipt_digest": "0fc61ae898e10ac70e34b94423ae1144b2f6a9ef10f19e609b12fb8c53b8b815"
+                },
+                "recorded_at": 1789043511.8294704
+              },
+              {
+                "event_id": 13,
+                "attempt_id": "66fa2b96ad914d2e9702aec8c6b8e8e9",
+                "kind": "observation",
+                "details": {
+                  "digest": "3332fb9252b5dbc2516691bf14c808f1838dc512cbadf9a7da3e6efbec69bc4e",
+                  "kind": "diagnostic"
+                },
+                "recorded_at": 1789043511.8518255
+              },
+              {
+                "event_id": 14,
+                "attempt_id": "66fa2b96ad914d2e9702aec8c6b8e8e9",
+                "kind": "failed",
+                "details": {
+                  "reason": "Validation did not pass.\nGate: input-validation-preservation\nOutcome: fail\nLast executed case: 1\nCommand: [\"python\", \"-c\", \"import ast,hashlib,tempfile\\nfrom pathlib import Path\\nfrom gflo.repository import Repository,RepositoryError,SnapshotSource,snapshot_bundle\\nfrom gflo.artifacts import ArtifactStore\\nfrom gflo.broker import SourceBundle\\nclass Untouched:\\n def _entry(self,path):raise AssertionError('invalid inputs reached source access')\\nfor field in ['start_line','max_lines','max_bytes']:\\n for value in [True,False,1.5,1.0,'1',None,[],{},type('SubInt',(int,),{})(5)]:\\n  try:Repository.read(Untouched(),'\n[truncated; full bytes in retained evidence]\nInput (stdin):\n\nProcess outcome: completed\nExit code: 1\nObserved stdout:\n\nObserved stderr:\nTraceback (most recent call last):\n  File \"<string>\", line 26, in <module>\nAssertionError\n",
+                  "state": "retry-ready"
+                },
+                "recorded_at": 1789043511.8556263
+              }
+            ],
+            "gate_receipts": [
+              {
+                "schema_version": 1,
+                "attempt_id": "66fa2b96ad914d2e9702aec8c6b8e8e9",
+                "contract_digest": "a93ee76aef72cab260e4b706574cdb9aa50dc8ab920b8b46b6931c3250c4e343",
+                "inputs_digest": "260dfd6bd0051c39ad8824431696303ae3e0b71080f382cf28e004470fcff86d",
+                "candidate_digest": "8502c970a794568c152de63dcb0fcfcf752cd3670cffcc17bc04f8dfbca2bc44",
+                "gate_id": "input-validation-preservation",
+                "validator_digest": "41082ff054d9d4cc669f46e596fb378c9f93ca791706072915653d8f9b558a11",
+                "outcome": "fail",
+                "evidence_digest": "bdfe1238bccd95869d171c375aafe15f3e33b59bcf2922147e8162c18fd9c81b",
+                "runner_id": "python-process-gate-v2"
+              }
+            ]
+          },
+          {
+            "attempt_id": "76a823f7f20c44bd90e2da80c9656ded",
+            "ordinal": 2,
+            "owner": "durable-controller-v1",
+            "expires_at": 1789045311.8590515,
+            "strategy": "repair from retained diagnostic",
+            "retry_plan": {
+              "failure_event": 14,
+              "new_evidence": "3332fb9252b5dbc2516691bf14c808f1838dc512cbadf9a7da3e6efbec69bc4e",
+              "schema_version": 1,
+              "strategy": "repair from retained diagnostic"
+            },
+            "events": [
+              {
+                "event_id": 15,
+                "attempt_id": "76a823f7f20c44bd90e2da80c9656ded",
+                "kind": "leased",
+                "details": {
+                  "ordinal": 2
+                },
+                "recorded_at": 1789043511.8590515
+              },
+              {
+                "event_id": 16,
+                "attempt_id": "76a823f7f20c44bd90e2da80c9656ded",
+                "kind": "running",
+                "details": {},
+                "recorded_at": 1789043511.863214
+              },
+              {
+                "event_id": 17,
+                "attempt_id": "76a823f7f20c44bd90e2da80c9656ded",
+                "kind": "observation",
+                "details": {
+                  "digest": "1a6650720f8a53b29439eebca9a42691f81e4207558c5ab059c90249b4cea534",
+                  "kind": "model"
+                },
+                "recorded_at": 1789043512.9882233
+              },
+              {
+                "event_id": 18,
+                "attempt_id": "76a823f7f20c44bd90e2da80c9656ded",
+                "kind": "observation",
+                "details": {
+                  "digest": "52b51e568f6d3f261610e272cb1885b7be610b25490d478aadeb3611456d808d",
+                  "kind": "model"
+                },
+                "recorded_at": 1789043517.289063
+              },
+              {
+                "event_id": 19,
+                "attempt_id": "76a823f7f20c44bd90e2da80c9656ded",
+                "kind": "observation",
+                "details": {
+                  "digest": "29867c1a55df9cdfc27a1044483961cdd518204e93da0c1733d2350cc626a8df",
+                  "kind": "review-request"
+                },
+                "recorded_at": 1789043517.3198953
+              },
+              {
+                "event_id": 20,
+                "attempt_id": "76a823f7f20c44bd90e2da80c9656ded",
+                "kind": "observation",
+                "details": {
+                  "digest": "84c65dc3fcb5c81d8a914c81caaa011b01e18356020460a576f4560feb00a54d",
+                  "kind": "diagnostic"
+                },
+                "recorded_at": 1789043517.3442054
+              },
+              {
+                "event_id": 21,
+                "attempt_id": "76a823f7f20c44bd90e2da80c9656ded",
+                "kind": "failed",
+                "details": {
+                  "reason": "Worker repeated an unchanged draft that already failed a pinned check.",
+                  "state": "quarantined"
+                },
+                "recorded_at": 1789043517.3472512
+              }
+            ],
+            "gate_receipts": []
+          }
+        ],
+        "acceptance_findings": [],
+        "acceptance_challenged": false
+      },
+      "source_digest": "79c42c34f8f4130bcf7a09a71f3d72c8909b6f9cda7dfaf2bcd05d360e94d507",
+      "source_sizes": {
+        "gflo/__init__.py": 86,
+        "gflo/artifacts.py": 4725,
+        "gflo/broker.py": 20818,
+        "gflo/records.py": 4846,
+        "gflo/repository.py": 21162,
+        "gflo/storage.py": 1026
+      },
+      "turns": [
+        {
+          "evidence": {
+            "contract_digest": "a93ee76aef72cab260e4b706574cdb9aa50dc8ab920b8b46b6931c3250c4e343",
+            "elapsed_seconds": 1.0637915859988425,
+            "exchanges": [
+              {
+                "elapsed_seconds": 0.021610986997984583,
+                "path": "/v1/models",
+                "request_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "response_digest": "2e079f671e91ff1faf88a4005d74ad0c40591dacc380f35342f3face846d3ff9",
+                "status": 200
+              },
+              {
+                "elapsed_seconds": 0.027671716001350433,
+                "path": "/tokenize",
+                "request_digest": "c38bf07eae06405aab15d97e8bc6dbd5c186a909d51d53a3823fbe578b2289aa",
+                "response_digest": "56b53610ccba82363b47cdbd1ae810af1f53b8aeb47d31a69da5a65543c36903",
+                "status": 200
+              },
+              {
+                "elapsed_seconds": 0.8097209270017629,
+                "path": "/v1/chat/completions",
+                "request_digest": "8802d4cbbdc80f8ec78c9b7f448db78bd4836b9227db865cac83a2a0f0c9f8b0",
+                "response_digest": "b4af40c2aae84b7bc01c7e93fa39e7d0dc6d3acff7b0f57bd8b29fcfdb984725",
+                "status": 200
+              }
+            ],
+            "manifest_digest": "1cb3192c1332b7e29fc1873e86e8e223da8810e9cc36b6265d04a1ae82455afe",
+            "profile": {
+              "base_url": "http://127.0.0.1:30000/v1",
+              "context_limit": 16384,
+              "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+              "model": "gflo-local",
+              "profile_id": "vllm-python-worker-windows-v1",
+              "schema_version": 1,
+              "timeout_seconds": 120.0
+            },
+            "turn_digest": "ef7fec6687aae049067773e5759e4e47bc8ddcb9fdf0735c15d8dc9934d62a0e",
+            "view_digest": "39af89b52bd188b16c7c805c6df1c10b6bb21f5dab2cc7d25c1f59c276be777d",
+            "window_targets_digest": "76107a8dc95f6d934e4cf250fd01b8298967ea6f7af7a8d2731528092f808afc"
+          },
+          "response": {
+            "id": "chatcmpl-93aca8c6dc91d90f",
+            "object": "chat.completion",
+            "created": 1789043501,
+            "model": "gflo-local",
+            "choices": [
+              {
+                "index": 0,
+                "message": {
+                  "role": "assistant",
+                  "content": "{\"kind\":\"read_window\",\"path\":\"gflo/repository.py\",\"start_line\":394,\"max_lines\":30}",
+                  "refusal": null,
+                  "annotations": null,
+                  "audio": null,
+                  "function_call": null,
+                  "reasoning": null
+                },
+                "logprobs": null,
+                "finish_reason": "stop",
+                "stop_reason": null,
+                "token_ids": null,
+                "routed_experts": null
+              }
+            ],
+            "service_tier": null,
+            "system_fingerprint": "vllm-0.28.0-1411bf1b",
+            "usage": {
+              "prompt_tokens": 3874,
+              "total_tokens": 3901,
+              "completion_tokens": 27,
+              "prompt_tokens_details": null,
+              "completion_tokens_details": {
+                "reasoning_tokens": 0
+              }
+            },
+            "prompt_logprobs": null,
+            "prompt_token_ids": null,
+            "prompt_text": null,
+            "kv_transfer_params": null,
+            "ec_transfer_params": null,
+            "metrics": null
+          }
+        },
+        {
+          "evidence": {
+            "contract_digest": "a93ee76aef72cab260e4b706574cdb9aa50dc8ab920b8b46b6931c3250c4e343",
+            "elapsed_seconds": 5.0482119459993555,
+            "exchanges": [
+              {
+                "elapsed_seconds": 0.020769414000824327,
+                "path": "/v1/models",
+                "request_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "response_digest": "1657f33683babc55919e561d4e4903fdd6b52e27508f16f04dc644c7876583f1",
+                "status": 200
+              },
+              {
+                "elapsed_seconds": 0.026442155001859646,
+                "path": "/tokenize",
+                "request_digest": "e9b9fd74f8a2078a6acbd44dc83063430afd59a20eabd3835bc853cceae8c5d8",
+                "response_digest": "82c8400c8c3e9334d4fbf2e11b334a4186946619d1be1809ccf65d1cc6ce7720",
+                "status": 200
+              },
+              {
+                "elapsed_seconds": 4.836674792000849,
+                "path": "/v1/chat/completions",
+                "request_digest": "8551625e18fc940f88d876328ce8036ee0ca3c8d40722b6631093488033ad06d",
+                "response_digest": "446d2c90f34d65ccfa823950d7c4bd8b5ab591a7109a9beef56bd80596f84ffe",
+                "status": 200
+              }
+            ],
+            "manifest_digest": "951a67d427e624b909cab72812de07eb09ddf91644f20db1886f77a0b8b55d36",
+            "profile": {
+              "base_url": "http://127.0.0.1:30000/v1",
+              "context_limit": 16384,
+              "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+              "model": "gflo-local",
+              "profile_id": "vllm-python-worker-windows-v1",
+              "schema_version": 1,
+              "timeout_seconds": 120.0
+            },
+            "turn_digest": "89a168e6e31e5a85ec6435af8825c017bf40ceca09a853aa953550ee2252c824",
+            "view_digest": "be69886a0d69be2512cfddf95598bc910e9784fad68235aa99ea1627c914fd17",
+            "window_targets_digest": "c8c0d77f9910d6f92f4bc6087eeab1d57af7e4df450cb709e7af144644d88c55"
+          },
+          "response": {
+            "id": "chatcmpl-897517a21205b293",
+            "object": "chat.completion",
+            "created": 1789043502,
+            "model": "gflo-local",
+            "choices": [
+              {
+                "index": 0,
+                "message": {
+                  "role": "assistant",
+                  "content": "{\"kind\":\"repair_window\",\"edits\":[{\"target\":\"w6a560c48\",\"old\":\"    def read(\\n        self, path: str, *, start_line: int = 1, max_lines: int = 200, max_bytes: int = 65536\\n    ) -> SourceRead:\\n        if not 1 <= max_lines <= 10000 or not 1 <= max_bytes <= 1048576 or start_line < 1:\\n            raise RepositoryError(\\\"Invalid read budget or line\\\")\",\"new\":\"    def read(\\n        self, path: str, *, start_line: int = 1, max_lines: int = 200, max_bytes: int = 65536\\n    ) -> SourceRead:\\n        if type(start_line) is not int or type(max_lines) is not int or type(max_bytes) is not int:\\n            raise RepositoryError(\\\"Invalid read budget or line\\\")\\n        if not 1 <= max_lines <= 10000 or not 1 <= max_bytes <= 1048576 or start_line < 1:\\n            raise RepositoryError(\\\"Invalid read budget or line\\\")\"}]}",
+                  "refusal": null,
+                  "annotations": null,
+                  "audio": null,
+                  "function_call": null,
+                  "reasoning": null
+                },
+                "logprobs": null,
+                "finish_reason": "stop",
+                "stop_reason": null,
+                "token_ids": null,
+                "routed_experts": null
+              }
+            ],
+            "service_tier": null,
+            "system_fingerprint": "vllm-0.28.0-1411bf1b",
+            "usage": {
+              "prompt_tokens": 4319,
+              "total_tokens": 4588,
+              "completion_tokens": 269,
+              "prompt_tokens_details": null,
+              "completion_tokens_details": {
+                "reasoning_tokens": 0
+              }
+            },
+            "prompt_logprobs": null,
+            "prompt_token_ids": null,
+            "prompt_text": null,
+            "kv_transfer_params": null,
+            "ec_transfer_params": null,
+            "metrics": null
+          }
+        },
+        {
+          "evidence": {
+            "contract_digest": "a93ee76aef72cab260e4b706574cdb9aa50dc8ab920b8b46b6931c3250c4e343",
+            "elapsed_seconds": 2.943615055999544,
+            "exchanges": [
+              {
+                "elapsed_seconds": 0.01768502599952626,
+                "path": "/v1/models",
+                "request_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "response_digest": "298e28dfd366e578c62e01a8eb633e59f6707542d9b6dd97e0713a22e7e88d84",
+                "status": 200
+              },
+              {
+                "elapsed_seconds": 0.028775441001926083,
+                "path": "/tokenize",
+                "request_digest": "11b123057d221022945a031e64429bbee30b6c988cfa9eb8c87ecf21305fcf0d",
+                "response_digest": "9beb871772938337aea80f7d848931291b86de7f46a950fa2cfd118c8d9f067e",
+                "status": 200
+              },
+              {
+                "elapsed_seconds": 2.704686639001011,
+                "path": "/v1/chat/completions",
+                "request_digest": "8d2ed2d3de1d20fb442d927f79dd331c6efef2cbe504dd3f43aa0b2c24bd64d6",
+                "response_digest": "b4916488783ba6832226d472912417b739d59f12d09728d6fb8566aec393e7f9",
+                "status": 200
+              }
+            ],
+            "manifest_digest": "af5d9b698413c33fc66b5e200d650f3457811ecd7d3a8dc4adb699e09d2dc365",
+            "profile": {
+              "base_url": "http://127.0.0.1:30000/v1",
+              "context_limit": 16384,
+              "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+              "model": "gflo-local",
+              "profile_id": "vllm-python-worker-windows-v1",
+              "schema_version": 1,
+              "timeout_seconds": 120.0
+            },
+            "turn_digest": "a6d6e0f5780b9e7c390dbfd383d65ff5525fc5b45d794085d8bde54bb6a2121f",
+            "view_digest": "a28e6a6b5f270ec72c78874048c78c8f919f8c5848b13680826f7ec234344b5d",
+            "window_targets_digest": "dc22416b40e7344c23927be829eef07b52b92bb0fe5bd6a41e1a4d0138024187"
+          },
+          "response": {
+            "id": "chatcmpl-95ef75004fe7d602",
+            "object": "chat.completion",
+            "created": 1789043508,
+            "model": "gflo-local",
+            "choices": [
+              {
+                "index": 0,
+                "message": {
+                  "role": "assistant",
+                  "content": "{\"kind\":\"repair_window\",\"edits\":[{\"target\":\"wcdf021ef\",\"old\":\"        if type(start_line) is not int or type(max_lines) is not int or type(max_bytes) is not int:\\n            raise RepositoryError(\\\"Invalid read budget or line\\\")\",\"new\":\"        if type(start_line) is not int or type(max_lines) is not int or type(max_bytes) is not int:\\n            raise RepositoryError(\\\"Invalid read budget or line\\\")\\n        if isinstance(start_line, bool) or isinstance(max_lines, bool) or isinstance(max_bytes, bool):\\n            raise RepositoryError(\\\"Invalid read budget or line\\\")\"}]}",
+                  "refusal": null,
+                  "annotations": null,
+                  "audio": null,
+                  "function_call": null,
+                  "reasoning": null
+                },
+                "logprobs": null,
+                "finish_reason": "stop",
+                "stop_reason": null,
+                "token_ids": null,
+                "routed_experts": null
+              }
+            ],
+            "service_tier": null,
+            "system_fingerprint": "vllm-0.28.0-1411bf1b",
+            "usage": {
+              "prompt_tokens": 4722,
+              "total_tokens": 4860,
+              "completion_tokens": 138,
+              "prompt_tokens_details": null,
+              "completion_tokens_details": {
+                "reasoning_tokens": 0
+              }
+            },
+            "prompt_logprobs": null,
+            "prompt_token_ids": null,
+            "prompt_text": null,
+            "kv_transfer_params": null,
+            "ec_transfer_params": null,
+            "metrics": null
+          }
+        },
+        {
+          "evidence": {
+            "contract_digest": "a93ee76aef72cab260e4b706574cdb9aa50dc8ab920b8b46b6931c3250c4e343",
+            "elapsed_seconds": 1.1103030259982916,
+            "exchanges": [
+              {
+                "elapsed_seconds": 0.018238566000945866,
+                "path": "/v1/models",
+                "request_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "response_digest": "d11cdf7ad6f6fb74b140ba1c0985e907d070adf331838467e159153129e74b99",
+                "status": 200
+              },
+              {
+                "elapsed_seconds": 0.026026387000456452,
+                "path": "/tokenize",
+                "request_digest": "9b16c4d6b838193029f3c57d48102af8715a81eec2f8f0743ae93229842bf507",
+                "response_digest": "0625ca405fa96e3c44e5ad7fc9b68d4e04061cb7b81227c17e571884c93d1d33",
+                "status": 200
+              },
+              {
+                "elapsed_seconds": 0.8935019900018233,
+                "path": "/v1/chat/completions",
+                "request_digest": "967c48759fcbe0a96d93d8d314afd04686e96eb9817281ca30e116ce9f14a2ae",
+                "response_digest": "96d0332f70c26fb0f72f287d424bdc30fc97b911d0b0c782d7020c11e3535b7b",
+                "status": 200
+              }
+            ],
+            "manifest_digest": "cec3d2879170b87e6de6f9166e90e3f22f7418b460d5f4a94c1c1e9b6ab30ca0",
+            "profile": {
+              "base_url": "http://127.0.0.1:30000/v1",
+              "context_limit": 16384,
+              "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+              "model": "gflo-local",
+              "profile_id": "vllm-python-worker-windows-v1",
+              "schema_version": 1,
+              "timeout_seconds": 120.0
+            },
+            "turn_digest": "7cfc5521bc024f62f5998c4757b65ff973b1e8706449df3e8de8106680163c2e",
+            "view_digest": "326df64ee50cd66be12b2de9a2e748013ad7f3c0d09598efff3cb5b02239b545",
+            "window_targets_digest": "7aa3884db6bb3c17bb84803fc5eabb22f6e93dd7851b7e041e8f51e6016a6aa9"
+          },
+          "response": {
+            "id": "chatcmpl-98223efe01bd504d",
+            "object": "chat.completion",
+            "created": 1789043512,
+            "model": "gflo-local",
+            "choices": [
+              {
+                "index": 0,
+                "message": {
+                  "role": "assistant",
+                  "content": "{\"kind\":\"read_window\",\"path\":\"gflo/repository.py\",\"start_line\":394,\"max_lines\":40}",
+                  "refusal": null,
+                  "annotations": null,
+                  "audio": null,
+                  "function_call": null,
+                  "reasoning": null
+                },
+                "logprobs": null,
+                "finish_reason": "stop",
+                "stop_reason": null,
+                "token_ids": null,
+                "routed_experts": null
+              }
+            ],
+            "service_tier": null,
+            "system_fingerprint": "vllm-0.28.0-1411bf1b",
+            "usage": {
+              "prompt_tokens": 4218,
+              "total_tokens": 4245,
+              "completion_tokens": 27,
+              "prompt_tokens_details": null,
+              "completion_tokens_details": {
+                "reasoning_tokens": 0
+              }
+            },
+            "prompt_logprobs": null,
+            "prompt_token_ids": null,
+            "prompt_text": null,
+            "kv_transfer_params": null,
+            "ec_transfer_params": null,
+            "metrics": null
+          }
+        },
+        {
+          "evidence": {
+            "contract_digest": "a93ee76aef72cab260e4b706574cdb9aa50dc8ab920b8b46b6931c3250c4e343",
+            "elapsed_seconds": 4.288261802998022,
+            "exchanges": [
+              {
+                "elapsed_seconds": 0.016908852001506602,
+                "path": "/v1/models",
+                "request_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "response_digest": "a2965cb8323a19458a1116d6d85e050d1445c7df2a3d24a9b96df59132e0c549",
+                "status": 200
+              },
+              {
+                "elapsed_seconds": 0.028547014997457154,
+                "path": "/tokenize",
+                "request_digest": "f0908f497603a64dbc9358543686ecf52d466605fdb220e7d2e1e27a2d49bd96",
+                "response_digest": "d0fdb4f5de6bef40d6b4e06eae42a295017d3a7b0145d969e006daeb327f7d60",
+                "status": 200
+              },
+              {
+                "elapsed_seconds": 4.072801767000783,
+                "path": "/v1/chat/completions",
+                "request_digest": "6e6c90f59a2faf8f40103bc7841224c6f332f1264e2b3d0efcd87e5f1d8bdcd1",
+                "response_digest": "2b0cd4356863b588f82289641657cbf4205f867ca8dde0d3c020ea7f0ce5dbfb",
+                "status": 200
+              }
+            ],
+            "manifest_digest": "87db030343bef3629bc87db3a1521835e620e5a119fd22cbb378c57aa88e393c",
+            "profile": {
+              "base_url": "http://127.0.0.1:30000/v1",
+              "context_limit": 16384,
+              "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+              "model": "gflo-local",
+              "profile_id": "vllm-python-worker-windows-v1",
+              "schema_version": 1,
+              "timeout_seconds": 120.0
+            },
+            "turn_digest": "42d3ff44c7599d3937a6c2e5afa7215d31adb091791149e002f3cad4b689216d",
+            "view_digest": "3b162a65372ec314e788c22e9030cab91bd16fe94f184b3af48639b709cb9154",
+            "window_targets_digest": "8599ac64da772627d31dead6ba90d41482110994dee7c72a51a314c47ed9239e"
+          },
+          "response": {
+            "id": "chatcmpl-ba113d489a778aa8",
+            "object": "chat.completion",
+            "created": 1789043513,
+            "model": "gflo-local",
+            "choices": [
+              {
+                "index": 0,
+                "message": {
+                  "role": "assistant",
+                  "content": "{\"kind\":\"repair_window\",\"edits\":[{\"target\":\"w7684a5e4\",\"old\":\"        if type(start_line) is not int or type(max_lines) is not int or type(max_bytes) is not int:\\n            raise RepositoryError(\\\"Invalid read budget or line\\\")\\n        if isinstance(start_line, bool) or isinstance(max_lines, bool) or isinstance(max_bytes, bool):\\n            raise RepositoryError(\\\"Invalid read budget or line\\\")\\n        if not 1 <= max_lines <= 10000 or not 1 <= max_bytes <= 1048576 or start_line < 1:\",\"new\":\"        if type(start_line) is not int or type(max_lines) is not int or type(max_bytes) is not int:\\n            raise RepositoryError(\\\"Invalid read budget or line\\\")\\n        if not 1 <= max_lines <= 10000 or not 1 <= max_bytes <= 1048576 or start_line < 1:\"}]}",
+                  "refusal": null,
+                  "annotations": null,
+                  "audio": null,
+                  "function_call": null,
+                  "reasoning": null
+                },
+                "logprobs": null,
+                "finish_reason": "stop",
+                "stop_reason": null,
+                "token_ids": null,
+                "routed_experts": null
+              }
+            ],
+            "service_tier": null,
+            "system_fingerprint": "vllm-0.28.0-1411bf1b",
+            "usage": {
+              "prompt_tokens": 4838,
+              "total_tokens": 5059,
+              "completion_tokens": 221,
+              "prompt_tokens_details": null,
+              "completion_tokens_details": {
+                "reasoning_tokens": 0
+              }
+            },
+            "prompt_logprobs": null,
+            "prompt_token_ids": null,
+            "prompt_text": null,
+            "kv_transfer_params": null,
+            "ec_transfer_params": null,
+            "metrics": null
+          }
+        }
+      ]
+    },
+    {
+      "name": "window-repository-v3",
+      "snapshot": {
+        "atom_id": "window-repository-v3",
+        "status": "retry-ready",
+        "active_attempt": "9069cd7d1658440d911e45afdf24833b",
+        "candidate_digest": null,
+        "contract": {
+          "schema_version": 1,
+          "atom_id": "window-repository-v3",
+          "graph_revision": "example-graph-v1",
+          "objective": "In gflo/repository.py Repository.read, require start_line, max_lines and max_bytes to be actual built-in ints (type is int), rejecting booleans and all other types with RepositoryError before range comparisons or source access. Preserve existing numeric bounds, valid reads and all other methods. Use the existing error message. Edit only this method.",
+          "non_goals": [
+            "Deployment",
+            "Autonomous product planning"
+          ],
+          "requirement_ids": [
+            "read-inputs"
+          ],
+          "product_modules": [
+            "provider"
+          ],
+          "source_revision": "EXAMPLE-REPLACE-WITH-EXACT-SOURCE-REVISION",
+          "inputs_digest": "260dfd6bd0051c39ad8824431696303ae3e0b71080f382cf28e004470fcff86d",
+          "writable_paths": [
+            "gflo/repository.py"
+          ],
+          "prohibited_paths": [],
+          "dependency_artifacts": [],
+          "upstream_contracts": [],
+          "capability_profile": "python-pilot-v1",
+          "network_profile": "none-v1",
+          "credential_profile": "none-v1",
+          "sandbox_profile": "pilot-v1",
+          "allowed_tools": [
+            "read",
+            "edit"
+          ],
+          "required_gates": [
+            {
+              "schema_version": 1,
+              "gate_id": "input-validation-preservation",
+              "validator_digest": "b011f977fc77c2beeeb7f3bcec9e9dcf8871b12a5958d15440cbcb61aa24c9cb"
+            }
+          ],
+          "context_budget": {
+            "schema_version": 1,
+            "total_tokens": 12288,
+            "output_tokens": 4096
+          },
+          "max_attempts": 2,
+          "expected_outputs": [
+            {
+              "schema_version": 1,
+              "name": "candidate",
+              "schema_digest": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+            }
+          ],
+          "idempotency_key": "example-provider-edit-v1",
+          "integration_key": "example-integration-v1"
+        },
+        "attempts": [
+          {
+            "attempt_id": "9069cd7d1658440d911e45afdf24833b",
+            "ordinal": 1,
+            "owner": "durable-controller-v1",
+            "expires_at": 1789045642.7258441,
+            "strategy": "initial",
+            "retry_plan": null,
+            "events": [
+              {
+                "event_id": 1,
+                "attempt_id": "9069cd7d1658440d911e45afdf24833b",
+                "kind": "leased",
+                "details": {
+                  "ordinal": 1
+                },
+                "recorded_at": 1789043842.7258441
+              },
+              {
+                "event_id": 2,
+                "attempt_id": "9069cd7d1658440d911e45afdf24833b",
+                "kind": "running",
+                "details": {},
+                "recorded_at": 1789043842.7302287
+              },
+              {
+                "event_id": 3,
+                "attempt_id": "9069cd7d1658440d911e45afdf24833b",
+                "kind": "observation",
+                "details": {
+                  "digest": "9c6b91b7e9305c976882acfe1c0de8ee26e9c09b9f42187a0e8afcb645b1eb7d",
+                  "kind": "model"
+                },
+                "recorded_at": 1789043844.0356898
+              },
+              {
+                "event_id": 4,
+                "attempt_id": "9069cd7d1658440d911e45afdf24833b",
+                "kind": "observation",
+                "details": {
+                  "digest": "6bf84a28450dd71735844d5432795697fb27cc9c263a399d984acb23ed6cae44",
+                  "kind": "model"
+                },
+                "recorded_at": 1789043849.0904334
+              },
+              {
+                "event_id": 5,
+                "attempt_id": "9069cd7d1658440d911e45afdf24833b",
+                "kind": "observation",
+                "details": {
+                  "digest": "3fee6f2b2f8eaa4da93f95e0a6aa8e1e6d1dc575185ea888c8ad1b4ed5bf529b",
+                  "kind": "development"
+                },
+                "recorded_at": 1789043849.1152837
+              },
+              {
+                "event_id": 6,
+                "attempt_id": "9069cd7d1658440d911e45afdf24833b",
+                "kind": "observation",
+                "details": {
+                  "digest": "b08ab5f73470e574b46d7034691048ea8d0272ff68fc6cc7f44e44969db375c1",
+                  "kind": "development"
+                },
+                "recorded_at": 1789043849.4244764
+              },
+              {
+                "event_id": 7,
+                "attempt_id": "9069cd7d1658440d911e45afdf24833b",
+                "kind": "observation",
+                "details": {
+                  "digest": "9de331d581cd44ca9503572bebe8eec3d06431d06c20bd79edad956a60b09914",
+                  "kind": "diagnostic"
+                },
+                "recorded_at": 1789043849.4496772
+              },
+              {
+                "event_id": 8,
+                "attempt_id": "9069cd7d1658440d911e45afdf24833b",
+                "kind": "observation",
+                "details": {
+                  "digest": "cd2424b6978cb9bebdc26cbe233a853470c021ce7760ede3be1f617cac3dfb35",
+                  "kind": "model"
+                },
+                "recorded_at": 1789043851.8878703
+              },
+              {
+                "event_id": 9,
+                "attempt_id": "9069cd7d1658440d911e45afdf24833b",
+                "kind": "observation",
+                "details": {
+                  "digest": "ff0cf23beb3b0a7746fc357fbee19780675baae9cc546fa4982eed33697639ac",
+                  "kind": "review-request"
+                },
+                "recorded_at": 1789043851.9166937
+              },
+              {
+                "event_id": 10,
+                "attempt_id": "9069cd7d1658440d911e45afdf24833b",
+                "kind": "observation",
+                "details": {
+                  "digest": "1322ea802faada74ddda4161c6e457a3a3f00f7d16eb700195e25adcca81c231",
+                  "kind": "diagnostic"
+                },
+                "recorded_at": 1789043851.9414566
+              },
+              {
+                "event_id": 11,
+                "attempt_id": "9069cd7d1658440d911e45afdf24833b",
+                "kind": "failed",
+                "details": {
+                  "reason": "Worker repeated an unchanged draft that already failed a pinned check.",
+                  "state": "retry-ready"
+                },
+                "recorded_at": 1789043851.9444056
+              }
+            ],
+            "gate_receipts": []
+          }
+        ],
+        "acceptance_findings": [],
+        "acceptance_challenged": false
+      },
+      "source_digest": "79c42c34f8f4130bcf7a09a71f3d72c8909b6f9cda7dfaf2bcd05d360e94d507",
+      "source_sizes": {
+        "gflo/__init__.py": 86,
+        "gflo/artifacts.py": 4725,
+        "gflo/broker.py": 20818,
+        "gflo/records.py": 4846,
+        "gflo/repository.py": 21162,
+        "gflo/storage.py": 1026
+      },
+      "turns": [
+        {
+          "evidence": {
+            "contract_digest": "8f0b7c2cf7bf0f2e21389769d75b87a5fa603cc6a61d4dc7d9e2cb56fabf21ee",
+            "elapsed_seconds": 1.2905839980012388,
+            "exchanges": [
+              {
+                "elapsed_seconds": 0.021638017002260312,
+                "path": "/v1/models",
+                "request_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "response_digest": "156106598ebd826d851b1d7f1de332a7fea884dc085db6ac200cf8a989ddd779",
+                "status": 200
+              },
+              {
+                "elapsed_seconds": 0.02621199299755972,
+                "path": "/tokenize",
+                "request_digest": "5fea00f584d8d08417454ae61caab445c8b3533c8a7ea90c89d2b2020441eff6",
+                "response_digest": "db3e6defedd6241286af76a673432ad6d7cd0bda2bb576262a764d6655575136",
+                "status": 200
+              },
+              {
+                "elapsed_seconds": 1.0326865960014402,
+                "path": "/v1/chat/completions",
+                "request_digest": "70b90b052aa45b6c334494aece5b9e4986b28efb1d05fcf760401de5e0a279f0",
+                "response_digest": "0ed3d5b6d9a752b3d3b9d0082a6673f4a3c756e614d72a183ac03420d10752f7",
+                "status": 200
+              }
+            ],
+            "manifest_digest": "91dcf51822488f9222c07308a52d0ff8385e91c50b22dfac723f5e5d4f4dde94",
+            "profile": {
+              "base_url": "http://127.0.0.1:30000/v1",
+              "context_limit": 16384,
+              "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+              "model": "gflo-local",
+              "profile_id": "vllm-python-worker-windows-v1",
+              "schema_version": 1,
+              "timeout_seconds": 120.0
+            },
+            "turn_digest": "86ff703ea53446924849801ef35d124cd747ef12811d827903bb9adf9f4770ea",
+            "view_digest": "e20301a39a54eda95943ed0be5af096e2c6125f5ba926d27ab43073e183235e2",
+            "window_targets_digest": "e41686e469463d523037a5fda493da4b2f5472912c2bfc50e85ea6a2090e1005"
+          },
+          "response": {
+            "id": "chatcmpl-aa32d2c034761f8b",
+            "object": "chat.completion",
+            "created": 1789043842,
+            "model": "gflo-local",
+            "choices": [
+              {
+                "index": 0,
+                "message": {
+                  "role": "assistant",
+                  "content": "{\"kind\":\"read_window\",\"path\":\"gflo/repository.py\",\"start_line\":394,\"max_lines\":30}",
+                  "refusal": null,
+                  "annotations": null,
+                  "audio": null,
+                  "function_call": null,
+                  "reasoning": null
+                },
+                "logprobs": null,
+                "finish_reason": "stop",
+                "stop_reason": null,
+                "token_ids": null,
+                "routed_experts": null
+              }
+            ],
+            "service_tier": null,
+            "system_fingerprint": "vllm-0.28.0-1411bf1b",
+            "usage": {
+              "prompt_tokens": 3876,
+              "total_tokens": 3903,
+              "completion_tokens": 27,
+              "prompt_tokens_details": null,
+              "completion_tokens_details": {
+                "reasoning_tokens": 0
+              }
+            },
+            "prompt_logprobs": null,
+            "prompt_token_ids": null,
+            "prompt_text": null,
+            "kv_transfer_params": null,
+            "ec_transfer_params": null,
+            "metrics": null
+          }
+        },
+        {
+          "evidence": {
+            "contract_digest": "8f0b7c2cf7bf0f2e21389769d75b87a5fa603cc6a61d4dc7d9e2cb56fabf21ee",
+            "elapsed_seconds": 5.040180526000768,
+            "exchanges": [
+              {
+                "elapsed_seconds": 0.020760103001521202,
+                "path": "/v1/models",
+                "request_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "response_digest": "ece24f7b056a6751d5b1259a0b89ea20e2b1eb4b179d5a7a274c8e5e51cc0918",
+                "status": 200
+              },
+              {
+                "elapsed_seconds": 0.02631265400123084,
+                "path": "/tokenize",
+                "request_digest": "740187aec58c6a0cf591521ea62150c9bc94f7a7787698823c3af4159142efe3",
+                "response_digest": "33cee0dac48d7dbe5baf65e300681b749bc2ddb30c955e105547f39b29e7f9d2",
+                "status": 200
+              },
+              {
+                "elapsed_seconds": 4.830932488999679,
+                "path": "/v1/chat/completions",
+                "request_digest": "fac6681d9eb6440fec4879ab73edf35ea347f23d65767744715e7249e59501e9",
+                "response_digest": "8014256f8f649c32781413762a0e89fabaa102b8557dd10e4d032b7e4169d85a",
+                "status": 200
+              }
+            ],
+            "manifest_digest": "6b9e1f99cfb44e6119a2c8e8927487bc425140f869f00b5ff800d1d0114ac987",
+            "profile": {
+              "base_url": "http://127.0.0.1:30000/v1",
+              "context_limit": 16384,
+              "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+              "model": "gflo-local",
+              "profile_id": "vllm-python-worker-windows-v1",
+              "schema_version": 1,
+              "timeout_seconds": 120.0
+            },
+            "turn_digest": "9637b8d8de7d709648bfa9f225075d28a78a0b8709e0d35650d68e2538a718f7",
+            "view_digest": "d63c90bc32b4bba7395d8acfc47978cf17e31b8676c140d56d191e3c24ea224c",
+            "window_targets_digest": "c5d9a4ab347c4d5aee6dc8606c0b2f1b8a0450aeb2030b73e3a07bb1ab275eec"
+          },
+          "response": {
+            "id": "chatcmpl-8b328b47ad293931",
+            "object": "chat.completion",
+            "created": 1789043844,
+            "model": "gflo-local",
+            "choices": [
+              {
+                "index": 0,
+                "message": {
+                  "role": "assistant",
+                  "content": "{\"kind\":\"repair_window\",\"edits\":[{\"target\":\"we6fd15e3\",\"old\":\"    def read(\\n        self, path: str, *, start_line: int = 1, max_lines: int = 200, max_bytes: int = 65536\\n    ) -> SourceRead:\\n        if not 1 <= max_lines <= 10000 or not 1 <= max_bytes <= 1048576 or start_line < 1:\\n            raise RepositoryError(\\\"Invalid read budget or line\\\")\",\"new\":\"    def read(\\n        self, path: str, *, start_line: int = 1, max_lines: int = 200, max_bytes: int = 65536\\n    ) -> SourceRead:\\n        if type(start_line) is not int or type(max_lines) is not int or type(max_bytes) is not int:\\n            raise RepositoryError(\\\"Invalid read budget or line\\\")\\n        if not 1 <= max_lines <= 10000 or not 1 <= max_bytes <= 1048576 or start_line < 1:\\n            raise RepositoryError(\\\"Invalid read budget or line\\\")\"}]}",
+                  "refusal": null,
+                  "annotations": null,
+                  "audio": null,
+                  "function_call": null,
+                  "reasoning": null
+                },
+                "logprobs": null,
+                "finish_reason": "stop",
+                "stop_reason": null,
+                "token_ids": null,
+                "routed_experts": null
+              }
+            ],
+            "service_tier": null,
+            "system_fingerprint": "vllm-0.28.0-1411bf1b",
+            "usage": {
+              "prompt_tokens": 4331,
+              "total_tokens": 4598,
+              "completion_tokens": 267,
+              "prompt_tokens_details": null,
+              "completion_tokens_details": {
+                "reasoning_tokens": 0
+              }
+            },
+            "prompt_logprobs": null,
+            "prompt_token_ids": null,
+            "prompt_text": null,
+            "kv_transfer_params": null,
+            "ec_transfer_params": null,
+            "metrics": null
+          }
+        },
+        {
+          "evidence": {
+            "contract_digest": "8f0b7c2cf7bf0f2e21389769d75b87a5fa603cc6a61d4dc7d9e2cb56fabf21ee",
+            "elapsed_seconds": 2.4246633290022146,
+            "exchanges": [
+              {
+                "elapsed_seconds": 0.019323825999890687,
+                "path": "/v1/models",
+                "request_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "response_digest": "67f2b0cddbf2e8d7583bc7ee3a7a09446bf581b92b2d395b62e00e676a474636",
+                "status": 200
+              },
+              {
+                "elapsed_seconds": 0.028373960998578696,
+                "path": "/tokenize",
+                "request_digest": "d86de8164bdf7418295b23a3d13e913ac6cd20979a92d29cdb4d98988a964ae6",
+                "response_digest": "303383b9fe15ea19dbf0f11adff433a3a354e1fcfe147d96923c22c650269207",
+                "status": 200
+              },
+              {
+                "elapsed_seconds": 2.1885380659987277,
+                "path": "/v1/chat/completions",
+                "request_digest": "053d8c4f5681afa71840bfc7ee25bd27b8b6f77590dd245c41e79c75d86eedc0",
+                "response_digest": "092332f3c5da114255ff0138e807f12c8db0601fe1870b03cdb3c66afe6353fa",
+                "status": 200
+              }
+            ],
+            "manifest_digest": "4ba1871c501c542ea22684fbaa08ab610a52e2ccd927709b93ad5dab852fac15",
+            "profile": {
+              "base_url": "http://127.0.0.1:30000/v1",
+              "context_limit": 16384,
+              "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+              "model": "gflo-local",
+              "profile_id": "vllm-python-worker-windows-v1",
+              "schema_version": 1,
+              "timeout_seconds": 120.0
+            },
+            "turn_digest": "d14f6aaedee5c5633752054fe31b78f2745a141799d88e7baffd8e39abbfc6cc",
+            "view_digest": "cc23114fcc61f274e80701730c858bbcd38df1f3293241051a56360eca0419f9",
+            "window_targets_digest": "76adc2251691caf43ee7f1b7a43b324dd59bb45a8dae910bec64edc5ae6de18f"
+          },
+          "response": {
+            "id": "chatcmpl-92e550de2a55991c",
+            "object": "chat.completion",
+            "created": 1789043849,
+            "model": "gflo-local",
+            "choices": [
+              {
+                "index": 0,
+                "message": {
+                  "role": "assistant",
+                  "content": "{\"kind\":\"repair_window\",\"edits\":[{\"target\":\"wbd92bc71\",\"old\":\"        if type(start_line) is not int or type(max_lines) is not int or type(max_bytes) is not int:\\n            raise RepositoryError(\\\"Invalid read budget or line\\\")\",\"new\":\"        if type(start_line) is not int or type(max_lines) is not int or type(max_bytes) is not int:\\n            raise RepositoryError(\\\"Invalid read budget or line\\\")\"}]}",
+                  "refusal": null,
+                  "annotations": null,
+                  "audio": null,
+                  "function_call": null,
+                  "reasoning": null
+                },
+                "logprobs": null,
+                "finish_reason": "stop",
+                "stop_reason": null,
+                "token_ids": null,
+                "routed_experts": null
+              }
+            ],
+            "service_tier": null,
+            "system_fingerprint": "vllm-0.28.0-1411bf1b",
+            "usage": {
+              "prompt_tokens": 4744,
+              "total_tokens": 4847,
+              "completion_tokens": 103,
+              "prompt_tokens_details": null,
+              "completion_tokens_details": {
+                "reasoning_tokens": 0
+              }
+            },
+            "prompt_logprobs": null,
+            "prompt_token_ids": null,
+            "prompt_text": null,
+            "kv_transfer_params": null,
+            "ec_transfer_params": null,
+            "metrics": null
+          }
+        }
+      ]
+    },
+    {
+      "name": "window-repository-v4",
+      "snapshot": {
+        "atom_id": "window-repository-v4",
+        "status": "accepted",
+        "active_attempt": "2ea7a4a8e5e246dcaeff35ac45967d54",
+        "candidate_digest": "ba1ad3f64ca5df6be55abcd736264ec5cdd937325d81a1f9b3d3e35d3e59c893",
+        "contract": {
+          "schema_version": 1,
+          "atom_id": "window-repository-v4",
+          "graph_revision": "example-graph-v1",
+          "objective": "In gflo/repository.py Repository.read, require start_line, max_lines and max_bytes to be actual built-in ints (type is int), rejecting booleans and all other types with RepositoryError before range comparisons or source access. Preserve existing numeric bounds, valid reads and all other methods. Use the existing error message. Edit only this method.",
+          "non_goals": [
+            "Deployment",
+            "Autonomous product planning"
+          ],
+          "requirement_ids": [
+            "read-inputs"
+          ],
+          "product_modules": [
+            "provider"
+          ],
+          "source_revision": "EXAMPLE-REPLACE-WITH-EXACT-SOURCE-REVISION",
+          "inputs_digest": "260dfd6bd0051c39ad8824431696303ae3e0b71080f382cf28e004470fcff86d",
+          "writable_paths": [
+            "gflo/repository.py"
+          ],
+          "prohibited_paths": [],
+          "dependency_artifacts": [],
+          "upstream_contracts": [],
+          "capability_profile": "python-pilot-v1",
+          "network_profile": "none-v1",
+          "credential_profile": "none-v1",
+          "sandbox_profile": "pilot-v1",
+          "allowed_tools": [
+            "read",
+            "edit"
+          ],
+          "required_gates": [
+            {
+              "schema_version": 1,
+              "gate_id": "input-validation-preservation",
+              "validator_digest": "8c7f14f03ccc51c042e1a2abcde9a1a5cbb526967f77933bf319b21d7adb2916"
+            }
+          ],
+          "context_budget": {
+            "schema_version": 1,
+            "total_tokens": 12288,
+            "output_tokens": 4096
+          },
+          "max_attempts": 2,
+          "expected_outputs": [
+            {
+              "schema_version": 1,
+              "name": "candidate",
+              "schema_digest": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+            }
+          ],
+          "idempotency_key": "example-provider-edit-v1",
+          "integration_key": "example-integration-v1"
+        },
+        "attempts": [
+          {
+            "attempt_id": "2ea7a4a8e5e246dcaeff35ac45967d54",
+            "ordinal": 1,
+            "owner": "durable-controller-v1",
+            "expires_at": 1789045675.7191613,
+            "strategy": "initial",
+            "retry_plan": null,
+            "events": [
+              {
+                "event_id": 1,
+                "attempt_id": "2ea7a4a8e5e246dcaeff35ac45967d54",
+                "kind": "leased",
+                "details": {
+                  "ordinal": 1
+                },
+                "recorded_at": 1789043875.7191613
+              },
+              {
+                "event_id": 2,
+                "attempt_id": "2ea7a4a8e5e246dcaeff35ac45967d54",
+                "kind": "running",
+                "details": {},
+                "recorded_at": 1789043875.723331
+              },
+              {
+                "event_id": 3,
+                "attempt_id": "2ea7a4a8e5e246dcaeff35ac45967d54",
+                "kind": "observation",
+                "details": {
+                  "digest": "64c7f24a43bf936adeac58fdf9f9ee5511bccf65dd544afec46c266e206374f6",
+                  "kind": "model"
+                },
+                "recorded_at": 1789043876.9114845
+              },
+              {
+                "event_id": 4,
+                "attempt_id": "2ea7a4a8e5e246dcaeff35ac45967d54",
+                "kind": "observation",
+                "details": {
+                  "digest": "17346f33f95f693b030293e261b16c1791af89b8c638057a16011b9ef3581efd",
+                  "kind": "model"
+                },
+                "recorded_at": 1789043883.0572474
+              },
+              {
+                "event_id": 5,
+                "attempt_id": "2ea7a4a8e5e246dcaeff35ac45967d54",
+                "kind": "observation",
+                "details": {
+                  "digest": "867239a7e38695c2365e490dd764d33ae0c98be30d6010d06469012fd1257c57",
+                  "kind": "development"
+                },
+                "recorded_at": 1789043883.0909872
+              },
+              {
+                "event_id": 6,
+                "attempt_id": "2ea7a4a8e5e246dcaeff35ac45967d54",
+                "kind": "observation",
+                "details": {
+                  "digest": "2e497b021b8e0bbb73a40e4febbd59b6d8acfc920239a1086ff54b9b713dfe41",
+                  "kind": "development"
+                },
+                "recorded_at": 1789043883.4817393
+              },
+              {
+                "event_id": 7,
+                "attempt_id": "2ea7a4a8e5e246dcaeff35ac45967d54",
+                "kind": "observation",
+                "details": {
+                  "digest": "199db5456e4fba4dc2a2c72cd1835e33fa660491fb5f2ca30b311dea5d1e90c4",
+                  "kind": "diagnostic"
+                },
+                "recorded_at": 1789043883.5078585
+              },
+              {
+                "event_id": 8,
+                "attempt_id": "2ea7a4a8e5e246dcaeff35ac45967d54",
+                "kind": "observation",
+                "details": {
+                  "digest": "d1b4a8e0e8c28ed23dce8c79b8f878f5dfb537d5bdfb63696b455f70f06fa7f4",
+                  "kind": "model"
+                },
+                "recorded_at": 1789043887.4606998
+              },
+              {
+                "event_id": 9,
+                "attempt_id": "2ea7a4a8e5e246dcaeff35ac45967d54",
+                "kind": "observation",
+                "details": {
+                  "digest": "9dbd6b975793a327552da87671f96f71fcab90dbcceb78e08fc7a0f5465591ce",
+                  "kind": "development"
+                },
+                "recorded_at": 1789043887.4849565
+              },
+              {
+                "event_id": 10,
+                "attempt_id": "2ea7a4a8e5e246dcaeff35ac45967d54",
+                "kind": "candidate",
+                "details": {
+                  "digest": "ba1ad3f64ca5df6be55abcd736264ec5cdd937325d81a1f9b3d3e35d3e59c893"
+                },
+                "recorded_at": 1789043887.4881134
+              },
+              {
+                "event_id": 11,
+                "attempt_id": "2ea7a4a8e5e246dcaeff35ac45967d54",
+                "kind": "observation",
+                "details": {
+                  "digest": "9e754e4992ff961f0ce55412deb7bb292082c1d73b091def3fbd81fdf5b57b0d",
+                  "kind": "candidate-execution"
+                },
+                "recorded_at": 1789043887.901153
+              },
+              {
+                "event_id": 12,
+                "attempt_id": "2ea7a4a8e5e246dcaeff35ac45967d54",
+                "kind": "gate",
+                "details": {
+                  "receipt_digest": "a93b38b2140ac7e9a8640118d2fd9f27693829b9258e8f9e8da3ebca02d60dc6"
+                },
+                "recorded_at": 1789043888.2977095
+              },
+              {
+                "event_id": 13,
+                "attempt_id": "2ea7a4a8e5e246dcaeff35ac45967d54",
+                "kind": "accepted",
+                "details": {
+                  "receipt": {
+                    "atom_id": "window-repository-v4",
+                    "attempt_id": "2ea7a4a8e5e246dcaeff35ac45967d54",
+                    "candidate_digest": "ba1ad3f64ca5df6be55abcd736264ec5cdd937325d81a1f9b3d3e35d3e59c893",
+                    "contract_digest": "e133c2a0c35879307184350db351a214238faa087d7ff6c35f1b3cf2de107e77",
+                    "gate_receipts": [
+                      "a93b38b2140ac7e9a8640118d2fd9f27693829b9258e8f9e8da3ebca02d60dc6"
+                    ],
+                    "inputs_digest": "260dfd6bd0051c39ad8824431696303ae3e0b71080f382cf28e004470fcff86d",
+                    "schema_version": 1
+                  }
+                },
+                "recorded_at": 1789043888.3023903
+              }
+            ],
+            "gate_receipts": [
+              {
+                "schema_version": 1,
+                "attempt_id": "2ea7a4a8e5e246dcaeff35ac45967d54",
+                "contract_digest": "e133c2a0c35879307184350db351a214238faa087d7ff6c35f1b3cf2de107e77",
+                "inputs_digest": "260dfd6bd0051c39ad8824431696303ae3e0b71080f382cf28e004470fcff86d",
+                "candidate_digest": "ba1ad3f64ca5df6be55abcd736264ec5cdd937325d81a1f9b3d3e35d3e59c893",
+                "gate_id": "input-validation-preservation",
+                "validator_digest": "8c7f14f03ccc51c042e1a2abcde9a1a5cbb526967f77933bf319b21d7adb2916",
+                "outcome": "pass",
+                "evidence_digest": "ae753a21a9e4a7bb1069b448a5b78c3d0a7c33528269c0f7050b6987adaa7437",
+                "runner_id": "python-process-gate-v2"
+              }
+            ]
+          }
+        ],
+        "acceptance_findings": [],
+        "acceptance_challenged": false
+      },
+      "source_digest": "79c42c34f8f4130bcf7a09a71f3d72c8909b6f9cda7dfaf2bcd05d360e94d507",
+      "source_sizes": {
+        "gflo/__init__.py": 86,
+        "gflo/artifacts.py": 4725,
+        "gflo/broker.py": 20818,
+        "gflo/records.py": 4846,
+        "gflo/repository.py": 21162,
+        "gflo/storage.py": 1026
+      },
+      "turns": [
+        {
+          "evidence": {
+            "contract_digest": "e133c2a0c35879307184350db351a214238faa087d7ff6c35f1b3cf2de107e77",
+            "elapsed_seconds": 1.1719085369986715,
+            "exchanges": [
+              {
+                "elapsed_seconds": 0.022606176000408595,
+                "path": "/v1/models",
+                "request_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "response_digest": "fad9ae29bc692923eb0d045bbb16ecaabeda544ce4d363d95eb696c2a4773667",
+                "status": 200
+              },
+              {
+                "elapsed_seconds": 0.02621892200113507,
+                "path": "/tokenize",
+                "request_digest": "58eeb2a89878e41b23b314842d84a3434886bfe05269a0a33c3ea3bd69fac96e",
+                "response_digest": "4c4d50394f87da7fe20d5dd50552a7411c43c99f2d28571042bdac72f14459d4",
+                "status": 200
+              },
+              {
+                "elapsed_seconds": 0.9112899879983161,
+                "path": "/v1/chat/completions",
+                "request_digest": "931caa17e04c560807c0ba901a3d8129b39c2fadd403a7134d98e1a2f4600871",
+                "response_digest": "b83570e721dbc0718670b2f6d0e5aadc4b5e7b194d6b00675fbc8939af5ed161",
+                "status": 200
+              }
+            ],
+            "manifest_digest": "94c8e03eb361fdced4a3770c8c370327f4d3f07c34db73bc369cb7b38a841dbd",
+            "profile": {
+              "base_url": "http://127.0.0.1:30000/v1",
+              "context_limit": 16384,
+              "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+              "model": "gflo-local",
+              "profile_id": "vllm-python-worker-windows-v1",
+              "schema_version": 1,
+              "timeout_seconds": 120.0
+            },
+            "turn_digest": "689d982c195fd5a185b7f66d85ac95df6fe8f65a13d8b95523dc24caa28d8464",
+            "view_digest": "187df3fb17a390491b86f92e70045f070442f3407832a6f363e0176bc98918a8",
+            "window_targets_digest": "7a05df3b217a7a7e425c514695d61a6e4290d1a5dfc6dea3c6037584345978b8"
+          },
+          "response": {
+            "id": "chatcmpl-bf1ccdba5f23cd07",
+            "object": "chat.completion",
+            "created": 1789043875,
+            "model": "gflo-local",
+            "choices": [
+              {
+                "index": 0,
+                "message": {
+                  "role": "assistant",
+                  "content": "{\"kind\":\"read_window\",\"path\":\"gflo/repository.py\",\"start_line\":394,\"max_lines\":30}",
+                  "refusal": null,
+                  "annotations": null,
+                  "audio": null,
+                  "function_call": null,
+                  "reasoning": null
+                },
+                "logprobs": null,
+                "finish_reason": "stop",
+                "stop_reason": null,
+                "token_ids": null,
+                "routed_experts": null
+              }
+            ],
+            "service_tier": null,
+            "system_fingerprint": "vllm-0.28.0-1411bf1b",
+            "usage": {
+              "prompt_tokens": 3882,
+              "total_tokens": 3909,
+              "completion_tokens": 27,
+              "prompt_tokens_details": null,
+              "completion_tokens_details": {
+                "reasoning_tokens": 0
+              }
+            },
+            "prompt_logprobs": null,
+            "prompt_token_ids": null,
+            "prompt_text": null,
+            "kv_transfer_params": null,
+            "ec_transfer_params": null,
+            "metrics": null
+          }
+        },
+        {
+          "evidence": {
+            "contract_digest": "e133c2a0c35879307184350db351a214238faa087d7ff6c35f1b3cf2de107e77",
+            "elapsed_seconds": 6.122273080000014,
+            "exchanges": [
+              {
+                "elapsed_seconds": 0.020614108001609566,
+                "path": "/v1/models",
+                "request_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "response_digest": "edfdc15b1ecbb8e050e3166f6777dffb61057534645bcada56b6dfc0c6d2c1d0",
+                "status": 200
+              },
+              {
+                "elapsed_seconds": 0.03237961500053643,
+                "path": "/tokenize",
+                "request_digest": "377f65f6fbb05077f2ce8529abe71b8e7124d5edb125cbf3c438131f7f3c50e6",
+                "response_digest": "35da6b63df1fc5c63df531fb085b2ea52b36eb0b7d394c9c2a30c278f22ab641",
+                "status": 200
+              },
+              {
+                "elapsed_seconds": 5.847754815000371,
+                "path": "/v1/chat/completions",
+                "request_digest": "28e7493e328eb49760fc44c0cd92cbb04d0fc7fc9e307fe73e21672ced53ec99",
+                "response_digest": "fee1b2cd21d0305aebdd643c6ca68e24247822e4726182f0063befee061f12ea",
+                "status": 200
+              }
+            ],
+            "manifest_digest": "f15fb791db981acf4cc3eb0af850d8694e37830a76d30e8e4980be89d89a6cd8",
+            "profile": {
+              "base_url": "http://127.0.0.1:30000/v1",
+              "context_limit": 16384,
+              "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+              "model": "gflo-local",
+              "profile_id": "vllm-python-worker-windows-v1",
+              "schema_version": 1,
+              "timeout_seconds": 120.0
+            },
+            "turn_digest": "3a9d532535af2fc810cf5305ebdc81c66faa6253c9f275dbed36dbc955d0e3ef",
+            "view_digest": "fde3dbe362f5f7b1c94005587fce1415e02f47a70a26ed44b645cdc90dcc1597",
+            "window_targets_digest": "f6609fb2a409f2d7af119e0de2929d2b65a42e8e4cfa6329e9a33263b217fd7c"
+          },
+          "response": {
+            "id": "chatcmpl-b34fe700da0cc8f8",
+            "object": "chat.completion",
+            "created": 1789043877,
+            "model": "gflo-local",
+            "choices": [
+              {
+                "index": 0,
+                "message": {
+                  "role": "assistant",
+                  "content": "{\"kind\":\"repair_window\",\"edits\":[{\"target\":\"w85384092\",\"old\":\"    def read(\\n        self, path: str, *, start_line: int = 1, max_lines: int = 200, max_bytes: int = 65536\\n    ) -> SourceRead:\\n        if not 1 <= max_lines <= 10000 or not 1 <= max_bytes <= 1048576 or start_line < 1:\\n            raise RepositoryError(\\\"Invalid read budget or line\\\")\",\"new\":\"    def read(\\n        self, path: str, *, start_line: int = 1, max_lines: int = 200, max_bytes: int = 65536\\n    ) -> SourceRead:\\n        if not (isinstance(start_line, int) and not isinstance(start_line, bool)):\\n            raise RepositoryError(\\\"Invalid read budget or line\\\")\\n        if not (isinstance(max_lines, int) and not isinstance(max_lines, bool)):\\n            raise RepositoryError(\\\"Invalid read budget or line\\\")\\n        if not (isinstance(max_bytes, int) and not isinstance(max_bytes, bool)):\\n            raise RepositoryError(\\\"Invalid read budget or line\\\")\\n        if not 1 <= max_lines <= 10000 or not 1 <= max_bytes <= 1048576 or start_line < 1:\\n            raise RepositoryError(\\\"Invalid read budget or line\\\")\"}]}",
+                  "refusal": null,
+                  "annotations": null,
+                  "audio": null,
+                  "function_call": null,
+                  "reasoning": null
+                },
+                "logprobs": null,
+                "finish_reason": "stop",
+                "stop_reason": null,
+                "token_ids": null,
+                "routed_experts": null
+              }
+            ],
+            "service_tier": null,
+            "system_fingerprint": "vllm-0.28.0-1411bf1b",
+            "usage": {
+              "prompt_tokens": 4337,
+              "total_tokens": 4668,
+              "completion_tokens": 331,
+              "prompt_tokens_details": null,
+              "completion_tokens_details": {
+                "reasoning_tokens": 0
+              }
+            },
+            "prompt_logprobs": null,
+            "prompt_token_ids": null,
+            "prompt_text": null,
+            "kv_transfer_params": null,
+            "ec_transfer_params": null,
+            "metrics": null
+          }
+        },
+        {
+          "evidence": {
+            "contract_digest": "e133c2a0c35879307184350db351a214238faa087d7ff6c35f1b3cf2de107e77",
+            "elapsed_seconds": 3.938160769001115,
+            "exchanges": [
+              {
+                "elapsed_seconds": 0.01789858899792307,
+                "path": "/v1/models",
+                "request_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+                "response_digest": "d0954628bbe03c8c5e4139f87023c2f331cd276b2df2b925b6654478b76cd93d",
+                "status": 200
+              },
+              {
+                "elapsed_seconds": 0.0271290519995091,
+                "path": "/tokenize",
+                "request_digest": "cbc521efb3fd99aa6406e6d7155a3d163d6933e78859648df3a161cc7ff8de77",
+                "response_digest": "6f1ec542db69964e1cdceefe20a52f1cbea45b7fc5d524bfb3355fd5bec1ce87",
+                "status": 200
+              },
+              {
+                "elapsed_seconds": 3.697466458001145,
+                "path": "/v1/chat/completions",
+                "request_digest": "fff5ecd8e818bcf613cbb385ca3c9e7c30a85e2dd295a76930d9a7ed93162728",
+                "response_digest": "1fa06fd0606b847c468275a9c7bcb6565ccdc3122c186c5ddea46bcd9fe6d97e",
+                "status": 200
+              }
+            ],
+            "manifest_digest": "5ef8c071290ee2415827f6380d2ef8db1145922999b2c1c0ce203116fa8f7f4c",
+            "profile": {
+              "base_url": "http://127.0.0.1:30000/v1",
+              "context_limit": 16384,
+              "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+              "model": "gflo-local",
+              "profile_id": "vllm-python-worker-windows-v1",
+              "schema_version": 1,
+              "timeout_seconds": 120.0
+            },
+            "turn_digest": "d3b62cdd3f8c315980a093e93b3620d29ddad3c8762a504c75f2d85b1ae2b1cb",
+            "view_digest": "b11d26dad3b2e06aee4e15109a37b935ee1ddb4218bf44f57872b3f463762a13",
+            "window_targets_digest": "571c7307e2c92760ded1c55a37b537e92e56b54b2a29dd6b44736307991bfcb9"
+          },
+          "response": {
+            "id": "chatcmpl-8b81053ce6cd6c8f",
+            "object": "chat.completion",
+            "created": 1789043883,
+            "model": "gflo-local",
+            "choices": [
+              {
+                "index": 0,
+                "message": {
+                  "role": "assistant",
+                  "content": "{\"kind\":\"repair_window\",\"edits\":[{\"target\":\"we5e002b6\",\"old\":\"        if not (isinstance(start_line, int) and not isinstance(start_line, bool)):\\n            raise RepositoryError(\\\"Invalid read budget or line\\\")\\n        if not (isinstance(max_lines, int) and not isinstance(max_lines, bool)):\\n            raise RepositoryError(\\\"Invalid read budget or line\\\")\\n        if not (isinstance(max_bytes, int) and not isinstance(max_bytes, bool)):\\n            raise RepositoryError(\\\"Invalid read budget or line\\\")\",\"new\":\"        if type(start_line) is not int:\\n            raise RepositoryError(\\\"Invalid read budget or line\\\")\\n        if type(max_lines) is not int:\\n            raise RepositoryError(\\\"Invalid read budget or line\\\")\\n        if type(max_bytes) is not int:\\n            raise RepositoryError(\\\"Invalid read budget or line\\\")\"}]}",
+                  "refusal": null,
+                  "annotations": null,
+                  "audio": null,
+                  "function_call": null,
+                  "reasoning": null
+                },
+                "logprobs": null,
+                "finish_reason": "stop",
+                "stop_reason": null,
+                "token_ids": null,
+                "routed_experts": null
+              }
+            ],
+            "service_tier": null,
+            "system_fingerprint": "vllm-0.28.0-1411bf1b",
+            "usage": {
+              "prompt_tokens": 4814,
+              "total_tokens": 5012,
+              "completion_tokens": 198,
+              "prompt_tokens_details": null,
+              "completion_tokens_details": {
+                "reasoning_tokens": 0
+              }
+            },
+            "prompt_logprobs": null,
+            "prompt_token_ids": null,
+            "prompt_text": null,
+            "kv_transfer_params": null,
+            "ec_transfer_params": null,
+            "metrics": null
+          }
+        }
+      ],
+      "replay_unchanged": true
+    }
+  ],
+  "limitations": [
+    "Prepared worker execution only; large-file planning still uses whole-file context.",
+    "Execution SourceBundle remains limited to 256 KiB.",
+    "Finite targeted trials do not establish unattended reliability."
+  ]
+}

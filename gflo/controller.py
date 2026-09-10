@@ -19,6 +19,7 @@ from gflo.gates import ProcessGate, run_gate
 from gflo.ledger import Conflict, WorkLedger
 from gflo.model import LocalModel, ModelError, ModelProfile
 from gflo.records import Acceptance, Lease, Record, RetryPlan, WorkAtom
+from gflo.windows import WINDOW_PROFILE, WindowRead
 from gflo.worker import (
     CandidateResult,
     ContractConflict,
@@ -297,7 +298,9 @@ class Controller:
         selected = plan.selected_paths
         source_digest = plan.source.digest()
         diagnostics = (diagnostic,) if diagnostic else ()
-        contracts = plan.model_profile.profile_id in CONTRACT_PROFILES
+        windows = plan.model_profile.profile_id == WINDOW_PROFILE
+        window_reads: tuple[WindowRead, ...] = ()
+        contracts = windows or plan.model_profile.profile_id in CONTRACT_PROFILES
         repair = contracts or plan.model_profile.profile_id == "vllm-python-worker-repair-v1"
         failed_drafts = self._failed_drafts(plan) if contracts else set()
         draft = plan.source
@@ -319,7 +322,10 @@ class Controller:
                     )
                     project_draft(
                         compose_view(
-                            self.ledger.artifacts, plan.atom, source_digest, selected_paths=selected
+                            self.ledger.artifacts,
+                            plan.atom,
+                            source_digest,
+                            selected_paths=None if windows else selected,
                         ),
                         plan.atom,
                         plan.source,
@@ -338,6 +344,7 @@ class Controller:
                     diagnostic_digests=diagnostics,
                     remaining_model_turns=plan.max_model_turns - turn_index,
                     **(dict[str, Any](draft_digest=draft.digest()) if repair else {}),
+                    **(dict[str, Any](window_reads=window_reads) if windows else {}),
                 )
             finally:
                 if self.model.last_evidence_digest is not None:
@@ -358,7 +365,10 @@ class Controller:
                 candidate = candidate_bundle(draft, turn.result)
                 project_draft(
                     compose_view(
-                        self.ledger.artifacts, plan.atom, source_digest, selected_paths=selected
+                        self.ledger.artifacts,
+                        plan.atom,
+                        source_digest,
+                        selected_paths=None if windows else selected,
                     ),
                     plan.atom,
                     plan.source,
@@ -432,6 +442,13 @@ class Controller:
                             continue
                 self.ledger.candidate(lease, digest)
                 return self._validate(plan, lease)
+            if isinstance(turn.result, WindowRead):
+                if not windows:
+                    raise ValueError("Window read requires window profile")
+                if turn.result in window_reads:
+                    raise ValueError("Worker repeated an already requested window")
+                window_reads = (*window_reads[-3:], turn.result)
+                continue
             # Only a verified bundle path can reach this branch. Expansion is a
             # fresh view, not an accumulating chat; required coverage is rechecked.
             already = set(selected) if selected is not None else set(plan.source.files)

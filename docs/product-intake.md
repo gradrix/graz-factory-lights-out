@@ -475,3 +475,24 @@ When every question is supported, planning can continue using the original requi
 and cited text. Quote matching proves provenance; whether text fully answers a question
 is still a model judgment. Independent policy compilation and acceptance gates remain
 necessary. Review does not add policy or authorize execution.
+
+## Bounded worker source windows
+
+Opt into `vllm-python-worker-windows-v1` in the model profile for prepared Python tasks.
+It retains structured interface contracts and original requirements. Preparation records
+`window-context-v1` and requires a context byte allowance of at least 12,000. Existing
+profiles and their replay records keep their previous interpretation.
+
+Workers see a bounded definition index and source excerpts (12,000 source bytes total,
+4,096 per window). They can request `read_window` with a path, start line and up to 100
+lines. A read consumes an existing worker turn; at most four requested windows are
+retained alongside initial headers. Coverage and omitted windows are explicit, including
+lines too large for a window. Model tokenization still enforces the contract budget.
+
+Existing-file changes use `repair_window`: a current opaque target handle plus exact
+old/new text. Handles bind the contract, complete current source and visible range.
+The controller rejects stale, read-only, overlapping and out-of-range edits, preserves
+unseen text, and runs the ordinary checks on the complete candidate. New files use the
+existing candidate protocol. Insufficient context can produce a durable review stop.
+
+This does not yet make planning window-based or lift the 256 KiB execution bundle limit.

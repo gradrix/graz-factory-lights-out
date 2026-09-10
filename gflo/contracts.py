@@ -11,7 +11,8 @@ from gflo.records import Digest, Identifier, Record, Text
 
 CONTRACT_PROFILE = "vllm-python-worker-contracts-v1"
 DEPENDENCY_CONTRACT_PROFILE = "vllm-python-worker-contracts-v2"
-CONTRACT_PROFILES = (CONTRACT_PROFILE, DEPENDENCY_CONTRACT_PROFILE)
+WINDOW_PROFILE = "vllm-python-worker-windows-v1"
+CONTRACT_PROFILES = (CONTRACT_PROFILE, DEPENDENCY_CONTRACT_PROFILE, WINDOW_PROFILE)
 
 
 class InterfaceDeclaration(Record):

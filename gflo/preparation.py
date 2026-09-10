@@ -17,6 +17,7 @@ from gflo.planning import PlanProposal, _paths, validate_tasks
 from gflo.planning import RepositoryFeatureRequest as RepositoryFeatureRequest
 from gflo.records import ContextBudget, Digest, Identifier, Record, WorkAtom
 from gflo.repository import FileEdit, Repository, Selection, SnapshotSource, SourceRef
+from gflo.windows import WINDOW_PROFILE, WindowContext
 from gflo.worker import InputSnapshot, within
 
 
@@ -49,7 +50,7 @@ class PreparedTask(Record):
     review_digest: Digest
     task_id: Identifier
     source: SourceRef
-    context: Selection
+    context: Selection | WindowContext
     execution: Selection
     run: RunPlan
 
@@ -116,9 +117,15 @@ def _materialize(
     execution = repository.select(
         policy.execution_paths, purpose="execution", max_bytes=policy.execution_bytes
     )
-    context = repository.select(policy.context_paths, max_bytes=policy.context_bytes)
-    if context.omitted:
-        raise ValueError("Reviewed context exceeds its budget")
+    context: Selection | WindowContext
+    if review.model_profile.profile_id == WINDOW_PROFILE:
+        if policy.context_bytes < 12000:
+            raise ValueError("Window profile requires its 12000-byte source context allowance")
+        context = WindowContext(source=source, initial_paths=policy.context_paths)
+    else:
+        context = repository.select(policy.context_paths, max_bytes=policy.context_bytes)
+        if context.omitted:
+            raise ValueError("Reviewed context exceeds its budget")
     assert execution.bundle is not None
     # Bind the full snapshot in the legacy revision field, without reinterpreting
     # historical InputSnapshot hashes or changing the controller's record schema.
@@ -147,7 +154,7 @@ def _materialize(
             task.interface_contracts, task.read_paths + task.writable_paths, task.requirement_ids
         )
     requirement_ids = task.requirement_ids
-    if review.model_profile.profile_id == DEPENDENCY_CONTRACT_PROFILE:
+    if review.model_profile.profile_id in (DEPENDENCY_CONTRACT_PROFILE, WINDOW_PROFILE):
         tasks = {t.task_id: t for t in proposal.tasks}
         ancestors: set[str] = set()
         pending = list(task.depends_on)

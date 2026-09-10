@@ -1,7 +1,7 @@
 # Edit bounded source windows in large files
 
 Type: task
-Status: ready-for-agent
+Status: resolved
 
 ## Evidence
 
@@ -28,3 +28,14 @@ into prompts. SourceBundle's 256 KiB execution limit is a separate later migrati
 constraint; do not claim arbitrary file-size support from this first windowed trial.
 
 No model/deployment change or human product-policy decision is required for this task.
+
+## Answer
+
+Implemented opt-in windows-v1 across model, controller and prepared-task context.
+Full-source/contract/range bindings preserve unseen text; bounded symbol navigation and
+explicit omissions use the existing repository reader. Legacy records remain unchanged.
+Seven focused tests cover range/scope/staleness, CRLF, large source, oversized lines,
+model wire evidence, controller gates/replay and prepared execution context.
+See [qualification](../window-qualification/README.md) for both successful GPU trials,
+all fixture failures, challenged acceptance, responses and reproduction recipes.
+Large-file planning and larger execution inputs remain follow-up work.
