@@ -2,7 +2,9 @@
 
 GFLO runs prepared Python coding tasks with a local LLM, validates their output in
 isolated containers, and keeps a durable history of changes, failures, and evidence.
-It can combine accepted changes against pinned inputs and validate the combined result.
+It can plan and build bounded features under prewritten validation policies, combine
+accepted changes against pinned inputs, and validate the combined result. Repository
+snapshots support text search and revision-bound Python definition lookup.
 
 **Experimental developer preview.** The original 120-run evaluation verified 109 runs
 and discovered two false acceptances. Larger-build reliability is still unqualified.

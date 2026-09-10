@@ -214,3 +214,9 @@ PYTHONPATH=. .venv/bin/python scripts/qualify_broker.py \
 ```
 
 Use a new output directory. The script stops on the first halt and retains evidence.
+
+
+Reviewed task and final-validation gate order is deterministic across JSON mapping
+order. For older runs, replay preserves the exact retained gate ordering after
+checking that gate specifications and all other contract fields match. It does not
+rewrite historical acceptance or permit changed gates/budgets under an existing ID.

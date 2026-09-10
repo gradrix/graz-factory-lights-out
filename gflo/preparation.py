@@ -164,7 +164,8 @@ def _materialize(
                 sandbox_profile="pilot-v1",
                 allowed_tools=["read", "edit"],
                 required_gates=[
-                    dict(gate_id=k, validator_digest=v.digest()) for k, v in policy.gates.items()
+                    dict(gate_id=k, validator_digest=v.digest())
+                    for k, v in sorted(policy.gates.items())
                 ],
                 context_budget=review.context_budget.model_dump(),
                 max_attempts=review.max_attempts,

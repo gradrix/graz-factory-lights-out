@@ -159,3 +159,10 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
 - [Issue 30](issues/30-diagnose-memory-qualification-halts.md): kernel counters proved
   an OOM despite Docker's false flag. Trusted supervisor proof replaces the unreliable
   qualification predicate; 100 complete qualifications passed, unrelated kills rejected.
+
+- [Issue 38](issues/38-qualify-recursive-settings-feature.md): three recursive-settings
+  builds passed nine tasks; 61 unmodified files survived each. Symbol queries were
+  prepared, not autonomous. A real product target remains an owner decision.
+- [Issue 39](issues/39-stabilize-reviewed-gate-order.md): canonical JSON exposed
+  gate-order replay instability. New order is deterministic; historical contracts
+  are replayed exactly after strict equality checks for all non-order content.

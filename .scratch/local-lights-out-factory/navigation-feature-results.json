@@ -1,0 +1,275 @@
+{
+  "schema_version": 1,
+  "scope": "Three fresh single-planner policy builds on one previously untested recursive-settings fixture; deterministic definition queries prepared context, not model-driven repository search.",
+  "request_digest": "f268f1bb25a14b4c711aca928967531c179cdf461296e84f429839654af63493",
+  "policy_digest": "24ab2b046d4ed9ba661db969ce0989161f096005a941701af13491ad8d92a8bc",
+  "navigation": {
+    "index": {
+      "schema_version": 1,
+      "index_digest": "7a0256ce8528bed741a706360d9e2747fc50877f18a066205508ac15a723e345",
+      "parsed_files": 64,
+      "reused_files": 0,
+      "skipped_files": 0
+    },
+    "probes": [
+      {
+        "query": "main",
+        "path": "console.py",
+        "source_digest": "01943421a716ac04bbd3931fe156c53965feb88710b099e37d619e9f2bca4d7d"
+      },
+      {
+        "query": "merge_text",
+        "path": "gateway.py",
+        "source_digest": "bb0dbec2dac7b6e48a0fffabe96383888a8e9307c0e19a7182a32f63829d62d4"
+      },
+      {
+        "query": "parse_document",
+        "path": "decoder.py",
+        "source_digest": "ef24021dc0d55aa0dff6f3953efeaaf7732694aad92e382ab53f03775539242f"
+      },
+      {
+        "query": "merge_settings",
+        "path": "merging.py",
+        "source_digest": "ec6b47be6aeb0a24d872b2a50e1cc6bcff760881a40b0b3c3931b6d47b005152"
+      }
+    ],
+    "note": "Exact definition queries selected four initial files. This is deterministic prepared navigation, not model-chosen search."
+  },
+  "source_files": 64,
+  "selected_files": 4,
+  "runs": [
+    {
+      "directory": ".gflo/evidence/navigation-feature-v1",
+      "status": "accepted",
+      "plan_digest": "68f287d5adb945ac067c8bc70b82ddbe1f40d8d2cb0ef6abe6abc6aaa85b29ec",
+      "source": {
+        "schema_version": 1,
+        "kind": "repository-snapshot-v1",
+        "artifact_digest": "9fe10d4d3d4ddc173de86deecc62ca59be0a381627df61600e9cf45aa1e62527"
+      },
+      "planning": {
+        "calls": 1,
+        "prompt_tokens": 2886,
+        "completion_tokens": 1175,
+        "model_seconds": 19.78106353199837,
+        "missing_usage": 0
+      },
+      "planning_errors": [],
+      "tasks": [
+        {
+          "task_id": "merge_settings",
+          "status": "accepted",
+          "cost": {
+            "attempts": 1,
+            "model_observations": 1,
+            "validated_prompt_tokens": 1162,
+            "validated_completion_tokens": 782,
+            "observed_model_seconds": 12.911672685000667,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          }
+        },
+        {
+          "task_id": "gateway_merge_text",
+          "status": "accepted",
+          "cost": {
+            "attempts": 1,
+            "model_observations": 1,
+            "validated_prompt_tokens": 1899,
+            "validated_completion_tokens": 125,
+            "observed_model_seconds": 2.293909616999372,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          }
+        },
+        {
+          "task_id": "console_main",
+          "status": "accepted",
+          "cost": {
+            "attempts": 1,
+            "model_observations": 1,
+            "validated_prompt_tokens": 2140,
+            "validated_completion_tokens": 199,
+            "observed_model_seconds": 3.559953941999993,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          }
+        }
+      ],
+      "omitted_files_preserved": 61,
+      "replay_new_model_calls": 0
+    },
+    {
+      "directory": ".gflo/evidence/navigation-feature-v1/repeat-2",
+      "status": "accepted",
+      "plan_digest": "94cfbae0e3aebea4c0dd3c6e1be09db074233bdfc339a6cf820cca6d9c11cef9",
+      "source": {
+        "schema_version": 1,
+        "kind": "repository-snapshot-v1",
+        "artifact_digest": "b20e9193de50abde871ed4fcb1f431a43e8a4cd11e1824e3fd61540ea4302a83"
+      },
+      "planning": {
+        "calls": 2,
+        "prompt_tokens": 6212,
+        "completion_tokens": 2221,
+        "model_seconds": 37.257801426001606,
+        "missing_usage": 0
+      },
+      "planning_errors": [
+        "5 validation errors for union[PlanProposal,PlanQuestions]\nPlanProposal.questions\n  Field required [type=missing, input_value={'schema_version': 1, 're...ndard library only.']}]}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.13/v/missing\nPlanProposal.rationale\n  Field required [type=missing, input_value={'schema_version': 1, 're...ndard library only.']}]}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.13/v/missing\nPlanQuestions.tasks\n  Extra inputs are not permitted [type=extra_forbidden, input_value=[{'task_id': 'merge-core'...andard library only.']}], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden\nPlanQuestions.questions\n  Field required [type=missing, input_value={'schema_version': 1, 're...ndard library only.']}]}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.13/v/missing\nPlanQuestions.rationale\n  Field required [type=missing, input_value={'schema_version': 1, 're...ndard library only.']}]}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.13/v/missing"
+      ],
+      "tasks": [
+        {
+          "task_id": "merge-core",
+          "status": "accepted",
+          "cost": {
+            "attempts": 1,
+            "model_observations": 1,
+            "validated_prompt_tokens": 1092,
+            "validated_completion_tokens": 518,
+            "observed_model_seconds": 8.762081810000382,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          }
+        },
+        {
+          "task_id": "gateway-merge",
+          "status": "accepted",
+          "cost": {
+            "attempts": 1,
+            "model_observations": 1,
+            "validated_prompt_tokens": 1665,
+            "validated_completion_tokens": 118,
+            "observed_model_seconds": 2.178488795998419,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          }
+        },
+        {
+          "task_id": "console-main",
+          "status": "accepted",
+          "cost": {
+            "attempts": 1,
+            "model_observations": 1,
+            "validated_prompt_tokens": 1909,
+            "validated_completion_tokens": 273,
+            "observed_model_seconds": 4.696977583998887,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          }
+        }
+      ],
+      "omitted_files_preserved": 61,
+      "replay_new_model_calls": 0
+    },
+    {
+      "directory": ".gflo/evidence/navigation-feature-v1/repeat-3",
+      "status": "accepted",
+      "plan_digest": "94cfbae0e3aebea4c0dd3c6e1be09db074233bdfc339a6cf820cca6d9c11cef9",
+      "source": {
+        "schema_version": 1,
+        "kind": "repository-snapshot-v1",
+        "artifact_digest": "9c39f28296a66e60fbb244044edaf86463a16e71bd57ef301cf612031f3c0a13"
+      },
+      "planning": {
+        "calls": 2,
+        "prompt_tokens": 6212,
+        "completion_tokens": 2221,
+        "model_seconds": 37.17844789899755,
+        "missing_usage": 0
+      },
+      "planning_errors": [
+        "5 validation errors for union[PlanProposal,PlanQuestions]\nPlanProposal.questions\n  Field required [type=missing, input_value={'schema_version': 1, 're...ndard library only.']}]}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.13/v/missing\nPlanProposal.rationale\n  Field required [type=missing, input_value={'schema_version': 1, 're...ndard library only.']}]}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.13/v/missing\nPlanQuestions.tasks\n  Extra inputs are not permitted [type=extra_forbidden, input_value=[{'task_id': 'merge-core'...andard library only.']}], input_type=list]\n    For further information visit https://errors.pydantic.dev/2.13/v/extra_forbidden\nPlanQuestions.questions\n  Field required [type=missing, input_value={'schema_version': 1, 're...ndard library only.']}]}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.13/v/missing\nPlanQuestions.rationale\n  Field required [type=missing, input_value={'schema_version': 1, 're...ndard library only.']}]}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.13/v/missing"
+      ],
+      "tasks": [
+        {
+          "task_id": "merge-core",
+          "status": "accepted",
+          "cost": {
+            "attempts": 1,
+            "model_observations": 1,
+            "validated_prompt_tokens": 1092,
+            "validated_completion_tokens": 518,
+            "observed_model_seconds": 8.675105255000744,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          }
+        },
+        {
+          "task_id": "gateway-merge",
+          "status": "accepted",
+          "cost": {
+            "attempts": 1,
+            "model_observations": 1,
+            "validated_prompt_tokens": 1668,
+            "validated_completion_tokens": 99,
+            "observed_model_seconds": 1.8700597989991365,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          }
+        },
+        {
+          "task_id": "console-main",
+          "status": "accepted",
+          "cost": {
+            "attempts": 1,
+            "model_observations": 1,
+            "validated_prompt_tokens": 1892,
+            "validated_completion_tokens": 432,
+            "observed_model_seconds": 7.290768459999526,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          }
+        }
+      ],
+      "omitted_files_preserved": 61,
+      "replay_new_model_calls": 0
+    }
+  ],
+  "accepted_tasks": 9,
+  "worker_attempts": 9,
+  "trusted_checks": "100 seeded recursive comparisons, nested alias/mutation checks, rejected invalid nested types/nonfinite numbers, decoder/merge delegation, CLI framing; same fixed gates at task and final integration.",
+  "fixture_reconstruction": "scripts/prepare_policy_trial.py recreated exact snapshot in a fresh ledger without inference.",
+  "raw_evidence": ".gflo/evidence/navigation-feature-v1",
+  "limits": [
+    "One synthetic product with implementation stubs and explicit requirements.",
+    "Language dependency graph and automatic navigation remain unqualified.",
+    "No million-line or general autonomy claim."
+  ],
+  "replay_failure_and_fix": {
+    "observed_failure": "Canonical policy JSON changed final gate order without changing plan identity; ledger rejected replay as an altered contract.",
+    "fix": "Sort newly derived gate lists; preserve retained historical order only when gate specifications and every other WorkAtom field are identical.",
+    "regressions": "Four cases: task and integration canonical round trips, historical unsorted replay, and rejection of non-order changes.",
+    "historical_replay": [
+      {
+        "run": "specified-single-compact",
+        "status": "exact historical replay",
+        "additional_model_calls": 0
+      },
+      {
+        "run": "specified-board-compact",
+        "status": "exact historical replay",
+        "additional_model_calls": 0
+      }
+    ],
+    "full_suite": "406 passed, 25 subtests, no skips with Docker enabled; ruff/mypy passed."
+  }
+}

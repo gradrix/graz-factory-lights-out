@@ -1,6 +1,31 @@
 # GFLO handoff — repository access foundation
 
-## Current checkpoint — memory qualification, 2026-09-10
+## Current checkpoint — unfamiliar feature and replay qualification, 2026-09-10
+
+Issues 38/39 complete. Recursive settings feature passed three fresh builds, nine
+tasks in nine attempts, plus independent final gates. Planning used 1/2/2 calls;
+failed initial proposals remain recorded. Each build preserved 60 archive files and
+the existing decoder. Prepared exact-definition queries selected the four execution
+files; no model-driven navigation is claimed. See [results](navigation-feature-results.json)
+and [portable fixture](navigation-feature-fixture.json). The existing preparation
+script reconstructed the exact snapshot in a fresh ledger.
+
+Portability checks caught JSON mapping order changing required-gate list order under
+one policy digest. New lists are deterministic. Replay preserves old order only when
+all gate specifications and every other WorkAtom field match. Four regressions, all
+three new ledgers and both prior board-comparison ledgers replayed without model calls.
+Full Docker-enabled suite: 406 passed, 25 subtests, no skips; ruff/mypy passed.
+
+Owner asked to continue until a blocker or human decision. Asked which real repository
+and concrete feature should be the first larger-product qualification target; no target
+was previously selected. That determines languages, dependency setup, build workload,
+and useful dependency-navigation work. Continue with their answer; do not invent a
+production target or claim scaffold trials establish million-line support. License
+choice remains separately open for a supported public release. All raw evidence stays
+ignored under `.gflo/evidence/`; tracked portable records are enough to resume planning.
+
+
+## Previous checkpoint — memory qualification, 2026-09-10
 
 Issue 30 is resolved after exact reproduction and kernel confirmation: Docker's OOM
 flag remained false despite same-container max/oom/oom_kill increments. Qualification

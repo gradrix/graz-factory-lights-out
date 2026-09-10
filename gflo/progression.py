@@ -59,6 +59,24 @@ class FeatureResult(Record):
     halted_atom: str | None = None
 
 
+def _retained_gate_order(ledger: WorkLedger, expected: WorkAtom) -> WorkAtom:
+    """Replay historical order only when every other contract field is identical."""
+    try:
+        fields = ledger.status(expected.atom_id)["contract"]
+    except KeyError:
+        return expected
+    retained = WorkAtom.model_validate_json(json.dumps(fields))
+    if sorted(retained.required_gates, key=lambda g: g.gate_id) != sorted(
+        expected.required_gates, key=lambda g: g.gate_id
+    ):
+        raise Conflict("Retained reviewed gates differ from current policy")
+    compared = expected.model_dump(mode="json")
+    compared["required_gates"] = fields["required_gates"]
+    if compared != fields:
+        raise Conflict("Retained reviewed contract differs beyond gate order")
+    return retained
+
+
 def _accepted(ledger: WorkLedger, prepared: PreparedTask) -> str:
     """Verify durable contract, candidate, receipt bytes and later findings."""
     atom = prepared.run.atom
@@ -83,6 +101,7 @@ def _check(
     with (ledger.artifacts.root / ".controller.lock").open("a") as lock:
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
         fresh()
+        plan = plan.model_copy(update={"atom": _retained_gate_order(ledger, plan.atom)})
         ledger.artifacts.publish(plan.source.canonical().encode())
         ledger.submit(plan.atom)
         ledger.bind_run(plan.atom.atom_id, ledger.artifacts.publish(plan.canonical().encode()))
@@ -209,6 +228,12 @@ def run_feature(
             package = _materialize(
                 store, request, proposal, review, task_id, source, tuple(evidence)
             )
+            atom = _retained_gate_order(ledger, package.run.atom)
+            if atom != package.run.atom:
+                package = package.model_copy(
+                    update={"run": package.run.model_copy(update={"atom": atom})}
+                )
+                store.publish(package.canonical().encode())
             prepare_run(ledger, package.run)
             controller = Controller(
                 ledger,
@@ -252,7 +277,7 @@ def run_feature(
             max_attempts=2,
             required_gates=[
                 dict(gate_id=k, validator_digest=v.digest())
-                for k, v in plan.integration.gates.items()
+                for k, v in sorted(plan.integration.gates.items())
             ],
         )
         check = FeatureCheck(

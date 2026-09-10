@@ -54,6 +54,14 @@ execution. This closes one workflow gap without establishing general autonomy.
 Next prioritize varied product/navigation trials and revision-bound symbol lookup;
 do not add orchestration merely to pursue the organizational metaphor.
 
+A recursive-settings feature has now passed three fresh builds (nine accepted tasks)
+with definition-derived explicit context, independent recursive/alias checks, and
+preservation of 61 unmodified files per build. Portability testing also found and
+fixed reviewed gate-order replay instability; older ledgers replay without changes.
+The next qualification target should be a real repository and concrete feature.
+Its language, dependency installation and test workload should guide larger isolated
+execution inputs and dependency-navigation work. No such product target is selected.
+
 ## Large-repository migration requirement
 
 Large-repository support is an architectural requirement, not an assumed property

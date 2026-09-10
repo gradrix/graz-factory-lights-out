@@ -436,3 +436,80 @@ def test_feature_cli_executes_the_reviewed_graph(tmp_path, monkeypatch, capsys):
     assert result["status"] == "accepted"
     assert len(result["tasks"]) == 2
     assert result["integration_selection"]["whole_repository"] is False
+
+
+@pytest.mark.parametrize("target", ["task", "integration"])
+def test_canonical_roundtrip_preserves_gate_order_for_replay(tmp_path, target):
+    with WorkLedger(tmp_path / "ledger") as ledger:
+        plan = feature(ledger)
+        fields = plan.model_dump(mode="json")
+        if target == "task":
+            policy = fields["review"]["tasks"]["provider"]
+        else:
+            policy = fields["integration"]
+        gate = policy["gates"]["behavior"]
+        policy["gates"] = {"z-check": gate, "a-check": gate}
+        plan = FeaturePlan.model_validate_json(json.dumps(fields))
+        services = Services()
+        first = run(ledger, plan, services)
+        restored = FeaturePlan.model_validate_json(plan.canonical())
+        assert restored.digest() == plan.digest()
+        calls = (len(services.model_calls), services.broker_calls)
+        assert run(ledger, restored, services) == first
+        assert (len(services.model_calls), services.broker_calls) == calls
+
+
+def test_replay_preserves_historical_unsorted_gates(tmp_path, monkeypatch):
+    import gflo.progression as progression
+
+    with WorkLedger(tmp_path / "ledger") as ledger:
+        plan = feature(ledger)
+        fields = plan.model_dump(mode="json")
+        for policy in [fields["review"]["tasks"]["provider"], fields["integration"]]:
+            gate = policy["gates"]["behavior"]
+            policy["gates"] = {"a-check": gate, "z-check": gate}
+        plan = FeaturePlan.model_validate_json(json.dumps(fields))
+        original_materialize, original_check = progression._materialize, progression._check
+
+        def historical_materialize(store, *args):
+            package = original_materialize(store, *args)
+            atom = package.run.atom.model_copy(
+                update={"required_gates": tuple(reversed(package.run.atom.required_gates))}
+            )
+            package = package.model_copy(
+                update={"run": package.run.model_copy(update={"atom": atom})}
+            )
+            store.publish(package.canonical().encode())
+            return package
+
+        def historical_check(ledger, check, *args):
+            atom = check.atom.model_copy(
+                update={"required_gates": tuple(reversed(check.atom.required_gates))}
+            )
+            return original_check(ledger, check.model_copy(update={"atom": atom}), *args)
+
+        services = Services()
+        with monkeypatch.context() as patch:
+            patch.setattr(progression, "_materialize", historical_materialize)
+            patch.setattr(progression, "_check", historical_check)
+            first = run(ledger, plan, services)
+        before = (len(services.model_calls), services.broker_calls)
+        assert run(ledger, FeaturePlan.model_validate_json(plan.canonical()), services) == first
+        assert (len(services.model_calls), services.broker_calls) == before
+
+
+def test_gate_order_compatibility_does_not_allow_other_changes(tmp_path):
+    from gflo.progression import _retained_gate_order
+
+    with WorkLedger(tmp_path / "ledger") as ledger:
+        plan = feature(ledger)
+        result = run(ledger, plan, Services())
+        package = PreparedTask.model_validate_json(ledger.artifacts.read(result.tasks[0]))
+        original = package.run.atom
+        with pytest.raises(Conflict, match="beyond gate order"):
+            _retained_gate_order(ledger, original.model_copy(update={"max_attempts": 9}))
+        altered_gate = original.required_gates[0].model_copy(update={"validator_digest": "f" * 64})
+        with pytest.raises(Conflict, match="gates differ"):
+            _retained_gate_order(
+                ledger, original.model_copy(update={"required_gates": (altered_gate,)})
+            )

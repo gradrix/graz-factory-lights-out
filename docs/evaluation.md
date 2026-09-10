@@ -249,3 +249,29 @@ Full suite with Docker enabled: 402 tests and 25 subtests passed, with no skips.
 [Results](../.scratch/local-lights-out-factory/memory-qualification-results.json)
 preserve baseline failures and prospective proofs. This fixes qualification evidence;
 it does not relax resources or rescore previous campaigns.
+
+
+## Recursive-settings feature and portable replay (2026-09-10)
+
+A new recursive settings merger passed three fresh policy builds: nine tasks accepted
+in nine attempts, plus final integration gates. The fixed checks cover 100 seeded
+recursive reference comparisons, mutable alias preservation, invalid nested values
+and nonfinite numbers, existing decoder delegation, and two-line CLI framing. Each
+build preserved 60 archive files and the existing decoder. Planning used one, two,
+and two calls; malformed initial proposals in the latter runs remain recorded.
+
+Definition queries selected the four relevant files from a 64-file snapshot before
+planning. These were prepared queries, not model-chosen repository navigation.
+The product still had stubs and explicit requirements; three successful builds do
+not establish broad large-product reliability.
+
+Portability testing found a real replay defect: mapping order affected derived gate
+lists under an unchanged policy/plan digest. New materialization sorts those lists;
+replay preserves historical ordering only when every gate and other contract field
+matches. Four regression cases and all three live replays passed without new model
+calls. Both earlier board-comparison ledgers also replayed exactly. Full suite with
+Docker enabled: 406 tests and 25 subtests passed, no skips; ruff/mypy passed.
+[Results](../.scratch/local-lights-out-factory/navigation-feature-results.json) retain
+the failure and fix. The [fixture](../.scratch/local-lights-out-factory/navigation-feature-fixture.json)
+reconstructs using `scripts/prepare_policy_trial.py --fixture FIXTURE --output NEW_DIR`.
+Raw evidence stays in ignored `.gflo/evidence/navigation-feature-v1/`.
