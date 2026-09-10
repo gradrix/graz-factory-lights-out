@@ -211,7 +211,15 @@ def validate_tasks(
             if path not in source_paths and not any(
                 within(path, tasks[dep].writable_paths) for dep in ancestors[key]
             ):
-                raise ValueError("Task references missing source without a provider dependency")
+                hint = (
+                    " This task creates that path: put it only in writable_paths, not read_paths."
+                    if within(path, task.writable_paths)
+                    else " Add a dependency on its producer, or use an existing source path."
+                )
+                raise ValueError(
+                    f"Task {key!r} references missing source {path!r} "
+                    "without a provider dependency." + hint
+                )
     for i, left in enumerate(order):
         for right in order[i + 1 :]:
             overlap = any(
@@ -316,7 +324,19 @@ def draft_feature(
     artifacts.publish(deployment.encode())
     artifacts.publish(request.canonical().encode())
     source_digest = artifacts.publish(source.canonical().encode())
+    all_source_paths = repository.source.files if repository is not None else source.files
+    path_state = {
+        path: (
+            "existing-file"
+            if path in all_source_paths
+            else "existing-scope"
+            if any(p.startswith(path + "/") for p in all_source_paths)
+            else "absent"
+        )
+        for path in request.allowed_paths
+    }
     brief = {
+        "allowed_path_state": path_state,
         "request_digest": request.digest(),
         "source_interfaces": _source_interfaces(source, request.allowed_paths),
         "source_coverage": coverage,
@@ -346,7 +366,14 @@ def draft_feature(
         "Use at most eight acceptance_checks per task; group related edge cases into one check. "
         "Split tasks only when independently testable. Include tests and documentation work where "
         "needed. Cover every requirement with meaningful acceptance checks. State exact provider "
-        "interfaces and order consumers after providers. Each interface_contract must state "
+        "interfaces and order consumers after providers. "
+        "read_paths are inputs available before a task starts: existing repository files or "
+        "outputs from dependency ancestors. writable_paths are outputs the task creates or edits. "
+        "A new file created by this task belongs only in writable_paths, not its own read_paths. "
+        "An existing file being edited may appear in both. allowed_path_state describes the "
+        "whole pinned source metadata, not just the readable context; absent paths may be new "
+        "outputs, while existing-scope denotes a directory scope, not a readable file. "
+        "Each interface_contract must state "
         "the proposed AFTER-change signature, with matching parameter names for consumers, "
         "not merely list existing functions. Environments are a trusted catalog; "
         "select an existing environment, never invent install commands. Questions must list "

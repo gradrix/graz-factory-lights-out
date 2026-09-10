@@ -106,10 +106,12 @@ def fake_model(monkeypatch, answers):
             self.artifacts = artifacts
             self.last_evidence_digest = None
             self.calls = []
+            self.atoms = []
             instances.append(self)
 
         def turn(self, *args, **kwargs):
             self.calls.append(kwargs)
+            self.atoms.append(args[0])
             self.last_evidence_digest = self.artifacts.publish(b"observed model call")
             answer = answers.pop(0)
             if isinstance(answer, Exception):
@@ -238,10 +240,11 @@ def test_snapshot_planning_binds_full_source_without_loading_omitted_bytes(
     fields.pop("selected_paths")
     fields.pop("source_revision")
     fields["source"] = ref.model_dump(mode="json")
+    fields["allowed_paths"].append("large.txt")
     request = RepositoryFeatureRequest.model_validate_json(json.dumps(fields))
     data = proposal(feature)
     data["request_digest"] = request.digest()
-    fake_model(
+    instances = fake_model(
         monkeypatch,
         [CandidateResult(kind="candidate", changes={"factory-plan.json": json.dumps(data)})],
     )
@@ -255,6 +258,7 @@ def test_snapshot_planning_binds_full_source_without_loading_omitted_bytes(
         context_paths=("history.py", "cli.py"),
     )
     assert result["status"] == "needs-review"
+    assert '"large.txt":"existing-file"' in instances[0].atoms[0].objective
     manifest = json.loads((output / "manifest.json").read_text())
     assert manifest["request_digest"] == request.digest()
     assert manifest["source_coverage"]["whole_repository"] is False
@@ -305,3 +309,25 @@ def test_questions_must_bind_the_current_request(feature, tmp_path, monkeypatch)
     result = draft_feature(feature, profile(), tmp_path / "draft", deployment="fixture")
     assert result["status"] == "exhausted"
     assert all("another request" in row["error"] for row in result["observations"])
+
+
+def test_missing_self_output_identifies_task_path_and_resolution(feature):
+    data = proposal(feature)
+    data['tasks'][1]['writable_paths'] = ['tests/test_new.py']
+    data['tasks'][1]['read_paths'] = ['tests/test_new.py']
+    with pytest.raises(ValueError, match="cli.*tests/test_new.py.*only in writable_paths"):
+        validate_proposal(feature, PlanProposal.model_validate_json(json.dumps(data)))
+    data['tasks'][1]['read_paths'] = ['history.py']
+    assert validate_proposal(feature, PlanProposal.model_validate_json(json.dumps(data)))
+
+
+def test_planner_receives_path_presence_and_input_output_rules(feature, tmp_path, monkeypatch):
+    answer = CandidateResult(kind='candidate', changes={
+        'factory-plan.json': json.dumps(proposal(feature)),
+    })
+    instances = fake_model(monkeypatch, [answer])
+    draft_feature(feature, profile(), tmp_path / 'draft', deployment='fixture')
+    instruction = instances[0].atoms[0].objective
+    assert 'only in writable_paths, not its own read_paths' in instruction
+    brief = instruction
+    assert '"allowed_path_state":{"history.py":"existing-file","cli.py":"existing-file","tests":"absent"}' in brief

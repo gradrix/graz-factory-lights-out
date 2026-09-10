@@ -490,3 +490,22 @@ Replay adds no calls and 85 other original files are preserved.
 [Results](../.scratch/local-lights-out-factory/repair-handles-results.json) retain the
 plan, targets, responses, costs and outcomes. All 449 tests and 25 subtests passed
 with Docker enabled; ruff and mypy passed.
+
+## Planner input/output path clarification, 2026-09-10
+
+The retained color planner failure listed its own new test output in read_paths.
+The validator still rejects it, now identifying task T2, tests/test_color.py and the
+required distinction between inputs and outputs. Planning briefs explicitly describe
+that distinction and report authorized-path presence from full snapshot metadata,
+without loading omitted file contents. No plan normalization or dependency inference
+was added.
+
+A fresh planning-only trial on the same color request/model/budgets returned a valid
+plan on its first response and compiled against the unchanged policy. The test task
+reads the existing color module, writes its new test file and depends on the provider.
+Usage: 2910 prompt / 1902 output tokens, 31.61 seconds. The preceding retained run
+needed a source-reference retry. This is one seen-feature comparison, not a broad
+planning reliability score; workers and product code were not re-executed.
+[Results](../.scratch/local-lights-out-factory/planner-paths-results.json) retain the
+historical rejection, proposal, raw response and compiled-plan identity. All 451 tests
+and 25 subtests passed with Docker enabled; ruff/mypy passed.

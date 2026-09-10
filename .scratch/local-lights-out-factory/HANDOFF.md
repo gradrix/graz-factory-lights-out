@@ -1,6 +1,26 @@
 # GFLO handoff — repository access foundation
 
-## Current checkpoint — turn-bound repair targets, 2026-09-10
+## Current checkpoint — planner path semantics, 2026-09-10
+
+Issue 52: retained color plan read its own new test output. Added explicit read_paths
+versus writable_paths rules and allowed_path_state from full source metadata. Missing
+source diagnostics identify task/path and self-output guidance; validation stays
+strict, with no normalization or invented dependencies. Omitted existing files are
+identified using metadata without loading their contents.
+
+Fresh same color request/model/budget planning-only trial passed first response:
+2910 prompt/1902 output tokens, 31.61s. Plan compiled under unchanged policy; test task
+reads provider module and writes its new file. No worker execution or product edits.
+All 451 tests/25 subtests pass with Docker enabled; ruff/mypy pass.
+
+[Results](planner-paths-results.json) retain bad-plan rejection and new proposal.
+Recreate source via leds-color-v2-fixture.json; draft_feature uses policy's planning
+paths/deployment and plain profile. Raw .gflo/evidence/planner-paths-v1. Next broaden
+prospective end-to-end feature qualification with current planner and repair targets,
+then larger navigation/execution workloads. One seen case is not broad reliability.
+Same-model constraint and push/merge authorization persist.
+
+## Previous checkpoint — turn-bound repair targets, 2026-09-10
 
 Issue 51 adds repair_handle with short per-turn controller-owned targets instead of
 worker-copied hashes. Mapping binds full draft/source and work contract, retains full

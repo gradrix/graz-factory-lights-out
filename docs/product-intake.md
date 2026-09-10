@@ -411,3 +411,16 @@ A loop inside one test stops at its first failed assertion and may hide crashes 
 later inputs. Qualification only observes executed cases: it cannot prove that an
 untested input will fail cleanly. The prospective color-parser trial exposed this
 limit; splitting reference cases excluded an additional crashing mutation.
+
+### Planner inputs and outputs
+
+`read_paths` names inputs available before a task starts: existing repository files
+or outputs supplied by dependency ancestors. `writable_paths` names files or scopes
+the task may create or edit. A task's new output is not its own input; an existing
+file being edited may appear in both lists.
+
+Planning briefs include `allowed_path_state` from full source metadata: `existing-file`,
+`existing-scope`, or `absent`. This is bounded to authorized paths and does not load
+omitted file contents. A directory scope is not a readable file. Invalid input
+references remain rejected with the task and path identified; the controller does
+not silently remove paths or invent provider dependencies.

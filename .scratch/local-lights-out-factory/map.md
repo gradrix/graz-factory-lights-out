@@ -218,3 +218,8 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
 - [Issue 51](issues/51-add-turn-bound-repair-handles.md): short per-turn repair targets
   resolve to full source/contract/file identities. Seen color trial passes without
   protocol errors, with semantic retry still required. Legacy checks preserved.
+
+- [Issue 52](issues/52-clarify-planner-input-output-paths.md): full-metadata allowed-path
+  state and explicit input/output rules prevent ambiguity about new task outputs.
+  Retained bad plan still rejected with precise feedback; fresh seen plan valid first
+  response. Broader end-to-end qualifications remain needed.
