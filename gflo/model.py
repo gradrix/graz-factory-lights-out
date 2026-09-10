@@ -28,6 +28,7 @@ from gflo.worker import (
     messages,
     parse_result,
     project_draft,
+    repair_targets,
     strict_json,
 )
 
@@ -232,22 +233,28 @@ class LocalModel:
                     raise WorkerError("Draft inputs require the repair protocol")
                 current = SourceBundle.model_validate_json(self.artifacts.read(draft_digest))
                 view = project_draft(view, atom, source, current)
+            targets = None
             if repair:
+                targets = repair_targets(atom, current, tuple(view.source_files))
+                evidence["repair_targets_digest"] = self.artifacts.publish(
+                    targets.canonical().encode()
+                )
                 view.instruction.update(
+                    repair_targets={key: target.path for key, target in targets.targets.items()},
                     repair_protocol=(
                         "For NEW files only, use candidate with concise file text. "
                         "For EXISTING files you MUST use small exact edits, "
                         "never rewrite the file. "
                         "Keep all old/new edit text together under 8192 bytes. Return "
-                        '{"schema_version":1,"kind":"repair","edits":[{"path":"file.py",'
-                        '"expected_digest":"SHA256 from sources","old":"unique exact text",'
-                        '"new":"replacement"}]}. Multiple edits in a file must not overlap; '
-                        "all hashes bind the current file. "
+                        '{"schema_version":1,"kind":"repair_handle","edits":[{"target":"e12345678",'
+                        '"old":"unique exact text","new":"replacement"}]}. '
+                        "Copy the target for this file from instruction.repair_targets. "
+                        "Targets are valid only for this turn. Edits must not overlap. "
                         "The controller checks drafts in its sandbox "
                         "and returns feedback while turns remain. "
                         "Repair only failing cases; do not expand the test suite during repair. "
                         "A development check is not acceptance."
-                    )
+                    ),
                 )
             models = self._request("/v1/models", None, deadline, exchanges)
             if not isinstance(models.get("data"), list) or not any(
@@ -287,7 +294,7 @@ class LocalModel:
             template_kwargs: dict[str, Any] = {"enable_thinking": thinking}
             chat = {
                 "model": self.profile.model,
-                "messages": messages(view, repair=repair),
+                "messages": messages(view, repair=repair, handles=repair),
                 "chat_template_kwargs": template_kwargs,
             }
             if thinking and self.profile.profile_id in (
@@ -369,6 +376,7 @@ class LocalModel:
                 atom,
                 current,
                 allow_repair=repair,
+                targets=targets,
             )
             turn = ModelTurn(
                 manifest_digest=manifest.digest(),

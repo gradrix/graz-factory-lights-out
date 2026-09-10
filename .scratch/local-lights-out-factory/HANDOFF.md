@@ -1,6 +1,26 @@
 # GFLO handoff — repository access foundation
 
-## Current checkpoint — repair system instructions, 2026-09-10
+## Current checkpoint — turn-bound repair targets, 2026-09-10
+
+Issue 51 adds repair_handle with short per-turn controller-owned targets instead of
+worker-copied hashes. Mapping binds full draft/source and work contract, retains full
+file hashes and only exposes visible writable paths. Mapping is immutable model
+evidence; resolution uses existing repair validation. Legacy hash repairs supported.
+
+Seen color trial reused the unchanged reviewed plan, gates/model/budgets: accepted,
+five implementation responses over two attempts and one test response. No protocol
+errors; semantic retry remained. No planning calls or target edits. Replay adds no
+calls; 85 other original files unchanged. All 449 tests/25 subtests pass with Docker;
+ruff/mypy pass. One run does not establish improved reliability or speed.
+
+[Results](repair-handles-results.json) retain plan, mappings, responses and costs.
+Recreate source via leds-color-v2-fixture.json and prepare_repository_trial.py; save
+results.plan as feature-plan.json in that output and use run-feature with the fixture
+source digest. Raw evidence .gflo/evidence/leds-color-handles-v1. Next investigate
+planner missing-source/provider retries, then broader prospective qualifications.
+Same-model constraint and push/merge authorization persist.
+
+## Previous checkpoint — repair system instructions, 2026-09-10
 
 Issue 50 fixed a confirmed contradiction: repair workers received the legacy system
 message requesting full-file candidates while their user instructions/parser required

@@ -633,3 +633,80 @@ def test_repair_protocol_requires_small_edits_for_existing_files(prepared):
     }
     with pytest.raises(WorkerError, match="8192"):
         parse_result(json.dumps(response), atom, source, allow_repair=True)
+
+
+def test_turn_bound_handles_reject_stale_drafts_contracts_and_turns(prepared):
+    from gflo.worker import repair_targets
+
+    _, atom, source, _ = prepared
+    targets = repair_targets(atom, source, ('main.py', 'private/test.py'))
+    assert [t.path for t in targets.targets.values()] == ['main.py']
+    handle = next(iter(targets.targets))
+    response = json.dumps({'kind': 'repair_handle', 'edits': [
+        {'target': handle, 'old': 'broken', 'new': 'fixed'},
+    ]})
+    result = parse_result(response, atom, source, allow_repair=True, targets=targets)
+    assert result.changes == {'main.py': "print('fixed')\n"}
+    changed = SourceBundle(files={**source.files, 'helper.py': 'changed draft'})
+    with pytest.raises(WorkerError, match='different contract or draft'):
+        parse_result(response, atom, changed, allow_repair=True, targets=targets)
+    other_atom = atom.model_copy(update={'atom_id': 'another-contract'})
+    with pytest.raises(WorkerError, match='different contract or draft'):
+        parse_result(response, other_atom, source, allow_repair=True, targets=targets)
+    fresh = repair_targets(atom, source, ('main.py',))
+    with pytest.raises(WorkerError, match='Unknown or stale'):
+        parse_result(response, atom, source, allow_repair=True, targets=fresh)
+    with pytest.raises(WorkerError, match='not enabled'):
+        parse_result(response, atom, source)
+
+
+def test_handles_preserve_exact_match_and_overlap_checks(prepared):
+    from gflo.worker import repair_targets
+
+    _, atom, source, _ = prepared
+    targets = repair_targets(atom, source, ('main.py',))
+    handle = next(iter(targets.targets))
+    edit = {'target': handle, 'old': 'broken', 'new': 'fixed'}
+    with pytest.raises(WorkerError, match='overlap'):
+        parse_result(json.dumps({'kind': 'repair_handle', 'edits': [edit, edit]}),
+                     atom, source, allow_repair=True, targets=targets)
+    with pytest.raises(WorkerError, match='exactly once'):
+        parse_result(json.dumps({'kind': 'repair_handle', 'edits': [
+            {**edit, 'old': 'absent'},
+        ]}), atom, source, allow_repair=True, targets=targets)
+
+
+def test_local_model_uses_tokenized_handle_mapping(prepared, server):
+    from gflo.worker import RepairTargets
+
+    store, atom, source, digest = prepared
+    draft = SourceBundle(files={**source.files, 'main.py': "print('draft')\n"})
+    draft_digest = store.publish(draft.canonical().encode())
+
+    def mutate(value):
+        request = next(body for path, body in server[0]['calls'] if path == '/tokenize')
+        view = json.loads(request['messages'][1]['content'])
+        handle = next(key for key, path in view['instruction']['repair_targets'].items()
+                      if path == 'main.py')
+        value['choices'][0]['message']['content'] = json.dumps({
+            'kind': 'repair_handle', 'edits': [
+                {'target': handle, 'old': 'draft', 'new': 'fixed'},
+            ],
+        })
+        return value
+
+    server[0]['mutate'] = mutate
+    original = client_for(prepared, server)
+    client = LocalModel(store, original.profile.model_copy(
+        update={'profile_id': 'vllm-python-worker-repair-v1'}))
+    turn = client.turn(atom, digest, current_inputs=lambda: atom.inputs_digest,
+                       draft_digest=draft_digest)
+    assert turn.result.changes == {'main.py': "print('fixed')\n"}
+    tokenize, generate = server[0]['calls'][1][1], server[0]['calls'][2][1]
+    assert tokenize['messages'] == generate['messages']
+    assert 'repair_handle' in generate['messages'][0]['content']
+    assert 'expected_digest' not in generate['messages'][0]['content']
+    evidence = json.loads(store.read(client.last_evidence_digest))
+    mapping = RepairTargets.model_validate_json(store.read(evidence['repair_targets_digest']))
+    assert mapping.source_digest == draft.digest()
+    assert mapping.contract_digest == atom.digest()

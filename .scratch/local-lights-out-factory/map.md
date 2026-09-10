@@ -214,3 +214,7 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
   system message for repair workers. Same-policy color build passes; malformed hash
   still causes retry. Default protocol and enforcement unchanged; no reliability-rate
   claim from one trial. Investigate bound edit handles and planner source references.
+
+- [Issue 51](issues/51-add-turn-bound-repair-handles.md): short per-turn repair targets
+  resolve to full source/contract/file identities. Seen color trial passes without
+  protocol errors, with semantic retry still required. Legacy checks preserved.

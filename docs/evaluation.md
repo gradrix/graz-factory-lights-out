@@ -472,3 +472,21 @@ conflicting traces, exact old/new system messages and fresh trial, including fai
 responses and raw usage. Reconstruct with the existing corrected color fixture.
 All 446 tests and 25 subtests passed with Docker enabled; ruff and mypy passed.
 Hash-copy errors and planning retries remain open reliability limitations.
+
+## Turn-bound repair targets, 2026-09-10
+
+Workers can now use short controller-issued references instead of copying SHA256
+hashes. Retained mappings bind the full current source bundle and work contract;
+resolution still applies full file-hash, scope, exact-match, overlap and size checks.
+Tests cover different drafts/contracts, stale turns, invisible paths, legacy repairs
+and equality of tokenized/generated mappings.
+
+A seen color trial reused the existing reviewed plan and unchanged gates, model and
+budgets. Implementation used five responses over two attempts; tests passed in one
+response. No malformed hashes or target-protocol errors occurred; an implementation
+semantic failure still required retry. This single run does not establish improved
+failure rates or speed. Planning was not re-exercised. No product changes were shipped.
+Replay adds no calls and 85 other original files are preserved.
+[Results](../.scratch/local-lights-out-factory/repair-handles-results.json) retain the
+plan, targets, responses, costs and outcomes. All 449 tests and 25 subtests passed
+with Docker enabled; ruff and mypy passed.

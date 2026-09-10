@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import secrets
 from typing import Annotated, Any, Literal, NoReturn
 
 from pydantic import Field, TypeAdapter
@@ -67,15 +68,56 @@ class RepairResult(Record):
     edits: Annotated[tuple[TextReplacement, ...], Field(min_length=1, max_length=16)]
 
 
+class HandleReplacement(Record):
+    target: Annotated[str, Field(pattern=r"^e[0-9a-f]{8}$")]
+    old: Annotated[str, Field(min_length=1, max_length=65536)]
+    new: Annotated[str, Field(max_length=65536)]
+
+
+class HandleRepairResult(Record):
+    kind: Literal["repair_handle"]
+    edits: Annotated[tuple[HandleReplacement, ...], Field(min_length=1, max_length=16)]
+
+
+class RepairTarget(Record):
+    path: str
+    content_digest: Digest
+
+
+class RepairTargets(Record):
+    contract_digest: Digest
+    source_digest: Digest
+    targets: dict[str, RepairTarget]
+
+
+def repair_targets(atom: WorkAtom, source: SourceBundle, visible: tuple[str, ...]) -> RepairTargets:
+    targets = {}
+    for path in sorted(set(visible) & source.files.keys()):
+        if not within(path, atom.writable_paths):
+            continue
+        handle = "e" + secrets.token_hex(4)
+        while handle in targets:
+            handle = "e" + secrets.token_hex(4)
+        targets[handle] = RepairTarget(
+            path=path, content_digest=hashlib.sha256(source.files[path].encode()).hexdigest()
+        )
+    return RepairTargets(
+        contract_digest=atom.digest(), source_digest=source.digest(), targets=targets
+    )
+
+
 class ReadFileRequest(Record):
     kind: Literal["read_file"]
     path: str
 
 
 WorkerResult = Annotated[
-    CandidateResult | ReadFileRequest | RepairResult, Field(discriminator="kind")
+    CandidateResult | ReadFileRequest | RepairResult | HandleRepairResult,
+    Field(discriminator="kind"),
 ]
-RESULT: TypeAdapter[CandidateResult | ReadFileRequest | RepairResult] = TypeAdapter(WorkerResult)
+RESULT: TypeAdapter[CandidateResult | ReadFileRequest | RepairResult | HandleRepairResult] = (
+    TypeAdapter(WorkerResult)
+)
 
 SYSTEM = """You are a bounded Python coding worker. Follow the controller's instruction.
 Context policy: bounded-python-v4.
@@ -97,16 +139,32 @@ REPAIR_SYSTEM = SYSTEM.replace(
     "Context policy: bounded-python-v4.",
     "Context policy: bounded-python-repair-v1.",
 ).replace(
-    'To propose edits, use this shape with complete replacement file text:\n'
+    "To propose edits, use this shape with complete replacement file text:\n"
     '{"schema_version":1,"kind":"candidate","changes":{"path.py":"file text"}}.',
-    'For EXISTING files, including files in a retained draft, return small exact edits:\n'
+    "For EXISTING files, including files in a retained draft, return small exact edits:\n"
     '{"schema_version":1,"kind":"repair","edits":[{"path":"path.py",'
     '"expected_digest":"copy the full current SHA256 from sources",'
     '"old":"unique exact text","new":"replacement"}]}.\n'
-    'For NEW files only, return '
+    "For NEW files only, return "
     '{"schema_version":1,"kind":"candidate","changes":{"path.py":"file text"}}.\n'
-    'Never return candidate for a path already present in source_files. '
-    'Do not abbreviate hashes. Keep combined old/new text within 8192 bytes.',
+    "Never return candidate for a path already present in source_files. "
+    "Do not abbreviate hashes. Keep combined old/new text within 8192 bytes.",
+)
+
+
+HANDLE_SYSTEM = (
+    REPAIR_SYSTEM.replace("bounded-python-repair-v1", "bounded-python-repair-handles-v1")
+    .replace(
+        '{"schema_version":1,"kind":"repair","edits":[{"path":"path.py",'
+        '"expected_digest":"copy the full current SHA256 from sources",'
+        '"old":"unique exact text","new":"replacement"}]}',
+        '{"schema_version":1,"kind":"repair_handle","edits":[{"target":"e12345678",'
+        '"old":"unique exact text","new":"replacement"}]}',
+    )
+    .replace(
+        "Do not abbreviate hashes.",
+        "Copy the target from instruction.repair_targets; use only this turn's targets.",
+    )
 )
 
 
@@ -204,9 +262,14 @@ def compose_view(
     )
 
 
-def messages(view: WorkerView, *, repair: bool = False) -> list[dict[str, str]]:
+def messages(
+    view: WorkerView, *, repair: bool = False, handles: bool = False
+) -> list[dict[str, str]]:
     return [
-        {"role": "system", "content": REPAIR_SYSTEM if repair else SYSTEM},
+        {
+            "role": "system",
+            "content": HANDLE_SYSTEM if handles else REPAIR_SYSTEM if repair else SYSTEM,
+        },
         {"role": "user", "content": view.canonical()},
     ]
 
@@ -227,12 +290,36 @@ def strict_json(content: str | bytes) -> Any:
 
 
 def parse_result(
-    content: str, atom: WorkAtom, source: SourceBundle, *, allow_repair: bool = False
+    content: str,
+    atom: WorkAtom,
+    source: SourceBundle,
+    *,
+    allow_repair: bool = False,
+    targets: RepairTargets | None = None,
 ) -> CandidateResult | ReadFileRequest:
     """Reject duplicate JSON keys, extra authority fields and scope violations."""
     parsed = strict_json(content)
     result = RESULT.validate_json(json.dumps(parsed))
     atom = WorkAtom.model_validate(atom)
+    if isinstance(result, HandleRepairResult):
+        if not allow_repair or targets is None:
+            raise WorkerError("Turn-bound repair targets are not enabled")
+        if targets.contract_digest != atom.digest() or targets.source_digest != source.digest():
+            raise WorkerError("Repair targets bind a different contract or draft")
+        resolved = []
+        for handle_edit in result.edits:
+            target = targets.targets.get(handle_edit.target)
+            if target is None:
+                raise WorkerError("Unknown or stale repair target")
+            resolved.append(
+                TextReplacement(
+                    path=target.path,
+                    expected_digest=target.content_digest,
+                    old=handle_edit.old,
+                    new=handle_edit.new,
+                )
+            )
+        result = RepairResult(kind="repair", edits=tuple(resolved))
     if (
         allow_repair
         and isinstance(result, CandidateResult)

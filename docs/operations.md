@@ -227,3 +227,11 @@ only for new files. Default workers retain their existing system instruction. To
 counts and generation use the same messages, and recorded requests preserve the exact
 instruction used by each historical run. This does not change hash/scope checks or
 retry limits. Invalid full-file responses remain rejected by the repair parser.
+
+Repair workers now receive short, turn-bound file targets in
+`instruction.repair_targets`. A `repair_handle` response contains a target plus exact
+old/new text; the controller resolves it to the complete file hash. The immutable
+mapping binds the full current draft and work contract, includes only visible writable
+files, and is retained with model evidence. Targets are regenerated for every turn;
+unknown targets and mappings for another draft/contract are rejected. Existing hash
+repairs remain parseable, and final acceptance still requires all independent gates.
