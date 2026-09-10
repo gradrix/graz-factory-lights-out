@@ -299,3 +299,15 @@ retain all six trial outcomes and attribution. The
 [fixture](../.scratch/local-lights-out-factory/ai-gamer-winners-fixture.json) reconstructs
 original and follow-up snapshots via `scripts/prepare_repository_trial.py`.
 Factory validation at this checkpoint: 410 tests and 25 subtests with Docker enabled.
+
+
+Follow-up: projecting remaining turns/output into the worker instruction yielded two
+complete test candidates, but both failed semantic checks. A subsequent four-file
+decomposition accepted gap and anti-diagonal tasks on their first attempts; the
+potential task failed on an invalid draw fixture and then truncated. Rectangular
+coverage and integration were never reached. These are negative qualification results,
+not proof of reliable autonomous test generation. See
+[budget results](../.scratch/local-lights-out-factory/worker-turn-budget-results.json)
+and [split-task results](../.scratch/local-lights-out-factory/ai-gamer-split-tests-results.json).
+The product fix PR is merged; its final tests were written by Codex. The current
+Docker-enabled factory suite passed 412 tests and 25 subtests.

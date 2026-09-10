@@ -1,6 +1,35 @@
 # GFLO handoff — repository access foundation
 
-## Current checkpoint — real ai-gamer qualification, 2026-09-10
+## Current checkpoint — bounded test-generation limit, 2026-09-10
+
+ai-gamer [PR 1](https://github.com/gradrix/ai-gamer/pull/1) is merged at
+9a0a4384b9b727c02f0f2c168c7abc43a4e076bf. Local implementation unchanged;
+Codex wrote the merged tests. Seventeen cases pass, eight genuine assertions fail
+on the original, and no other baseline errors occur. Independent winner oracle passes.
+
+Issue 43 now exposes remaining turns and actual output allowance in tokenized worker
+instructions. 412 factory tests and 25 subtests passed with Docker enabled. Same-policy
+follow-up produced two candidates but failed semantics. Issue 44 then split tests
+into four files: gaps and anti-diagonals passed first try; potential failed with a
+winning draw fixture then truncated; rectangles never ran. No integration acceptance.
+See [budget results](worker-turn-budget-results.json),
+[split results](ai-gamer-split-tests-results.json), and
+[split fixture](ai-gamer-split-tests-fixture.json). Both issues are resolved as measured
+experiments, not as a claim that test-generation reliability is solved.
+
+**Current qualification blocker:** the pinned worker cannot reliably repair generated
+semantic test fixtures within these finite budgets, even after decomposition. Do not
+present the merged product fix as unattended end-to-end success. Future work should
+prospectively compare a smaller repair representation or another qualified worker
+profile on the same failing case; preserve failures, budget totals and independent
+checks. Correct-board injection would be a different, more supervised task.
+No owner decision was needed for the delivered work. License choice remains separate.
+Raw evidence: `.gflo/evidence/ai-gamer-turn-budget-v1/` and
+`.gflo/evidence/ai-gamer-split-tests-v1/`. Portable helper with `--test-followup`
+reconstructs the new split request/source from the pinned baseline clone.
+
+
+## Previous checkpoint — real ai-gamer qualification, 2026-09-10
 
 Owner delegated target/task choice and reaffirmed continuing until actual blockers.
 Chose ai-gamer rule correctness; [merged PR 1](https://github.com/gradrix/ai-gamer/pull/1)

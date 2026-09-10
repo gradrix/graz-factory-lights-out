@@ -124,3 +124,11 @@ passed independent checks, but local test generation failed and Codex completed 
 tests. [Evaluation](evaluation.md#real-repository-trial-ai-gamer-2026-09-10) records
 this limit. Next investigate wasted read turns and incomplete outputs before claiming
 reliable whole-feature delivery or moving to more complex products.
+
+
+Remaining-turn visibility is implemented. Smaller test tasks still failed semantic
+fixture repair within the pinned output/retry budget; this currently blocks an
+unattended whole-feature reliability claim. Next qualification should compare a
+bounded repair representation or an explicitly selected model profile on the retained
+failure, with unchanged independent checks and separate accounting. The real ai-gamer
+fix is merged with reviewer-written regression tests.

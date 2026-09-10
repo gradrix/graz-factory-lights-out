@@ -490,7 +490,11 @@
       ],
       "new_pytest_cases": 17,
       "winner_oracle": "all 19683 3x3 boards; seeded rectangular cases and every valid winning start",
-      "legacy_collection": "fails on original stale models import; full training/server not run"
+      "legacy_collection": "fails on original stale models import; full training/server not run",
+      "strict_original_baseline": {
+        "assertion_failures": 8,
+        "other_errors": 0
+      }
     },
     "preservation": {
       "unchanged_files": 86,

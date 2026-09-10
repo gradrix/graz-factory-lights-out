@@ -178,3 +178,7 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
 - [Issue 43](issues/43-expose-worker-turn-budget.md): remaining turns/output projected
   into tokenized worker instructions. Fresh trial proposed both candidates but still
   failed semantics; separate smaller test tasks are the next diagnostic.
+
+- [Issue 44](issues/44-qualify-smaller-test-tasks.md): smaller tests accepted gaps and
+  anti-diagonals, then potential failed/truncated. Rectangles and integration never
+  ran. Semantic fixture repair remains a qualification blocker within these budgets.

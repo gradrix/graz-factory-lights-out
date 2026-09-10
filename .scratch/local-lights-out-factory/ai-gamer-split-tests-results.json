@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "status": "task-halt",
+  "request_digest": "ad5c1ffb6e44bdc3d81e0ed0ead3d685dbebf3ce693b32c1162fa28ace44d4d0",
+  "policy_digest": "f38b563caf40a3181c781a114ee4da9edd93ec39f0d4ece78f724bfed06fe91c",
+  "workers": [
+    {
+      "atom_id": "prepared-ad5c1ffb6e44bdc3-4cdec1a10a35a163-94ddd7004659f2d1/0ce7c1a0393fb1b6",
+      "status": "accepted",
+      "cost": {
+        "attempts": 1,
+        "model_observations": 1,
+        "validated_prompt_tokens": 3624,
+        "validated_completion_tokens": 346,
+        "observed_model_seconds": 6.084999693001009,
+        "observations_without_validated_usage": 0,
+        "observations_without_timing": 0,
+        "usage_complete_for_recorded_observations": true,
+        "timing_complete_for_recorded_observations": true
+      },
+      "failures": []
+    },
+    {
+      "atom_id": "prepared-ad5c1ffb6e44bdc3-4cdec1a10a35a163-94ddd7004659f2d1-8e0c7bf7dca0d140/c7f00a63e8ccb64f",
+      "status": "accepted",
+      "cost": {
+        "attempts": 1,
+        "model_observations": 1,
+        "validated_prompt_tokens": 3633,
+        "validated_completion_tokens": 397,
+        "observed_model_seconds": 6.9333504759997595,
+        "observations_without_validated_usage": 0,
+        "observations_without_timing": 0,
+        "usage_complete_for_recorded_observations": true,
+        "timing_complete_for_recorded_observations": true
+      },
+      "failures": []
+    },
+    {
+      "atom_id": "prepared-ad5c1ffb6e44bdc3-4cdec1a10a35a163-94ddd7004659f2d1-d4e67c4a05ece79e/619d210aa9928bc3",
+      "status": "quarantined",
+      "cost": {
+        "attempts": 2,
+        "model_observations": 2,
+        "validated_prompt_tokens": 3722,
+        "validated_completion_tokens": 847,
+        "observed_model_seconds": 82.3061732770002,
+        "observations_without_validated_usage": 1,
+        "observations_without_timing": 0,
+        "usage_complete_for_recorded_observations": false,
+        "timing_complete_for_recorded_observations": true
+      },
+      "failures": [
+        "Validation did not pass.\nGate: file-0\nOutcome: fail\nLast executed case: 1\nCommand: [\"python\", \"-c\", \"import contextlib,io\\noutput=io.StringIO()\\nwith contextlib.redirect_stdout(output), contextlib.redirect_stderr(output):\\n import importlib.util,pytest\\n from pathlib import Path\\n class Results:\\n  def __init__(self):self.count=0\\n  def pytest_collection_finish(self,session):self.count=len(session.items)\\n plugin=Results()\\n result=pytest.main(['-q', '--tb=short', 'tests/test_gflo_potential.py'],plugins=[plugin])\\n assert result==0 and plugin.count>=1, output.getvalue()\\n print('regressio\n[truncated; full bytes in retained evidence]\nInput (stdin):\n\nProcess outcome: completed\nExit code: 1\nObserved stdout:\n\nObserved stderr:\nTraceback (most recent call last):\n  File \"<string>\", line 11, in <module>\nAssertionError: .F.....                                                                  [100%]\n=================================== FAILURES ===================================\n__________________ test_full_board_no_winner_has_no_potential __________________\ntests/test_gflo_potential.py:34: in test_full_board_no_winner_has_no_potential\n    assert game.checkForWinner() is False\nE   assert 1 is False\nE    +  where 1 = checkForWinner()\nE    +    where checkForWinner = <game_server.games.ticktaktoe.TikTakToe object at 0x7a740e2a5d50>.checkForWinner\n=========================== short test summary info ============================\nFAILED tests/test_gflo_potential.py::test_full_board_no_winner_has_no_potential\n1 failed, 6 passed in 0.02s\n\n",
+        "Infrastructure/protocol failure: Incomplete or unsupported worker response"
+      ]
+    }
+  ],
+  "source": {
+    "schema_version": 1,
+    "kind": "repository-snapshot-v1",
+    "artifact_digest": "cc2d200afd90e031304b976a8408c555b960265fd7570f3513cd243a8c49c0c2"
+  },
+  "raw_evidence": ".gflo/evidence/ai-gamer-split-tests-v1",
+  "scope": "Seen task, operator-selected four-file decomposition and known bug coordinates. Not autonomous task discovery or unseen benchmark."
+}
