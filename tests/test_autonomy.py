@@ -244,3 +244,38 @@ def test_altered_proposal_is_not_a_new_authorized_build(tmp_path):
         with pytest.raises(ValueError, match="differs from planning result"):
             run()
         assert len(services.model_calls) == 2
+
+
+def test_policy_planning_stays_nonthinking_while_worker_profile_is_retained(tmp_path):
+    with WorkLedger(tmp_path / "ledger") as ledger:
+        plan = feature(ledger)
+        policy = policy_for(plan)
+        policy = replace(
+            policy,
+            model_profile={
+                **policy.model_profile.model_dump(mode="json"),
+                "profile_id": "vllm-python-worker-reasoning-v1",
+            },
+        )
+        services = Services()
+
+        def planner(request, profile, output, **kwargs):
+            assert profile.profile_id == "vllm-python-worker-v1"
+            assert profile.deployment_digest == policy.model_profile.deployment_digest
+            return planner_for(plan, [])(request, profile, output, **kwargs)
+
+        result = build_feature(
+            ledger,
+            plan.request,
+            policy,
+            tmp_path / "build",
+            lambda: plan.request.source,
+            planner=planner,
+            model_factory=services.model,
+            broker_factory=services.broker,
+        )
+        assert result["status"] == "accepted"
+        prepared = json.loads((tmp_path / "build/feature-plan.json").read_text())
+        assert (
+            prepared["review"]["model_profile"]["profile_id"] == "vllm-python-worker-reasoning-v1"
+        )

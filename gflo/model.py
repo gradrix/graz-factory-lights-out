@@ -39,6 +39,7 @@ class ModelProfile(Record):
     profile_id: Literal[
         "vllm-python-worker-v1",
         "vllm-python-worker-reasoning-v1",
+        "vllm-python-worker-reasoning-low-v1",
         "vllm-python-worker-escalating-v1",
         "vllm-python-worker-escalating-low-v1",
         "vllm-python-worker-escalating-tools-v1",
@@ -234,9 +235,10 @@ class LocalModel:
                 or atom.context_budget.output_tokens != 4096
             ):
                 raise ModelError("Escalation requires two attempts and an 8K/4K contract budget")
-            thinking = self.profile.profile_id == "vllm-python-worker-reasoning-v1" or (
-                escalating and bool(diagnostic_digests)
-            )
+            thinking = self.profile.profile_id in (
+                "vllm-python-worker-reasoning-v1",
+                "vllm-python-worker-reasoning-low-v1",
+            ) or (escalating and bool(diagnostic_digests))
             reserve = 2048 if escalating and not thinking else atom.context_budget.output_tokens
             template_kwargs: dict[str, Any] = {"enable_thinking": thinking}
             chat = {
@@ -245,6 +247,7 @@ class LocalModel:
                 "chat_template_kwargs": template_kwargs,
             }
             if thinking and self.profile.profile_id in (
+                "vllm-python-worker-reasoning-low-v1",
                 "vllm-python-worker-escalating-low-v1",
                 "vllm-python-worker-escalating-tools-v1",
             ):

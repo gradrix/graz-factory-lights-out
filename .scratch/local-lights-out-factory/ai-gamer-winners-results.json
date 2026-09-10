@@ -1,0 +1,517 @@
+{
+  "schema_version": 1,
+  "target": "https://github.com/gradrix/ai-gamer",
+  "revision": "7ccbb585a6097e85416fb109ff5d03a92ce09b88",
+  "selection": "Hardware-independent game-rule correctness supports local independent gates. leds-service would require a separate GPIO/service integration target.",
+  "verified_baseline_failures": [
+    "Gapped X pieces at (0,0),(2,0),(4,0) falsely win on 5x5 K=3.",
+    "Contiguous anti-diagonal at (2,4),(3,3),(4,2) is missed on 5x5 K=3."
+  ],
+  "snapshot_admission_failure": "Tracked console_client/db/game_records.db blocked former UTF-8-only capture. Opaque preservation added; text worker inputs remain restricted.",
+  "runs": [
+    {
+      "run": "build",
+      "status": "task-halt",
+      "policy_digest": "bdede17204b7ecaac3156ee59f9ce01910e2c59de6d28c52218866470be66c0d",
+      "planning_calls": 1,
+      "accepted_tasks": 0,
+      "workers": [
+        {
+          "atom_id": "prepared-956d9ed427279a5a-998efc3e20f2133b-434be391eaab9125/c8b9b8e02d1e6680",
+          "status": "quarantined",
+          "cost": {
+            "attempts": 2,
+            "model_observations": 2,
+            "validated_prompt_tokens": 9038,
+            "validated_completion_tokens": 2868,
+            "observed_model_seconds": 48.20444410300115,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          },
+          "calls": [
+            {
+              "finish_reason": "stop",
+              "server_usage": {
+                "prompt_tokens": 4288,
+                "total_tokens": 7132,
+                "completion_tokens": 2844,
+                "prompt_tokens_details": null,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 0
+                }
+              },
+              "seconds": 47.24819129500065
+            },
+            {
+              "finish_reason": "stop",
+              "server_usage": {
+                "prompt_tokens": 4750,
+                "total_tokens": 4774,
+                "completion_tokens": 24,
+                "prompt_tokens_details": null,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 0
+                }
+              },
+              "seconds": 0.9562528080004995
+            }
+          ],
+          "failures": [
+            "Validation did not pass.\nGate: file-0\nOutcome: fail\nLast executed case: 1\nCommand: [\"python\", \"-c\", \"import copy,itertools,random\\nfrom game_server.games.ticktaktoe import TikTakToe,E,X,O\\n\\ndef reference(board,k):\\n h=len(board);w=len(board[0]);winners=set();possible=False\\n for y in range(h):\\n  for x in range(w):\\n   for dx,dy in ((1,0),(0,1),(1,1),(1,-1)):\\n    if not (0<=x+(k-1)*dx<w and 0<=y+(k-1)*dy<h):continue\\n    line=[board[y+i*dy][x+i*dx] for i in range(k)]\\n    for figure in (X,O):\\n     if all(v==figure for v in line):winners.add(figure)\\n     if all(v in (E,figure) for v in\n[truncated; full bytes in retained evidence]\nInput (stdin):\n\nProcess outcome: completed\nExit code: 1\nObserved stdout:\n\nObserved stderr:\nTraceback (most recent call last):\n  File \"<string>\", line 32, in <module>\n  File \"<string>\", line 22, in check\nAssertionError: ([[0, 0, 0], [0, 0, 0], [0, 0, 0]], False, True)\n",
+            "Invalid worker result: Worker repeated a read for a file already in its view"
+          ]
+        }
+      ],
+      "source": {
+        "schema_version": 1,
+        "kind": "repository-snapshot-v1",
+        "artifact_digest": "25ecfdbf689f56a90dd6cf5c2124b146b8e7d4eb0e28a5ca39dd40498e249dfb"
+      }
+    },
+    {
+      "run": "reasoning-build",
+      "status": "task-halt",
+      "policy_digest": "d110f20f5ff9e172fbd8b2c6787067d2d67c328a5ef6e86ad272231dc2755c77",
+      "planning_calls": 1,
+      "accepted_tasks": 0,
+      "workers": [
+        {
+          "atom_id": "prepared-956d9ed427279a5a-998efc3e20f2133b-93da12e8bfe0dd25/c8b9b8e02d1e6680",
+          "status": "retry-ready",
+          "cost": {
+            "attempts": 1,
+            "model_observations": 1,
+            "validated_prompt_tokens": 0,
+            "validated_completion_tokens": 0,
+            "observed_model_seconds": 67.87371663699923,
+            "observations_without_validated_usage": 1,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": false,
+            "timing_complete_for_recorded_observations": true
+          },
+          "calls": [
+            {
+              "finish_reason": "length",
+              "server_usage": {
+                "prompt_tokens": 4322,
+                "total_tokens": 8418,
+                "completion_tokens": 4096,
+                "prompt_tokens_details": null,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 4096
+                }
+              },
+              "seconds": 67.87371663699923
+            }
+          ],
+          "failures": [
+            "Infrastructure/protocol failure: Incomplete or unsupported worker response"
+          ]
+        }
+      ],
+      "source": {
+        "schema_version": 1,
+        "kind": "repository-snapshot-v1",
+        "artifact_digest": "25ecfdbf689f56a90dd6cf5c2124b146b8e7d4eb0e28a5ca39dd40498e249dfb"
+      }
+    },
+    {
+      "run": "low-reasoning-build",
+      "status": "task-halt",
+      "policy_digest": "eb391ec11fd45904935953f1eb70ef0367320e2aae3c0c2dcf253c71eafe6203",
+      "planning_calls": 1,
+      "accepted_tasks": 0,
+      "workers": [
+        {
+          "atom_id": "prepared-956d9ed427279a5a-998efc3e20f2133b-98f5b2e089b3b101/c8b9b8e02d1e6680",
+          "status": "retry-ready",
+          "cost": {
+            "attempts": 1,
+            "model_observations": 1,
+            "validated_prompt_tokens": 0,
+            "validated_completion_tokens": 0,
+            "observed_model_seconds": 67.93132634799986,
+            "observations_without_validated_usage": 1,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": false,
+            "timing_complete_for_recorded_observations": true
+          },
+          "calls": [
+            {
+              "finish_reason": "length",
+              "server_usage": {
+                "prompt_tokens": 4312,
+                "total_tokens": 8408,
+                "completion_tokens": 4096,
+                "prompt_tokens_details": null,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 1940
+                }
+              },
+              "seconds": 67.93132634799986
+            }
+          ],
+          "failures": [
+            "Infrastructure/protocol failure: Incomplete or unsupported worker response"
+          ]
+        }
+      ],
+      "source": {
+        "schema_version": 1,
+        "kind": "repository-snapshot-v1",
+        "artifact_digest": "25ecfdbf689f56a90dd6cf5c2124b146b8e7d4eb0e28a5ca39dd40498e249dfb"
+      }
+    },
+    {
+      "run": "low-reasoning-6k-build",
+      "status": "task-halt",
+      "policy_digest": "f85b305e46e05cd7986689cd413b726f2e09369fb38855eddde7887e1f8fd097",
+      "planning_calls": 1,
+      "accepted_tasks": 1,
+      "workers": [
+        {
+          "atom_id": "prepared-956d9ed427279a5a-998efc3e20f2133b-e274d82b707b9475/c8b9b8e02d1e6680",
+          "status": "accepted",
+          "cost": {
+            "attempts": 2,
+            "model_observations": 2,
+            "validated_prompt_tokens": 9081,
+            "validated_completion_tokens": 9768,
+            "observed_model_seconds": 162.36180888499985,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          },
+          "calls": [
+            {
+              "finish_reason": "stop",
+              "server_usage": {
+                "prompt_tokens": 4313,
+                "total_tokens": 8699,
+                "completion_tokens": 4386,
+                "prompt_tokens_details": null,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 1638
+                }
+              },
+              "seconds": 72.81903891099864
+            },
+            {
+              "finish_reason": "stop",
+              "server_usage": {
+                "prompt_tokens": 4768,
+                "total_tokens": 10150,
+                "completion_tokens": 5382,
+                "prompt_tokens_details": null,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 3161
+                }
+              },
+              "seconds": 89.5427699740012
+            }
+          ],
+          "failures": [
+            "Validation did not pass.\nGate: file-0\nOutcome: fail\nLast executed case: 1\nCommand: [\"python\", \"-c\", \"import copy,itertools,random\\nfrom game_server.games.ticktaktoe import TikTakToe,E,X,O\\n\\ndef reference(board,k):\\n h=len(board);w=len(board[0]);winners=set();possible=False\\n for y in range(h):\\n  for x in range(w):\\n   for dx,dy in ((1,0),(0,1),(1,1),(1,-1)):\\n    if not (0<=x+(k-1)*dx<w and 0<=y+(k-1)*dy<h):continue\\n    line=[board[y+i*dy][x+i*dx] for i in range(k)]\\n    for figure in (X,O):\\n     if all(v==figure for v in line):winners.add(figure)\\n     if all(v in (E,figure) for v in\n[truncated; full bytes in retained evidence]\nInput (stdin):\n\nProcess outcome: completed\nExit code: 1\nObserved stdout:\n\nObserved stderr:\nTraceback (most recent call last):\n  File \"<string>\", line 32, in <module>\n  File \"<string>\", line 22, in check\nAssertionError: ([[0, 1, 2], [0, 1, 2], [1, 1, 1]], False, True)\n"
+          ]
+        },
+        {
+          "atom_id": "prepared-956d9ed427279a5a-998efc3e20f2133b-e274d82b707b9475-fadd0f7172606f6e/df9a968d09484998",
+          "status": "quarantined",
+          "cost": {
+            "attempts": 2,
+            "model_observations": 2,
+            "validated_prompt_tokens": 0,
+            "validated_completion_tokens": 0,
+            "observed_model_seconds": 203.6242735170017,
+            "observations_without_validated_usage": 2,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": false,
+            "timing_complete_for_recorded_observations": true
+          },
+          "calls": [
+            {
+              "finish_reason": "length",
+              "server_usage": {
+                "prompt_tokens": 3578,
+                "total_tokens": 9722,
+                "completion_tokens": 6144,
+                "prompt_tokens_details": null,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 6144
+                }
+              },
+              "seconds": 101.79037810900081
+            },
+            {
+              "finish_reason": "length",
+              "server_usage": {
+                "prompt_tokens": 3718,
+                "total_tokens": 9862,
+                "completion_tokens": 6144,
+                "prompt_tokens_details": null,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 6144
+                }
+              },
+              "seconds": 101.8338954080009
+            }
+          ],
+          "failures": [
+            "Infrastructure/protocol failure: Incomplete or unsupported worker response",
+            "Infrastructure/protocol failure: Incomplete or unsupported worker response"
+          ]
+        }
+      ],
+      "source": {
+        "schema_version": 1,
+        "kind": "repository-snapshot-v1",
+        "artifact_digest": "6e25f6ee2600995948fc69f1ddb6bc26fe1cf8a6cc1d563b67c785f147c8085f"
+      }
+    },
+    {
+      "run": "tests-build",
+      "status": "task-halt",
+      "policy_digest": "63fac19955f3d9dbf20246cae412bd5727fee77146cf10c073a49b7feed43a2b",
+      "planning_calls": 1,
+      "accepted_tasks": 0,
+      "workers": [
+        {
+          "atom_id": "prepared-0ed17054c01212b2-f199b7d56c1e2dc8-15a550045a633083/c7f0e4debb150409",
+          "status": "quarantined",
+          "cost": {
+            "attempts": 2,
+            "model_observations": 4,
+            "validated_prompt_tokens": 16163,
+            "validated_completion_tokens": 1337,
+            "observed_model_seconds": 23.866311067000424,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          },
+          "calls": [
+            {
+              "finish_reason": "stop",
+              "server_usage": {
+                "prompt_tokens": 3913,
+                "total_tokens": 3934,
+                "completion_tokens": 21,
+                "prompt_tokens_details": null,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 0
+                }
+              },
+              "seconds": 0.8081441869999253
+            },
+            {
+              "finish_reason": "stop",
+              "server_usage": {
+                "prompt_tokens": 3987,
+                "total_tokens": 4007,
+                "completion_tokens": 20,
+                "prompt_tokens_details": null,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 0
+                }
+              },
+              "seconds": 0.8099152960003266
+            },
+            {
+              "finish_reason": "stop",
+              "server_usage": {
+                "prompt_tokens": 4212,
+                "total_tokens": 4231,
+                "completion_tokens": 19,
+                "prompt_tokens_details": null,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 0
+                }
+              },
+              "seconds": 0.895719399999507
+            },
+            {
+              "finish_reason": "stop",
+              "server_usage": {
+                "prompt_tokens": 4051,
+                "total_tokens": 5328,
+                "completion_tokens": 1277,
+                "prompt_tokens_details": null,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 0
+                }
+              },
+              "seconds": 21.352532184000665
+            }
+          ],
+          "failures": [
+            "Invalid worker result: Bounded model-turn allowance exhausted without a candidate",
+            "Validation did not pass.\nGate: file-0\nOutcome: fail\nLast executed case: 1\nCommand: [\"python\", \"-c\", \"import contextlib,io\\noutput=io.StringIO()\\nwith contextlib.redirect_stdout(output), contextlib.redirect_stderr(output):\\n import importlib.util,pytest\\n from pathlib import Path\\n class Results:\\n  def __init__(self):self.count=0\\n  def pytest_collection_finish(self,session):self.count=len(session.items)\\n plugin=Results()\\n result=pytest.main(['-q','tests/test_winner_windows.py'],plugins=[plugin])\\n assert result==0 and plugin.count>=4\\n print('regression-tests-ok')\\nprint('regression-te\n[truncated; full bytes in retained evidence]\nInput (stdin):\n\nProcess outcome: completed\nExit code: 1\nObserved stdout:\n\nObserved stderr:\nTraceback (most recent call last):\n  File \"<string>\", line 11, in <module>\nAssertionError\n"
+          ]
+        }
+      ],
+      "source": {
+        "schema_version": 1,
+        "kind": "repository-snapshot-v1",
+        "artifact_digest": "6e25f6ee2600995948fc69f1ddb6bc26fe1cf8a6cc1d563b67c785f147c8085f"
+      }
+    },
+    {
+      "run": "tests-feedback-build",
+      "status": "task-halt",
+      "policy_digest": "d630f87dacfca9dd3660845e1c6494ef0bba0f77a849f8110549bc1d6a1cc16c",
+      "planning_calls": 1,
+      "accepted_tasks": 0,
+      "workers": [
+        {
+          "atom_id": "prepared-0ed17054c01212b2-f199b7d56c1e2dc8-d3c50541f7761716/c7f0e4debb150409",
+          "status": "quarantined",
+          "cost": {
+            "attempts": 2,
+            "model_observations": 5,
+            "validated_prompt_tokens": 17194,
+            "validated_completion_tokens": 93,
+            "observed_model_seconds": 71.70261984200079,
+            "observations_without_validated_usage": 1,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": false,
+            "timing_complete_for_recorded_observations": true
+          },
+          "calls": [
+            {
+              "finish_reason": "length",
+              "server_usage": {
+                "prompt_tokens": 3912,
+                "total_tokens": 8008,
+                "completion_tokens": 4096,
+                "prompt_tokens_details": null,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 0
+                }
+              },
+              "seconds": 67.77008222200129
+            },
+            {
+              "finish_reason": "stop",
+              "server_usage": {
+                "prompt_tokens": 4046,
+                "total_tokens": 4066,
+                "completion_tokens": 20,
+                "prompt_tokens_details": null,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 0
+                }
+              },
+              "seconds": 1.0520255449991964
+            },
+            {
+              "finish_reason": "stop",
+              "server_usage": {
+                "prompt_tokens": 4271,
+                "total_tokens": 4292,
+                "completion_tokens": 21,
+                "prompt_tokens_details": null,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 0
+                }
+              },
+              "seconds": 0.8877006069997151
+            },
+            {
+              "finish_reason": "stop",
+              "server_usage": {
+                "prompt_tokens": 4345,
+                "total_tokens": 4364,
+                "completion_tokens": 19,
+                "prompt_tokens_details": null,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 0
+                }
+              },
+              "seconds": 0.8933602470006008
+            },
+            {
+              "finish_reason": "stop",
+              "server_usage": {
+                "prompt_tokens": 4532,
+                "total_tokens": 4565,
+                "completion_tokens": 33,
+                "prompt_tokens_details": null,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 0
+                }
+              },
+              "seconds": 1.0994512209999812
+            }
+          ],
+          "failures": [
+            "Infrastructure/protocol failure: Incomplete or unsupported worker response",
+            "Invalid worker result: Bounded model-turn allowance exhausted without a candidate"
+          ]
+        }
+      ],
+      "source": {
+        "schema_version": 1,
+        "kind": "repository-snapshot-v1",
+        "artifact_digest": "6e25f6ee2600995948fc69f1ddb6bc26fe1cf8a6cc1d563b67c785f147c8085f"
+      }
+    }
+  ],
+  "raw_evidence": ".gflo/evidence/ai-gamer-winners-v1",
+  "scope": "Real 87-file repository, rule-only task. No TensorFlow training, gRPC deployment, dashboard or hardware qualification.",
+  "delivery": {
+    "pull_request": "https://github.com/gradrix/ai-gamer/pull/1",
+    "commit": "0011cd6",
+    "implementation_author": "local LLM; accepted implementation exported unchanged",
+    "tests_author": "Codex reviewer; all local test-generation builds halted",
+    "validation": {
+      "author": "Codex reviewer tests; local accepted implementation unchanged",
+      "cases": [
+        {
+          "gate": "tests",
+          "case": 1,
+          "exit_code": 0,
+          "stdout": "regression-tests-ok\n"
+        },
+        {
+          "gate": "tests",
+          "case": 2,
+          "exit_code": 0,
+          "stdout": "baseline-rejected\n"
+        },
+        {
+          "gate": "winner",
+          "case": 1,
+          "exit_code": 0,
+          "stdout": "winner-reference-ok\n"
+        }
+      ],
+      "new_pytest_cases": 17,
+      "winner_oracle": "all 19683 3x3 boards; seeded rectangular cases and every valid winning start",
+      "legacy_collection": "fails on original stale models import; full training/server not run"
+    },
+    "preservation": {
+      "unchanged_files": 86,
+      "tracked_database_preserved": true,
+      "other_public_gameplay_methods_unchanged": true,
+      "replay": "halted test trial replayed without new work; implementation atom accepted",
+      "test_author": "Codex reviewer; local test tasks failed",
+      "target_branch": "gflo/fix-winner-windows",
+      "selected_source": {
+        "schema_version": 1,
+        "kind": "repository-snapshot-v1",
+        "artifact_digest": "6e25f6ee2600995948fc69f1ddb6bc26fe1cf8a6cc1d563b67c785f147c8085f"
+      }
+    },
+    "end_to_end_factory_success": false,
+    "qualification_limit": "Prepared task and trusted oracle; feedback exposed reference code. Not autonomous task discovery or independent unaided algorithm invention.",
+    "factory_tests": {
+      "passed": 410,
+      "subtests": 25,
+      "docker_enabled": true
+    },
+    "portability": "Original and accepted-implementation follow-up snapshots reconstructed in fresh ledgers"
+  }
+}

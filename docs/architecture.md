@@ -55,8 +55,9 @@ or mismatched evidence is inconclusive. Finite gates can miss defects; later
 contradictory evidence is an [Acceptance finding](operations.md#acceptance-findings).
 
 This capability does not install dependencies, build arbitrary repositories, or
-export mutable container workspaces. Binary assets and general shell workflows
-need additional capabilities and qualification.
+export mutable container workspaces. Binary editing/execution and general shell
+workflows need additional capabilities and qualification. Opaque snapshot preservation
+is supported independently of those worker capabilities.
 
 ## Durable state and integration
 
@@ -85,7 +86,7 @@ Results identify the snapshot and files and report incomplete coverage. Edits
 preserve every unselected file, rejecting stale bases and missing source evidence.
 Historical bundle and record identities remain unchanged.
 
-Capture inventories Git-visible UTF-8 text, including dirty and nonignored untracked
+Capture inventories Git-visible file bytes, including dirty and nonignored untracked
 files, and checks inventory/content again before publishing. It requires a quiescent
 checkout; it is not an atomic filesystem snapshot. Symlinks, submodules, binaries,
 unresolved merges, and unsupported paths are rejected. Limits are 100,000 files,
@@ -124,3 +125,11 @@ and durable progress. It does not implement SFLO's exact pipeline or Gas City's
 runtime. The optional specialist board is a GFLO planning-policy experiment above
 that core. Its consensus has no acceptance authority. More roles become defaults
 only when measured outcomes justify the additional coordination and model cost.
+
+
+Snapshot capture preserves bounded opaque files, such as existing SQLite databases,
+as immutable blobs. Text reads/search/selections still reject non-UTF-8 or NUL content;
+workers receive only reviewed text selections. This permits unrelated binary assets
+to survive text changes without importing, executing, or pretending to understand them.
+The snapshot record and existing identities are unchanged; only capture admission
+now accepts opaque bytes within the existing limits.

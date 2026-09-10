@@ -225,3 +225,43 @@ each parsed file is capped at 512 KiB, 50,000 AST nodes, 1,000 definitions and 2
 of qualified names. Query output defaults to 100 hits. Source is parsed, never run.
 This is operator-accessible navigation; planners still receive explicit bounded
 context selections. The scheduler does not depend on the index format.
+
+
+Real repository snapshots may include opaque files (for example a tracked SQLite
+database). Capture preserves their exact bytes and identity. Keep them outside text
+context/execution selections: read/search/select reject unsupported text instead of
+silently treating it as absent. Scope text searches to appropriate source directories.
+Unrelated text edits preserve those blobs, and missing/corrupt omitted blobs still
+block candidate assembly. Binary editing and binary worker inputs remain unsupported.
+
+
+Policy builds always use the qualified non-thinking planning profile on the pinned
+model/deployment. `FeaturePolicy.model_profile` selects the worker profile retained
+in the compiled review. This allows an existing reasoning worker without sending
+an unsupported reasoning profile to the planner. Default plain-worker policies and
+their identities are unchanged. Existing escalation profiles retain their fixed
+8K/4K/two-attempt contracts; selecting reasoning does not relax gates or isolation.
+
+The explicit `vllm-python-worker-reasoning-low-v1` worker profile enables thinking
+with low reasoning effort. Its output reserve comes from the policy context budget;
+it is separate from fixed-budget escalation. Reasoning can consume the entire output
+allowance without producing a candidate, so selecting it is not a reliability guarantee.
+The plain worker remains the default.
+
+To recreate the real-repository qualification inputs, clone ai-gamer and check out
+revision `7ccbb585a6097e85416fb109ff5d03a92ce09b88`, then run:
+
+```sh
+.venv/bin/python scripts/prepare_repository_trial.py --fixture .scratch/local-lights-out-factory/ai-gamer-winners-fixture.json --checkout /path/to/ai-gamer --output .gflo/evidence/ai-gamer-fresh
+```
+
+The helper checks both Git revision and complete captured bytes before writing the
+request/policy. It does not execute repository code or call the model. The fixture
+contains the selected trial policy and prior profile/budget variants; see the
+[retained results](../.scratch/local-lights-out-factory/ai-gamer-winners-results.json)
+for failures and qualification scope. Runtime artifacts require separate recreation.
+
+Add `--test-followup` with a fresh output directory to reconstruct the separate test
+trial source from the retained accepted implementation. This checks the resulting
+snapshot identity and leaves the checkout untouched. The follow-up is a distinct
+operator-selected policy, not a successful replay of the original two-task build.

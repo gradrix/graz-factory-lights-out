@@ -268,7 +268,6 @@ def _read_worktree(root: Path, path: str) -> tuple[bytes, bool]:
             != (after.st_size, after.st_mtime_ns, after.st_ctime_ns, after.st_mode)
         ):
             raise RepositoryError("File changed during capture")
-        _text(data)
         return data, bool(before.st_mode & 0o111)
     finally:
         os.close(directory)

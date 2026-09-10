@@ -1,6 +1,33 @@
 # GFLO handoff — repository access foundation
 
-## Current checkpoint — unfamiliar feature and replay qualification, 2026-09-10
+## Current checkpoint — real ai-gamer qualification, 2026-09-10
+
+Owner delegated target/task choice and reaffirmed continuing until actual blockers.
+Chose ai-gamer rule correctness; [draft PR 1](https://github.com/gradrix/ai-gamer/pull/1)
+contains unchanged local-LLM implementation and 17 Codex-authored regression cases.
+Oracle passed all 19,683 3x3 boards plus larger-board probes; new tests reject original.
+All 86 other original files preserved. Issues 40–42 resolved; 410 factory tests and
+25 subtests passed with Docker enabled; ruff/mypy passed.
+
+**No end-to-end autonomous success:** initial plain implementation failed; reasoning
+4K output truncated; low reasoning 6K repaired implementation but test generation
+quarantined. Separate plain tests also failed/truncated/exhausted reads. Reviewer
+finished tests directly. Original task/oracle were prepared and gate feedback exposes
+reference code. See [results](ai-gamer-winners-results.json) and
+[fixture](ai-gamer-winners-fixture.json). Raw evidence is ignored under
+`.gflo/evidence/ai-gamer-winners-v1/`; target checkout `.gflo/targets/ai-gamer`.
+The portable helper reconstructs original or `--test-followup` snapshots from a
+pinned clone without executing target code. Existing legacy tests have stale imports;
+training/server/dashboard remain unqualified.
+
+Factory fixes: snapshot capture preserves opaque blobs; text selections still reject
+them. Policy planning stays plain while workers retain their selected profile.
+Standalone low-reasoning profile is explicit, not a changed default. Next actionable
+work: diagnose read/turn exhaustion before broadening product tasks. Push permission
+persists; license selection remains separate from engineering progress.
+
+
+## Previous checkpoint — unfamiliar feature and replay qualification, 2026-09-10
 
 Issues 38/39 complete. Recursive settings feature passed three fresh builds, nine
 tasks in nine attempts, plus independent final gates. Planning used 1/2/2 calls;

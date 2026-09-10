@@ -462,3 +462,19 @@ def test_escalation_profile_uses_bounded_failure_evidence(prepared, server, retr
     manifest = json.loads(store.read(turn.manifest_digest))
     assert manifest["output_reserved"] == request["max_tokens"]
     assert manifest["total_limit"] == 8192
+
+
+def test_standalone_low_reasoning_uses_explicit_larger_contract(prepared, server):
+    store, atom, source, digest = prepared
+    atom = change_atom(atom, context_budget={"total_tokens": 12288, "output_tokens": 4096})
+    original = client_for(prepared, server)
+    profile = original.profile.model_copy(
+        update={"profile_id": "vllm-python-worker-reasoning-low-v1"}
+    )
+    turn = LocalModel(store, profile).turn(atom, digest, current_inputs=lambda: atom.inputs_digest)
+    tokenize, generate = server[0]["calls"][1][1], server[0]["calls"][2][1]
+    assert tokenize["chat_template_kwargs"] == {"enable_thinking": True, "reasoning_effort": "low"}
+    assert generate["chat_template_kwargs"] == tokenize["chat_template_kwargs"]
+    assert generate["max_tokens"] == 4096
+    manifest = json.loads(store.read(turn.manifest_digest))
+    assert manifest["total_limit"] == 12288 and manifest["output_reserved"] == 4096

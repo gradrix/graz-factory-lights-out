@@ -275,3 +275,27 @@ Docker enabled: 406 tests and 25 subtests passed, no skips; ruff/mypy passed.
 the failure and fix. The [fixture](../.scratch/local-lights-out-factory/navigation-feature-fixture.json)
 reconstructs using `scripts/prepare_policy_trial.py --fixture FIXTURE --output NEW_DIR`.
 Raw evidence stays in ignored `.gflo/evidence/navigation-feature-v1/`.
+
+
+## Real repository trial: ai-gamer, 2026-09-10
+
+A prepared rule-correction task on ai-gamer's 87-file snapshot produced an accepted
+local-model implementation, delivered in [PR 1](https://github.com/gradrix/ai-gamer/pull/1).
+It passed all 19,683 3x3 boards against a trusted reference and larger-board checks;
+86 other original files, including a SQLite database, were preserved. Codex supplied
+17 regression cases after every local test-generation trial halted. Those tests pass
+the candidate and reject the original. This was not an end-to-end factory success.
+
+Initial plain and reasoning trials failed or truncated. Low reasoning with a 12K
+context / 6K output budget repaired the implementation on its second attempt but
+spent both test responses entirely reasoning. Separate plain test trials also failed.
+Task selection, requirements and trusted gates were prepared by Codex; validation
+feedback exposed reference code. These results do not measure unaided task discovery
+or training quality. Legacy gameplay tests cannot collect due to stale imports;
+training, services and dashboard were not exercised.
+
+[Portable results](../.scratch/local-lights-out-factory/ai-gamer-winners-results.json)
+retain all six trial outcomes and attribution. The
+[fixture](../.scratch/local-lights-out-factory/ai-gamer-winners-fixture.json) reconstructs
+original and follow-up snapshots via `scripts/prepare_repository_trial.py`.
+Factory validation at this checkpoint: 410 tests and 25 subtests with Docker enabled.

@@ -117,3 +117,10 @@ Before a supported release:
 
 The repository is public; owner-authorized merges and pushes are underway.
 Public visibility does not imply a supported release or larger-build qualification.
+
+
+The first external repository trial selected ai-gamer: a local-model rule repair
+passed independent checks, but local test generation failed and Codex completed the
+tests. [Evaluation](evaluation.md#real-repository-trial-ai-gamer-2026-09-10) records
+this limit. Next investigate wasted read turns and incomplete outputs before claiming
+reliable whole-feature delivery or moving to more complex products.

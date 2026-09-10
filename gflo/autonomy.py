@@ -200,7 +200,7 @@ def build_feature(
         if not planning.exists():
             planner(
                 request,
-                policy.model_profile,
+                policy.model_profile.model_copy(update={"profile_id": "vllm-python-worker-v1"}),
                 planning,
                 deployment=policy.deployment,
                 repository=repository,

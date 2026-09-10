@@ -166,13 +166,11 @@ def test_capture_dirty_untracked_deleted_and_ignored_files(tmp_path, artifacts):
     assert repo.read("tracked.py").content == "dirty\n"
 
 
-@pytest.mark.parametrize("kind", ["symlink", "binary", "submodule"])
+@pytest.mark.parametrize("kind", ["symlink", "submodule"])
 def test_unsupported_capture_inputs_rejected(tmp_path, artifacts, kind):
     root = worktree(tmp_path)
     if kind == "symlink":
         (root / "link.py").symlink_to(tmp_path / "outside")
-    elif kind == "binary":
-        (root / "binary").write_bytes(b"\0")
     else:
         git(root, "update-index", "--add", "--cacheinfo", "160000," + "a" * 40 + ",nested")
     with pytest.raises((RepositoryError, OSError)):
@@ -319,3 +317,43 @@ def test_cli_capture_and_scoped_search_require_no_ledger(tmp_path, monkeypatch, 
     assert main() == 0
     result = json.loads(capsys.readouterr().out)
     assert result["complete"] and result["hits"][0]["path"] == "tracked.py"
+
+
+@pytest.mark.parametrize("opaque", [b"\0binary", b"\xff\xfe"])
+def test_capture_preserves_opaque_files_without_granting_text_access(tmp_path, artifacts, opaque):
+    root = worktree(tmp_path)
+    (root / "data.db").write_bytes(opaque)
+    captured = capture_worktree(artifacts, root)
+    repo = Repository(SnapshotSource(artifacts, captured))
+    assert repo.source.read_bytes("data.db") == opaque
+    with pytest.raises(RepositoryError, match="Binary|UTF-8"):
+        repo.read("data.db")
+    with pytest.raises(RepositoryError, match="Binary|UTF-8"):
+        repo.select(("data.db",), purpose="execution")
+    with pytest.raises(RepositoryError, match="Binary|UTF-8"):
+        repo.search("needle")
+    # Opaque files survive a separate text edit, including their original identity.
+    changed = repo.apply(
+        artifacts,
+        {"new.py": FileEdit(expected_digest=None, content="pass\n")},
+        current_source=captured,
+        writable_paths=("new.py",),
+    )
+    result = Repository(SnapshotSource(artifacts, changed))
+    assert result.source.files["data.db"] == repo.source.files["data.db"]
+    assert result.source.read_bytes("data.db") == opaque
+
+
+def test_corrupt_omitted_opaque_blob_blocks_unrelated_edit(tmp_path, artifacts):
+    root = worktree(tmp_path)
+    (root / "asset.bin").write_bytes(b"\0opaque")
+    captured = capture_worktree(artifacts, root)
+    repo = Repository(SnapshotSource(artifacts, captured))
+    (artifacts.root / repo.source.files["asset.bin"].content_digest).unlink()
+    with pytest.raises(ArtifactError):
+        repo.apply(
+            artifacts,
+            {"new.py": FileEdit(expected_digest=None, content="pass\n")},
+            current_source=captured,
+            writable_paths=("new.py",),
+        )

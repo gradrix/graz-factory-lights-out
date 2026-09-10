@@ -16,7 +16,7 @@ def configure(parser: argparse.ArgumentParser) -> None:
     parser.add_argument("--store", type=Path, required=True)
     actions = parser.add_subparsers(dest="repository_action", required=True)
     capture = actions.add_parser(
-        "capture", help="Capture Git-visible UTF-8 files from a quiescent worktree"
+        "capture", help="Capture Git-visible file bytes from a quiescent worktree"
     )
     capture.add_argument("root", type=Path)
     for name in ("list", "read", "search", "select", "apply", "index-symbols", "symbols"):

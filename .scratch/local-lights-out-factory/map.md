@@ -166,3 +166,11 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
 - [Issue 39](issues/39-stabilize-reviewed-gate-order.md): canonical JSON exposed
   gate-order replay instability. New order is deterministic; historical contracts
   are replayed exactly after strict equality checks for all non-order content.
+
+- [Issue 40](issues/40-qualify-ai-gamer-win-detection.md): real bug fix delivered as
+  target draft PR; local implementation passed, reviewer supplied tests after worker
+  failures. No end-to-end autonomous success claimed.
+- [Issue 41](issues/41-preserve-opaque-snapshot-files.md): captured SQLite and other
+  opaque blobs survive text changes; bounded text APIs still reject opaque inputs.
+- [Issue 42](issues/42-separate-policy-planning-worker-profile.md): planning/worker
+  profiles separated; standalone low reasoning supported but not a better default.
