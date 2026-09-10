@@ -12,7 +12,7 @@ from pydantic import Field
 
 from gflo.artifacts import ArtifactStore
 from gflo.broker import DockerBroker
-from gflo.contracts import CONTRACT_PROFILES, WINDOW_PROFILE, task_interfaces
+from gflo.contracts import CONTRACT_PROFILES, WINDOW_PROFILE, WINDOW_PROFILES, task_interfaces
 from gflo.escalation import pending_review, review_handoff
 from gflo.gates import ProcessGate
 from gflo.ledger import WorkLedger
@@ -214,7 +214,7 @@ def build_feature(
                     update={
                         "profile_id": (
                             WINDOW_PROFILE
-                            if policy.model_profile.profile_id == WINDOW_PROFILE
+                            if policy.model_profile.profile_id in WINDOW_PROFILES
                             else "vllm-python-worker-v1"
                         )
                     }

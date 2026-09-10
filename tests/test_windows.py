@@ -10,6 +10,7 @@ from test_worker import prepared as prepared
 from test_worker import server as server
 
 from gflo.broker import SourceBundle
+from gflo.contracts import WINDOW_PROFILES, WINDOW_REASONING_PROFILE
 from gflo.ledger import WorkLedger
 from gflo.windows import WINDOW_PROFILE, WindowRead, parse_window_result, window_view
 from gflo.worker import CandidateResult, WorkerError
@@ -119,11 +120,10 @@ def test_large_file_projection_is_bounded_and_navigable(prepared):
     assert result.changes["main.py"] == text.replace("return 41", "return 42")
 
 
-def test_controller_advances_window_read_then_runs_complete_gates(tmp_path, plan):
+@pytest.mark.parametrize("profile", WINDOW_PROFILES)
+def test_controller_advances_window_read_then_runs_complete_gates(tmp_path, plan, profile):
     plan = plan.model_copy(
-        update={
-            "model_profile": plan.model_profile.model_copy(update={"profile_id": WINDOW_PROFILE})
-        }
+        update={"model_profile": plan.model_profile.model_copy(update={"profile_id": profile})}
     )
     with WorkLedger(tmp_path / "ledger.db") as ledger:
         controller, model, broker = setup(
@@ -456,3 +456,80 @@ def test_failure_windows_keep_explicit_reads_and_total_limits(prepared):
         o["reason"] == "Source window count budget exhausted"
         for o in view.instruction["window_omissions"]
     )
+
+
+@pytest.mark.parametrize("overflow", [False, True])
+def test_reasoning_windows_bind_effort_budget_and_exact_edits(prepared, server, overflow):
+    from test_worker import change_atom, client_for
+
+    from gflo.model import LocalModel, ModelError
+
+    store, atom, source, digest = prepared
+    atom = change_atom(atom, context_budget={"total_tokens": 16384, "output_tokens": 6144})
+    original = client_for(prepared, server)
+    client = LocalModel(
+        store, original.profile.model_copy(update={"profile_id": WINDOW_REASONING_PROFILE})
+    )
+    if overflow:
+        server[0]["count"] = 10241
+
+    def mutate(response):
+        view = json.loads(server[0]["calls"][-1][1]["messages"][1]["content"])
+        handle = next(
+            k for k, t in view["instruction"]["source_windows"].items() if t["path"] == "main.py"
+        )
+        response["choices"][0]["message"]["content"] = edit(handle)
+        response["choices"][0]["message"]["reasoning"] = "Untrusted reasoning is not an edit"
+        return response
+
+    server[0]["mutate"] = mutate
+    if overflow:
+        with pytest.raises(ModelError, match="budget"):
+            client.turn(atom, digest, current_inputs=lambda: atom.inputs_digest)
+        assert len(server[0]["calls"]) == 2
+        return
+    turn = client.turn(atom, digest, current_inputs=lambda: atom.inputs_digest)
+    tokenize, generate = server[0]["calls"][1][1], server[0]["calls"][2][1]
+    assert tokenize["chat_template_kwargs"] == {"enable_thinking": True, "reasoning_effort": "low"}
+    assert generate["chat_template_kwargs"] == tokenize["chat_template_kwargs"]
+    assert generate["max_tokens"] == 6144
+    manifest = json.loads(store.read(turn.manifest_digest))
+    assert manifest["output_reserved"] == 6144 and manifest["total_limit"] == 16384
+    assert turn.result.changes == {"main.py": "print('fixed')\n"}
+
+
+@pytest.mark.parametrize(
+    "finish,valid_usage", [("length", True), ("length", False), ("stop", True)]
+)
+def test_reasoning_only_truncation_preserves_accounting_and_protocol(
+    prepared, server, finish, valid_usage
+):
+    from test_worker import client_for
+    from gflo.model import LocalModel, ModelError
+
+    store, atom, _, digest = prepared
+    old = client_for(prepared, server)
+    client = LocalModel(
+        store, old.profile.model_copy(update={"profile_id": WINDOW_REASONING_PROFILE})
+    )
+
+    def mutate(response):
+        response["choices"][0]["finish_reason"] = finish
+        response["choices"][0]["message"]["content"] = None
+        response["choices"][0]["message"]["reasoning"] = "No completed candidate"
+        if not valid_usage:
+            response["usage"]["prompt_tokens"] += 1
+        return response
+
+    server[0]["mutate"] = mutate
+    error, match = (WorkerError, "No partial output was applied")
+    if finish == "stop":
+        error, match = ModelError, "Incomplete or unsupported"
+    elif not valid_usage:
+        error, match = ModelError, "Token accounting"
+    with pytest.raises(error, match=match):
+        client.turn(atom, digest, current_inputs=lambda: atom.inputs_digest)
+    assert client.last_evidence_digest
+    legacy = LocalModel(store, old.profile.model_copy(update={"profile_id": WINDOW_PROFILE}))
+    with pytest.raises(ModelError, match="Incomplete or unsupported"):
+        legacy.turn(atom, digest, current_inputs=lambda: atom.inputs_digest)

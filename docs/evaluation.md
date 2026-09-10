@@ -754,3 +754,23 @@ comparison does not establish that automatic repair context caused better comple
 Model, deployment and retry budgets were unchanged. Supervised task/validator preparation,
 failed preflights, every model response and both campaigns are retained in the
 [portable qualification](../.scratch/local-lights-out-factory/atomic-moves/README.md).
+
+## Bounded reasoning windows (2026-09-10)
+
+A frozen comparison used the same model, source, independent gates, two attempts,
+three turns per attempt, and 16,384 total / 6,144 output tokens in both conditions.
+Low reasoning accepted 1/3 complete SQLite features versus 0/3 non-reasoning;
+both accepted 0/2 retained-draft repairs. The accepted feature passed independent
+commit-failure recovery and replay without new events. All requests passed the
+wire-settings/budget audit. Control spent 170,118 tokens / 284.49 model seconds;
+reasoning spent 142,726 / 764.37. Earlier reasoning halts explain its lower total
+input/output token use; completion tokens were 45,165 versus 15,759.
+
+Two reasoning test workers consumed their output allowance entirely in reasoning,
+returning null content that bypassed the decoder's bounded truncation-retry path.
+The narrow recovery fix was tested in two fresh unchanged-plan follow-ups: both
+reached bounded retry, but neither completed the feature. One exhausted retries on
+invented helper signatures; the other on another truncation. They used 13 responses,
+109,344 tokens and 593.50 model seconds; wire/budget audits passed. No default
+profile upgrade or general reliability ranking follows from this sample.
+[Portable plans, drafts and all outcomes](../.scratch/local-lights-out-factory/window-reasoning/README.md).

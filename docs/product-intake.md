@@ -486,6 +486,13 @@ necessary. Review does not add policy or authorize execution.
 ## Bounded worker source windows
 
 Opt into `vllm-python-worker-windows-v1` in the model profile for prepared Python tasks.
+The separate `vllm-python-worker-windows-reasoning-low-v1` profile enables low-effort
+reasoning on every worker turn while retaining the same window/edit protocol. Select
+its context and output reservation explicitly in the reviewed budget; reasoning uses
+that output allowance and does not grant extra turns or attempts. Tokenization and
+generation retain identical template settings in wire evidence. `build-feature` keeps
+planning on the non-reasoning window profile even when its workers use reasoning.
+Existing profiles keep their previous behavior; selecting reasoning is opt-in.
 It retains structured interface contracts and original requirements. Preparation records
 `window-context-v1` and requires a context byte allowance of at least 12,000. Existing
 profiles and their replay records keep their previous interpretation.

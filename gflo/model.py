@@ -19,7 +19,7 @@ from pydantic import Field, model_validator
 
 from gflo.artifacts import ArtifactStore
 from gflo.broker import SourceBundle
-from gflo.contracts import CONTRACT_PROFILES
+from gflo.contracts import CONTRACT_PROFILES, WINDOW_PROFILES, WINDOW_REASONING_PROFILE
 from gflo.records import Digest, Record, WorkAtom
 from gflo.windows import (
     WINDOW_PROFILE,
@@ -56,6 +56,7 @@ class ModelProfile(Record):
         "vllm-python-worker-v1",
         "vllm-python-worker-repair-v1",
         "vllm-python-worker-windows-v1",
+        "vllm-python-worker-windows-reasoning-low-v1",
         "vllm-python-worker-contracts-v1",
         "vllm-python-worker-contracts-v2",
         "vllm-python-worker-reasoning-v1",
@@ -242,7 +243,7 @@ class LocalModel:
             self.artifacts.verify(self.profile.deployment_digest)
             if current_inputs() != atom.inputs_digest:
                 raise WorkerError("Stale inputs before model turn")
-            windows = self.profile.profile_id == WINDOW_PROFILE
+            windows = self.profile.profile_id in WINDOW_PROFILES
             if window_reads and not windows:
                 raise WorkerError("Window reads require the window profile")
             view = compose_view(
@@ -321,6 +322,7 @@ class LocalModel:
             thinking = self.profile.profile_id in (
                 "vllm-python-worker-reasoning-v1",
                 "vllm-python-worker-reasoning-low-v1",
+                WINDOW_REASONING_PROFILE,
             ) or (escalating and bool(diagnostic_digests))
             reserve = 2048 if escalating and not thinking else atom.context_budget.output_tokens
             if remaining_model_turns is not None:
@@ -373,6 +375,7 @@ class LocalModel:
             }
             if thinking and self.profile.profile_id in (
                 "vllm-python-worker-reasoning-low-v1",
+                WINDOW_REASONING_PROFILE,
                 "vllm-python-worker-escalating-low-v1",
                 "vllm-python-worker-escalating-tools-v1",
             ):
@@ -427,7 +430,14 @@ class LocalModel:
                 or message.get("role") != "assistant"
                 or message.get("tool_calls")
                 or message.get("refusal")
-                or not isinstance(message.get("content"), str)
+                or (
+                    not isinstance(message.get("content"), str)
+                    and not (
+                        self.profile.profile_id == WINDOW_REASONING_PROFILE
+                        and choice.get("finish_reason") == "length"
+                        and message.get("content") is None
+                    )
+                )
             ):
                 raise ModelError("Incomplete or unsupported worker response")
             usage = response.get("usage")

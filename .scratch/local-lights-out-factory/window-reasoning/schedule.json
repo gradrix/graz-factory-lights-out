@@ -1,0 +1,62 @@
+[
+  {
+    "name": "feature-1-control",
+    "plan_digest": "b448d5f8bcbf38835e1f40ba2ed580d854790e6c51c10a47e608283566fdbd92",
+    "responses_reserved": 12,
+    "tokens_reserved": 196608
+  },
+  {
+    "name": "feature-1-reasoning",
+    "plan_digest": "b6e8d3a30ad87ad5b60da1680d4aa78fecab06350e9655b7996a8fc2ee0e0a8b",
+    "responses_reserved": 12,
+    "tokens_reserved": 196608
+  },
+  {
+    "name": "feature-2-reasoning",
+    "plan_digest": "2cf51e0c744f231139050a436b9888252486f64143e5318dc45febf9f73b5e16",
+    "responses_reserved": 12,
+    "tokens_reserved": 196608
+  },
+  {
+    "name": "feature-2-control",
+    "plan_digest": "3d19decdaa83c97e5c56a401d0f4e8439436366479aa975af68e90ec27c4c380",
+    "responses_reserved": 12,
+    "tokens_reserved": 196608
+  },
+  {
+    "name": "feature-3-control",
+    "plan_digest": "237b8ba6205e870192a28225420ced5e840e5b8ecdb9fbacd54a46aec3dd7a04",
+    "responses_reserved": 12,
+    "tokens_reserved": 196608
+  },
+  {
+    "name": "feature-3-reasoning",
+    "plan_digest": "b47915a422f26d753cb1a9d75a46c9145c073b9688e19f39fbb572e80fc7cd85",
+    "responses_reserved": 12,
+    "tokens_reserved": 196608
+  },
+  {
+    "name": "repair-1-control",
+    "plan_digest": "a1911da2967a64e4755a436daf4b4b37a2810a9f84954273a50ad47c17e7a40f",
+    "responses_reserved": 6,
+    "tokens_reserved": 98304
+  },
+  {
+    "name": "repair-1-reasoning",
+    "plan_digest": "12bedc404379c70990aec0ea629ae6949e0cc3205e8ac5a85ae1bcd75d87d6c9",
+    "responses_reserved": 6,
+    "tokens_reserved": 98304
+  },
+  {
+    "name": "repair-2-reasoning",
+    "plan_digest": "d45d9522310a1e614e673523e42691d4e45da18fc42e373a1696d676f092508b",
+    "responses_reserved": 6,
+    "tokens_reserved": 98304
+  },
+  {
+    "name": "repair-2-control",
+    "plan_digest": "69cfca306be4c0bde1ff25d9e16a6f557217087619300924ac1bce28c954a90c",
+    "responses_reserved": 6,
+    "tokens_reserved": 98304
+  }
+]

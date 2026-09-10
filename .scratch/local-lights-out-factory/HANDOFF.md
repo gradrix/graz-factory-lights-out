@@ -1,6 +1,26 @@
 # GFLO handoff — repository access foundation
 
-## Current checkpoint — stateful SQLite repair and failure windows, 2026-09-10
+## Current checkpoint — bounded window reasoning, 2026-09-10
+
+Issues 66/67 resolved. Added opt-in vllm-python-worker-windows-reasoning-low-v1:
+low reasoning every worker turn with matching tokenizer/generation settings and
+explicit output reservation; planning stays non-reasoning. Existing profiles unchanged.
+
+Frozen ten-run comparison (same model/source/gates, 16384 total/6144 output tokens,
+two attempts, three turns): full features reasoning 1/3 vs control 0/3; retained
+repairs 0/2 both. Accepted result passed held-out commit recovery and unchanged replay.
+A null-content length response exposed a protocol bug, now fixed only for the new
+profile. Two fresh same-plan follow-ups exercised bounded retry but accepted 0/2:
+one failed invented helper signatures, one exhausted another output allowance.
+[Portable inputs, costs and all outcomes](window-reasoning/README.md). No manual model
+candidate repairs, model/deployment changes, policy upgrades or historical resets.
+
+515 tests/25 subtests, lint/typing and four historical replays pass. Next: issue 68,
+inspect actual manifest visibility and revision-bound definition grounding before
+changing repair context. Reliability remains primary; reasoning is not a default.
+No human decision required for that investigation; push/merge authorization persists.
+
+## Previous checkpoint — stateful SQLite repair and failure windows, 2026-09-10
 
 Issues 64/65 resolved. ai-gamer PR 2 merged at d278d7c7f59da72ea48d4b106ba4d41e67949c0a.
 The local model fixed addMoves batch rollback and wrote five tests. Published bytes

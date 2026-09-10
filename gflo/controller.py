@@ -12,14 +12,14 @@ from typing import Annotated, Any
 from pydantic import Field, model_validator
 
 from gflo.broker import BrokerError, DockerBroker, SourceBundle
-from gflo.contracts import CONTRACT_PROFILES
+from gflo.contracts import CONTRACT_PROFILES, WINDOW_PROFILES
 from gflo.escalation import pending_review
 from gflo.feedback import validation_feedback
 from gflo.gates import ProcessGate, run_gate
 from gflo.ledger import Conflict, WorkLedger
 from gflo.model import LocalModel, ModelError, ModelProfile
 from gflo.records import Acceptance, Lease, Record, RetryPlan, WorkAtom
-from gflo.windows import WINDOW_PROFILE, WindowRead
+from gflo.windows import WindowRead
 from gflo.worker import (
     CandidateResult,
     ContractConflict,
@@ -298,7 +298,7 @@ class Controller:
         selected = plan.selected_paths
         source_digest = plan.source.digest()
         diagnostics = (diagnostic,) if diagnostic else ()
-        windows = plan.model_profile.profile_id == WINDOW_PROFILE
+        windows = plan.model_profile.profile_id in WINDOW_PROFILES
         window_reads: tuple[WindowRead, ...] = ()
         contracts = windows or plan.model_profile.profile_id in CONTRACT_PROFILES
         repair = contracts or plan.model_profile.profile_id == "vllm-python-worker-repair-v1"

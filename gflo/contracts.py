@@ -12,7 +12,9 @@ from gflo.records import Digest, Identifier, Record, Text
 CONTRACT_PROFILE = "vllm-python-worker-contracts-v1"
 DEPENDENCY_CONTRACT_PROFILE = "vllm-python-worker-contracts-v2"
 WINDOW_PROFILE = "vllm-python-worker-windows-v1"
-CONTRACT_PROFILES = (CONTRACT_PROFILE, DEPENDENCY_CONTRACT_PROFILE, WINDOW_PROFILE)
+WINDOW_REASONING_PROFILE = "vllm-python-worker-windows-reasoning-low-v1"
+WINDOW_PROFILES = (WINDOW_PROFILE, WINDOW_REASONING_PROFILE)
+CONTRACT_PROFILES = (CONTRACT_PROFILE, DEPENDENCY_CONTRACT_PROFILE, *WINDOW_PROFILES)
 
 
 class InterfaceDeclaration(Record):

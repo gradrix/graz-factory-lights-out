@@ -9,7 +9,12 @@ from pydantic import Field
 
 from gflo.artifacts import ArtifactStore
 from gflo.broker import SourceBundle
-from gflo.contracts import CONTRACT_PROFILES, DEPENDENCY_CONTRACT_PROFILE, task_interfaces
+from gflo.contracts import (
+    CONTRACT_PROFILES,
+    DEPENDENCY_CONTRACT_PROFILE,
+    WINDOW_PROFILES,
+    task_interfaces,
+)
 from gflo.controller import RunPlan
 from gflo.gates import ProcessGate
 from gflo.model import ModelProfile
@@ -17,7 +22,7 @@ from gflo.planning import PlanProposal, _paths, validate_tasks
 from gflo.planning import RepositoryFeatureRequest as RepositoryFeatureRequest
 from gflo.records import ContextBudget, Digest, Identifier, Record, WorkAtom
 from gflo.repository import FileEdit, Repository, Selection, SnapshotSource, SourceRef
-from gflo.windows import WINDOW_PROFILE, WindowContext
+from gflo.windows import WindowContext
 from gflo.worker import InputSnapshot, within
 
 
@@ -118,7 +123,7 @@ def _materialize(
         policy.execution_paths, purpose="execution", max_bytes=policy.execution_bytes
     )
     context: Selection | WindowContext
-    if review.model_profile.profile_id == WINDOW_PROFILE:
+    if review.model_profile.profile_id in WINDOW_PROFILES:
         if policy.context_bytes < 12000:
             raise ValueError("Window profile requires its 12000-byte source context allowance")
         context = WindowContext(source=source, initial_paths=policy.context_paths)
@@ -154,7 +159,7 @@ def _materialize(
             task.interface_contracts, task.read_paths + task.writable_paths, task.requirement_ids
         )
     requirement_ids = task.requirement_ids
-    if review.model_profile.profile_id in (DEPENDENCY_CONTRACT_PROFILE, WINDOW_PROFILE):
+    if review.model_profile.profile_id in (DEPENDENCY_CONTRACT_PROFILE, *WINDOW_PROFILES):
         tasks = {t.task_id: t for t in proposal.tasks}
         ancestors: set[str] = set()
         pending = list(task.depends_on)

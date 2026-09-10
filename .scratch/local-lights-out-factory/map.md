@@ -286,3 +286,15 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
   full-feature acceptance 0/3; failure-local windows 1/3 with identical policies.
   [Evidence and limits](atomic-moves/README.md). Next: issue 66 bounded window reasoning;
   two failures still held wrong behavior assumptions despite current source context.
+
+- Issue 66 resolved: opt-in low-reasoning windows implemented. Frozen comparison:
+  full features 1/3 reasoning versus 0/3 control; retained repairs 0/2 for both.
+  Accepted held-out audit and unchanged replay pass; all wire settings verified.
+  [Evidence](window-reasoning/README.md). Issue 67 fixes reasoning-only null-content
+  truncation bypassing the existing finite retry path. No default policy upgrade.
+
+- Issue 67 resolved: accounted reasoning-only truncation reaches bounded retry.
+  Two fresh unchanged-plan follow-ups exercised recovery but accepted 0/2 complete
+  features (helper-signature failure / repeated truncation). No partial edits or
+  budget reset. [Evidence](window-reasoning/README.md). Next: issue 68 investigates
+  revision-bound definition grounding; no default reasoning upgrade.

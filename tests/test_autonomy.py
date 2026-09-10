@@ -291,3 +291,51 @@ def test_policy_version_pins_integration_semantics(tmp_path, version):
         restored = FeaturePolicy.model_validate_json(policy.canonical())
         assert restored.digest() == policy.digest()
         assert compile_feature(ledger.artifacts, plan.request, plan.proposal, restored) == compiled
+
+
+def test_reasoning_window_policy_keeps_planning_nonthinking(tmp_path):
+    from gflo.contracts import WINDOW_PROFILE, WINDOW_REASONING_PROFILE, InterfaceBundle
+
+    with WorkLedger(tmp_path / "ledger") as ledger:
+        plan = feature(ledger)
+        proposal = plan.proposal.model_copy(
+            update={
+                "tasks": tuple(
+                    task.model_copy(
+                        update={
+                            "interface_contracts": (InterfaceBundle(declarations=()).canonical(),)
+                        }
+                    )
+                    for task in plan.proposal.tasks
+                )
+            }
+        )
+        plan = plan.model_copy(update={"proposal": proposal})
+        policy = policy_for(plan)
+        policy = policy.model_copy(
+            update={
+                "model_profile": policy.model_profile.model_copy(
+                    update={"profile_id": WINDOW_REASONING_PROFILE}
+                )
+            }
+        )
+        calls = []
+
+        def planner(request, profile, output, **kwargs):
+            assert profile.profile_id == WINDOW_PROFILE
+            return planner_for(plan, calls)(request, profile, output, **kwargs)
+
+        services = Services()
+        result = build_feature(
+            ledger,
+            plan.request,
+            policy,
+            tmp_path / "build",
+            lambda: plan.request.source,
+            planner=planner,
+            model_factory=services.model,
+            broker_factory=services.broker,
+        )
+        assert result["status"] == "accepted" and len(calls) == 1
+        compiled = json.loads((tmp_path / "build/feature-plan.json").read_text())
+        assert compiled["review"]["model_profile"]["profile_id"] == WINDOW_REASONING_PROFILE

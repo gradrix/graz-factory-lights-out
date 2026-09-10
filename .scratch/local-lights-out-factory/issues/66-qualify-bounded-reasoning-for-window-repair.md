@@ -1,7 +1,7 @@
 # Qualify bounded reasoning for window repair
 
 Type: task
-Status: ready-for-agent
+Status: resolved
 Blocked by: 65
 
 ## Evidence
@@ -29,3 +29,16 @@ source, requirements, gates and held-out commit checks; do not add SQLite-specif
 prompt instructions or manually fix candidates. Preflight budgets and request fields,
 then report every acceptance, failure, intervention and post-audit result. A small
 qualification cannot establish a general model/profile ranking.
+
+## Answer
+
+Added explicit `vllm-python-worker-windows-reasoning-low-v1` with low reasoning on every
+worker turn, matching tokenizer/generation settings and caller-reviewed reservations.
+Planning remains non-reasoning; existing profiles, gates and replay remain unchanged.
+
+Frozen equal-budget comparison: full features control 0/3 versus reasoning 1/3;
+retained repairs 0/2 in both. The accepted feature passed held-out commit recovery
+and unchanged replay. All wire/budget audits passed. [Portable evidence](../window-reasoning/README.md)
+contains every result and reproducing inputs. This does not justify a default upgrade.
+Reasoning-only output truncation exposed a confirmed decoder failure; issue 67 handles
+it separately without changing these results or resetting historical attempts.
