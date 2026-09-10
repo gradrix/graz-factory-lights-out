@@ -449,3 +449,26 @@ adequacy tests passed, as did ruff/mypy. The preceding full Docker-enabled suite
 passed 445 tests and 25 subtests. No factory runtime code changed in this trial.
 
 The selected change is merged in [leds-service PR 11](https://github.com/gradrix/leds-service/pull/11).
+
+## Repair system-instruction correction, 2026-09-10
+
+Retained traces exposed a protocol contradiction: repair workers received the legacy
+system instruction requesting complete file replacements, while user instructions
+and parser enforcement required exact edits for existing files. Two rejected full-file
+responses carried that contradiction. A LocalModel transport regression failed before
+the fix and passed after a dedicated repair system message was introduced. Default
+worker instructions and parser/hash/scope enforcement remain unchanged.
+
+A fresh build of the same corrected color fixture passed with the same model and
+budgets. Planning reproduced its previous retry. Implementation used four responses
+over two attempts (one malformed hash remains), and tests passed in one response.
+The preceding build used five implementation responses and one test response. This
+single comparison does not establish improved failure rates. Eleven generated tests,
+independent reference/fault gates and replay pass; 85 other original files remain
+unchanged. No further target-product changes were published.
+
+[Results](../.scratch/local-lights-out-factory/repair-system-results.json) retain the
+conflicting traces, exact old/new system messages and fresh trial, including failed
+responses and raw usage. Reconstruct with the existing corrected color fixture.
+All 446 tests and 25 subtests passed with Docker enabled; ruff and mypy passed.
+Hash-copy errors and planning retries remain open reliability limitations.

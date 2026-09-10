@@ -287,7 +287,7 @@ class LocalModel:
             template_kwargs: dict[str, Any] = {"enable_thinking": thinking}
             chat = {
                 "model": self.profile.model,
-                "messages": messages(view),
+                "messages": messages(view, repair=repair),
                 "chat_template_kwargs": template_kwargs,
             }
             if thinking and self.profile.profile_id in (

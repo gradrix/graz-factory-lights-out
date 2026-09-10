@@ -1,6 +1,29 @@
 # GFLO handoff — repository access foundation
 
-## Current checkpoint — prospective color feature, 2026-09-10
+## Current checkpoint — repair system instructions, 2026-09-10
+
+Issue 50 fixed a confirmed contradiction: repair workers received the legacy system
+message requesting full-file candidates while their user instructions/parser required
+exact edits. Dedicated REPAIR_SYSTEM is explicitly selected by LocalModel; default
+messages and hash/scope/parser enforcement unchanged. Tokenization and generation
+use identical corrected messages. Red/green transport regression and retained-trace
+replay verify the contradiction.
+
+Fresh same-policy corrected color build accepted: four implementation responses over
+two attempts, one test response. A malformed hash still needed retry; planning also
+retried. Eleven tests, independent reference/fault gates, 85-file preservation and
+no-call replay pass. No target changes shipped from this repeat. All 446 tests and
+25 subtests pass with Docker enabled; ruff/mypy pass.
+
+[Results](repair-system-results.json) retain old/new messages, rejected traces and
+fresh outcomes. Use leds-color-v2-fixture.json with prepare_repository_trial.py for
+reconstruction. Raw run .gflo/evidence/leds-color-protocol-v3; diagnostic harness in
+.gflo/evidence/repair-system-diagnosis. This fixes an instruction bug; a single trial
+does not prove improved failure rates. Next consider controller-bound short edit
+handles to eliminate manual hash copying, and planner source-reference reliability.
+Same-model constraint and push/merge authorization persist.
+
+## Previous checkpoint — prospective color feature, 2026-09-10
 
 Issue 49: new leds-service Color.fromHex feature, strict six ASCII hex digits with
 optional # and surrounding whitespace; preserve white fallback and channel order.

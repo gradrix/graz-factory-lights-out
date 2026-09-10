@@ -209,3 +209,8 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
   succeeded on a separately recorded build after reference cases were split to expose
   mutation crashes. Local planning/implementation retried; all 11 local tests passed
   first response. Original failure retained. Reference preparation still needs review.
+
+- [Issue 50](issues/50-align-repair-system-protocol.md): fixed contradictory legacy
+  system message for repair workers. Same-policy color build passes; malformed hash
+  still causes retry. Default protocol and enforcement unchanged; no reliability-rate
+  claim from one trial. Investigate bound edit handles and planner source references.

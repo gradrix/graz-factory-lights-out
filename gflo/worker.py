@@ -93,6 +93,23 @@ The controller validates your proposal; independent gates decide acceptance.
 """
 
 
+REPAIR_SYSTEM = SYSTEM.replace(
+    "Context policy: bounded-python-v4.",
+    "Context policy: bounded-python-repair-v1.",
+).replace(
+    'To propose edits, use this shape with complete replacement file text:\n'
+    '{"schema_version":1,"kind":"candidate","changes":{"path.py":"file text"}}.',
+    'For EXISTING files, including files in a retained draft, return small exact edits:\n'
+    '{"schema_version":1,"kind":"repair","edits":[{"path":"path.py",'
+    '"expected_digest":"copy the full current SHA256 from sources",'
+    '"old":"unique exact text","new":"replacement"}]}.\n'
+    'For NEW files only, return '
+    '{"schema_version":1,"kind":"candidate","changes":{"path.py":"file text"}}.\n'
+    'Never return candidate for a path already present in source_files. '
+    'Do not abbreviate hashes. Keep combined old/new text within 8192 bytes.',
+)
+
+
 def within(path: str, scopes: tuple[str, ...]) -> bool:
     return any(path == scope or path.startswith(scope + "/") for scope in scopes)
 
@@ -187,8 +204,11 @@ def compose_view(
     )
 
 
-def messages(view: WorkerView) -> list[dict[str, str]]:
-    return [{"role": "system", "content": SYSTEM}, {"role": "user", "content": view.canonical()}]
+def messages(view: WorkerView, *, repair: bool = False) -> list[dict[str, str]]:
+    return [
+        {"role": "system", "content": REPAIR_SYSTEM if repair else SYSTEM},
+        {"role": "user", "content": view.canonical()},
+    ]
 
 
 def strict_json(content: str | bytes) -> Any:

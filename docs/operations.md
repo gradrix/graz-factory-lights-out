@@ -220,3 +220,10 @@ Reviewed task and final-validation gate order is deterministic across JSON mappi
 order. For older runs, replay preserves the exact retained gate ordering after
 checking that gate specifications and all other contract fields match. It does not
 rewrite historical acceptance or permit changed gates/budgets under an existing ID.
+
+The repair worker uses a dedicated system instruction matching its enforced response
+protocol: exact edits for existing files (including retained drafts), full candidates
+only for new files. Default workers retain their existing system instruction. Token
+counts and generation use the same messages, and recorded requests preserve the exact
+instruction used by each historical run. This does not change hash/scope checks or
+retry limits. Invalid full-file responses remain rejected by the repair parser.

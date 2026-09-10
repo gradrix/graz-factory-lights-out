@@ -604,6 +604,9 @@ def test_local_model_repairs_tokenized_draft_against_its_hash(prepared, server):
     view = json.loads(generate["messages"][1]["content"])
     assert view["source_digest"] == digest
     assert view["source_files"]["main.py"] == draft.files["main.py"]
+    system = generate["messages"][0]["content"]
+    assert "For EXISTING files" in system
+    assert "complete replacement file text" not in system
 
 
 def test_repair_protocol_requires_small_edits_for_existing_files(prepared):
