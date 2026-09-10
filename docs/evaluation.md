@@ -713,3 +713,21 @@ fault checks unchanged. Three fresh local-model solo trials accepted, including 
 two-response draft repair. Original input files remain protected by exact window edits.
 These small trials verify the regression, not general reliability.
 [Portable evidence](../.scratch/local-lights-out-factory/draft-repair/README.md).
+
+## Full per-worker retries and integration provenance (2026-09-10)
+
+New v2 integration records cover every feature requirement and accepted contribution,
+without inheriting a worker's tools. Explicit v1 policies and plans preserve replay.
+503 tests and 25 subtests pass, including both version paths; four historical campaigns
+replayed with zero new events.
+
+Six frozen same-model trials gave every worker two attempts of three turns. Solo
+accepted 3/3; two specialists accepted 2/3 despite twice the aggregate response allowance.
+The value specialist in the failed trial invented behavior contrary to the actual code
+and exhausted both attempts. Checks caught it. Default coverage was required by the
+pinned gates, and all five accepted features passed assigned/combined default and
+held-out subclass audits. Accepted replay added no events. No manual candidate fixes.
+
+Actual tokens were 14,348 for solo and 50,844 for split; reliability is the primary
+comparison. This small sample demonstrates no specialist advantage on this workload,
+not a general ranking. [Full results and retained failure](../.scratch/local-lights-out-factory/full-worker-budgets/README.md).

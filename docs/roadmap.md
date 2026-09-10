@@ -18,10 +18,11 @@ are recorded in [evaluation](evaluation.md) and portable development evidence.
 
 ## Next priorities
 
-1. Improve worker draft repair, particularly newly created files. The final planner
-   recovery campaign passed all six planning runs and two of three full features;
-   worker failures remain. Prioritize reliable completion and coverage over token
-   savings, and compare specialists with full per-worker retry budgets after this fix.
+1. Improve repair reliability when a fix introduces different incorrect behavior.
+   Task-created draft replacement is fixed, and final integration now records all
+   feature requirements. A full-retry comparison accepted 3/3 solo runs and 2/3 split
+   runs; independent audits passed all accepted features. Keep one worker for this
+   workload while broadening evidence; prioritize reliability over token savings.
 2. Qualify repeated features across different real repositories and uncertain
    interfaces. Measure complete feature success, retries, model cost and review
    effort. Planning JSON reliability and source-selection sufficiency remain open.

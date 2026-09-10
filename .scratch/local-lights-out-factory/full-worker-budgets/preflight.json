@@ -1,0 +1,209 @@
+[
+  {
+    "scope": "all",
+    "execution": {
+      "schema_version": 1,
+      "candidate_digest": "ea9ad7d0d818a31b57da1c761181a3b0830f0999cddc157615351a3b7527b7cd",
+      "image_id": "sha256:695d05883b15326aea01e9266067ff58c41f3eaa4f647cfc9424b403dbe9548d",
+      "container_id": "ed84d38b7682c5eee415fd407c16d8dd30e3f6ca6f8d388fa29dce17ff09a5ba",
+      "command": [
+        "python",
+        "-B",
+        "-c",
+        "import ast,hashlib,json,subprocess,sys\nfrom pathlib import Path\npaths=['tests/test_all.py']\nfaults=['unclamped', 'constant', 'caller', 'permissive']\noriginal={p:Path(p).read_text() for p in ['large.py','consumer.py']}\nassert {p:hashlib.sha256(t.encode()).hexdigest() for p,t in original.items()} == {'large.py': 'dc6328504b1a0efe732ce021c91577762103f5f009b7ffc55ce65c5254bb0c83', 'consumer.py': '4a87c82f9a932412c44348bb20a1b638f47e9f27467e624c0c20b04bc1dbd579'}\nnode=next(n for n in ast.parse(original['large.py']).body if isinstance(n,ast.FunctionDef) and n.name=='chosen_value')\nlines=original['large.py'].splitlines(keepends=True)\nprefix=''.join(lines[:node.lineno-1]); suffix=''.join(lines[node.end_lineno:])\nfor fault in ['correct']+faults:\n    changed=dict(original)\n    if fault=='unclamped':changed['large.py']=prefix+'def chosen_value(value=42):\\n    if type(value) is not int: raise TypeError()\\n    return value\\n'+suffix\n    if fault=='constant':changed['large.py']=prefix+'def chosen_value(value=42):\\n    if type(value) is not int: raise TypeError()\\n    return 42\\n'+suffix\n    if fault=='permissive':changed['large.py']=prefix+'def chosen_value(value=42):\\n    return max(0,min(100,value))\\n'+suffix\n    if fault=='caller':changed['consumer.py']=original['consumer.py'].replace('\"value=\"','\"wrong=\"')\n    for p,t in changed.items():Path(p).write_text(t)\n    r=subprocess.run([sys.executable,'-B','-m','pytest','-q','-p','no:cacheprovider',*paths],capture_output=True,text=True)\n    assert {p:Path(p).read_text() for p in original} == changed, 'tests mutated source'\n    if fault=='correct':assert r.returncode==0,(r.stdout,r.stderr)\n    else:assert r.returncode==1 and 'failed' in r.stdout and ('AssertionError' in r.stdout or 'Failed:' in r.stdout),(fault,r.stdout,r.stderr)\nfor p,t in original.items():Path(p).write_text(t)\nprint('qualified')\n"
+      ],
+      "stdin": "",
+      "purpose": "validation",
+      "outcome": "completed",
+      "exit_code": 0,
+      "oom_killed": false,
+      "stdout_base64": "cXVhbGlmaWVkCg==",
+      "stderr_base64": "",
+      "elapsed_seconds": 0.9966324480010371
+    }
+  },
+  {
+    "scope": "all",
+    "execution": {
+      "schema_version": 1,
+      "candidate_digest": "ea9ad7d0d818a31b57da1c761181a3b0830f0999cddc157615351a3b7527b7cd",
+      "image_id": "sha256:695d05883b15326aea01e9266067ff58c41f3eaa4f647cfc9424b403dbe9548d",
+      "container_id": "4d5eeead4432de2658591e7dbe1e5d8823976b27ac0086cc86b9da5d91abae7b",
+      "command": [
+        "python",
+        "-B",
+        "-c",
+        "import json,subprocess,sys\nfrom pathlib import Path\noriginal=Path('large.py').read_text()\nresults=[]\nfor fault in ['default']:\n    old,new = (('value: int = 42','value: int = 0') if fault=='default'\n               else ('if type(value) is not int:', 'if not isinstance(value, int):'))\n    assert original.count(old)==1\n    changed=original.replace(old,new)\n    Path('large.py').write_text(changed)\n    r=subprocess.run([sys.executable,'-B','-m','pytest','-q','-p','no:cacheprovider',*['tests/test_all.py']],capture_output=True,text=True)\n    assert Path('large.py').read_text()==changed\n    results.append(dict(fault=fault,exit_code=r.returncode,\n        detected=r.returncode==1 and 'failed' in r.stdout and ('AssertionError' in r.stdout or 'Failed:' in r.stdout),\n        stdout=r.stdout[-5000:],stderr=r.stderr[-2000:]))\nPath('large.py').write_text(original)\nassert all(r['detected'] for r in results), results\nprint('qualified')\n"
+      ],
+      "stdin": "",
+      "purpose": "validation",
+      "outcome": "completed",
+      "exit_code": 0,
+      "oom_killed": false,
+      "stdout_base64": "cXVhbGlmaWVkCg==",
+      "stderr_base64": "",
+      "elapsed_seconds": 0.3824333379998279
+    }
+  },
+  {
+    "scope": "integration",
+    "execution": {
+      "schema_version": 1,
+      "candidate_digest": "ea9ad7d0d818a31b57da1c761181a3b0830f0999cddc157615351a3b7527b7cd",
+      "image_id": "sha256:695d05883b15326aea01e9266067ff58c41f3eaa4f647cfc9424b403dbe9548d",
+      "container_id": "549e0025ab38817821cf11c8bc00974b7e933535a36abc11df13f4b14d091059",
+      "command": [
+        "python",
+        "-B",
+        "-c",
+        "import ast,hashlib,json,subprocess,sys\nfrom pathlib import Path\npaths=['tests/test_all.py']\nfaults=['unclamped', 'constant', 'caller', 'permissive']\noriginal={p:Path(p).read_text() for p in ['large.py','consumer.py']}\nassert {p:hashlib.sha256(t.encode()).hexdigest() for p,t in original.items()} == {'large.py': 'dc6328504b1a0efe732ce021c91577762103f5f009b7ffc55ce65c5254bb0c83', 'consumer.py': '4a87c82f9a932412c44348bb20a1b638f47e9f27467e624c0c20b04bc1dbd579'}\nnode=next(n for n in ast.parse(original['large.py']).body if isinstance(n,ast.FunctionDef) and n.name=='chosen_value')\nlines=original['large.py'].splitlines(keepends=True)\nprefix=''.join(lines[:node.lineno-1]); suffix=''.join(lines[node.end_lineno:])\nfor fault in ['correct']+faults:\n    changed=dict(original)\n    if fault=='unclamped':changed['large.py']=prefix+'def chosen_value(value=42):\\n    if type(value) is not int: raise TypeError()\\n    return value\\n'+suffix\n    if fault=='constant':changed['large.py']=prefix+'def chosen_value(value=42):\\n    if type(value) is not int: raise TypeError()\\n    return 42\\n'+suffix\n    if fault=='permissive':changed['large.py']=prefix+'def chosen_value(value=42):\\n    return max(0,min(100,value))\\n'+suffix\n    if fault=='caller':changed['consumer.py']=original['consumer.py'].replace('\"value=\"','\"wrong=\"')\n    for p,t in changed.items():Path(p).write_text(t)\n    r=subprocess.run([sys.executable,'-B','-m','pytest','-q','-p','no:cacheprovider',*paths],capture_output=True,text=True)\n    assert {p:Path(p).read_text() for p in original} == changed, 'tests mutated source'\n    if fault=='correct':assert r.returncode==0,(r.stdout,r.stderr)\n    else:assert r.returncode==1 and 'failed' in r.stdout and ('AssertionError' in r.stdout or 'Failed:' in r.stdout),(fault,r.stdout,r.stderr)\nfor p,t in original.items():Path(p).write_text(t)\nprint('qualified')\n"
+      ],
+      "stdin": "",
+      "purpose": "validation",
+      "outcome": "completed",
+      "exit_code": 0,
+      "oom_killed": false,
+      "stdout_base64": "cXVhbGlmaWVkCg==",
+      "stderr_base64": "",
+      "elapsed_seconds": 0.9976101600004768
+    }
+  },
+  {
+    "scope": "integration",
+    "execution": {
+      "schema_version": 1,
+      "candidate_digest": "ea9ad7d0d818a31b57da1c761181a3b0830f0999cddc157615351a3b7527b7cd",
+      "image_id": "sha256:695d05883b15326aea01e9266067ff58c41f3eaa4f647cfc9424b403dbe9548d",
+      "container_id": "a1dff8fee078cc6863e796c57f362cc6d85188dedd453955e6fac89d22160323",
+      "command": [
+        "python",
+        "-B",
+        "-c",
+        "import json,subprocess,sys\nfrom pathlib import Path\noriginal=Path('large.py').read_text()\nresults=[]\nfor fault in ['default']:\n    old,new = (('value: int = 42','value: int = 0') if fault=='default'\n               else ('if type(value) is not int:', 'if not isinstance(value, int):'))\n    assert original.count(old)==1\n    changed=original.replace(old,new)\n    Path('large.py').write_text(changed)\n    r=subprocess.run([sys.executable,'-B','-m','pytest','-q','-p','no:cacheprovider',*['tests/test_all.py']],capture_output=True,text=True)\n    assert Path('large.py').read_text()==changed\n    results.append(dict(fault=fault,exit_code=r.returncode,\n        detected=r.returncode==1 and 'failed' in r.stdout and ('AssertionError' in r.stdout or 'Failed:' in r.stdout),\n        stdout=r.stdout[-5000:],stderr=r.stderr[-2000:]))\nPath('large.py').write_text(original)\nassert all(r['detected'] for r in results), results\nprint('qualified')\n"
+      ],
+      "stdin": "",
+      "purpose": "validation",
+      "outcome": "completed",
+      "exit_code": 0,
+      "oom_killed": false,
+      "stdout_base64": "cXVhbGlmaWVkCg==",
+      "stderr_base64": "",
+      "elapsed_seconds": 0.38038831400263007
+    }
+  },
+  {
+    "scope": "values",
+    "execution": {
+      "schema_version": 1,
+      "candidate_digest": "10195a70413bac4abbeee55e101d9eef7ae456e1708b96dfceaa898a40252f7a",
+      "image_id": "sha256:695d05883b15326aea01e9266067ff58c41f3eaa4f647cfc9424b403dbe9548d",
+      "container_id": "63c6b34e913b03afe3f4a33e436c3526620cf3b597a372e4bb10db05148c3142",
+      "command": [
+        "python",
+        "-B",
+        "-c",
+        "import ast,hashlib,json,subprocess,sys\nfrom pathlib import Path\npaths=['tests/test_values.py']\nfaults=['unclamped', 'constant', 'caller']\noriginal={p:Path(p).read_text() for p in ['large.py','consumer.py']}\nassert {p:hashlib.sha256(t.encode()).hexdigest() for p,t in original.items()} == {'large.py': 'dc6328504b1a0efe732ce021c91577762103f5f009b7ffc55ce65c5254bb0c83', 'consumer.py': '4a87c82f9a932412c44348bb20a1b638f47e9f27467e624c0c20b04bc1dbd579'}\nnode=next(n for n in ast.parse(original['large.py']).body if isinstance(n,ast.FunctionDef) and n.name=='chosen_value')\nlines=original['large.py'].splitlines(keepends=True)\nprefix=''.join(lines[:node.lineno-1]); suffix=''.join(lines[node.end_lineno:])\nfor fault in ['correct']+faults:\n    changed=dict(original)\n    if fault=='unclamped':changed['large.py']=prefix+'def chosen_value(value=42):\\n    if type(value) is not int: raise TypeError()\\n    return value\\n'+suffix\n    if fault=='constant':changed['large.py']=prefix+'def chosen_value(value=42):\\n    if type(value) is not int: raise TypeError()\\n    return 42\\n'+suffix\n    if fault=='permissive':changed['large.py']=prefix+'def chosen_value(value=42):\\n    return max(0,min(100,value))\\n'+suffix\n    if fault=='caller':changed['consumer.py']=original['consumer.py'].replace('\"value=\"','\"wrong=\"')\n    for p,t in changed.items():Path(p).write_text(t)\n    r=subprocess.run([sys.executable,'-B','-m','pytest','-q','-p','no:cacheprovider',*paths],capture_output=True,text=True)\n    assert {p:Path(p).read_text() for p in original} == changed, 'tests mutated source'\n    if fault=='correct':assert r.returncode==0,(r.stdout,r.stderr)\n    else:assert r.returncode==1 and 'failed' in r.stdout and ('AssertionError' in r.stdout or 'Failed:' in r.stdout),(fault,r.stdout,r.stderr)\nfor p,t in original.items():Path(p).write_text(t)\nprint('qualified')\n"
+      ],
+      "stdin": "",
+      "purpose": "validation",
+      "outcome": "completed",
+      "exit_code": 0,
+      "oom_killed": false,
+      "stdout_base64": "cXVhbGlmaWVkCg==",
+      "stderr_base64": "",
+      "elapsed_seconds": 0.8428758420013764
+    }
+  },
+  {
+    "scope": "values",
+    "execution": {
+      "schema_version": 1,
+      "candidate_digest": "10195a70413bac4abbeee55e101d9eef7ae456e1708b96dfceaa898a40252f7a",
+      "image_id": "sha256:695d05883b15326aea01e9266067ff58c41f3eaa4f647cfc9424b403dbe9548d",
+      "container_id": "0f104380d642c3a95f2a583d33e4cda1f0e1896e2069e82833d090e98665bebd",
+      "command": [
+        "python",
+        "-B",
+        "-c",
+        "import json,subprocess,sys\nfrom pathlib import Path\noriginal=Path('large.py').read_text()\nresults=[]\nfor fault in ['default']:\n    old,new = (('value: int = 42','value: int = 0') if fault=='default'\n               else ('if type(value) is not int:', 'if not isinstance(value, int):'))\n    assert original.count(old)==1\n    changed=original.replace(old,new)\n    Path('large.py').write_text(changed)\n    r=subprocess.run([sys.executable,'-B','-m','pytest','-q','-p','no:cacheprovider',*['tests/test_values.py']],capture_output=True,text=True)\n    assert Path('large.py').read_text()==changed\n    results.append(dict(fault=fault,exit_code=r.returncode,\n        detected=r.returncode==1 and 'failed' in r.stdout and ('AssertionError' in r.stdout or 'Failed:' in r.stdout),\n        stdout=r.stdout[-5000:],stderr=r.stderr[-2000:]))\nPath('large.py').write_text(original)\nassert all(r['detected'] for r in results), results\nprint('qualified')\n"
+      ],
+      "stdin": "",
+      "purpose": "validation",
+      "outcome": "completed",
+      "exit_code": 0,
+      "oom_killed": false,
+      "stdout_base64": "cXVhbGlmaWVkCg==",
+      "stderr_base64": "",
+      "elapsed_seconds": 0.3791723229987838
+    }
+  },
+  {
+    "scope": "types",
+    "execution": {
+      "schema_version": 1,
+      "candidate_digest": "10195a70413bac4abbeee55e101d9eef7ae456e1708b96dfceaa898a40252f7a",
+      "image_id": "sha256:695d05883b15326aea01e9266067ff58c41f3eaa4f647cfc9424b403dbe9548d",
+      "container_id": "047aea694367e8b87e9c564ea76ff82961735751022bfa1a84075f477e3bc5d4",
+      "command": [
+        "python",
+        "-B",
+        "-c",
+        "import ast,hashlib,json,subprocess,sys\nfrom pathlib import Path\npaths=['tests/test_types.py']\nfaults=['permissive']\noriginal={p:Path(p).read_text() for p in ['large.py','consumer.py']}\nassert {p:hashlib.sha256(t.encode()).hexdigest() for p,t in original.items()} == {'large.py': 'dc6328504b1a0efe732ce021c91577762103f5f009b7ffc55ce65c5254bb0c83', 'consumer.py': '4a87c82f9a932412c44348bb20a1b638f47e9f27467e624c0c20b04bc1dbd579'}\nnode=next(n for n in ast.parse(original['large.py']).body if isinstance(n,ast.FunctionDef) and n.name=='chosen_value')\nlines=original['large.py'].splitlines(keepends=True)\nprefix=''.join(lines[:node.lineno-1]); suffix=''.join(lines[node.end_lineno:])\nfor fault in ['correct']+faults:\n    changed=dict(original)\n    if fault=='unclamped':changed['large.py']=prefix+'def chosen_value(value=42):\\n    if type(value) is not int: raise TypeError()\\n    return value\\n'+suffix\n    if fault=='constant':changed['large.py']=prefix+'def chosen_value(value=42):\\n    if type(value) is not int: raise TypeError()\\n    return 42\\n'+suffix\n    if fault=='permissive':changed['large.py']=prefix+'def chosen_value(value=42):\\n    return max(0,min(100,value))\\n'+suffix\n    if fault=='caller':changed['consumer.py']=original['consumer.py'].replace('\"value=\"','\"wrong=\"')\n    for p,t in changed.items():Path(p).write_text(t)\n    r=subprocess.run([sys.executable,'-B','-m','pytest','-q','-p','no:cacheprovider',*paths],capture_output=True,text=True)\n    assert {p:Path(p).read_text() for p in original} == changed, 'tests mutated source'\n    if fault=='correct':assert r.returncode==0,(r.stdout,r.stderr)\n    else:assert r.returncode==1 and 'failed' in r.stdout and ('AssertionError' in r.stdout or 'Failed:' in r.stdout),(fault,r.stdout,r.stderr)\nfor p,t in original.items():Path(p).write_text(t)\nprint('qualified')\n"
+      ],
+      "stdin": "",
+      "purpose": "validation",
+      "outcome": "completed",
+      "exit_code": 0,
+      "oom_killed": false,
+      "stdout_base64": "cXVhbGlmaWVkCg==",
+      "stderr_base64": "",
+      "elapsed_seconds": 0.5370465339983639
+    }
+  },
+  {
+    "scope": "integration",
+    "execution": {
+      "schema_version": 1,
+      "candidate_digest": "10195a70413bac4abbeee55e101d9eef7ae456e1708b96dfceaa898a40252f7a",
+      "image_id": "sha256:695d05883b15326aea01e9266067ff58c41f3eaa4f647cfc9424b403dbe9548d",
+      "container_id": "325cf9e68f61618e55c7efa93f328cd604e273d3cff7513f3f76c8197461d823",
+      "command": [
+        "python",
+        "-B",
+        "-c",
+        "import ast,hashlib,json,subprocess,sys\nfrom pathlib import Path\npaths=['tests/test_values.py', 'tests/test_types.py']\nfaults=['unclamped', 'constant', 'caller', 'permissive']\noriginal={p:Path(p).read_text() for p in ['large.py','consumer.py']}\nassert {p:hashlib.sha256(t.encode()).hexdigest() for p,t in original.items()} == {'large.py': 'dc6328504b1a0efe732ce021c91577762103f5f009b7ffc55ce65c5254bb0c83', 'consumer.py': '4a87c82f9a932412c44348bb20a1b638f47e9f27467e624c0c20b04bc1dbd579'}\nnode=next(n for n in ast.parse(original['large.py']).body if isinstance(n,ast.FunctionDef) and n.name=='chosen_value')\nlines=original['large.py'].splitlines(keepends=True)\nprefix=''.join(lines[:node.lineno-1]); suffix=''.join(lines[node.end_lineno:])\nfor fault in ['correct']+faults:\n    changed=dict(original)\n    if fault=='unclamped':changed['large.py']=prefix+'def chosen_value(value=42):\\n    if type(value) is not int: raise TypeError()\\n    return value\\n'+suffix\n    if fault=='constant':changed['large.py']=prefix+'def chosen_value(value=42):\\n    if type(value) is not int: raise TypeError()\\n    return 42\\n'+suffix\n    if fault=='permissive':changed['large.py']=prefix+'def chosen_value(value=42):\\n    return max(0,min(100,value))\\n'+suffix\n    if fault=='caller':changed['consumer.py']=original['consumer.py'].replace('\"value=\"','\"wrong=\"')\n    for p,t in changed.items():Path(p).write_text(t)\n    r=subprocess.run([sys.executable,'-B','-m','pytest','-q','-p','no:cacheprovider',*paths],capture_output=True,text=True)\n    assert {p:Path(p).read_text() for p in original} == changed, 'tests mutated source'\n    if fault=='correct':assert r.returncode==0,(r.stdout,r.stderr)\n    else:assert r.returncode==1 and 'failed' in r.stdout and ('AssertionError' in r.stdout or 'Failed:' in r.stdout),(fault,r.stdout,r.stderr)\nfor p,t in original.items():Path(p).write_text(t)\nprint('qualified')\n"
+      ],
+      "stdin": "",
+      "purpose": "validation",
+      "outcome": "completed",
+      "exit_code": 0,
+      "oom_killed": false,
+      "stdout_base64": "cXVhbGlmaWVkCg==",
+      "stderr_base64": "",
+      "elapsed_seconds": 0.9839277989995026
+    }
+  },
+  {
+    "scope": "integration",
+    "execution": {
+      "schema_version": 1,
+      "candidate_digest": "10195a70413bac4abbeee55e101d9eef7ae456e1708b96dfceaa898a40252f7a",
+      "image_id": "sha256:695d05883b15326aea01e9266067ff58c41f3eaa4f647cfc9424b403dbe9548d",
+      "container_id": "34974d9339c613f8631ef521adc82dddea07303ad3206c414a52f2b992a59562",
+      "command": [
+        "python",
+        "-B",
+        "-c",
+        "import json,subprocess,sys\nfrom pathlib import Path\noriginal=Path('large.py').read_text()\nresults=[]\nfor fault in ['default']:\n    old,new = (('value: int = 42','value: int = 0') if fault=='default'\n               else ('if type(value) is not int:', 'if not isinstance(value, int):'))\n    assert original.count(old)==1\n    changed=original.replace(old,new)\n    Path('large.py').write_text(changed)\n    r=subprocess.run([sys.executable,'-B','-m','pytest','-q','-p','no:cacheprovider',*['tests/test_values.py', 'tests/test_types.py']],capture_output=True,text=True)\n    assert Path('large.py').read_text()==changed\n    results.append(dict(fault=fault,exit_code=r.returncode,\n        detected=r.returncode==1 and 'failed' in r.stdout and ('AssertionError' in r.stdout or 'Failed:' in r.stdout),\n        stdout=r.stdout[-5000:],stderr=r.stderr[-2000:]))\nPath('large.py').write_text(original)\nassert all(r['detected'] for r in results), results\nprint('qualified')\n"
+      ],
+      "stdin": "",
+      "purpose": "validation",
+      "outcome": "completed",
+      "exit_code": 0,
+      "oom_killed": false,
+      "stdout_base64": "cXVhbGlmaWVkCg==",
+      "stderr_base64": "",
+      "elapsed_seconds": 0.3682250109995948
+    }
+  }
+]

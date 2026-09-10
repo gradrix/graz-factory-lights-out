@@ -46,13 +46,14 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--campaign", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--results", type=Path, default=HERE / "results.json")
     args = parser.parse_args()
     if args.output.exists():
         raise ValueError(
             "Audit output already exists; inspect retained findings instead of rerunning"
         )
     fixture = json.loads((HERE / "fixture.json").read_text())
-    initial = json.loads((HERE / "results.json").read_text())
+    initial = json.loads(args.results.read_text())
     reports = []
     for trial in initial["trials"]:
         if trial["status"] != "accepted":

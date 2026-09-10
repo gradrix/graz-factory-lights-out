@@ -275,3 +275,8 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
 - Issue 62 resolved: v2 integration contracts explicitly cover all feature requirements,
   output scope and contribution evidence without granting worker tools. Version-1
   policy compilation and replay retain original identities.
+
+- Issue 63 resolved: full per-worker retries yielded solo 3/3 vs split 2/3 accepted;
+  all accepted features passed assigned/combined audits. No observed reliability gain
+  from splitting on this fixture. [Frozen trials](full-worker-budgets/README.md).
+  Next: broader real-repository feature qualification and repair regression coverage.

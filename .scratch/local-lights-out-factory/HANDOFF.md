@@ -1,6 +1,24 @@
 # GFLO handoff — repository access foundation
 
-## Current checkpoint — integration provenance, 2026-09-10
+## Current checkpoint — full worker retry budgets, 2026-09-10
+
+Issues 62/63 resolved. New v2 integration records cover all feature requirements;
+v1 policy/plan replay retains historical identity. Six frozen same-model trials with
+full retries per worker: solo 3/3 accepted, split 2/3. All five accepted features passed
+assigned and combined default/subclass audits and replayed without new events.
+[Portable campaign](full-worker-budgets/README.md). Actual tokens 14,348 vs 50,844;
+reliability is primary and the sample is too small for a general ranking.
+
+Split-2 value worker exhausted six responses after reading the real function, inventing
+render() default behavior and boolean acceptance. Gates rejected the errors. Retain
+this as a repair regression; no manual patches, model switch, or extra retries.
+Keep one test worker by default for this workload. Next: qualify broader real-repository
+features with independent gates; inspect repair regression behavior without fixture-
+specific prompt tuning. Larger execution inputs remain capped at 256 KiB; million-line
+operation remains unqualified. 503 tests/25 subtests and four historical replays pass.
+Push authorization and reliability-over-token-cost preference remain in effect.
+
+## Previous checkpoint — integration provenance, 2026-09-10
 
 Issue 62 resolved. New FeaturePlan/FeaturePolicy defaults are explicit v2. Final
 validation records cover all request requirements and worker output paths, without

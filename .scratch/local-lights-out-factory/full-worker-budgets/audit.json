@@ -1,0 +1,292 @@
+[
+  {
+    "trial": "solo-1",
+    "checks": [
+      {
+        "atom": "feature-final-0abcbe50b42f27a8d3efd3df6f452192bfedbd5c06ae71422fe4dd7fa5cea604",
+        "paths": [
+          "tests/test_all.py"
+        ],
+        "execution_digest": "f58cf9318a18c01264a4a5c1aa9668d4dac02f949aa317cbfc4b894c76beccd7",
+        "results": [
+          {
+            "fault": "default",
+            "exit_code": 1,
+            "detected": true,
+            "stdout": "..............F.................                                         [100%]\n=================================== FAILURES ===================================\n___________________________ test_default_returns_42 ____________________________\n\n    def test_default_returns_42():\n>       assert chosen_value() == 42\nE       assert 0 == 42\nE        +  where 0 = chosen_value()\n\ntests/test_all.py:48: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_all.py::test_default_returns_42 - assert 0 == 42\n1 failed, 31 passed in 0.04s\n",
+            "stderr": ""
+          },
+          {
+            "fault": "subclass",
+            "exit_code": 1,
+            "detected": true,
+            "stdout": ".............F..................                                         [100%]\n=================================== FAILURES ===================================\n______________________ test_int_subclass_raises_typeerror ______________________\n\n    def test_int_subclass_raises_typeerror():\n>       with pytest.raises(TypeError):\nE       Failed: DID NOT RAISE TypeError\n\ntests/test_all.py:41: Failed\n=========================== short test summary info ============================\nFAILED tests/test_all.py::test_int_subclass_raises_typeerror - Failed: DID NO...\n1 failed, 31 passed in 0.04s\n",
+            "stderr": ""
+          }
+        ]
+      },
+      {
+        "atom": "prepared-5cb1a8ec814fe2ad-1a2b188abcfe1200-6f94eec10cd5faf1/3c9e63d1d8bdbe54",
+        "paths": [
+          "tests/test_all.py"
+        ],
+        "execution_digest": "c40244c4fff6c84c0cfed3ea68af6b29f39f9221d7404be2808909b5686a1ac3",
+        "results": [
+          {
+            "fault": "default",
+            "exit_code": 1,
+            "detected": true,
+            "stdout": "..............F.................                                         [100%]\n=================================== FAILURES ===================================\n___________________________ test_default_returns_42 ____________________________\n\n    def test_default_returns_42():\n>       assert chosen_value() == 42\nE       assert 0 == 42\nE        +  where 0 = chosen_value()\n\ntests/test_all.py:48: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_all.py::test_default_returns_42 - assert 0 == 42\n1 failed, 31 passed in 0.04s\n",
+            "stderr": ""
+          },
+          {
+            "fault": "subclass",
+            "exit_code": 1,
+            "detected": true,
+            "stdout": ".............F..................                                         [100%]\n=================================== FAILURES ===================================\n______________________ test_int_subclass_raises_typeerror ______________________\n\n    def test_int_subclass_raises_typeerror():\n>       with pytest.raises(TypeError):\nE       Failed: DID NOT RAISE TypeError\n\ntests/test_all.py:41: Failed\n=========================== short test summary info ============================\nFAILED tests/test_all.py::test_int_subclass_raises_typeerror - Failed: DID NO...\n1 failed, 31 passed in 0.04s\n",
+            "stderr": ""
+          }
+        ]
+      }
+    ],
+    "findings": [],
+    "replay": "accepted",
+    "replay_added_events": 0
+  },
+  {
+    "trial": "split-1",
+    "checks": [
+      {
+        "atom": "feature-final-6fed59e110c348d67ef18e6ab7e37ac8613d8f103f6a11068ea3bb4b21c12634",
+        "paths": [
+          "tests/test_types.py",
+          "tests/test_values.py"
+        ],
+        "execution_digest": "ed90c31f9439e9a27af08de89263e57690b2372f8193b635429c3e8744e647ad",
+        "results": [
+          {
+            "fault": "default",
+            "exit_code": 1,
+            "detected": true,
+            "stdout": "..................F............                                          [100%]\n=================================== FAILURES ===================================\n_________________________ test_chosen_value_returns_42 _________________________\n\n    def test_chosen_value_returns_42():\n>       assert chosen_value() == 42\nE       assert 0 == 42\nE        +  where 0 = chosen_value()\n\ntests/test_values.py:23: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_values.py::test_chosen_value_returns_42 - assert 0 == 42\n1 failed, 30 passed in 0.04s\n",
+            "stderr": ""
+          },
+          {
+            "fault": "subclass",
+            "exit_code": 1,
+            "detected": true,
+            "stdout": ".......F.......................                                          [100%]\n=================================== FAILURES ===================================\n__________________________ test_rejects_int_subclass ___________________________\n\n    def test_rejects_int_subclass():\n        class MyInt(int):\n            pass\n    \n>       with pytest.raises(TypeError):\nE       Failed: DID NOT RAISE TypeError\n\ntests/test_types.py:41: Failed\n=========================== short test summary info ============================\nFAILED tests/test_types.py::test_rejects_int_subclass - Failed: DID NOT RAISE...\n1 failed, 30 passed in 0.04s\n",
+            "stderr": ""
+          }
+        ]
+      },
+      {
+        "atom": "prepared-3ebfdca52151708f-c13b3a1bb52ba34e-3c1430f164fc5b09-9414731afdce5de1/23e4333ad49c955c",
+        "paths": [
+          "tests/test_values.py"
+        ],
+        "execution_digest": "70e5d3463b1197e7bc23f787c3650009db50e6512a12ac4af0b8c65b96da768e",
+        "results": [
+          {
+            "fault": "default",
+            "exit_code": 1,
+            "detected": true,
+            "stdout": ".........F............                                                   [100%]\n=================================== FAILURES ===================================\n_________________________ test_chosen_value_returns_42 _________________________\n\n    def test_chosen_value_returns_42():\n>       assert chosen_value() == 42\nE       assert 0 == 42\nE        +  where 0 = chosen_value()\n\ntests/test_values.py:23: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_values.py::test_chosen_value_returns_42 - assert 0 == 42\n1 failed, 21 passed in 0.03s\n",
+            "stderr": ""
+          }
+        ]
+      },
+      {
+        "atom": "prepared-3ebfdca52151708f-c13b3a1bb52ba34e-3c1430f164fc5b09/e2f5a50636468971",
+        "paths": [
+          "tests/test_types.py"
+        ],
+        "execution_digest": "818670d1db79f5ac398f0ff3623c197f408aff2b62dd087a7b73031d94059e20",
+        "results": [
+          {
+            "fault": "subclass",
+            "exit_code": 1,
+            "detected": true,
+            "stdout": ".......F.                                                                [100%]\n=================================== FAILURES ===================================\n__________________________ test_rejects_int_subclass ___________________________\n\n    def test_rejects_int_subclass():\n        class MyInt(int):\n            pass\n    \n>       with pytest.raises(TypeError):\nE       Failed: DID NOT RAISE TypeError\n\ntests/test_types.py:41: Failed\n=========================== short test summary info ============================\nFAILED tests/test_types.py::test_rejects_int_subclass - Failed: DID NOT RAISE...\n1 failed, 8 passed in 0.02s\n",
+            "stderr": ""
+          }
+        ]
+      }
+    ],
+    "findings": [],
+    "replay": "accepted",
+    "replay_added_events": 0
+  },
+  {
+    "trial": "solo-2",
+    "checks": [
+      {
+        "atom": "feature-final-1324ce786e34e411e87b856f8422928d5b8eb88595d2486ac892820f5d939924",
+        "paths": [
+          "tests/test_all.py"
+        ],
+        "execution_digest": "b98a29642c966db92c74eb1baa0945ee6da4f04c72963082d87d955ac2b5fb58",
+        "results": [
+          {
+            "fault": "default",
+            "exit_code": 1,
+            "detected": true,
+            "stdout": ".................F.....................                                  [100%]\n=================================== FAILURES ===================================\n___________________________ test_default_returns_42 ____________________________\n\n    def test_default_returns_42():\n>       assert chosen_value() == 42\nE       assert 0 == 42\nE        +  where 0 = chosen_value()\n\ntests/test_all.py:50: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_all.py::test_default_returns_42 - assert 0 == 42\n1 failed, 38 passed in 0.04s\n",
+            "stderr": ""
+          },
+          {
+            "fault": "subclass",
+            "exit_code": 1,
+            "detected": true,
+            "stdout": "................F......................                                  [100%]\n=================================== FAILURES ===================================\n__________________________ test_int_subclass_rejected __________________________\n\n    def test_int_subclass_rejected():\n        class MyInt(int):\n            pass\n>       with pytest.raises(TypeError):\nE       Failed: DID NOT RAISE TypeError\n\ntests/test_all.py:43: Failed\n=========================== short test summary info ============================\nFAILED tests/test_all.py::test_int_subclass_rejected - Failed: DID NOT RAISE ...\n1 failed, 38 passed in 0.04s\n",
+            "stderr": ""
+          }
+        ]
+      },
+      {
+        "atom": "prepared-71013da4eb1adf98-4a5c44ff7b3ce7c1-7f1664a69bc37a0e/3c9e63d1d8bdbe54",
+        "paths": [
+          "tests/test_all.py"
+        ],
+        "execution_digest": "508dc7f9111c03b9c5b48b77200fe84597fb9db96adb08341978a0e4d7c3f441",
+        "results": [
+          {
+            "fault": "default",
+            "exit_code": 1,
+            "detected": true,
+            "stdout": ".................F.....................                                  [100%]\n=================================== FAILURES ===================================\n___________________________ test_default_returns_42 ____________________________\n\n    def test_default_returns_42():\n>       assert chosen_value() == 42\nE       assert 0 == 42\nE        +  where 0 = chosen_value()\n\ntests/test_all.py:50: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_all.py::test_default_returns_42 - assert 0 == 42\n1 failed, 38 passed in 0.04s\n",
+            "stderr": ""
+          },
+          {
+            "fault": "subclass",
+            "exit_code": 1,
+            "detected": true,
+            "stdout": "................F......................                                  [100%]\n=================================== FAILURES ===================================\n__________________________ test_int_subclass_rejected __________________________\n\n    def test_int_subclass_rejected():\n        class MyInt(int):\n            pass\n>       with pytest.raises(TypeError):\nE       Failed: DID NOT RAISE TypeError\n\ntests/test_all.py:43: Failed\n=========================== short test summary info ============================\nFAILED tests/test_all.py::test_int_subclass_rejected - Failed: DID NOT RAISE ...\n1 failed, 38 passed in 0.04s\n",
+            "stderr": ""
+          }
+        ]
+      }
+    ],
+    "findings": [],
+    "replay": "accepted",
+    "replay_added_events": 0
+  },
+  {
+    "trial": "solo-3",
+    "checks": [
+      {
+        "atom": "feature-final-b0801a0e08c9124618fa84a09b8a3f8faa606199552a9821bbf4a5956cdee02d",
+        "paths": [
+          "tests/test_all.py"
+        ],
+        "execution_digest": "e3e8c1316b7ebbe6ce7678932a8904ad425b9efbfc4de7e6b9cfe7e5445d8f4c",
+        "results": [
+          {
+            "fault": "default",
+            "exit_code": 1,
+            "detected": true,
+            "stdout": "..............F.......................                                   [100%]\n=================================== FAILURES ===================================\n___________________________ test_default_returns_42 ____________________________\n\n    def test_default_returns_42():\n>       assert chosen_value() == 42\nE       assert 0 == 42\nE        +  where 0 = chosen_value()\n\ntests/test_all.py:48: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_all.py::test_default_returns_42 - assert 0 == 42\n1 failed, 37 passed in 0.04s\n",
+            "stderr": ""
+          },
+          {
+            "fault": "subclass",
+            "exit_code": 1,
+            "detected": true,
+            "stdout": "..........F...........................                                   [100%]\n=================================== FAILURES ===================================\n__________________________ test_int_subclass_rejected __________________________\n\n    def test_int_subclass_rejected():\n        class MyInt(int):\n            pass\n>       with pytest.raises(TypeError):\nE       Failed: DID NOT RAISE TypeError\n\ntests/test_all.py:26: Failed\n=========================== short test summary info ============================\nFAILED tests/test_all.py::test_int_subclass_rejected - Failed: DID NOT RAISE ...\n1 failed, 37 passed in 0.04s\n",
+            "stderr": ""
+          }
+        ]
+      },
+      {
+        "atom": "prepared-041217846065ed81-4185f07a1cbce3f3-9c6710be58063abd/3c9e63d1d8bdbe54",
+        "paths": [
+          "tests/test_all.py"
+        ],
+        "execution_digest": "12946271230758bc47270c60f79be6956dd52d6459871aef8f9f22420e229f83",
+        "results": [
+          {
+            "fault": "default",
+            "exit_code": 1,
+            "detected": true,
+            "stdout": "..............F.......................                                   [100%]\n=================================== FAILURES ===================================\n___________________________ test_default_returns_42 ____________________________\n\n    def test_default_returns_42():\n>       assert chosen_value() == 42\nE       assert 0 == 42\nE        +  where 0 = chosen_value()\n\ntests/test_all.py:48: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_all.py::test_default_returns_42 - assert 0 == 42\n1 failed, 37 passed in 0.04s\n",
+            "stderr": ""
+          },
+          {
+            "fault": "subclass",
+            "exit_code": 1,
+            "detected": true,
+            "stdout": "..........F...........................                                   [100%]\n=================================== FAILURES ===================================\n__________________________ test_int_subclass_rejected __________________________\n\n    def test_int_subclass_rejected():\n        class MyInt(int):\n            pass\n>       with pytest.raises(TypeError):\nE       Failed: DID NOT RAISE TypeError\n\ntests/test_all.py:26: Failed\n=========================== short test summary info ============================\nFAILED tests/test_all.py::test_int_subclass_rejected - Failed: DID NOT RAISE ...\n1 failed, 37 passed in 0.04s\n",
+            "stderr": ""
+          }
+        ]
+      }
+    ],
+    "findings": [],
+    "replay": "accepted",
+    "replay_added_events": 0
+  },
+  {
+    "trial": "split-3",
+    "checks": [
+      {
+        "atom": "feature-final-36978c339e573bdc1b5d5b562f214b9d3c9c46f81f67598be0cf0d28b04d6345",
+        "paths": [
+          "tests/test_types.py",
+          "tests/test_values.py"
+        ],
+        "execution_digest": "06c65ddf741754bb7e5810ca3f4634dc7931cfa6f27343080df2b72e1b800535",
+        "results": [
+          {
+            "fault": "default",
+            "exit_code": 1,
+            "detected": true,
+            "stdout": ".....................................F...........                        [100%]\n=================================== FAILURES ===================================\n_______________________ test_chosen_value_default_is_42 ________________________\n\n    def test_chosen_value_default_is_42():\n>       assert chosen_value() == 42\nE       assert 0 == 42\nE        +  where 0 = chosen_value()\n\ntests/test_values.py:26: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_values.py::test_chosen_value_default_is_42 - assert 0 == 42\n1 failed, 48 passed in 0.05s\n",
+            "stderr": ""
+          },
+          {
+            "fault": "subclass",
+            "exit_code": 1,
+            "detected": true,
+            "stdout": ".........F................F......................                        [100%]\n=================================== FAILURES ===================================\n__________________________ test_rejects_int_subclass ___________________________\n\n    def test_rejects_int_subclass():\n>       with pytest.raises(TypeError):\nE       Failed: DID NOT RAISE TypeError\n\ntests/test_types.py:22: Failed\n_________________ test_detects_type_permissive_implementation __________________\n\n    def test_detects_type_permissive_implementation():\n        # If the implementation were type-permissive (e.g. using isinstance(value, int)\n        # without the bool guard, or accepting non-int types), these assertions would fail.\n        # Bool must be rejected even though isinstance(True, int) is True.\n        with pytest.raises(TypeError):\n            chosen_value(True)\n        with pytest.raises(TypeError):\n            chosen_value(False)\n        # Integer subclass must be rejected because type(value) is not int.\n>       with pytest.raises(TypeError):\nE       Failed: DID NOT RAISE TypeError\n\ntests/test_types.py:58: Failed\n=========================== short test summary info ============================\nFAILED tests/test_types.py::test_rejects_int_subclass - Failed: DID NOT RAISE...\nFAILED tests/test_types.py::test_detects_type_permissive_implementation - Fai...\n2 failed, 47 passed in 0.04s\n",
+            "stderr": ""
+          }
+        ]
+      },
+      {
+        "atom": "prepared-c0199503b5fea1f1-5e5dbaaaacf992e1-ea552f9585fc38ef-25047ed88d7709a1/23e4333ad49c955c",
+        "paths": [
+          "tests/test_values.py"
+        ],
+        "execution_digest": "a518ab6c22ec735a1de786b8dac6a3d40a49c542421506792c2d8e056828ca14",
+        "results": [
+          {
+            "fault": "default",
+            "exit_code": 1,
+            "detected": true,
+            "stdout": "..........F...........                                                   [100%]\n=================================== FAILURES ===================================\n_______________________ test_chosen_value_default_is_42 ________________________\n\n    def test_chosen_value_default_is_42():\n>       assert chosen_value() == 42\nE       assert 0 == 42\nE        +  where 0 = chosen_value()\n\ntests/test_values.py:26: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_values.py::test_chosen_value_default_is_42 - assert 0 == 42\n1 failed, 21 passed in 0.03s\n",
+            "stderr": ""
+          }
+        ]
+      },
+      {
+        "atom": "prepared-c0199503b5fea1f1-5e5dbaaaacf992e1-ea552f9585fc38ef/e2f5a50636468971",
+        "paths": [
+          "tests/test_types.py"
+        ],
+        "execution_digest": "169844e1ca7e4f44e2d7cd103d7b28f595f873cc765a7459edc403b85d049f5e",
+        "results": [
+          {
+            "fault": "subclass",
+            "exit_code": 1,
+            "detected": true,
+            "stdout": ".........F................F                                              [100%]\n=================================== FAILURES ===================================\n__________________________ test_rejects_int_subclass ___________________________\n\n    def test_rejects_int_subclass():\n>       with pytest.raises(TypeError):\nE       Failed: DID NOT RAISE TypeError\n\ntests/test_types.py:22: Failed\n_________________ test_detects_type_permissive_implementation __________________\n\n    def test_detects_type_permissive_implementation():\n        # If the implementation were type-permissive (e.g. using isinstance(value, int)\n        # without the bool guard, or accepting non-int types), these assertions would fail.\n        # Bool must be rejected even though isinstance(True, int) is True.\n        with pytest.raises(TypeError):\n            chosen_value(True)\n        with pytest.raises(TypeError):\n            chosen_value(False)\n        # Integer subclass must be rejected because type(value) is not int.\n>       with pytest.raises(TypeError):\nE       Failed: DID NOT RAISE TypeError\n\ntests/test_types.py:58: Failed\n=========================== short test summary info ============================\nFAILED tests/test_types.py::test_rejects_int_subclass - Failed: DID NOT RAISE...\nFAILED tests/test_types.py::test_detects_type_permissive_implementation - Fai...\n2 failed, 25 passed in 0.03s\n",
+            "stderr": ""
+          }
+        ]
+      }
+    ],
+    "findings": [],
+    "replay": "accepted",
+    "replay_added_events": 0
+  }
+]
