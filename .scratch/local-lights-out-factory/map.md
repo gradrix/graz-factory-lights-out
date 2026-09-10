@@ -194,3 +194,8 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
   change. Review caught default-valued test weakness; finding blocks old reuse and
   reviewed local repair passes reference/baseline/mutant checks. Qualification remains
   supervised; next work is prospective test adequacy and broader repeated features.
+
+- [Issue 47](issues/47-add-reusable-test-adequacy-gates.md): generic pytest gate rejects
+  supplied faulty variants only through real assertion failures; errors/skips do not
+  qualify. Retained weak tests rejected and same-instruction local repair passes.
+  Trusted variant selection remains necessary; no automatic fault-discovery claim.

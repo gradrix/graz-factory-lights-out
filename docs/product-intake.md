@@ -339,3 +339,39 @@ includes an explicitly reviewed proposal. Add `--reviewed-plan` to the existing
 `prepare_repository_trial.py --test-followup` command to reconstruct its exact
 `feature-plan.json` in a fresh ledger, then use `gflo run-feature`. This bypasses model
 planning intentionally; the trial's planner failures remain in its evidence.
+
+## Checking generated pytest regressions
+
+Use `gflo.test_adequacy.pytest_adequacy_gate` to build an ordinary pinned ProcessGate
+from test paths and trusted faulty module variants. The candidate must pass at least
+the specified number of tests. Each faulty variant must collect the same tests and
+produce a genuine assertion failure, without runtime/collection errors, skips or
+expected failures. Each run uses a fresh interpreter inside the existing offline
+broker. The whole check shares the ProcessCase time and resource limits.
+
+```python
+from gflo.test_adequacy import FaultyVariant, pytest_adequacy_gate
+
+gate = pytest_adequacy_gate(
+    ("tests/test_parser.py",),
+    (FaultyVariant(
+        name="original-bug",
+        modules={"app.parser": original_parser_source},
+    ),),
+    minimum_tests=4,
+)
+```
+
+Supply complete, operator-reviewed Python module source. Variants replace named
+modules before test collection; they are intended for isolated Python unit tests.
+Put this gate in the test file's policy gate and retain independent implementation
+and integration checks. As the first case, the combined check also participates in
+the repair worker's existing development-feedback loop. No scheduler changes or
+new acceptance authority are involved.
+
+Variant selection remains trusted preparation: a surviving variant can be equivalent
+to correct behavior and require review. The gate detects the supplied faults; it does
+not prove broad test adequacy or resist adversarial tests that manipulate pytest.
+Keep variants relevant and bounded (at most eight), and preserve earlier acceptance
+findings when preparing repair work. Generated variants must be reviewed before they
+can become mandatory gates.

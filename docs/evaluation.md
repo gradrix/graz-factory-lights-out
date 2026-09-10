@@ -369,3 +369,26 @@ The selected source is merged in [leds-service PR 10](https://github.com/gradrix
 No factory core code changed during this qualification; targeted checks, fixture
 reconstruction and replay passed. The preceding full factory validation remains
 423 tests and 25 subtests with Docker enabled.
+
+## Reusable test-adequacy gate, 2026-09-10
+
+A generic pytest gate now checks candidate success and assertion-based rejection of
+trusted faulty module variants. It rejected the retained weak leds-service suite
+because the untrimmed-key variant survived, and accepted the earlier repaired suite.
+A fresh local repair used the same reviewed instruction, model and finite budget,
+with the generic gate frozen before execution. It passed on one response: 2567 prompt
+and 472 output tokens, 8.26 seconds. Independent parser checks passed and replay added
+no model calls. No further product changes were published from this repeated trial.
+
+This removes per-trial pytest validation scripting for this pattern; it does not
+eliminate trusted variant preparation or demonstrate unaided fault discovery.
+The trial is a seen-task correction, not a new reliability score.
+[Portable results](../.scratch/local-lights-out-factory/generic-test-adequacy-results.json)
+and [fixture](../.scratch/local-lights-out-factory/leds-generic-adequacy-fixture.json)
+retain the checks and local response.
+
+Final review added explicit rejection of collection-time skips. A fresh trial with
+that final gate also passed in one response (2569 prompt / 467 output, 8.19 seconds)
+and replay added no calls. Fourteen targeted regressions pass. The preceding full
+suite passed 428 tests and 25 subtests with eight optional Docker skips; all 49 broker
+checks passed separately with Docker enabled. Ruff and mypy pass.

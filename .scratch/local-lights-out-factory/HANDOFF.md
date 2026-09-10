@@ -1,6 +1,30 @@
 # GFLO handoff — repository access foundation
 
-## Current checkpoint — second-repository repair qualification, 2026-09-10
+## Current checkpoint — reusable test adequacy, 2026-09-10
+
+Issue 47 adds gflo.test_adequacy.pytest_adequacy_gate: trusted complete module variants,
+candidate success, identical collected tests, genuine assertion failure per variant,
+no errors/skips/xfails. It compiles one standard ProcessCase for final gates and the
+existing development-feedback loop; no scheduler or historical digest changes.
+
+Retained weak leds tests fail the generic untrimmed-key variant; repaired tests pass.
+Initial local correction passed one response (2567 prompt/472 output, 8.26s) with the
+same instruction, model and budget. Independent oracle and replay passed. No new
+product edits were shipped. This is seen-task repair; trusted variant preparation
+and selection remain manual. No automatic adequacy/fault-discovery claim.
+
+[Results](generic-test-adequacy-results.json) and
+[fixture](leds-generic-adequacy-fixture.json) are portable; reconstruct with
+prepare_repository_trial.py --test-followup --reviewed-plan against leds baseline
+24f602c0bf7e67e781a04cd741f4c98a99ad616d. Raw evidence:
+.gflo/evidence/leds-generic-adequacy-v1 and v2. Final gate also rejects collection-time
+skips; its fresh correction passed once (2569 prompt/467 output, 8.19s). Fourteen
+targeted tests pass; preceding full suite 428 passed/8 Docker skips/25 subtests, with
+all 49 broker checks separately passing with Docker. Ruff/mypy pass. Next qualify prospective varied features and
+variant selection, then larger navigation/execution workloads. Same-model constraint
+and existing push/merge authorization persist.
+
+## Previous checkpoint — second-repository repair qualification, 2026-09-10
 
 Issue 46: same pinned model and generic repair protocol on leds-service baseline
 24f602c0bf7e67e781a04cd741f4c98a99ad616d. Local planning and both initial workers
