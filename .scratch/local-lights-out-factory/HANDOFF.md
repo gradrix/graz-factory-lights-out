@@ -1,6 +1,33 @@
 # GFLO handoff — repository access foundation
 
-## Current checkpoint — development repair and verified data, 2026-09-10
+## Current checkpoint — second-repository repair qualification, 2026-09-10
+
+Issue 46: same pinned model and generic repair protocol on leds-service baseline
+24f602c0bf7e67e781a04cd741f4c98a99ad616d. Local planning and both initial workers
+passed first attempt. Review found a whitespace test using defaults could not detect
+silent fallback; recorded finding blocks old acceptance reuse. A reviewed one-task
+repair added a sixth test in one local response (2567 prompt / 455 output, 7.89s).
+
+Final six tests, independent reference (600 seeded random configurations plus edge
+cases), original-baseline rejection and fallback-mutant rejection pass. Only
+initConfigs changed in the original source; 84 original files are identical. Final
+replay makes no new model calls. All shipped implementation/test source is local-model
+output; Codex selected scope, wrote gates, reviewed and prepared the corrective task.
+No product-specific factory core changes or model changes were needed. No hardware,
+web or gRPC qualification, unattended discovery, or broad reliability claim.
+
+[Results](leds-config-results.json), [initial fixture](leds-config-fixture.json), and
+[reviewed repair fixture](leds-config-repair-fixture.json) are portable. Reconstruct
+with scripts/prepare_repository_trial.py against the pinned checkout; add
+--test-followup --reviewed-plan for the correction. Raw evidence lives under
+.gflo/evidence/leds-config-v1 and leds-config-repair-v1. Read issue 46 for delivery.
+
+Next: prospective behavior-sensitive test checks and repeated feature trials, then
+larger navigation/execution workloads. The active public roadmap is consolidated in
+[docs/roadmap.md](../../docs/roadmap.md); older checkpoints below are historical.
+Keep current model/serving configuration. Existing push/merge authorization persists.
+
+## Previous checkpoint — development repair and verified data, 2026-09-10
 
 Owner requested every repair option EXCEPT changing the model. Keep current weights,
 serving deployment and GPU configuration. Issue 45 complete: opt-in repair protocol

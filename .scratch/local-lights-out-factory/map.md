@@ -188,3 +188,9 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
   Retained planning/protocol/coverage failures; a finding blocks the square-only test
   acceptance. Reviewed/data-assisted correction passed one repair response and final
   checks, preserving all other files. End-to-end unattended planning remains unproven.
+
+- [Issue 46](issues/46-qualify-leds-config-repair.md): second-domain parser fix and six
+  local-model tests merged into leds-service PR 10. No factory specialization or model
+  change. Review caught default-valued test weakness; finding blocks old reuse and
+  reviewed local repair passes reference/baseline/mutant checks. Qualification remains
+  supervised; next work is prospective test adequacy and broader repeated features.

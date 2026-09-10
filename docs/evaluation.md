@@ -338,3 +338,34 @@ retain every stage, including the challenged acceptance.
 
 Final validation: 423 tests and 25 subtests passed with Docker checks enabled;
 ruff and mypy passed. The model weights and serving deployment were unchanged.
+
+
+## Second real repository: leds-service, 2026-09-10
+
+With the same model and existing generic repair protocol, local planning and two
+workers produced a configuration-parser fix and five tests on their first attempts.
+Review found that the whitespace test used default values and survived a silent
+fallback mutant. An immutable finding blocks reuse of that initial acceptance.
+A reviewed repair task added a sixth, non-default regression in one local response:
+2567 prompt / 455 output tokens, 7.89 seconds. The two initial workers used 3624
+prompt / 1425 output tokens and 23.68 seconds combined (excluding planning).
+
+All six tests pass; the suite rejects the original implementation and the fallback
+mutant. Independent checks compare against a reference parser on fixed edge cases
+and 600 seeded configurations. AST comparison confines original code changes to
+initConfigs, and all 84 other original files remain identical. Replay adds no model
+observations. No factory core customization was necessary for this product.
+
+Codex selected the task, supplied requirements and trusted checks, reviewed coverage,
+and prepared the corrective task. The local model wrote all shipped implementation
+and test source. This is one supervised feature on a second real repository, not a
+held-out reliability score or hardware/service qualification. Both initial acceptance
+and the subsequent finding remain in [portable results](../.scratch/local-lights-out-factory/leds-config-results.json).
+[Initial](../.scratch/local-lights-out-factory/leds-config-fixture.json) and
+[repair](../.scratch/local-lights-out-factory/leds-config-repair-fixture.json) fixtures
+reconstruct from the pinned upstream revision with prepare_repository_trial.py.
+
+The selected source is merged in [leds-service PR 10](https://github.com/gradrix/leds-service/pull/10).
+No factory core code changed during this qualification; targeted checks, fixture
+reconstruction and replay passed. The preceding full factory validation remains
+423 tests and 25 subtests with Docker enabled.

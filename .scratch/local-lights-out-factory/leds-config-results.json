@@ -1,0 +1,273 @@
+{
+  "schema_version": 1,
+  "repository": "https://github.com/gradrix/leds-service",
+  "baseline_commit": "24f602c0bf7e67e781a04cd741f4c98a99ad616d",
+  "model_changed": false,
+  "scope": "Supervised parser repair; Codex selected requirements, prepared independent gates, reviewed and requested coverage correction. Local model wrote implementation and all shipped tests. No hardware/service qualification.",
+  "initial_planning": {
+    "status": "needs-review",
+    "proposal_digest": "33c9c73460b67a42146d9db817271c215bf514fb1cb8642d0660f42b501cf507",
+    "execution_authorized": false,
+    "task_order": [
+      "repair-initconfigs",
+      "add-regression-tests"
+    ],
+    "questions": [],
+    "observations": [
+      {
+        "attempt": 1,
+        "turn": 1,
+        "model_evidence_digest": "d2942c96c0580121c69938e69ea52e7b9b2f6ef962f10c6a26b4f1b5f7f25fd5",
+        "observation_digest": "826a4611d8e317289bb13460fd3e5ec3f4cbe6c827f643a8fe7a2ae814a5e5d7"
+      }
+    ],
+    "usage": {
+      "prompt_tokens": 3166,
+      "total_tokens": 4153,
+      "completion_tokens": 987,
+      "prompt_tokens_details": null,
+      "completion_tokens_details": {
+        "reasoning_tokens": 0
+      }
+    },
+    "elapsed_seconds": 16.742329493001307,
+    "proposal": {
+      "questions": [],
+      "rationale": "Policy is sufficient: the requirements specify exact parsing behavior, completeness rule, defaults, replacement semantics, and test expectations. The source confirms ConfigReader.initConfigs and GpioService signatures, so the plan can state after-change interfaces without inventing business policy. Tasks are ordered provider-first (repair) then consumer (tests). Presentation choices follow the repository: keep GpioService and public methods unchanged, edit only initConfigs, and use pytest with real imports.",
+      "request_digest": "c880d9c95ea2a0ad8ad099b23d4420cde9ae1faa1d75088082eedb0b65ba8917",
+      "schema_version": 1,
+      "tasks": [
+        {
+          "acceptance_checks": [
+            "Whitespace around keys and values is stripped before matching and storing, e.g. ' pin = 18 ' yields pin '18'.",
+            "A service with empty pin, port, or ledCount after trimming is skipped and does not produce a GpioService.",
+            "Multiple services preserve input order while incomplete entries are skipped; complete services remain in original order.",
+            "Repeated calls replace ConfigReader.configs entirely; prior state does not persist.",
+            "When no complete service remains, ConfigReader.configs contains exactly one GpioService with pin '18', port '9000', ledCount '10'.",
+            "Last duplicate known-key wins, including an empty value that makes the service incomplete; unknown keys and fields with more than one '=' are ignored.",
+            "GpioService, readCfgFile, read, LEDS_INSTALL_CFG, and file/cache behavior are unchanged; only initConfigs is edited."
+          ],
+          "depends_on": [],
+          "environment_id": "python",
+          "interface_contracts": [
+            "ConfigReader.initConfigs(config: str) -> None: classmethod/staticmethod that replaces ConfigReader.configs with a list of GpioService objects built from complete services in input order; GpioService(pin: str, port: str, ledCount: str) remains unchanged and receives trimmed string values; malformed/unknown fields are ignored; incomplete services are skipped; defaults are used only when no complete service remains."
+          ],
+          "objective": "Repair ConfigReader.initConfigs so it trims whitespace around field keys and values in comma-separated key=value fields and colon-separated services, treats a service as complete only when pin, port and ledCount are all nonempty after trimming, skips incomplete services, preserves order, preserves string-valued attributes, applies last duplicate known-key wins including empty, ignores unknown/malformed fields with other than one equals sign, and uses existing string defaults 18/9000/10 only when no complete service remains. Each call replaces ConfigReader.configs. Preserve GpioService, public interfaces and all read/cache/environment/file behavior; edit only initConfigs.",
+          "read_paths": [
+            "web_api/config/configreader.py"
+          ],
+          "requirement_ids": [
+            "parse"
+          ],
+          "schema_version": 1,
+          "task_id": "repair-initconfigs",
+          "writable_paths": [
+            "web_api/config/configreader.py"
+          ]
+        },
+        {
+          "acceptance_checks": [
+            "At least four substantive regression cases are present and cover whitespace, incomplete fields, order/skipping, and defaults/replacement.",
+            "Tests import real web_api.config.configreader and do not mock the module under test.",
+            "Tests pass against repaired initConfigs.",
+            "At least two assertions fail against original initConfigs, demonstrating the regression coverage.",
+            "No hardware, network, external packages beyond pytest, or changes to other files are introduced."
+          ],
+          "depends_on": [
+            "repair-initconfigs"
+          ],
+          "environment_id": "python",
+          "interface_contracts": [
+            "Import ConfigReader and GpioService from web_api.config.configreader; call ConfigReader.initConfigs(config: str) and assert ConfigReader.configs contents; GpioService(pin: str, port: str, ledCount: str) remains the only service representation."
+          ],
+          "objective": "Add tests/test_configreader.py using pytest and real web_api.config.configreader imports with at least four substantive regression cases: whitespace around keys/values, empty or incomplete required fields, multiple services preserving order while skipping incomplete entries, and defaults/repeated parsing replacing prior state. Tests must pass repaired code and at least two assertion failures must occur against original code. No hardware, network, external packages beyond pytest, or changes to other files.",
+          "read_paths": [
+            "web_api/config/configreader.py"
+          ],
+          "requirement_ids": [
+            "tests"
+          ],
+          "schema_version": 1,
+          "task_id": "add-regression-tests",
+          "writable_paths": [
+            "tests/test_configreader.py"
+          ]
+        }
+      ]
+    }
+  },
+  "initial_finding": {
+    "atom_id": "prepared-c880d9c95ea2a0ad-33c9c73460b67a42-2848dbcfa919d815-98f16784b4222b8d/37fcd330d96ffd64",
+    "candidate_digest": "4561df16d65e0007c9cee528e6b5bcbebc36cdd9f8b58436e05991c48f29335d",
+    "contract_digest": "90907ac0989adf793f72bcac2ad53b7f94806171e5af25fdc597c1ae39fa9309",
+    "evidence_digest": "27a8eb721d9ce596fed0b91acc9036bb48c63098f63d50e329b06e4f895f1ea3",
+    "reason": "Generated whitespace regression uses default values and cannot detect missing key trimming.",
+    "schema_version": 1
+  },
+  "runs": [
+    {
+      "directory": ".gflo/evidence/leds-config-v1",
+      "status": "accepted",
+      "source": {
+        "schema_version": 1,
+        "kind": "repository-snapshot-v1",
+        "artifact_digest": "b42e579b33c5d78cf41365383baa612b6cf3fbbf44740c3be03d147dd4ad8b24"
+      },
+      "workers": [
+        {
+          "atom_id": "prepared-c880d9c95ea2a0ad-33c9c73460b67a42-2848dbcfa919d815/8a9bc5710bf1515a",
+          "cost": {
+            "attempts": 1,
+            "model_observations": 1,
+            "validated_prompt_tokens": 1864,
+            "validated_completion_tokens": 617,
+            "observed_model_seconds": 10.269509623998601,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          },
+          "responses": [
+            {
+              "content": "{\n  \"schema_version\": 1,\n  \"kind\": \"repair\",\n  \"edits\": [\n    {\n      \"path\": \"web_api/config/configreader.py\",\n      \"expected_digest\": \"51a7cdc9fec9225288b3df23c8927bf53d39f582da685be54d33e367b2d4d36c\",\n      \"old\": \"    @staticmethod\\n    def initConfigs(config):\\n        result = []\\n        services = config.split(\\\":\\\")\\n        for service in services:\\n            args = service.split(\\\",\\\")\\n            pin = None\\n            port = None\\n            ledCount = None\\n            for arg in args:\\n                keyValuePair = arg.split(\\\"=\\\")\\n                if (len(keyValuePair) == 2):\\n                    key = keyValuePair[0]\\n                    value = keyValuePair[1]\\n                    \\n                    if (key == \\\"pin\\\"):\\n                        pin = value\\n                    elif (key == \\\"port\\\"):\\n                        port = value\\n                    elif (key == \\\"ledCount\\\"):\\n                        ledCount = value\\n\\n            if (pin != None and port != None and ledCount != None):\\n                result.append(GpioService(pin, port, ledCount))\\n\\n        if (len(result) == 0):\\n            result.append(GpioService(\\\"18\\\", \\\"9000\\\", \\\"10\\\"))\\n        ConfigReader.configs = result\",\n      \"new\": \"    @staticmethod\\n    def initConfigs(config):\\n        result = []\\n        services = config.split(\\\":\\\")\\n        for service in services:\\n            args = service.split(\\\",\\\")\\n            pin = None\\n            port = None\\n            ledCount = None\\n            for arg in args:\\n                keyValuePair = arg.split(\\\"=\\\")\\n                if (len(keyValuePair) == 2):\\n                    key = keyValuePair[0].strip()\\n                    value = keyValuePair[1].strip()\\n                    \\n                    if (key == \\\"pin\\\"):\\n                        pin = value\\n                    elif (key == \\\"port\\\"):\\n                        port = value\\n                    elif (key == \\\"ledCount\\\"):\\n                        ledCount = value\\n\\n            if (pin is not None and port is not None and ledCount is not None and pin != \\\"\\\" and port != \\\"\\\" and ledCount != \\\"\\\"):\\n                result.append(GpioService(pin, port, ledCount))\\n\\n        if (len(result) == 0):\\n            result.append(GpioService(\\\"18\\\", \\\"9000\\\", \\\"10\\\"))\\n        ConfigReader.configs = result\"\n    }\n  ]\n}",
+              "usage": {
+                "prompt_tokens": 1864,
+                "total_tokens": 2481,
+                "completion_tokens": 617,
+                "prompt_tokens_details": null,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 0
+                }
+              }
+            }
+          ]
+        },
+        {
+          "atom_id": "prepared-c880d9c95ea2a0ad-33c9c73460b67a42-2848dbcfa919d815-98f16784b4222b8d/37fcd330d96ffd64",
+          "cost": {
+            "attempts": 1,
+            "model_observations": 1,
+            "validated_prompt_tokens": 1760,
+            "validated_completion_tokens": 808,
+            "observed_model_seconds": 13.413710277000064,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          },
+          "responses": [
+            {
+              "content": "{\"schema_version\":1,\"kind\":\"candidate\",\"changes\":{\"tests/test_configreader.py\":\"import pytest\\n\\nfrom web_api.config.configreader import ConfigReader, GpioService\\n\\n\\ndef _reset():\\n    ConfigReader.configs = []\\n\\n\\ndef test_whitespace_around_keys_and_values():\\n    _reset()\\n    ConfigReader.initConfigs(\\\"  pin = 18 , port = 9000 , ledCount = 10 \\\")\\n    assert len(ConfigReader.configs) == 1\\n    svc = ConfigReader.configs[0]\\n    assert svc.pin == \\\"18\\\"\\n    assert svc.port == \\\"9000\\\"\\n    assert svc.ledCount == \\\"10\\\"\\n\\n\\ndef test_empty_or_incomplete_required_fields_skipped():\\n    _reset()\\n    # First entry missing ledCount, second entry has empty pin value.\\n    ConfigReader.initConfigs(\\n        \\\"pin=18,port=9000:pin=,port=9000,ledCount=10\\\"\\n    )\\n    # Both entries are incomplete; no valid service should be produced.\\n    # The default fallback should kick in.\\n    assert len(ConfigReader.configs) == 1\\n    svc = ConfigReader.configs[0]\\n    assert svc.pin == \\\"18\\\"\\n    assert svc.port == \\\"9000\\\"\\n    assert svc.ledCount == \\\"10\\\"\\n\\n\\ndef test_multiple_services_preserve_order_skip_incomplete():\\n    _reset()\\n    ConfigReader.initConfigs(\\n        \\\"pin=1,port=2,ledCount=3:pin=,port=4,ledCount=5:pin=6,port=7,ledCount=8\\\"\\n    )\\n    assert len(ConfigReader.configs) == 2\\n    assert ConfigReader.configs[0].pin == \\\"1\\\"\\n    assert ConfigReader.configs[0].port == \\\"2\\\"\\n    assert ConfigReader.configs[0].ledCount == \\\"3\\\"\\n    assert ConfigReader.configs[1].pin == \\\"6\\\"\\n    assert ConfigReader.configs[1].port == \\\"7\\\"\\n    assert ConfigReader.configs[1].ledCount == \\\"8\\\"\\n\\n\\ndef test_defaults_and_repeated_parsing_replaces_prior_state():\\n    _reset()\\n    # First parse: empty config triggers default.\\n    ConfigReader.initConfigs(\\\"\\\")\\n    assert len(ConfigReader.configs) == 1\\n    assert ConfigReader.configs[0].pin == \\\"18\\\"\\n    assert ConfigReader.configs[0].port == \\\"9000\\\"\\n    assert ConfigReader.configs[0].ledCount == \\\"10\\\"\\n\\n    # Second parse replaces prior state entirely.\\n    ConfigReader.initConfigs(\\\"pin=20,port=8000,ledCount=5\\\")\\n    assert len(ConfigReader.configs) == 1\\n    assert ConfigReader.configs[0].pin == \\\"20\\\"\\n    assert ConfigReader.configs[0].port == \\\"8000\\\"\\n    assert ConfigReader.configs[0].ledCount == \\\"5\\\"\\n\\n\\ndef test_whitespace_incomplete_entry_not_selected():\\n    _reset()\\n    # Entry with whitespace-only values should be treated as incomplete.\\n    ConfigReader.initConfigs(\\\"pin=  ,port=  ,ledCount=  \\\")\\n    assert len(ConfigReader.configs) == 1\\n    svc = ConfigReader.configs[0]\\n    assert svc.pin == \\\"18\\\"\\n    assert svc.port == \\\"9000\\\"\\n    assert svc.ledCount == \\\"10\\\"\\n\"}}",
+              "usage": {
+                "prompt_tokens": 1760,
+                "total_tokens": 2568,
+                "completion_tokens": 808,
+                "prompt_tokens_details": null,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 0
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "directory": ".gflo/evidence/leds-config-repair-v1",
+      "status": "accepted",
+      "source": {
+        "artifact_digest": "230afa7d908c820eb63786a234a3391838726ebf1fb6638e4f91c49f324e6dba",
+        "kind": "repository-snapshot-v1",
+        "schema_version": 1
+      },
+      "workers": [
+        {
+          "atom_id": "prepared-4326a17b438e2a2e-cb12a5cda1317673-050857bbacbb416a/ee23645e0e9a862e",
+          "cost": {
+            "attempts": 1,
+            "model_observations": 1,
+            "validated_prompt_tokens": 2567,
+            "validated_completion_tokens": 455,
+            "observed_model_seconds": 7.89363993599909,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          },
+          "responses": [
+            {
+              "content": "{\"schema_version\":1,\"kind\":\"repair\",\"edits\":[{\"path\":\"tests/test_configreader.py\",\"expected_digest\":\"3e8e0dc7c7ef999031adeac54a25482b949699063fdb3586793b7e2ec406151c\",\"old\":\"def test_whitespace_incomplete_entry_not_selected():\\n    _reset()\\n    # Entry with whitespace-only values should be treated as incomplete.\\n    ConfigReader.initConfigs(\\\"pin=  ,port=  ,ledCount=  \\\")\\n    assert len(ConfigReader.configs) == 1\\n    svc = ConfigReader.configs[0]\\n    assert svc.pin == \\\"18\\\"\\n    assert svc.port == \\\"9000\\\"\\n    assert svc.ledCount == \\\"10\\\"\",\"new\":\"def test_whitespace_incomplete_entry_not_selected():\\n    _reset()\\n    # Entry with whitespace-only values should be treated as incomplete.\\n    ConfigReader.initConfigs(\\\"pin=  ,port=  ,ledCount=  \\\")\\n    assert len(ConfigReader.configs) == 1\\n    svc = ConfigReader.configs[0]\\n    assert svc.pin == \\\"18\\\"\\n    assert svc.port == \\\"9000\\\"\\n    assert svc.ledCount == \\\"10\\\"\\n\\n\\ndef test_whitespace_key_not_fallback():\\n    _reset()\\n    # A key with surrounding whitespace must be recognized, not dropped.\\n    # If the parser trims keys and the value is non-default, the result\\n    # must reflect the configured values, not the default fallback.\\n    ConfigReader.initConfigs(\\\"  pin = 20 , port = 8000 , ledCount = 5 \\\")\\n    assert len(ConfigReader.configs) == 1\\n    svc = ConfigReader.configs[0]\\n    assert svc.pin == \\\"20\\\"\\n    assert svc.port == \\\"8000\\\"\\n    assert svc.ledCount == \\\"5\\\"\"}]}",
+              "usage": {
+                "prompt_tokens": 2567,
+                "total_tokens": 3022,
+                "completion_tokens": 455,
+                "prompt_tokens_details": null,
+                "completion_tokens_details": {
+                  "reasoning_tokens": 0
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "unchanged_original_files": 84,
+  "final_source": {
+    "artifact_digest": "230afa7d908c820eb63786a234a3391838726ebf1fb6638e4f91c49f324e6dba",
+    "kind": "repository-snapshot-v1",
+    "schema_version": 1
+  },
+  "shipped_files": {
+    "web_api/config/configreader.py": {
+      "identity": {
+        "schema_version": 1,
+        "content_digest": "8cd1a00c96cea614e0247d9981521c50835570428878353a072ccf8ad8dab7b1",
+        "size_bytes": 2078,
+        "executable": false
+      },
+      "content": "import os\nfrom pathlib import Path\n\nLEDS_INSTALL_CFG = os.environ.get(\"LEDS_INSTALL_CFG\")\n\nclass GpioService():\n    \n    def __init__(self, pin, port, ledCount):\n        self.pin = pin\n        self.port = port\n        self.ledCount = ledCount\n\n\nclass ConfigReader():\n\n    configs = []\n\n    @staticmethod\n    def initConfigs(config):\n        result = []\n        services = config.split(\":\")\n        for service in services:\n            args = service.split(\",\")\n            pin = None\n            port = None\n            ledCount = None\n            for arg in args:\n                keyValuePair = arg.split(\"=\")\n                if (len(keyValuePair) == 2):\n                    key = keyValuePair[0].strip()\n                    value = keyValuePair[1].strip()\n                    \n                    if (key == \"pin\"):\n                        pin = value\n                    elif (key == \"port\"):\n                        port = value\n                    elif (key == \"ledCount\"):\n                        ledCount = value\n\n            if (pin is not None and port is not None and ledCount is not None and pin != \"\" and port != \"\" and ledCount != \"\"):\n                result.append(GpioService(pin, port, ledCount))\n\n        if (len(result) == 0):\n            result.append(GpioService(\"18\", \"9000\", \"10\"))\n        ConfigReader.configs = result\n\n    @staticmethod\n    def readCfgFile():\n        path = Path(__file__).parent / \"../config/install.cfg\"\n        data = \"\"\n        if (path.is_file()):\n            with path.open() as f:\n                data = f.read().rstrip()\n        return data\n \n    @staticmethod\n    def read():\n        if (len(ConfigReader.configs) == 0):\n            print(\"Reading install.config\", end=\" \")\n            data = \"\"\n            if not LEDS_INSTALL_CFG:\n                data = ConfigReader.readCfgFile()\n            else:\n                data = LEDS_INSTALL_CFG\n            print(\" => \"+data)\n            ConfigReader.initConfigs(data)\n        else:\n            print(\"Returning existing loaded install.config\")\n\n        return ConfigReader.configs\n"
+    },
+    "tests/test_configreader.py": {
+      "identity": {
+        "schema_version": 1,
+        "content_digest": "8aa00d42a92ec06026c72458d486a19f1a9abce7344f2a891e2d166e60e0d5f8",
+        "size_bytes": 2984,
+        "executable": false
+      },
+      "content": "import pytest\n\nfrom web_api.config.configreader import ConfigReader, GpioService\n\n\ndef _reset():\n    ConfigReader.configs = []\n\n\ndef test_whitespace_around_keys_and_values():\n    _reset()\n    ConfigReader.initConfigs(\"  pin = 18 , port = 9000 , ledCount = 10 \")\n    assert len(ConfigReader.configs) == 1\n    svc = ConfigReader.configs[0]\n    assert svc.pin == \"18\"\n    assert svc.port == \"9000\"\n    assert svc.ledCount == \"10\"\n\n\ndef test_empty_or_incomplete_required_fields_skipped():\n    _reset()\n    # First entry missing ledCount, second entry has empty pin value.\n    ConfigReader.initConfigs(\n        \"pin=18,port=9000:pin=,port=9000,ledCount=10\"\n    )\n    # Both entries are incomplete; no valid service should be produced.\n    # The default fallback should kick in.\n    assert len(ConfigReader.configs) == 1\n    svc = ConfigReader.configs[0]\n    assert svc.pin == \"18\"\n    assert svc.port == \"9000\"\n    assert svc.ledCount == \"10\"\n\n\ndef test_multiple_services_preserve_order_skip_incomplete():\n    _reset()\n    ConfigReader.initConfigs(\n        \"pin=1,port=2,ledCount=3:pin=,port=4,ledCount=5:pin=6,port=7,ledCount=8\"\n    )\n    assert len(ConfigReader.configs) == 2\n    assert ConfigReader.configs[0].pin == \"1\"\n    assert ConfigReader.configs[0].port == \"2\"\n    assert ConfigReader.configs[0].ledCount == \"3\"\n    assert ConfigReader.configs[1].pin == \"6\"\n    assert ConfigReader.configs[1].port == \"7\"\n    assert ConfigReader.configs[1].ledCount == \"8\"\n\n\ndef test_defaults_and_repeated_parsing_replaces_prior_state():\n    _reset()\n    # First parse: empty config triggers default.\n    ConfigReader.initConfigs(\"\")\n    assert len(ConfigReader.configs) == 1\n    assert ConfigReader.configs[0].pin == \"18\"\n    assert ConfigReader.configs[0].port == \"9000\"\n    assert ConfigReader.configs[0].ledCount == \"10\"\n\n    # Second parse replaces prior state entirely.\n    ConfigReader.initConfigs(\"pin=20,port=8000,ledCount=5\")\n    assert len(ConfigReader.configs) == 1\n    assert ConfigReader.configs[0].pin == \"20\"\n    assert ConfigReader.configs[0].port == \"8000\"\n    assert ConfigReader.configs[0].ledCount == \"5\"\n\n\ndef test_whitespace_incomplete_entry_not_selected():\n    _reset()\n    # Entry with whitespace-only values should be treated as incomplete.\n    ConfigReader.initConfigs(\"pin=  ,port=  ,ledCount=  \")\n    assert len(ConfigReader.configs) == 1\n    svc = ConfigReader.configs[0]\n    assert svc.pin == \"18\"\n    assert svc.port == \"9000\"\n    assert svc.ledCount == \"10\"\n\n\ndef test_whitespace_key_not_fallback():\n    _reset()\n    # A key with surrounding whitespace must be recognized, not dropped.\n    # If the parser trims keys and the value is non-default, the result\n    # must reflect the configured values, not the default fallback.\n    ConfigReader.initConfigs(\"  pin = 20 , port = 8000 , ledCount = 5 \")\n    assert len(ConfigReader.configs) == 1\n    svc = ConfigReader.configs[0]\n    assert svc.pin == \"20\"\n    assert svc.port == \"8000\"\n    assert svc.ledCount == \"5\"\n"
+    }
+  },
+  "replay_without_model_calls": true,
+  "checks": [
+    {
+      "gate": "oracle",
+      "case": 1,
+      "stdout": "config-reference-ok\n"
+    },
+    {
+      "gate": "tests",
+      "case": 1,
+      "stdout": "regressions-ok\n"
+    },
+    {
+      "gate": "tests",
+      "case": 2,
+      "stdout": "original-rejected\n"
+    },
+    {
+      "gate": "key-mutant",
+      "case": 1,
+      "stdout": "key-whitespace-mutant-rejected\n"
+    }
+  ],
+  "pytest": "......                                                                   [100%]\n6 passed in 0.02s\n",
+  "initial_replay_blocked": "Accepted result has contradictory evidence; prepare new repair work",
+  "delivery": {
+    "pr": "https://github.com/gradrix/leds-service/pull/10",
+    "commit": "bd2b1f68524a9e15daf5ab4cf1d432439ed25d4b",
+    "merge_commit": "9ab0926a9c693d6972aadd3fc009593ed1c3c88a",
+    "status": "merged"
+  },
+  "portable_reconstruction_verified": true
+}

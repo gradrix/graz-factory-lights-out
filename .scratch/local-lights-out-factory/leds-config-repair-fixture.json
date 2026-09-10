@@ -1,0 +1,351 @@
+{
+  "schema_version": 1,
+  "repository": "https://github.com/gradrix/leds-service",
+  "revision": "24f602c0bf7e67e781a04cd741f4c98a99ad616d",
+  "request": {
+    "schema_version": 1,
+    "kind": "repository-feature-v1",
+    "feature_id": "leds-config-whitespace-v1",
+    "objective": "Make LED service configuration robust to whitespace and incomplete entries without silently selecting the wrong default service. Repair the parser and add isolated regression tests.",
+    "requirements": {
+      "parse": "In ConfigReader.initConfigs strip whitespace around field keys and values in comma-separated key=value fields and colon-separated services. A service is complete only if pin, port and ledCount are all nonempty after trimming. Skip incomplete services; use existing string defaults 18/9000/10 only if none remain. Preserve order, string-valued attributes, last duplicate known-key wins (including empty), and ignoring unknown/malformed fields with other than one equals sign. Each call replaces ConfigReader.configs. Preserve GpioService, public interfaces and all read/cache/environment/file behavior; edit only initConfigs.",
+      "tests": "Add tests/test_configreader.py using pytest and real web_api.config.configreader imports. At least four substantive regression cases: whitespace around keys/values, empty or incomplete required fields, multiple services preserving order while skipping incomplete entries, and defaults/repeated parsing replacing prior state. Tests pass repaired code and at least two assertion failures occur against original. No hardware, network, external packages beyond pytest, or changes to other files."
+    },
+    "source": {
+      "schema_version": 1,
+      "kind": "repository-snapshot-v1",
+      "artifact_digest": "077ecc33df3e572bf185a9229e8497f69786f9b1cc1381911ea49c4e1269e3b6"
+    },
+    "allowed_paths": [
+      "web_api/config/configreader.py",
+      "tests/test_configreader.py"
+    ],
+    "environments": {
+      "python": {
+        "schema_version": 1,
+        "image": "sha256:695d05883b15326aea01e9266067ff58c41f3eaa4f647cfc9424b403dbe9548d",
+        "description": "Pinned offline CPython 3.11, standard library; no installation needed."
+      }
+    }
+  },
+  "policy": {
+    "schema_version": 1,
+    "kind": "feature-policy-v1",
+    "request_digest": "c880d9c95ea2a0ad8ad099b23d4420cde9ae1faa1d75088082eedb0b65ba8917",
+    "file_gates": {
+      "web_api/config/configreader.py": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-c",
+              "import itertools,random\nfrom web_api.config.configreader import ConfigReader\n\ndef reference(text):\n out=[]\n for service in text.split(':'):\n  fields={}\n  for raw in service.split(','):\n   pair=raw.split('=')\n   if len(pair)==2:\n    key,value=(part.strip() for part in pair)\n    if key in ('pin','port','ledCount'):fields[key]=value\n  if all(fields.get(k) for k in ('pin','port','ledCount')):\n   out.append(tuple(fields[k] for k in ('pin','port','ledCount')))\n return out or [('18','9000','10')]\n\ndef check(text):\n ConfigReader.initConfigs(text)\n actual=[(v.pin,v.port,v.ledCount) for v in ConfigReader.configs]\n assert actual==reference(text),(text,actual,reference(text))\n assert all(type(v) is str for row in actual for v in row)\n return actual\n\ncases=['','pin=21,port=9001,ledCount=30',' pin = 21 , port = 9001 , ledCount = 30 ',\n 'pin=,port=9001,ledCount=30','pin=21,port=,ledCount=30','pin=21,port=9001,ledCount= ',\n 'pin=21,port=9001,ledCount=30:pin=22,port=9002,ledCount=40',\n 'pin=,port=9000,ledCount=30:pin=22,port=9002,ledCount=40',\n 'pin=21,port=9001,ledCount=30,pin=','pin=,pin=21,port=9001,ledCount=30',\n 'pin=21,port=9001,ledCount=30,unknown=x,broken=x=y']\nfor case in cases:check(case)\nrng=random.Random(4601)\nspaces=['',' ','\\t','\\n','  ']\nfor _ in range(600):\n services=[]\n for _ in range(rng.randrange(1,5)):\n  fields=[]\n  for key in rng.sample(['pin','port','ledCount','unknown'],4):\n   value=rng.choice(['',' ',str(rng.randrange(1,10000)),'custom'])\n   fields.append(rng.choice(spaces)+key+rng.choice(spaces)+'='+rng.choice(spaces)+value+rng.choice(spaces))\n  services.append(','.join(fields))\n check(':'.join(services))\n# A later parse replaces the previous list instead of accumulating or leaking entries.\ncheck('pin=21,port=9001,ledCount=30');check('');check('pin=22,port=9002,ledCount=40')\nprint('config-reference-ok')\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "config-reference-ok\n",
+            "seconds": 30.0
+          }
+        ]
+      },
+      "tests/test_configreader.py": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-c",
+              "import contextlib,io,pytest,re\nfrom web_api.config.configreader import ConfigReader\noriginal=ConfigReader.initConfigs\nseen=[]\ndef observe(text):\n seen.append(text)\n return original(text)\nConfigReader.initConfigs=staticmethod(observe)\nclass Counts:\n def pytest_collection_finish(self,session):self.count=len(session.items)\nplugin=Counts();output=io.StringIO()\nwith contextlib.redirect_stdout(output),contextlib.redirect_stderr(output):\n result=pytest.main(['-q','--tb=short','tests/test_configreader.py'],plugins=[plugin])\nassert result==0,output.getvalue()\nassert plugin.count>=4,'At least four regression cases required'\nassert any(re.search(r'(pin|port|ledCount)\\s+=|=\\s+\\S',text) for text in seen),'No whitespace parse exercised'\nassert any(re.search(r'(pin|port|ledCount)\\s*=\\s*(?:,|:|$)',text) for text in seen),'No empty required value exercised'\nassert any(':' in text for text in seen),'No multi-service parse exercised'\nprint('regressions-ok')\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "regressions-ok\n",
+            "seconds": 30.0
+          },
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-c",
+              "import contextlib,io,pytest\nimport web_api.config.configreader as live\nnamespace={'__file__':live.__file__}\nexec('import os\\nfrom pathlib import Path\\n\\nLEDS_INSTALL_CFG = os.environ.get(\"LEDS_INSTALL_CFG\")\\n\\nclass GpioService():\\n    \\n    def __init__(self, pin, port, ledCount):\\n        self.pin = pin\\n        self.port = port\\n        self.ledCount = ledCount\\n\\n\\nclass ConfigReader():\\n\\n    configs = []\\n\\n    @staticmethod\\n    def initConfigs(config):\\n        result = []\\n        services = config.split(\":\")\\n        for service in services:\\n            args = service.split(\",\")\\n            pin = None\\n            port = None\\n            ledCount = None\\n            for arg in args:\\n                keyValuePair = arg.split(\"=\")\\n                if (len(keyValuePair) == 2):\\n                    key = keyValuePair[0]\\n                    value = keyValuePair[1]\\n                    \\n                    if (key == \"pin\"):\\n                        pin = value\\n                    elif (key == \"port\"):\\n                        port = value\\n                    elif (key == \"ledCount\"):\\n                        ledCount = value\\n\\n            if (pin != None and port != None and ledCount != None):\\n                result.append(GpioService(pin, port, ledCount))\\n\\n        if (len(result) == 0):\\n            result.append(GpioService(\"18\", \"9000\", \"10\"))\\n        ConfigReader.configs = result\\n\\n    @staticmethod\\n    def readCfgFile():\\n        path = Path(__file__).parent / \"../config/install.cfg\"\\n        data = \"\"\\n        if (path.is_file()):\\n            with path.open() as f:\\n                data = f.read().rstrip()\\n        return data\\n \\n    @staticmethod\\n    def read():\\n        if (len(ConfigReader.configs) == 0):\\n            print(\"Reading install.config\", end=\" \")\\n            data = \"\"\\n            if not LEDS_INSTALL_CFG:\\n                data = ConfigReader.readCfgFile()\\n            else:\\n                data = LEDS_INSTALL_CFG\\n            print(\" => \"+data)\\n            ConfigReader.initConfigs(data)\\n        else:\\n            print(\"Returning existing loaded install.config\")\\n\\n        return ConfigReader.configs\\n',namespace)\nlive.ConfigReader=namespace['ConfigReader']\nclass Counts:\n def __init__(self):self.failed=0;self.errors=0\n def pytest_runtest_makereport(self,item,call):\n  if call.excinfo is not None:\n   if call.when=='call' and call.excinfo.errisinstance(AssertionError):self.failed+=1\n   else:self.errors+=1\nplugin=Counts()\nwith contextlib.redirect_stdout(io.StringIO()),contextlib.redirect_stderr(io.StringIO()):\n result=pytest.main(['-q','--tb=short','tests/test_configreader.py'],plugins=[plugin])\nassert result==1 and plugin.failed>=2 and plugin.errors==0,(result,plugin.failed,plugin.errors)\nprint('original-rejected')\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "original-rejected\n",
+            "seconds": 30.0
+          }
+        ]
+      }
+    },
+    "execution_paths": [
+      "web_api/config/configreader.py",
+      "tests/test_configreader.py"
+    ],
+    "planning_paths": [
+      "web_api/config/configreader.py"
+    ],
+    "integration_gates": {
+      "oracle": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-c",
+              "import itertools,random\nfrom web_api.config.configreader import ConfigReader\n\ndef reference(text):\n out=[]\n for service in text.split(':'):\n  fields={}\n  for raw in service.split(','):\n   pair=raw.split('=')\n   if len(pair)==2:\n    key,value=(part.strip() for part in pair)\n    if key in ('pin','port','ledCount'):fields[key]=value\n  if all(fields.get(k) for k in ('pin','port','ledCount')):\n   out.append(tuple(fields[k] for k in ('pin','port','ledCount')))\n return out or [('18','9000','10')]\n\ndef check(text):\n ConfigReader.initConfigs(text)\n actual=[(v.pin,v.port,v.ledCount) for v in ConfigReader.configs]\n assert actual==reference(text),(text,actual,reference(text))\n assert all(type(v) is str for row in actual for v in row)\n return actual\n\ncases=['','pin=21,port=9001,ledCount=30',' pin = 21 , port = 9001 , ledCount = 30 ',\n 'pin=,port=9001,ledCount=30','pin=21,port=,ledCount=30','pin=21,port=9001,ledCount= ',\n 'pin=21,port=9001,ledCount=30:pin=22,port=9002,ledCount=40',\n 'pin=,port=9000,ledCount=30:pin=22,port=9002,ledCount=40',\n 'pin=21,port=9001,ledCount=30,pin=','pin=,pin=21,port=9001,ledCount=30',\n 'pin=21,port=9001,ledCount=30,unknown=x,broken=x=y']\nfor case in cases:check(case)\nrng=random.Random(4601)\nspaces=['',' ','\\t','\\n','  ']\nfor _ in range(600):\n services=[]\n for _ in range(rng.randrange(1,5)):\n  fields=[]\n  for key in rng.sample(['pin','port','ledCount','unknown'],4):\n   value=rng.choice(['',' ',str(rng.randrange(1,10000)),'custom'])\n   fields.append(rng.choice(spaces)+key+rng.choice(spaces)+'='+rng.choice(spaces)+value+rng.choice(spaces))\n  services.append(','.join(fields))\n check(':'.join(services))\n# A later parse replaces the previous list instead of accumulating or leaking entries.\ncheck('pin=21,port=9001,ledCount=30');check('');check('pin=22,port=9002,ledCount=40')\nprint('config-reference-ok')\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "config-reference-ok\n",
+            "seconds": 30.0
+          }
+        ]
+      },
+      "tests": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-c",
+              "import contextlib,io,pytest,re\nfrom web_api.config.configreader import ConfigReader\noriginal=ConfigReader.initConfigs\nseen=[]\ndef observe(text):\n seen.append(text)\n return original(text)\nConfigReader.initConfigs=staticmethod(observe)\nclass Counts:\n def pytest_collection_finish(self,session):self.count=len(session.items)\nplugin=Counts();output=io.StringIO()\nwith contextlib.redirect_stdout(output),contextlib.redirect_stderr(output):\n result=pytest.main(['-q','--tb=short','tests/test_configreader.py'],plugins=[plugin])\nassert result==0,output.getvalue()\nassert plugin.count>=4,'At least four regression cases required'\nassert any(re.search(r'(pin|port|ledCount)\\s+=|=\\s+\\S',text) for text in seen),'No whitespace parse exercised'\nassert any(re.search(r'(pin|port|ledCount)\\s*=\\s*(?:,|:|$)',text) for text in seen),'No empty required value exercised'\nassert any(':' in text for text in seen),'No multi-service parse exercised'\nprint('regressions-ok')\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "regressions-ok\n",
+            "seconds": 30.0
+          },
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-c",
+              "import contextlib,io,pytest\nimport web_api.config.configreader as live\nnamespace={'__file__':live.__file__}\nexec('import os\\nfrom pathlib import Path\\n\\nLEDS_INSTALL_CFG = os.environ.get(\"LEDS_INSTALL_CFG\")\\n\\nclass GpioService():\\n    \\n    def __init__(self, pin, port, ledCount):\\n        self.pin = pin\\n        self.port = port\\n        self.ledCount = ledCount\\n\\n\\nclass ConfigReader():\\n\\n    configs = []\\n\\n    @staticmethod\\n    def initConfigs(config):\\n        result = []\\n        services = config.split(\":\")\\n        for service in services:\\n            args = service.split(\",\")\\n            pin = None\\n            port = None\\n            ledCount = None\\n            for arg in args:\\n                keyValuePair = arg.split(\"=\")\\n                if (len(keyValuePair) == 2):\\n                    key = keyValuePair[0]\\n                    value = keyValuePair[1]\\n                    \\n                    if (key == \"pin\"):\\n                        pin = value\\n                    elif (key == \"port\"):\\n                        port = value\\n                    elif (key == \"ledCount\"):\\n                        ledCount = value\\n\\n            if (pin != None and port != None and ledCount != None):\\n                result.append(GpioService(pin, port, ledCount))\\n\\n        if (len(result) == 0):\\n            result.append(GpioService(\"18\", \"9000\", \"10\"))\\n        ConfigReader.configs = result\\n\\n    @staticmethod\\n    def readCfgFile():\\n        path = Path(__file__).parent / \"../config/install.cfg\"\\n        data = \"\"\\n        if (path.is_file()):\\n            with path.open() as f:\\n                data = f.read().rstrip()\\n        return data\\n \\n    @staticmethod\\n    def read():\\n        if (len(ConfigReader.configs) == 0):\\n            print(\"Reading install.config\", end=\" \")\\n            data = \"\"\\n            if not LEDS_INSTALL_CFG:\\n                data = ConfigReader.readCfgFile()\\n            else:\\n                data = LEDS_INSTALL_CFG\\n            print(\" => \"+data)\\n            ConfigReader.initConfigs(data)\\n        else:\\n            print(\"Returning existing loaded install.config\")\\n\\n        return ConfigReader.configs\\n',namespace)\nlive.ConfigReader=namespace['ConfigReader']\nclass Counts:\n def __init__(self):self.failed=0;self.errors=0\n def pytest_runtest_makereport(self,item,call):\n  if call.excinfo is not None:\n   if call.when=='call' and call.excinfo.errisinstance(AssertionError):self.failed+=1\n   else:self.errors+=1\nplugin=Counts()\nwith contextlib.redirect_stdout(io.StringIO()),contextlib.redirect_stderr(io.StringIO()):\n result=pytest.main(['-q','--tb=short','tests/test_configreader.py'],plugins=[plugin])\nassert result==1 and plugin.failed>=2 and plugin.errors==0,(result,plugin.failed,plugin.errors)\nprint('original-rejected')\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "original-rejected\n",
+            "seconds": 30.0
+          }
+        ]
+      }
+    },
+    "environment_id": "python",
+    "model_profile": {
+      "schema_version": 1,
+      "profile_id": "vllm-python-worker-repair-v1",
+      "base_url": "http://127.0.0.1:30000/v1",
+      "model": "gflo-local",
+      "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+      "context_limit": 16384,
+      "timeout_seconds": 120.0
+    },
+    "deployment": "{\n  \"mode\": \"managed\",\n  \"base_url\": \"http://127.0.0.1:30000/v1\",\n  \"model\": \"gflo-local\",\n  \"request_timeout\": 120,\n  \"startup_timeout\": 300,\n  \"managed\": {\n    \"backend\": \"vllm\",\n    \"image\": \"vllm/vllm-openai@sha256:ac259a0111c6cf462a72e449962b84f7a624b5cbec24bd7d9ec3b67d40ffd1bf\",\n    \"model_path\": \"Inferact/Qwen3.8-27B-NVFP4\",\n    \"revision\": \"6128240ebaf4eaa7bad2b3d1c72c37d677c5f462\",\n    \"name\": \"gflo-vllm-graphs\",\n    \"gpu\": \"0\",\n    \"context_length\": 16384,\n    \"memory_fraction\": 0.85,\n    \"shm_size\": \"4g\",\n    \"memory_limit\": \"36g\",\n    \"cpu_limit\": 3,\n    \"pids_limit\": 1024,\n    \"model_cache_volume\": \"local-vllm-huggingface-cache\",\n    \"offline\": true,\n    \"hf_token_env\": \"\",\n    \"server_options\": {\n      \"kv-cache-dtype\": \"bfloat16\",\n      \"reasoning-parser\": \"qwen3\",\n      \"tool-call-parser\": \"qwen3_coder\"\n    },\n    \"enforce_eager\": false\n  }\n}\n",
+    "context_budget": {
+      "schema_version": 1,
+      "total_tokens": 12288,
+      "output_tokens": 4096
+    },
+    "max_tasks": 2,
+    "max_attempts": 2,
+    "max_model_turns": 3,
+    "max_reserved_tokens": 221184
+  },
+  "repository_files": 85,
+  "repository_bytes": 336387,
+  "source_license": "MIT License\n\nCopyright (c) 2019 Gra\u017evydas Ju\u010dius\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n",
+  "scope": "Pure parser repair and tests; no GPIO, grpc or web deployment qualification.",
+  "test_followup": {
+    "request": {
+      "schema_version": 1,
+      "kind": "repository-feature-v1",
+      "feature_id": "leds-config-whitespace-regression-repair-v1",
+      "objective": "Repair the whitespace regression so it fails if whitespace causes default fallback. Existing test uses default values and cannot catch the original key-trimming bug. Preserve all existing cases and the implementation.",
+      "requirements": {
+        "tests": "Preserve all five regression cases. The whitespace-key test must configure and assert a non-default service, so a parser that drops whitespace-containing keys and silently returns defaults is rejected. Keep real ConfigReader calls; do not change implementation, remove assertions or weaken checks."
+      },
+      "source": {
+        "schema_version": 1,
+        "kind": "repository-snapshot-v1",
+        "artifact_digest": "878c42962c5ae2d71bbb8cfa6cf0d929b08a814b55d064eeba3951b7ef28e4d0"
+      },
+      "allowed_paths": [
+        "tests/test_configreader.py"
+      ],
+      "environments": {
+        "python": {
+          "schema_version": 1,
+          "image": "sha256:695d05883b15326aea01e9266067ff58c41f3eaa4f647cfc9424b403dbe9548d",
+          "description": "Pinned offline CPython 3.11, standard library; no installation needed."
+        }
+      }
+    },
+    "policy": {
+      "schema_version": 1,
+      "kind": "feature-policy-v1",
+      "request_digest": "4326a17b438e2a2ed42f1cd5bba0ad68d89fe3b804d59a3a5efffd4a94f5311b",
+      "file_gates": {
+        "tests/test_configreader.py": {
+          "schema_version": 1,
+          "cases": [
+            {
+              "schema_version": 1,
+              "command": [
+                "python",
+                "-c",
+                "import contextlib,io,pytest,re\nfrom web_api.config.configreader import ConfigReader\noriginal=ConfigReader.initConfigs\nseen=[]\ndef observe(text):\n seen.append(text)\n return original(text)\nConfigReader.initConfigs=staticmethod(observe)\nclass Counts:\n def pytest_collection_finish(self,session):self.count=len(session.items)\nplugin=Counts();output=io.StringIO()\nwith contextlib.redirect_stdout(output),contextlib.redirect_stderr(output):\n result=pytest.main(['-q','--tb=short','tests/test_configreader.py'],plugins=[plugin])\nassert result==0,output.getvalue()\nassert plugin.count>=4,'At least four regression cases required'\nassert any(re.search(r'(pin|port|ledCount)\\s+=|=\\s+\\S',text) for text in seen),'No whitespace parse exercised'\nassert any(re.search(r'(pin|port|ledCount)\\s*=\\s*(?:,|:|$)',text) for text in seen),'No empty required value exercised'\nassert any(':' in text for text in seen),'No multi-service parse exercised'\nprint('regressions-ok')\n"
+              ],
+              "stdin": "",
+              "expected_stdout": "regressions-ok\n",
+              "seconds": 30.0
+            },
+            {
+              "schema_version": 1,
+              "command": [
+                "python",
+                "-c",
+                "import contextlib,io,pytest\nimport web_api.config.configreader as live\nnamespace={'__file__':live.__file__}\nexec('import os\\nfrom pathlib import Path\\n\\nLEDS_INSTALL_CFG = os.environ.get(\"LEDS_INSTALL_CFG\")\\n\\nclass GpioService():\\n    \\n    def __init__(self, pin, port, ledCount):\\n        self.pin = pin\\n        self.port = port\\n        self.ledCount = ledCount\\n\\n\\nclass ConfigReader():\\n\\n    configs = []\\n\\n    @staticmethod\\n    def initConfigs(config):\\n        result = []\\n        services = config.split(\":\")\\n        for service in services:\\n            args = service.split(\",\")\\n            pin = None\\n            port = None\\n            ledCount = None\\n            for arg in args:\\n                keyValuePair = arg.split(\"=\")\\n                if (len(keyValuePair) == 2):\\n                    key = keyValuePair[0]\\n                    value = keyValuePair[1]\\n                    \\n                    if (key == \"pin\"):\\n                        pin = value\\n                    elif (key == \"port\"):\\n                        port = value\\n                    elif (key == \"ledCount\"):\\n                        ledCount = value\\n\\n            if (pin != None and port != None and ledCount != None):\\n                result.append(GpioService(pin, port, ledCount))\\n\\n        if (len(result) == 0):\\n            result.append(GpioService(\"18\", \"9000\", \"10\"))\\n        ConfigReader.configs = result\\n\\n    @staticmethod\\n    def readCfgFile():\\n        path = Path(__file__).parent / \"../config/install.cfg\"\\n        data = \"\"\\n        if (path.is_file()):\\n            with path.open() as f:\\n                data = f.read().rstrip()\\n        return data\\n \\n    @staticmethod\\n    def read():\\n        if (len(ConfigReader.configs) == 0):\\n            print(\"Reading install.config\", end=\" \")\\n            data = \"\"\\n            if not LEDS_INSTALL_CFG:\\n                data = ConfigReader.readCfgFile()\\n            else:\\n                data = LEDS_INSTALL_CFG\\n            print(\" => \"+data)\\n            ConfigReader.initConfigs(data)\\n        else:\\n            print(\"Returning existing loaded install.config\")\\n\\n        return ConfigReader.configs\\n',namespace)\nlive.ConfigReader=namespace['ConfigReader']\nclass Counts:\n def __init__(self):self.failed=0;self.errors=0\n def pytest_runtest_makereport(self,item,call):\n  if call.excinfo is not None:\n   if call.when=='call' and call.excinfo.errisinstance(AssertionError):self.failed+=1\n   else:self.errors+=1\nplugin=Counts()\nwith contextlib.redirect_stdout(io.StringIO()),contextlib.redirect_stderr(io.StringIO()):\n result=pytest.main(['-q','--tb=short','tests/test_configreader.py'],plugins=[plugin])\nassert result==1 and plugin.failed>=2 and plugin.errors==0,(result,plugin.failed,plugin.errors)\nprint('original-rejected')\n"
+              ],
+              "stdin": "",
+              "expected_stdout": "original-rejected\n",
+              "seconds": 30.0
+            },
+            {
+              "schema_version": 1,
+              "command": [
+                "python",
+                "-c",
+                "import contextlib,io,pytest\nfrom web_api.config.configreader import ConfigReader\noriginal=ConfigReader.initConfigs\ndef broken(text):\n fields=[field.split('=') for service in text.split(':') for field in service.split(',')]\n if any(len(pair)==2 and pair[0].strip() in ('pin','port','ledCount') and pair[0]!=pair[0].strip() for pair in fields):\n  return original('')\n return original(text)\nConfigReader.initConfigs=staticmethod(broken)\nclass Counts:\n def __init__(self):self.failed=0;self.errors=0\n def pytest_runtest_makereport(self,item,call):\n  if call.excinfo is not None:\n   if call.when=='call' and call.excinfo.errisinstance(AssertionError):self.failed+=1\n   else:self.errors+=1\nplugin=Counts();output=io.StringIO()\nwith contextlib.redirect_stdout(output),contextlib.redirect_stderr(output):\n result=pytest.main(['-q','--tb=short','tests/test_configreader.py'],plugins=[plugin])\nassert result==1 and plugin.failed>=1 and plugin.errors==0, 'Tests must reject silently defaulting when keys contain whitespace; use a non-default service. '+str((result,plugin.failed,plugin.errors))\nprint('key-whitespace-mutant-rejected')\n"
+              ],
+              "stdin": "",
+              "expected_stdout": "key-whitespace-mutant-rejected\n",
+              "seconds": 30.0
+            }
+          ]
+        }
+      },
+      "execution_paths": [
+        "web_api/config/configreader.py",
+        "tests/test_configreader.py"
+      ],
+      "planning_paths": [
+        "web_api/config/configreader.py"
+      ],
+      "integration_gates": {
+        "oracle": {
+          "schema_version": 1,
+          "cases": [
+            {
+              "schema_version": 1,
+              "command": [
+                "python",
+                "-c",
+                "import itertools,random\nfrom web_api.config.configreader import ConfigReader\n\ndef reference(text):\n out=[]\n for service in text.split(':'):\n  fields={}\n  for raw in service.split(','):\n   pair=raw.split('=')\n   if len(pair)==2:\n    key,value=(part.strip() for part in pair)\n    if key in ('pin','port','ledCount'):fields[key]=value\n  if all(fields.get(k) for k in ('pin','port','ledCount')):\n   out.append(tuple(fields[k] for k in ('pin','port','ledCount')))\n return out or [('18','9000','10')]\n\ndef check(text):\n ConfigReader.initConfigs(text)\n actual=[(v.pin,v.port,v.ledCount) for v in ConfigReader.configs]\n assert actual==reference(text),(text,actual,reference(text))\n assert all(type(v) is str for row in actual for v in row)\n return actual\n\ncases=['','pin=21,port=9001,ledCount=30',' pin = 21 , port = 9001 , ledCount = 30 ',\n 'pin=,port=9001,ledCount=30','pin=21,port=,ledCount=30','pin=21,port=9001,ledCount= ',\n 'pin=21,port=9001,ledCount=30:pin=22,port=9002,ledCount=40',\n 'pin=,port=9000,ledCount=30:pin=22,port=9002,ledCount=40',\n 'pin=21,port=9001,ledCount=30,pin=','pin=,pin=21,port=9001,ledCount=30',\n 'pin=21,port=9001,ledCount=30,unknown=x,broken=x=y']\nfor case in cases:check(case)\nrng=random.Random(4601)\nspaces=['',' ','\\t','\\n','  ']\nfor _ in range(600):\n services=[]\n for _ in range(rng.randrange(1,5)):\n  fields=[]\n  for key in rng.sample(['pin','port','ledCount','unknown'],4):\n   value=rng.choice(['',' ',str(rng.randrange(1,10000)),'custom'])\n   fields.append(rng.choice(spaces)+key+rng.choice(spaces)+'='+rng.choice(spaces)+value+rng.choice(spaces))\n  services.append(','.join(fields))\n check(':'.join(services))\n# A later parse replaces the previous list instead of accumulating or leaking entries.\ncheck('pin=21,port=9001,ledCount=30');check('');check('pin=22,port=9002,ledCount=40')\nprint('config-reference-ok')\n"
+              ],
+              "stdin": "",
+              "expected_stdout": "config-reference-ok\n",
+              "seconds": 30.0
+            }
+          ]
+        },
+        "tests": {
+          "schema_version": 1,
+          "cases": [
+            {
+              "schema_version": 1,
+              "command": [
+                "python",
+                "-c",
+                "import contextlib,io,pytest,re\nfrom web_api.config.configreader import ConfigReader\noriginal=ConfigReader.initConfigs\nseen=[]\ndef observe(text):\n seen.append(text)\n return original(text)\nConfigReader.initConfigs=staticmethod(observe)\nclass Counts:\n def pytest_collection_finish(self,session):self.count=len(session.items)\nplugin=Counts();output=io.StringIO()\nwith contextlib.redirect_stdout(output),contextlib.redirect_stderr(output):\n result=pytest.main(['-q','--tb=short','tests/test_configreader.py'],plugins=[plugin])\nassert result==0,output.getvalue()\nassert plugin.count>=4,'At least four regression cases required'\nassert any(re.search(r'(pin|port|ledCount)\\s+=|=\\s+\\S',text) for text in seen),'No whitespace parse exercised'\nassert any(re.search(r'(pin|port|ledCount)\\s*=\\s*(?:,|:|$)',text) for text in seen),'No empty required value exercised'\nassert any(':' in text for text in seen),'No multi-service parse exercised'\nprint('regressions-ok')\n"
+              ],
+              "stdin": "",
+              "expected_stdout": "regressions-ok\n",
+              "seconds": 30.0
+            },
+            {
+              "schema_version": 1,
+              "command": [
+                "python",
+                "-c",
+                "import contextlib,io,pytest\nimport web_api.config.configreader as live\nnamespace={'__file__':live.__file__}\nexec('import os\\nfrom pathlib import Path\\n\\nLEDS_INSTALL_CFG = os.environ.get(\"LEDS_INSTALL_CFG\")\\n\\nclass GpioService():\\n    \\n    def __init__(self, pin, port, ledCount):\\n        self.pin = pin\\n        self.port = port\\n        self.ledCount = ledCount\\n\\n\\nclass ConfigReader():\\n\\n    configs = []\\n\\n    @staticmethod\\n    def initConfigs(config):\\n        result = []\\n        services = config.split(\":\")\\n        for service in services:\\n            args = service.split(\",\")\\n            pin = None\\n            port = None\\n            ledCount = None\\n            for arg in args:\\n                keyValuePair = arg.split(\"=\")\\n                if (len(keyValuePair) == 2):\\n                    key = keyValuePair[0]\\n                    value = keyValuePair[1]\\n                    \\n                    if (key == \"pin\"):\\n                        pin = value\\n                    elif (key == \"port\"):\\n                        port = value\\n                    elif (key == \"ledCount\"):\\n                        ledCount = value\\n\\n            if (pin != None and port != None and ledCount != None):\\n                result.append(GpioService(pin, port, ledCount))\\n\\n        if (len(result) == 0):\\n            result.append(GpioService(\"18\", \"9000\", \"10\"))\\n        ConfigReader.configs = result\\n\\n    @staticmethod\\n    def readCfgFile():\\n        path = Path(__file__).parent / \"../config/install.cfg\"\\n        data = \"\"\\n        if (path.is_file()):\\n            with path.open() as f:\\n                data = f.read().rstrip()\\n        return data\\n \\n    @staticmethod\\n    def read():\\n        if (len(ConfigReader.configs) == 0):\\n            print(\"Reading install.config\", end=\" \")\\n            data = \"\"\\n            if not LEDS_INSTALL_CFG:\\n                data = ConfigReader.readCfgFile()\\n            else:\\n                data = LEDS_INSTALL_CFG\\n            print(\" => \"+data)\\n            ConfigReader.initConfigs(data)\\n        else:\\n            print(\"Returning existing loaded install.config\")\\n\\n        return ConfigReader.configs\\n',namespace)\nlive.ConfigReader=namespace['ConfigReader']\nclass Counts:\n def __init__(self):self.failed=0;self.errors=0\n def pytest_runtest_makereport(self,item,call):\n  if call.excinfo is not None:\n   if call.when=='call' and call.excinfo.errisinstance(AssertionError):self.failed+=1\n   else:self.errors+=1\nplugin=Counts()\nwith contextlib.redirect_stdout(io.StringIO()),contextlib.redirect_stderr(io.StringIO()):\n result=pytest.main(['-q','--tb=short','tests/test_configreader.py'],plugins=[plugin])\nassert result==1 and plugin.failed>=2 and plugin.errors==0,(result,plugin.failed,plugin.errors)\nprint('original-rejected')\n"
+              ],
+              "stdin": "",
+              "expected_stdout": "original-rejected\n",
+              "seconds": 30.0
+            }
+          ]
+        },
+        "key-mutant": {
+          "schema_version": 1,
+          "cases": [
+            {
+              "schema_version": 1,
+              "command": [
+                "python",
+                "-c",
+                "import contextlib,io,pytest\nfrom web_api.config.configreader import ConfigReader\noriginal=ConfigReader.initConfigs\ndef broken(text):\n fields=[field.split('=') for service in text.split(':') for field in service.split(',')]\n if any(len(pair)==2 and pair[0].strip() in ('pin','port','ledCount') and pair[0]!=pair[0].strip() for pair in fields):\n  return original('')\n return original(text)\nConfigReader.initConfigs=staticmethod(broken)\nclass Counts:\n def __init__(self):self.failed=0;self.errors=0\n def pytest_runtest_makereport(self,item,call):\n  if call.excinfo is not None:\n   if call.when=='call' and call.excinfo.errisinstance(AssertionError):self.failed+=1\n   else:self.errors+=1\nplugin=Counts();output=io.StringIO()\nwith contextlib.redirect_stdout(output),contextlib.redirect_stderr(output):\n result=pytest.main(['-q','--tb=short','tests/test_configreader.py'],plugins=[plugin])\nassert result==1 and plugin.failed>=1 and plugin.errors==0, 'Tests must reject silently defaulting when keys contain whitespace; use a non-default service. '+str((result,plugin.failed,plugin.errors))\nprint('key-whitespace-mutant-rejected')\n"
+              ],
+              "stdin": "",
+              "expected_stdout": "key-whitespace-mutant-rejected\n",
+              "seconds": 30.0
+            }
+          ]
+        }
+      },
+      "environment_id": "python",
+      "model_profile": {
+        "schema_version": 1,
+        "profile_id": "vllm-python-worker-repair-v1",
+        "base_url": "http://127.0.0.1:30000/v1",
+        "model": "gflo-local",
+        "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+        "context_limit": 16384,
+        "timeout_seconds": 120.0
+      },
+      "deployment": "{\n  \"mode\": \"managed\",\n  \"base_url\": \"http://127.0.0.1:30000/v1\",\n  \"model\": \"gflo-local\",\n  \"request_timeout\": 120,\n  \"startup_timeout\": 300,\n  \"managed\": {\n    \"backend\": \"vllm\",\n    \"image\": \"vllm/vllm-openai@sha256:ac259a0111c6cf462a72e449962b84f7a624b5cbec24bd7d9ec3b67d40ffd1bf\",\n    \"model_path\": \"Inferact/Qwen3.8-27B-NVFP4\",\n    \"revision\": \"6128240ebaf4eaa7bad2b3d1c72c37d677c5f462\",\n    \"name\": \"gflo-vllm-graphs\",\n    \"gpu\": \"0\",\n    \"context_length\": 16384,\n    \"memory_fraction\": 0.85,\n    \"shm_size\": \"4g\",\n    \"memory_limit\": \"36g\",\n    \"cpu_limit\": 3,\n    \"pids_limit\": 1024,\n    \"model_cache_volume\": \"local-vllm-huggingface-cache\",\n    \"offline\": true,\n    \"hf_token_env\": \"\",\n    \"server_options\": {\n      \"kv-cache-dtype\": \"bfloat16\",\n      \"reasoning-parser\": \"qwen3\",\n      \"tool-call-parser\": \"qwen3_coder\"\n    },\n    \"enforce_eager\": false\n  }\n}\n",
+      "context_budget": {
+        "schema_version": 1,
+        "total_tokens": 12288,
+        "output_tokens": 4096
+      },
+      "max_tasks": 1,
+      "max_attempts": 2,
+      "max_model_turns": 3,
+      "max_reserved_tokens": 147456
+    },
+    "source_edits": {
+      "web_api/config/configreader.py": "import os\nfrom pathlib import Path\n\nLEDS_INSTALL_CFG = os.environ.get(\"LEDS_INSTALL_CFG\")\n\nclass GpioService():\n    \n    def __init__(self, pin, port, ledCount):\n        self.pin = pin\n        self.port = port\n        self.ledCount = ledCount\n\n\nclass ConfigReader():\n\n    configs = []\n\n    @staticmethod\n    def initConfigs(config):\n        result = []\n        services = config.split(\":\")\n        for service in services:\n            args = service.split(\",\")\n            pin = None\n            port = None\n            ledCount = None\n            for arg in args:\n                keyValuePair = arg.split(\"=\")\n                if (len(keyValuePair) == 2):\n                    key = keyValuePair[0].strip()\n                    value = keyValuePair[1].strip()\n                    \n                    if (key == \"pin\"):\n                        pin = value\n                    elif (key == \"port\"):\n                        port = value\n                    elif (key == \"ledCount\"):\n                        ledCount = value\n\n            if (pin is not None and port is not None and ledCount is not None and pin != \"\" and port != \"\" and ledCount != \"\"):\n                result.append(GpioService(pin, port, ledCount))\n\n        if (len(result) == 0):\n            result.append(GpioService(\"18\", \"9000\", \"10\"))\n        ConfigReader.configs = result\n\n    @staticmethod\n    def readCfgFile():\n        path = Path(__file__).parent / \"../config/install.cfg\"\n        data = \"\"\n        if (path.is_file()):\n            with path.open() as f:\n                data = f.read().rstrip()\n        return data\n \n    @staticmethod\n    def read():\n        if (len(ConfigReader.configs) == 0):\n            print(\"Reading install.config\", end=\" \")\n            data = \"\"\n            if not LEDS_INSTALL_CFG:\n                data = ConfigReader.readCfgFile()\n            else:\n                data = LEDS_INSTALL_CFG\n            print(\" => \"+data)\n            ConfigReader.initConfigs(data)\n        else:\n            print(\"Returning existing loaded install.config\")\n\n        return ConfigReader.configs\n",
+      "tests/test_configreader.py": "import pytest\n\nfrom web_api.config.configreader import ConfigReader, GpioService\n\n\ndef _reset():\n    ConfigReader.configs = []\n\n\ndef test_whitespace_around_keys_and_values():\n    _reset()\n    ConfigReader.initConfigs(\"  pin = 18 , port = 9000 , ledCount = 10 \")\n    assert len(ConfigReader.configs) == 1\n    svc = ConfigReader.configs[0]\n    assert svc.pin == \"18\"\n    assert svc.port == \"9000\"\n    assert svc.ledCount == \"10\"\n\n\ndef test_empty_or_incomplete_required_fields_skipped():\n    _reset()\n    # First entry missing ledCount, second entry has empty pin value.\n    ConfigReader.initConfigs(\n        \"pin=18,port=9000:pin=,port=9000,ledCount=10\"\n    )\n    # Both entries are incomplete; no valid service should be produced.\n    # The default fallback should kick in.\n    assert len(ConfigReader.configs) == 1\n    svc = ConfigReader.configs[0]\n    assert svc.pin == \"18\"\n    assert svc.port == \"9000\"\n    assert svc.ledCount == \"10\"\n\n\ndef test_multiple_services_preserve_order_skip_incomplete():\n    _reset()\n    ConfigReader.initConfigs(\n        \"pin=1,port=2,ledCount=3:pin=,port=4,ledCount=5:pin=6,port=7,ledCount=8\"\n    )\n    assert len(ConfigReader.configs) == 2\n    assert ConfigReader.configs[0].pin == \"1\"\n    assert ConfigReader.configs[0].port == \"2\"\n    assert ConfigReader.configs[0].ledCount == \"3\"\n    assert ConfigReader.configs[1].pin == \"6\"\n    assert ConfigReader.configs[1].port == \"7\"\n    assert ConfigReader.configs[1].ledCount == \"8\"\n\n\ndef test_defaults_and_repeated_parsing_replaces_prior_state():\n    _reset()\n    # First parse: empty config triggers default.\n    ConfigReader.initConfigs(\"\")\n    assert len(ConfigReader.configs) == 1\n    assert ConfigReader.configs[0].pin == \"18\"\n    assert ConfigReader.configs[0].port == \"9000\"\n    assert ConfigReader.configs[0].ledCount == \"10\"\n\n    # Second parse replaces prior state entirely.\n    ConfigReader.initConfigs(\"pin=20,port=8000,ledCount=5\")\n    assert len(ConfigReader.configs) == 1\n    assert ConfigReader.configs[0].pin == \"20\"\n    assert ConfigReader.configs[0].port == \"8000\"\n    assert ConfigReader.configs[0].ledCount == \"5\"\n\n\ndef test_whitespace_incomplete_entry_not_selected():\n    _reset()\n    # Entry with whitespace-only values should be treated as incomplete.\n    ConfigReader.initConfigs(\"pin=  ,port=  ,ledCount=  \")\n    assert len(ConfigReader.configs) == 1\n    svc = ConfigReader.configs[0]\n    assert svc.pin == \"18\"\n    assert svc.port == \"9000\"\n    assert svc.ledCount == \"10\"\n"
+    },
+    "note": "Explicit one-task repair after a mutant-survival finding. No hand-written product or test source was substituted."
+  },
+  "reviewed_proposal": {
+    "schema_version": 1,
+    "request_digest": "4326a17b438e2a2ed42f1cd5bba0ad68d89fe3b804d59a3a5efffd4a94f5311b",
+    "tasks": [
+      {
+        "schema_version": 1,
+        "task_id": "add-regression-tests",
+        "objective": "Repair the whitespace regression so it fails if whitespace causes default fallback. Existing test uses default values and cannot catch the original key-trimming bug. Preserve all existing cases and the implementation.",
+        "requirement_ids": [
+          "tests"
+        ],
+        "depends_on": [],
+        "writable_paths": [
+          "tests/test_configreader.py"
+        ],
+        "read_paths": [
+          "web_api/config/configreader.py"
+        ],
+        "environment_id": "python",
+        "interface_contracts": [
+          "Import ConfigReader and GpioService from web_api.config.configreader; call ConfigReader.initConfigs(config: str) and assert ConfigReader.configs contents; GpioService(pin: str, port: str, ledCount: str) remains the only service representation."
+        ],
+        "acceptance_checks": [
+          "Existing regressions pass candidate and reject original; whitespace test rejects silent default fallback on a non-default service."
+        ]
+      }
+    ],
+    "questions": [],
+    "rationale": "Policy is sufficient: the requirements specify exact parsing behavior, completeness rule, defaults, replacement semantics, and test expectations. The source confirms ConfigReader.initConfigs and GpioService signatures, so the plan can state after-change interfaces without inventing business policy. Tasks are ordered provider-first (repair) then consumer (tests). Presentation choices follow the repository: keep GpioService and public methods unchanged, edit only initConfigs, and use pytest with real imports."
+  }
+}
