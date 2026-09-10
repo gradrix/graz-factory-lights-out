@@ -151,3 +151,7 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
   removes per-task review assembly for preauthorized exact-file features. Live
   three-task build and replay passed; missing policy decisions halt. Continue
   navigation/product qualification before more orchestration.
+
+- [Issue 37](issues/37-index-python-definitions.md): snapshot-bound Python definitions
+  and unchanged-file analysis reuse implemented. Five navigation probes on GFLO
+  passed; index coverage does not establish callers or model context sufficiency.

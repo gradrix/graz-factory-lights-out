@@ -1,6 +1,23 @@
 # GFLO handoff — repository access foundation
 
-## Current checkpoint — policy build handoff, 2026-09-10
+## Current checkpoint — Python definition navigation, 2026-09-10
+
+Issue 37 adds snapshot-bound Python definition shards/indexes and CLI navigation,
+with exact source/scope/analyzer binding, explicit skipped-file/truncation coverage,
+and reuse of unchanged same-path analysis. This does not resolve callers or provide
+automatic model context selection. Real GFLO core: 27 files parsed in 0.332 s, all
+27 reused in 0.007 s; five definition/source-read probes passed. See
+[results](symbol-navigation-results.json) and [guide](../../docs/product-intake.md).
+Validation: 384 passed, eight optional Docker skips, 25 subtests; ruff/mypy passed.
+
+Owner requested continued engineering until a real blocker or human decision.
+Next in progress: reproduce and diagnose issue 30 before broader live feature trials.
+The original full qualification failed on repetition 14; memory-only reproduction
+failed on repetition 35 with exit 137/OOMKilled false. No enforcement was relaxed.
+Raw diagnosis work is under `.gflo/evidence/memory-qualification-v1/`.
+
+
+## Previous checkpoint — policy build handoff, 2026-09-10
 
 Issue 36 closes manual task-review assembly for policy-covered features.
 `build-feature` accepts an exact request-bound FeaturePolicy: file checks, integration

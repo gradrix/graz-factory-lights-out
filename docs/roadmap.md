@@ -65,8 +65,10 @@ yielded a 238-KB execution subset. Reviewed task graphs now use snapshot-bound
 preparation and accepted-base progression while preserving historical records.
 Larger execution inputs remain future work.
 
-The sequence is snapshot-backed access and text search, revision-bound symbol
-lookup, then dependency/impact queries and incremental indexing. Graph storage is
+Snapshot-backed access, text search, and revision-bound Python definition lookup
+are implemented. Definition analysis reuses unchanged same-path file shards. Next
+are navigation-selection qualification, dependency/impact queries, and broader
+incremental indexing. Graph storage is
 an implementation choice rather than a scheduler dependency. Changes must preserve
 unselected files and reject stale source/index bindings. See the concrete
 [implementation slice](../.scratch/local-lights-out-factory/issues/32-separate-repository-access-from-task-bundles.md).

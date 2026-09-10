@@ -219,3 +219,15 @@ the local GPU model and Docker gates separately from those skipped host tests.
 `scripts/prepare_policy_trial.py` reconstructed the exact snapshot in a fresh store.
 Raw evidence remains in ignored `.gflo/evidence/policy-build-v1/`. Existing campaign
 scores, board failures, and open memory-qualification findings remain unchanged.
+
+
+## Python definition navigation (2026-09-10)
+
+On a captured 220-file, 1,815,776-byte GFLO repository, the `gflo` scope contained
+27 Python files. All indexed successfully in 0.332 seconds; unchanged reuse took
+0.007 seconds and reparsed zero files. Five preselected simple/qualified names
+located their expected source files and verified source reads. Nine tests cover
+nested/async/duplicate definitions, stale snapshots and shards, scopes, syntax and
+budget coverage, reuse, and CLI access. These timings are a single local run, not
+large-repository performance qualification. No model participated in these probes.
+See [results](../.scratch/local-lights-out-factory/symbol-navigation-results.json).

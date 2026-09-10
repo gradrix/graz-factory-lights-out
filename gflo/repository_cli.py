@@ -9,6 +9,7 @@ from typing import Any
 
 from gflo.artifacts import ArtifactStore
 from gflo.repository import FileEdit, Repository, SnapshotSource, SourceRef, capture_worktree
+from gflo.symbols import build_symbols, query_symbols
 
 
 def configure(parser: argparse.ArgumentParser) -> None:
@@ -18,11 +19,19 @@ def configure(parser: argparse.ArgumentParser) -> None:
         "capture", help="Capture Git-visible UTF-8 files from a quiescent worktree"
     )
     capture.add_argument("root", type=Path)
-    for name in ("list", "read", "search", "select", "apply"):
+    for name in ("list", "read", "search", "select", "apply", "index-symbols", "symbols"):
         command = actions.add_parser(name)
         command.add_argument("snapshot", help="Snapshot artifact digest returned by capture")
         command.add_argument("--scope", action="append", default=[])
-        if name == "list":
+        if name == "index-symbols":
+            command.add_argument("--prior")
+            command.add_argument("--max-files", type=int, default=1000)
+            command.add_argument("--max-bytes", type=int, default=8388608)
+        elif name == "symbols":
+            command.add_argument("index")
+            command.add_argument("query")
+            command.add_argument("--max-hits", type=int, default=100)
+        elif name == "list":
             command.add_argument("--limit", type=int, default=100)
             command.add_argument("--after")
         elif name == "read":
@@ -56,6 +65,18 @@ def execute(args: argparse.Namespace) -> dict[str, Any]:
     artifacts = ArtifactStore(args.store)
     ref = SourceRef(kind="repository-snapshot-v1", artifact_digest=args.snapshot)
     repository = Repository(SnapshotSource(artifacts, ref), scopes=tuple(args.scope))
+    if args.repository_action == "index-symbols":
+        return build_symbols(
+            repository,
+            artifacts,
+            prior_digest=args.prior,
+            max_files=args.max_files,
+            max_bytes=args.max_bytes,
+        ).model_dump(mode="json")
+    if args.repository_action == "symbols":
+        return query_symbols(
+            repository, artifacts, args.index, args.query, max_hits=args.max_hits
+        ).model_dump(mode="json")
     if args.repository_action == "list":
         result = repository.list_paths(limit=args.limit, after=args.after)
     elif args.repository_action == "read":

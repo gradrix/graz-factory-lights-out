@@ -117,7 +117,7 @@ CEO qualification. See [evaluation](evaluation.md) for retained evidence.
 
 Next, vary products and interface ambiguity, test managers' failure detection and
 escalation, and measure context-selection failures before adding recursive managers.
-Symbol/dependency indexing, larger isolated builds, automatic environment setup,
+Dependency indexing, larger isolated builds, automatic environment setup,
 and million-line product work remain unqualified. Snapshot capture/edit replay
 still reads original source bytes; current measurements do not establish efficient
 large-repository execution.
@@ -199,3 +199,29 @@ replans. Planning exhaustion/interruption needs a new build directory. A changed
 request or policy also needs a new build. The live trial passed three tasks and
 final checks; its ambiguous variant returned questions without executing. See
 [evaluation](evaluation.md) and the [portable fixture](../.scratch/local-lights-out-factory/policy-build-fixture.json).
+
+
+## Definition navigation
+
+Repository snapshots support a derived Python definition index:
+
+```sh
+gflo repository --store .gflo/source index-symbols SNAPSHOT --scope gflo
+gflo repository --store .gflo/source symbols SNAPSHOT INDEX_DIGEST Repository.select --scope gflo
+```
+
+Use returned paths/lines with repository `read` or `select`; in Python,
+`read_symbol(repository, hit)` verifies the snapshot/file identity before reading.
+The index locates classes, functions, async functions and nested definitions by
+exact simple or qualified name. It does not resolve imports, calls, runtime binding,
+or other languages. `complete` means all eligible Python files in the stated scope
+were analyzed and results were not truncated; it says nothing about callers.
+
+`index-symbols --prior INDEX_DIGEST` reuses same-path, same-content analysis from
+an earlier snapshot when the analyzer version matches. Changed files are reparsed.
+Queries reject an index for another snapshot, scope or analyzer. Skipped syntax
+errors and budgets remain in coverage. Defaults admit 1,000 Python files/8 MiB;
+each parsed file is capped at 512 KiB, 50,000 AST nodes, 1,000 definitions and 256 KiB
+of qualified names. Query output defaults to 100 hits. Source is parsed, never run.
+This is operator-accessible navigation; planners still receive explicit bounded
+context selections. The scheduler does not depend on the index format.

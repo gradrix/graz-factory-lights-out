@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "source": {
+    "schema_version": 1,
+    "kind": "repository-snapshot-v1",
+    "artifact_digest": "9a98846c2abadab68153502852ad89e59001d9ad72f147bb5612ff35df499765"
+  },
+  "repository_files": 220,
+  "repository_bytes": 1815776,
+  "scope": [
+    "gflo"
+  ],
+  "build": {
+    "schema_version": 1,
+    "index_digest": "98a0cc59a642566bff4d5be3c29655b937b513bc9527546e462fd229cdea4483",
+    "parsed_files": 27,
+    "reused_files": 0,
+    "skipped_files": 0
+  },
+  "reuse": {
+    "schema_version": 1,
+    "index_digest": "98a0cc59a642566bff4d5be3c29655b937b513bc9527546e462fd229cdea4483",
+    "parsed_files": 0,
+    "reused_files": 27,
+    "skipped_files": 0
+  },
+  "capture_seconds": 2.286129250000158,
+  "build_seconds": 0.3323925859986048,
+  "reuse_seconds": 0.007131792001018766,
+  "probes": [
+    {
+      "query": "build_feature",
+      "expected_path": "gflo/autonomy.py",
+      "actual_path": "gflo/autonomy.py",
+      "line": 161,
+      "lookup_seconds": 0.0006194140005391091,
+      "source_read_verified": true
+    },
+    {
+      "query": "Controller.run",
+      "expected_path": "gflo/controller.py",
+      "actual_path": "gflo/controller.py",
+      "line": 262,
+      "lookup_seconds": 0.0004442000008566538,
+      "source_read_verified": true
+    },
+    {
+      "query": "Repository.select",
+      "expected_path": "gflo/repository.py",
+      "actual_path": "gflo/repository.py",
+      "line": 486,
+      "lookup_seconds": 0.00041649000013421755,
+      "source_read_verified": true
+    },
+    {
+      "query": "PlanReview",
+      "expected_path": "gflo/preparation.py",
+      "actual_path": "gflo/preparation.py",
+      "line": 32,
+      "lookup_seconds": 0.0006999559991527349,
+      "source_read_verified": true
+    },
+    {
+      "query": "read_symbol",
+      "expected_path": "gflo/symbols.py",
+      "actual_path": "gflo/symbols.py",
+      "line": 238,
+      "lookup_seconds": 0.0005938239992246963,
+      "source_read_verified": true
+    }
+  ],
+  "scope_of_claim": "Definition navigation on GFLO core; no local-model trial, caller graph, or million-line qualification.",
+  "raw_evidence": ".gflo/evidence/symbol-navigation-v1/artifacts"
+}
