@@ -18,11 +18,12 @@ are recorded in [evaluation](evaluation.md) and portable development evidence.
 
 ## Next priorities
 
-1. Separate planner interface declarations from implementation advice. The sparse-mode
-   trial produced a contradictory algorithm that workers repeatedly copied despite
-   failing gates; a priority-instruction experiment also failed. Preserve old plan
-   identities while introducing an explicit way to handle semantic contradictions.
-   Current repair transport works, but this limits unattended feature reliability.
+1. Ground planner questions in the original request and broaden structured-contract qualification.
+   Declarations are separated from planner advice; contradiction reports and repeated
+   failed drafts stop for review. Sparse-mode implementation now passes, and dependent
+   tests receive the provider's original requirements. Measure planning truncation,
+   semantic failures and review effort across new tasks before making unattended claims.
+   A repeat still asked questions already answered by its immutable requirements.
 2. Qualify repeated features across different real repositories and uncertain
    interfaces. Measure complete feature success, retries, model cost and review
    effort. Planning JSON reliability and source-selection sufficiency remain open.

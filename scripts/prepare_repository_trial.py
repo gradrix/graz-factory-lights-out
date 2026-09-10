@@ -9,6 +9,7 @@ import subprocess
 from pathlib import Path
 
 from gflo.autonomy import FeaturePolicy, compile_feature
+from gflo.contracts import CONTRACT_PROFILES
 from gflo.ledger import WorkLedger
 from gflo.planning import PlanProposal, RepositoryFeatureRequest
 from gflo.repository import FileEdit, Repository, SnapshotSource, capture_worktree
@@ -21,6 +22,11 @@ def main() -> None:
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--test-followup", action="store_true")
     parser.add_argument("--reviewed-plan", action="store_true")
+    parser.add_argument(
+        "--worker-profile",
+        choices=CONTRACT_PROFILES,
+        help="Opt into a structured worker protocol; preserve model and gates",
+    )
     args = parser.parse_args()
     if args.reviewed_plan and not args.test_followup:
         raise ValueError("Reviewed plan requires --test-followup")
@@ -62,6 +68,14 @@ def main() -> None:
             policy = FeaturePolicy.model_validate_json(json.dumps(followup["policy"]))
             if source != request.source or policy.request_digest != request.digest():
                 raise ValueError("Follow-up source or policy differs from the pinned request")
+        if args.worker_profile:
+            policy = policy.model_copy(
+                update={
+                    "model_profile": policy.model_profile.model_copy(
+                        update={"profile_id": args.worker_profile}
+                    )
+                }
+            )
         if args.reviewed_plan:
             proposal = PlanProposal.model_validate_json(json.dumps(fixture["reviewed_proposal"]))
             plan = compile_feature(ledger.artifacts, request, proposal, policy)

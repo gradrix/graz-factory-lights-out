@@ -14,7 +14,8 @@ from pydantic import Field, TypeAdapter, model_validator
 from gflo.artifacts import ArtifactError, ArtifactStore
 from gflo.board_records import Role, ShortText, SpecialistReport
 from gflo.broker import SourceBundle
-from gflo.model import LocalModel, ModelError, ModelProfile
+from gflo.contracts import ContractProposal, InterfaceBundle, task_interfaces
+from gflo.model import IncompleteModelResult, LocalModel, ModelError, ModelProfile
 from gflo.records import Digest, Identifier, Record, Text, WorkAtom
 from gflo.repository import Repository, SourceRef
 from gflo.worker import CandidateResult, Diagnostic, InputSnapshot, ReadFileRequest, within
@@ -270,12 +271,15 @@ def draft_feature(
     context_paths: tuple[str, ...] = (),
     specialist: Role | None = None,
     reports: tuple[SpecialistReport, ...] = (),
+    structured_interfaces: bool = False,
 ) -> dict[str, Any]:
     """Create one non-resumable, bounded proposal run with immutable model evidence.
 
     Existing directories are refused. Interrupted runs retain observations but are
     not silently resumed or rescored. A draft is never a Work-atom acceptance.
     """
+    if structured_interfaces and (specialist is not None or reports):
+        raise ValueError("Structured interfaces require direct planning")
     if (specialist is not None or reports) and not isinstance(request, RepositoryFeatureRequest):
         raise ValueError("Board planning requires a repository request")
     if specialist is not None and reports:
@@ -387,6 +391,29 @@ def draft_feature(
         + json.dumps(PLANNING_RESULT.json_schema(), separators=(",", ":"))
     )
     adapter: TypeAdapter[Any] = PLANNING_RESULT
+    if structured_interfaces:
+        adapter = TypeAdapter(ContractProposal | PlanQuestions)
+        instruction = (
+            "Inspect the pinned source and return a bounded contract-plan-v1 JSON document, "
+            "or planning-questions-v1 if essential product policy is missing. Return the document "
+            "directly, not as an escaped file string or candidate. You may first request "
+            "read_file for an available input; at most two reads, retaining only two files. "
+            "Missing readable context does not mean absent source; use allowed_path_state. "
+            "Do not invent product requirements. Cover every requirement with meaningful "
+            "acceptance_checks, at most eight per task. Split independently testable tasks only. "
+            "read_paths must exist before the task starts, including outputs from dependency "
+            "ancestors. Put a task's new files only in writable_paths, never its own read_paths. "
+            "An existing edited file may appear in both. Use only catalog environments. "
+            "Interfaces declare AFTER-change Python def signatures with ellipsis bodies, paths, "
+            "qualified symbols and original requirement_ids. No algorithms, decorators or prose "
+            "inside declarations. Empty interfaces are allowed for tests. Optional algorithm "
+            "advice belongs only in implementation_suggestions, retained for review and never "
+            "sent to workers. Original requirements define behavior. A plan does not authorize "
+            "execution. Check source before claiming interfaces exist. "
+            + json.dumps(brief, separators=(",", ":"))
+            + "\nSchema: "
+            + json.dumps(adapter.json_schema(), separators=(",", ":"))
+        )
     if specialist is not None or reports:
         assert isinstance(request, RepositoryFeatureRequest)
         for report in reports:
@@ -515,6 +542,11 @@ def draft_feature(
                         "Return the requested FILE schema inside candidate factory-plan.json. "
                         "No repeated reads or questions answered by the brief."
                     )
+                    if structured_interfaces:
+                        note = note.replace(
+                            "Return the requested FILE schema inside candidate factory-plan.json. ",
+                            "Return the requested plan document directly as JSON. ",
+                        )
                     note_digest = artifacts.publish(
                         Diagnostic(source_digest=artifacts.publish(note.encode()), text=note)
                         .canonical()
@@ -526,6 +558,7 @@ def draft_feature(
                         current_inputs=lambda: atom.inputs_digest,
                         selected_paths=tuple(sorted(selected)),
                         diagnostic_digests=diagnostics + (note_digest,),
+                        **(dict[str, Any](planning_document=True) if structured_interfaces else {}),
                     )
                     answer = response.result
                     if isinstance(answer, ReadFileRequest):
@@ -575,6 +608,11 @@ def draft_feature(
                         )
                         (output / "questions.json").write_text(answer_record.canonical() + "\n")
                         return result
+                    if isinstance(answer_record, ContractProposal):
+                        raw = answer_record.canonical()
+                        result["structured_proposal_digest"] = artifacts.publish(raw.encode())
+                        (output / "structured-proposal.json").write_text(raw + "\n")
+                        answer_record = declaration_proposal(answer_record)
                     proposal = answer_record
                     order = validate_tasks(
                         proposal,
@@ -595,6 +633,17 @@ def draft_feature(
                     )
                     (output / "proposal.json").write_text(proposal.canonical() + "\n")
                     return result
+                except IncompleteModelResult as error:
+                    if not structured_interfaces:
+                        result["status"] = "infrastructure-halt"
+                        raise
+                    failure = (
+                        str(error) + "; return a compact complete plan. Group checks by "
+                        "behavior, at most eight per task. Do not enumerate individual "
+                        "test inputs or repeat checks. Omit optional implementation advice."
+                    )
+                    row["error"] = failure
+                    break
                 except (ModelError, ArtifactError):
                     result["status"] = "infrastructure-halt"
                     raise
@@ -620,3 +669,23 @@ def draft_feature(
     finally:
         result["observations"] = observations
         (output / "result.json").write_text(json.dumps(result, indent=2) + "\n")
+
+
+def declaration_proposal(proposal: ContractProposal) -> PlanProposal:
+    tasks = []
+    for task in proposal.tasks:
+        contracts = (InterfaceBundle(declarations=task.interfaces).canonical(),)
+        task_interfaces(contracts, task.read_paths + task.writable_paths, task.requirement_ids)
+        fields = task.model_dump(mode="json", exclude={"interfaces", "implementation_suggestions"})
+        fields["interface_contracts"] = list(contracts)
+        tasks.append(fields)
+    return PlanProposal.model_validate_json(
+        json.dumps(
+            {
+                "request_digest": proposal.request_digest,
+                "tasks": tasks,
+                "questions": proposal.questions,
+                "rationale": proposal.rationale,
+            }
+        )
+    )

@@ -710,3 +710,62 @@ def test_local_model_uses_tokenized_handle_mapping(prepared, server):
     mapping = RepairTargets.model_validate_json(store.read(evidence['repair_targets_digest']))
     assert mapping.source_digest == draft.digest()
     assert mapping.contract_digest == atom.digest()
+
+@pytest.mark.parametrize("read", [False, True])
+def test_direct_planning_transport_preserves_document_and_read_scope(prepared, server, read):
+    store, atom, source, digest = prepared
+    atom = change_atom(atom, writable_paths=["factory-plan.json"])
+    content = (
+        '{"kind":"read_file","path":"helper.py"}'
+        if read
+        else '{"kind":"contract-plan-v1","tasks":[],"rationale":"quotes \\"kept\\""}'
+    )
+
+    def mutate(response):
+        response["choices"][0]["message"]["content"] = content
+        return response
+
+    server[0]["mutate"] = mutate
+    client = client_for(prepared, server)
+    turn = client.turn(
+        atom, digest, current_inputs=lambda: atom.inputs_digest, planning_document=True
+    )
+    if read:
+        assert turn.result.path == "helper.py"
+    else:
+        assert turn.result.changes == {"factory-plan.json": content}
+    request = server[0]["calls"][-1][1]
+    assert "Do not wrap the document" in request["messages"][0]["content"]
+    assert request["messages"] == server[0]["calls"][1][1]["messages"]
+    with pytest.raises(WorkerError, match="bounded planning task"):
+        client.turn(
+            prepared[1], digest, current_inputs=lambda: atom.inputs_digest, planning_document=True
+        )
+
+
+def test_only_accounted_planning_truncation_is_retryable(prepared, server):
+    from gflo.model import IncompleteModelResult
+
+    store, atom, source, digest = prepared
+    atom = change_atom(atom, writable_paths=["factory-plan.json"])
+
+    def mutate(response):
+        response["choices"][0]["finish_reason"] = "length"
+        response["choices"][0]["message"]["content"] = '{"tasks": ['
+        return response
+
+    server[0]["mutate"] = mutate
+    client = client_for(prepared, server)
+    with pytest.raises(IncompleteModelResult):
+        client.turn(atom, digest, current_inputs=lambda: atom.inputs_digest,
+                    planning_document=True)
+
+    def missing_usage(response):
+        response = mutate(response)
+        response.pop("usage")
+        return response
+
+    server[0]["mutate"] = missing_usage
+    with pytest.raises(ModelError, match="Missing token accounting"):
+        client.turn(atom, digest, current_inputs=lambda: atom.inputs_digest,
+                    planning_document=True)

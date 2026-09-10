@@ -331,3 +331,45 @@ def test_planner_receives_path_presence_and_input_output_rules(feature, tmp_path
     assert 'only in writable_paths, not its own read_paths' in instruction
     brief = instruction
     assert '"allowed_path_state":{"history.py":"existing-file","cli.py":"existing-file","tests":"absent"}' in brief
+
+def test_structured_plan_retains_advice_but_compiles_declarations(feature, tmp_path, monkeypatch):
+    data = proposal(feature)
+    data["kind"] = "contract-plan-v1"
+    for task in data["tasks"]:
+        task.pop("interface_contracts")
+        task["interfaces"] = []
+        task["implementation_suggestions"] = ["BAD ALGORITHM ADVICE"]
+    answer = CandidateResult(kind="candidate", changes={"factory-plan.json": json.dumps(data)})
+    models = fake_model(monkeypatch, [answer])
+    output = tmp_path / "draft"
+    result = draft_feature(
+        feature, profile(), output, deployment="fixture", structured_interfaces=True
+    )
+    assert result["status"] == "needs-review"
+    assert "BAD ALGORITHM ADVICE" in (output / "structured-proposal.json").read_text()
+    assert "BAD ALGORITHM ADVICE" not in (output / "proposal.json").read_text()
+    assert result["structured_proposal_digest"]
+    assert "contract-plan-v1" in models[0].atoms[0].objective
+
+
+def test_truncated_structured_plan_uses_existing_finite_retry(feature, tmp_path, monkeypatch):
+    from gflo.model import IncompleteModelResult
+
+    data = proposal(feature)
+    data["kind"] = "contract-plan-v1"
+    for task in data["tasks"]:
+        task.pop("interface_contracts")
+        task.update(interfaces=[], implementation_suggestions=[])
+    models = fake_model(monkeypatch, [
+        IncompleteModelResult("Planning output exceeded its token allowance"),
+        CandidateResult(kind="candidate", changes={"factory-plan.json": json.dumps(data)}),
+    ])
+    result = draft_feature(feature, profile(), tmp_path / "draft", deployment="fixture",
+                           structured_interfaces=True)
+    assert result["status"] == "needs-review"
+    assert [o["attempt"] for o in result["observations"]] == [1, 2]
+    assert models[0].calls[1]["diagnostic_digests"]
+    fake_model(monkeypatch, [IncompleteModelResult("length"), IncompleteModelResult("length")])
+    result = draft_feature(feature, profile(), tmp_path / "exhausted", deployment="fixture",
+                           structured_interfaces=True)
+    assert result["status"] == "exhausted" and len(result["observations"]) == 2

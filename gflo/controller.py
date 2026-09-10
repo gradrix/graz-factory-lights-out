@@ -12,6 +12,8 @@ from typing import Annotated, Any
 from pydantic import Field, model_validator
 
 from gflo.broker import BrokerError, DockerBroker, SourceBundle
+from gflo.contracts import CONTRACT_PROFILES
+from gflo.escalation import pending_review
 from gflo.feedback import validation_feedback
 from gflo.gates import ProcessGate, run_gate
 from gflo.ledger import Conflict, WorkLedger
@@ -19,6 +21,7 @@ from gflo.model import LocalModel, ModelError, ModelProfile
 from gflo.records import Acceptance, Lease, Record, RetryPlan, WorkAtom
 from gflo.worker import (
     CandidateResult,
+    ContractConflict,
     Diagnostic,
     InputSnapshot,
     candidate_bundle,
@@ -228,13 +231,75 @@ class Controller:
         self.ledger.accept(lease, current_inputs_digest=plan.atom.inputs_digest)
         return "accepted"
 
+    def _request_review(
+        self, plan: RunPlan, lease: Lease, draft: SourceBundle, reason: str, details: Any
+    ) -> str:
+        record = {
+            "contract_digest": plan.atom.digest(),
+            "draft_digest": self.ledger.artifacts.publish(draft.canonical().encode()),
+            "reason": reason,
+            "details": details,
+        }
+        self.ledger.observe(
+            lease,
+            "review-request",
+            self.ledger.artifacts.publish(json.dumps(record, sort_keys=True).encode()),
+        )
+        self._failure(lease, reason, record)
+        return "halt"
+
+    def _failed_drafts(self, plan: RunPlan) -> set[str]:
+        failed = set()
+        case = next(iter(plan.gates.values())).cases[0]
+        for attempt in self.ledger.status(plan.atom.atom_id)["attempts"]:
+            for receipt in attempt["gate_receipts"]:
+                if receipt["outcome"] == "fail":
+                    gate = plan.gates.get(receipt["gate_id"])
+                    if (
+                        receipt["contract_digest"] != plan.atom.digest()
+                        or receipt["inputs_digest"] != plan.atom.inputs_digest
+                        or gate is None
+                        or receipt["validator_digest"] != gate.digest()
+                    ):
+                        raise ValueError("Retained failed gate differs from contract/check")
+                    self.ledger.artifacts.verify(receipt["evidence_digest"])
+                    failed.add(receipt["candidate_digest"])
+            for event in attempt["events"]:
+                if event["kind"] != "observation" or event["details"]["kind"] != "development":
+                    continue
+                record = json.loads(self.ledger.artifacts.read(event["details"]["digest"]))
+                execution = record.get("execution")
+                if execution is None:
+                    continue
+                if (
+                    record["contract_digest"] != plan.atom.digest()
+                    or execution["candidate_digest"] != record["draft_digest"]
+                    or execution["command"] != list(case.command)
+                    or execution["stdin"] != case.stdin
+                    or execution["image_id"] != self.broker.image_id
+                    or execution["purpose"] != "candidate"
+                ):
+                    raise ValueError("Retained development report differs from contract/check")
+                passed = (
+                    execution["outcome"] == "completed"
+                    and execution["exit_code"] == 0
+                    and not execution["oom_killed"]
+                    and base64.b64decode(execution["stdout_base64"], validate=True)
+                    == case.expected_stdout.encode()
+                )
+                if not passed:
+                    failed.add(record["draft_digest"])
+        return failed
+
     def _attempt(self, plan: RunPlan, lease: Lease, diagnostic: str | None) -> str:
         if self.ledger.status(lease.atom_id)["status"] == "leased":
             self.ledger.start(lease)
         selected = plan.selected_paths
         source_digest = plan.source.digest()
         diagnostics = (diagnostic,) if diagnostic else ()
-        repair = plan.model_profile.profile_id == "vllm-python-worker-repair-v1"
+        contracts = plan.model_profile.profile_id in CONTRACT_PROFILES
+        repair = contracts or plan.model_profile.profile_id == "vllm-python-worker-repair-v1"
+        failed_drafts = self._failed_drafts(plan) if contracts else set()
         draft = plan.source
         if repair:
             for attempt in reversed(self.ledger.status(lease.atom_id)["attempts"]):
@@ -272,11 +337,23 @@ class Controller:
                     selected_paths=selected,
                     diagnostic_digests=diagnostics,
                     remaining_model_turns=plan.max_model_turns - turn_index,
-                    **({"draft_digest": draft.digest()} if repair else {}),
+                    **(dict[str, Any](draft_digest=draft.digest()) if repair else {}),
                 )
             finally:
                 if self.model.last_evidence_digest is not None:
                     self.ledger.observe(lease, "model", self.model.last_evidence_digest)
+            if isinstance(turn.result, ContractConflict):
+                if not contracts or not set(turn.result.requirement_ids) <= set(
+                    plan.atom.requirement_ids
+                ):
+                    raise ValueError("Unauthorized contract conflict report")
+                return self._request_review(
+                    plan,
+                    lease,
+                    draft,
+                    "Worker reported a contract contradiction: " + turn.result.reason,
+                    turn.result.model_dump(mode="json"),
+                )
             if isinstance(turn.result, CandidateResult):
                 candidate = candidate_bundle(draft, turn.result)
                 project_draft(
@@ -288,6 +365,14 @@ class Controller:
                     candidate,
                 )
                 digest = self.ledger.artifacts.publish(candidate.canonical().encode())
+                if contracts and digest in failed_drafts:
+                    return self._request_review(
+                        plan,
+                        lease,
+                        candidate,
+                        "Worker repeated an unchanged draft that already failed a pinned check.",
+                        {"repeated_failed_draft": digest},
+                    )
                 if repair:
                     draft = candidate
                     record = {"contract_digest": plan.atom.digest(), "draft_digest": digest}
@@ -333,6 +418,7 @@ class Controller:
                             == case.expected_stdout.encode()
                         )
                         if not passed:
+                            failed_drafts.add(digest)
                             observation = {
                                 "gate_id": "development-only",
                                 "outcome": "fail",
@@ -381,7 +467,7 @@ class Controller:
                     self.ledger.active_lease(atom_id), current_inputs_digest=plan.atom.inputs_digest
                 )
                 return snapshot
-            if snapshot["status"] == "quarantined":
+            if snapshot["status"] == "quarantined" or pending_review(self.ledger, atom_id):
                 return snapshot
             self.ledger.check_storage()
             # Infrastructure qualification occurs before consuming a new attempt.

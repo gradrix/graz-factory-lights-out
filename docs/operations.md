@@ -28,6 +28,12 @@ Failure makes it `retry-ready` while attempts remain, otherwise `quarantined`.
 Contracts permit at most ten attempts. Retries retain earlier candidates and cite
 failure evidence. Infrastructure failures halt the loop until explicit resume.
 
+Structured-contract workers can stop earlier with a durable `review-request`
+observation for a contradiction or repeated failed draft. The ledger may still show
+`retry-ready`, but the controller will not claim another attempt under that contract.
+Use `review-handoff ATOM_ID` to inspect the reason, draft and evidence. A new reviewed
+contract is required to continue; restarting the controller does not clear the stop.
+
 Expired leases fence prior work. The controller reconciles owned execution
 containers before retrying. Interrupted running work gets a fresh attempt;
 interrupted validation can reuse its durable candidate and receipts. Replaying

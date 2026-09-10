@@ -12,7 +12,8 @@ from pydantic import Field
 
 from gflo.artifacts import ArtifactStore
 from gflo.broker import DockerBroker
-from gflo.escalation import review_handoff
+from gflo.contracts import CONTRACT_PROFILES, task_interfaces
+from gflo.escalation import pending_review, review_handoff
 from gflo.gates import ProcessGate
 from gflo.ledger import WorkLedger
 from gflo.model import LocalModel, ModelProfile
@@ -96,6 +97,13 @@ def compile_feature(
     policy = FeaturePolicy.model_validate(policy)
     proposal = PlanProposal.model_validate(proposal)
     repository = _validate_policy(store, request, policy)
+    if policy.model_profile.profile_id in CONTRACT_PROFILES:
+        for task in proposal.tasks:
+            task_interfaces(
+                task.interface_contracts,
+                task.read_paths + task.writable_paths,
+                task.requirement_ids,
+            )
     if proposal.questions:
         raise ValueError("Resolve proposal questions before policy compilation")
     if len(proposal.tasks) > policy.max_tasks:
@@ -206,6 +214,11 @@ def build_feature(
                 deployment=policy.deployment,
                 repository=repository,
                 context_paths=policy.planning_paths,
+                **(
+                    {"structured_interfaces": True}
+                    if policy.model_profile.profile_id in CONTRACT_PROFILES
+                    else {}
+                ),
             )
         state_path = planning / "result.json"
         state = json.loads(state_path.read_text()) if state_path.exists() else {}
@@ -238,7 +251,9 @@ def build_feature(
         else:
             result["planning_status"] = state.get("status", "interrupted")
         halted = result.get("feature_result", {}).get("halted_atom")
-        if halted and ledger.status(halted)["status"] == "quarantined":
+        if halted and (
+            ledger.status(halted)["status"] == "quarantined" or pending_review(ledger, halted)
+        ):
             packet = review_handoff(ledger, halted)
             payload = json.dumps(packet, indent=2) + "\n"
             (output / "review-handoff.json").write_text(payload)

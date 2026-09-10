@@ -9,6 +9,7 @@ from pydantic import Field
 
 from gflo.artifacts import ArtifactStore
 from gflo.broker import SourceBundle
+from gflo.contracts import CONTRACT_PROFILES, DEPENDENCY_CONTRACT_PROFILE, task_interfaces
 from gflo.controller import RunPlan
 from gflo.gates import ProcessGate
 from gflo.model import ModelProfile
@@ -132,23 +133,63 @@ def _materialize(
                 ).encode()
             )[:16]
         )
+    objective = {
+        "product_objective": request.objective,
+        "task_objective": task.objective,
+        "requirements": {k: request.requirements[k] for k in task.requirement_ids},
+        "interfaces": task.interface_contracts,
+        "repository_files": execution.repository_file_count,
+        "execution_is_whole_repository": execution.whole_repository,
+    }
+    if review.model_profile.profile_id in CONTRACT_PROFILES:
+        objective.pop("task_objective")
+        objective["interfaces"] = task_interfaces(
+            task.interface_contracts, task.read_paths + task.writable_paths, task.requirement_ids
+        )
+    requirement_ids = task.requirement_ids
+    if review.model_profile.profile_id == DEPENDENCY_CONTRACT_PROFILE:
+        tasks = {t.task_id: t for t in proposal.tasks}
+        ancestors: set[str] = set()
+        pending = list(task.depends_on)
+        while pending:
+            key = pending.pop()
+            if key not in ancestors:
+                ancestors.add(key)
+                pending.extend(tasks[key].depends_on)
+        providers = [
+            tasks[key]
+            for key in sorted(ancestors)
+            if any(within(path, tasks[key].writable_paths) for path in task.read_paths)
+        ]
+        requirement_ids = tuple(
+            sorted(
+                set(task.requirement_ids).union(
+                    *(set(provider.requirement_ids) for provider in providers)
+                )
+            )
+        )
+        objective["requirements"] = {k: request.requirements[k] for k in requirement_ids}
+        objective["task_requirement_ids"] = task.requirement_ids
+        objective["dependency_interfaces"] = [
+            {
+                "task_id": provider.task_id,
+                "requirement_ids": provider.requirement_ids,
+                "interfaces": task_interfaces(
+                    provider.interface_contracts,
+                    provider.read_paths + provider.writable_paths,
+                    provider.requirement_ids,
+                ),
+            }
+            for provider in providers
+        ]
     atom = WorkAtom.model_validate_json(
         json.dumps(
             dict(
                 atom_id=f"{identity}/{task.digest()[:16]}",
                 graph_revision=proposal.digest(),
-                objective=json.dumps(
-                    {
-                        "product_objective": request.objective,
-                        "task_objective": task.objective,
-                        "requirements": {k: request.requirements[k] for k in task.requirement_ids},
-                        "interfaces": task.interface_contracts,
-                        "repository_files": execution.repository_file_count,
-                        "execution_is_whole_repository": execution.whole_repository,
-                    }
-                ),
+                objective=json.dumps(objective),
                 non_goals=["Modify omitted repository files", "Accept own work"],
-                requirement_ids=task.requirement_ids,
+                requirement_ids=requirement_ids,
                 product_modules=[request.feature_id],
                 source_revision=revision,
                 inputs_digest=InputSnapshot(

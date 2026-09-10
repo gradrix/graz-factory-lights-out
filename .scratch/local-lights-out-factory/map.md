@@ -230,3 +230,11 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
 - [Issue 54](issues/54-prioritize-requirements-over-plan-advice.md): requirement-priority
   prompt did not fix semantic anchoring; reverted after separate failed trial. Next
   separate interface declarations from planner implementation advice structurally.
+
+- [Issue 55](issues/55-separate-contracts-and-stop-stalled-repairs.md): typed declarations,
+  original dependency requirements, direct planning and durable review stops. Mode,
+  color and parser qualifications pass; retained repeats show remaining question
+  grounding gaps. 469 tests/25 subtests pass; all 28 target tests pass together.
+- [Issue 56](issues/56-ground-planning-questions-in-requirements.md): next bounded design
+  and qualification for questions already answered by the immutable request, while
+  preserving genuine missing-policy stops.

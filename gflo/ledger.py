@@ -349,7 +349,13 @@ class WorkLedger:
         return self.artifacts.read(row[0])
 
     def observe(self, lease: Lease, kind: str, digest: str) -> None:
-        if kind not in ("model", "diagnostic", "candidate-execution", "development"):
+        if kind not in (
+            "model",
+            "diagnostic",
+            "candidate-execution",
+            "development",
+            "review-request",
+        ):
             raise ValueError("Unsupported observation kind")
         self.artifacts.verify(digest)
         with self._transaction():
@@ -613,7 +619,7 @@ class WorkLedger:
             for row in self._db.execute("SELECT details FROM events WHERE kind='observation'"):
                 details = json.loads(row[0])
                 references.add(details["digest"])
-                if details["kind"] == "development":
+                if details["kind"] in ("development", "review-request"):
                     development.append(details["digest"])
             for row in self._db.execute(
                 "SELECT details FROM events WHERE kind='acceptance-finding'"

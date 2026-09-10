@@ -19,9 +19,11 @@ from pydantic import Field, model_validator
 
 from gflo.artifacts import ArtifactStore
 from gflo.broker import SourceBundle
+from gflo.contracts import CONTRACT_PROFILES
 from gflo.records import Digest, Record, WorkAtom
 from gflo.worker import (
     CandidateResult,
+    ContractConflict,
     ReadFileRequest,
     WorkerError,
     compose_view,
@@ -37,10 +39,16 @@ class ModelError(RuntimeError):
     """Transport/protocol/budget failure; raw evidence remains in the artifact store."""
 
 
+class IncompleteModelResult(ModelError):
+    """A bounded structured planning response exhausted its output allowance."""
+
+
 class ModelProfile(Record):
     profile_id: Literal[
         "vllm-python-worker-v1",
         "vllm-python-worker-repair-v1",
+        "vllm-python-worker-contracts-v1",
+        "vllm-python-worker-contracts-v2",
         "vllm-python-worker-reasoning-v1",
         "vllm-python-worker-reasoning-low-v1",
         "vllm-python-worker-escalating-v1",
@@ -87,7 +95,7 @@ class ContextManifest(Record):
 class ModelTurn(Record):
     manifest_digest: Digest
     response_digest: Digest
-    result: CandidateResult | ReadFileRequest
+    result: CandidateResult | ReadFileRequest | ContractConflict
     prompt_tokens: int
     completion_tokens: int
     elapsed_seconds: float
@@ -189,10 +197,16 @@ class LocalModel:
         diagnostic_digests: tuple[str, ...] = (),
         remaining_model_turns: int | None = None,
         draft_digest: str | None = None,
+        planning_document: bool = False,
     ) -> ModelTurn:
         """Produce a validated proposal only; no file write, tool dispatch or acceptance."""
         atom = WorkAtom.model_validate(atom)
         self.last_evidence_digest = None
+        if planning_document and (
+            atom.writable_paths != ("factory-plan.json",)
+            or self.profile.profile_id != "vllm-python-worker-v1"
+        ):
+            raise WorkerError("Direct planning documents require the bounded planning task")
         if remaining_model_turns is not None and (
             type(remaining_model_turns) is not int or not 1 <= remaining_model_turns <= 4
         ):
@@ -225,7 +239,8 @@ class LocalModel:
                 selected_paths=selected_paths,
                 diagnostic_digests=diagnostic_digests,
             )
-            repair = self.profile.profile_id == "vllm-python-worker-repair-v1"
+            contracts = self.profile.profile_id in CONTRACT_PROFILES
+            repair = contracts or self.profile.profile_id == "vllm-python-worker-repair-v1"
             source = SourceBundle.model_validate_json(self.artifacts.read(source_digest))
             current = source
             if draft_digest is not None:
@@ -294,7 +309,13 @@ class LocalModel:
             template_kwargs: dict[str, Any] = {"enable_thinking": thinking}
             chat = {
                 "model": self.profile.model,
-                "messages": messages(view, repair=repair, handles=repair),
+                "messages": messages(
+                    view,
+                    repair=repair,
+                    handles=repair,
+                    contracts=contracts,
+                    document=planning_document,
+                ),
                 "chat_template_kwargs": template_kwargs,
             }
             if thinking and self.profile.profile_id in (
@@ -347,7 +368,8 @@ class LocalModel:
             choice = choices[0]
             message = choice.get("message")
             if (
-                choice.get("finish_reason") != "stop"
+                choice.get("finish_reason")
+                not in (("stop", "length") if planning_document else ("stop",))
                 or not isinstance(message, dict)
                 or message.get("role") != "assistant"
                 or message.get("tool_calls")
@@ -371,11 +393,23 @@ class LocalModel:
                 or total > limit
             ):
                 raise ModelError("Token accounting differs from the bounded request")
+            if choice.get("finish_reason") == "length":
+                raise IncompleteModelResult("Planning output exceeded its token allowance")
+            content = message["content"]
+            if planning_document:
+                document = strict_json(content)
+                if not isinstance(document, dict):
+                    raise WorkerError("Planning document must be an object")
+                if document.get("kind") != "read_file":
+                    content = json.dumps(
+                        {"kind": "candidate", "changes": {"factory-plan.json": content}}
+                    )
             result = parse_result(
-                message["content"],
+                content,
                 atom,
                 current,
                 allow_repair=repair,
+                allow_conflicts=contracts,
                 targets=targets,
             )
             turn = ModelTurn(

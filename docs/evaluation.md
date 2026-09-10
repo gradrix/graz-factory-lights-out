@@ -542,3 +542,59 @@ implementation advice and prevent contradictory algorithms from acquiring contra
 authority. Stronger prose alone did not resolve this example. The factory's 451 tests
 and 25 subtests passed with Docker during the experiment; the reverted source matches
 the preceding validated runtime, and its transport regression passed again afterward.
+
+## Structured contracts and end-to-end regression, 2026-09-10
+
+Issue 55 separates Python interface declarations from planner implementation advice.
+Workers receive original requirements; `contracts-v2` also projects requirements and
+declarations from ancestor providers whose outputs the task reads. Suggestions stay
+in planning evidence. Contradictions and byte-identical failed drafts produce durable
+review stops. Older profiles retain their preparation identities and replay behavior.
+
+Eleven bounded local-GPU trials used the same pinned model/deployment and existing
+fixture gates: 32 model responses, 136,034 server-reported tokens and 599.2 seconds of
+recorded model-call time. This includes rejected and truncated responses. Protocols
+changed during the campaign, so these totals are not a reliability-rate estimate.
+
+| Trial | Outcome |
+| --- | --- |
+| Modes, escaped-document v1/v2 | Both planning responses truncated; no workers |
+| Color and basic configuration, contracts-v1 | Both features accepted |
+| Modes, direct-document v3 | Implementation accepted; test worker lacked provider behavior and exhausted |
+| Modes, dependency-context v4 | Plan, implementation and 11 tests accepted on their first responses; integration passed |
+| Color, direct-document v2 | Planning repeated checks until output truncation |
+| Basic configuration, dependency-context v2 | Accepted |
+| Color v3 | Accepted after a schema-validation planning retry |
+| Strict configuration-test repair v1 | Accepted after a declaration-validation planning retry |
+| Modes repeat v5 | Stopped with questions already answered by the original request; no workers |
+
+The successful mode implementation passed the frozen 216-case oracle, generated
+fault checks and combined gates. Other methods' ASTs and all other original files
+were preserved. Running the accepted snapshot's entire pytest directory in the
+pinned offline image passed **28 tests**, including earlier color/configuration tests.
+The basic configuration fixture predates its known test-adequacy finding; the separate
+strict repair trial uses the stronger generic adequacy fixture, and the old challenged
+acceptance remains blocked. No target-source edits or plan corrections were supplied
+by Codex during these builds. No target PR was published from this qualification.
+
+Historical color and strict-parser acceptances replayed with zero new ledger events.
+A historical ai-gamer halt stayed halted; the challenged parser result stayed blocked.
+The factory passed **469 tests and 25 subtests** with Docker enabled; ruff and mypy
+passed. Tests cover declaration authority, dependency context, direct JSON transport,
+bounded truncation retries, explicit conflicts, repeated failed drafts across attempts,
+and review stops surviving ledger reopen. Live successful retries above were schema
+validation retries; truncation-retry behavior was exercised by transport/controller
+fixtures, rather than observed in a successful live truncation recovery.
+
+[Trial responses, plans and costs](../.scratch/local-lights-out-factory/contracts-qualification-results.json),
+[combined repository tests](../.scratch/local-lights-out-factory/contracts-combined-regression-results.json),
+and [historical replay](../.scratch/local-lights-out-factory/contracts-legacy-replay-results.json)
+retain the evidence. Each trial records its original fixture and worker profile.
+Recreate it with `prepare_repository_trial.py --worker-profile PROFILE`, adding
+`--test-followup` where recorded, then `build-feature` in a fresh output directory.
+Raw ledgers and artifacts remain under `.gflo/evidence/<run>/`.
+
+This resolves the observed algorithm-advice boundary and missing dependency context.
+The repeat's unnecessary questions remain an unattended-planning reliability gap.
+Future work must distinguish unanswered policy from questions already grounded in
+requirements, while preserving real `needs-info` stops and unchanged acceptance gates.

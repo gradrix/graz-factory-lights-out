@@ -424,3 +424,40 @@ Planning briefs include `allowed_path_state` from full source metadata: `existin
 omitted file contents. A directory scope is not a readable file. Invalid input
 references remain rejected with the task and path identified; the controller does
 not silently remove paths or invent provider dependencies.
+
+## Structured declarations and dependent worker context
+
+For new Python trials, set `FeaturePolicy.model_profile.profile_id` to
+`vllm-python-worker-contracts-v2`. This keeps the configured model and deployment.
+It enables exact-edit repair, structured planning and bounded review stops.
+
+The planner returns a direct `contract-plan-v1` JSON document. Each interface names
+a path, qualified symbol, Python signature with an ellipsis body, and original
+requirement IDs. Executable bodies are rejected. Optional
+`implementation_suggestions` remain in `planning/structured-proposal.json` and its
+artifact; they do not become worker instructions. Policy compilation still supplies
+independent gates and checks the graph and write scopes.
+
+Workers receive original requirements and declarations. A dependent task also
+receives the original requirements and declarations of ancestor providers whose
+outputs it declares as reads. This lets a test writer see the behavior it must test
+without inheriting a planner's proposed algorithm. Write scope remains unchanged.
+The earlier `contracts-v1` profile retains its task-only projection for trial replay;
+legacy plans and profiles retain their identities.
+
+A worker can return `contract_conflict` with a reason and affected requirement IDs.
+The controller records a durable review request and stops. It also stops when an
+identical draft has already failed a development or final gate under the same
+contract. This detects byte-identical repetition, not semantic equivalence.
+Neither event changes requirements, resets attempts, or accepts the draft.
+`build-feature` exports `review-handoff.json`; a replacement requires an explicitly
+reviewed new contract and budget. Ordinary resume leaves the review stop in place.
+
+To recreate a trial with the new protocol, keep its original fixture and pass
+`--worker-profile vllm-python-worker-contracts-v2` to
+`scripts/prepare_repository_trial.py`. The helper records a new policy while retaining
+the fixture's source, model, deployment, budgets and gates. Use `build-feature` for
+fresh structured planning; an old untyped reviewed proposal is rejected.
+Structured planning can retry an accounted output truncation within its existing
+two-attempt limit. It retains the incomplete response and supplies compactness
+feedback. No partial JSON is repaired or treated as a valid proposal.

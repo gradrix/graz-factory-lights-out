@@ -10,9 +10,22 @@ from gflo.ledger import WorkLedger
 from gflo.reporting import cost_report
 
 
+def pending_review(ledger: WorkLedger, atom_id: str) -> dict[str, Any] | None:
+    """An immutable review request blocks automatic retry under this contract."""
+    for attempt in reversed(ledger.status(atom_id)["attempts"]):
+        for event in reversed(attempt["events"]):
+            if event["kind"] == "observation" and event["details"]["kind"] == "review-request":
+                record: dict[str, Any] = json.loads(
+                    ledger.artifacts.read(event["details"]["digest"])
+                )
+                return record
+    return None
+
+
 def review_handoff(ledger: WorkLedger, atom_id: str) -> dict[str, Any]:
     state = ledger.status(atom_id)
-    if state["status"] != "quarantined":
+    request = pending_review(ledger, atom_id)
+    if state["status"] != "quarantined" and request is None:
         raise ValueError("Review escalation requires exhausted, quarantined work")
     plan = json.loads(ledger.run_plan(atom_id))
     drafts = []
@@ -30,6 +43,9 @@ def review_handoff(ledger: WorkLedger, atom_id: str) -> dict[str, Any]:
                     drafts.append(record["draft_digest"])
                 else:
                     diagnostics.append(record)
+    if request is not None:
+        diagnostics.append(request)
+        drafts.append(request["draft_digest"])
     latest = drafts[-1] if drafts else None
     draft = SourceBundle.model_validate_json(ledger.artifacts.read(latest)) if latest else None
     return {
@@ -37,7 +53,9 @@ def review_handoff(ledger: WorkLedger, atom_id: str) -> dict[str, Any]:
         "kind": "review-handoff-v1",
         "atom_id": atom_id,
         "status": "needs-review",
-        "reason": "Finite worker attempts exhausted; review required before further work.",
+        "reason": request["reason"]
+        if request
+        else "Finite worker attempts exhausted; review required before further work.",
         "run_plan": plan,
         "latest_unaccepted_draft_digest": latest,
         "latest_unaccepted_draft": draft.model_dump(mode="json") if draft else None,

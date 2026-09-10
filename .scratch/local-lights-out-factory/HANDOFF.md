@@ -1,6 +1,38 @@
 # GFLO handoff — repository access foundation
 
-## Current checkpoint — semantic plan conflict, 2026-09-10
+## Current checkpoint — structured contracts qualified, 2026-09-10
+
+Issue 55 resolved. New opt-in `vllm-python-worker-contracts-v2` separates declaration
+syntax from planner advice and supplies original requirements of read dependency
+providers to consumers/test writers. `contracts-v1` retains its initial task-only
+projection for replay. Legacy profiles retain identities. Planning uses direct JSON;
+accounted truncation can consume the existing second attempt. Worker contradiction
+reports and repeated byte-identical failed drafts persist a review stop across resume.
+
+Eleven GPU trials / 32 responses / 136,034 server-reported tokens retained in
+[results](contracts-qualification-results.json). Modes v4 accepted planning, implementation
+and 11 generated tests on first responses; frozen 216-case oracle and integration pass.
+[All 28 repository tests](contracts-combined-regression-results.json) pass together.
+Color and basic parser feature reruns plus the stricter parser test repair accepted.
+No manual source edits or planner correction; no target PR from this campaign.
+Older accepted/halted/challenged states [replay unchanged](contracts-legacy-replay-results.json).
+Factory: 469 tests/25 subtests with Docker, ruff/mypy pass.
+
+Failures remain meaningful: initial escaped-plan truncations, missing dependency rules
+for tests before v2, and a fresh modes v5 repeat that asked eight questions already
+answered in the request. Next is [issue 56](issues/56-ground-planning-questions-in-requirements.md):
+bounded question grounding without suppressing real missing policy. No new human
+product decision is needed for those already-answered questions. Do not count that
+repeat as success or reset its state. No unattended-reliability claim.
+
+Recreate each recorded original fixture/profile using prepare_repository_trial.py
+`--worker-profile PROFILE` (and `--test-followup` for strict parser repair), then
+build-feature in a fresh output. No duplicate fixture copies required. Raw ledgers,
+model exchanges and artifacts are under `.gflo/evidence/<recorded run>/`; transfer
+separately for exact historical replay. Same-model constraint and push authorization
+persist. Model deployment/weights and acceptance gates were unchanged.
+
+## Previous checkpoint — semantic plan conflict, 2026-09-10
 
 Issues 53/54 are completed negative experiments. Sparse mode-selection feature on
 leds-service baseline d02622a865333d3044859aba22ffdc4303b188b1 froze 216 reference cases
