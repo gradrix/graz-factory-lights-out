@@ -155,3 +155,7 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
 - [Issue 37](issues/37-index-python-definitions.md): snapshot-bound Python definitions
   and unchanged-file analysis reuse implemented. Five navigation probes on GFLO
   passed; index coverage does not establish callers or model context sufficiency.
+
+- [Issue 30](issues/30-diagnose-memory-qualification-halts.md): kernel counters proved
+  an OOM despite Docker's false flag. Trusted supervisor proof replaces the unreliable
+  qualification predicate; 100 complete qualifications passed, unrelated kills rejected.

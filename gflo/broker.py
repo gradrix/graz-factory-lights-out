@@ -109,6 +109,51 @@ except BaseException as e:
 """
 
 
+# Trusted qualification command, never supplied by candidate code. Keeping the
+# supervisor alive lets it retain local kernel counters even when Docker misses
+# the OOM event associated with a rapidly exiting container.
+MEMORY_PROBE = r"""
+import json, subprocess, sys
+from pathlib import Path
+def counters():
+    text = Path('/sys/fs/cgroup/memory.events.local').read_text()
+    values = dict(line.split() for line in text.splitlines())
+    return {key: int(values[key]) for key in ('max', 'oom', 'oom_kill')}
+cgroup_before = Path('/proc/self/cgroup').read_text()
+before = counters()
+child = subprocess.run([sys.executable, '-I', '-c', 'a=bytearray(256*1024*1024)'],
+                       stdin=subprocess.DEVNULL, stdout=subprocess.DEVNULL,
+                       stderr=subprocess.DEVNULL, timeout=10)
+after = counters()
+print(json.dumps({'before': before, 'after': after, 'child_returncode': child.returncode,
+                  'cgroup_before': cgroup_before,
+                  'cgroup_after': Path('/proc/self/cgroup').read_text()}, sort_keys=True))
+"""
+
+
+def _memory_enforced(execution: Execution) -> bool:
+    if execution.exit_code != 0 or execution.outcome != "completed" or execution.stderr_base64:
+        return False
+    try:
+        proof = json.loads(execution.stdout)
+        before, after = proof["before"], proof["after"]
+        return (
+            type(proof["child_returncode"]) is int
+            and proof["child_returncode"] == -9
+            and isinstance(proof["cgroup_before"], str)
+            and proof["cgroup_before"].startswith("0::/")
+            and proof["cgroup_before"] == proof["cgroup_after"]
+            and all(
+                type(before[key]) is int
+                and type(after[key]) is int
+                and 0 <= before[key] < after[key]
+                for key in ("max", "oom", "oom_kill")
+            )
+        )
+    except (ValueError, KeyError, TypeError):
+        return False
+
+
 class DockerBroker:
     def __init__(self, artifacts: ArtifactStore, image: str):
         if not re.fullmatch(r"(?:[A-Za-z0-9_./:-]+@)?sha256:[a-f0-9]{64}", image):
@@ -414,7 +459,7 @@ class DockerBroker:
             )
             memory = self._execute(
                 digest,
-                ("python", "-I", "-c", "a=bytearray(256*1024*1024)"),
+                ("python", "-I", "-c", MEMORY_PROBE),
                 "",
                 15,
                 "qualification",
@@ -436,14 +481,14 @@ finally:
             report = {
                 "image_id": self.image_id,
                 "docker": info["ServerVersion"],
+                "memory_proof": "cgroup-v2-local-events-v1",
                 "executions": [r.model_dump(mode="json") for r in (controls, memory, pids)],
             }
             report_digest = self.artifacts.publish(json.dumps(report, sort_keys=True).encode())
             if not (
                 controls.exit_code == 0
                 and controls.stdout == b"controls-ok\n"
-                and memory.oom_killed
-                and memory.exit_code == 137
+                and _memory_enforced(memory)
                 and pids.exit_code == 0
                 and pids.stdout == b"pids-enforced\n"
                 and all(r.outcome == "completed" for r in (controls, memory, pids))

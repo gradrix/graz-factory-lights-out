@@ -197,3 +197,20 @@ execution clears prior success in the build result before revalidation and can b
 replayed with the same command. Exit 0 means accepted, 2 means a reported halt,
 1 means an error, and 130 means interruption. Build output binds the local store
 path; portable fixtures recreate a run, not a moved runtime directory's identity.
+
+
+Memory qualification uses a trusted supervisor with a bounded allocator child.
+It requires increasing `memory.events.local` limit/OOM/kill counters in the same
+cgroup and child SIGKILL, with clean supervisor completion. Docker's `OOMKilled`
+flag is retained in execution evidence but is not the memory-qualification proof;
+we observed it remain false during a kernel-confirmed OOM. Exit 137 alone remains
+insufficient. The existing 128-MiB memory/no-swap/PID/network restrictions are unchanged.
+To repeat qualification and retain each report:
+
+```sh
+PYTHONPATH=. .venv/bin/python scripts/qualify_broker.py \
+  --image sha256:695d05883b15326aea01e9266067ff58c41f3eaa4f647cfc9424b403dbe9548d \
+  --output .gflo/qualification-check --repetitions 10
+```
+
+Use a new output directory. The script stops on the first halt and retains evidence.

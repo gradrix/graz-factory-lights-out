@@ -24,8 +24,9 @@ This is one feature repeated, not a broad repository benchmark.
 
 The trusted dependency-image recipe is documented in [infra/worker](../infra/worker/README.md).
 Workers remain offline and restricted. Full repository tests required bounded
-batches under the existing 256-KiB limit. Next engineering investigation is an
-intermittent memory-qualification halt; retain strict controls while diagnosing it.
+batches under the existing 256-KiB limit. The intermittent memory-qualification halt is resolved: same-container kernel
+counters now prove enforcement, and 100 prospective qualifications passed with
+unchanged isolation controls.
 
 Snapshot-backed planning and reviewed feature progression now run a bounded graph
 through accepted providers, consumers, and independent combined checks. An expense

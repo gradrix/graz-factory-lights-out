@@ -402,3 +402,82 @@ def test_printing_forged_pass_does_not_satisfy_gate(gate_setup):
     assert receipt.outcome == "fail"
     with pytest.raises(Conflict):
         ledger.accept(lease, current_inputs_digest=atom.inputs_digest)
+
+
+@pytest.mark.parametrize(
+    "invalid",
+    [
+        None,
+        "no-oom",
+        "no-max",
+        "no-kill",
+        "wrong-child",
+        "different-cgroup",
+        "stderr",
+        "timeout",
+        "exit",
+        "malformed",
+    ],
+)
+def test_qualification_requires_kernel_memory_proof_even_without_docker_flag(broker, invalid):
+    proof = {
+        "before": {"max": 0, "oom": 0, "oom_kill": 0},
+        "after": {"max": 20, "oom": 1, "oom_kill": 1},
+        "child_returncode": -9,
+        "cgroup_before": "0::/\n",
+        "cgroup_after": "0::/\n",
+    }
+    if invalid == "no-oom":
+        proof["after"]["oom"] = 0
+    if invalid == "no-max":
+        proof["after"]["max"] = 0
+    if invalid == "no-kill":
+        proof["after"]["oom_kill"] = 0
+    if invalid == "wrong-child":
+        proof["child_returncode"] = 0
+    if invalid == "different-cgroup":
+        proof["cgroup_after"] = "0::/other\n"
+    broker._reap = Mock()
+    broker._docker = Mock(
+        side_effect=[
+            json.dumps(
+                {"CgroupVersion": "2", "SecurityOptions": ["seccomp"], "ServerVersion": "test"}
+            ),
+            json.dumps([{"Id": IMAGE, "Config": {}}]),
+        ]
+    )
+    outputs = iter(
+        [
+            b"controls-ok\n",
+            b"bad" if invalid == "malformed" else json.dumps(proof).encode(),
+            b"pids-enforced\n",
+        ]
+    )
+
+    def execute(digest, command, stdin, seconds, purpose):
+        output = next(outputs)
+        memory = output not in (b"controls-ok\n", b"pids-enforced\n")
+        return Execution(
+            candidate_digest=digest,
+            image_id=IMAGE,
+            container_id="proof-test",
+            command=command,
+            stdin=stdin,
+            purpose=purpose,
+            outcome="timeout" if memory and invalid == "timeout" else "completed",
+            exit_code=137 if memory and invalid == "exit" else 0,
+            oom_killed=False,
+            stdout_base64=base64.b64encode(output).decode(),
+            stderr_base64=base64.b64encode(
+                b"error" if memory and invalid == "stderr" else b""
+            ).decode(),
+            elapsed_seconds=0.1,
+        )
+
+    broker._execute = Mock(side_effect=execute)
+    if invalid:
+        with pytest.raises(BrokerError, match="Resource enforcement"):
+            broker.qualify()
+        assert broker.qualification_digest is None
+    else:
+        assert broker.qualify() == broker.qualification_digest

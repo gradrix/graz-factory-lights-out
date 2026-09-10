@@ -1,6 +1,23 @@
 # GFLO handoff — repository access foundation
 
-## Current checkpoint — Python definition navigation, 2026-09-10
+## Current checkpoint — memory qualification, 2026-09-10
+
+Issue 30 is resolved after exact reproduction and kernel confirmation: Docker's OOM
+flag remained false despite same-container max/oom/oom_kill increments. Qualification
+now uses a trusted supervisor and killed allocator child, requiring local kernel
+counter increases and clean completion. Limits unchanged; exit 137 alone never passes.
+All 100 prospective full qualifications passed; real unrelated kills/no-allocation
+failed as required. Full suite with Docker enabled: 402 passed, 25 subtests, no skips.
+[Portable evidence](memory-qualification-results.json) retains all failed baselines.
+
+Issue 38 is now running a new recursive-settings feature with 60 archive decoys,
+definition-derived explicit context, fixed independent recursive/alias/invalid-value
+checks, and the existing policy build. Do not treat prepared symbol selection as
+model-driven navigation. Owner requests continued work until actual blockers or
+human decisions; push authorization remains active.
+
+
+## Previous checkpoint — Python definition navigation, 2026-09-10
 
 Issue 37 adds snapshot-bound Python definition shards/indexes and CLI navigation,
 with exact source/scope/analyzer binding, explicit skipped-file/truncation coverage,

@@ -1,7 +1,7 @@
 # Diagnose intermittent memory qualification halts
 
 Type: task
-Status: ready-for-agent
+Status: resolved
 
 ## Evidence
 
@@ -21,3 +21,21 @@ Do not accept exit 137 alone as proof of memory enforcement. Any replacement pro
 must be independently tied to the same container/cgroup and retain existing
 restrictions. Add failure-mode regression checks and qualify prospectively.
 This trusted broker change is separate from the worker's CLI-only trial.
+
+## Answer — 2026-09-10
+
+Reproduced the exact original halt on full qualification run 14 and memory-only run
+35. A delayed-inspection experiment reproduced it on run 76; Docker's flag stayed
+false through one second. Host observation of the same full container ID on another
+failure recorded memory.events.local max/oom/oom_kill rising from zero, proving a
+real memory-limit OOM kill. The exact internal Docker event-loss cause is unproven.
+
+Qualification now runs a trusted allocator supervisor and requires increasing local
+kernel limit/OOM/kill counters, the same cgroup, child return -9, and clean supervisor
+completion. It never accepts exit 137 alone. All original isolation controls remain.
+Ten regression cases were run red/green. One hundred prospective complete broker
+qualifications passed; real unrelated-SIGKILL and no-allocation probes were rejected.
+Full suite with Docker enabled: 402 passed, 25 subtests. Raw evidence remains ignored;
+[portable results](../memory-qualification-results.json) retain the failures, kernel
+confirmation and prospective proofs. `scripts/qualify_broker.py` supplies the retained
+repeatable qualification loop. Kernel semantics: [cgroup v2](https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v2.html).

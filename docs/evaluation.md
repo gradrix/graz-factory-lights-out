@@ -231,3 +231,21 @@ nested/async/duplicate definitions, stale snapshots and shards, scopes, syntax a
 budget coverage, reuse, and CLI access. These timings are a single local run, not
 large-repository performance qualification. No model participated in these probes.
 See [results](../.scratch/local-lights-out-factory/symbol-navigation-results.json).
+
+
+## Memory qualification reliability (2026-09-10)
+
+The earlier intermittent exit-137/no-OOM-flag halt reproduced in both full and
+memory-only qualification. Waiting one second did not restore the Docker flag.
+Observation of the exact failing container's local cgroup counters confirmed a
+kernel OOM kill. A trusted supervisor now retains those counters around a bounded
+allocator child, requiring limit, OOM and kill increments plus child SIGKILL.
+This follows the [kernel's cgroup memory-event semantics](https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v2.html).
+
+All 100 prospective complete qualifications passed. Real unrelated-SIGKILL and
+no-allocation probes were rejected. Ten new regression cases cover missing counters,
+wrong child status, changed cgroup, malformed output, stderr, timeout and exit errors.
+Full suite with Docker enabled: 402 tests and 25 subtests passed, with no skips.
+[Results](../.scratch/local-lights-out-factory/memory-qualification-results.json)
+preserve baseline failures and prospective proofs. This fixes qualification evidence;
+it does not relax resources or rescore previous campaigns.
