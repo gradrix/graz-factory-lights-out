@@ -478,3 +478,16 @@ def test_standalone_low_reasoning_uses_explicit_larger_contract(prepared, server
     assert generate["max_tokens"] == 4096
     manifest = json.loads(store.read(turn.manifest_digest))
     assert manifest["total_limit"] == 12288 and manifest["output_reserved"] == 4096
+
+
+def test_model_tokenizes_actual_remaining_turn_and_output_budget(prepared, server):
+    _, atom, _, digest = prepared
+    client_for(prepared, server).turn(
+        atom, digest, current_inputs=lambda: atom.inputs_digest, remaining_model_turns=1
+    )
+    tokenize, generate = server[0]["calls"][1][1], server[0]["calls"][2][1]
+    assert tokenize["messages"] == generate["messages"]
+    view = json.loads(generate["messages"][1]["content"])
+    assert view["instruction"]["remaining_model_turns"] == 1
+    assert view["instruction"]["response_output_tokens"] == generate["max_tokens"]
+    assert "last turn" in view["instruction"]["turn_guidance"]

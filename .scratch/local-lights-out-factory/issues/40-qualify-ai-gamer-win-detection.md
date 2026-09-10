@@ -29,7 +29,7 @@ quality or full-system qualification from rule tests.
 
 ## Answer
 
-Delivered [draft PR 1](https://github.com/gradrix/ai-gamer/pull/1), commit 0011cd6.
+Delivered [merged PR 1](https://github.com/gradrix/ai-gamer/pull/1), commit 0011cd6.
 Local implementation passed the full winner oracle on its second 12K/6K low-reasoning
 attempt. All local test-generation trials halted; Codex wrote 17 passing regression
 cases. The same final oracle and baseline-rejection checks passed on the exported

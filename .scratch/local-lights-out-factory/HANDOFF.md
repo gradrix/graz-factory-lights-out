@@ -3,7 +3,7 @@
 ## Current checkpoint — real ai-gamer qualification, 2026-09-10
 
 Owner delegated target/task choice and reaffirmed continuing until actual blockers.
-Chose ai-gamer rule correctness; [draft PR 1](https://github.com/gradrix/ai-gamer/pull/1)
+Chose ai-gamer rule correctness; [merged PR 1](https://github.com/gradrix/ai-gamer/pull/1)
 contains unchanged local-LLM implementation and 17 Codex-authored regression cases.
 Oracle passed all 19,683 3x3 boards plus larger-board probes; new tests reject original.
 All 86 other original files preserved. Issues 40–42 resolved; 410 factory tests and

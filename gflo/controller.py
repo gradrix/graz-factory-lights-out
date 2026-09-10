@@ -232,7 +232,7 @@ class Controller:
         selected = plan.selected_paths
         source_digest = plan.source.digest()
         diagnostics = (diagnostic,) if diagnostic else ()
-        for _ in range(plan.max_model_turns):
+        for turn_index in range(plan.max_model_turns):
             verify_predecessors(self.ledger, plan.atom)
             self.ledger.check_lease(lease)
             try:
@@ -242,6 +242,7 @@ class Controller:
                     current_inputs=lambda: plan.atom.inputs_digest,
                     selected_paths=selected,
                     diagnostic_digests=diagnostics,
+                    remaining_model_turns=plan.max_model_turns - turn_index,
                 )
             finally:
                 if self.model.last_evidence_digest is not None:

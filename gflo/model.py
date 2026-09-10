@@ -184,10 +184,15 @@ class LocalModel:
         current_inputs: Callable[[], str],
         selected_paths: tuple[str, ...] | None = None,
         diagnostic_digests: tuple[str, ...] = (),
+        remaining_model_turns: int | None = None,
     ) -> ModelTurn:
         """Produce a validated proposal only; no file write, tool dispatch or acceptance."""
         atom = WorkAtom.model_validate(atom)
         self.last_evidence_digest = None
+        if remaining_model_turns is not None and (
+            type(remaining_model_turns) is not int or not 1 <= remaining_model_turns <= 4
+        ):
+            raise WorkerError("Remaining model turns must be an integer from one to four")
         started = time.monotonic()
         deadline = started + self.profile.timeout_seconds
         exchanges: list[dict[str, Any]] = []
@@ -216,7 +221,6 @@ class LocalModel:
                 selected_paths=selected_paths,
                 diagnostic_digests=diagnostic_digests,
             )
-            evidence["view_digest"] = self.artifacts.publish(view.canonical().encode())
             models = self._request("/v1/models", None, deadline, exchanges)
             if not isinstance(models.get("data"), list) or not any(
                 m.get("id") == self.profile.model
@@ -240,6 +244,18 @@ class LocalModel:
                 "vllm-python-worker-reasoning-low-v1",
             ) or (escalating and bool(diagnostic_digests))
             reserve = 2048 if escalating and not thinking else atom.context_budget.output_tokens
+            if remaining_model_turns is not None:
+                view.instruction.update(
+                    remaining_model_turns=remaining_model_turns,
+                    response_output_tokens=reserve,
+                    turn_guidance=(
+                        "Remaining turns include this response. Each read_file consumes one turn. "
+                        "On the last turn, a read leaves no turn to submit a candidate. "
+                        "Use the source already provided and read only necessary omitted files. "
+                        "Keep replacement files concise enough for the output allowance."
+                    ),
+                )
+            evidence["view_digest"] = self.artifacts.publish(view.canonical().encode())
             template_kwargs: dict[str, Any] = {"enable_thinking": thinking}
             chat = {
                 "model": self.profile.model,

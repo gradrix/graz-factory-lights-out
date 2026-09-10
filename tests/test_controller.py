@@ -820,3 +820,14 @@ def test_tool_escalation_cannot_exceed_six_turns(tmp_path, plan):
         assert len(result["attempts"]) == 2 and len(model.calls) == 6
         controller.run(plan.atom.atom_id)
         assert len(model.calls) == 6
+
+
+def test_remaining_turn_budget_counts_down_and_resets_after_failure(tmp_path, plan):
+    with WorkLedger(tmp_path / "ledger.db") as ledger:
+        bad = CandidateResult(kind="candidate", changes={"main.py": "print(0)"})
+        good = CandidateResult(kind="candidate", changes={"main.py": "print(42)"})
+        controller, model, _ = setup(ledger, plan, [
+            ReadFileRequest(kind="read_file", path="helper.py"), bad, good,
+        ])
+        assert controller.run(plan.atom.atom_id)["status"] == "accepted"
+        assert [call["remaining_model_turns"] for call in model.calls] == [3, 2, 3]

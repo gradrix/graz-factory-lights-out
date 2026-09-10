@@ -512,6 +512,8 @@
       "subtests": 25,
       "docker_enabled": true
     },
-    "portability": "Original and accepted-implementation follow-up snapshots reconstructed in fresh ledgers"
+    "portability": "Original and accepted-implementation follow-up snapshots reconstructed in fresh ledgers",
+    "merge_commit": "9a0a4384b9b727c02f0f2c168c7abc43a4e076bf",
+    "state": "merged"
   }
 }

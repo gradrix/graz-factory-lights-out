@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "request_digest": "0ed17054c01212b2b69089d72ed3f1383dc1e29a0bded914d1849de7e60998fb",
+  "policy_digest": "d630f87dacfca9dd3660845e1c6494ef0bba0f77a849f8110549bc1d6a1cc16c",
+  "status": "quarantined",
+  "candidate_count": 2,
+  "cost": {
+    "attempts": 2,
+    "model_observations": 2,
+    "validated_prompt_tokens": 8844,
+    "validated_completion_tokens": 2722,
+    "observed_model_seconds": 45.635176994001085,
+    "observations_without_validated_usage": 0,
+    "observations_without_timing": 0,
+    "usage_complete_for_recorded_observations": true,
+    "timing_complete_for_recorded_observations": true
+  },
+  "failures": [
+    "Validation did not pass.\nGate: file-0\nOutcome: fail\nLast executed case: 1\nCommand: [\"python\", \"-c\", \"import contextlib,io\\noutput=io.StringIO()\\nwith contextlib.redirect_stdout(output), contextlib.redirect_stderr(output):\\n import importlib.util,pytest\\n from pathlib import Path\\n class Results:\\n  def __init__(self):self.count=0\\n  def pytest_collection_finish(self,session):self.count=len(session.items)\\n plugin=Results()\\n result=pytest.main(['-q','tests/test_winner_windows.py'],plugins=[plugin])\\n assert result==0 and plugin.count>=4, output.getvalue()\\n print('regression-tests-ok')\\np\n[truncated; full bytes in retained evidence]\nInput (stdin):\n\nProcess outcome: completed\nExit code: 1\nObserved stdout:\n\nObserved stderr:\nTraceback (most recent call last):\n  File \"<string>\", line 11, in <module>\nAssertionError: ..FF...                                                                  [100%]\n=================================== FAILURES ===================================\n___________________ test_rectangular_other_directional_wins ____________________\n\n    def test_rectangular_other_directional_wins():\n        # Rectangular 5x3 board, scoreLineLength=3.\n        game = TikTakToe(5, 3, 3)\n    \n        # Horizontal win on row 0: (0,0),(1,0),(2,0).\n        game.placeFigure(0, 0, X)\n        game.placeFigure(1, 0, X)\n        game.placeFigure(2, 0, X)\n        assert game.checkForWinner() == X\n    \n>       game.__reset()\n        ^^^^^^^^^^^^\nE       AttributeError: 'TikTakToe' object has no attribute '__reset'\n\ntests/test_winner_windows.py:52: AttributeError\n____________________ test_no_possible_winner_draw_detection ____________________\n\n    def test_no_possible_winner_draw_detection():\n        # 3x3 board fully filled with no winner -> stillCouldHaveWinner is False.\n        game = TikTakToe(3, 3, 3)\n        # Fill with a draw pattern (no three in a row).\n        # Row 0: X O X\n        game.placeFigure(0, 0, X)\n        game.placeFigure(1, 0, O)\n        game.placeFigure(2, 0, ",
+    "Validation did not pass.\nGate: file-0\nOutcome: fail\nLast executed case: 1\nCommand: [\"python\", \"-c\", \"import contextlib,io\\noutput=io.StringIO()\\nwith contextlib.redirect_stdout(output), contextlib.redirect_stderr(output):\\n import importlib.util,pytest\\n from pathlib import Path\\n class Results:\\n  def __init__(self):self.count=0\\n  def pytest_collection_finish(self,session):self.count=len(session.items)\\n plugin=Results()\\n result=pytest.main(['-q','tests/test_winner_windows.py'],plugins=[plugin])\\n assert result==0 and plugin.count>=4, output.getvalue()\\n print('regression-tests-ok')\\np\n[truncated; full bytes in retained evidence]\nInput (stdin):\n\nProcess outcome: completed\nExit code: 1\nObserved stdout:\n\nObserved stderr:\nTraceback (most recent call last):\n  File \"<string>\", line 11, in <module>\nAssertionError: ...F..                                                                   [100%]\n=================================== FAILURES ===================================\n____________________ test_no_possible_winner_draw_detection ____________________\n\n    def test_no_possible_winner_draw_detection():\n        # 3x3 board fully filled with no winner -> stillCouldHaveWinner is False.\n        game = TikTakToe(3, 3, 3)\n        # Fill with a draw pattern (no three in a row).\n        # Row 0: X O X\n        game.placeFigure(0, 0, X)\n        game.placeFigure(1, 0, O)\n        game.placeFigure(2, 0, X)\n        # Row 1: O X O\n        game.placeFigure(0, 1, O)\n        game.placeFigure(1, 1, X)\n        game.placeFigure(2, 1, O)\n        # Row 2: X O X\n        game.placeFigure(0, 2, X)\n        game.placeFigure(1, 2, O)\n        game.placeFigure(2, 2, X)\n    \n        result = game.checkForWinner()\n>       assert result is False\nE       assert 1 is False\n\ntests/test_winner_windows.py:82: AssertionError\n=========================== short test summary info ============================\nFAILED tests/test_winner_windows.py::test_no_possible_winner_draw_detection\n1 failed, 5 passed in 0.01s\n\n"
+  ],
+  "interpretation": "Both attempts now proposed complete tests; second corrected private reset but retained a winning board as a draw. Budget visibility did not produce acceptance.",
+  "raw_evidence": ".gflo/evidence/ai-gamer-turn-budget-v1",
+  "factory_validation": "412 passed, 25 subtests, Docker enabled"
+}

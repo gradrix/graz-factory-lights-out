@@ -174,3 +174,7 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
   opaque blobs survive text changes; bounded text APIs still reject opaque inputs.
 - [Issue 42](issues/42-separate-policy-planning-worker-profile.md): planning/worker
   profiles separated; standalone low reasoning supported but not a better default.
+
+- [Issue 43](issues/43-expose-worker-turn-budget.md): remaining turns/output projected
+  into tokenized worker instructions. Fresh trial proposed both candidates but still
+  failed semantics; separate smaller test tasks are the next diagnostic.

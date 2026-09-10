@@ -265,3 +265,10 @@ Add `--test-followup` with a fresh output directory to reconstruct the separate 
 trial source from the retained accepted implementation. This checks the resulting
 snapshot identity and leaves the checkout untouched. The follow-up is a distinct
 operator-selected policy, not a successful replay of the original two-task build.
+
+
+Controller-driven workers receive their remaining attempt turns, including the current
+response, and actual response output allowance. A read on the last turn leaves no
+opportunity to propose edits. These instructions are included in exact tokenization;
+they do not extend retry, context or output limits. The first live follow-up produced
+complete candidates but still failed semantic checks.
