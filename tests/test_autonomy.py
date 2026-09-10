@@ -279,3 +279,15 @@ def test_policy_planning_stays_nonthinking_while_worker_profile_is_retained(tmp_
         assert (
             prepared["review"]["model_profile"]["profile_id"] == "vllm-python-worker-reasoning-v1"
         )
+
+
+@pytest.mark.parametrize("version", ["v1", "v2"])
+def test_policy_version_pins_integration_semantics(tmp_path, version):
+    with WorkLedger(tmp_path / "ledger") as ledger:
+        plan = feature(ledger)
+        policy = replace(policy_for(plan), kind="feature-policy-" + version)
+        compiled = compile_feature(ledger.artifacts, plan.request, plan.proposal, policy)
+        assert compiled.kind == "reviewed-feature-" + version
+        restored = FeaturePolicy.model_validate_json(policy.canonical())
+        assert restored.digest() == policy.digest()
+        assert compile_feature(ledger.artifacts, plan.request, plan.proposal, restored) == compiled

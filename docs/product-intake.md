@@ -75,6 +75,13 @@ bindings and exact predecessor acceptance evidence. Consumers may reference file
 created by declared providers, but preparation fails if those files are still absent.
 A failed task stops progression. Final independent gates run against an explicit
 combined execution selection, with no model call to approve the result.
+New `reviewed-feature-v2` plans produce a `feature-check-v2` integration contract with
+all request requirement IDs and all accepted contribution evidence. Its recorded scope
+covers the feature's worker outputs; it grants no worker tools and runs only independent
+validation. `feature-policy-v2` compiles to this plan version. Both are the defaults for
+new records. Explicit version-1 plans and policies retain their original contract and
+replay identities, including their historical task-local integration metadata. Upgrading
+a policy or plan creates a new integration identity; it does not rewrite old acceptance.
 
 Repeat the same command to resume. Progress is reconstructed from prepared tasks,
 acceptances, candidates, and receipts rather than a mutable summary file. Reuse

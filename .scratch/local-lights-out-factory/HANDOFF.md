@@ -1,6 +1,14 @@
 # GFLO handoff — repository access foundation
 
-## Current checkpoint — task-created draft repair, 2026-09-10
+## Current checkpoint — integration provenance, 2026-09-10
+
+Issue 62 resolved. New FeaturePlan/FeaturePolicy defaults are explicit v2. Final
+validation records cover all request requirements and worker output paths, without
+worker tools or inherited last-task capability. Explicit v1 records retain old semantics.
+503 tests/25 subtests, lint/typing and four historical replays pass. Next: issue 63,
+full per-worker retry-budget comparison with reliability prioritized over token cost.
+
+## Previous checkpoint — task-created draft repair, 2026-09-10
 
 Issue 61 resolved. Window candidates can replace task-created files, with immutable
 base identity bound to the contract and original files still range-protected. The exact

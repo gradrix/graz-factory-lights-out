@@ -32,7 +32,7 @@ from gflo.worker import InputSnapshot
 
 
 class FeaturePlan(Record):
-    kind: Literal["reviewed-feature-v1"] = "reviewed-feature-v1"
+    kind: Literal["reviewed-feature-v1", "reviewed-feature-v2"] = "reviewed-feature-v2"
     request: RepositoryFeatureRequest
     proposal: PlanProposal
     review: PlanReview
@@ -41,7 +41,7 @@ class FeaturePlan(Record):
 
 
 class FeatureCheck(Record):
-    kind: Literal["feature-check-v1"] = "feature-check-v1"
+    kind: Literal["feature-check-v1", "feature-check-v2"] = "feature-check-v1"
     atom: WorkAtom
     source: SourceBundle
     gates: dict[str, ProcessGate]
@@ -127,12 +127,10 @@ def _check(
                     strategy="Repeat reviewed final validation after recovery",
                     new_evidence=ledger.artifacts.publish(json.dumps(prior).encode()),
                 )
-            lease = ledger.claim(
-                plan.atom.atom_id, "feature-check-v1", retry=retry, lease_seconds=1800
-            )
+            lease = ledger.claim(plan.atom.atom_id, plan.kind, retry=retry, lease_seconds=1800)
         else:
             lease = ledger.active_lease(plan.atom.atom_id)
-            if lease.owner != "feature-check-v1":
+            if lease.owner != plan.kind:
                 raise Conflict("Different owner holds final validation")
         if ledger.status(plan.atom.atom_id)["status"] == "leased":
             ledger.start(lease)
@@ -262,25 +260,68 @@ def run_feature(
                 [plan.digest(), source.model_dump(mode="json"), evidence], sort_keys=True
             ).encode()
         )
-        fields = completed[-1].run.atom.model_dump(mode="json")
-        revision = "feature-final-v1:" + binding
-        fields.update(
-            atom_id="feature-final-" + binding,
-            idempotency_key="feature-final-" + binding,
-            objective="Independently validate the combined feature",
-            source_revision=revision,
-            inputs_digest=InputSnapshot(
-                source_digest=selection.bundle.digest(), source_revision=revision
-            ).digest(),
-            dependency_artifacts=evidence,
-            upstream_contracts=[],
-            max_attempts=2,
-            required_gates=[
-                dict(gate_id=k, validator_digest=v.digest())
-                for k, v in sorted(plan.integration.gates.items())
-            ],
-        )
+        if plan.kind == "reviewed-feature-v1":
+            fields = completed[-1].run.atom.model_dump(mode="json")
+            revision = "feature-final-v1:" + binding
+            fields.update(
+                atom_id="feature-final-" + binding,
+                idempotency_key="feature-final-" + binding,
+                objective="Independently validate the combined feature",
+                source_revision=revision,
+                inputs_digest=InputSnapshot(
+                    source_digest=selection.bundle.digest(), source_revision=revision
+                ).digest(),
+                dependency_artifacts=evidence,
+                upstream_contracts=[],
+                max_attempts=2,
+                required_gates=[
+                    dict(gate_id=k, validator_digest=v.digest())
+                    for k, v in sorted(plan.integration.gates.items())
+                ],
+            )
+        else:
+            # Construct validation authority explicitly; no last-worker metadata inheritance.
+            revision = "feature-final-v2:" + binding
+            fields = dict(
+                atom_id="feature-final-" + binding,
+                graph_revision=proposal.digest(),
+                objective="Independently validate the combined feature: " + request.objective,
+                non_goals=["Modify source", "Run model inference"],
+                requirement_ids=sorted(request.requirements),
+                product_modules=[request.feature_id],
+                source_revision=revision,
+                inputs_digest=InputSnapshot(
+                    source_digest=selection.bundle.digest(), source_revision=revision
+                ).digest(),
+                # The affected feature scope is recorded, but no edit tool is granted.
+                writable_paths=sorted({p for task in proposal.tasks for p in task.writable_paths}),
+                prohibited_paths=[],
+                dependency_artifacts=evidence,
+                upstream_contracts=[],
+                capability_profile="feature-validation-v2",
+                network_profile="none-v1",
+                credential_profile="none-v1",
+                sandbox_profile="pilot-v1",
+                allowed_tools=[],
+                required_gates=[
+                    dict(gate_id=k, validator_digest=v.digest())
+                    for k, v in sorted(plan.integration.gates.items())
+                ],
+                context_budget=review.context_budget.model_dump(mode="json"),
+                max_attempts=2,
+                expected_outputs=[
+                    dict(
+                        name="candidate",
+                        schema_digest=store.publish(
+                            json.dumps(SourceBundle.model_json_schema(), sort_keys=True).encode()
+                        ),
+                    )
+                ],
+                idempotency_key="feature-final-" + binding,
+                integration_key=request.feature_id,
+            )
         check = FeatureCheck(
+            kind="feature-check-v2" if plan.kind == "reviewed-feature-v2" else "feature-check-v1",
             atom=WorkAtom.model_validate_json(json.dumps(fields)),
             source=selection.bundle,
             gates=plan.integration.gates,

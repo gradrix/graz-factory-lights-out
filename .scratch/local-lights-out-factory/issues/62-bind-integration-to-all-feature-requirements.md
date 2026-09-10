@@ -1,7 +1,7 @@
 # Bind integration provenance to all feature requirements
 
 Type: task
-Status: ready-for-agent
+Status: resolved
 
 ## Evidence
 
@@ -17,3 +17,12 @@ Give new integration records explicit whole-feature requirement provenance and r
 other inherited task-local metadata. Preserve the exact meaning and replay identities
 of old accepted records through an explicit versioned path; do not rewrite history.
 Test disjoint requirements across multiple tasks, combined acceptance and legacy replay.
+
+## Answer
+
+New reviewed-feature-v2 plans construct validation-only final contracts explicitly,
+covering every request requirement and the union of worker output paths, with no worker
+tools. feature-policy-v2 compiles to v2; explicit v1 policies/plans replay unchanged.
+The independent final checks remain required. 503 tests/25 subtests pass, including
+disjoint requirements, both version replays and policy compilation. Four historical
+GPU campaigns replay with zero new events. Maintained guide: docs/product-intake.md.

@@ -271,3 +271,7 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
 - Issue 61 resolved: immutable-input-bound draft replacement fixes the retained failure;
   three fresh GPU trials accepted, including draft repair. [Evidence](draft-repair/README.md).
   Next: issue 62 integration provenance, then issue 63 full worker retry budgets.
+
+- Issue 62 resolved: v2 integration contracts explicitly cover all feature requirements,
+  output scope and contribution evidence without granting worker tools. Version-1
+  policy compilation and replay retain original identities.

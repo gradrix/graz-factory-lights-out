@@ -33,7 +33,7 @@ from gflo.repository import Repository, SnapshotSource, SourceRef
 class FeaturePolicy(Record):
     """Trusted exact-file authorization for one request; never produced by its planner."""
 
-    kind: Literal["feature-policy-v1"] = "feature-policy-v1"
+    kind: Literal["feature-policy-v1", "feature-policy-v2"] = "feature-policy-v2"
     request_digest: Digest
     file_gates: Annotated[dict[str, ProcessGate], Field(min_length=1, max_length=16)]
     execution_paths: Annotated[tuple[str, ...], Field(min_length=1, max_length=100)]
@@ -140,6 +140,7 @@ def compile_feature(
     if not set(policy.execution_paths) <= available:
         raise ValueError("Plan leaves required execution outputs without a producer")
     plan = FeaturePlan(
+        kind="reviewed-feature-v2" if policy.kind == "feature-policy-v2" else "reviewed-feature-v1",
         request=request,
         proposal=proposal,
         review=PlanReview(

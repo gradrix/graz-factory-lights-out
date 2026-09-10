@@ -513,3 +513,38 @@ def test_gate_order_compatibility_does_not_allow_other_changes(tmp_path):
             _retained_gate_order(
                 ledger, original.model_copy(update={"required_gates": (altered_gate,)})
             )
+
+
+@pytest.mark.parametrize("version", ["v1", "v2"])
+def test_integration_provenance_is_versioned_and_replayable(tmp_path, version):
+    from gflo.progression import FeatureCheck
+
+    with WorkLedger(tmp_path / "ledger") as ledger:
+        plan = feature(ledger).model_copy(update={"kind": "reviewed-feature-" + version})
+        encoded = plan.canonical()
+        services = Services()
+        result = run(ledger, plan, services)
+        assert result.status == "accepted"
+        check = FeatureCheck.model_validate_json(ledger.run_plan(result.integration_atom))
+        assert check.kind == "feature-check-" + version
+        assert check.atom.source_revision.startswith("feature-final-" + version + ":")
+        assert len(check.atom.dependency_artifacts) == 2
+        if version == "v2":
+            assert check.atom.requirement_ids == ("cli", "value")
+            assert check.atom.writable_paths == ("main.py", "provider.py")
+            assert check.atom.allowed_tools == ()
+            assert check.atom.capability_profile == "feature-validation-v2"
+            assert check.atom.product_modules == (plan.request.feature_id,)
+            assert check.atom.graph_revision == plan.proposal.digest()
+            assert check.atom.integration_key == plan.request.feature_id
+        else:
+            assert check.atom.requirement_ids == ("cli",)
+            assert check.atom.writable_paths == ("main.py",)
+            assert check.atom.allowed_tools == ("read", "edit")
+        before = ledger.status(result.integration_atom)
+        calls = len(services.model_calls), services.broker_calls
+        restored = FeaturePlan.model_validate_json(encoded)
+        assert restored.canonical() == encoded
+        assert run(ledger, restored, services) == result
+        assert ledger.status(result.integration_atom) == before
+        assert (len(services.model_calls), services.broker_calls) == calls
