@@ -342,3 +342,117 @@ def test_task_created_draft_replacement_preserves_original_authority(prepared):
             targets,
             base_source=base,
         )
+
+
+@pytest.mark.parametrize(
+    "location",
+    [
+        "tests/test_new.py:135: AssertionError: wrong index",
+        '  File "tests/test_new.py", line 135, in test_recovery',
+        "AssertionError: ('candidate', 'trace\\ntests/test_new.py:135: AssertionError\\n')",
+    ],
+)
+def test_failure_location_exposes_current_new_draft_for_exact_repair(prepared, location):
+    from gflo.worker import Diagnostic
+
+    store, atom, base, digest = prepared
+    atom = atom.model_copy(update={"writable_paths": ("main.py", "tests")})
+    lines = [f"# line {i}\n" for i in range(1, 201)]
+    lines[134] = "assert row_index == 1\n"
+    draft = SourceBundle(files=base.files | {"tests/test_new.py": "".join(lines)})
+    diagnostic = Diagnostic(source_digest=store.publish(b"failure evidence"), text=location)
+    diagnostic_digest = store.publish(diagnostic.canonical().encode())
+    view, targets = window_view(
+        store,
+        atom,
+        digest,
+        draft,
+        selected_paths=("main.py",),
+        diagnostic_digests=(diagnostic_digest,),
+    )
+    handle = next(h for h, t in targets.targets.items() if t.path == "tests/test_new.py")
+    assert "assert row_index == 1" in view.source_files[handle]
+    assert len(view.source_files[handle].splitlines()) <= 25
+    repaired = parse_window_result(
+        edit(handle, "assert row_index == 1", "assert row_index == 0"),
+        atom,
+        draft,
+        targets,
+        base_source=base,
+    )
+    assert repaired.changes["tests/test_new.py"] == draft.files["tests/test_new.py"].replace(
+        "assert row_index == 1", "assert row_index == 0"
+    )
+
+
+def test_failure_locations_do_not_expand_scope_or_window_budget(prepared):
+    from gflo.worker import Diagnostic
+
+    store, atom, base, digest = prepared
+    diagnostic = Diagnostic(
+        source_digest=store.publish(b"untrusted failure text"),
+        text="private/test.py:1: secret\n/etc/passwd:1: secret\n"
+        "../main.py:1: secret\nmissing.py:1: missing\nmain.py:999999: invalid\n"
+        "main.py:0: invalid\nmain.py:1: AssertionError\nhelper.py:1: AssertionError",
+    )
+    ref = store.publish(diagnostic.canonical().encode())
+    view, targets = window_view(
+        store,
+        atom,
+        digest,
+        base,
+        selected_paths=(),
+        diagnostic_digests=(ref,),
+    )
+    assert {t.path for t in targets.targets.values()} == {"main.py", "helper.py"}
+    assert len(targets.targets) <= 8
+    assert sum(len(s.encode()) for s in view.source_files.values()) <= 12000
+    assert not any(t.writable for t in targets.targets.values() if t.path == "helper.py")
+    no_reads = atom.model_copy(update={"allowed_tools": ("edit",)})
+    _, targets = window_view(
+        store,
+        no_reads,
+        digest,
+        base,
+        selected_paths=(),
+        diagnostic_digests=(ref,),
+    )
+    assert not targets.targets
+
+
+def test_failure_windows_keep_explicit_reads_and_total_limits(prepared):
+    from gflo.worker import Diagnostic, InputSnapshot
+
+    store, atom, _, _ = prepared
+    paths = ("main.py", "helper.py", "other.py", "last.py")
+    source = SourceBundle(files={p: ("#" + "x" * 169 + "\n") * 100 for p in paths})
+    digest = store.publish(source.canonical().encode())
+    atom = atom.model_copy(
+        update={
+            "inputs_digest": InputSnapshot(
+                source_digest=digest, source_revision=atom.source_revision
+            ).digest()
+        }
+    )
+    diagnostic = Diagnostic(
+        source_digest=store.publish(b"trace"), text="main.py:50: failed\nhelper.py:50: failed"
+    )
+    ref = store.publish(diagnostic.canonical().encode())
+    view, targets = window_view(
+        store,
+        atom,
+        digest,
+        source,
+        selected_paths=paths,
+        reads=tuple(WindowRead(path=p, start_line=75, max_lines=1) for p in paths),
+        diagnostic_digests=(ref,),
+    )
+    assert {(t.path, t.start_line) for t in targets.targets.values() if t.start_line == 75} == {
+        (p, 75) for p in paths
+    }
+    assert len(targets.targets) <= 8
+    assert sum(len(s.encode()) for s in view.source_files.values()) <= 12000
+    assert any(
+        o["reason"] == "Source window count budget exhausted"
+        for o in view.instruction["window_omissions"]
+    )

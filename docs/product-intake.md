@@ -495,6 +495,12 @@ Workers see a bounded definition index and source excerpts (12,000 source bytes 
 lines. A read consumes an existing worker turn; at most four requested windows are
 retained alongside initial headers. Coverage and omitted windows are explicit, including
 lines too large for a window. Model tokenization still enforces the contract budget.
+During repair, up to two relative file/line locations in retained diagnostics select
+25-line windows from the current draft, including task-created files. These are untrusted
+navigation hints: missing, prohibited and out-of-range locations grant no access.
+Explicit worker reads take priority. The combined view remains limited to eight windows
+and 12,000 source bytes; omitted windows are reported. Automatic context selection does
+not add model turns or expand write authority.
 
 Immutable-input-file changes use `repair_window`: a current opaque target handle plus exact
 old/new text. Handles bind the contract, complete current source and visible range.

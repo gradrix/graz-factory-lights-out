@@ -18,11 +18,11 @@ are recorded in [evaluation](evaluation.md) and portable development evidence.
 
 ## Next priorities
 
-1. Improve repair reliability when a fix introduces different incorrect behavior.
-   Task-created draft replacement is fixed, and final integration now records all
-   feature requirements. A full-retry comparison accepted 3/3 solo runs and 2/3 split
-   runs; independent audits passed all accepted features. Keep one worker for this
-   workload while broadening evidence; prioritize reliability over token savings.
+1. Qualify an explicit bounded reasoning profile for window repairs on the same model.
+   Failure-local draft windows are implemented, but stateful ai-gamer trials still
+   produced incorrect test assumptions: one of three full features accepted, and its
+   SQLite fix is merged. Keep reliable completion primary; larger finite output
+   allowances are acceptable if they help. Preserve all failed evidence and policies.
 2. Qualify repeated features across different real repositories and uncertain
    interfaces. Measure complete feature success, retries, model cost and review
    effort. Planning JSON reliability and source-selection sufficiency remain open.

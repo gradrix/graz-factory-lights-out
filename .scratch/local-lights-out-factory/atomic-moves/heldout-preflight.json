@@ -1,0 +1,50 @@
+[
+  {
+    "name": "original",
+    "expected_pass": false,
+    "execution": {
+      "schema_version": 1,
+      "candidate_digest": "7725f5675c4301357f42fe5a3d819b630e8eeec4f5084f648ea774c359faa808",
+      "image_id": "sha256:695d05883b15326aea01e9266067ff58c41f3eaa4f647cfc9424b403dbe9548d",
+      "container_id": "1384095e6de1216a1ea1f9c076f873a0afe897d7bae66ee54843976bf90a48ed",
+      "command": [
+        "python",
+        "-B",
+        "-c",
+        "\"\"\"Real deferred foreign-key failure exercises commit-time rollback and recovery.\"\"\"\nimport sqlite3\nimport tempfile\nfrom pathlib import Path\nfrom game_server.state import recorderdb\nfrom common.models.move import Move\n\nwith tempfile.TemporaryDirectory() as directory:\n    recorderdb.RECORDER_DB = str(Path(directory) / 'records.db')\n    db = recorderdb.RecorderDb()\n    db.conn.execute('PRAGMA foreign_keys=ON')\n    player = db.createPlayer('existing')\n    game = db.createGame()\n    assert db.addMoves([Move(0,game.id,player.id,90,'existing',1)]) is True\n    before = db.conn.execute('SELECT * FROM moves').fetchall()\n    # Inserts succeed; the deferred foreign-key violation is raised only at COMMIT.\n    db.conn.execute('PRAGMA defer_foreign_keys=ON')\n    sql = []\n    db.conn.set_trace_callback(sql.append)\n    assert db.addMoves([Move(0,game.id,player.id,91,'partial',2),Move(0,999999,player.id,92,'invalid',3)]) == -1\n    assert 'COMMIT' in sql and 'ROLLBACK' in sql, sql\n    assert not db.conn.in_transaction\n    assert db.conn.execute('SELECT * FROM moves').fetchall() == before\n    assert db.createPlayer('after-failure') != -1\n    with sqlite3.connect(recorderdb.RECORDER_DB) as reader:\n        assert reader.execute('SELECT * FROM moves').fetchall() == before\n        assert db.addMoves([Move(0,game.id,player.id,93,'recovered',4)]) is True\n        assert reader.execute('SELECT move FROM moves ORDER BY id').fetchall() == [('existing',),('recovered',)]\n    db.conn.close()\nprint('deferred-commit-recovery-qualified')\n"
+      ],
+      "stdin": "",
+      "purpose": "validation",
+      "outcome": "completed",
+      "exit_code": 1,
+      "oom_killed": false,
+      "stdout_base64": "",
+      "stderr_base64": "UmVjb3JkZXJEYjogVW5hYmxlIHRvIGFkZCBNb3ZlczogRk9SRUlHTiBLRVkgY29uc3RyYWludCBmYWlsZWQKVHJhY2ViYWNrIChtb3N0IHJlY2VudCBjYWxsIGxhc3QpOgogIEZpbGUgIjxzdHJpbmc+IiwgbGluZSAyMSwgaW4gPG1vZHVsZT4KQXNzZXJ0aW9uRXJyb3I6IFsnQkVHSU4gJywgIiBJTlNFUlQgSU5UTyBtb3ZlcyhnYW1laWQscGxheWVyaWQsaWR4LG1vdmUsZGF0ZSlcbiAgICAgICAgICAgICAgICBWQUxVRVMoMSwxLDAsJ3BhcnRpYWwnLDIpICIsICIgSU5TRVJUIElOVE8gbW92ZXMoZ2FtZWlkLHBsYXllcmlkLGlkeCxtb3ZlLGRhdGUpXG4gICAgICAgICAgICAgICAgVkFMVUVTKDk5OTk5OSwxLDEsJ2ludmFsaWQnLDMpICIsICdDT01NSVQnXQo=",
+      "elapsed_seconds": 0.2582447009990574
+    }
+  },
+  {
+    "name": "reference",
+    "expected_pass": true,
+    "execution": {
+      "schema_version": 1,
+      "candidate_digest": "47bd81018d242a77ddfeb480440f6e570d8d30acd9f8a1737766a789635de250",
+      "image_id": "sha256:695d05883b15326aea01e9266067ff58c41f3eaa4f647cfc9424b403dbe9548d",
+      "container_id": "2ff79dc8e4ee95c24b6f5096a26781826864391956c0328344ea84b20e0bb7a2",
+      "command": [
+        "python",
+        "-B",
+        "-c",
+        "\"\"\"Real deferred foreign-key failure exercises commit-time rollback and recovery.\"\"\"\nimport sqlite3\nimport tempfile\nfrom pathlib import Path\nfrom game_server.state import recorderdb\nfrom common.models.move import Move\n\nwith tempfile.TemporaryDirectory() as directory:\n    recorderdb.RECORDER_DB = str(Path(directory) / 'records.db')\n    db = recorderdb.RecorderDb()\n    db.conn.execute('PRAGMA foreign_keys=ON')\n    player = db.createPlayer('existing')\n    game = db.createGame()\n    assert db.addMoves([Move(0,game.id,player.id,90,'existing',1)]) is True\n    before = db.conn.execute('SELECT * FROM moves').fetchall()\n    # Inserts succeed; the deferred foreign-key violation is raised only at COMMIT.\n    db.conn.execute('PRAGMA defer_foreign_keys=ON')\n    sql = []\n    db.conn.set_trace_callback(sql.append)\n    assert db.addMoves([Move(0,game.id,player.id,91,'partial',2),Move(0,999999,player.id,92,'invalid',3)]) == -1\n    assert 'COMMIT' in sql and 'ROLLBACK' in sql, sql\n    assert not db.conn.in_transaction\n    assert db.conn.execute('SELECT * FROM moves').fetchall() == before\n    assert db.createPlayer('after-failure') != -1\n    with sqlite3.connect(recorderdb.RECORDER_DB) as reader:\n        assert reader.execute('SELECT * FROM moves').fetchall() == before\n        assert db.addMoves([Move(0,game.id,player.id,93,'recovered',4)]) is True\n        assert reader.execute('SELECT move FROM moves ORDER BY id').fetchall() == [('existing',),('recovered',)]\n    db.conn.close()\nprint('deferred-commit-recovery-qualified')\n"
+      ],
+      "stdin": "",
+      "purpose": "validation",
+      "outcome": "completed",
+      "exit_code": 0,
+      "oom_killed": false,
+      "stdout_base64": "ZGVmZXJyZWQtY29tbWl0LXJlY292ZXJ5LXF1YWxpZmllZAo=",
+      "stderr_base64": "UmVjb3JkZXJEYjogVW5hYmxlIHRvIGFkZCBNb3ZlczogRk9SRUlHTiBLRVkgY29uc3RyYWludCBmYWlsZWQK",
+      "elapsed_seconds": 0.2643541700017522
+    }
+  }
+]

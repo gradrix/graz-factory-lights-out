@@ -280,3 +280,9 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
   all accepted features passed assigned/combined audits. No observed reliability gain
   from splitting on this fixture. [Frozen trials](full-worker-budgets/README.md).
   Next: broader real-repository feature qualification and repair regression coverage.
+
+- Issues 64/65 resolved: stateful ai-gamer SQLite repair merged as PR 2; model-authored
+  implementation and five tests pass independent gates and 22 target tests. Baseline
+  full-feature acceptance 0/3; failure-local windows 1/3 with identical policies.
+  [Evidence and limits](atomic-moves/README.md). Next: issue 66 bounded window reasoning;
+  two failures still held wrong behavior assumptions despite current source context.

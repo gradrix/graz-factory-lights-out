@@ -1,0 +1,13 @@
+{
+  "repository": "https://github.com/gradrix/ai-gamer",
+  "pull_request": "https://github.com/gradrix/ai-gamer/pull/2",
+  "base": "9a0a4384b9b727c02f0f2c168c7abc43a4e076bf",
+  "merge": "d278d7c7f59da72ea48d4b106ba4d41e67949c0a",
+  "accepted_trial": "atomic-moves-v4/trial-2",
+  "changed_files": {
+    "game_server/state/recorderdb.py": "5f07dda3cac7cf9ae70cda0e91bf2e88f2f33561167a1ef790c64af2b1ed76a7",
+    "tests/test_atomic_moves.py": "4b10e1600fa120d0269f78a572f45461e374ab5fd84ca83fed4fe7bb4be09eef"
+  },
+  "candidate_bytes_unchanged": true,
+  "target_tests_passed": 22
+}

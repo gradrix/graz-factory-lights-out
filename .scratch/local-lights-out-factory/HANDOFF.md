@@ -1,6 +1,28 @@
 # GFLO handoff — repository access foundation
 
-## Current checkpoint — full worker retry budgets, 2026-09-10
+## Current checkpoint — stateful SQLite repair and failure windows, 2026-09-10
+
+Issues 64/65 resolved. ai-gamer PR 2 merged at d278d7c7f59da72ea48d4b106ba4d41e67949c0a.
+The local model fixed addMoves batch rollback and wrote five tests. Published bytes
+match accepted v4/trial-2 unchanged; 87 original files preserved. All 22 target tests,
+independent insertion/lock checks, test mutants, held-out commit failure and replay pass.
+[Full portable evidence](atomic-moves/README.md); raw runtime under `.gflo/evidence/`.
+
+Baseline atomic-moves-v2 accepted 0/3; v4 accepted 1/3 with exactly the same requests,
+policies, model and budgets. All six implementation workers accepted; five test workers
+failed incorrect index or SQLite foreign-key assumptions. New runtime windows expose
+up to two failure locations in current drafts, respecting read scope, eight windows,
+12,000 source bytes and exact edit identity. This fixes a confirmed visibility gap,
+not general semantic repair. The accepted test worker passed its first candidate.
+
+508 factory tests/25 subtests, lint/typing and four historical replays pass. v1 preflight
+had a pytest XML validator mistake; v3 caught a gate-text identity mismatch before
+inference. Both are retained and spent no model responses. No manual candidate repairs.
+Next: issue 66 explicitly bounded low-effort reasoning for window repair, with larger
+finite output allowance if warranted. Same pinned weights/deployment; reliability over
+token cost. Existing push/merge authorization persists; no human blocker identified.
+
+## Previous checkpoint — full worker retry budgets, 2026-09-10
 
 Issues 62/63 resolved. New v2 integration records cover all feature requirements;
 v1 policy/plan replay retains historical identity. Six frozen same-model trials with

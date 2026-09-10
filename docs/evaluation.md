@@ -731,3 +731,26 @@ held-out subclass audits. Accepted replay added no events. No manual candidate f
 Actual tokens were 14,348 for solo and 50,844 for split; reliability is the primary
 comparison. This small sample demonstrates no specialist advantage on this workload,
 not a general ranking. [Full results and retained failure](../.scratch/local-lights-out-factory/full-worker-budgets/README.md).
+
+## Stateful SQLite repair and failure-local windows (2026-09-10)
+
+The factory repaired ai-gamer's move-batch transaction leak and generated five real
+SQLite tests. The first accepted candidate was merged in
+[ai-gamer PR 2](https://github.com/gradrix/ai-gamer/pull/2) without manual code correction.
+Independent checks cover atomic insertion, rollback while locked, prior committed rows,
+subsequent writes, indices/dates, and a held-out deferred failure at commit. All 22 new
+and existing winner tests pass, 87 original files are preserved, and replay adds no work.
+
+The first three full builds failed their generated tests, despite accepted implementations.
+Their repair turns lacked source windows from the task-created tests. The window worker
+now selects up to two failure locations from current readable drafts under its existing
+byte/turn/permission limits. Five new regressions and the full factory suite pass:
+508 tests and 25 subtests; four historical replays remain unchanged.
+
+Three fresh builds with identical requests and policies accepted one. The remaining
+workers continued incorrect SQLite or index assumptions even with source windows and
+failure diagnostics. The accepted test worker passed its first candidate, so this small
+comparison does not establish that automatic repair context caused better completion.
+Model, deployment and retry budgets were unchanged. Supervised task/validator preparation,
+failed preflights, every model response and both campaigns are retained in the
+[portable qualification](../.scratch/local-lights-out-factory/atomic-moves/README.md).

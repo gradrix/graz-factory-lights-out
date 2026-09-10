@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import re
 import secrets
 from typing import Annotated, Any, Literal
 
@@ -19,6 +20,7 @@ from gflo.worker import (
     CandidateResult,
     ContextSource,
     ContractConflict,
+    Diagnostic,
     InputSnapshot,
     WorkerError,
     WorkerView,
@@ -104,6 +106,31 @@ The controller preserves unseen text and independently validates the complete ca
 """
 
 
+def _failure_windows(
+    diagnostics: tuple[Diagnostic, ...], visible: dict[str, str]
+) -> tuple[WindowRead, ...]:
+    """Treat traceback locations as bounded navigation hints, never authority."""
+    locations = re.compile(
+        r"(?:^|[\s\"'])([A-Za-z0-9_./-]+):([1-9][0-9]{0,8})(?=[:\s])"
+        r"|File [\"']([A-Za-z0-9_./-]+)[\"'], line ([1-9][0-9]{0,8})(?=[,\s])",
+        re.MULTILINE,
+    )
+    selected: dict[tuple[str, int], WindowRead] = {}
+    for diagnostic in reversed(diagnostics):
+        # Captured subprocess output may be quoted with literal newline escapes.
+        text = diagnostic.text.replace("\\n", "\n")
+        for match in locations.finditer(text):
+            path = match[1] or match[3]
+            line = int(match[2] or match[4])
+            if path not in visible or line > max(1, len(visible[path].splitlines())):
+                continue
+            start = max(1, line - 12)
+            selected[(path, start)] = WindowRead(path=path, start_line=start, max_lines=25)
+            if len(selected) == 2:
+                return tuple(selected.values())
+    return tuple(selected.values())
+
+
 def window_view(
     store: ArtifactStore,
     atom: WorkAtom,
@@ -135,7 +162,10 @@ def window_view(
     if not set(initial) <= visible.keys():
         raise WorkerError("Initial window paths are missing or prohibited")
     specs = [WindowRead(path=p, start_line=1, max_lines=30) for p in initial[:4]]
-    for read in reads:
+    failure_reads = (
+        _failure_windows(view.diagnostics, visible) if "read" in atom.allowed_tools else ()
+    )
+    for read in (*failure_reads, *reads):
         if "read" not in atom.allowed_tools or read.path not in visible:
             raise WorkerError("Window read is missing, prohibited or unauthorized")
         specs = [s for s in specs if (s.path, s.start_line) != (read.path, read.start_line)]
@@ -143,8 +173,11 @@ def window_view(
     targets: dict[str, WindowTarget] = {}
     contents = {}
     remaining = 12000
-    omissions = []
-    for spec in reversed(specs):  # Latest requested context has priority over headers.
+    omissions = [
+        dict(path=s.path, start_line=s.start_line, reason="Source window count budget exhausted")
+        for s in specs[:-8]
+    ]
+    for spec in reversed(specs[-8:]):  # Latest requested context has priority over headers.
         if remaining < 1:
             omissions.append(
                 dict(

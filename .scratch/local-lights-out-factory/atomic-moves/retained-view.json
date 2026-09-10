@@ -1,0 +1,15 @@
+{
+  "original_model_evidence": "b653cc8203b9153ed6ccc786731e67b40b83a56c16e5209b8cac693fb0d4a8bd",
+  "before": [],
+  "after": [
+    {
+      "path": "tests/test_atomic_moves.py",
+      "start_line": 115,
+      "end_line": 127,
+      "writable": true
+    }
+  ],
+  "source_bytes": 2439,
+  "ledger_unchanged": true,
+  "model_calls": 0
+}
