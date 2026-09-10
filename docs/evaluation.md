@@ -413,3 +413,39 @@ reference behavior, not automatic specification discovery or broad mutation cove
 [fixture](../.scratch/local-lights-out-factory/generated-faults-fixture.json) retain
 source, proposals, checks and evidence identities. Validation: 445 tests and 25 subtests
 passed with Docker enabled; ruff and mypy passed.
+
+## Prospective color-parser feature, 2026-09-10
+
+A new leds-service feature adds strict six-digit ASCII hex parsing with optional `#`
+and surrounding whitespace, preserving white fallback and LED channel order. Gates
+were prepared before model calls using a trusted reference and generated mutations.
+The first build halted: implementation eventually passed, but the test worker
+exhausted two attempts with invalid repair responses. Reference qualification also
+had a flaw: one large test stopped at its first assertion and hid later crashes.
+
+A separately recorded preparation split reference inputs into individual tests.
+Three generated faults qualified (one fewer), plus the original baseline. The second
+build needed an automatic planning retry and an implementation retry, then produced
+11 tests in one response with no reviewer source edits. Independent checks passed
+fixed edge cases and 600 seeded colors in six forms; the suite rejected every pinned
+fault. All 85 other original files were unchanged. Replay added no model calls; all
+17 tests in the target's isolated tests directory passed after export.
+
+The final implementation worker used five model responses across two attempts,
+9506 prompt / 2334 output tokens, 39.28 seconds. The test worker used one response,
+1557 prompt / 701 output tokens, 11.63 seconds. Planning and the failed first build
+are recorded separately in [campaign results](../.scratch/local-lights-out-factory/leds-color-campaign-results.json);
+these worker totals do not include them. Raw response usage is retained where invalid
+protocol output prevented validated usage accounting.
+
+Codex selected requirements, supplied reference behavior and corrected reference-test
+preparation between builds. The local model wrote all shipped source. This is a
+supervised new-feature trial, not intervention-free success. The model, instructions,
+protocol and per-build budgets were unchanged. [Final results](../.scratch/local-lights-out-factory/leds-color-results.json),
+[initial fixture](../.scratch/local-lights-out-factory/leds-color-fixture.json), and
+[corrected fixture](../.scratch/local-lights-out-factory/leds-color-v2-fixture.json)
+are portable. A new gate regression covers mixed assertion/error outcomes; all 15
+adequacy tests passed, as did ruff/mypy. The preceding full Docker-enabled suite
+passed 445 tests and 25 subtests. No factory runtime code changed in this trial.
+
+The selected change is merged in [leds-service PR 11](https://github.com/gradrix/leds-service/pull/11).

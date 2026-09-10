@@ -1,6 +1,34 @@
 # GFLO handoff — repository access foundation
 
-## Current checkpoint — generated fault qualification, 2026-09-10
+## Current checkpoint — prospective color feature, 2026-09-10
+
+Issue 49: new leds-service Color.fromHex feature, strict six ASCII hex digits with
+optional # and surrounding whitespace; preserve white fallback and channel order.
+Initial build halted (test repair protocol errors); reference test combined all inputs
+and hid later mutation crashes. Corrected preparation splits reference inputs into
+individual cases, excludes an additional fault, and freezes three generated faults
+plus original baseline before a fresh build. Both runs retained separately.
+
+Second build accepted after automatic planner and implementation retries. Tests passed
+in one response (11 cases), with no reviewer source edits. Independent oracle covers
+fixed edges and 600 seeded colors in six forms. 85 other original files unchanged;
+replay adds no model calls; 17 target tests pass after export. Same model, task
+instructions and budgets. Codex still supplied scope/reference and corrected gates.
+
+[Campaign](leds-color-campaign-results.json), [final result](leds-color-results.json),
+[initial fixture](leds-color-fixture.json), [corrected fixture](leds-color-v2-fixture.json).
+Reconstruct via prepare_repository_trial.py against baseline
+9ab0926a9c693d6972aadd3fc009593ed1c3c88a. Raw evidence .gflo/evidence/leds-color-v1
+and leds-color-v2; original baseline checkout .gflo/targets/leds-color-baseline.
+See issue 49 for delivery. Added regression for assertion plus runtime error across
+separate tests: all 15 adequacy tests pass, ruff/mypy pass. No factory runtime changes.
+
+Next: improve planning/repair protocol reliability from retained failures and broaden
+reference-input coverage before larger navigation/execution workloads. Do not count
+this as unattended success or reset exhausted historical work. Same-model constraint
+and push/merge authorization persist.
+
+## Previous checkpoint — generated fault qualification, 2026-09-10
 
 Issue 48 adds gflo.mutations.propose_faults / qualify_faults and the portable
 scripts/qualify_python_faults.py helper. Source-bounded AST mutations (conditions,

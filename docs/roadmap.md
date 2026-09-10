@@ -18,7 +18,9 @@ are recorded in [evaluation](evaluation.md) and portable development evidence.
 
 ## Next priorities
 
-1. Qualify the reusable pytest adequacy gate prospectively across more features.
+1. Broaden prospective pytest-adequacy qualifications. The color-parser trial
+   completed after reference-test preparation was corrected; planning and repair
+   protocol reliability remain measured limitations.
    Bounded Python faults can now be generated and filtered against trusted reference
    tests. Correct reference behavior and sufficient mutation coverage still need
    trusted preparation. Preserve findings and measure first-pass

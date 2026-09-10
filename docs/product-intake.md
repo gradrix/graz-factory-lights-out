@@ -405,3 +405,9 @@ already be available. The fixture owns the reference source/tests, module and fu
 selection. This runs sandbox checks and makes no model calls. A surviving proposal
 is unqualified, not proven equivalent. Fault selection is only as reliable as the
 trusted reference tests; this does not automate specifying correct product behavior.
+
+Reference inputs should be separate pytest cases (for example, parametrized tests).
+A loop inside one test stops at its first failed assertion and may hide crashes on
+later inputs. Qualification only observes executed cases: it cannot prove that an
+untested input will fail cleanly. The prospective color-parser trial exposed this
+limit; splitting reference cases excluded an additional crashing mutation.

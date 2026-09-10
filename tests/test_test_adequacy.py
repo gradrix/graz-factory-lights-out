@@ -74,3 +74,23 @@ def test_collection_skip_cannot_hide_beside_passing_test(tmp_path):
         env={**os.environ, 'PYTHONPATH': str(tmp_path)})
     assert result.returncode != 0
     assert 'errors/skips' in result.stderr
+
+
+def test_assertion_on_one_input_does_not_hide_crash_on_another(tmp_path):
+    tests = (
+        'from subject import value\n'
+        'def test_first(): assert value(1) == 7\n'
+        'def test_second(): assert value(0) == 7\n'
+    )
+    (tmp_path / 'subject.py').write_text('def value(x): return 7\n')
+    (tmp_path / 'test_subject.py').write_text(tests)
+    variant = FaultyVariant(name='mixed-failure', modules={
+        'subject': 'def value(x):\n    return 0 if x else 1 / 0\n',
+    })
+    case = pytest_adequacy_gate(('test_subject.py',), (variant,)).cases[0]
+    result = subprocess.run([sys.executable, *case.command[1:]], input=case.stdin,
+        text=True, capture_output=True, cwd=tmp_path, timeout=30,
+        env={**os.environ, 'PYTHONPATH': str(tmp_path)})
+    assert result.returncode != 0
+    assert 'errors/skips' in result.stderr
+    assert 'ZeroDivisionError' in result.stderr

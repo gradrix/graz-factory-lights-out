@@ -1,0 +1,326 @@
+{
+  "schema_version": 1,
+  "model_changed": false,
+  "assistance": "Prospective feature; Codex selected requirements, supplied trusted reference implementation/oracle and prepared gates before model calls. Fault variants generated and qualified automatically.",
+  "baseline_commit": "9ab0926a9c693d6972aadd3fc009593ed1c3c88a",
+  "build_result": {
+    "status": "accepted",
+    "request_digest": "43960fcc7b15cdeb053a10f72ae962b347e5f69b5e1e1a2a761e4488b9352621",
+    "policy_digest": "4c28ad35ef94d60b34adbdbb724785b534dcba8578353b0573072bd2ff225690",
+    "artifact_store": "/home/gradrix/repos/graz-factory-lights-out/.gflo/evidence/leds-color-v2/ledger.db.artifacts",
+    "feature_result": {
+      "schema_version": 1,
+      "kind": "feature-result-v1",
+      "plan_digest": "4a8e0af2a3c3c93a98e6e150e8173d517b77bfb4c6334f3353d9b7a039bfbbf3",
+      "source": {
+        "schema_version": 1,
+        "kind": "repository-snapshot-v1",
+        "artifact_digest": "71125417d5851f12f925dc5dcef08b2cdc2f2d0f8528e4eeed9da10c4e1d1f51"
+      },
+      "status": "accepted",
+      "tasks": [
+        "fb7a41986de350dfedd2994f5b19670d68373314168d09026c634bbddb58e87f",
+        "e3fee94afec709d73344297641309f2d6c245d0f9a877b4cbbaddee11223b03f"
+      ],
+      "integration_atom": "feature-final-a57668c182951eb9bf3c776e042dd8a6d4a602dd2d8027c973d18954efdb3cc7",
+      "integration_selection": {
+        "schema_version": 1,
+        "source": {
+          "schema_version": 1,
+          "kind": "repository-snapshot-v1",
+          "artifact_digest": "71125417d5851f12f925dc5dcef08b2cdc2f2d0f8528e4eeed9da10c4e1d1f51"
+        },
+        "purpose": "execution",
+        "bundle": {
+          "schema_version": 1,
+          "files": {
+            "gpio_service/common/color.py": "import random\n\nclass Color:\n    \n    def __init__(self, r, g, b):\n        self.r = r\n        self.g = g\n        self.b = b\n\n    def toRGB(self):\n        return (self.b, self.r, self.g)\n\n    @staticmethod\n    def fromHex(hexStr):\n        if not isinstance(hexStr, str):\n            return Color(255, 255, 255)\n        s = hexStr.strip()\n        if s.startswith('#'):\n            s = s[1:]\n        if len(s) != 6:\n            return Color(255, 255, 255)\n        for ch in s:\n            if not ('0' <= ch <= '9' or 'a' <= ch <= 'f' or 'A' <= ch <= 'F'):\n                return Color(255, 255, 255)\n        number = int(s, 16)\n        r = (number >> 16) & 255\n        g = (number >> 8) & 255\n        b = number & 255\n        return Color(r, g, b)\n\n    @staticmethod\n    def generateRandom():\n        return Color(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))\n",
+            "tests/test_color.py": "import pytest\nfrom gpio_service.common.color import Color\n\n\ndef test_bare_hex_non_default():\n    c = Color.fromHex(\"ff0000\")\n    assert c.r == 255\n    assert c.g == 0\n    assert c.b == 0\n\n\ndef test_hash_prefixed_non_default():\n    c = Color.fromHex(\"#00ff00\")\n    assert c.r == 0\n    assert c.g == 255\n    assert c.b == 0\n\n\ndef test_mixed_case():\n    c = Color.fromHex(\"#AbCdEf\")\n    assert c.r == 0xAB\n    assert c.g == 0xCD\n    assert c.b == 0xEF\n\n\ndef test_whitespace():\n    c = Color.fromHex(\"  #123456  \")\n    assert c.r == 0x12\n    assert c.g == 0x34\n    assert c.b == 0x56\n\n\ndef test_malformed_length():\n    c = Color.fromHex(\"#12345\")\n    assert c.r == 255\n    assert c.g == 255\n    assert c.b == 255\n\n\ndef test_trailing_data():\n    c = Color.fromHex(\"#12345678\")\n    assert c.r == 255\n    assert c.g == 255\n    assert c.b == 255\n\n\ndef test_invalid_characters():\n    c = Color.fromHex(\"#12345G\")\n    assert c.r == 255\n    assert c.g == 255\n    assert c.b == 255\n\n\ndef test_non_string():\n    c = Color.fromHex(123456)\n    assert c.r == 255\n    assert c.g == 255\n    assert c.b == 255\n\n\ndef test_fresh_fallback_objects():\n    c1 = Color.fromHex(\"#12345\")\n    c2 = Color.fromHex(\"#12345\")\n    assert c1 is not c2\n    assert c1.r == 255\n    assert c1.g == 255\n    assert c1.b == 255\n\n\ndef test_existing_channel_order():\n    c = Color(10, 20, 30)\n    assert c.r == 10\n    assert c.g == 20\n    assert c.b == 30\n    assert c.toRGB() == (30, 10, 20)\n\n\ndef test_generate_random():\n    c = Color.generateRandom()\n    assert isinstance(c, Color)\n    assert 0 <= c.r <= 255\n    assert 0 <= c.g <= 255\n    assert 0 <= c.b <= 255\n"
+          }
+        },
+        "file_identities": {
+          "gpio_service/common/color.py": {
+            "schema_version": 1,
+            "content_digest": "e3407d5ba2249d78eb6fd014549901d3c345ac178268d023135f8ddaebf8a6e0",
+            "size_bytes": 882,
+            "executable": false
+          },
+          "tests/test_color.py": {
+            "schema_version": 1,
+            "content_digest": "bb6d3de22ee11ef2415a843edf407209bd04d761c2040c6af7be84c2d5678a84",
+            "size_bytes": 1624,
+            "executable": false
+          }
+        },
+        "omitted": {},
+        "repository_file_count": 87,
+        "whole_repository": false
+      },
+      "halted_atom": null
+    }
+  },
+  "planning": {
+    "status": "needs-review",
+    "proposal_digest": "535ac073ffa0788d5f784c4dad09e82f73394b27c16e080653b517823eca6a11",
+    "execution_authorized": false,
+    "task_order": [
+      "T1",
+      "T2"
+    ],
+    "questions": [],
+    "observations": [
+      {
+        "attempt": 1,
+        "turn": 1,
+        "error": "Task references missing source without a provider dependency",
+        "model_evidence_digest": "297b531b0ab926ae0375d696af182980c45f34454fb73c2d5e8c89fbac2764df",
+        "observation_digest": "4c687d9dda8c75bf329fa2246ad2329ae704867cd249666a38d47e0fc9cf7bbe"
+      },
+      {
+        "attempt": 2,
+        "turn": 1,
+        "model_evidence_digest": "cf9222206fcacc1a64b02ee598828f7dd631c1fa3a494cb0da060a33b03909fd",
+        "observation_digest": "47b1960a44f5f94b78c1e16b9f7f4ea2065ca9660af8dac73f974fa7c3b9026d"
+      }
+    ]
+  },
+  "preflight": [
+    {
+      "name": "oracle",
+      "execution": {
+        "schema_version": 1,
+        "candidate_digest": "be9b160e18f3da8247293d8d21156c09959b2876acb268798c076a8be04c29af",
+        "image_id": "sha256:695d05883b15326aea01e9266067ff58c41f3eaa4f647cfc9424b403dbe9548d",
+        "container_id": "66d1b353f34115f304fd0d023a35f7d7a1884d740d42f5fd39672780334cc882",
+        "command": [
+          "python",
+          "-c",
+          "import random,re\nfrom gpio_service.common.color import Color\nrng=random.Random(4901)\ndef check(value):\n normalized=value.strip() if isinstance(value,str) else ''\n match=re.fullmatch(r'#?([0-9a-fA-F]{6})',normalized)\n if match:\n  number=int(match[1],16);expected=(number>>16,(number>>8)&255,number&255)\n else:expected=(255,255,255)\n c=Color.fromHex(value)\n assert isinstance(c,Color)\n assert (c.r,c.g,c.b)==expected,(value,(c.r,c.g,c.b),expected)\n assert c.toRGB()==(expected[2],expected[0],expected[1])\nfor v in ['',None,1,True,[],{},b'123456','12345','1234567','123456junk','##123456','#12345','#1234567','+12345','-12345','12 456','0x1234','\uff11\uff12\uff13\uff14\uff15\uff16','ffffff','000000','aBcD09',' #12abef \\t','\\n123456\\r']:\n check(v)\nfor _ in range(600):\n text=format(rng.randrange(1<<24),'06x')\n for value in [text,text.upper(),'#'+text,' \\t#'+text+'\\n',text+'0',text[:3]+'z'+text[4:]]:check(value)\na=Color.fromHex(None);b=Color.fromHex(None);assert a is not b\nprint('color-reference-ok')\n"
+        ],
+        "stdin": "",
+        "purpose": "validation",
+        "outcome": "completed",
+        "exit_code": 0,
+        "oom_killed": false,
+        "stdout_base64": "Y29sb3ItcmVmZXJlbmNlLW9rCg==",
+        "stderr_base64": "",
+        "elapsed_seconds": 0.2608386120009527
+      }
+    },
+    {
+      "name": "tests",
+      "execution": {
+        "schema_version": 1,
+        "candidate_digest": "be9b160e18f3da8247293d8d21156c09959b2876acb268798c076a8be04c29af",
+        "image_id": "sha256:695d05883b15326aea01e9266067ff58c41f3eaa4f647cfc9424b403dbe9548d",
+        "container_id": "71f1ff069b960bf19310a9e6adc1746bd12afafe62dbf0571c5f754e5dce288a",
+        "command": [
+          "python",
+          "-c",
+          "\nimport json, os, subprocess, sys\nspec = json.loads(sys.stdin.read())\nenv = dict(os.environ, PYTEST_DISABLE_PLUGIN_AUTOLOAD='1')\ndef run(name, modules):\n    result = subprocess.run([sys.executable, '-c', spec['runner']],\n        input=json.dumps(dict(modules=modules, tests=spec['tests'])),\n        text=True, capture_output=True, env=env, timeout=spec['seconds'])\n    if result.returncode:\n        raise AssertionError(name + ': validation process failed: ' + result.stderr[-2000:])\n    try:\n        report = json.loads(result.stdout)\n    except ValueError:\n        raise AssertionError(name + ': malformed validation report') from None\n    if report['errors'] or report['skipped']:\n        raise AssertionError(name + ': errors/skips are not behavioral evidence: '\n                             + report['detail'])\n    return report\nbase = run('candidate', {})\nassert base['exit'] == 0 and len(base['ids']) >= spec['minimum_tests'], base['detail']\nfor variant in spec['variants']:\n    report = run(variant['name'], variant['modules'])\n    assert report['ids'] == base['ids'], variant['name'] + ': collected tests changed'\n    assert report['exit'] == 1 and report['assertions'] > 0, (\n        variant['name'] + ': tests did not reject faulty behavior: ' + report['detail'])\nprint('test-adequacy-ok')\n"
+        ],
+        "stdin": "{\"minimum_tests\": 6, \"runner\": \"\\nimport contextlib, importlib, io, json, sys, types\\npayload = json.loads(sys.stdin.read())\\nfor name, source in payload['modules'].items():\\n    parent, _, child = name.rpartition('.')\\n    package = importlib.import_module(parent) if parent else None\\n    module = types.ModuleType(name)\\n    module.__file__ = name.replace('.', '/') + '.py'\\n    module.__package__ = parent\\n    sys.modules[name] = module\\n    if package is not None:\\n        setattr(package, child, module)\\n    exec(compile(source, module.__file__, 'exec'), module.__dict__)\\nimport pytest\\nclass Counts:\\n    def __init__(self):\\n        self.ids = []; self.assertions = 0; self.errors = 0; self.skipped = 0\\n    def pytest_collection_finish(self, session):\\n        self.ids = sorted(item.nodeid for item in session.items)\\n    def pytest_runtest_makereport(self, item, call):\\n        if call.excinfo is not None:\\n            if call.when == 'call' and call.excinfo.errisinstance(AssertionError):\\n                self.assertions += 1\\n            else:\\n                self.errors += 1\\n    def pytest_collectreport(self, report):\\n        if report.skipped:\\n            self.skipped += 1\\n        if report.failed:\\n            self.errors += 1\\n    def pytest_runtest_logreport(self, report):\\n        if report.skipped or hasattr(report, 'wasxfail'):\\n            self.skipped += 1\\ncounts = Counts()\\noutput = io.StringIO()\\nwith contextlib.redirect_stdout(output), contextlib.redirect_stderr(output):\\n    result = pytest.main(['-q', '--tb=short', '-o', 'addopts=', *payload['tests']],\\n                         plugins=[counts])\\nprint(json.dumps(dict(exit=int(result), ids=counts.ids, assertions=counts.assertions,\\n                      errors=counts.errors, skipped=counts.skipped,\\n                      detail=output.getvalue()[-6000:])))\\n\", \"seconds\": 30, \"tests\": [\"tests/test_color.py\"], \"variants\": [{\"modules\": {\"gpio_service.common.color\": \"import random\\n\\nclass Color:\\n\\n    def __init__(self, r, g, b):\\n        self.r, self.g, self.b = (r, g, b)\\n\\n    def toRGB(self):\\n        return (self.b, self.r, self.g)\\n\\n    @staticmethod\\n    def fromHex(hexStr):\\n        if not isinstance(hexStr, str):\\n            return Color(255, 255, 255)\\n        text = hexStr\\n        if text.startswith('#'):\\n            text = text[1:]\\n        if len(text) != 6:\\n            return Color(255, 255, 255)\\n        if any((c not in '0123456789abcdefABCDEF' for c in text)):\\n            return Color(255, 255, 255)\\n        return Color(int(text[:2], 16), int(text[2:4], 16), int(text[4:], 16))\\n\\n    @staticmethod\\n    def generateRandom():\\n        return Color(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))\\n\"}, \"name\": \"remove-call-8-7-8cac82b9d0c2\", \"schema_version\": 1}, {\"modules\": {\"gpio_service.common.color\": \"import random\\n\\nclass Color:\\n\\n    def __init__(self, r, g, b):\\n        self.r, self.g, self.b = (r, g, b)\\n\\n    def toRGB(self):\\n        return (self.b, self.r, self.g)\\n\\n    @staticmethod\\n    def fromHex(hexStr):\\n        if not isinstance(hexStr, str):\\n            return Color(255, 255, 255)\\n        text = hexStr.strip()\\n        if not text.startswith('#'):\\n            text = text[1:]\\n        if len(text) != 6:\\n            return Color(255, 255, 255)\\n        if any((c not in '0123456789abcdefABCDEF' for c in text)):\\n            return Color(255, 255, 255)\\n        return Color(int(text[:2], 16), int(text[2:4], 16), int(text[4:], 16))\\n\\n    @staticmethod\\n    def generateRandom():\\n        return Color(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))\\n\"}, \"name\": \"negate-condition-9-2-d96fba856e46\", \"schema_version\": 1}, {\"modules\": {\"gpio_service.common.color\": \"import random\\n\\nclass Color:\\n\\n    def __init__(self, r, g, b):\\n        self.r, self.g, self.b = (r, g, b)\\n\\n    def toRGB(self):\\n        return (self.b, self.r, self.g)\\n\\n    @staticmethod\\n    def fromHex(hexStr):\\n        if not isinstance(hexStr, str):\\n            return Color(255, 255, 255)\\n        text = hexStr.strip()\\n        if text.startswith('#'):\\n            text = text[1:]\\n        if len(text) != 6:\\n            return Color(255, 255, 255)\\n        if any((c in '0123456789abcdefABCDEF' for c in text)):\\n            return Color(255, 255, 255)\\n        return Color(int(text[:2], 16), int(text[2:4], 16), int(text[4:], 16))\\n\\n    @staticmethod\\n    def generateRandom():\\n        return Color(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))\\n\"}, \"name\": \"invert-comparison-11-9-5dd8f6b68421\", \"schema_version\": 1}, {\"modules\": {\"gpio_service.common.color\": \"import random\\n\\nclass Color:\\n    \\n    def __init__(self, r, g, b):\\n        self.r = r\\n        self.g = g\\n        self.b = b\\n\\n    def toRGB(self):\\n        return (self.b, self.r, self.g)\\n\\n    @staticmethod\\n    def fromHex(hexStr):\\n        try:\\n            rgbTuple = tuple(int(hexStr[i:i+2], 16) for i in (0, 2, 4))\\n            return Color(rgbTuple[0], rgbTuple[1], rgbTuple[2])\\n        except Exception as e:\\n            return Color(255, 255, 255)\\n\\n    @staticmethod\\n    def generateRandom():\\n        return Color(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))\\n\"}, \"name\": \"original-baseline\", \"schema_version\": 1}]}",
+        "purpose": "validation",
+        "outcome": "completed",
+        "exit_code": 0,
+        "oom_killed": false,
+        "stdout_base64": "dGVzdC1hZGVxdWFjeS1vawo=",
+        "stderr_base64": "",
+        "elapsed_seconds": 0.9286354150026455
+      }
+    }
+  ],
+  "workers": [
+    {
+      "atom_id": "prepared-43960fcc7b15cdeb-535ac073ffa0788d-fe704d5af9edf2ad/33d19f3123119588",
+      "cost": {
+        "schema_version": 1,
+        "atom_id": "prepared-43960fcc7b15cdeb-535ac073ffa0788d-fe704d5af9edf2ad/33d19f3123119588",
+        "status": "accepted",
+        "totals": {
+          "attempts": 2,
+          "model_observations": 5,
+          "validated_prompt_tokens": 9506,
+          "validated_completion_tokens": 2334,
+          "observed_model_seconds": 39.28271845400377,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "retries": {
+          "attempts": 1,
+          "model_observations": 2,
+          "validated_prompt_tokens": 4059,
+          "validated_completion_tokens": 1039,
+          "observed_model_seconds": 17.454106765002507,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "attempts": [
+          {
+            "attempt_id": "51de8245b61347a4982ee1f9cf92c656",
+            "ordinal": 1,
+            "failures": [
+              {
+                "reason": "Validation did not pass.\nGate: file-0\nOutcome: fail\nLast executed case: 1\nCommand: [\"python\", \"-c\", \"import random,re\\nfrom gpio_service.common.color import Color\\nrng=random.Random(4901)\\ndef check(value):\\n normalized=value.strip() if isinstance(value,str) else ''\\n match=re.fullmatch(r'#?([0-9a-fA-F]{6})',normalized)\\n if match:\\n  number=int(match[1],16);expected=(number>>16,(number>>8)&255,number&255)\\n else:expected=(255,255,255)\\n c=Color.fromHex(value)\\n assert isinstance(c,Color)\\n assert (c.r,c.g,c.b)==expected,(value,(c.r,c.g,c.b),expected)\\n assert c.toRGB()==(expected[2],expe\n[truncated; full bytes in retained evidence]\nInput (stdin):\n\nProcess outcome: completed\nExit code: 1\nObserved stdout:\n\nObserved stderr:\nTraceback (most recent call last):\n  File \"<string>\", line 15, in <module>\n  File \"<string>\", line 12, in check\nAssertionError: ('+12345', (1, 35, 69), (255, 255, 255))\n",
+                "state": "retry-ready"
+              }
+            ],
+            "observations": [
+              {
+                "event_id": 3,
+                "evidence_digest": "397db3f672925fc1a8d06feea52390f4b61dc707f74c83d3bbe6840c5c1f7b87",
+                "model_seconds": 5.996932021000248,
+                "error": null,
+                "prompt_tokens": 1454,
+                "completion_tokens": 355
+              },
+              {
+                "event_id": 7,
+                "evidence_digest": "e4191f0bcfd521c22c82ba2389db0763761bedf55ddeaf3d05bde4ce53b322af",
+                "model_seconds": 7.591574500002025,
+                "error": null,
+                "prompt_tokens": 1999,
+                "completion_tokens": 450
+              },
+              {
+                "event_id": 11,
+                "evidence_digest": "9f2e196cfc94eed1cb2baadfc52a0acd4618bbab354ed705e5fb5db44264ac59",
+                "model_seconds": 8.24010516799899,
+                "error": null,
+                "prompt_tokens": 1994,
+                "completion_tokens": 490
+              }
+            ]
+          },
+          {
+            "attempt_id": "ed8853252348470eab2a627cc329c8cd",
+            "ordinal": 2,
+            "failures": [],
+            "observations": [
+              {
+                "event_id": 20,
+                "evidence_digest": "b1dfcb07dd39d5fb56ecc530c0359460fecc874cc304e736eacb1dbb424c15b0",
+                "model_seconds": 8.738979655001458,
+                "error": null,
+                "prompt_tokens": 2032,
+                "completion_tokens": 520
+              },
+              {
+                "event_id": 24,
+                "evidence_digest": "77e29b78767f3c66f6e76c09dda37e2e1492b4e1419464d7a8d479124136c1c1",
+                "model_seconds": 8.715127110001049,
+                "error": null,
+                "prompt_tokens": 2027,
+                "completion_tokens": 519
+              }
+            ]
+          }
+        ],
+        "measurement_scope": "Recorded model observations only; validated token sums are lower bounds when usage is missing. Model duration includes client work and waiting, not broker time. Unrecorded work lost during process death, energy and replanning are not measured."
+      }
+    },
+    {
+      "atom_id": "prepared-43960fcc7b15cdeb-535ac073ffa0788d-fe704d5af9edf2ad-259ec694a89b375a/60796f3a2dedd0fe",
+      "cost": {
+        "schema_version": 1,
+        "atom_id": "prepared-43960fcc7b15cdeb-535ac073ffa0788d-fe704d5af9edf2ad-259ec694a89b375a/60796f3a2dedd0fe",
+        "status": "accepted",
+        "totals": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 1557,
+          "validated_completion_tokens": 701,
+          "observed_model_seconds": 11.634260718001315,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "retries": {
+          "attempts": 0,
+          "model_observations": 0,
+          "validated_prompt_tokens": 0,
+          "validated_completion_tokens": 0,
+          "observed_model_seconds": 0,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        },
+        "attempts": [
+          {
+            "attempt_id": "79ae27f852ba424ba91ac48c2fe4540b",
+            "ordinal": 1,
+            "failures": [],
+            "observations": [
+              {
+                "event_id": 33,
+                "evidence_digest": "44eef9b9849bfc2bc2570223ee16e1bf1115afe4550402e0d56faa5da5fcd407",
+                "model_seconds": 11.634260718001315,
+                "error": null,
+                "prompt_tokens": 1557,
+                "completion_tokens": 701
+              }
+            ]
+          }
+        ],
+        "measurement_scope": "Recorded model observations only; validated token sums are lower bounds when usage is missing. Model duration includes client work and waiting, not broker time. Unrecorded work lost during process death, energy and replanning are not measured."
+      }
+    }
+  ],
+  "portable_reconstruction": true,
+  "unchanged_original_files": 85,
+  "shipped_files": {
+    "gpio_service/common/color.py": "import random\n\nclass Color:\n    \n    def __init__(self, r, g, b):\n        self.r = r\n        self.g = g\n        self.b = b\n\n    def toRGB(self):\n        return (self.b, self.r, self.g)\n\n    @staticmethod\n    def fromHex(hexStr):\n        if not isinstance(hexStr, str):\n            return Color(255, 255, 255)\n        s = hexStr.strip()\n        if s.startswith('#'):\n            s = s[1:]\n        if len(s) != 6:\n            return Color(255, 255, 255)\n        for ch in s:\n            if not ('0' <= ch <= '9' or 'a' <= ch <= 'f' or 'A' <= ch <= 'F'):\n                return Color(255, 255, 255)\n        number = int(s, 16)\n        r = (number >> 16) & 255\n        g = (number >> 8) & 255\n        b = number & 255\n        return Color(r, g, b)\n\n    @staticmethod\n    def generateRandom():\n        return Color(random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))\n",
+    "tests/test_color.py": "import pytest\nfrom gpio_service.common.color import Color\n\n\ndef test_bare_hex_non_default():\n    c = Color.fromHex(\"ff0000\")\n    assert c.r == 255\n    assert c.g == 0\n    assert c.b == 0\n\n\ndef test_hash_prefixed_non_default():\n    c = Color.fromHex(\"#00ff00\")\n    assert c.r == 0\n    assert c.g == 255\n    assert c.b == 0\n\n\ndef test_mixed_case():\n    c = Color.fromHex(\"#AbCdEf\")\n    assert c.r == 0xAB\n    assert c.g == 0xCD\n    assert c.b == 0xEF\n\n\ndef test_whitespace():\n    c = Color.fromHex(\"  #123456  \")\n    assert c.r == 0x12\n    assert c.g == 0x34\n    assert c.b == 0x56\n\n\ndef test_malformed_length():\n    c = Color.fromHex(\"#12345\")\n    assert c.r == 255\n    assert c.g == 255\n    assert c.b == 255\n\n\ndef test_trailing_data():\n    c = Color.fromHex(\"#12345678\")\n    assert c.r == 255\n    assert c.g == 255\n    assert c.b == 255\n\n\ndef test_invalid_characters():\n    c = Color.fromHex(\"#12345G\")\n    assert c.r == 255\n    assert c.g == 255\n    assert c.b == 255\n\n\ndef test_non_string():\n    c = Color.fromHex(123456)\n    assert c.r == 255\n    assert c.g == 255\n    assert c.b == 255\n\n\ndef test_fresh_fallback_objects():\n    c1 = Color.fromHex(\"#12345\")\n    c2 = Color.fromHex(\"#12345\")\n    assert c1 is not c2\n    assert c1.r == 255\n    assert c1.g == 255\n    assert c1.b == 255\n\n\ndef test_existing_channel_order():\n    c = Color(10, 20, 30)\n    assert c.r == 10\n    assert c.g == 20\n    assert c.b == 30\n    assert c.toRGB() == (30, 10, 20)\n\n\ndef test_generate_random():\n    c = Color.generateRandom()\n    assert isinstance(c, Color)\n    assert 0 <= c.r <= 255\n    assert 0 <= c.g <= 255\n    assert 0 <= c.b <= 255\n"
+  },
+  "replay_without_calls": true,
+  "independent_checks": [
+    {
+      "gate": "oracle",
+      "stdout": "color-reference-ok\n"
+    },
+    {
+      "gate": "tests",
+      "stdout": "test-adequacy-ok\n"
+    }
+  ],
+  "pytest": "...........                                                              [100%]\n11 passed in 0.02s\n",
+  "planning_model_usage": [
+    {
+      "usage": {
+        "prompt_tokens": 2795,
+        "total_tokens": 4548,
+        "completion_tokens": 1753,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "elapsed_seconds": 29.139141922998533
+    },
+    {
+      "usage": {
+        "prompt_tokens": 2931,
+        "total_tokens": 4651,
+        "completion_tokens": 1720,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "elapsed_seconds": 28.522603028002777
+    }
+  ],
+  "delivery": {
+    "pr": "https://github.com/gradrix/leds-service/pull/11",
+    "commit": "d064b9a64a26cbb4bd55691d2a798346e9c4f430",
+    "merge_commit": "d02622a865333d3044859aba22ffdc4303b188b1",
+    "status": "merged",
+    "exported_tests": "17 passed"
+  }
+}

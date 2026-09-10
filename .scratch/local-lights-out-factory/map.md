@@ -204,3 +204,8 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
   and sandboxed reference qualification replace handwritten variants for supported
   operators. Six parser faults detect the prior weak suite; error-producing variants
   and numeric unchanged/crashing controls are excluded. Trusted oracle remains needed.
+
+- [Issue 49](issues/49-qualify-prospective-color-feature.md): prospective color feature
+  succeeded on a separately recorded build after reference cases were split to expose
+  mutation crashes. Local planning/implementation retried; all 11 local tests passed
+  first response. Original failure retained. Reference preparation still needs review.
