@@ -1,0 +1,22 @@
+{
+  "source_files_sha256": {
+    "large.py": "dc6328504b1a0efe732ce021c91577762103f5f009b7ffc55ce65c5254bb0c83",
+    "consumer.py": "4a87c82f9a932412c44348bb20a1b638f47e9f27467e624c0c20b04bc1dbd579"
+  },
+  "accepted_feature_source": {
+    "schema_version": 1,
+    "kind": "repository-snapshot-v1",
+    "artifact_digest": "b9f3bac5b73b3c9bc6658f88f6953c9e7d18be9fc1de37f08997d5d12c6e16ae"
+  },
+  "profile": {
+    "schema_version": 1,
+    "profile_id": "vllm-python-worker-windows-v1",
+    "base_url": "http://127.0.0.1:30000/v1",
+    "model": "gflo-local",
+    "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+    "context_limit": 16384,
+    "timeout_seconds": 120.0
+  },
+  "deployment": "{\n  \"mode\": \"managed\",\n  \"base_url\": \"http://127.0.0.1:30000/v1\",\n  \"model\": \"gflo-local\",\n  \"request_timeout\": 120,\n  \"startup_timeout\": 300,\n  \"managed\": {\n    \"backend\": \"vllm\",\n    \"image\": \"vllm/vllm-openai@sha256:ac259a0111c6cf462a72e449962b84f7a624b5cbec24bd7d9ec3b67d40ffd1bf\",\n    \"model_path\": \"Inferact/Qwen3.8-27B-NVFP4\",\n    \"revision\": \"6128240ebaf4eaa7bad2b3d1c72c37d677c5f462\",\n    \"name\": \"gflo-vllm-graphs\",\n    \"gpu\": \"0\",\n    \"context_length\": 16384,\n    \"memory_fraction\": 0.85,\n    \"shm_size\": \"4g\",\n    \"memory_limit\": \"36g\",\n    \"cpu_limit\": 3,\n    \"pids_limit\": 1024,\n    \"model_cache_volume\": \"local-vllm-huggingface-cache\",\n    \"offline\": true,\n    \"hf_token_env\": \"\",\n    \"server_options\": {\n      \"kv-cache-dtype\": \"bfloat16\",\n      \"reasoning-parser\": \"qwen3\",\n      \"tool-call-parser\": \"qwen3_coder\"\n    },\n    \"enforce_eager\": false\n  }\n}\n",
+  "image": "sha256:695d05883b15326aea01e9266067ff58c41f3eaa4f647cfc9424b403dbe9548d"
+}

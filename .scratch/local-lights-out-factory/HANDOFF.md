@@ -1,6 +1,30 @@
 # GFLO handoff — repository access foundation
 
-## Current checkpoint — window planning and reliability limits, 2026-09-10
+## Current checkpoint — test decomposition compared, 2026-09-10
+
+Issue 59 resolved. Three frozen pairs compared one test worker with two behavior-scoped
+workers using equal six-response ceilings, identical accepted source/model/requirements
+and combined fault checks. No planner, runtime or prompt changes were made. Both
+initially accepted 2/3. Splitting cost 30,807 tokens versus 20,128 (53% more), with more
+exactly duplicate test bodies. One solo run failed new-file draft repair; one split
+worker exhausted its output allowance. No measured reliability advantage from splitting.
+
+Post-review default/subclass fault checks found a default-test gap in split-1's values
+contribution, covered incidentally by its types sibling. Recorded finding blocks reuse
+without rewriting historical acceptance. Remaining accepted replays and four older
+historical replays added no events. See [portable campaign and audit](test-decomposition/README.md).
+Preflight validated frozen checks before model calls; a prior bytes-property harness
+error stopped before inference and is retained separately. No generated tests were
+manually corrected. Factory runtime code is still 99dcfd9; this checkpoint adds evidence.
+
+Decision: keep one bounded test worker by default for this workload; split selectively
+with disjoint files and per-task coverage checks. Next eligible issue is 60 (planner
+read/coverage recovery). New issues 61 and 62 capture newly-created-file draft repair
+and integration requirement provenance. Neither needs a model change or human policy
+answer. Avoid task-specific prompt patches, shared mutable writes and attempt resets.
+Same-model constraint and push authorization persist. Execution remains capped at 256 KiB.
+
+## Previous checkpoint — window planning and reliability limits, 2026-09-10
 
 Issue 58 implemented and initially qualified. windows-v1 now plans through bounded
 read-only source windows and uses source-free question grounding. Completed reads have

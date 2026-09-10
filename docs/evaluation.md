@@ -668,3 +668,22 @@ repair was used. CPU/Docker verification passed 492 tests and 25 subtests. The n
 retryable output-limit classification is covered by CPU tests; the last GPU trial
 halted before reaching it. Test-task decomposition and navigation recovery are the next
 experiments, not demonstrated solutions. Execution remains capped at 256 KiB.
+
+
+## One test worker versus two behavior-scoped workers (2026-09-10)
+
+Three frozen pairs used the same accepted large-file implementation, model, requirements
+and aggregate six-response ceiling. Reviewed groups isolated test generation from
+planning. Both approaches initially passed 2/3; split workers used 30,807 total tokens
+versus 20,128 for one worker, about 53% more. One solo trial failed to repair a syntax
+error using the window protocol; one split trial exceeded its output allowance.
+
+Post-run review found a split values contribution missing its assigned default test,
+although the types worker incidentally covered it in the combined suite. A held-out
+mutant confirmed the gap; a retained finding now blocks reuse. Other audited accepted
+contributions passed their applicable checks. Current reusable outcomes are 2/3 solo
+and 1/3 split. No candidates were manually repaired or failed trials replaced.
+[Portable plans, responses, generated tests, costs and findings](../.scratch/local-lights-out-factory/test-decomposition/README.md)
+retain all results. Separate files worked through the existing sequential scheduler;
+no shared-file editing or runtime/prompt change was needed. The small supervised sample
+supports selective decomposition, not a general claim that either approach is superior.

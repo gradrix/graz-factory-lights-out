@@ -510,3 +510,12 @@ For larger test suites, compare separate behavior-scoped tasks under a fixed agg
 budget. Separate pytest files avoid overlapping write ownership. Shared-file proposals
 would require sequential revision-bound integration; simultaneous mutable writes are
 not an execution mode supported by the factory.
+
+
+The first equal-budget test-writing comparison used reviewed groups on the same large
+source fixture. One worker and two scoped workers each passed two of three initial
+trials; splitting used 53% more tokens and later review challenged one split contribution
+for missing its assigned default-value check. Keep one bounded worker as the default
+for this workload. Splitting remains useful to investigate for larger independent
+responsibilities, but each group's gates must catch its own omissions: combined success
+can conceal coverage supplied incidentally by another worker. See [evaluation](evaluation.md).

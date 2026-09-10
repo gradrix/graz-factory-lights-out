@@ -255,3 +255,9 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
   reliability gaps. [All trials](window-feature-qualification/README.md).
 - Next: issue 59 compares behavior-scoped test tasks (user suggestion); issue 60 targets
   planner read/coverage recovery. Neither permits overlapping mutable file ownership.
+
+- Issue 59 resolved: three equal-budget pairs found no advantage from splitting test
+  workers, 53% higher token use, and an assigned-coverage finding now blocking one
+  split contribution. [Campaign and audit](test-decomposition/README.md).
+- Keep one bounded test worker by default for this workload. Next: issue 60 planner
+  recovery; issues 61/62 track new-file draft repair and integration provenance.

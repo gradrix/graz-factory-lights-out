@@ -18,10 +18,10 @@ are recorded in [evaluation](evaluation.md) and portable development evidence.
 
 ## Next priorities
 
-1. Improve repeatability of bounded planning and test generation. Window planning now
-   supports a complete large-file feature, but repeated trials still halt on redundant
-   reads, omitted requirements and excessive test output. Compare behavior-scoped test
-   tasks under a fixed aggregate budget, with disjoint file ownership.
+1. Improve bounded planner recovery and draft repair. Repeated reads, incomplete plans
+   and confusion about repairing newly created files remain observed failures. The first
+   equal-budget comparison found no advantage from splitting test workers; keep one
+   worker by default for that workload and enforce coverage per task when splitting.
 2. Qualify repeated features across different real repositories and uncertain
    interfaces. Measure complete feature success, retries, model cost and review
    effort. Planning JSON reliability and source-selection sufficiency remain open.

@@ -1,0 +1,47 @@
+{
+  "solo": {
+    "trials": 3,
+    "original_acceptances": 2,
+    "reusable_acceptances": 2,
+    "total_tokens": 20128,
+    "model_seconds": 62.82638816599501,
+    "responses": 7,
+    "reserved_tokens_per_trial": 73728,
+    "test_functions_in_originally_accepted_suites": [
+      10,
+      18
+    ],
+    "exact_duplicate_bodies_in_originally_accepted_suites": [
+      0,
+      0
+    ]
+  },
+  "split": {
+    "trials": 3,
+    "original_acceptances": 2,
+    "reusable_acceptances": 1,
+    "total_tokens": 30807,
+    "model_seconds": 116.49693466399913,
+    "responses": 10,
+    "reserved_tokens_per_trial": 73728,
+    "test_functions_in_originally_accepted_suites": [
+      19,
+      15
+    ],
+    "exact_duplicate_bodies_in_originally_accepted_suites": [
+      3,
+      4
+    ]
+  },
+  "split_token_increase_fraction": 0.5305544515103338,
+  "findings": [
+    {
+      "schema_version": 1,
+      "atom_id": "prepared-3ebfdca52151708f-c13b3a1bb52ba34e-19e431ab7ed93d18-a2385345197e5650/23e4333ad49c955c",
+      "contract_digest": "efbf03e04be45ac001b1367f8395dd635c1c7cd530543f34937c9fc55e91c02e",
+      "candidate_digest": "6cbfb6e7668e4ff18a98da9eb9e8fb0fb94db81ab946d05b5a8203e66227ca08",
+      "evidence_digest": "d996e109075ec687ac652d1d206b18a2218943579cbf9e660fcdceafaf297635",
+      "reason": "Assigned test coverage omitted required behavior: surviving held-out default mutant. Original receipts remain historical evidence."
+    }
+  ]
+}
