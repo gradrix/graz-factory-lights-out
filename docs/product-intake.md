@@ -272,3 +272,70 @@ response, and actual response output allowance. A read on the last turn leaves n
 opportunity to propose edits. These instructions are included in exact tokenization;
 they do not extend retry, context or output limits. The first live follow-up produced
 complete candidates but still failed semantic checks.
+
+## Development checks and bounded repair
+
+Set `FeaturePolicy.model_profile.profile_id` to `vllm-python-worker-repair-v1`
+(or the same field in a reviewed run) to opt into development feedback. This uses the
+same pinned model/deployment with thinking disabled; it does not select new weights,
+raise token limits or change the default plain worker.
+
+When another model turn remains, the controller checks each proposed draft using the
+first case of the first pinned gate in the existing sandbox. The worker cannot supply
+commands. Failed checks return bounded diagnostics within the same attempt. Passing a
+development check still requires independent final gates. On the last turn, the
+proposal proceeds directly to final validation. Reads, proposals and repair responses
+all consume the existing finite model-turn allowance.
+
+In this protocol, full-file candidate responses create new files. Existing files
+require exact edits:
+
+```json
+{"schema_version":1,"kind":"repair","edits":[{"path":"tests/test_rules.py","expected_digest":"<current SHA256 from sources>","old":"unique existing text","new":"replacement text"}]}
+```
+
+Up to 16 non-overlapping replacements may refer to the same current file hash,
+with at most 8,192 bytes of old/new text across the response.
+Missing/ambiguous text, stale hashes, overlapping edits, removed files and changes
+outside the granted scope reject. New files use the existing candidate response.
+Draft content is shown as source data with its own digest while the original source
+and contract identities remain fixed. Drafts and check executions are retained as
+`development` observations. An interrupted check consumes the interrupted attempt;
+resume can recover the retained draft under the remaining retry budget. Artifact
+audits include drafts that were never submitted for final validation.
+
+## Verified examples and exhausted work
+
+`gflo.fixtures.verify_examples` creates a bounded portable example record only after
+an explicitly supplied trusted oracle agrees with every expected result. The caller
+owns the producer and oracle; an arbitrary JSON file claiming verification is not
+authority. Supply verified data through normal read-only source/context and execution
+inputs, separate from writable test files and independent acceptance checks.
+
+The TicTacToe adapter demonstrates this without importing target code:
+
+```sh
+.venv/bin/python scripts/prepare_game_rule_examples.py --output .gflo/examples/winners.json
+```
+
+It enumerates a full draw and verifies empty/draw/winning examples. This is domain
+assistance, not proof that the model can discover correct test data unaided.
+
+Exhausted policy builds retain `review-handoff.json` and its artifact digest. Export
+a packet from any quarantined prepared run with:
+
+```sh
+gflo --db .gflo/work.db review-handoff ATOM_ID > review-handoff.json
+```
+
+The packet contains the run contract, latest **unaccepted** draft, diagnostics,
+cumulative costs and accepted-predecessor references. No model change, external
+message, retry reset or automatic acceptance occurs. A reviewer can authorize a new
+bounded replacement contract while preserving the original failures. Raw predecessor
+artifacts still require the original store or a separate transfer.
+
+The [verified-example fixture](../.scratch/local-lights-out-factory/ai-gamer-verified-examples-fixture.json)
+includes an explicitly reviewed proposal. Add `--reviewed-plan` to the existing
+`prepare_repository_trial.py --test-followup` command to reconstruct its exact
+`feature-plan.json` in a fresh ledger, then use `gflo run-feature`. This bypasses model
+planning intentionally; the trial's planner failures remain in its evidence.

@@ -826,8 +826,119 @@ def test_remaining_turn_budget_counts_down_and_resets_after_failure(tmp_path, pl
     with WorkLedger(tmp_path / "ledger.db") as ledger:
         bad = CandidateResult(kind="candidate", changes={"main.py": "print(0)"})
         good = CandidateResult(kind="candidate", changes={"main.py": "print(42)"})
-        controller, model, _ = setup(ledger, plan, [
-            ReadFileRequest(kind="read_file", path="helper.py"), bad, good,
-        ])
+        controller, model, _ = setup(
+            ledger,
+            plan,
+            [
+                ReadFileRequest(kind="read_file", path="helper.py"),
+                bad,
+                good,
+            ],
+        )
         assert controller.run(plan.atom.atom_id)["status"] == "accepted"
         assert [call["remaining_model_turns"] for call in model.calls] == [3, 2, 3]
+
+
+def test_development_failure_repairs_within_attempt_and_still_runs_final_gate(tmp_path, plan):
+    plan = plan.model_copy(
+        update={
+            "model_profile": plan.model_profile.model_copy(
+                update={"profile_id": "vllm-python-worker-repair-v1"}
+            )
+        }
+    )
+    with WorkLedger(tmp_path / "ledger.db") as ledger:
+        bad = CandidateResult(kind="candidate", changes={"main.py": "print(1)"})
+        good = CandidateResult(kind="candidate", changes={"main.py": "print(42)"})
+        controller, model, broker = setup(ledger, plan, [bad, good])
+        result = controller.run(plan.atom.atom_id)
+        assert result["status"] == "accepted" and len(result["attempts"]) == 1
+        assert broker.calls == 4  # two development checks, smoke, independent gate
+        assert model.calls[1]["diagnostic_digests"]
+        draft = SourceBundle.model_validate_json(
+            ledger.artifacts.read(model.calls[1]["draft_digest"])
+        )
+        assert draft.files["main.py"] == "print(1)"
+        assert len(result["attempts"][0]["gate_receipts"]) == 1
+        assert ledger.audit_artifacts().missing == ()
+
+
+def test_development_pass_cannot_replace_independent_acceptance(tmp_path, plan):
+    from gflo.escalation import review_handoff
+
+    plan = plan.model_copy(
+        update={
+            "model_profile": plan.model_profile.model_copy(
+                update={"profile_id": "vllm-python-worker-repair-v1"}
+            )
+        }
+    )
+    with WorkLedger(tmp_path / "ledger.db") as ledger:
+        controller, model, broker = setup(ledger, plan)
+        original = broker.execute
+
+        def execute(*args, **kwargs):
+            result = original(*args, **kwargs)
+            if result.purpose == "validation":
+                return result.model_copy(
+                    update={"stdout_base64": base64.b64encode(b"wrong").decode()}
+                )
+            return result
+
+        broker.execute = execute
+        result = controller.run(plan.atom.atom_id)
+        assert result["status"] == "quarantined"
+        assert all(a["gate_receipts"][0]["outcome"] == "fail" for a in result["attempts"])
+        packet = review_handoff(ledger, plan.atom.atom_id)
+        assert packet["status"] == "needs-review"
+        assert packet["latest_unaccepted_draft"]["files"]["main.py"] == "print(42)"
+        assert packet["diagnostics"]
+        assert ledger.status(plan.atom.atom_id)["status"] == "quarantined"
+        assert model.calls[1]["draft_digest"] == packet["latest_unaccepted_draft_digest"]
+
+
+def test_repair_profile_retains_draft_after_interrupted_check(tmp_path, plan):
+    plan = plan.model_copy(
+        update={
+            "model_profile": plan.model_profile.model_copy(
+                update={"profile_id": "vllm-python-worker-repair-v1"}
+            )
+        }
+    )
+    with WorkLedger(tmp_path / "ledger.db") as ledger:
+        controller, model, broker = setup(ledger, plan)
+        broker.interrupt_at = 1
+        with pytest.raises(KeyboardInterrupt):
+            controller.run(plan.atom.atom_id)
+        assert ledger.status(plan.atom.atom_id)["status"] == "running"
+        broker.interrupt_at = None
+        assert controller.run(plan.atom.atom_id)["status"] == "accepted"
+        retained = SourceBundle.model_validate_json(
+            ledger.artifacts.read(model.calls[1]["draft_digest"])
+        )
+        assert retained.files["main.py"] == "print(42)"
+        assert len(ledger.status(plan.atom.atom_id)["attempts"]) == 2
+
+
+def test_audit_detects_missing_unsubmitted_development_draft(tmp_path, plan):
+    plan = plan.model_copy(
+        update={
+            "model_profile": plan.model_profile.model_copy(
+                update={"profile_id": "vllm-python-worker-repair-v1"}
+            )
+        }
+    )
+    with WorkLedger(tmp_path / "ledger.db") as ledger:
+        controller, model, broker = setup(ledger, plan)
+        broker.interrupt_at = 1
+        with pytest.raises(KeyboardInterrupt):
+            controller.run(plan.atom.atom_id)
+        events = ledger.status(plan.atom.atom_id)["attempts"][0]["events"]
+        event = next(
+            e
+            for e in events
+            if e["kind"] == "observation" and e["details"]["kind"] == "development"
+        )
+        draft = json.loads(ledger.artifacts.read(event["details"]["digest"]))["draft_digest"]
+        (ledger.artifacts.root / draft).unlink()
+        assert draft in ledger.audit_artifacts().missing

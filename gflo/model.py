@@ -27,6 +27,7 @@ from gflo.worker import (
     compose_view,
     messages,
     parse_result,
+    project_draft,
     strict_json,
 )
 
@@ -38,6 +39,7 @@ class ModelError(RuntimeError):
 class ModelProfile(Record):
     profile_id: Literal[
         "vllm-python-worker-v1",
+        "vllm-python-worker-repair-v1",
         "vllm-python-worker-reasoning-v1",
         "vllm-python-worker-reasoning-low-v1",
         "vllm-python-worker-escalating-v1",
@@ -185,6 +187,7 @@ class LocalModel:
         selected_paths: tuple[str, ...] | None = None,
         diagnostic_digests: tuple[str, ...] = (),
         remaining_model_turns: int | None = None,
+        draft_digest: str | None = None,
     ) -> ModelTurn:
         """Produce a validated proposal only; no file write, tool dispatch or acceptance."""
         atom = WorkAtom.model_validate(atom)
@@ -221,6 +224,31 @@ class LocalModel:
                 selected_paths=selected_paths,
                 diagnostic_digests=diagnostic_digests,
             )
+            repair = self.profile.profile_id == "vllm-python-worker-repair-v1"
+            source = SourceBundle.model_validate_json(self.artifacts.read(source_digest))
+            current = source
+            if draft_digest is not None:
+                if not repair:
+                    raise WorkerError("Draft inputs require the repair protocol")
+                current = SourceBundle.model_validate_json(self.artifacts.read(draft_digest))
+                view = project_draft(view, atom, source, current)
+            if repair:
+                view.instruction.update(
+                    repair_protocol=(
+                        "For NEW files only, use candidate with concise file text. "
+                        "For EXISTING files you MUST use small exact edits, "
+                        "never rewrite the file. "
+                        "Keep all old/new edit text together under 8192 bytes. Return "
+                        '{"schema_version":1,"kind":"repair","edits":[{"path":"file.py",'
+                        '"expected_digest":"SHA256 from sources","old":"unique exact text",'
+                        '"new":"replacement"}]}. Multiple edits in a file must not overlap; '
+                        "all hashes bind the current file. "
+                        "The controller checks drafts in its sandbox "
+                        "and returns feedback while turns remain. "
+                        "Repair only failing cases; do not expand the test suite during repair. "
+                        "A development check is not acceptance."
+                    )
+                )
             models = self._request("/v1/models", None, deadline, exchanges)
             if not isinstance(models.get("data"), list) or not any(
                 m.get("id") == self.profile.model
@@ -339,7 +367,8 @@ class LocalModel:
             result = parse_result(
                 message["content"],
                 atom,
-                SourceBundle.model_validate_json(self.artifacts.read(source_digest)),
+                current,
+                allow_repair=repair,
             )
             turn = ModelTurn(
                 manifest_digest=manifest.digest(),

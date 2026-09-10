@@ -1,0 +1,388 @@
+{
+  "schema_version": 1,
+  "repository": "https://github.com/gradrix/ai-gamer",
+  "revision": "7ccbb585a6097e85416fb109ff5d03a92ce09b88",
+  "request": {
+    "schema_version": 1,
+    "kind": "repository-feature-v1",
+    "feature_id": "ai-gamer-winner-windows-v1",
+    "objective": "Correct TicTacToe winner and draw-potential detection so gameplay and training outcomes reflect contiguous winning lines on all supported board shapes.",
+    "requirements": {
+      "winner": "checkForWinner returns X or O only for scoreLineLength contiguous equal non-empty cells horizontally, vertically, or diagonally in either direction. Check every valid start, including anti-diagonals near the right edge and rectangular boards. Return False if no winner. If both figures have winning lines, return either winning figure. Do not mutate the board; repeated calls on the same board are stable.",
+      "potential": "After every checkForWinner call set stillCouldHaveWinner to a bool: True iff at least one length-scoreLineLength window in any of the four directions consists solely of E and one figure (X or O), including completely empty or already-winning windows. False otherwise. Empty gaps never make an actual win. Preserve existing public class/method names, dimensions, move/turn handling, and constructor behavior.",
+      "tests": "Add tests/test_winner_windows.py using pytest and current common.models imports. Include at least four substantive regression tests: gapped non-winning runs, missed right-edge anti-diagonal, rectangular/other directional wins, and no-possible-winner/draw detection. Tests pass the fixed implementation and at least two fail assertions on the original implementation. Standard library plus pytest only; do not edit existing unrelated files."
+    },
+    "source": {
+      "schema_version": 1,
+      "kind": "repository-snapshot-v1",
+      "artifact_digest": "25ecfdbf689f56a90dd6cf5c2124b146b8e7d4eb0e28a5ca39dd40498e249dfb"
+    },
+    "allowed_paths": [
+      "game_server/games/ticktaktoe.py",
+      "tests/test_winner_windows.py"
+    ],
+    "environments": {
+      "python": {
+        "schema_version": 1,
+        "image": "sha256:695d05883b15326aea01e9266067ff58c41f3eaa4f647cfc9424b403dbe9548d",
+        "description": "Pinned offline CPython 3.11, standard library; no installation needed."
+      }
+    }
+  },
+  "policy": {
+    "context_budget": {
+      "output_tokens": 6144,
+      "schema_version": 1,
+      "total_tokens": 12288
+    },
+    "deployment": "{\n  \"mode\": \"managed\",\n  \"base_url\": \"http://127.0.0.1:30000/v1\",\n  \"model\": \"gflo-local\",\n  \"request_timeout\": 120,\n  \"startup_timeout\": 300,\n  \"managed\": {\n    \"backend\": \"vllm\",\n    \"image\": \"vllm/vllm-openai@sha256:ac259a0111c6cf462a72e449962b84f7a624b5cbec24bd7d9ec3b67d40ffd1bf\",\n    \"model_path\": \"Inferact/Qwen3.8-27B-NVFP4\",\n    \"revision\": \"6128240ebaf4eaa7bad2b3d1c72c37d677c5f462\",\n    \"name\": \"gflo-vllm-graphs\",\n    \"gpu\": \"0\",\n    \"context_length\": 16384,\n    \"memory_fraction\": 0.85,\n    \"shm_size\": \"4g\",\n    \"memory_limit\": \"36g\",\n    \"cpu_limit\": 3,\n    \"pids_limit\": 1024,\n    \"model_cache_volume\": \"local-vllm-huggingface-cache\",\n    \"offline\": true,\n    \"hf_token_env\": \"\",\n    \"server_options\": {\n      \"kv-cache-dtype\": \"bfloat16\",\n      \"reasoning-parser\": \"qwen3\",\n      \"tool-call-parser\": \"qwen3_coder\"\n    },\n    \"enforce_eager\": false\n  }\n}\n",
+    "environment_id": "python",
+    "execution_paths": [
+      "common/models/__init__.py",
+      "common/models/enums.py",
+      "common/models/game.py",
+      "common/models/gamebase.py",
+      "common/models/move.py",
+      "common/models/player.py",
+      "game_server/games/ticktaktoe.py",
+      "tests/test_winner_windows.py"
+    ],
+    "file_gates": {
+      "game_server/games/ticktaktoe.py": {
+        "cases": [
+          {
+            "command": [
+              "python",
+              "-c",
+              "import copy,itertools,random\nfrom game_server.games.ticktaktoe import TikTakToe,E,X,O\n\ndef reference(board,k):\n h=len(board);w=len(board[0]);winners=set();possible=False\n for y in range(h):\n  for x in range(w):\n   for dx,dy in ((1,0),(0,1),(1,1),(1,-1)):\n    if not (0<=x+(k-1)*dx<w and 0<=y+(k-1)*dy<h):continue\n    line=[board[y+i*dy][x+i*dx] for i in range(k)]\n    for figure in (X,O):\n     if all(v==figure for v in line):winners.add(figure)\n     if all(v in (E,figure) for v in line):possible=True\n return winners,possible\n\ndef check(g,board):\n g.grid=copy.deepcopy(board);before=copy.deepcopy(g.grid)\n winners,possible=reference(board,g.scoreLineLength)\n actual=g.checkForWinner()\n if winners:assert type(actual) is int and actual in winners,(board,actual,winners)\n else:assert actual is False,(board,actual)\n assert g.stillCouldHaveWinner is possible,(board,g.stillCouldHaveWinner,possible)\n assert g.grid==before,'winner query mutated the board'\n # Repeat calls must not retain scan state.\n assert g.checkForWinner()==actual\nfor points,expected in [([(0,0),(2,0),(4,0)],False),([(2,4),(3,3),(4,2)],X)]:\n g=TikTakToe(5,5,3)\n for x,y in points:g.grid[y][x]=X\n actual=g.checkForWinner();assert actual==expected,(points,actual,expected)\nrng=random.Random(40129)\ng=TikTakToe(3,3,3)\nfor cells in itertools.product((E,X,O),repeat=9):check(g,[list(cells[i:i+3]) for i in (0,3,6)])\nfor w,h,k in [(5,5,3),(7,4,3),(4,7,3),(6,5,4),(2,3,1)]:\n g=TikTakToe(w,h,k)\n for _ in range(150):check(g,[[rng.choice((E,X,O)) for x in range(w)] for y in range(h)])\n # Every position and all four directions for both figures.\n for y in range(h):\n  for x in range(w):\n   for dx,dy in ((1,0),(0,1),(1,1),(1,-1)):\n    if 0<=x+(k-1)*dx<w and 0<=y+(k-1)*dy<h:\n     for figure in (X,O):\n      board=[[E]*w for _ in range(h)]\n      for i in range(k):board[y+i*dy][x+i*dx]=figure\n      check(g,board)\nprint('winner-reference-ok')\n"
+            ],
+            "expected_stdout": "winner-reference-ok\n",
+            "schema_version": 1,
+            "seconds": 30.0,
+            "stdin": ""
+          }
+        ],
+        "schema_version": 1
+      },
+      "tests/test_winner_windows.py": {
+        "cases": [
+          {
+            "command": [
+              "python",
+              "-c",
+              "import contextlib,io\noutput=io.StringIO()\nwith contextlib.redirect_stdout(output), contextlib.redirect_stderr(output):\n import importlib.util,pytest\n from pathlib import Path\n class Results:\n  def __init__(self):self.count=0\n  def pytest_collection_finish(self,session):self.count=len(session.items)\n plugin=Results()\n result=pytest.main(['-q','tests/test_winner_windows.py'],plugins=[plugin])\n assert result==0 and plugin.count>=4\n print('regression-tests-ok')\nprint('regression-tests-ok')\n"
+            ],
+            "expected_stdout": "regression-tests-ok\n",
+            "schema_version": 1,
+            "seconds": 30.0,
+            "stdin": ""
+          },
+          {
+            "command": [
+              "python",
+              "-c",
+              "import types,sys,contextlib,io,pytest\nimport game_server.games.ticktaktoe as live\nnamespace={}\nexec('from array import array\\nimport random\\nimport time\\n\\nfrom common.models.gamebase import GameBase\\nfrom common.models.enums import PlayerStatus, MoveStatus\\nfrom common.models.player import Player\\nfrom common.models.game import MoveResult\\n\\nE = 0 #Empty\\nX = 1 #X\\nO = 2 #O\\n\\nclass TikTakToe(GameBase):\\n    def __init__(self, xSize, ySize, scoreLineLength):\\n        self.xSize = xSize\\n        self.ySize = ySize\\n        self.scoreLineLength = scoreLineLength\\n        if (min(xSize, ySize) < scoreLineLength):\\n            raise Exception(\\'Error: scoreLineLength of \\'+str(scoreLineLength)+ \\' is bigger than width (\\'+str(xSize)+ \\') or \\'+\\n            \\'height (\\'+str(ySize)+\\') and therefore it is not possible to reach winning condition\\')\\n        self.previousWinner = None\\n        self.player1: Player = None\\n        self.player2: Player = None\\n        self.hasEnded = True\\n        self.__reset()\\n\\n    #GameBase implementation\\n    requiredNumOfPlayers: int = 2\\n\\n    def startNewGame(self, players: list[Player]):\\n        # Ensure we have exactly 2 different players\\n        if len(players) < 2:\\n            return False\\n\\n        # Validate that we have 2 different players\\n        if players[0].id == players[1].id:\\n            # This shouldn\\'t happen - same player assigned twice\\n            import logging\\n            logger = logging.getLogger(__name__)\\n            logger.error(f\"Attempted to start game with same player twice: {players[0].name} (ID: {players[0].id})\")\\n            return False\\n\\n        self.__reset()\\n        self.syncPlayers(players)\\n\\n        if (self.player1.id == self.previousWinner):\\n            self.__assignPlayerFigures(True)\\n        elif (self.player2.id == self.previousWinner):\\n            self.__assignPlayerFigures(False)\\n        else:\\n            self.__assignPlayerFigures(bool(random.getrandbits(1)))\\n\\n        self.hasEnded = False\\n        self.player1.status = PlayerStatus.CanMove\\n        self.player2.status = PlayerStatus.Wait\\n        return True\\n\\n    def getPossibleMoves(self) -> array:\\n        moves = []\\n        for y in range(0, self.ySize):\\n            for x in range(0, self.xSize):\\n                moves.append([x, y])\\n        return moves\\n\\n    def getCurrentBoard(self) -> array:\\n        return self.grid\\n    \\n    def getCurrentBoardString(self) -> str:\\n        result = \\'\\'\\n        for y in range(0, self.ySize):\\n            line = \\'\\'\\n            for x in range(0, self.xSize):\\n                value = self.grid[y][x]\\n                if (value == X):\\n                    line += \\'x|\\'\\n                elif (value == O):\\n                    line += \\'o|\\'\\n                else:\\n                    line += \\' |\\'\\n            result += line[:-1] + \\'\\\\n\\'\\n        return result\\n\\n    def canMove(self, playerName) -> PlayerStatus:\\n        playerFigure = self.__getPlayerFigureByName(playerName)\\n        playerStatus = self.checkForWinner()\\n        player = self.__getPlayerByName(playerName)\\n\\n        if (playerFigure == None):\\n            if (self.hasEnded == True and player != None):\\n                return PlayerStatus.Wait\\n            else:\\n                return PlayerStatus.UnregisteredPlayer\\n        elif (playerStatus == False):\\n            if (self.stillCouldHaveWinner == False):\\n                return self.__endGame(player, PlayerStatus.Draw)\\n            elif (self.nextToMove != playerFigure):\\n                return PlayerStatus.Wait\\n            else:\\n                return PlayerStatus.CanMove\\n        elif (playerStatus == playerFigure):\\n            return self.__endGame(player, PlayerStatus.Won)\\n        else:\\n            return self.__endGame(player, PlayerStatus.Lost)\\n\\n    def move(self, playerName, index):\\n        playerFigure = self.__getPlayerFigureByName(playerName)\\n\\n        if (self.hasEnded or playerFigure == None or self.nextToMove != playerFigure):\\n            return MoveResult(MoveStatus.Error, None)\\n        else:\\n            possibleMoves = self.getPossibleMoves()\\n            (x, y) = possibleMoves[index]\\n            if (self.placeFigure(x, y, playerFigure)):\\n                if (playerFigure == X):\\n                    symbol = \\'X\\'\\n                    self.nextToMove = O\\n                else:\\n                    symbol = \\'O\\'\\n                    self.nextToMove = X\\n                moveStr = symbol + \\' -> X:\\' +str(x)+ \\',Y:\\'+str(y)\\n                return MoveResult(MoveStatus.Success, moveStr)\\n            else:\\n                return MoveResult(MoveStatus.Incorrect, None)\\n            \\n    def syncPlayers(self, players: list[Player]):\\n        def getPlayer(player: Player):\\n            return  (None, None) if player is None else (player.refid, player.name)\\n\\n        def syncFigure(oponentsName: str, newName: str):\\n            figure = self.__getPlayerFigureByName(oponentsName)\\n            if (figure != None):\\n                isX = True if figure is X else False\\n                if (isX): \\n                    self.figureMap[O] = newName\\n                else:\\n                    self.figureMap[X] = newName\\n\\n        (pl1Ref, pl1Name) = getPlayer(players[0])\\n        (pl2Ref, pl2Name) =  getPlayer(players[1])\\n        (existing1Ref, existing1Name) = getPlayer(self.player1)\\n        (existing2Ref, existing2Name) = getPlayer(self.player2)\\n\\n        #swap if needed\\n        if ((pl1Ref != None and pl1Ref == existing2Ref) or \\n                (pl2Ref != None and pl2Ref == existing1Ref)):\\n            player1 = self.player1\\n            self.player1 = self.player2\\n            self.player2 = player1\\n\\n        if (pl1Ref != None and pl1Ref != existing1Ref):\\n            self.player1 = players[0]\\n            syncFigure(existing2Name, pl1Name)\\n\\n        if (pl2Ref != None and pl2Ref != existing2Ref):\\n            self.player2 = players[1]\\n            syncFigure(existing1Name, pl2Name)\\n    #end\\n\\n    def getPl(self, players: list[Player], refId: str):\\n        maybePlayer = [player for player in players if player.refid == refId]\\n        return maybePlayer[0] if maybePlayer else None\\n\\n    def placeFigure(self, x, y, figure) -> bool:\\n        if ((x < 0 or x > self.xSize - 1 or y < 0 or y > self.ySize - 1) or\\n            (figure != X and figure != O)):\\n            return False\\n        \\n        canPlaceFigure = self.grid[y][x] == E\\n        if (canPlaceFigure):\\n            self.grid[y][x] = figure\\n        return canPlaceFigure\\n\\n    def checkForWinner(self):\\n        self.stillCouldHaveWinner = False\\n        score = { \\n            X: 0,\\n            O: 0,\\n            E: 0,\\n            \"prev\": None\\n        }\\n\\n        #check vertically\\n        for x in range(0, self.xSize):\\n            self.__clearAllScores(score)  \\n            for y in range(0, self.ySize):  \\n                winner = self.__calculateScore(score, self.grid[y][x])\\n                if (winner != None):\\n                    return winner\\n\\n        #check horizontally\\n        for y in range(0, self.ySize):  \\n            self.__clearAllScores(score)  \\n            for x in range(0, self.xSize):\\n                winner = self.__calculateScore(score, self.grid[y][x])\\n                if (winner != None):\\n                    return winner\\n\\n        #check diagonally (bottom left -> top right)\\n        xStart = 0\\n        yStart = self.ySize - 1\\n        while(xStart < self.xSize):            \\n            self.__clearAllScores(score)  \\n            x = xStart\\n            y = yStart\\n            while (y < self.ySize and x < self.xSize):             \\n                winner = self.__calculateScore(score, self.grid[y][x])\\n                if (winner != None):\\n                    return winner\\n                x += 1\\n                y += 1\\n            if (yStart > 0):\\n                yStart -= 1\\n            elif (yStart == 0):\\n                xStart += 1\\n\\n        #check diagonally (bottom left -> top right)\\n        yStart = 0\\n        xStart = 0\\n        while(yStart < self.ySize):       \\n            self.__clearAllScores(score)  \\n            x = xStart\\n            y = yStart\\n            while (y >= 0 and x < self.xSize):   \\n                winner = self.__calculateScore(score, self.grid[y][x])\\n                if (winner != None):\\n                    return winner\\n                x += 1\\n                y -= 1\\n            if (yStart < self.ySize):\\n                yStart += 1\\n            elif (yStart == self.ySize - 1):\\n                xStart += 1\\n\\n        return False\\n\\n    def __reset(self):\\n        self.figureMap = {\\n            X: None,\\n            O: None\\n        }\\n        self.grid = []\\n        for y in range(0, self.ySize):\\n            self.grid.insert(y, [])\\n            for x in range(0, self.xSize):\\n                self.grid[y].insert(x, E)\\n        self.nextToMove = X\\n\\n    def __endGame(self, player: Player, endStatus: PlayerStatus):\\n        self.hasEnded = True        \\n        player.status = endStatus\\n        return endStatus\\n\\n    def __clearAllScores(self, score):\\n        score[X] = 0\\n        score[O] = 0\\n        score[E] = 0\\n\\n    def __clearOponentScore(self, score, playerFigure):\\n        if (playerFigure == X and score[O] > 0):\\n            score[O] = 0\\n            score[E] = 0\\n        elif (playerFigure == O and score[X] > 0):\\n            score[X] = 0\\n            score[E] = 0\\n\\n    def __calculateScore(self, score, newFigure):\\n        prevFigure = score[\"prev\"]\\n        score[newFigure] += 1\\n\\n        if (prevFigure != newFigure):\\n            self.__clearOponentScore(score, newFigure)\\n\\n        if (newFigure != E and score[newFigure] >= self.scoreLineLength):\\n            return newFigure\\n        elif ((prevFigure != None and score[prevFigure] + score[E] >= self.scoreLineLength)\\n                or (score[newFigure] + score[E] >= self.scoreLineLength)):\\n            self.stillCouldHaveWinner = True\\n\\n        score[\"prev\"] = newFigure\\n        return None\\n\\n    def __assignPlayerFigures(self, player1IsFirst: bool):\\n        if (player1IsFirst):\\n            self.figureMap[X] = self.player1.name\\n            self.figureMap[O] = self.player2.name\\n        else:\\n            self.figureMap[X] = self.player1.name\\n            self.figureMap[O] = self.player2.name\\n\\n    #TODO: move outside\\n    def __getPlayerByName(self, playerName: str):\\n        if (self.player1 != None and self.player1.name == playerName):\\n            return self.player1\\n        elif (self.player2 != None and self.player2.name == playerName):\\n            return self.player2\\n        else:\\n            return None\\n\\n    def __getPlayerFigureByName(self, playerName: str):\\n        figures = list(self.figureMap.keys())\\n        for i, figPlayerName in enumerate(self.figureMap.values()):\\n            if (figPlayerName == playerName):\\n                return figures[i]\\n        return None\\n',namespace)\nlive.TikTakToe=namespace['TikTakToe']\nclass Results:\n def __init__(self):self.failed=0;self.errors=0;self.count=0\n def pytest_collection_finish(self,session):self.count=len(session.items)\n def pytest_runtest_logreport(self,report):\n  if report.failed:\n   if report.when=='call':self.failed+=1\n   else:self.errors+=1\nplugin=Results()\nwith contextlib.redirect_stdout(io.StringIO()),contextlib.redirect_stderr(io.StringIO()):\n result=pytest.main(['-q','tests/test_winner_windows.py'],plugins=[plugin])\nassert result==1 and plugin.failed>=2 and plugin.errors==0 and plugin.count>=4\nprint('baseline-rejected')\n"
+            ],
+            "expected_stdout": "baseline-rejected\n",
+            "schema_version": 1,
+            "seconds": 30.0,
+            "stdin": ""
+          }
+        ],
+        "schema_version": 1
+      }
+    },
+    "integration_gates": {
+      "tests": {
+        "cases": [
+          {
+            "command": [
+              "python",
+              "-c",
+              "import contextlib,io\noutput=io.StringIO()\nwith contextlib.redirect_stdout(output), contextlib.redirect_stderr(output):\n import importlib.util,pytest\n from pathlib import Path\n class Results:\n  def __init__(self):self.count=0\n  def pytest_collection_finish(self,session):self.count=len(session.items)\n plugin=Results()\n result=pytest.main(['-q','tests/test_winner_windows.py'],plugins=[plugin])\n assert result==0 and plugin.count>=4\n print('regression-tests-ok')\nprint('regression-tests-ok')\n"
+            ],
+            "expected_stdout": "regression-tests-ok\n",
+            "schema_version": 1,
+            "seconds": 30.0,
+            "stdin": ""
+          },
+          {
+            "command": [
+              "python",
+              "-c",
+              "import types,sys,contextlib,io,pytest\nimport game_server.games.ticktaktoe as live\nnamespace={}\nexec('from array import array\\nimport random\\nimport time\\n\\nfrom common.models.gamebase import GameBase\\nfrom common.models.enums import PlayerStatus, MoveStatus\\nfrom common.models.player import Player\\nfrom common.models.game import MoveResult\\n\\nE = 0 #Empty\\nX = 1 #X\\nO = 2 #O\\n\\nclass TikTakToe(GameBase):\\n    def __init__(self, xSize, ySize, scoreLineLength):\\n        self.xSize = xSize\\n        self.ySize = ySize\\n        self.scoreLineLength = scoreLineLength\\n        if (min(xSize, ySize) < scoreLineLength):\\n            raise Exception(\\'Error: scoreLineLength of \\'+str(scoreLineLength)+ \\' is bigger than width (\\'+str(xSize)+ \\') or \\'+\\n            \\'height (\\'+str(ySize)+\\') and therefore it is not possible to reach winning condition\\')\\n        self.previousWinner = None\\n        self.player1: Player = None\\n        self.player2: Player = None\\n        self.hasEnded = True\\n        self.__reset()\\n\\n    #GameBase implementation\\n    requiredNumOfPlayers: int = 2\\n\\n    def startNewGame(self, players: list[Player]):\\n        # Ensure we have exactly 2 different players\\n        if len(players) < 2:\\n            return False\\n\\n        # Validate that we have 2 different players\\n        if players[0].id == players[1].id:\\n            # This shouldn\\'t happen - same player assigned twice\\n            import logging\\n            logger = logging.getLogger(__name__)\\n            logger.error(f\"Attempted to start game with same player twice: {players[0].name} (ID: {players[0].id})\")\\n            return False\\n\\n        self.__reset()\\n        self.syncPlayers(players)\\n\\n        if (self.player1.id == self.previousWinner):\\n            self.__assignPlayerFigures(True)\\n        elif (self.player2.id == self.previousWinner):\\n            self.__assignPlayerFigures(False)\\n        else:\\n            self.__assignPlayerFigures(bool(random.getrandbits(1)))\\n\\n        self.hasEnded = False\\n        self.player1.status = PlayerStatus.CanMove\\n        self.player2.status = PlayerStatus.Wait\\n        return True\\n\\n    def getPossibleMoves(self) -> array:\\n        moves = []\\n        for y in range(0, self.ySize):\\n            for x in range(0, self.xSize):\\n                moves.append([x, y])\\n        return moves\\n\\n    def getCurrentBoard(self) -> array:\\n        return self.grid\\n    \\n    def getCurrentBoardString(self) -> str:\\n        result = \\'\\'\\n        for y in range(0, self.ySize):\\n            line = \\'\\'\\n            for x in range(0, self.xSize):\\n                value = self.grid[y][x]\\n                if (value == X):\\n                    line += \\'x|\\'\\n                elif (value == O):\\n                    line += \\'o|\\'\\n                else:\\n                    line += \\' |\\'\\n            result += line[:-1] + \\'\\\\n\\'\\n        return result\\n\\n    def canMove(self, playerName) -> PlayerStatus:\\n        playerFigure = self.__getPlayerFigureByName(playerName)\\n        playerStatus = self.checkForWinner()\\n        player = self.__getPlayerByName(playerName)\\n\\n        if (playerFigure == None):\\n            if (self.hasEnded == True and player != None):\\n                return PlayerStatus.Wait\\n            else:\\n                return PlayerStatus.UnregisteredPlayer\\n        elif (playerStatus == False):\\n            if (self.stillCouldHaveWinner == False):\\n                return self.__endGame(player, PlayerStatus.Draw)\\n            elif (self.nextToMove != playerFigure):\\n                return PlayerStatus.Wait\\n            else:\\n                return PlayerStatus.CanMove\\n        elif (playerStatus == playerFigure):\\n            return self.__endGame(player, PlayerStatus.Won)\\n        else:\\n            return self.__endGame(player, PlayerStatus.Lost)\\n\\n    def move(self, playerName, index):\\n        playerFigure = self.__getPlayerFigureByName(playerName)\\n\\n        if (self.hasEnded or playerFigure == None or self.nextToMove != playerFigure):\\n            return MoveResult(MoveStatus.Error, None)\\n        else:\\n            possibleMoves = self.getPossibleMoves()\\n            (x, y) = possibleMoves[index]\\n            if (self.placeFigure(x, y, playerFigure)):\\n                if (playerFigure == X):\\n                    symbol = \\'X\\'\\n                    self.nextToMove = O\\n                else:\\n                    symbol = \\'O\\'\\n                    self.nextToMove = X\\n                moveStr = symbol + \\' -> X:\\' +str(x)+ \\',Y:\\'+str(y)\\n                return MoveResult(MoveStatus.Success, moveStr)\\n            else:\\n                return MoveResult(MoveStatus.Incorrect, None)\\n            \\n    def syncPlayers(self, players: list[Player]):\\n        def getPlayer(player: Player):\\n            return  (None, None) if player is None else (player.refid, player.name)\\n\\n        def syncFigure(oponentsName: str, newName: str):\\n            figure = self.__getPlayerFigureByName(oponentsName)\\n            if (figure != None):\\n                isX = True if figure is X else False\\n                if (isX): \\n                    self.figureMap[O] = newName\\n                else:\\n                    self.figureMap[X] = newName\\n\\n        (pl1Ref, pl1Name) = getPlayer(players[0])\\n        (pl2Ref, pl2Name) =  getPlayer(players[1])\\n        (existing1Ref, existing1Name) = getPlayer(self.player1)\\n        (existing2Ref, existing2Name) = getPlayer(self.player2)\\n\\n        #swap if needed\\n        if ((pl1Ref != None and pl1Ref == existing2Ref) or \\n                (pl2Ref != None and pl2Ref == existing1Ref)):\\n            player1 = self.player1\\n            self.player1 = self.player2\\n            self.player2 = player1\\n\\n        if (pl1Ref != None and pl1Ref != existing1Ref):\\n            self.player1 = players[0]\\n            syncFigure(existing2Name, pl1Name)\\n\\n        if (pl2Ref != None and pl2Ref != existing2Ref):\\n            self.player2 = players[1]\\n            syncFigure(existing1Name, pl2Name)\\n    #end\\n\\n    def getPl(self, players: list[Player], refId: str):\\n        maybePlayer = [player for player in players if player.refid == refId]\\n        return maybePlayer[0] if maybePlayer else None\\n\\n    def placeFigure(self, x, y, figure) -> bool:\\n        if ((x < 0 or x > self.xSize - 1 or y < 0 or y > self.ySize - 1) or\\n            (figure != X and figure != O)):\\n            return False\\n        \\n        canPlaceFigure = self.grid[y][x] == E\\n        if (canPlaceFigure):\\n            self.grid[y][x] = figure\\n        return canPlaceFigure\\n\\n    def checkForWinner(self):\\n        self.stillCouldHaveWinner = False\\n        score = { \\n            X: 0,\\n            O: 0,\\n            E: 0,\\n            \"prev\": None\\n        }\\n\\n        #check vertically\\n        for x in range(0, self.xSize):\\n            self.__clearAllScores(score)  \\n            for y in range(0, self.ySize):  \\n                winner = self.__calculateScore(score, self.grid[y][x])\\n                if (winner != None):\\n                    return winner\\n\\n        #check horizontally\\n        for y in range(0, self.ySize):  \\n            self.__clearAllScores(score)  \\n            for x in range(0, self.xSize):\\n                winner = self.__calculateScore(score, self.grid[y][x])\\n                if (winner != None):\\n                    return winner\\n\\n        #check diagonally (bottom left -> top right)\\n        xStart = 0\\n        yStart = self.ySize - 1\\n        while(xStart < self.xSize):            \\n            self.__clearAllScores(score)  \\n            x = xStart\\n            y = yStart\\n            while (y < self.ySize and x < self.xSize):             \\n                winner = self.__calculateScore(score, self.grid[y][x])\\n                if (winner != None):\\n                    return winner\\n                x += 1\\n                y += 1\\n            if (yStart > 0):\\n                yStart -= 1\\n            elif (yStart == 0):\\n                xStart += 1\\n\\n        #check diagonally (bottom left -> top right)\\n        yStart = 0\\n        xStart = 0\\n        while(yStart < self.ySize):       \\n            self.__clearAllScores(score)  \\n            x = xStart\\n            y = yStart\\n            while (y >= 0 and x < self.xSize):   \\n                winner = self.__calculateScore(score, self.grid[y][x])\\n                if (winner != None):\\n                    return winner\\n                x += 1\\n                y -= 1\\n            if (yStart < self.ySize):\\n                yStart += 1\\n            elif (yStart == self.ySize - 1):\\n                xStart += 1\\n\\n        return False\\n\\n    def __reset(self):\\n        self.figureMap = {\\n            X: None,\\n            O: None\\n        }\\n        self.grid = []\\n        for y in range(0, self.ySize):\\n            self.grid.insert(y, [])\\n            for x in range(0, self.xSize):\\n                self.grid[y].insert(x, E)\\n        self.nextToMove = X\\n\\n    def __endGame(self, player: Player, endStatus: PlayerStatus):\\n        self.hasEnded = True        \\n        player.status = endStatus\\n        return endStatus\\n\\n    def __clearAllScores(self, score):\\n        score[X] = 0\\n        score[O] = 0\\n        score[E] = 0\\n\\n    def __clearOponentScore(self, score, playerFigure):\\n        if (playerFigure == X and score[O] > 0):\\n            score[O] = 0\\n            score[E] = 0\\n        elif (playerFigure == O and score[X] > 0):\\n            score[X] = 0\\n            score[E] = 0\\n\\n    def __calculateScore(self, score, newFigure):\\n        prevFigure = score[\"prev\"]\\n        score[newFigure] += 1\\n\\n        if (prevFigure != newFigure):\\n            self.__clearOponentScore(score, newFigure)\\n\\n        if (newFigure != E and score[newFigure] >= self.scoreLineLength):\\n            return newFigure\\n        elif ((prevFigure != None and score[prevFigure] + score[E] >= self.scoreLineLength)\\n                or (score[newFigure] + score[E] >= self.scoreLineLength)):\\n            self.stillCouldHaveWinner = True\\n\\n        score[\"prev\"] = newFigure\\n        return None\\n\\n    def __assignPlayerFigures(self, player1IsFirst: bool):\\n        if (player1IsFirst):\\n            self.figureMap[X] = self.player1.name\\n            self.figureMap[O] = self.player2.name\\n        else:\\n            self.figureMap[X] = self.player1.name\\n            self.figureMap[O] = self.player2.name\\n\\n    #TODO: move outside\\n    def __getPlayerByName(self, playerName: str):\\n        if (self.player1 != None and self.player1.name == playerName):\\n            return self.player1\\n        elif (self.player2 != None and self.player2.name == playerName):\\n            return self.player2\\n        else:\\n            return None\\n\\n    def __getPlayerFigureByName(self, playerName: str):\\n        figures = list(self.figureMap.keys())\\n        for i, figPlayerName in enumerate(self.figureMap.values()):\\n            if (figPlayerName == playerName):\\n                return figures[i]\\n        return None\\n',namespace)\nlive.TikTakToe=namespace['TikTakToe']\nclass Results:\n def __init__(self):self.failed=0;self.errors=0;self.count=0\n def pytest_collection_finish(self,session):self.count=len(session.items)\n def pytest_runtest_logreport(self,report):\n  if report.failed:\n   if report.when=='call':self.failed+=1\n   else:self.errors+=1\nplugin=Results()\nwith contextlib.redirect_stdout(io.StringIO()),contextlib.redirect_stderr(io.StringIO()):\n result=pytest.main(['-q','tests/test_winner_windows.py'],plugins=[plugin])\nassert result==1 and plugin.failed>=2 and plugin.errors==0 and plugin.count>=4\nprint('baseline-rejected')\n"
+            ],
+            "expected_stdout": "baseline-rejected\n",
+            "schema_version": 1,
+            "seconds": 30.0,
+            "stdin": ""
+          }
+        ],
+        "schema_version": 1
+      },
+      "winner": {
+        "cases": [
+          {
+            "command": [
+              "python",
+              "-c",
+              "import copy,itertools,random\nfrom game_server.games.ticktaktoe import TikTakToe,E,X,O\n\ndef reference(board,k):\n h=len(board);w=len(board[0]);winners=set();possible=False\n for y in range(h):\n  for x in range(w):\n   for dx,dy in ((1,0),(0,1),(1,1),(1,-1)):\n    if not (0<=x+(k-1)*dx<w and 0<=y+(k-1)*dy<h):continue\n    line=[board[y+i*dy][x+i*dx] for i in range(k)]\n    for figure in (X,O):\n     if all(v==figure for v in line):winners.add(figure)\n     if all(v in (E,figure) for v in line):possible=True\n return winners,possible\n\ndef check(g,board):\n g.grid=copy.deepcopy(board);before=copy.deepcopy(g.grid)\n winners,possible=reference(board,g.scoreLineLength)\n actual=g.checkForWinner()\n if winners:assert type(actual) is int and actual in winners,(board,actual,winners)\n else:assert actual is False,(board,actual)\n assert g.stillCouldHaveWinner is possible,(board,g.stillCouldHaveWinner,possible)\n assert g.grid==before,'winner query mutated the board'\n # Repeat calls must not retain scan state.\n assert g.checkForWinner()==actual\nfor points,expected in [([(0,0),(2,0),(4,0)],False),([(2,4),(3,3),(4,2)],X)]:\n g=TikTakToe(5,5,3)\n for x,y in points:g.grid[y][x]=X\n actual=g.checkForWinner();assert actual==expected,(points,actual,expected)\nrng=random.Random(40129)\ng=TikTakToe(3,3,3)\nfor cells in itertools.product((E,X,O),repeat=9):check(g,[list(cells[i:i+3]) for i in (0,3,6)])\nfor w,h,k in [(5,5,3),(7,4,3),(4,7,3),(6,5,4),(2,3,1)]:\n g=TikTakToe(w,h,k)\n for _ in range(150):check(g,[[rng.choice((E,X,O)) for x in range(w)] for y in range(h)])\n # Every position and all four directions for both figures.\n for y in range(h):\n  for x in range(w):\n   for dx,dy in ((1,0),(0,1),(1,1),(1,-1)):\n    if 0<=x+(k-1)*dx<w and 0<=y+(k-1)*dy<h:\n     for figure in (X,O):\n      board=[[E]*w for _ in range(h)]\n      for i in range(k):board[y+i*dy][x+i*dx]=figure\n      check(g,board)\nprint('winner-reference-ok')\n"
+            ],
+            "expected_stdout": "winner-reference-ok\n",
+            "schema_version": 1,
+            "seconds": 30.0,
+            "stdin": ""
+          }
+        ],
+        "schema_version": 1
+      }
+    },
+    "kind": "feature-policy-v1",
+    "max_attempts": 2,
+    "max_model_turns": 3,
+    "max_reserved_tokens": 221184,
+    "max_tasks": 2,
+    "model_profile": {
+      "base_url": "http://127.0.0.1:30000/v1",
+      "context_limit": 16384,
+      "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+      "model": "gflo-local",
+      "profile_id": "vllm-python-worker-reasoning-low-v1",
+      "schema_version": 1,
+      "timeout_seconds": 120.0
+    },
+    "planning_paths": [
+      "common/models/gamebase.py",
+      "game_server/games/ticktaktoe.py"
+    ],
+    "request_digest": "956d9ed427279a5aeb89ded0a83d9e937a2d25d20d3bc058269fe275d8eb15ca",
+    "schema_version": 1
+  },
+  "snapshot": {
+    "schema_version": 1,
+    "kind": "repository-snapshot-v1",
+    "artifact_digest": "25ecfdbf689f56a90dd6cf5c2124b146b8e7d4eb0e28a5ca39dd40498e249dfb"
+  },
+  "repository_files": 87,
+  "repository_bytes": 271379,
+  "execution_paths": [
+    "common/models/__init__.py",
+    "common/models/enums.py",
+    "common/models/game.py",
+    "common/models/gamebase.py",
+    "common/models/move.py",
+    "common/models/player.py",
+    "game_server/games/ticktaktoe.py",
+    "tests/test_winner_windows.py"
+  ],
+  "navigation_hit": {
+    "schema_version": 1,
+    "source": {
+      "schema_version": 1,
+      "kind": "repository-snapshot-v1",
+      "artifact_digest": "25ecfdbf689f56a90dd6cf5c2124b146b8e7d4eb0e28a5ca39dd40498e249dfb"
+    },
+    "index_digest": "72f3cfa158bca86ec995c7c064c46c976c41a7439e035fdfaf98f6441641b3c5",
+    "path": "game_server/games/ticktaktoe.py",
+    "file_digest": "6ff4b9fcc1b3b2824a2a72ffc284fa385b857b5de0adea81fd75c2ddc6613710",
+    "definition": {
+      "schema_version": 1,
+      "name": "checkForWinner",
+      "qualified_name": "TikTakToe.checkForWinner",
+      "kind": "function",
+      "line": 174,
+      "end_line": 235
+    }
+  },
+  "license": "MIT; source and copyright remain in the target checkout. Reconstruct from the pinned Git revision rather than embedding a repository copy.",
+  "source_license": "MIT License\n\nCopyright (c) 2022 Gra\u017evydas Ju\u010dius\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n",
+  "test_followup": {
+    "request": {
+      "schema_version": 1,
+      "kind": "repository-feature-v1",
+      "feature_id": "ai-gamer-split-tests-v1",
+      "objective": "Create four small independent pytest test tasks, one per allowed test file, for the accepted winner implementation. Each task covers only its corresponding requirement. Do not modify implementation or other tests.",
+      "requirements": {
+        "gaps": "Create tests/test_gflo_gaps.py: at least one substantive test that separated X pieces at (0,0),(2,0),(4,0) on a 5x5 K=3 board return False. Contiguous winning lines require no gaps. Use the real game class.",
+        "antidiagonals": "Create tests/test_gflo_antidiagonals.py: at least one substantive test that X at (2,4),(3,3),(4,2) on a 5x5 K=3 board wins. This anti-diagonal starts away from the left edge. Use the real game class.",
+        "rectangles": "Create tests/test_gflo_rectangles.py: test horizontal, vertical and both diagonal contiguous K=3 wins on rectangular boards. Repeated calls are stable and leave the grid unchanged. Use fresh game instances for independent cases.",
+        "potential": "Create tests/test_gflo_potential.py: test an empty board has potential True, a full 3x3 board with no winning line has potential False, and a winning board has potential True. Check all rows, columns and both diagonals when choosing a draw. checkForWinner returns False for no winner and X or O for a winner. Use fresh game instances for independent cases."
+      },
+      "source": {
+        "schema_version": 1,
+        "kind": "repository-snapshot-v1",
+        "artifact_digest": "6e25f6ee2600995948fc69f1ddb6bc26fe1cf8a6cc1d563b67c785f147c8085f"
+      },
+      "allowed_paths": [
+        "tests/test_gflo_gaps.py",
+        "tests/test_gflo_antidiagonals.py",
+        "tests/test_gflo_rectangles.py",
+        "tests/test_gflo_potential.py"
+      ],
+      "environments": {
+        "python": {
+          "schema_version": 1,
+          "image": "sha256:695d05883b15326aea01e9266067ff58c41f3eaa4f647cfc9424b403dbe9548d",
+          "description": "Pinned offline CPython 3.11, standard library; no installation needed."
+        }
+      }
+    },
+    "policy": {
+      "context_budget": {
+        "output_tokens": 4096,
+        "schema_version": 1,
+        "total_tokens": 12288
+      },
+      "deployment": "{\n  \"mode\": \"managed\",\n  \"base_url\": \"http://127.0.0.1:30000/v1\",\n  \"model\": \"gflo-local\",\n  \"request_timeout\": 120,\n  \"startup_timeout\": 300,\n  \"managed\": {\n    \"backend\": \"vllm\",\n    \"image\": \"vllm/vllm-openai@sha256:ac259a0111c6cf462a72e449962b84f7a624b5cbec24bd7d9ec3b67d40ffd1bf\",\n    \"model_path\": \"Inferact/Qwen3.8-27B-NVFP4\",\n    \"revision\": \"6128240ebaf4eaa7bad2b3d1c72c37d677c5f462\",\n    \"name\": \"gflo-vllm-graphs\",\n    \"gpu\": \"0\",\n    \"context_length\": 16384,\n    \"memory_fraction\": 0.85,\n    \"shm_size\": \"4g\",\n    \"memory_limit\": \"36g\",\n    \"cpu_limit\": 3,\n    \"pids_limit\": 1024,\n    \"model_cache_volume\": \"local-vllm-huggingface-cache\",\n    \"offline\": true,\n    \"hf_token_env\": \"\",\n    \"server_options\": {\n      \"kv-cache-dtype\": \"bfloat16\",\n      \"reasoning-parser\": \"qwen3\",\n      \"tool-call-parser\": \"qwen3_coder\"\n    },\n    \"enforce_eager\": false\n  }\n}\n",
+      "environment_id": "python",
+      "execution_paths": [
+        "common/models/__init__.py",
+        "common/models/enums.py",
+        "common/models/game.py",
+        "common/models/gamebase.py",
+        "common/models/move.py",
+        "common/models/player.py",
+        "game_server/games/ticktaktoe.py",
+        "tests/test_gflo_gaps.py",
+        "tests/test_gflo_antidiagonals.py",
+        "tests/test_gflo_rectangles.py",
+        "tests/test_gflo_potential.py"
+      ],
+      "file_gates": {
+        "tests/test_gflo_antidiagonals.py": {
+          "cases": [
+            {
+              "command": [
+                "python",
+                "-c",
+                "import contextlib,io\noutput=io.StringIO()\nwith contextlib.redirect_stdout(output), contextlib.redirect_stderr(output):\n import importlib.util,pytest\n from pathlib import Path\n class Results:\n  def __init__(self):self.count=0\n  def pytest_collection_finish(self,session):self.count=len(session.items)\n plugin=Results()\n result=pytest.main(['-q', '--tb=short', 'tests/test_gflo_antidiagonals.py'],plugins=[plugin])\n assert result==0 and plugin.count>=1, output.getvalue()\n print('regression-tests-ok')\nprint('regression-tests-ok')\n"
+              ],
+              "expected_stdout": "regression-tests-ok\n",
+              "schema_version": 1,
+              "seconds": 30.0,
+              "stdin": ""
+            }
+          ],
+          "schema_version": 1
+        },
+        "tests/test_gflo_gaps.py": {
+          "cases": [
+            {
+              "command": [
+                "python",
+                "-c",
+                "import contextlib,io\noutput=io.StringIO()\nwith contextlib.redirect_stdout(output), contextlib.redirect_stderr(output):\n import importlib.util,pytest\n from pathlib import Path\n class Results:\n  def __init__(self):self.count=0\n  def pytest_collection_finish(self,session):self.count=len(session.items)\n plugin=Results()\n result=pytest.main(['-q', '--tb=short', 'tests/test_gflo_gaps.py'],plugins=[plugin])\n assert result==0 and plugin.count>=1, output.getvalue()\n print('regression-tests-ok')\nprint('regression-tests-ok')\n"
+              ],
+              "expected_stdout": "regression-tests-ok\n",
+              "schema_version": 1,
+              "seconds": 30.0,
+              "stdin": ""
+            }
+          ],
+          "schema_version": 1
+        },
+        "tests/test_gflo_potential.py": {
+          "cases": [
+            {
+              "command": [
+                "python",
+                "-c",
+                "import contextlib,io\noutput=io.StringIO()\nwith contextlib.redirect_stdout(output), contextlib.redirect_stderr(output):\n import importlib.util,pytest\n from pathlib import Path\n class Results:\n  def __init__(self):self.count=0\n  def pytest_collection_finish(self,session):self.count=len(session.items)\n plugin=Results()\n result=pytest.main(['-q', '--tb=short', 'tests/test_gflo_potential.py'],plugins=[plugin])\n assert result==0 and plugin.count>=1, output.getvalue()\n print('regression-tests-ok')\nprint('regression-tests-ok')\n"
+              ],
+              "expected_stdout": "regression-tests-ok\n",
+              "schema_version": 1,
+              "seconds": 30.0,
+              "stdin": ""
+            }
+          ],
+          "schema_version": 1
+        },
+        "tests/test_gflo_rectangles.py": {
+          "cases": [
+            {
+              "command": [
+                "python",
+                "-c",
+                "import contextlib,io\noutput=io.StringIO()\nwith contextlib.redirect_stdout(output), contextlib.redirect_stderr(output):\n import importlib.util,pytest\n from pathlib import Path\n class Results:\n  def __init__(self):self.count=0\n  def pytest_collection_finish(self,session):self.count=len(session.items)\n plugin=Results()\n result=pytest.main(['-q', '--tb=short', 'tests/test_gflo_rectangles.py'],plugins=[plugin])\n assert result==0 and plugin.count>=1, output.getvalue()\n print('regression-tests-ok')\nprint('regression-tests-ok')\n"
+              ],
+              "expected_stdout": "regression-tests-ok\n",
+              "schema_version": 1,
+              "seconds": 30.0,
+              "stdin": ""
+            }
+          ],
+          "schema_version": 1
+        }
+      },
+      "integration_gates": {
+        "tests": {
+          "cases": [
+            {
+              "command": [
+                "python",
+                "-c",
+                "import contextlib,io\noutput=io.StringIO()\nwith contextlib.redirect_stdout(output), contextlib.redirect_stderr(output):\n import importlib.util,pytest\n from pathlib import Path\n class Results:\n  def __init__(self):self.count=0\n  def pytest_collection_finish(self,session):self.count=len(session.items)\n plugin=Results()\n result=pytest.main(['-q', '--tb=short', 'tests/test_gflo_gaps.py', 'tests/test_gflo_antidiagonals.py', 'tests/test_gflo_rectangles.py', 'tests/test_gflo_potential.py'],plugins=[plugin])\n assert result==0 and plugin.count>=4, output.getvalue()\n print('regression-tests-ok')\nprint('regression-tests-ok')\n"
+              ],
+              "expected_stdout": "regression-tests-ok\n",
+              "schema_version": 1,
+              "seconds": 30.0,
+              "stdin": ""
+            },
+            {
+              "command": [
+                "python",
+                "-c",
+                "import types,sys,contextlib,io,pytest\nimport game_server.games.ticktaktoe as live\nnamespace={}\nexec('from array import array\\nimport random\\nimport time\\n\\nfrom common.models.gamebase import GameBase\\nfrom common.models.enums import PlayerStatus, MoveStatus\\nfrom common.models.player import Player\\nfrom common.models.game import MoveResult\\n\\nE = 0 #Empty\\nX = 1 #X\\nO = 2 #O\\n\\nclass TikTakToe(GameBase):\\n    def __init__(self, xSize, ySize, scoreLineLength):\\n        self.xSize = xSize\\n        self.ySize = ySize\\n        self.scoreLineLength = scoreLineLength\\n        if (min(xSize, ySize) < scoreLineLength):\\n            raise Exception(\\'Error: scoreLineLength of \\'+str(scoreLineLength)+ \\' is bigger than width (\\'+str(xSize)+ \\') or \\'+\\n            \\'height (\\'+str(ySize)+\\') and therefore it is not possible to reach winning condition\\')\\n        self.previousWinner = None\\n        self.player1: Player = None\\n        self.player2: Player = None\\n        self.hasEnded = True\\n        self.__reset()\\n\\n    #GameBase implementation\\n    requiredNumOfPlayers: int = 2\\n\\n    def startNewGame(self, players: list[Player]):\\n        # Ensure we have exactly 2 different players\\n        if len(players) < 2:\\n            return False\\n\\n        # Validate that we have 2 different players\\n        if players[0].id == players[1].id:\\n            # This shouldn\\'t happen - same player assigned twice\\n            import logging\\n            logger = logging.getLogger(__name__)\\n            logger.error(f\"Attempted to start game with same player twice: {players[0].name} (ID: {players[0].id})\")\\n            return False\\n\\n        self.__reset()\\n        self.syncPlayers(players)\\n\\n        if (self.player1.id == self.previousWinner):\\n            self.__assignPlayerFigures(True)\\n        elif (self.player2.id == self.previousWinner):\\n            self.__assignPlayerFigures(False)\\n        else:\\n            self.__assignPlayerFigures(bool(random.getrandbits(1)))\\n\\n        self.hasEnded = False\\n        self.player1.status = PlayerStatus.CanMove\\n        self.player2.status = PlayerStatus.Wait\\n        return True\\n\\n    def getPossibleMoves(self) -> array:\\n        moves = []\\n        for y in range(0, self.ySize):\\n            for x in range(0, self.xSize):\\n                moves.append([x, y])\\n        return moves\\n\\n    def getCurrentBoard(self) -> array:\\n        return self.grid\\n    \\n    def getCurrentBoardString(self) -> str:\\n        result = \\'\\'\\n        for y in range(0, self.ySize):\\n            line = \\'\\'\\n            for x in range(0, self.xSize):\\n                value = self.grid[y][x]\\n                if (value == X):\\n                    line += \\'x|\\'\\n                elif (value == O):\\n                    line += \\'o|\\'\\n                else:\\n                    line += \\' |\\'\\n            result += line[:-1] + \\'\\\\n\\'\\n        return result\\n\\n    def canMove(self, playerName) -> PlayerStatus:\\n        playerFigure = self.__getPlayerFigureByName(playerName)\\n        playerStatus = self.checkForWinner()\\n        player = self.__getPlayerByName(playerName)\\n\\n        if (playerFigure == None):\\n            if (self.hasEnded == True and player != None):\\n                return PlayerStatus.Wait\\n            else:\\n                return PlayerStatus.UnregisteredPlayer\\n        elif (playerStatus == False):\\n            if (self.stillCouldHaveWinner == False):\\n                return self.__endGame(player, PlayerStatus.Draw)\\n            elif (self.nextToMove != playerFigure):\\n                return PlayerStatus.Wait\\n            else:\\n                return PlayerStatus.CanMove\\n        elif (playerStatus == playerFigure):\\n            return self.__endGame(player, PlayerStatus.Won)\\n        else:\\n            return self.__endGame(player, PlayerStatus.Lost)\\n\\n    def move(self, playerName, index):\\n        playerFigure = self.__getPlayerFigureByName(playerName)\\n\\n        if (self.hasEnded or playerFigure == None or self.nextToMove != playerFigure):\\n            return MoveResult(MoveStatus.Error, None)\\n        else:\\n            possibleMoves = self.getPossibleMoves()\\n            (x, y) = possibleMoves[index]\\n            if (self.placeFigure(x, y, playerFigure)):\\n                if (playerFigure == X):\\n                    symbol = \\'X\\'\\n                    self.nextToMove = O\\n                else:\\n                    symbol = \\'O\\'\\n                    self.nextToMove = X\\n                moveStr = symbol + \\' -> X:\\' +str(x)+ \\',Y:\\'+str(y)\\n                return MoveResult(MoveStatus.Success, moveStr)\\n            else:\\n                return MoveResult(MoveStatus.Incorrect, None)\\n            \\n    def syncPlayers(self, players: list[Player]):\\n        def getPlayer(player: Player):\\n            return  (None, None) if player is None else (player.refid, player.name)\\n\\n        def syncFigure(oponentsName: str, newName: str):\\n            figure = self.__getPlayerFigureByName(oponentsName)\\n            if (figure != None):\\n                isX = True if figure is X else False\\n                if (isX): \\n                    self.figureMap[O] = newName\\n                else:\\n                    self.figureMap[X] = newName\\n\\n        (pl1Ref, pl1Name) = getPlayer(players[0])\\n        (pl2Ref, pl2Name) =  getPlayer(players[1])\\n        (existing1Ref, existing1Name) = getPlayer(self.player1)\\n        (existing2Ref, existing2Name) = getPlayer(self.player2)\\n\\n        #swap if needed\\n        if ((pl1Ref != None and pl1Ref == existing2Ref) or \\n                (pl2Ref != None and pl2Ref == existing1Ref)):\\n            player1 = self.player1\\n            self.player1 = self.player2\\n            self.player2 = player1\\n\\n        if (pl1Ref != None and pl1Ref != existing1Ref):\\n            self.player1 = players[0]\\n            syncFigure(existing2Name, pl1Name)\\n\\n        if (pl2Ref != None and pl2Ref != existing2Ref):\\n            self.player2 = players[1]\\n            syncFigure(existing1Name, pl2Name)\\n    #end\\n\\n    def getPl(self, players: list[Player], refId: str):\\n        maybePlayer = [player for player in players if player.refid == refId]\\n        return maybePlayer[0] if maybePlayer else None\\n\\n    def placeFigure(self, x, y, figure) -> bool:\\n        if ((x < 0 or x > self.xSize - 1 or y < 0 or y > self.ySize - 1) or\\n            (figure != X and figure != O)):\\n            return False\\n        \\n        canPlaceFigure = self.grid[y][x] == E\\n        if (canPlaceFigure):\\n            self.grid[y][x] = figure\\n        return canPlaceFigure\\n\\n    def checkForWinner(self):\\n        self.stillCouldHaveWinner = False\\n        score = { \\n            X: 0,\\n            O: 0,\\n            E: 0,\\n            \"prev\": None\\n        }\\n\\n        #check vertically\\n        for x in range(0, self.xSize):\\n            self.__clearAllScores(score)  \\n            for y in range(0, self.ySize):  \\n                winner = self.__calculateScore(score, self.grid[y][x])\\n                if (winner != None):\\n                    return winner\\n\\n        #check horizontally\\n        for y in range(0, self.ySize):  \\n            self.__clearAllScores(score)  \\n            for x in range(0, self.xSize):\\n                winner = self.__calculateScore(score, self.grid[y][x])\\n                if (winner != None):\\n                    return winner\\n\\n        #check diagonally (bottom left -> top right)\\n        xStart = 0\\n        yStart = self.ySize - 1\\n        while(xStart < self.xSize):            \\n            self.__clearAllScores(score)  \\n            x = xStart\\n            y = yStart\\n            while (y < self.ySize and x < self.xSize):             \\n                winner = self.__calculateScore(score, self.grid[y][x])\\n                if (winner != None):\\n                    return winner\\n                x += 1\\n                y += 1\\n            if (yStart > 0):\\n                yStart -= 1\\n            elif (yStart == 0):\\n                xStart += 1\\n\\n        #check diagonally (bottom left -> top right)\\n        yStart = 0\\n        xStart = 0\\n        while(yStart < self.ySize):       \\n            self.__clearAllScores(score)  \\n            x = xStart\\n            y = yStart\\n            while (y >= 0 and x < self.xSize):   \\n                winner = self.__calculateScore(score, self.grid[y][x])\\n                if (winner != None):\\n                    return winner\\n                x += 1\\n                y -= 1\\n            if (yStart < self.ySize):\\n                yStart += 1\\n            elif (yStart == self.ySize - 1):\\n                xStart += 1\\n\\n        return False\\n\\n    def __reset(self):\\n        self.figureMap = {\\n            X: None,\\n            O: None\\n        }\\n        self.grid = []\\n        for y in range(0, self.ySize):\\n            self.grid.insert(y, [])\\n            for x in range(0, self.xSize):\\n                self.grid[y].insert(x, E)\\n        self.nextToMove = X\\n\\n    def __endGame(self, player: Player, endStatus: PlayerStatus):\\n        self.hasEnded = True        \\n        player.status = endStatus\\n        return endStatus\\n\\n    def __clearAllScores(self, score):\\n        score[X] = 0\\n        score[O] = 0\\n        score[E] = 0\\n\\n    def __clearOponentScore(self, score, playerFigure):\\n        if (playerFigure == X and score[O] > 0):\\n            score[O] = 0\\n            score[E] = 0\\n        elif (playerFigure == O and score[X] > 0):\\n            score[X] = 0\\n            score[E] = 0\\n\\n    def __calculateScore(self, score, newFigure):\\n        prevFigure = score[\"prev\"]\\n        score[newFigure] += 1\\n\\n        if (prevFigure != newFigure):\\n            self.__clearOponentScore(score, newFigure)\\n\\n        if (newFigure != E and score[newFigure] >= self.scoreLineLength):\\n            return newFigure\\n        elif ((prevFigure != None and score[prevFigure] + score[E] >= self.scoreLineLength)\\n                or (score[newFigure] + score[E] >= self.scoreLineLength)):\\n            self.stillCouldHaveWinner = True\\n\\n        score[\"prev\"] = newFigure\\n        return None\\n\\n    def __assignPlayerFigures(self, player1IsFirst: bool):\\n        if (player1IsFirst):\\n            self.figureMap[X] = self.player1.name\\n            self.figureMap[O] = self.player2.name\\n        else:\\n            self.figureMap[X] = self.player1.name\\n            self.figureMap[O] = self.player2.name\\n\\n    #TODO: move outside\\n    def __getPlayerByName(self, playerName: str):\\n        if (self.player1 != None and self.player1.name == playerName):\\n            return self.player1\\n        elif (self.player2 != None and self.player2.name == playerName):\\n            return self.player2\\n        else:\\n            return None\\n\\n    def __getPlayerFigureByName(self, playerName: str):\\n        figures = list(self.figureMap.keys())\\n        for i, figPlayerName in enumerate(self.figureMap.values()):\\n            if (figPlayerName == playerName):\\n                return figures[i]\\n        return None\\n',namespace)\nlive.TikTakToe=namespace['TikTakToe']\nclass Results:\n def __init__(self):self.failed=0;self.errors=0;self.count=0\n def pytest_collection_finish(self,session):self.count=len(session.items)\n def pytest_runtest_logreport(self,report):\n  if report.failed:\n   if report.when=='call':self.failed+=1\n   else:self.errors+=1\nplugin=Results()\nwith contextlib.redirect_stdout(io.StringIO()),contextlib.redirect_stderr(io.StringIO()):\n result=pytest.main(['-q', '--tb=short', 'tests/test_gflo_gaps.py', 'tests/test_gflo_antidiagonals.py', 'tests/test_gflo_rectangles.py', 'tests/test_gflo_potential.py'],plugins=[plugin])\nassert result==1 and plugin.failed>=2 and plugin.errors==0 and plugin.count>=4\nprint('baseline-rejected')\n"
+              ],
+              "expected_stdout": "baseline-rejected\n",
+              "schema_version": 1,
+              "seconds": 30.0,
+              "stdin": ""
+            }
+          ],
+          "schema_version": 1
+        },
+        "winner": {
+          "cases": [
+            {
+              "command": [
+                "python",
+                "-c",
+                "import copy,itertools,random\nfrom game_server.games.ticktaktoe import TikTakToe,E,X,O\n\ndef reference(board,k):\n h=len(board);w=len(board[0]);winners=set();possible=False\n for y in range(h):\n  for x in range(w):\n   for dx,dy in ((1,0),(0,1),(1,1),(1,-1)):\n    if not (0<=x+(k-1)*dx<w and 0<=y+(k-1)*dy<h):continue\n    line=[board[y+i*dy][x+i*dx] for i in range(k)]\n    for figure in (X,O):\n     if all(v==figure for v in line):winners.add(figure)\n     if all(v in (E,figure) for v in line):possible=True\n return winners,possible\n\ndef check(g,board):\n g.grid=copy.deepcopy(board);before=copy.deepcopy(g.grid)\n winners,possible=reference(board,g.scoreLineLength)\n actual=g.checkForWinner()\n if winners:assert type(actual) is int and actual in winners,(board,actual,winners)\n else:assert actual is False,(board,actual)\n assert g.stillCouldHaveWinner is possible,(board,g.stillCouldHaveWinner,possible)\n assert g.grid==before,'winner query mutated the board'\n # Repeat calls must not retain scan state.\n assert g.checkForWinner()==actual\nfor points,expected in [([(0,0),(2,0),(4,0)],False),([(2,4),(3,3),(4,2)],X)]:\n g=TikTakToe(5,5,3)\n for x,y in points:g.grid[y][x]=X\n actual=g.checkForWinner();assert actual==expected,(points,actual,expected)\nrng=random.Random(40129)\ng=TikTakToe(3,3,3)\nfor cells in itertools.product((E,X,O),repeat=9):check(g,[list(cells[i:i+3]) for i in (0,3,6)])\nfor w,h,k in [(5,5,3),(7,4,3),(4,7,3),(6,5,4),(2,3,1)]:\n g=TikTakToe(w,h,k)\n for _ in range(150):check(g,[[rng.choice((E,X,O)) for x in range(w)] for y in range(h)])\n # Every position and all four directions for both figures.\n for y in range(h):\n  for x in range(w):\n   for dx,dy in ((1,0),(0,1),(1,1),(1,-1)):\n    if 0<=x+(k-1)*dx<w and 0<=y+(k-1)*dy<h:\n     for figure in (X,O):\n      board=[[E]*w for _ in range(h)]\n      for i in range(k):board[y+i*dy][x+i*dx]=figure\n      check(g,board)\nprint('winner-reference-ok')\n"
+              ],
+              "expected_stdout": "winner-reference-ok\n",
+              "schema_version": 1,
+              "seconds": 30.0,
+              "stdin": ""
+            }
+          ],
+          "schema_version": 1
+        }
+      },
+      "kind": "feature-policy-v1",
+      "max_attempts": 2,
+      "max_model_turns": 3,
+      "max_reserved_tokens": 368640,
+      "max_tasks": 4,
+      "model_profile": {
+        "base_url": "http://127.0.0.1:30000/v1",
+        "context_limit": 16384,
+        "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+        "model": "gflo-local",
+        "profile_id": "vllm-python-worker-repair-v1",
+        "schema_version": 1,
+        "timeout_seconds": 120.0
+      },
+      "planning_paths": [
+        "common/models/gamebase.py",
+        "game_server/games/ticktaktoe.py"
+      ],
+      "request_digest": "ad5c1ffb6e44bdc3d81e0ed0ead3d685dbebf3ce693b32c1162fa28ace44d4d0",
+      "schema_version": 1
+    },
+    "source_edits": {
+      "game_server/games/ticktaktoe.py": "from array import array\nimport random\nimport time\n\nfrom common.models.gamebase import GameBase\nfrom common.models.enums import PlayerStatus, MoveStatus\nfrom common.models.player import Player\nfrom common.models.game import MoveResult\n\nE = 0 #Empty\nX = 1 #X\nO = 2 #O\n\nclass TikTakToe(GameBase):\n    def __init__(self, xSize, ySize, scoreLineLength):\n        self.xSize = xSize\n        self.ySize = ySize\n        self.scoreLineLength = scoreLineLength\n        if (min(xSize, ySize) < scoreLineLength):\n            raise Exception('Error: scoreLineLength of '+str(scoreLineLength)+ ' is bigger than width ('+str(xSize)+ ') or '+\n            'height ('+str(ySize)+') and therefore it is not possible to reach winning condition')\n        self.previousWinner = None\n        self.player1: Player = None\n        self.player2: Player = None\n        self.hasEnded = True\n        self.__reset()\n\n    #GameBase implementation\n    requiredNumOfPlayers: int = 2\n\n    def startNewGame(self, players: list[Player]):\n        # Ensure we have exactly 2 different players\n        if len(players) < 2:\n            return False\n\n        # Validate that we have 2 different players\n        if players[0].id == players[1].id:\n            # This shouldn't happen - same player assigned twice\n            import logging\n            logger = logging.getLogger(__name__)\n            logger.error(f\"Attempted to start game with same player twice: {players[0].name} (ID: {players[0].id})\")\n            return False\n\n        self.__reset()\n        self.syncPlayers(players)\n\n        if (self.player1.id == self.previousWinner):\n            self.__assignPlayerFigures(True)\n        elif (self.player2.id == self.previousWinner):\n            self.__assignPlayerFigures(False)\n        else:\n            self.__assignPlayerFigures(bool(random.getrandbits(1)))\n\n        self.hasEnded = False\n        self.player1.status = PlayerStatus.CanMove\n        self.player2.status = PlayerStatus.Wait\n        return True\n\n    def getPossibleMoves(self) -> array:\n        moves = []\n        for y in range(0, self.ySize):\n            for x in range(0, self.xSize):\n                moves.append([x, y])\n        return moves\n\n    def getCurrentBoard(self) -> array:\n        return self.grid\n    \n    def getCurrentBoardString(self) -> str:\n        result = ''\n        for y in range(0, self.ySize):\n            line = ''\n            for x in range(0, self.xSize):\n                value = self.grid[y][x]\n                if (value == X):\n                    line += 'x|'\n                elif (value == O):\n                    line += 'o|'\n                else:\n                    line += ' |'\n            result += line[:-1] + '\\n'\n        return result\n\n    def canMove(self, playerName) -> PlayerStatus:\n        playerFigure = self.__getPlayerFigureByName(playerName)\n        playerStatus = self.checkForWinner()\n        player = self.__getPlayerByName(playerName)\n\n        if (playerFigure == None):\n            if (self.hasEnded == True and player != None):\n                return PlayerStatus.Wait\n            else:\n                return PlayerStatus.UnregisteredPlayer\n        elif (playerStatus == False):\n            if (self.stillCouldHaveWinner == False):\n                return self.__endGame(player, PlayerStatus.Draw)\n            elif (self.nextToMove != playerFigure):\n                return PlayerStatus.Wait\n            else:\n                return PlayerStatus.CanMove\n        elif (playerStatus == playerFigure):\n            return self.__endGame(player, PlayerStatus.Won)\n        else:\n            return self.__endGame(player, PlayerStatus.Lost)\n\n    def move(self, playerName, index):\n        playerFigure = self.__getPlayerFigureByName(playerName)\n\n        if (self.hasEnded or playerFigure == None or self.nextToMove != playerFigure):\n            return MoveResult(MoveStatus.Error, None)\n        else:\n            possibleMoves = self.getPossibleMoves()\n            (x, y) = possibleMoves[index]\n            if (self.placeFigure(x, y, playerFigure)):\n                if (playerFigure == X):\n                    symbol = 'X'\n                    self.nextToMove = O\n                else:\n                    symbol = 'O'\n                    self.nextToMove = X\n                moveStr = symbol + ' -> X:' +str(x)+ ',Y:'+str(y)\n                return MoveResult(MoveStatus.Success, moveStr)\n            else:\n                return MoveResult(MoveStatus.Incorrect, None)\n            \n    def syncPlayers(self, players: list[Player]):\n        def getPlayer(player: Player):\n            return  (None, None) if player is None else (player.refid, player.name)\n\n        def syncFigure(oponentsName: str, newName: str):\n            figure = self.__getPlayerFigureByName(oponentsName)\n            if (figure != None):\n                isX = True if figure is X else False\n                if (isX): \n                    self.figureMap[O] = newName\n                else:\n                    self.figureMap[X] = newName\n\n        (pl1Ref, pl1Name) = getPlayer(players[0])\n        (pl2Ref, pl2Name) =  getPlayer(players[1])\n        (existing1Ref, existing1Name) = getPlayer(self.player1)\n        (existing2Ref, existing2Name) = getPlayer(self.player2)\n\n        #swap if needed\n        if ((pl1Ref != None and pl1Ref == existing2Ref) or \n                (pl2Ref != None and pl2Ref == existing1Ref)):\n            player1 = self.player1\n            self.player1 = self.player2\n            self.player2 = player1\n\n        if (pl1Ref != None and pl1Ref != existing1Ref):\n            self.player1 = players[0]\n            syncFigure(existing2Name, pl1Name)\n\n        if (pl2Ref != None and pl2Ref != existing2Ref):\n            self.player2 = players[1]\n            syncFigure(existing1Name, pl2Name)\n    #end\n\n    def getPl(self, players: list[Player], refId: str):\n        maybePlayer = [player for player in players if player.refid == refId]\n        return maybePlayer[0] if maybePlayer else None\n\n    def placeFigure(self, x, y, figure) -> bool:\n        if ((x < 0 or x > self.xSize - 1 or y < 0 or y > self.ySize - 1) or\n            (figure != X and figure != O)):\n            return False\n        \n        canPlaceFigure = self.grid[y][x] == E\n        if (canPlaceFigure):\n            self.grid[y][x] = figure\n        return canPlaceFigure\n\n    def checkForWinner(self):\n        self.stillCouldHaveWinner = False\n        h = self.ySize\n        w = self.xSize\n        k = self.scoreLineLength\n        winners = set()\n        possible = False\n\n        for y in range(h):\n            for x in range(w):\n                for dx, dy in ((1, 0), (0, 1), (1, 1), (1, -1)):\n                    ex = x + (k - 1) * dx\n                    ey = y + (k - 1) * dy\n                    if not (0 <= ex < w and 0 <= ey < h):\n                        continue\n                    line = [self.grid[y + i * dy][x + i * dx] for i in range(k)]\n                    for figure in (X, O):\n                        if all(v == figure for v in line):\n                            winners.add(figure)\n                        if all(v in (E, figure) for v in line):\n                            possible = True\n\n        self.stillCouldHaveWinner = possible\n        if winners:\n            return next(iter(winners))\n        return False\n\n    def __reset(self):\n        self.figureMap = {\n            X: None,\n            O: None\n        }\n        self.grid = []\n        for y in range(0, self.ySize):\n            self.grid.insert(y, [])\n            for x in range(0, self.xSize):\n                self.grid[y].insert(x, E)\n        self.nextToMove = X\n\n    def __endGame(self, player: Player, endStatus: PlayerStatus):\n        self.hasEnded = True        \n        player.status = endStatus\n        return endStatus\n\n    def __assignPlayerFigures(self, player1IsFirst: bool):\n        if (player1IsFirst):\n            self.figureMap[X] = self.player1.name\n            self.figureMap[O] = self.player2.name\n        else:\n            self.figureMap[X] = self.player1.name\n            self.figureMap[O] = self.player2.name\n\n    #TODO: move outside\n    def __getPlayerByName(self, playerName: str):\n        if (self.player1 != None and self.player1.name == playerName):\n            return self.player1\n        elif (self.player2 != None and self.player2.name == playerName):\n            return self.player2\n        else:\n            return None\n\n    def __getPlayerFigureByName(self, playerName: str):\n        figures = list(self.figureMap.keys())\n        for i, figPlayerName in enumerate(self.figureMap.values()):\n            if (figPlayerName == playerName):\n                return figures[i]\n        return None\n"
+    },
+    "note": "Same task, model, budgets and gates; opt-in development repair protocol. No example assistance."
+  }
+}

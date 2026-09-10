@@ -182,3 +182,9 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
 - [Issue 44](issues/44-qualify-smaller-test-tasks.md): smaller tests accepted gaps and
   anti-diagonals, then potential failed/truncated. Rectangles and integration never
   ran. Semantic fixture repair remains a qualification blocker within these budgets.
+
+- [Issue 45](issues/45-add-bounded-development-repair.md): same-model development
+  checks, bounded exact edits, verified example data and exhausted-work review packets.
+  Retained planning/protocol/coverage failures; a finding blocks the square-only test
+  acceptance. Reviewed/data-assisted correction passed one repair response and final
+  checks, preserving all other files. End-to-end unattended planning remains unproven.

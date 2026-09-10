@@ -12,6 +12,7 @@ from pydantic import Field
 
 from gflo.artifacts import ArtifactStore
 from gflo.broker import DockerBroker
+from gflo.escalation import review_handoff
 from gflo.gates import ProcessGate
 from gflo.ledger import WorkLedger
 from gflo.model import LocalModel, ModelProfile
@@ -236,6 +237,12 @@ def build_feature(
                 )
         else:
             result["planning_status"] = state.get("status", "interrupted")
+        halted = result.get("feature_result", {}).get("halted_atom")
+        if halted and ledger.status(halted)["status"] == "quarantined":
+            packet = review_handoff(ledger, halted)
+            payload = json.dumps(packet, indent=2) + "\n"
+            (output / "review-handoff.json").write_text(payload)
+            result["review_handoff_digest"] = ledger.artifacts.publish(payload.encode())
         (output / "result.json").write_text(json.dumps(result, indent=2) + "\n")
         ledger.artifacts.publish(json.dumps(result, sort_keys=True).encode())
         return result

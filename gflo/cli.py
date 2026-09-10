@@ -18,6 +18,7 @@ from gflo.autonomy import FeaturePolicy, build_feature
 from gflo.board import draft_board
 from gflo.broker import BrokerError, DockerBroker
 from gflo.controller import Controller, RunPlan, prepare_run
+from gflo.escalation import review_handoff
 from gflo.history import change_history, render_history
 from gflo.integration import IntegrationPlan, IntegrationState, integrate
 from gflo.ledger import Conflict, WorkLedger
@@ -54,6 +55,8 @@ def main() -> int:
     status.add_argument("atom_id")
     report = commands.add_parser("report", help="Report cumulative model costs including retries")
     report.add_argument("atom_id")
+    handoff = commands.add_parser("review-handoff", help="Export exhausted work for human review")
+    handoff.add_argument("atom_id")
     history = commands.add_parser("history", help="Review retained candidate diffs and outcomes")
     history.add_argument("atom_id")
     history.add_argument("--format", choices=("text", "json"), default="text")
@@ -249,6 +252,8 @@ def main() -> int:
                 return 0 if output["status"] == "accepted" else 2
             elif args.command == "status":
                 output = ledger.status(args.atom_id)
+            elif args.command == "review-handoff":
+                output = review_handoff(ledger, args.atom_id)
             elif args.command == "report":
                 output = cost_report(ledger, args.atom_id)
             elif args.command == "history":

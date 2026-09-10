@@ -1,6 +1,46 @@
 # GFLO handoff — repository access foundation
 
-## Current checkpoint — bounded test-generation limit, 2026-09-10
+## Current checkpoint — development repair and verified data, 2026-09-10
+
+Owner requested every repair option EXCEPT changing the model. Keep current weights,
+serving deployment and GPU configuration. Issue 45 complete: opt-in repair protocol
+on the same model, sandbox development checks, exact edits for existing files,
+read-only verified examples, and review packets for exhausted work. Default plain
+worker and historical plan digests are preserved. Existing budgets remain finite.
+
+Final local repair passed in one response: 6212 prompt + 1695 output tokens, 28.80s.
+Twenty generated tests pass; four assertions fail on original; two potential mutants
+are rejected. Runtime instrumentation verifies all four winning directions on
+non-square boards, and original winner oracle passes. Ninety-one other files stayed
+identical. Replay adds no worker observations. No further ai-gamer edits were pushed:
+its earlier product fix remains merged; these are factory qualification artifacts.
+
+Important limits: repair-only trial halted after three accepted tasks; assisted
+planner produced malformed JSON twice, so Codex adapted a reviewed plan. Initial
+assisted gate acceptance missed non-square coverage; immutable finding blocks reuse.
+First correction attempt set truncated twice. Final protocol requires existing-file
+edits (16 replacements, 8192 bytes total), and that fresh correction trial passed.
+Do not erase failures or claim unattended planning from this supervised success.
+
+[Results](development-repair-results.json) retain all stages.
+[Repair fixture](ai-gamer-repair-fixture.json),
+[verified data / reviewed plan](ai-gamer-verified-examples-fixture.json), and
+[coverage correction](ai-gamer-coverage-repair-fixture.json) are portable. The helper
+supports `--test-followup --reviewed-plan`; the coverage fixture is the final passing
+trial input. Raw evidence: `.gflo/evidence/ai-gamer-small-repair-v1/` (final),
+`ai-gamer-coverage-repair-v1/` (truncated), `ai-gamer-verified-examples-v2/` (finding),
+and `ai-gamer-repair-v1/` (initial failure). Use original baseline checkout at
+`.gflo/targets/ai-gamer-baseline` or clone pinned revision on another machine.
+
+Next qualification should keep the same model, freeze domain checks before scoring,
+and distinguish reviewed planning/data assistance from autonomous discovery. Planning
+JSON reliability and adequacy of generated-test coverage remain limitations. The new
+human-review route retains contracts/drafts/evidence; it does not reset quarantine or
+silently change models. Push/merge authorization persists. License choice remains a
+separate supported-release decision.
+
+
+## Previous checkpoint — bounded test-generation limit, 2026-09-10
 
 ai-gamer [PR 1](https://github.com/gradrix/ai-gamer/pull/1) is merged at
 9a0a4384b9b727c02f0f2c168c7abc43a4e076bf. Local implementation unchanged;
@@ -306,3 +346,6 @@ Requests and deployment/profile files are retained there; source hashes/proposal
 are in portable results. Raw artifacts/images require separate transfer/recreation.
 The isolated history checkout remains at `.gflo/self-trial-checkout` for reference.
 Keep `.scratch/` version-controlled. Issues 29 and 31 resolved; 30 ready-for-agent.
+
+Final validation: 423 tests and 25 subtests passed with Docker checks enabled;
+ruff and mypy passed. The model weights and serving deployment were unchanged.

@@ -8,9 +8,9 @@ import json
 import subprocess
 from pathlib import Path
 
-from gflo.autonomy import FeaturePolicy
+from gflo.autonomy import FeaturePolicy, compile_feature
 from gflo.ledger import WorkLedger
-from gflo.planning import RepositoryFeatureRequest
+from gflo.planning import PlanProposal, RepositoryFeatureRequest
 from gflo.repository import FileEdit, Repository, SnapshotSource, capture_worktree
 
 
@@ -20,7 +20,10 @@ def main() -> None:
     parser.add_argument("--checkout", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--test-followup", action="store_true")
+    parser.add_argument("--reviewed-plan", action="store_true")
     args = parser.parse_args()
+    if args.reviewed_plan and not args.test_followup:
+        raise ValueError("Reviewed plan requires --test-followup")
     fixture = json.loads(args.fixture.read_bytes())
     if fixture["schema_version"] != 1:
         raise ValueError("Unsupported fixture version")
@@ -43,7 +46,11 @@ def main() -> None:
             repository = Repository(SnapshotSource(ledger.artifacts, source))
             edits = {
                 path: FileEdit(
-                    expected_digest=repository.source.files[path].content_digest,
+                    expected_digest=(
+                        repository.source.files[path].content_digest
+                        if path in repository.source.files
+                        else None
+                    ),
                     content=content,
                 )
                 for path, content in followup["source_edits"].items()
@@ -55,6 +62,10 @@ def main() -> None:
             policy = FeaturePolicy.model_validate_json(json.dumps(followup["policy"]))
             if source != request.source or policy.request_digest != request.digest():
                 raise ValueError("Follow-up source or policy differs from the pinned request")
+        if args.reviewed_plan:
+            proposal = PlanProposal.model_validate_json(json.dumps(fixture["reviewed_proposal"]))
+            plan = compile_feature(ledger.artifacts, request, proposal, policy)
+            (args.output / "feature-plan.json").write_text(plan.canonical() + "\n")
     (args.output / "request.json").write_text(request.canonical() + "\n")
     (args.output / "policy.json").write_text(policy.canonical() + "\n")
     print(

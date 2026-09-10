@@ -491,3 +491,142 @@ def test_model_tokenizes_actual_remaining_turn_and_output_budget(prepared, serve
     assert view["instruction"]["remaining_model_turns"] == 1
     assert view["instruction"]["response_output_tokens"] == generate["max_tokens"]
     assert "last turn" in view["instruction"]["turn_guidance"]
+
+
+def test_repair_binds_unique_text_scope_and_current_file(prepared):
+    import hashlib
+
+    store, atom, source, digest = prepared
+    edit = {
+        "path": "main.py",
+        "expected_digest": hashlib.sha256(source.files["main.py"].encode()).hexdigest(),
+        "old": "broken",
+        "new": "fixed",
+    }
+    response = {"schema_version": 1, "kind": "repair", "edits": [edit]}
+    with pytest.raises(WorkerError, match="not enabled"):
+        parse_result(json.dumps(response), atom, source)
+    result = parse_result(json.dumps(response), atom, source, allow_repair=True)
+    assert result.changes == {"main.py": "print('fixed')\n"}
+    for changes in [
+        {"expected_digest": "0" * 64},
+        {"old": "missing"},
+        {
+            "path": "helper.py",
+            "expected_digest": hashlib.sha256(source.files["helper.py"].encode()).hexdigest(),
+            "old": "value",
+        },
+    ]:
+        with pytest.raises(WorkerError):
+            parse_result(
+                json.dumps({**response, "edits": [{**edit, **changes}]}),
+                atom,
+                source,
+                allow_repair=True,
+            )
+    repeated = SourceBundle(files={**source.files, "main.py": "same same"})
+    edit.update(old="same", expected_digest=hashlib.sha256(b"same same").hexdigest())
+    with pytest.raises(WorkerError, match="exactly once"):
+        parse_result(json.dumps(response), atom, repeated, allow_repair=True)
+
+
+def test_draft_projection_preserves_base_identity_and_rejects_ungranted_changes(prepared):
+    from gflo.worker import project_draft
+
+    store, atom, source, digest = prepared
+    view = compose_view(store, atom, digest, selected_paths=("main.py",))
+    draft = SourceBundle(files={**source.files, "main.py": "print('draft')"})
+    projected = project_draft(view, atom, source, draft)
+    assert projected.source_digest == digest
+    assert projected.instruction["draft_digest"] == draft.digest()
+    assert projected.source_files["main.py"] == "print('draft')"
+    assert "helper.py" in projected.omitted_paths
+    with pytest.raises(WorkerError):
+        project_draft(view, atom, source, SourceBundle(files={**source.files, "helper.py": "bad"}))
+
+
+def test_repair_multiple_spans_use_one_base_and_reject_overlap(prepared):
+    import hashlib
+
+    _, atom, source, _ = prepared
+    content = source.files["main.py"]
+    digest = hashlib.sha256(content.encode()).hexdigest()
+    edit = {"path": "main.py", "expected_digest": digest, "old": "broken", "new": "fixed"}
+    response = {
+        "schema_version": 1,
+        "kind": "repair",
+        "edits": [edit, {**edit, "old": "print", "new": "repr"}],
+    }
+    result = parse_result(json.dumps(response), atom, source, allow_repair=True)
+    assert result.changes["main.py"] == "repr('fixed')\n"
+    response["edits"][1]["old"] = "print('broken')"
+    with pytest.raises(WorkerError, match="overlap"):
+        parse_result(json.dumps(response), atom, source, allow_repair=True)
+
+
+def test_local_model_repairs_tokenized_draft_against_its_hash(prepared, server):
+    import hashlib
+
+    store, atom, source, digest = prepared
+    draft = SourceBundle(files={**source.files, "main.py": "print('draft')\n"})
+    draft_digest = store.publish(draft.canonical().encode())
+    response = {
+        "kind": "repair",
+        "edits": [
+            {
+                "path": "main.py",
+                "old": "draft",
+                "new": "fixed",
+                "expected_digest": hashlib.sha256(draft.files["main.py"].encode()).hexdigest(),
+            }
+        ],
+    }
+
+    def mutate(value):
+        value["choices"][0]["message"]["content"] = json.dumps(response)
+        return value
+
+    server[0]["mutate"] = mutate
+    original = client_for(prepared, server)
+    client = LocalModel(
+        store, original.profile.model_copy(update={"profile_id": "vllm-python-worker-repair-v1"})
+    )
+    turn = client.turn(
+        atom,
+        digest,
+        current_inputs=lambda: atom.inputs_digest,
+        draft_digest=draft_digest,
+        remaining_model_turns=2,
+    )
+    assert turn.result.changes == {"main.py": "print('fixed')\n"}
+    tokenize, generate = server[0]["calls"][1][1], server[0]["calls"][2][1]
+    assert tokenize["messages"] == generate["messages"]
+    view = json.loads(generate["messages"][1]["content"])
+    assert view["source_digest"] == digest
+    assert view["source_files"]["main.py"] == draft.files["main.py"]
+
+
+def test_repair_protocol_requires_small_edits_for_existing_files(prepared):
+    import hashlib
+
+    _, atom, source, _ = prepared
+    with pytest.raises(WorkerError, match="exact edits"):
+        parse_result(
+            CandidateResult(kind="candidate", changes={"main.py": "pass"}).canonical(),
+            atom,
+            source,
+            allow_repair=True,
+        )
+    response = {
+        "kind": "repair",
+        "edits": [
+            {
+                "path": "main.py",
+                "old": "broken",
+                "new": "a" * 8192,
+                "expected_digest": hashlib.sha256(source.files["main.py"].encode()).hexdigest(),
+            }
+        ],
+    }
+    with pytest.raises(WorkerError, match="8192"):
+        parse_result(json.dumps(response), atom, source, allow_repair=True)

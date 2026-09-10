@@ -133,3 +133,12 @@ workers receive only reviewed text selections. This permits unrelated binary ass
 to survive text changes without importing, executing, or pretending to understand them.
 The snapshot record and existing identities are unchanged; only capture admission
 now accepts opaque bytes within the existing limits.
+
+The opt-in development repair protocol retains draft bundles separately from the
+immutable task input. Scope validation precedes draft projection and sandbox checks;
+file hashes and unique non-overlapping matches bind small repairs to the current
+draft. The controller may run the first pinned gate case for development feedback
+within existing model turns. These observations create no gate receipt or acceptance;
+independent final gates still validate the submitted candidate. Drafts survive
+interruption and remain auditable even without candidate publication. Exhausted
+policy builds export review packets without resetting work or selecting another model.

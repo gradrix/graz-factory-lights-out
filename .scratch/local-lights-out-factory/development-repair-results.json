@@ -1,0 +1,395 @@
+{
+  "schema_version": 1,
+  "model_changed": false,
+  "model": "Same pinned gflo-local deployment; explicit repair worker protocol, non-thinking",
+  "scope": "Seen ai-gamer tests; independent gates unchanged. Original product fix already merged separately.",
+  "runs": [
+    {
+      "run": "ai-gamer-repair-v1",
+      "status": "task-halt",
+      "accepted_tasks": 3,
+      "workers": [
+        {
+          "atom_id": "prepared-ad5c1ffb6e44bdc3-4cdec1a10a35a163-9e40c7ed7259d280/0ce7c1a0393fb1b6",
+          "status": "accepted",
+          "acceptance_challenged": false,
+          "cost": {
+            "attempts": 1,
+            "model_observations": 1,
+            "validated_prompt_tokens": 3777,
+            "validated_completion_tokens": 207,
+            "observed_model_seconds": 3.825286661998689,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          },
+          "development_checks": 1,
+          "response_kinds": [
+            "candidate"
+          ],
+          "failures": []
+        },
+        {
+          "atom_id": "prepared-ad5c1ffb6e44bdc3-4cdec1a10a35a163-9e40c7ed7259d280-fb357e2f1a1ef60d/c7f00a63e8ccb64f",
+          "status": "accepted",
+          "acceptance_challenged": false,
+          "cost": {
+            "attempts": 1,
+            "model_observations": 1,
+            "validated_prompt_tokens": 3800,
+            "validated_completion_tokens": 257,
+            "observed_model_seconds": 4.757593435999297,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          },
+          "development_checks": 1,
+          "response_kinds": [
+            "candidate"
+          ],
+          "failures": []
+        },
+        {
+          "atom_id": "prepared-ad5c1ffb6e44bdc3-4cdec1a10a35a163-9e40c7ed7259d280-583b6b5e9c5c098e/619d210aa9928bc3",
+          "status": "accepted",
+          "acceptance_challenged": false,
+          "cost": {
+            "attempts": 1,
+            "model_observations": 3,
+            "validated_prompt_tokens": 14015,
+            "validated_completion_tokens": 1223,
+            "observed_model_seconds": 21.827079992999643,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          },
+          "development_checks": 2,
+          "response_kinds": [
+            "candidate",
+            "repair",
+            "repair"
+          ],
+          "failures": []
+        },
+        {
+          "atom_id": "prepared-ad5c1ffb6e44bdc3-4cdec1a10a35a163-9e40c7ed7259d280-a85dfbe383a99c4f/fe8067751a4dd92d",
+          "status": "quarantined",
+          "acceptance_challenged": false,
+          "cost": {
+            "attempts": 2,
+            "model_observations": 5,
+            "validated_prompt_tokens": 15234,
+            "validated_completion_tokens": 4039,
+            "observed_model_seconds": 106.43023054199693,
+            "observations_without_validated_usage": 2,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": false,
+            "timing_complete_for_recorded_observations": true
+          },
+          "development_checks": 3,
+          "response_kinds": [
+            "candidate",
+            "candidate",
+            "repair",
+            "candidate",
+            "repair"
+          ],
+          "failures": [
+            "Invalid worker result: Repair requires distinct existing file paths",
+            "Invalid worker result: Repair requires distinct existing file paths"
+          ]
+        }
+      ],
+      "source": {
+        "schema_version": 1,
+        "kind": "repository-snapshot-v1",
+        "artifact_digest": "a2916961c7d41cd2fe4fecdb1939961e00d9bf9aa84dda45292533437c0a5dee"
+      },
+      "integration_atom": null,
+      "raw_evidence": ".gflo/evidence/ai-gamer-repair-v1",
+      "review_handoff_digest": "fc167885aeea07c52b1bf6be6dbd6745a27b2cfdc09de93def516c77a62da3dc",
+      "current_qualification": "task-halt"
+    },
+    {
+      "run": "ai-gamer-verified-examples-v2",
+      "status": "accepted",
+      "accepted_tasks": 4,
+      "workers": [
+        {
+          "atom_id": "prepared-045cf3d08ba9fd30-af233e0923b70496-0b072ed1064096fa/0ce7c1a0393fb1b6",
+          "status": "accepted",
+          "acceptance_challenged": false,
+          "cost": {
+            "attempts": 1,
+            "model_observations": 1,
+            "validated_prompt_tokens": 3799,
+            "validated_completion_tokens": 211,
+            "observed_model_seconds": 4.102755851999973,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          },
+          "development_checks": 1,
+          "response_kinds": [
+            "candidate"
+          ],
+          "failures": []
+        },
+        {
+          "atom_id": "prepared-045cf3d08ba9fd30-af233e0923b70496-0b072ed1064096fa-730a43a69bf82208/c7f00a63e8ccb64f",
+          "status": "accepted",
+          "acceptance_challenged": false,
+          "cost": {
+            "attempts": 1,
+            "model_observations": 1,
+            "validated_prompt_tokens": 3823,
+            "validated_completion_tokens": 237,
+            "observed_model_seconds": 4.3497913270002755,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          },
+          "development_checks": 1,
+          "response_kinds": [
+            "candidate"
+          ],
+          "failures": []
+        },
+        {
+          "atom_id": "prepared-045cf3d08ba9fd30-af233e0923b70496-0b072ed1064096fa-9af553196ba6ed06/8fd098d7eaccf6dc",
+          "status": "accepted",
+          "acceptance_challenged": false,
+          "cost": {
+            "attempts": 2,
+            "model_observations": 5,
+            "validated_prompt_tokens": 26497,
+            "validated_completion_tokens": 2594,
+            "observed_model_seconds": 45.69397850000314,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          },
+          "development_checks": 4,
+          "response_kinds": [
+            "candidate",
+            "candidate",
+            "candidate",
+            "candidate",
+            "candidate"
+          ],
+          "failures": [
+            "Validation did not pass.\nGate: file-0\nOutcome: fail\nLast executed case: 1\nCommand: [\"python\", \"-c\", \"import contextlib,io\\noutput=io.StringIO()\\nwith contextlib.redirect_stdout(output), contextlib.redirect_stderr(output):\\n import importlib.util,pytest\\n from pathlib import Path\\n class Results:\\n  def __init__(self):self.count=0\\n  def pytest_collection_finish(self,session):self.count=len(session.items)\\n plugin=Results()\\n result=pytest.main(['-q', '--tb=short', 'tests/test_gflo_potential.py'],plugins=[plugin])\\n assert result==0 and plugin.count>=1, output.getvalue()\\n print('regressio\n[truncated; full bytes in retained evidence]\nInput (stdin):\n\nProcess outcome: completed\nExit code: 1\nObserved stdout:\n\nObserved stderr:\nTraceback (most recent call last):\n  File \"<string>\", line 11, in <module>\nAssertionError: EEE                                                                      [100%]\n==================================== ERRORS ====================================\n_______________ ERROR at setup of test_empty_board_has_potential _______________\ntests/test_gflo_potential.py:12: in examples\n    with open(path, \"r\", encoding=\"utf-8\") as f:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   FileNotFoundError: [Errno 2] No such file or directory: '/workspace/tests/verified_winner_examples.json'\n___________ ERROR at setup of test_full_draw_board_has_no_potential ____________\ntests/test_gflo_potential.py:12: in examples\n    with open(path, \"r\", encoding=\"utf-8\") as f:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   FileNotFoundError: [Errno 2] No such file or directory: '/workspace/tests/verified_winner_examples.json'\n______________ ERROR at setup of test_winning_board_has_potential ______________\ntests/test_gflo_potential.py:12: in examples\n    with open(path, \"r\", encoding=\"utf-8\") as f:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nE   FileNotFoundError: [Errno 2] No such file or directory: '/workspace/tests/verified_winner_examples.json'\n=========================== short t"
+          ]
+        },
+        {
+          "atom_id": "prepared-045cf3d08ba9fd30-af233e0923b70496-0b072ed1064096fa-73245b0061ebeec7/fe8067751a4dd92d",
+          "status": "accepted",
+          "acceptance_challenged": true,
+          "cost": {
+            "attempts": 1,
+            "model_observations": 1,
+            "validated_prompt_tokens": 3835,
+            "validated_completion_tokens": 2270,
+            "observed_model_seconds": 37.671835793000355,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          },
+          "development_checks": 1,
+          "response_kinds": [
+            "candidate"
+          ],
+          "failures": []
+        }
+      ],
+      "source": {
+        "artifact_digest": "61ce0892e97edbc5b2e65391a4aaafd576db20b8a73335ae4540b339c682550f",
+        "kind": "repository-snapshot-v1",
+        "schema_version": 1
+      },
+      "integration_atom": "feature-final-26604d06d5c86f9d33964317b9f0bd950754e56f448192d68e41139ddc96e547",
+      "raw_evidence": ".gflo/evidence/ai-gamer-verified-examples-v2",
+      "review_handoff_digest": null,
+      "current_qualification": "blocked-by-finding"
+    },
+    {
+      "run": "ai-gamer-coverage-repair-v1",
+      "status": "task-halt",
+      "accepted_tasks": 0,
+      "workers": [
+        {
+          "atom_id": "prepared-21c725d1be9d43ca-826c243808ba6876-2e551f09d2810de7/c7478b62c0480ed1",
+          "status": "quarantined",
+          "acceptance_challenged": false,
+          "cost": {
+            "attempts": 2,
+            "model_observations": 2,
+            "validated_prompt_tokens": 0,
+            "validated_completion_tokens": 0,
+            "observed_model_seconds": 137.3983268280026,
+            "observations_without_validated_usage": 2,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": false,
+            "timing_complete_for_recorded_observations": true
+          },
+          "development_checks": 0,
+          "response_kinds": [
+            "incomplete-or-invalid",
+            "incomplete-or-invalid"
+          ],
+          "failures": [
+            "Infrastructure/protocol failure: Incomplete or unsupported worker response",
+            "Infrastructure/protocol failure: Incomplete or unsupported worker response"
+          ]
+        }
+      ],
+      "source": {
+        "artifact_digest": "2b420a279580e7a47b4a4f82360bb60d31700e351b297669d28c20e89db13d6c",
+        "kind": "repository-snapshot-v1",
+        "schema_version": 1
+      },
+      "integration_atom": null,
+      "raw_evidence": ".gflo/evidence/ai-gamer-coverage-repair-v1",
+      "review_handoff_digest": null,
+      "current_qualification": "task-halt"
+    },
+    {
+      "run": "ai-gamer-small-repair-v1",
+      "status": "accepted",
+      "accepted_tasks": 1,
+      "workers": [
+        {
+          "atom_id": "prepared-21c725d1be9d43ca-826c243808ba6876-2e551f09d2810de7/c7478b62c0480ed1",
+          "status": "accepted",
+          "acceptance_challenged": false,
+          "cost": {
+            "attempts": 1,
+            "model_observations": 1,
+            "validated_prompt_tokens": 6212,
+            "validated_completion_tokens": 1695,
+            "observed_model_seconds": 28.795610020999447,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          },
+          "development_checks": 1,
+          "response_kinds": [
+            "repair"
+          ],
+          "failures": []
+        }
+      ],
+      "source": {
+        "artifact_digest": "3e50031053d4316b94f7ee19fed9a41ef9bcc8138b061984f53dc70e8b6926e6",
+        "kind": "repository-snapshot-v1",
+        "schema_version": 1
+      },
+      "integration_atom": "feature-final-f264a15016a205323a483a94e592602cd2019d921bddc1d639534762288d54c1",
+      "raw_evidence": ".gflo/evidence/ai-gamer-small-repair-v1",
+      "review_handoff_digest": null,
+      "current_qualification": "accepted"
+    }
+  ],
+  "assisted_planning": {
+    "status": "exhausted",
+    "proposal_digest": null,
+    "execution_authorized": false,
+    "observations": [
+      {
+        "attempt": 1,
+        "turn": 1,
+        "error": "1 validation error for union[PlanProposal,PlanQuestions]\n  Invalid JSON: expected `,` or `]` at line 1 column 1349 [type=json_invalid, input_value='{\"schema_version\":1,\"req...e between cases.\"]}]}\"}', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/json_invalid",
+        "model_evidence_digest": "3913e4a814d2a18642e90f429789f9338cf49f30bf3ce674334aed2dce1bc16b",
+        "observation_digest": "42b83bed2f89a7771b4a3d66e7733329fd6d11f4a7187c5e4cf3c17a650a9601"
+      },
+      {
+        "attempt": 2,
+        "turn": 1,
+        "error": "1 validation error for union[PlanProposal,PlanQuestions]\n  Invalid JSON: expected `,` or `]` at line 1 column 6691 [type=json_invalid, input_value='{\"schema_version\":1,\"req...questions are needed.\"}', input_type=str]\n    For further information visit https://errors.pydantic.dev/2.13/v/json_invalid",
+        "model_evidence_digest": "145fda3cf102fdf22d89dda1ddcdd380662234b14d4e939912f2b6df33196f5e",
+        "observation_digest": "4dfab7ddb0aeb1f94c3b24786f9acb6b83aa5c1d772c19364f3113e2dd604fee"
+      }
+    ]
+  },
+  "assisted_plan_author": "Codex adapted prior four-task proposal and included verified example data after planning failed; not end-to-end autonomous planning.",
+  "initial_protocol_limit": "Repair-only trial initially allowed one replacement per file. Rejected multi-edit responses motivated non-overlapping same-base replacements before assisted trial.",
+  "coverage_finding": {
+    "atom_id": "prepared-045cf3d08ba9fd30-af233e0923b70496-0b072ed1064096fa-73245b0061ebeec7/fe8067751a4dd92d",
+    "candidate_digest": "323776819ed4dac3a418a74015bd0a9ddc4a0a5f091904dd4e8aebd8fca70cb2",
+    "contract_digest": "ecd3cb35b74acb451e049b150a143cbd794e527420a3e49c6a8521f2d8b81edb",
+    "evidence_digest": "95ec0dc57fec23d5b13a85f117b29f4bc07c2439ec126ff4217c518dcc46dd6c",
+    "reason": "Generated tests never exercise non-square boards required by rectangles requirement. Independent runtime coverage probe failed.",
+    "schema_version": 1
+  },
+  "coverage_probe": "import contextlib,io,pytest\nimport game_server.games.ticktaktoe as live\nOriginal=live.TikTakToe\nobserved=set()\nclass Probe(Original):\n def checkForWinner(self):\n  result=super().checkForWinner()\n  if self.xSize!=self.ySize and self.scoreLineLength>=3:\n   k=self.scoreLineLength\n   for dx,dy in ((1,0),(0,1),(1,1),(1,-1)):\n    for y in range(self.ySize):\n     for x in range(self.xSize):\n      if 0<=x+(k-1)*dx<self.xSize and 0<=y+(k-1)*dy<self.ySize:\n       line=[self.grid[y+i*dy][x+i*dx] for i in range(k)]\n       if line[0] in (live.X,live.O) and all(v==line[0] for v in line):observed.add((dx,dy))\n  return result\nlive.TikTakToe=Probe\noutput=io.StringIO()\nwith contextlib.redirect_stdout(output),contextlib.redirect_stderr(output):\n result=pytest.main(['-q','--tb=short','tests/test_gflo_rectangles.py'])\nassert result==0,output.getvalue()\nmissing={(1,0),(0,1),(1,1),(1,-1)}-observed\nassert not missing, 'Tests did not exercise K>=3 non-square winning boards in directions: '+repr(sorted(missing))\nprint('non-square-directions-ok')\n",
+  "final_protocol": "Existing files require exact non-overlapping edits with at most 8192 bytes of old/new text total. Candidate full-file text is for new files only.",
+  "portability": "Verified examples and reviewed proposal reconstruct the exact source/plan in a fresh ledger.",
+  "final_review": {
+    "status": "review-passed",
+    "unchanged_files": 91,
+    "implementation_and_verified_examples_preserved": true,
+    "replay": "No new worker observations",
+    "checks": [
+      {
+        "check": "generated-tests",
+        "stdout": "....................                                                     [100%]\n20 passed in 0.06s\n"
+      },
+      {
+        "check": "strict-original-baseline",
+        "stdout": "baseline-rejected 4 assertions 0 other errors\n"
+      },
+      {
+        "check": "potential-always-True",
+        "stdout": "potential-mutant-rejected: True\n"
+      },
+      {
+        "check": "potential-always-False",
+        "stdout": "potential-mutant-rejected: False\n"
+      }
+    ],
+    "new_source": {
+      "artifact_digest": "3e50031053d4316b94f7ee19fed9a41ef9bcc8138b061984f53dc70e8b6926e6",
+      "kind": "repository-snapshot-v1",
+      "schema_version": 1
+    }
+  },
+  "retained_failure_notes": [
+    "Assisted planner exhausted two malformed JSON attempts before explicit reviewed planning.",
+    "First assisted execution was gate-accepted but review found square-only coverage; an immutable finding blocks reuse.",
+    "The first coverage-repair trial exhausted two incomplete responses. A fresh trial required small edits for existing files and passed in one repair response.",
+    "Preparation initially built a different snapshot parent chain; corrected fixture reconstructs identical bytes and lineage from the pinned baseline."
+  ],
+  "factory_validation": {
+    "passed": 423,
+    "subtests": 25,
+    "docker_enabled": true,
+    "ruff": "passed",
+    "mypy": "passed"
+  },
+  "final_repair_response": {
+    "schema_version": 1,
+    "kind": "repair",
+    "edits": [
+      {
+        "path": "tests/test_gflo_rectangles.py",
+        "expected_digest": "7a8b147a64e1a14312128ebeaa91a562893b85c646cd8b7c2aa65674bb339b70",
+        "old": "@pytest.fixture\ndef fresh_game():\n    \"\"\"Return a fresh 5x5 TikTakToe game with K=3.\"\"\"\n    return TikTakToe(5, 5, 3)",
+        "new": "@pytest.fixture\ndef fresh_game():\n    \"\"\"Return a fresh 5x5 TikTakToe game with K=3.\"\"\"\n    return TikTakToe(5, 5, 3)\n\n\n@pytest.fixture\ndef fresh_rect_game():\n    \"\"\"Return a fresh 7x5 TikTakToe game with K=3 (non-square board).\"\"\"\n    return TikTakToe(7, 5, 3)"
+      },
+      {
+        "path": "tests/test_gflo_rectangles.py",
+        "expected_digest": "7a8b147a64e1a14312128ebeaa91a562893b85c646cd8b7c2aa65674bb339b70",
+        "old": "def test_fresh_independent_cases():\n    \"\"\"Each independent case uses a fresh game instance.\"\"\"\n    game1 = TikTakToe(5, 5, 3)\n    game2 = TikTakToe(5, 5, 3)\n\n    # game1: horizontal win\n    assert game1.placeFigure(0, 0, X)\n    assert game1.placeFigure(1, 0, X)\n    assert game1.placeFigure(2, 0, X)\n    assert game1.checkForWinner() == X\n\n    # game2: vertical win (independent)\n    assert game2.placeFigure(0, 0, O)\n    assert game2.placeFigure(0, 1, O)\n    assert game2.placeFigure(0, 2, O)\n    assert game2.checkForWinner() == O\n\n    # game1 board still has X's, game2 board still has O's\n    board1 = game1.getCurrentBoard()\n    board2 = game2.getCurrentBoard()\n    assert board1[0][0] == X\n    assert board2[0][0] == O",
+        "new": "def test_fresh_independent_cases():\n    \"\"\"Each independent case uses a fresh game instance.\"\"\"\n    game1 = TikTakToe(5, 5, 3)\n    game2 = TikTakToe(5, 5, 3)\n\n    # game1: horizontal win\n    assert game1.placeFigure(0, 0, X)\n    assert game1.placeFigure(1, 0, X)\n    assert game1.placeFigure(2, 0, X)\n    assert game1.checkForWinner() == X\n\n    # game2: vertical win (independent)\n    assert game2.placeFigure(0, 0, O)\n    assert game2.placeFigure(0, 1, O)\n    assert game2.placeFigure(0, 2, O)\n    assert game2.checkForWinner() == O\n\n    # game1 board still has X's, game2 board still has O's\n    board1 = game1.getCurrentBoard()\n    board2 = game2.getCurrentBoard()\n    assert board1[0][0] == X\n    assert board2[0][0] == O\n\n\n# ---------------------------------------------------------------------------\n# Non-square board tests (7x5, K=3)\n# ---------------------------------------------------------------------------\n\ndef test_rect_horizontal_win(fresh_rect_game):\n    game = fresh_rect_game\n    # Place X at (0,0), (1,0), (2,0) -> horizontal K=3 win on 7x5 board\n    _place(game, 0, 0, X)\n    _place(game, 1, 0, X)\n    _place(game, 2, 0, X)\n\n    winner = game.checkForWinner()\n    assert winner == X\n\n    # Repeated calls are stable\n    assert game.checkForWinner() == X\n    assert game.checkForWinner() == X\n\n    # Grid unchanged after checkForWinner\n    board = _board_copy(game)\n    assert board[0][0] == X\n    assert board[0][1] == X\n    assert board[0][2] == X\n    assert board[0][3] == E\n    assert board[0][6] == E\n\n\ndef test_rect_vertical_win(fresh_rect_game):\n    game = fresh_rect_game\n    # Place X at (3,0), (3,1), (3,2) -> vertical K=3 win on 7x5 board\n    _place(game, 3, 0, X)\n    _place(game, 3, 1, X)\n    _place(game, 3, 2, X)\n\n    winner = game.checkForWinner()\n    assert winner == X\n\n    # Repeated calls stable\n    assert game.checkForWinner() == X\n    assert game.checkForWinner() == X\n\n    # Grid unchanged\n    board = _board_copy(game)\n    assert board[0][3] == X\n    assert board[1][3] == X\n    assert board[2][3] == X\n    assert board[3][3] == E\n    assert board[4][3] == E\n\n\ndef test_rect_diagonal_down_right_win(fresh_rect_game):\n    game = fresh_rect_game\n    # Place X at (0,0), (1,1), (2,2) -> diagonal K=3 win on 7x5 board\n    _place(game, 0, 0, X)\n    _place(game, 1, 1, X)\n    _place(game, 2, 2, X)\n\n    winner = game.checkForWinner()\n    assert winner == X\n\n    # Repeated calls stable\n    assert game.checkForWinner() == X\n    assert game.checkForWinner() == X\n\n    # Grid unchanged\n    board = _board_copy(game)\n    assert board[0][0] == X\n    assert board[1][1] == X\n    assert board[2][2] == X\n    assert board[3][3] == E\n\n\ndef test_rect_diagonal_down_left_win(fresh_rect_game):\n    game = fresh_rect_game\n    # Place X at (6,0), (5,1), (4,2) -> anti-diagonal K=3 win on 7x5 board\n    _place(game, 6, 0, X)\n    _place(game, 5, 1, X)\n    _place(game, 4, 2, X)\n\n    winner = game.checkForWinner()\n    assert winner == X\n\n    # Repeated calls stable\n    assert game.checkForWinner() == X\n    assert game.checkForWinner() == X\n\n    # Grid unchanged\n    board = _board_copy(game)\n    assert board[0][6] == X\n    assert board[1][5] == X\n    assert board[2][4] == X\n    assert board[3][3] == E\n    assert board[4][2] == E"
+      }
+    ]
+  }
+}

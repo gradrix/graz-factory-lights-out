@@ -20,7 +20,7 @@ from typing import Any, Self
 
 from pydantic import TypeAdapter
 
-from gflo.artifacts import ArtifactAudit, ArtifactStore
+from gflo.artifacts import ArtifactAudit, ArtifactError, ArtifactStore
 from gflo.records import (
     Acceptance,
     AcceptanceFinding,
@@ -349,7 +349,7 @@ class WorkLedger:
         return self.artifacts.read(row[0])
 
     def observe(self, lease: Lease, kind: str, digest: str) -> None:
-        if kind not in ("model", "diagnostic", "candidate-execution"):
+        if kind not in ("model", "diagnostic", "candidate-execution", "development"):
             raise ValueError("Unsupported observation kind")
         self.artifacts.verify(digest)
         with self._transaction():
@@ -606,11 +606,15 @@ class WorkLedger:
         No collection is performed, including for publication-before-commit orphans.
         """
         references: set[str] = set()
+        development: list[str] = []
         with self._transaction(write=False):
             for row in self._db.execute("SELECT digest FROM run_plans"):
                 references.add(row[0])
             for row in self._db.execute("SELECT details FROM events WHERE kind='observation'"):
-                references.add(json.loads(row[0])["digest"])
+                details = json.loads(row[0])
+                references.add(details["digest"])
+                if details["kind"] == "development":
+                    development.append(details["digest"])
             for row in self._db.execute(
                 "SELECT details FROM events WHERE kind='acceptance-finding'"
             ):
@@ -629,4 +633,10 @@ class WorkLedger:
                 evidence = RetryPlan.model_validate_json(row[0]).new_evidence
                 if evidence is not None:
                     references.add(evidence)
+        for digest in development:
+            try:
+                record = json.loads(self.artifacts.read(digest))
+            except ArtifactError:
+                continue  # The observation itself is reported missing/corrupt below.
+            references.add(TypeAdapter(Digest).validate_python(record["draft_digest"]))
         return self.artifacts.audit(references)

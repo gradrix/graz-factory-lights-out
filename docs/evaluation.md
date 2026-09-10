@@ -311,3 +311,30 @@ not proof of reliable autonomous test generation. See
 and [split-task results](../.scratch/local-lights-out-factory/ai-gamer-split-tests-results.json).
 The product fix PR is merged; its final tests were written by Codex. The current
 Docker-enabled factory suite passed 412 tests and 25 subtests.
+
+
+## Development repair follow-up, 2026-09-10
+
+The model and serving configuration were unchanged. An opt-in protocol adds pinned
+sandbox development checks, retained drafts, and hash-bound exact text edits. A
+trusted generator supplies verified example boards as read-only data. Exhausted
+work produces a review packet instead of resetting its retry budget.
+
+The first repair-only trial accepted three tasks then halted. Assisted planning
+exhausted two malformed JSON responses, requiring an explicitly reviewed plan. That
+run passed its gates, but review found square-only coverage in the rectangle tests;
+an immutable finding now blocks that acceptance. A new coverage check requires actual
+winning calls in every direction on non-square boards. The first correction trial
+truncated twice. After existing files were restricted to small edit responses, the
+same correction passed in one response: 6212 prompt / 1695 output tokens, 28.80 seconds.
+
+The corrected set passes 20 generated tests, rejects the original with four assertion
+failures and no other errors, and rejects always-True/False potential mutants. The
+non-square coverage check and original exhaustive winner oracle pass. All 91 other
+files remained unchanged; replay required no new worker observations. This is a
+reviewed-plan, data-assisted result on a seen task, not an unattended or held-out
+success score. [Portable results](../.scratch/local-lights-out-factory/development-repair-results.json)
+retain every stage, including the challenged acceptance.
+
+Final validation: 423 tests and 25 subtests passed with Docker checks enabled;
+ruff and mypy passed. The model weights and serving deployment were unchanged.

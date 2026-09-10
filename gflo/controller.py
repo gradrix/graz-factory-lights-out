@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import base64
 import fcntl
 import hashlib
 import json
@@ -22,6 +23,7 @@ from gflo.worker import (
     InputSnapshot,
     candidate_bundle,
     compose_view,
+    project_draft,
 )
 
 OWNER = "durable-controller-v1"
@@ -232,6 +234,33 @@ class Controller:
         selected = plan.selected_paths
         source_digest = plan.source.digest()
         diagnostics = (diagnostic,) if diagnostic else ()
+        repair = plan.model_profile.profile_id == "vllm-python-worker-repair-v1"
+        draft = plan.source
+        if repair:
+            for attempt in reversed(self.ledger.status(lease.atom_id)["attempts"]):
+                observations = [
+                    e
+                    for e in attempt["events"]
+                    if e["kind"] == "observation" and e["details"]["kind"] == "development"
+                ]
+                if observations:
+                    retained = json.loads(
+                        self.ledger.artifacts.read(observations[-1]["details"]["digest"])
+                    )
+                    if retained["contract_digest"] != plan.atom.digest():
+                        raise ValueError("Development draft belongs to another contract")
+                    draft = SourceBundle.model_validate_json(
+                        self.ledger.artifacts.read(retained["draft_digest"])
+                    )
+                    project_draft(
+                        compose_view(
+                            self.ledger.artifacts, plan.atom, source_digest, selected_paths=selected
+                        ),
+                        plan.atom,
+                        plan.source,
+                        draft,
+                    )
+                    break
         for turn_index in range(plan.max_model_turns):
             verify_predecessors(self.ledger, plan.atom)
             self.ledger.check_lease(lease)
@@ -243,13 +272,78 @@ class Controller:
                     selected_paths=selected,
                     diagnostic_digests=diagnostics,
                     remaining_model_turns=plan.max_model_turns - turn_index,
+                    **({"draft_digest": draft.digest()} if repair else {}),
                 )
             finally:
                 if self.model.last_evidence_digest is not None:
                     self.ledger.observe(lease, "model", self.model.last_evidence_digest)
             if isinstance(turn.result, CandidateResult):
-                candidate = candidate_bundle(plan.source, turn.result)
+                candidate = candidate_bundle(draft, turn.result)
+                project_draft(
+                    compose_view(
+                        self.ledger.artifacts, plan.atom, source_digest, selected_paths=selected
+                    ),
+                    plan.atom,
+                    plan.source,
+                    candidate,
+                )
                 digest = self.ledger.artifacts.publish(candidate.canonical().encode())
+                if repair:
+                    draft = candidate
+                    record = {"contract_digest": plan.atom.digest(), "draft_digest": digest}
+                    self.ledger.observe(
+                        lease,
+                        "development",
+                        self.ledger.artifacts.publish(json.dumps(record, sort_keys=True).encode()),
+                    )
+                    if turn_index + 1 < plan.max_model_turns:
+                        case = next(iter(plan.gates.values())).cases[0]
+                        execution = self.broker.execute(
+                            digest,
+                            case.command,
+                            stdin=case.stdin,
+                            seconds=case.seconds,
+                            purpose="candidate",
+                        )
+                        verify_predecessors(self.ledger, plan.atom)
+                        self.ledger.check_lease(lease)
+                        self.ledger.observe(
+                            lease,
+                            "development",
+                            self.ledger.artifacts.publish(
+                                json.dumps(
+                                    {**record, "execution": execution.model_dump(mode="json")},
+                                    sort_keys=True,
+                                ).encode()
+                            ),
+                        )
+                        if (
+                            execution.candidate_digest != digest
+                            or execution.command != case.command
+                            or execution.stdin != case.stdin
+                            or execution.purpose != "candidate"
+                            or execution.image_id != self.broker.image_id
+                        ):
+                            raise ValueError("Development report does not bind the draft/check")
+                        passed = (
+                            execution.outcome == "completed"
+                            and execution.exit_code == 0
+                            and not execution.oom_killed
+                            and base64.b64decode(execution.stdout_base64, validate=True)
+                            == case.expected_stdout.encode()
+                        )
+                        if not passed:
+                            observation = {
+                                "gate_id": "development-only",
+                                "outcome": "fail",
+                                "executions": [execution.model_dump(mode="json")],
+                            }
+                            text = validation_feedback(observation).replace(
+                                "Validation did not pass.",
+                                "Development check failed; draft retained.",
+                            )
+                            diagnostics = (self._diagnostic(lease, text, observation),)
+                            continue
                 self.ledger.candidate(lease, digest)
                 return self._validate(plan, lease)
             # Only a verified bundle path can reach this branch. Expansion is a

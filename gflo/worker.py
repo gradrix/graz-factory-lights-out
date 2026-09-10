@@ -55,13 +55,27 @@ class CandidateResult(Record):
     changes: dict[str, str]
 
 
+class TextReplacement(Record):
+    path: str
+    expected_digest: Digest
+    old: Annotated[str, Field(min_length=1, max_length=65536)]
+    new: Annotated[str, Field(max_length=65536)]
+
+
+class RepairResult(Record):
+    kind: Literal["repair"]
+    edits: Annotated[tuple[TextReplacement, ...], Field(min_length=1, max_length=16)]
+
+
 class ReadFileRequest(Record):
     kind: Literal["read_file"]
     path: str
 
 
-WorkerResult = Annotated[CandidateResult | ReadFileRequest, Field(discriminator="kind")]
-RESULT: TypeAdapter[CandidateResult | ReadFileRequest] = TypeAdapter(WorkerResult)
+WorkerResult = Annotated[
+    CandidateResult | ReadFileRequest | RepairResult, Field(discriminator="kind")
+]
+RESULT: TypeAdapter[CandidateResult | ReadFileRequest | RepairResult] = TypeAdapter(WorkerResult)
 
 SYSTEM = """You are a bounded Python coding worker. Follow the controller's instruction.
 Context policy: bounded-python-v4.
@@ -193,12 +207,45 @@ def strict_json(content: str | bytes) -> Any:
 
 
 def parse_result(
-    content: str, atom: WorkAtom, source: SourceBundle
+    content: str, atom: WorkAtom, source: SourceBundle, *, allow_repair: bool = False
 ) -> CandidateResult | ReadFileRequest:
     """Reject duplicate JSON keys, extra authority fields and scope violations."""
     parsed = strict_json(content)
     result = RESULT.validate_json(json.dumps(parsed))
     atom = WorkAtom.model_validate(atom)
+    if (
+        allow_repair
+        and isinstance(result, CandidateResult)
+        and set(result.changes) & source.files.keys()
+    ):
+        raise WorkerError("Repair protocol requires exact edits for existing files")
+    if isinstance(result, RepairResult):
+        if not allow_repair:
+            raise WorkerError("Repair protocol is not enabled")
+        if sum(len(e.old.encode()) + len(e.new.encode()) for e in result.edits) > 8192:
+            raise WorkerError("Repair text exceeds 8192 bytes; use smaller edits")
+        changes = {}
+        replacements: dict[str, list[tuple[int, int, str]]] = {}
+        for edit in result.edits:
+            if edit.path not in source.files:
+                raise WorkerError("Repair requires existing file paths")
+            content_before = source.files[edit.path]
+            if hashlib.sha256(content_before.encode()).hexdigest() != edit.expected_digest:
+                raise WorkerError("Repair file digest is stale")
+            if content_before.count(edit.old) != 1:
+                raise WorkerError("Repair text must match exactly once")
+            start = content_before.index(edit.old)
+            end = start + len(edit.old)
+            spans = replacements.setdefault(edit.path, [])
+            if any(start < prior_end and prior_start < end for prior_start, prior_end, _ in spans):
+                raise WorkerError("Repair replacements overlap")
+            spans.append((start, end, edit.new))
+        for path, spans in replacements.items():
+            text = source.files[path]
+            for start, end, new in sorted(spans, reverse=True):
+                text = text[:start] + new + text[end:]
+            changes[path] = text
+        result = CandidateResult(kind="candidate", changes=changes)
     if isinstance(result, ReadFileRequest):
         if (
             "read" not in atom.allowed_tools
@@ -220,3 +267,35 @@ def parse_result(
 def candidate_bundle(source: SourceBundle, result: CandidateResult) -> SourceBundle:
     """Merge an already validated proposal; this does not execute or accept it."""
     return SourceBundle(files=source.files | result.changes)
+
+
+def project_draft(
+    view: WorkerView, atom: WorkAtom, base: SourceBundle, draft: SourceBundle
+) -> WorkerView:
+    """Keep base identity, replace only authorized source data with a retained draft."""
+    if not set(base.files) <= draft.files.keys():
+        raise WorkerError("Draft cannot remove source files")
+    changes = {p: text for p, text in draft.files.items() if base.files.get(p) != text}
+    if changes:
+        parse_result(CandidateResult(kind="candidate", changes=changes).canonical(), atom, base)
+    selected = set(view.source_files) | set(changes)
+    return view.model_copy(
+        update={
+            "instruction": {**view.instruction, "draft_digest": draft.digest()},
+            "source_files": {p: draft.files[p] for p in sorted(selected)},
+            "sources": tuple(
+                ContextSource(
+                    path=p,
+                    content_digest=hashlib.sha256(draft.files[p].encode()).hexdigest(),
+                    reason="current development draft"
+                    if p in changes
+                    else "selected supporting source",
+                )
+                for p in sorted(selected)
+            ),
+            "omitted_paths": tuple(p for p in view.omitted_paths if p not in selected),
+            "omission_reasons": {
+                p: why for p, why in view.omission_reasons.items() if p not in selected
+            },
+        }
+    )
