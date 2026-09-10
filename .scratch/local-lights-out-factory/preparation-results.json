@@ -1,0 +1,33 @@
+{
+  "source": {
+    "schema_version": 1,
+    "kind": "repository-snapshot-v1",
+    "artifact_digest": "9799252ba2dba6a84c9175d1e268d3644a6b23bd1288114c5a6ebb4c83f6a7d4"
+  },
+  "repository_bytes": 360033,
+  "request_bytes": 475,
+  "run_bytes": 2041,
+  "execution_bundle_bytes": 75,
+  "whole_repository": false,
+  "omitted_file_preserved": true,
+  "checks": [
+    {
+      "name": "correct",
+      "passed": true,
+      "expected_pass": true,
+      "execution_digest": "bda9f822ddd561cc2599216115fac5798aabe187ccddf75e6f2ac6ca6a6d71db"
+    },
+    {
+      "name": "faulty",
+      "passed": false,
+      "expected_pass": false,
+      "execution_digest": "5281f87f4b7e9b2134f5f2d18624fde64b32e7f7252d85a091140f5f3626c2dc"
+    }
+  ],
+  "model_used": false,
+  "scope": "Trusted fixture preparation and direct broker checks; no acceptance or autonomous planning claim",
+  "image": "sha256:695d05883b15326aea01e9266067ff58c41f3eaa4f647cfc9424b403dbe9548d",
+  "note": "Broker fixture preceded addition of product objective/requirement text to worker brief; source selections and gates unchanged.",
+  "raw_evidence": ".gflo/evidence/preparation-v1",
+  "host_tests": "337 passed, 8 optional Docker skips, 25 subtests passed"
+}

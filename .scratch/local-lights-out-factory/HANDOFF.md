@@ -1,6 +1,31 @@
 # GFLO handoff — repository access foundation
 
-## Current checkpoint — 2026-09-10
+## Current checkpoint — reviewed snapshot root tasks, 2026-09-10
+
+`gflo/preparation.py` and `gflo prepare-task` bridge RepositoryFeatureRequest +
+PlanProposal + controller-authored PlanReview to PreparedTask/legacy RunPlan.
+Reviews bind exact request/proposal digests and provide context/execution paths,
+ProcessGates, model/deployment, and budgets. Full snapshot identity is bound in the
+new run's source revision. Legacy schemas are unchanged. Only independent root
+tasks prepare; dependent tasks reject until accepted-base progression exists.
+Preparation publishes artifacts without submitting/running. Candidate lifting
+produces a proposed snapshot, not acceptance or promotion.
+
+16 new tests; full suite 337 passed, eight optional skips, 25 subtests. Ruff/mypy
+passed. Docker fixture matched correct output and rejected faulty output:
+360,033-byte repository, 75-byte execution source, omitted file identity preserved.
+No LLM was exercised. See [results](preparation-results.json) and
+[product intake](../../docs/product-intake.md). Legacy plan-feature still uses
+FeatureRequest bundles; snapshot-backed model drafting is not implemented.
+
+Next: accepted-base progression with acceptance/finding checks and independent
+combined gates, then repeated multi-task feature trials. Do not prepare consumers
+by deleting dependencies or relabeling unaccepted candidate snapshots. Recursive
+managers, automated intake/environment setup, larger builds, indexing, and million-
+line work remain unqualified. No human decision blocks that engineering slice.
+Owner push/merge authorization remains active.
+
+## Previous checkpoint — repository access, 2026-09-10
 
 Repository access first slice complete: `gflo/repository.py`, `repository_cli.py`,
 and 21 tests. CLI captures immutable Git-visible dirty source, reads/searches/selects

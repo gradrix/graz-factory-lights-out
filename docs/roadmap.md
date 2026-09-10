@@ -29,8 +29,10 @@ intermittent memory-qualification halt; retain strict controls while diagnosing 
 
 A new bounded planner has produced a four-task feature proposal from repository
 context. Structural checks passed and proposed interfaces were reviewed; tasks
-are not yet materialized or executed automatically. The next milestone is a trusted
-bridge from reviewed drafts to WorkAtoms and independent gates.
+are not yet materialized or executed automatically. The first trusted
+bridge now prepares reviewed independent tasks from snapshot references and separately
+supplied gates. Dependent tasks remain blocked pending accepted-base progression.
+See [product intake](product-intake.md) for the intended hierarchy and current limits.
 
 Prepare the task graph and provider contracts, independent per-task gates, and
 whole-feature checks before model work. Split workers where ownership and validation
@@ -45,8 +47,9 @@ records the migration: immutable repository identity, bounded context selections
 and separately prepared execution inputs. The first source-access slice is implemented:
 immutable snapshots, bounded reads/search/selections, legacy-bundle parity, and
 digest-bound edits preserving omitted files. A real 193-file, 1.53-MB GFLO snapshot
-yielded a 238-KB execution subset. Next, wire reviewed plans through snapshot-bound
-preparation while preserving historical records; larger execution inputs remain future work.
+yielded a 238-KB execution subset. Reviewed independent tasks now use snapshot-bound preparation while preserving
+historical records. Next: accepted-base progression and combined validation; larger
+execution inputs remain future work.
 
 The sequence is snapshot-backed access and text search, revision-bound symbol
 lookup, then dependency/impact queries and incremental indexing. Graph storage is

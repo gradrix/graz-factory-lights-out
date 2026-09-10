@@ -94,8 +94,10 @@ file bytes but stores only changed blobs and a new manifest. No garbage collecti
 or cross-store snapshot export is implemented.
 
 `FeatureRequest.source`, `RunPlan.source`, and existing candidate construction still
-embed `SourceBundle`. Wiring reviewed plans through snapshot references is the next
-migration slice. Execution selections retain the broker's 100-file/256-KiB limits;
+embed `SourceBundle`. `gflo.preparation` now prepares reviewed independent root tasks from snapshot
+references into these unchanged RunPlans, retaining full source binding and bounded
+execution/context selections. Dependent tasks are blocked until accepted-base
+progression is implemented. See [product intake](product-intake.md). Execution selections retain the broker's 100-file/256-KiB limits;
 a selected subset is explicitly not a full-repository validation.
 
 Search currently scans text with explicit file/byte/hit budgets; no symbol or graph

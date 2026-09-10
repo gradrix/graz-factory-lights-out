@@ -13,6 +13,7 @@ from typing import Any
 
 from pydantic import ValidationError
 
+from gflo.artifacts import ArtifactStore
 from gflo.broker import BrokerError, DockerBroker
 from gflo.controller import Controller, RunPlan, prepare_run
 from gflo.history import change_history, render_history
@@ -20,8 +21,10 @@ from gflo.integration import IntegrationPlan, IntegrationState, integrate
 from gflo.ledger import Conflict, WorkLedger
 from gflo.model import LocalModel, ModelError, ModelProfile
 from gflo.planning import FeatureRequest, PlanProposal, draft_feature, validate_proposal
+from gflo.preparation import PlanReview, RepositoryFeatureRequest, prepare_task
 from gflo.records import WorkAtom
 from gflo.reporting import cost_report
+from gflo.repository import SourceRef
 from gflo.repository_cli import configure as configure_repository
 from gflo.repository_cli import execute as execute_repository
 
@@ -74,8 +77,30 @@ def main() -> int:
     configure_repository(
         commands.add_parser("repository", help="Capture and query repository snapshots")
     )
+    preparation = commands.add_parser("prepare-task", help="Prepare a reviewed snapshot root task")
+    preparation.add_argument("request", type=Path)
+    preparation.add_argument("proposal", type=Path)
+    preparation.add_argument("review", type=Path)
+    preparation.add_argument("task_id")
+    preparation.add_argument("--store", type=Path, required=True)
+    preparation.add_argument("--current", required=True)
     args = parser.parse_args()
     try:
+        if args.command == "prepare-task":
+            if not args.store.is_dir():
+                raise ValueError("Repository artifact store does not exist")
+            result_task = prepare_task(
+                ArtifactStore(args.store),
+                RepositoryFeatureRequest.model_validate_json(args.request.read_bytes()),
+                PlanProposal.model_validate_json(args.proposal.read_bytes()),
+                PlanReview.model_validate_json(args.review.read_bytes()),
+                args.task_id,
+                current_source=SourceRef(
+                    kind="repository-snapshot-v1", artifact_digest=args.current
+                ),
+            )
+            print(result_task.canonical())
+            return 0
         if args.command == "repository":
             print(json.dumps(execute_repository(args), indent=2))
             return 0

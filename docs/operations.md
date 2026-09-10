@@ -166,3 +166,10 @@ checkout freshness for them. It publishes a derived snapshot in the same store,
 preserves omitted files and executable metadata, and changes no checkout or acceptance.
 Deletion and cross-store export are not implemented. Raw artifacts in `.gflo/` must
 be transferred separately to reuse snapshots on another machine.
+
+## Reviewed task preparation
+
+Use `gflo prepare-task` to turn a snapshot-backed request, exact proposal, and trusted
+review into an existing RunPlan. It prepares independent root tasks only and does
+not submit, run, accept, or promote them. See [product intake](product-intake.md)
+for commands, record schemas, authority assumptions, and dependent-task limitations.

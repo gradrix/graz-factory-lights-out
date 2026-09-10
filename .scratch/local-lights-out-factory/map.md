@@ -128,3 +128,8 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
   snapshot/bundle access and CLI implemented; real 1.53-MB source selected within
   current broker budget. Next: snapshot-bound reviewed-plan preparation. See
   [results](repository-access-results.json); no large-build qualification claimed.
+
+- [Issue 33](issues/33-prepare-snapshot-backed-reviewed-tasks.md) resolved: reviewed
+  snapshot root tasks prepare existing RunPlans with trusted gates; candidate lifting
+  preserves omitted source. Next: accepted-base progression and combined validation
+  before recursive managers. Dependent tasks deliberately remain blocked.

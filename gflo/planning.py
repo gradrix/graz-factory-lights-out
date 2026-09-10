@@ -5,6 +5,7 @@ from __future__ import annotations
 import ast
 import hashlib
 import json
+from collections.abc import Collection
 from pathlib import Path
 from typing import Annotated, Any
 
@@ -77,8 +78,28 @@ class PlanProposal(Record):
 def validate_proposal(request: FeatureRequest, proposal: PlanProposal) -> tuple[str, ...]:
     """Return deterministic dependency order; validate structure, not semantic adequacy."""
     request = FeatureRequest.model_validate(request)
+    return validate_tasks(
+        proposal,
+        request_digest=request.digest(),
+        allowed_paths=request.allowed_paths,
+        source_paths=request.source.files.keys(),
+        environments=request.environments.keys(),
+        requirements=request.requirements.keys(),
+    )
+
+
+def validate_tasks(
+    proposal: PlanProposal,
+    *,
+    request_digest: str,
+    allowed_paths: tuple[str, ...],
+    source_paths: Collection[str],
+    environments: Collection[str],
+    requirements: Collection[str],
+) -> tuple[str, ...]:
+    """Shared structural checks without loading repository content."""
     proposal = PlanProposal.model_validate(proposal)
-    if proposal.request_digest != request.digest():
+    if proposal.request_digest != request_digest:
         raise ValueError("Proposal is bound to another request/source snapshot")
     tasks = {t.task_id: t for t in proposal.tasks}
     if len(tasks) != len(proposal.tasks):
@@ -87,20 +108,20 @@ def validate_proposal(request: FeatureRequest, proposal: PlanProposal) -> tuple[
     for task in proposal.tasks:
         _paths(task.writable_paths)
         _paths(task.read_paths)
-        if not all(within(p, request.allowed_paths) for p in task.writable_paths):
+        if not all(within(p, allowed_paths) for p in task.writable_paths):
             raise ValueError("Task writes outside allowed scope")
-        if not set(task.read_paths) <= request.source.files.keys():
+        if not set(task.read_paths) <= set(source_paths):
             raise ValueError("Task references missing source")
-        if task.environment_id not in request.environments:
+        if task.environment_id not in environments:
             raise ValueError("Task requests an unknown environment")
-        if not set(task.requirement_ids) <= request.requirements.keys():
+        if not set(task.requirement_ids) <= set(requirements):
             raise ValueError("Task references an unknown requirement")
         if len(set(task.depends_on)) != len(task.depends_on):
             raise ValueError("Duplicate dependencies")
         if task.task_id in task.depends_on or not set(task.depends_on) <= tasks.keys():
             raise ValueError("Task has a self or missing dependency")
         covered.update(task.requirement_ids)
-    if covered != request.requirements.keys():
+    if covered != set(requirements):
         raise ValueError("Some requirements have no planned task")
     order: list[str] = []
     ancestors: dict[str, set[str]] = {}

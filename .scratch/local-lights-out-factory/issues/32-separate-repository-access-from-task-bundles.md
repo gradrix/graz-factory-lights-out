@@ -6,7 +6,7 @@ Status: resolved
 ## Requirement
 
 The owner requires a path to large repositories without a rewrite of planning and
-execution around demo-only assumptions. Follow [ADR 0001](../../../../docs/adr/0001-repository-snapshots-and-bounded-task-inputs.md).
+execution around demo-only assumptions. Follow [ADR 0001](../../../docs/adr/0001-repository-snapshots-and-bounded-task-inputs.md).
 Do not add a speculative graph framework or merely increase existing bundle limits.
 
 ## First implementation slice
