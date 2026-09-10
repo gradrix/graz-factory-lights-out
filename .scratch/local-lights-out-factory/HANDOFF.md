@@ -1,6 +1,17 @@
 # GFLO handoff — repository access foundation
 
-## Current checkpoint — planner recovery, 2026-09-10
+## Current checkpoint — task-created draft repair, 2026-09-10
+
+Issue 61 resolved. Window candidates can replace task-created files, with immutable
+base identity bound to the contract and original files still range-protected. The exact
+previously rejected response passes all fault gates unchanged. Three fresh GPU trials
+accepted (1/2/1 responses); the second repaired its own draft. Replay unchanged.
+499 tests/25 subtests, lint, typing and four historical replay checks pass.
+[Portable evidence](draft-repair/README.md). Next: issue 62 integration provenance,
+then issue 63 full per-worker retry-budget reliability comparison. Model unchanged;
+reliability matters more than token savings. Existing push authorization persists.
+
+## Previous checkpoint — planner recovery, 2026-09-10
 
 Issue 60 resolved. Windows persist across attempts, use direct file/range labels, and
 receive precise validation feedback within the existing six-turn ceiling. The controller

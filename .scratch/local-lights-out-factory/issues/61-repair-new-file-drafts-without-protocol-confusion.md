@@ -1,7 +1,7 @@
 # Repair newly created file drafts without protocol confusion
 
 Type: task
-Status: ready-for-agent
+Status: resolved
 
 ## Evidence
 
@@ -19,3 +19,11 @@ provide a clearer typed repair action/result. Do not accept partial output, gran
 outside scope, discard unseen original bytes, or add retries. Preserve historical replay
 and qualify against the retained failure plus original-file rejection tests. Prefer
 state/protocol design to task-specific prompting. Do not hardcode test file names.
+
+## Answer
+
+Window parsing now binds immutable input identity and permits complete replacement only
+for task-created files. Scope and complete-draft checks remain enforced. The unedited
+retained repair passes all fault gates; three fresh GPU trials accepted, including one
+two-response draft repair. 499 tests and 25 subtests pass; historical replay unchanged.
+[Evidence and reproduction](../draft-repair/README.md).

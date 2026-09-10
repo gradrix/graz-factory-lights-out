@@ -267,3 +267,7 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
   [Both campaigns](planner-recovery/README.md) retain failures and final results.
 - Owner prioritizes reliability over local token cost. Issue 63 compares larger aggregate
   specialist budgets after issue 61; equal-budget results do not settle that question.
+
+- Issue 61 resolved: immutable-input-bound draft replacement fixes the retained failure;
+  three fresh GPU trials accepted, including draft repair. [Evidence](draft-repair/README.md).
+  Next: issue 62 integration provenance, then issue 63 full worker retry budgets.

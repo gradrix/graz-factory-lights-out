@@ -489,11 +489,13 @@ lines. A read consumes an existing worker turn; at most four requested windows a
 retained alongside initial headers. Coverage and omitted windows are explicit, including
 lines too large for a window. Model tokenization still enforces the contract budget.
 
-Existing-file changes use `repair_window`: a current opaque target handle plus exact
+Immutable-input-file changes use `repair_window`: a current opaque target handle plus exact
 old/new text. Handles bind the contract, complete current source and visible range.
 The controller rejects stale, read-only, overlapping and out-of-range edits, preserves
 unseen text, and runs the ordinary checks on the complete candidate. New files use the
-existing candidate protocol. Window workers receive compact new-file guidance. A response
+existing candidate protocol, including complete replacement of files created during this
+task. The prompt lists these in `task_created_paths`; the host binds original source
+identity to the contract before granting this authority. Window workers receive compact new-file guidance. A response
 that reaches its output limit is retained and rejected as a worker-output failure; a
 remaining attempt may retry with the diagnostic. Partial text is never applied and no
 extra attempts are granted. Other protocol or infrastructure failures retain their halt

@@ -1,0 +1,1950 @@
+[
+  {
+    "name": "solo-1",
+    "status": "accepted",
+    "atoms": [
+      {
+        "atom_id": "feature-final-2d8b0751f76f0718c302f612fb752952ddca2f450c9d85333bf97cd070f76b79",
+        "status": "accepted",
+        "active_attempt": "e281a3a60c104ee4a3ad7551dde1f118",
+        "candidate_digest": "3908b8f604f8c0821267482ff191d3fd1a25318e86d0ac339bd4f3e08bfb233c",
+        "contract": {
+          "schema_version": 1,
+          "atom_id": "feature-final-2d8b0751f76f0718c302f612fb752952ddca2f450c9d85333bf97cd070f76b79",
+          "graph_revision": "1a2b188abcfe12000df0d95a791b02653fe9eb043bb6b0b4d0cd62fb7583ea25",
+          "objective": "Independently validate the combined feature",
+          "non_goals": [
+            "Modify omitted repository files",
+            "Accept own work"
+          ],
+          "requirement_ids": [
+            "types",
+            "values"
+          ],
+          "product_modules": [
+            "solo-1"
+          ],
+          "source_revision": "feature-final-v1:2d8b0751f76f0718c302f612fb752952ddca2f450c9d85333bf97cd070f76b79",
+          "inputs_digest": "3108efeab39d647a6a8353c8217e765929d47973030b482bf1b41e6c15c52b00",
+          "writable_paths": [
+            "tests/test_all.py"
+          ],
+          "prohibited_paths": [],
+          "dependency_artifacts": [
+            "1b60e990a95d287ccfaecee4500ccf99c15e6f093f001515e5fb76a5d6235776"
+          ],
+          "upstream_contracts": [],
+          "capability_profile": "python-pilot-v1",
+          "network_profile": "none-v1",
+          "credential_profile": "none-v1",
+          "sandbox_profile": "pilot-v1",
+          "allowed_tools": [
+            "read",
+            "edit"
+          ],
+          "required_gates": [
+            {
+              "schema_version": 1,
+              "gate_id": "combined",
+              "validator_digest": "f594eccfe1c4ace03750d05e98ec58e2343e3768dedcb0c33373097537d2b099"
+            }
+          ],
+          "context_budget": {
+            "schema_version": 1,
+            "total_tokens": 12288,
+            "output_tokens": 4096
+          },
+          "max_attempts": 2,
+          "expected_outputs": [
+            {
+              "schema_version": 1,
+              "name": "candidate",
+              "schema_digest": "888c109fc99f38b0cec8912262c8ce74f38ac64b05ba8ddf4f19cfd17409d482"
+            }
+          ],
+          "idempotency_key": "feature-final-2d8b0751f76f0718c302f612fb752952ddca2f450c9d85333bf97cd070f76b79",
+          "integration_key": "solo-1"
+        },
+        "attempts": [
+          {
+            "attempt_id": "e281a3a60c104ee4a3ad7551dde1f118",
+            "ordinal": 1,
+            "owner": "feature-check-v1",
+            "expires_at": 1789049688.4712389,
+            "strategy": "initial",
+            "retry_plan": null,
+            "events": [
+              {
+                "event_id": 10,
+                "attempt_id": "e281a3a60c104ee4a3ad7551dde1f118",
+                "kind": "leased",
+                "details": {
+                  "ordinal": 1
+                },
+                "recorded_at": 1789047888.4712389
+              },
+              {
+                "event_id": 11,
+                "attempt_id": "e281a3a60c104ee4a3ad7551dde1f118",
+                "kind": "running",
+                "details": {},
+                "recorded_at": 1789047888.4742656
+              },
+              {
+                "event_id": 12,
+                "attempt_id": "e281a3a60c104ee4a3ad7551dde1f118",
+                "kind": "candidate",
+                "details": {
+                  "digest": "3908b8f604f8c0821267482ff191d3fd1a25318e86d0ac339bd4f3e08bfb233c"
+                },
+                "recorded_at": 1789047888.4794586
+              },
+              {
+                "event_id": 13,
+                "attempt_id": "e281a3a60c104ee4a3ad7551dde1f118",
+                "kind": "gate",
+                "details": {
+                  "receipt_digest": "5485e0a5590f750511ca364f4294a3d98763001f8cfcafa2df6a9470793985b0"
+                },
+                "recorded_at": 1789047889.5484827
+              },
+              {
+                "event_id": 14,
+                "attempt_id": "e281a3a60c104ee4a3ad7551dde1f118",
+                "kind": "accepted",
+                "details": {
+                  "receipt": {
+                    "atom_id": "feature-final-2d8b0751f76f0718c302f612fb752952ddca2f450c9d85333bf97cd070f76b79",
+                    "attempt_id": "e281a3a60c104ee4a3ad7551dde1f118",
+                    "candidate_digest": "3908b8f604f8c0821267482ff191d3fd1a25318e86d0ac339bd4f3e08bfb233c",
+                    "contract_digest": "5e2dd5f82729c554430fece799fa6d83d016c80d25017826bef93c5d0efc9643",
+                    "gate_receipts": [
+                      "5485e0a5590f750511ca364f4294a3d98763001f8cfcafa2df6a9470793985b0"
+                    ],
+                    "inputs_digest": "3108efeab39d647a6a8353c8217e765929d47973030b482bf1b41e6c15c52b00",
+                    "schema_version": 1
+                  }
+                },
+                "recorded_at": 1789047889.559463
+              }
+            ],
+            "gate_receipts": [
+              {
+                "schema_version": 1,
+                "attempt_id": "e281a3a60c104ee4a3ad7551dde1f118",
+                "contract_digest": "5e2dd5f82729c554430fece799fa6d83d016c80d25017826bef93c5d0efc9643",
+                "inputs_digest": "3108efeab39d647a6a8353c8217e765929d47973030b482bf1b41e6c15c52b00",
+                "candidate_digest": "3908b8f604f8c0821267482ff191d3fd1a25318e86d0ac339bd4f3e08bfb233c",
+                "gate_id": "combined",
+                "validator_digest": "f594eccfe1c4ace03750d05e98ec58e2343e3768dedcb0c33373097537d2b099",
+                "outcome": "pass",
+                "evidence_digest": "4989b774adc5073b343f8a197367e517cdbb66006df88c9e3d3b298796d0e702",
+                "runner_id": "python-process-gate-v2"
+              }
+            ]
+          }
+        ],
+        "acceptance_findings": [],
+        "acceptance_challenged": false
+      },
+      {
+        "atom_id": "prepared-5cb1a8ec814fe2ad-1a2b188abcfe1200-d6a66091acf9734d/3c9e63d1d8bdbe54",
+        "status": "accepted",
+        "active_attempt": "ff3b91e863344c7b8d4cb8cf4ae3b914",
+        "candidate_digest": "3908b8f604f8c0821267482ff191d3fd1a25318e86d0ac339bd4f3e08bfb233c",
+        "contract": {
+          "schema_version": 1,
+          "atom_id": "prepared-5cb1a8ec814fe2ad-1a2b188abcfe1200-d6a66091acf9734d/3c9e63d1d8bdbe54",
+          "graph_revision": "1a2b188abcfe12000df0d95a791b02653fe9eb043bb6b0b4d0cd62fb7583ea25",
+          "objective": "{\"product_objective\": \"Add isolated regression tests for the accepted clamp and caller. Do not change production code, substitute imports, mock the tested functions, or mutate source from tests. Cover the assigned requirement groups concisely.\", \"requirements\": {\"types\": \"Write pytest tests against actual large.chosen_value. Only exact built-in ints are accepted. Booleans, integer subclasses, floats, strings, None and other non-integer types raise TypeError. Tests must detect a type-permissive implementation with assertions.\", \"values\": \"Write pytest tests against actual large.chosen_value and consumer.render. chosen_value() returns 42. Built-in ints clamp to 0..100 inclusive: cover negative, both bounds, interior and over-100 inputs. render(value) returns \\\"value=\\\" followed by the decimal clamped value. Tests must detect unclamped, constant-return and incorrect caller-format implementations with assertions.\"}, \"interfaces\": [], \"repository_files\": 2, \"execution_is_whole_repository\": true, \"task_requirement_ids\": [\"values\", \"types\"], \"dependency_interfaces\": []}",
+          "non_goals": [
+            "Modify omitted repository files",
+            "Accept own work"
+          ],
+          "requirement_ids": [
+            "types",
+            "values"
+          ],
+          "product_modules": [
+            "solo-1"
+          ],
+          "source_revision": "repository-snapshot-v1:4baafa6824c8f4a6d33651b64f111f3e27364fa12d881e8763b64ef7f7f9fb52",
+          "inputs_digest": "8230611c498fb28e282c9e9c87753521215a2ba4e1c0930a42026ced0e322b42",
+          "writable_paths": [
+            "tests/test_all.py"
+          ],
+          "prohibited_paths": [],
+          "dependency_artifacts": [],
+          "upstream_contracts": [],
+          "capability_profile": "python-pilot-v1",
+          "network_profile": "none-v1",
+          "credential_profile": "none-v1",
+          "sandbox_profile": "pilot-v1",
+          "allowed_tools": [
+            "read",
+            "edit"
+          ],
+          "required_gates": [
+            {
+              "schema_version": 1,
+              "gate_id": "faults",
+              "validator_digest": "f594eccfe1c4ace03750d05e98ec58e2343e3768dedcb0c33373097537d2b099"
+            }
+          ],
+          "context_budget": {
+            "schema_version": 1,
+            "total_tokens": 12288,
+            "output_tokens": 4096
+          },
+          "max_attempts": 2,
+          "expected_outputs": [
+            {
+              "schema_version": 1,
+              "name": "candidate",
+              "schema_digest": "888c109fc99f38b0cec8912262c8ce74f38ac64b05ba8ddf4f19cfd17409d482"
+            }
+          ],
+          "idempotency_key": "prepared-5cb1a8ec814fe2ad-1a2b188abcfe1200-d6a66091acf9734d/3c9e63d1d8bdbe54",
+          "integration_key": "solo-1"
+        },
+        "attempts": [
+          {
+            "attempt_id": "ff3b91e863344c7b8d4cb8cf4ae3b914",
+            "ordinal": 1,
+            "owner": "durable-controller-v1",
+            "expires_at": 1789049675.4281442,
+            "strategy": "initial",
+            "retry_plan": null,
+            "events": [
+              {
+                "event_id": 1,
+                "attempt_id": "ff3b91e863344c7b8d4cb8cf4ae3b914",
+                "kind": "leased",
+                "details": {
+                  "ordinal": 1
+                },
+                "recorded_at": 1789047875.4281442
+              },
+              {
+                "event_id": 2,
+                "attempt_id": "ff3b91e863344c7b8d4cb8cf4ae3b914",
+                "kind": "running",
+                "details": {},
+                "recorded_at": 1789047875.4323204
+              },
+              {
+                "event_id": 3,
+                "attempt_id": "ff3b91e863344c7b8d4cb8cf4ae3b914",
+                "kind": "observation",
+                "details": {
+                  "digest": "aec0e1fe9792a2fd25c528c2b3479d8d4189891bcdfbaafd47c457ccecb70cac",
+                  "kind": "model"
+                },
+                "recorded_at": 1789047884.0826027
+              },
+              {
+                "event_id": 4,
+                "attempt_id": "ff3b91e863344c7b8d4cb8cf4ae3b914",
+                "kind": "observation",
+                "details": {
+                  "digest": "3e1e7fd16188098c7d6c746bc34cf3b6647c986bc622795638c86343e9f2b773",
+                  "kind": "development"
+                },
+                "recorded_at": 1789047884.1081223
+              },
+              {
+                "event_id": 5,
+                "attempt_id": "ff3b91e863344c7b8d4cb8cf4ae3b914",
+                "kind": "observation",
+                "details": {
+                  "digest": "19d0748da60ee1b684a68675307e410c1205816d531463eb440310174c0c4d3a",
+                  "kind": "development"
+                },
+                "recorded_at": 1789047885.2028787
+              },
+              {
+                "event_id": 6,
+                "attempt_id": "ff3b91e863344c7b8d4cb8cf4ae3b914",
+                "kind": "candidate",
+                "details": {
+                  "digest": "3908b8f604f8c0821267482ff191d3fd1a25318e86d0ac339bd4f3e08bfb233c"
+                },
+                "recorded_at": 1789047885.206314
+              },
+              {
+                "event_id": 7,
+                "attempt_id": "ff3b91e863344c7b8d4cb8cf4ae3b914",
+                "kind": "observation",
+                "details": {
+                  "digest": "f9effc05b356c7d0897972c90c3849aeb00029d0a3c668c228bc276c5a7a0306",
+                  "kind": "candidate-execution"
+                },
+                "recorded_at": 1789047886.2540104
+              },
+              {
+                "event_id": 8,
+                "attempt_id": "ff3b91e863344c7b8d4cb8cf4ae3b914",
+                "kind": "gate",
+                "details": {
+                  "receipt_digest": "419e9aa05ec2f153ad2ab0ff6441b5f63e4940f2dc6195551217c1edb83a194c"
+                },
+                "recorded_at": 1789047887.3430378
+              },
+              {
+                "event_id": 9,
+                "attempt_id": "ff3b91e863344c7b8d4cb8cf4ae3b914",
+                "kind": "accepted",
+                "details": {
+                  "receipt": {
+                    "atom_id": "prepared-5cb1a8ec814fe2ad-1a2b188abcfe1200-d6a66091acf9734d/3c9e63d1d8bdbe54",
+                    "attempt_id": "ff3b91e863344c7b8d4cb8cf4ae3b914",
+                    "candidate_digest": "3908b8f604f8c0821267482ff191d3fd1a25318e86d0ac339bd4f3e08bfb233c",
+                    "contract_digest": "483b63e58d31413ad4dd44a4031916800d58ee0e36ecee7a09aec825d411a179",
+                    "gate_receipts": [
+                      "419e9aa05ec2f153ad2ab0ff6441b5f63e4940f2dc6195551217c1edb83a194c"
+                    ],
+                    "inputs_digest": "8230611c498fb28e282c9e9c87753521215a2ba4e1c0930a42026ced0e322b42",
+                    "schema_version": 1
+                  }
+                },
+                "recorded_at": 1789047887.3475058
+              }
+            ],
+            "gate_receipts": [
+              {
+                "schema_version": 1,
+                "attempt_id": "ff3b91e863344c7b8d4cb8cf4ae3b914",
+                "contract_digest": "483b63e58d31413ad4dd44a4031916800d58ee0e36ecee7a09aec825d411a179",
+                "inputs_digest": "8230611c498fb28e282c9e9c87753521215a2ba4e1c0930a42026ced0e322b42",
+                "candidate_digest": "3908b8f604f8c0821267482ff191d3fd1a25318e86d0ac339bd4f3e08bfb233c",
+                "gate_id": "faults",
+                "validator_digest": "f594eccfe1c4ace03750d05e98ec58e2343e3768dedcb0c33373097537d2b099",
+                "outcome": "pass",
+                "evidence_digest": "c7101edd540544487ad861f97361353e5e31b521126fd80d75290b5ba3bbc573",
+                "runner_id": "python-process-gate-v2"
+              }
+            ]
+          }
+        ],
+        "acceptance_findings": [],
+        "acceptance_challenged": false
+      }
+    ],
+    "responses": [
+      {
+        "atom": "prepared-5cb1a8ec814fe2ad-1a2b188abcfe1200-d6a66091acf9734d/3c9e63d1d8bdbe54",
+        "attempt": 1,
+        "evidence_digest": "aec0e1fe9792a2fd25c528c2b3479d8d4189891bcdfbaafd47c457ccecb70cac",
+        "evidence": {
+          "contract_digest": "483b63e58d31413ad4dd44a4031916800d58ee0e36ecee7a09aec825d411a179",
+          "elapsed_seconds": 8.637035661999107,
+          "exchanges": [
+            {
+              "elapsed_seconds": 0.021077119999972638,
+              "path": "/v1/models",
+              "request_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "response_digest": "5e645ef56ba9bf0faec4f600e7a0fbe8e3a4aa99eaf22594eafa8313e20edde6",
+              "status": 200
+            },
+            {
+              "elapsed_seconds": 0.023894343998108525,
+              "path": "/tokenize",
+              "request_digest": "33fb22822ef0984014dd484f382c46c1f231be31a8f398ce572f52b50b479ce1",
+              "response_digest": "98c86680151cd20a76e5ee821e29501a546e38451dc31654892f13c5772a7604",
+              "status": 200
+            },
+            {
+              "elapsed_seconds": 8.433419163000508,
+              "path": "/v1/chat/completions",
+              "request_digest": "a248dd1be9f28d06bb99b821ac24fc0506218faa4520eebc9b960960fb4ad8a8",
+              "response_digest": "e465e02f2a4a5e144db711d90c4fec57c35f07b284b4ba22bdd271760981479d",
+              "status": 200
+            }
+          ],
+          "manifest_digest": "2e59a90ddd84cb9aa141d324ecb86d53129ec4e6603efee2309d3c2d4a0ca5b1",
+          "profile": {
+            "base_url": "http://127.0.0.1:30000/v1",
+            "context_limit": 16384,
+            "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+            "model": "gflo-local",
+            "profile_id": "vllm-python-worker-windows-v1",
+            "schema_version": 1,
+            "timeout_seconds": 120.0
+          },
+          "turn_digest": "e25629eec07a34c4d89238b6871ce97f6bb484e2481f68ce79804f9cb58015da",
+          "view_digest": "79b53db2628f69df040be6c21c62e739e16e653dab502215757a50497b688176",
+          "window_targets_digest": "0fe73af248074064f3ad45996bcc989f991af9bede8617cdd1a926fff8bbb918"
+        },
+        "response": {
+          "id": "chatcmpl-8481b2ebd15abcb2",
+          "object": "chat.completion",
+          "created": 1789047875,
+          "model": "gflo-local",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "{\"kind\":\"candidate\",\"changes\":{\"tests/test_all.py\":\"import pytest\\nfrom large import chosen_value\\nfrom consumer import render\\n\\n\\nclass TestTypes:\\n    def test_bool_raises(self):\\n        with pytest.raises(TypeError):\\n            chosen_value(True)\\n\\n    def test_float_raises(self):\\n        with pytest.raises(TypeError):\\n            chosen_value(1.0)\\n\\n    def test_string_raises(self):\\n        with pytest.raises(TypeError):\\n            chosen_value(\\\"42\\\")\\n\\n    def test_none_raises(self):\\n        with pytest.raises(TypeError):\\n            chosen_value(None)\\n\\n    def test_complex_raises(self):\\n        with pytest.raises(TypeError):\\n            chosen_value(1+0j)\\n\\n    def test_int_subclass_raises(self):\\n        class MyInt(int):\\n            pass\\n        with pytest.raises(TypeError):\\n            chosen_value(MyInt(42))\\n\\n    def test_builtin_int_accepted(self):\\n        # Should not raise\\n        chosen_value(42)\\n\\n\\nclass TestValues:\\n    def test_default_returns_42(self):\\n        assert chosen_value() == 42\\n\\n    def test_negative_clamps_to_0(self):\\n        assert chosen_value(-1) == 0\\n        assert chosen_value(-1000) == 0\\n\\n    def test_zero(self):\\n        assert chosen_value(0) == 0\\n\\n    def test_hundred(self):\\n        assert chosen_value(100) == 100\\n\\n    def test_over_100_clamps(self):\\n        assert chosen_value(101) == 100\\n        assert chosen_value(999) == 100\\n\\n    def test_interior(self):\\n        assert chosen_value(50) == 50\\n        assert chosen_value(1) == 1\\n        assert chosen_value(99) == 99\\n\\n    def test_render_format(self):\\n        assert render(42) == \\\"value=42\\\"\\n        assert render(-1) == \\\"value=0\\\"\\n        assert render(200) == \\\"value=100\\\"\\n        assert render(0) == \\\"value=0\\\"\\n        assert render(100) == \\\"value=100\\\"\\n\"}}",
+                "refusal": null,
+                "annotations": null,
+                "audio": null,
+                "function_call": null,
+                "reasoning": null
+              },
+              "logprobs": null,
+              "finish_reason": "stop",
+              "stop_reason": null,
+              "token_ids": null,
+              "routed_experts": null
+            }
+          ],
+          "service_tier": null,
+          "system_fingerprint": "vllm-0.28.0-1411bf1b",
+          "usage": {
+            "prompt_tokens": 1781,
+            "total_tokens": 2283,
+            "completion_tokens": 502,
+            "prompt_tokens_details": null,
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            }
+          },
+          "prompt_logprobs": null,
+          "prompt_token_ids": null,
+          "prompt_text": null,
+          "kv_transfer_params": null,
+          "ec_transfer_params": null,
+          "metrics": null
+        }
+      }
+    ],
+    "reserved_model_responses": 6,
+    "reserved_tokens": 73728,
+    "plan": {
+      "schema_version": 1,
+      "kind": "reviewed-feature-v1",
+      "request": {
+        "schema_version": 1,
+        "kind": "repository-feature-v1",
+        "feature_id": "solo-1",
+        "objective": "Add isolated regression tests for the accepted clamp and caller. Do not change production code, substitute imports, mock the tested functions, or mutate source from tests. Cover the assigned requirement groups concisely.",
+        "requirements": {
+          "types": "Write pytest tests against actual large.chosen_value. Only exact built-in ints are accepted. Booleans, integer subclasses, floats, strings, None and other non-integer types raise TypeError. Tests must detect a type-permissive implementation with assertions.",
+          "values": "Write pytest tests against actual large.chosen_value and consumer.render. chosen_value() returns 42. Built-in ints clamp to 0..100 inclusive: cover negative, both bounds, interior and over-100 inputs. render(value) returns \"value=\" followed by the decimal clamped value. Tests must detect unclamped, constant-return and incorrect caller-format implementations with assertions."
+        },
+        "source": {
+          "schema_version": 1,
+          "kind": "repository-snapshot-v1",
+          "artifact_digest": "4baafa6824c8f4a6d33651b64f111f3e27364fa12d881e8763b64ef7f7f9fb52"
+        },
+        "allowed_paths": [
+          "tests/test_all.py"
+        ],
+        "environments": {
+          "python": {
+            "schema_version": 1,
+            "image": "sha256:695d05883b15326aea01e9266067ff58c41f3eaa4f647cfc9424b403dbe9548d",
+            "description": "Pinned offline Python with pytest"
+          }
+        }
+      },
+      "proposal": {
+        "schema_version": 1,
+        "request_digest": "5cb1a8ec814fe2add92ce0344fe0c376bd3c7964f0ccba04998b2359d5b494ad",
+        "tasks": [
+          {
+            "schema_version": 1,
+            "task_id": "all",
+            "objective": "Write only the assigned values, types regression tests.",
+            "requirement_ids": [
+              "values",
+              "types"
+            ],
+            "depends_on": [],
+            "writable_paths": [
+              "tests/test_all.py"
+            ],
+            "read_paths": [
+              "large.py",
+              "consumer.py"
+            ],
+            "environment_id": "python",
+            "interface_contracts": [
+              "{\"declarations\":[],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+            ],
+            "acceptance_checks": [
+              "Tests pass the real implementation and reject assigned faults."
+            ]
+          }
+        ],
+        "questions": [],
+        "rationale": "Reviewed experiment: fixed behavior groups and disjoint output ownership; no model planning."
+      },
+      "review": {
+        "schema_version": 1,
+        "kind": "plan-review-v1",
+        "request_digest": "5cb1a8ec814fe2add92ce0344fe0c376bd3c7964f0ccba04998b2359d5b494ad",
+        "proposal_digest": "1a2b188abcfe12000df0d95a791b02653fe9eb043bb6b0b4d0cd62fb7583ea25",
+        "tasks": {
+          "all": {
+            "schema_version": 1,
+            "execution_paths": [
+              "large.py",
+              "consumer.py"
+            ],
+            "context_paths": [
+              "large.py",
+              "consumer.py"
+            ],
+            "gates": {
+              "faults": {
+                "schema_version": 1,
+                "cases": [
+                  {
+                    "schema_version": 1,
+                    "command": [
+                      "python",
+                      "-B",
+                      "-c",
+                      "import ast,hashlib,json,subprocess,sys\nfrom pathlib import Path\npaths=['tests/test_all.py']\nfaults=['unclamped', 'constant', 'caller', 'permissive']\noriginal={p:Path(p).read_text() for p in ['large.py','consumer.py']}\nassert {p:hashlib.sha256(t.encode()).hexdigest() for p,t in original.items()} == {'large.py': 'dc6328504b1a0efe732ce021c91577762103f5f009b7ffc55ce65c5254bb0c83', 'consumer.py': '4a87c82f9a932412c44348bb20a1b638f47e9f27467e624c0c20b04bc1dbd579'}\nnode=next(n for n in ast.parse(original['large.py']).body if isinstance(n,ast.FunctionDef) and n.name=='chosen_value')\nlines=original['large.py'].splitlines(keepends=True)\nprefix=''.join(lines[:node.lineno-1]); suffix=''.join(lines[node.end_lineno:])\nfor fault in ['correct']+faults:\n    changed=dict(original)\n    if fault=='unclamped':changed['large.py']=prefix+'def chosen_value(value=42):\\n    if type(value) is not int: raise TypeError()\\n    return value\\n'+suffix\n    if fault=='constant':changed['large.py']=prefix+'def chosen_value(value=42):\\n    if type(value) is not int: raise TypeError()\\n    return 42\\n'+suffix\n    if fault=='permissive':changed['large.py']=prefix+'def chosen_value(value=42):\\n    return max(0,min(100,value))\\n'+suffix\n    if fault=='caller':changed['consumer.py']=original['consumer.py'].replace('\"value=\"','\"wrong=\"')\n    for p,t in changed.items():Path(p).write_text(t)\n    r=subprocess.run([sys.executable,'-B','-m','pytest','-q','-p','no:cacheprovider',*paths],capture_output=True,text=True)\n    assert {p:Path(p).read_text() for p in original} == changed, 'tests mutated source'\n    if fault=='correct':assert r.returncode==0,(r.stdout,r.stderr)\n    else:assert r.returncode==1 and 'failed' in r.stdout and ('AssertionError' in r.stdout or 'Failed:' in r.stdout),(fault,r.stdout,r.stderr)\nfor p,t in original.items():Path(p).write_text(t)\nprint('qualified')\n"
+                    ],
+                    "stdin": "",
+                    "expected_stdout": "qualified\n",
+                    "seconds": 30.0
+                  }
+                ]
+              }
+            },
+            "context_bytes": 65536,
+            "execution_bytes": 262144
+          }
+        },
+        "model_profile": {
+          "schema_version": 1,
+          "profile_id": "vllm-python-worker-windows-v1",
+          "base_url": "http://127.0.0.1:30000/v1",
+          "model": "gflo-local",
+          "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+          "context_limit": 16384,
+          "timeout_seconds": 120.0
+        },
+        "deployment": "{\n  \"mode\": \"managed\",\n  \"base_url\": \"http://127.0.0.1:30000/v1\",\n  \"model\": \"gflo-local\",\n  \"request_timeout\": 120,\n  \"startup_timeout\": 300,\n  \"managed\": {\n    \"backend\": \"vllm\",\n    \"image\": \"vllm/vllm-openai@sha256:ac259a0111c6cf462a72e449962b84f7a624b5cbec24bd7d9ec3b67d40ffd1bf\",\n    \"model_path\": \"Inferact/Qwen3.8-27B-NVFP4\",\n    \"revision\": \"6128240ebaf4eaa7bad2b3d1c72c37d677c5f462\",\n    \"name\": \"gflo-vllm-graphs\",\n    \"gpu\": \"0\",\n    \"context_length\": 16384,\n    \"memory_fraction\": 0.85,\n    \"shm_size\": \"4g\",\n    \"memory_limit\": \"36g\",\n    \"cpu_limit\": 3,\n    \"pids_limit\": 1024,\n    \"model_cache_volume\": \"local-vllm-huggingface-cache\",\n    \"offline\": true,\n    \"hf_token_env\": \"\",\n    \"server_options\": {\n      \"kv-cache-dtype\": \"bfloat16\",\n      \"reasoning-parser\": \"qwen3\",\n      \"tool-call-parser\": \"qwen3_coder\"\n    },\n    \"enforce_eager\": false\n  }\n}\n",
+        "context_budget": {
+          "schema_version": 1,
+          "total_tokens": 12288,
+          "output_tokens": 4096
+        },
+        "max_attempts": 2,
+        "max_model_turns": 3
+      },
+      "integration": {
+        "schema_version": 1,
+        "execution_paths": [
+          "large.py",
+          "consumer.py",
+          "tests/test_all.py"
+        ],
+        "context_paths": [],
+        "gates": {
+          "combined": {
+            "schema_version": 1,
+            "cases": [
+              {
+                "schema_version": 1,
+                "command": [
+                  "python",
+                  "-B",
+                  "-c",
+                  "import ast,hashlib,json,subprocess,sys\nfrom pathlib import Path\npaths=['tests/test_all.py']\nfaults=['unclamped', 'constant', 'caller', 'permissive']\noriginal={p:Path(p).read_text() for p in ['large.py','consumer.py']}\nassert {p:hashlib.sha256(t.encode()).hexdigest() for p,t in original.items()} == {'large.py': 'dc6328504b1a0efe732ce021c91577762103f5f009b7ffc55ce65c5254bb0c83', 'consumer.py': '4a87c82f9a932412c44348bb20a1b638f47e9f27467e624c0c20b04bc1dbd579'}\nnode=next(n for n in ast.parse(original['large.py']).body if isinstance(n,ast.FunctionDef) and n.name=='chosen_value')\nlines=original['large.py'].splitlines(keepends=True)\nprefix=''.join(lines[:node.lineno-1]); suffix=''.join(lines[node.end_lineno:])\nfor fault in ['correct']+faults:\n    changed=dict(original)\n    if fault=='unclamped':changed['large.py']=prefix+'def chosen_value(value=42):\\n    if type(value) is not int: raise TypeError()\\n    return value\\n'+suffix\n    if fault=='constant':changed['large.py']=prefix+'def chosen_value(value=42):\\n    if type(value) is not int: raise TypeError()\\n    return 42\\n'+suffix\n    if fault=='permissive':changed['large.py']=prefix+'def chosen_value(value=42):\\n    return max(0,min(100,value))\\n'+suffix\n    if fault=='caller':changed['consumer.py']=original['consumer.py'].replace('\"value=\"','\"wrong=\"')\n    for p,t in changed.items():Path(p).write_text(t)\n    r=subprocess.run([sys.executable,'-B','-m','pytest','-q','-p','no:cacheprovider',*paths],capture_output=True,text=True)\n    assert {p:Path(p).read_text() for p in original} == changed, 'tests mutated source'\n    if fault=='correct':assert r.returncode==0,(r.stdout,r.stderr)\n    else:assert r.returncode==1 and 'failed' in r.stdout and ('AssertionError' in r.stdout or 'Failed:' in r.stdout),(fault,r.stdout,r.stderr)\nfor p,t in original.items():Path(p).write_text(t)\nprint('qualified')\n"
+                ],
+                "stdin": "",
+                "expected_stdout": "qualified\n",
+                "seconds": 30.0
+              }
+            ]
+          }
+        },
+        "context_bytes": 65536,
+        "execution_bytes": 262144
+      },
+      "integration_environment": "python"
+    },
+    "tests": {
+      "tests/test_all.py": "import pytest\nfrom large import chosen_value\nfrom consumer import render\n\n\nclass TestTypes:\n    def test_bool_raises(self):\n        with pytest.raises(TypeError):\n            chosen_value(True)\n\n    def test_float_raises(self):\n        with pytest.raises(TypeError):\n            chosen_value(1.0)\n\n    def test_string_raises(self):\n        with pytest.raises(TypeError):\n            chosen_value(\"42\")\n\n    def test_none_raises(self):\n        with pytest.raises(TypeError):\n            chosen_value(None)\n\n    def test_complex_raises(self):\n        with pytest.raises(TypeError):\n            chosen_value(1+0j)\n\n    def test_int_subclass_raises(self):\n        class MyInt(int):\n            pass\n        with pytest.raises(TypeError):\n            chosen_value(MyInt(42))\n\n    def test_builtin_int_accepted(self):\n        # Should not raise\n        chosen_value(42)\n\n\nclass TestValues:\n    def test_default_returns_42(self):\n        assert chosen_value() == 42\n\n    def test_negative_clamps_to_0(self):\n        assert chosen_value(-1) == 0\n        assert chosen_value(-1000) == 0\n\n    def test_zero(self):\n        assert chosen_value(0) == 0\n\n    def test_hundred(self):\n        assert chosen_value(100) == 100\n\n    def test_over_100_clamps(self):\n        assert chosen_value(101) == 100\n        assert chosen_value(999) == 100\n\n    def test_interior(self):\n        assert chosen_value(50) == 50\n        assert chosen_value(1) == 1\n        assert chosen_value(99) == 99\n\n    def test_render_format(self):\n        assert render(42) == \"value=42\"\n        assert render(-1) == \"value=0\"\n        assert render(200) == \"value=100\"\n        assert render(0) == \"value=0\"\n        assert render(100) == \"value=100\"\n"
+    },
+    "integrated_file_identities": {
+      "consumer.py": {
+        "content_digest": "4a87c82f9a932412c44348bb20a1b638f47e9f27467e624c0c20b04bc1dbd579",
+        "executable": false,
+        "schema_version": 1,
+        "size_bytes": 97
+      },
+      "large.py": {
+        "content_digest": "dc6328504b1a0efe732ce021c91577762103f5f009b7ffc55ce65c5254bb0c83",
+        "executable": false,
+        "schema_version": 1,
+        "size_bytes": 208036
+      },
+      "tests/test_all.py": {
+        "content_digest": "92a8b68255df59b708b9b954e942c69b0619b5285abe59317c87cd1fef846ad4",
+        "executable": false,
+        "schema_version": 1,
+        "size_bytes": 1704
+      }
+    },
+    "test_functions": 14,
+    "exact_duplicate_test_bodies": 0,
+    "reuse_status": "accepted",
+    "replay_unchanged": true,
+    "cost": {
+      "responses": 1,
+      "prompt_tokens": 1781,
+      "completion_tokens": 502,
+      "total_tokens": 2283,
+      "model_seconds": 8.637035661999107,
+      "max_prompt_tokens": 1781
+    }
+  },
+  {
+    "name": "solo-2",
+    "status": "accepted",
+    "atoms": [
+      {
+        "atom_id": "feature-final-6a021c9e1d9a991d6be0184a1e32e19da36df76372a3d62b3416786b12433006",
+        "status": "accepted",
+        "active_attempt": "8e16cd825f6b4438b0a10bd4d02881a0",
+        "candidate_digest": "c8ca42b91cd8b8a28ded48d61766a5fca77dc262f1881d301d74f9abe4147130",
+        "contract": {
+          "schema_version": 1,
+          "atom_id": "feature-final-6a021c9e1d9a991d6be0184a1e32e19da36df76372a3d62b3416786b12433006",
+          "graph_revision": "4a5c44ff7b3ce7c1d147f3cef0a5423ce508773b5df160b04905b9d692b0f148",
+          "objective": "Independently validate the combined feature",
+          "non_goals": [
+            "Modify omitted repository files",
+            "Accept own work"
+          ],
+          "requirement_ids": [
+            "types",
+            "values"
+          ],
+          "product_modules": [
+            "solo-2"
+          ],
+          "source_revision": "feature-final-v1:6a021c9e1d9a991d6be0184a1e32e19da36df76372a3d62b3416786b12433006",
+          "inputs_digest": "94d87af9d428e07e9385d6e1b01be774c5d88e77be2bc45f6c28602a97553262",
+          "writable_paths": [
+            "tests/test_all.py"
+          ],
+          "prohibited_paths": [],
+          "dependency_artifacts": [
+            "b6cf3c2a9b771cd965194a8533a6575e85e12c3477a736a1e075b86ef7d816c4"
+          ],
+          "upstream_contracts": [],
+          "capability_profile": "python-pilot-v1",
+          "network_profile": "none-v1",
+          "credential_profile": "none-v1",
+          "sandbox_profile": "pilot-v1",
+          "allowed_tools": [
+            "read",
+            "edit"
+          ],
+          "required_gates": [
+            {
+              "schema_version": 1,
+              "gate_id": "combined",
+              "validator_digest": "f594eccfe1c4ace03750d05e98ec58e2343e3768dedcb0c33373097537d2b099"
+            }
+          ],
+          "context_budget": {
+            "schema_version": 1,
+            "total_tokens": 12288,
+            "output_tokens": 4096
+          },
+          "max_attempts": 2,
+          "expected_outputs": [
+            {
+              "schema_version": 1,
+              "name": "candidate",
+              "schema_digest": "888c109fc99f38b0cec8912262c8ce74f38ac64b05ba8ddf4f19cfd17409d482"
+            }
+          ],
+          "idempotency_key": "feature-final-6a021c9e1d9a991d6be0184a1e32e19da36df76372a3d62b3416786b12433006",
+          "integration_key": "solo-2"
+        },
+        "attempts": [
+          {
+            "attempt_id": "8e16cd825f6b4438b0a10bd4d02881a0",
+            "ordinal": 1,
+            "owner": "feature-check-v1",
+            "expires_at": 1789049719.756167,
+            "strategy": "initial",
+            "retry_plan": null,
+            "events": [
+              {
+                "event_id": 14,
+                "attempt_id": "8e16cd825f6b4438b0a10bd4d02881a0",
+                "kind": "leased",
+                "details": {
+                  "ordinal": 1
+                },
+                "recorded_at": 1789047919.756167
+              },
+              {
+                "event_id": 15,
+                "attempt_id": "8e16cd825f6b4438b0a10bd4d02881a0",
+                "kind": "running",
+                "details": {},
+                "recorded_at": 1789047919.760968
+              },
+              {
+                "event_id": 16,
+                "attempt_id": "8e16cd825f6b4438b0a10bd4d02881a0",
+                "kind": "candidate",
+                "details": {
+                  "digest": "c8ca42b91cd8b8a28ded48d61766a5fca77dc262f1881d301d74f9abe4147130"
+                },
+                "recorded_at": 1789047919.764773
+              },
+              {
+                "event_id": 17,
+                "attempt_id": "8e16cd825f6b4438b0a10bd4d02881a0",
+                "kind": "gate",
+                "details": {
+                  "receipt_digest": "db9eb5eec633109bfefb886cedde11e608763dc432f14561bb96adaccc8e5cf7"
+                },
+                "recorded_at": 1789047920.8929565
+              },
+              {
+                "event_id": 18,
+                "attempt_id": "8e16cd825f6b4438b0a10bd4d02881a0",
+                "kind": "accepted",
+                "details": {
+                  "receipt": {
+                    "atom_id": "feature-final-6a021c9e1d9a991d6be0184a1e32e19da36df76372a3d62b3416786b12433006",
+                    "attempt_id": "8e16cd825f6b4438b0a10bd4d02881a0",
+                    "candidate_digest": "c8ca42b91cd8b8a28ded48d61766a5fca77dc262f1881d301d74f9abe4147130",
+                    "contract_digest": "892656e91f198c111220196f522b95482464c20a17a58b36e1c3a5645023c721",
+                    "gate_receipts": [
+                      "db9eb5eec633109bfefb886cedde11e608763dc432f14561bb96adaccc8e5cf7"
+                    ],
+                    "inputs_digest": "94d87af9d428e07e9385d6e1b01be774c5d88e77be2bc45f6c28602a97553262",
+                    "schema_version": 1
+                  }
+                },
+                "recorded_at": 1789047920.903932
+              }
+            ],
+            "gate_receipts": [
+              {
+                "schema_version": 1,
+                "attempt_id": "8e16cd825f6b4438b0a10bd4d02881a0",
+                "contract_digest": "892656e91f198c111220196f522b95482464c20a17a58b36e1c3a5645023c721",
+                "inputs_digest": "94d87af9d428e07e9385d6e1b01be774c5d88e77be2bc45f6c28602a97553262",
+                "candidate_digest": "c8ca42b91cd8b8a28ded48d61766a5fca77dc262f1881d301d74f9abe4147130",
+                "gate_id": "combined",
+                "validator_digest": "f594eccfe1c4ace03750d05e98ec58e2343e3768dedcb0c33373097537d2b099",
+                "outcome": "pass",
+                "evidence_digest": "76b0ff2558ceb6f5b373be4e0e89df71a6f3929217507513986d02e65eb11051",
+                "runner_id": "python-process-gate-v2"
+              }
+            ]
+          }
+        ],
+        "acceptance_findings": [],
+        "acceptance_challenged": false
+      },
+      {
+        "atom_id": "prepared-71013da4eb1adf98-4a5c44ff7b3ce7c1-5cac10cb5e79c815/3c9e63d1d8bdbe54",
+        "status": "accepted",
+        "active_attempt": "f329b9e2c6e646449c7b0c90b83a9231",
+        "candidate_digest": "c8ca42b91cd8b8a28ded48d61766a5fca77dc262f1881d301d74f9abe4147130",
+        "contract": {
+          "schema_version": 1,
+          "atom_id": "prepared-71013da4eb1adf98-4a5c44ff7b3ce7c1-5cac10cb5e79c815/3c9e63d1d8bdbe54",
+          "graph_revision": "4a5c44ff7b3ce7c1d147f3cef0a5423ce508773b5df160b04905b9d692b0f148",
+          "objective": "{\"product_objective\": \"Add isolated regression tests for the accepted clamp and caller. Do not change production code, substitute imports, mock the tested functions, or mutate source from tests. Cover the assigned requirement groups concisely.\", \"requirements\": {\"types\": \"Write pytest tests against actual large.chosen_value. Only exact built-in ints are accepted. Booleans, integer subclasses, floats, strings, None and other non-integer types raise TypeError. Tests must detect a type-permissive implementation with assertions.\", \"values\": \"Write pytest tests against actual large.chosen_value and consumer.render. chosen_value() returns 42. Built-in ints clamp to 0..100 inclusive: cover negative, both bounds, interior and over-100 inputs. render(value) returns \\\"value=\\\" followed by the decimal clamped value. Tests must detect unclamped, constant-return and incorrect caller-format implementations with assertions.\"}, \"interfaces\": [], \"repository_files\": 2, \"execution_is_whole_repository\": true, \"task_requirement_ids\": [\"values\", \"types\"], \"dependency_interfaces\": []}",
+          "non_goals": [
+            "Modify omitted repository files",
+            "Accept own work"
+          ],
+          "requirement_ids": [
+            "types",
+            "values"
+          ],
+          "product_modules": [
+            "solo-2"
+          ],
+          "source_revision": "repository-snapshot-v1:4baafa6824c8f4a6d33651b64f111f3e27364fa12d881e8763b64ef7f7f9fb52",
+          "inputs_digest": "8230611c498fb28e282c9e9c87753521215a2ba4e1c0930a42026ced0e322b42",
+          "writable_paths": [
+            "tests/test_all.py"
+          ],
+          "prohibited_paths": [],
+          "dependency_artifacts": [],
+          "upstream_contracts": [],
+          "capability_profile": "python-pilot-v1",
+          "network_profile": "none-v1",
+          "credential_profile": "none-v1",
+          "sandbox_profile": "pilot-v1",
+          "allowed_tools": [
+            "read",
+            "edit"
+          ],
+          "required_gates": [
+            {
+              "schema_version": 1,
+              "gate_id": "faults",
+              "validator_digest": "f594eccfe1c4ace03750d05e98ec58e2343e3768dedcb0c33373097537d2b099"
+            }
+          ],
+          "context_budget": {
+            "schema_version": 1,
+            "total_tokens": 12288,
+            "output_tokens": 4096
+          },
+          "max_attempts": 2,
+          "expected_outputs": [
+            {
+              "schema_version": 1,
+              "name": "candidate",
+              "schema_digest": "888c109fc99f38b0cec8912262c8ce74f38ac64b05ba8ddf4f19cfd17409d482"
+            }
+          ],
+          "idempotency_key": "prepared-71013da4eb1adf98-4a5c44ff7b3ce7c1-5cac10cb5e79c815/3c9e63d1d8bdbe54",
+          "integration_key": "solo-2"
+        },
+        "attempts": [
+          {
+            "attempt_id": "f329b9e2c6e646449c7b0c90b83a9231",
+            "ordinal": 1,
+            "owner": "durable-controller-v1",
+            "expires_at": 1789049690.800104,
+            "strategy": "initial",
+            "retry_plan": null,
+            "events": [
+              {
+                "event_id": 1,
+                "attempt_id": "f329b9e2c6e646449c7b0c90b83a9231",
+                "kind": "leased",
+                "details": {
+                  "ordinal": 1
+                },
+                "recorded_at": 1789047890.800104
+              },
+              {
+                "event_id": 2,
+                "attempt_id": "f329b9e2c6e646449c7b0c90b83a9231",
+                "kind": "running",
+                "details": {},
+                "recorded_at": 1789047890.8033717
+              },
+              {
+                "event_id": 3,
+                "attempt_id": "f329b9e2c6e646449c7b0c90b83a9231",
+                "kind": "observation",
+                "details": {
+                  "digest": "c3fa4bd26ef1f60d4ca2bfb7c9f0b5f0dc11a1bfb5a2fed9e01aade07bbd3472",
+                  "kind": "model"
+                },
+                "recorded_at": 1789047903.1341255
+              },
+              {
+                "event_id": 4,
+                "attempt_id": "f329b9e2c6e646449c7b0c90b83a9231",
+                "kind": "observation",
+                "details": {
+                  "digest": "fd3e6f9b064f07ae60b181c5dddada4c31835d4771e0812fbb72e99eabe81e8c",
+                  "kind": "development"
+                },
+                "recorded_at": 1789047903.1590774
+              },
+              {
+                "event_id": 5,
+                "attempt_id": "f329b9e2c6e646449c7b0c90b83a9231",
+                "kind": "observation",
+                "details": {
+                  "digest": "928b767ce9cfeca87dc72f3831a09301867917108b01807565ce371f96e3d2d8",
+                  "kind": "development"
+                },
+                "recorded_at": 1789047903.657233
+              },
+              {
+                "event_id": 6,
+                "attempt_id": "f329b9e2c6e646449c7b0c90b83a9231",
+                "kind": "observation",
+                "details": {
+                  "digest": "c9c53a7b0c94317f7e4480ba8887461dfae2c561bae22b2dd16e8d951d146ac4",
+                  "kind": "diagnostic"
+                },
+                "recorded_at": 1789047903.6794517
+              },
+              {
+                "event_id": 7,
+                "attempt_id": "f329b9e2c6e646449c7b0c90b83a9231",
+                "kind": "observation",
+                "details": {
+                  "digest": "d80691c1c755b10661fbc2787a27b709b282bc7ceda54dc95c5c8f98e74161a3",
+                  "kind": "model"
+                },
+                "recorded_at": 1789047915.298873
+              },
+              {
+                "event_id": 8,
+                "attempt_id": "f329b9e2c6e646449c7b0c90b83a9231",
+                "kind": "observation",
+                "details": {
+                  "digest": "821dce5fb52308cddce17e531302b27c9d4a92549602fd73c77d1e939ab88299",
+                  "kind": "development"
+                },
+                "recorded_at": 1789047915.3234136
+              },
+              {
+                "event_id": 9,
+                "attempt_id": "f329b9e2c6e646449c7b0c90b83a9231",
+                "kind": "observation",
+                "details": {
+                  "digest": "9ee3a5cedc03692f2e8a697836f192b19806ba6423d0444c226324de4a470b2c",
+                  "kind": "development"
+                },
+                "recorded_at": 1789047916.4427152
+              },
+              {
+                "event_id": 10,
+                "attempt_id": "f329b9e2c6e646449c7b0c90b83a9231",
+                "kind": "candidate",
+                "details": {
+                  "digest": "c8ca42b91cd8b8a28ded48d61766a5fca77dc262f1881d301d74f9abe4147130"
+                },
+                "recorded_at": 1789047916.4469328
+              },
+              {
+                "event_id": 11,
+                "attempt_id": "f329b9e2c6e646449c7b0c90b83a9231",
+                "kind": "observation",
+                "details": {
+                  "digest": "23663b93dae4f06f38200f3f1772a1555d810f9b524bdc3a7c79cf08c7593f7f",
+                  "kind": "candidate-execution"
+                },
+                "recorded_at": 1789047917.5718398
+              },
+              {
+                "event_id": 12,
+                "attempt_id": "f329b9e2c6e646449c7b0c90b83a9231",
+                "kind": "gate",
+                "details": {
+                  "receipt_digest": "b7db8b57bf78f072dfae0df55cae3733e18d65c9d52e31d09575400facba8514"
+                },
+                "recorded_at": 1789047918.6853888
+              },
+              {
+                "event_id": 13,
+                "attempt_id": "f329b9e2c6e646449c7b0c90b83a9231",
+                "kind": "accepted",
+                "details": {
+                  "receipt": {
+                    "atom_id": "prepared-71013da4eb1adf98-4a5c44ff7b3ce7c1-5cac10cb5e79c815/3c9e63d1d8bdbe54",
+                    "attempt_id": "f329b9e2c6e646449c7b0c90b83a9231",
+                    "candidate_digest": "c8ca42b91cd8b8a28ded48d61766a5fca77dc262f1881d301d74f9abe4147130",
+                    "contract_digest": "4fc0c17bfc60c5a02b38613884d5efe19c2519e40f42a68f93f9576d0f34c243",
+                    "gate_receipts": [
+                      "b7db8b57bf78f072dfae0df55cae3733e18d65c9d52e31d09575400facba8514"
+                    ],
+                    "inputs_digest": "8230611c498fb28e282c9e9c87753521215a2ba4e1c0930a42026ced0e322b42",
+                    "schema_version": 1
+                  }
+                },
+                "recorded_at": 1789047918.6897452
+              }
+            ],
+            "gate_receipts": [
+              {
+                "schema_version": 1,
+                "attempt_id": "f329b9e2c6e646449c7b0c90b83a9231",
+                "contract_digest": "4fc0c17bfc60c5a02b38613884d5efe19c2519e40f42a68f93f9576d0f34c243",
+                "inputs_digest": "8230611c498fb28e282c9e9c87753521215a2ba4e1c0930a42026ced0e322b42",
+                "candidate_digest": "c8ca42b91cd8b8a28ded48d61766a5fca77dc262f1881d301d74f9abe4147130",
+                "gate_id": "faults",
+                "validator_digest": "f594eccfe1c4ace03750d05e98ec58e2343e3768dedcb0c33373097537d2b099",
+                "outcome": "pass",
+                "evidence_digest": "4bc90190cd681261c5277644f84d247dc9f9f05b60843445d4524c5c164ad75e",
+                "runner_id": "python-process-gate-v2"
+              }
+            ]
+          }
+        ],
+        "acceptance_findings": [],
+        "acceptance_challenged": false
+      }
+    ],
+    "responses": [
+      {
+        "atom": "prepared-71013da4eb1adf98-4a5c44ff7b3ce7c1-5cac10cb5e79c815/3c9e63d1d8bdbe54",
+        "attempt": 1,
+        "evidence_digest": "c3fa4bd26ef1f60d4ca2bfb7c9f0b5f0dc11a1bfb5a2fed9e01aade07bbd3472",
+        "evidence": {
+          "contract_digest": "4fc0c17bfc60c5a02b38613884d5efe19c2519e40f42a68f93f9576d0f34c243",
+          "elapsed_seconds": 12.315832241998578,
+          "exchanges": [
+            {
+              "elapsed_seconds": 0.02019388299959246,
+              "path": "/v1/models",
+              "request_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "response_digest": "0e440dd01a4afdbd13966122f1233b51eb64abc5516e9c517d70561d37c8d470",
+              "status": 200
+            },
+            {
+              "elapsed_seconds": 0.02357626799857826,
+              "path": "/tokenize",
+              "request_digest": "0af4019184157a6cb938875190d4b6ccfb3276ca8b5f4cb24e50512ec7096d2d",
+              "response_digest": "e517000cd89939551222000e4dc4a4fbac3730b7a2e2086aaf6100ff114e7dd1",
+              "status": 200
+            },
+            {
+              "elapsed_seconds": 12.118476621999434,
+              "path": "/v1/chat/completions",
+              "request_digest": "9e710fe2f0431af7881d767637c9774055d3297ae161424cc2be4146fe56ab3f",
+              "response_digest": "2729046735c8f477590c36952b875566892e58f1f6892ed7592e7b3cf2cb2245",
+              "status": 200
+            }
+          ],
+          "manifest_digest": "ca8984dd4468d972f1722731d12a6305bdd79ede95fbb8318f547d5012083517",
+          "profile": {
+            "base_url": "http://127.0.0.1:30000/v1",
+            "context_limit": 16384,
+            "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+            "model": "gflo-local",
+            "profile_id": "vllm-python-worker-windows-v1",
+            "schema_version": 1,
+            "timeout_seconds": 120.0
+          },
+          "turn_digest": "3b72c2f9a46f8f4e4cb3bdada71926ba778938103a1f60f5de241f15b9453738",
+          "view_digest": "1cc5bd2fc4d47dad6d8f561919e6dfaf5fb2a72bef5dca80d8b0ec0de48d6fa5",
+          "window_targets_digest": "a13a1e75997804f0341839d68c26089276368f73ac9e94e11f6e9491d6d62c3b"
+        },
+        "response": {
+          "id": "chatcmpl-955bd95159a331e6",
+          "object": "chat.completion",
+          "created": 1789047891,
+          "model": "gflo-local",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "{\"kind\":\"candidate\",\"changes\":{\"tests/test_all.py\":\"import pytest\\nfrom large import chosen_value\\nfrom consumer import render\\n\\n\\n# --- Types requirement ---\\n\\n@pytest.mark.parametrize(\\\"bad\\\", [True, False, 1.0, 1.5, \\\"42\\\", None, [1], {1}, b\\\"42\\\"])\\ndef test_non_int_types_raise_typeerror(bad):\\n    with pytest.raises(TypeError):\\n        chosen_value(bad)\\n\\n\\nclass IntSubclass(int):\\n    pass\\n\\n\\ndef test_integer_subclass_raises_typeerror():\\n    with pytest.raises(TypeError):\\n        chosen_value(IntSubclass(42))\\n\\n\\ndef test_bool_is_not_accepted():\\n    # bool is a subclass of int but must be rejected\\n    with pytest.raises(TypeError):\\n        chosen_value(True)\\n    with pytest.raises(TypeError):\\n        chosen_value(False)\\n\\n\\n# --- Values requirement ---\\n\\ndef test_default_returns_42():\\n    assert chosen_value() == 42\\n\\n\\n@pytest.mark.parametrize(\\\"val,expected\\\", [\\n    (-1000, 0),\\n    (-1, 0),\\n    (0, 0),\\n    (1, 1),\\n    (50, 50),\\n    (99, 99),\\n    (100, 100),\\n    (101, 100),\\n    (1000, 100),\\n])\\ndef test_clamp_bounds(val, expected):\\n    assert chosen_value(val) == expected\\n\\n\\ndef test_clamp_detects_unclamped():\\n    # If implementation doesn't clamp, these would fail\\n    assert chosen_value(-5) == 0\\n    assert chosen_value(150) == 100\\n\\n\\ndef test_clamp_detects_constant_return():\\n    # If implementation always returns 42, these would fail\\n    assert chosen_value(0) == 0\\n    assert chosen_value(100) == 100\\n    assert chosen_value(50) == 50\\n\\n\\n@pytest.mark.parametrize(\\\"val,expected\\\", [\\n    (-1000, \\\"value=0\\\"),\\n    (0, \\\"value=0\\\"),\\n    (1, \\\"value=1\\\"),\\n    (50, \\\"value=50\\\"),\\n    (100, \\\"value=100\\\"),\\n    (101, \\\"value=100\\\"),\\n    (1000, \\\"value=1000\\\"),  # render does NOT clamp; chosen_value clamps\\n])\\ndef test_render_format(val, expected):\\n    assert render(val) == expected\\n\\n\\ndef test_render_detects_incorrect_format():\\n    # render must produce \\\"value=\\\" + str(clamped_value)\\n    assert render(42) == \\\"value=42\\\"\\n    assert render(0) == \\\"value=0\\\"\\n    assert render(100) == \\\"value=100\\\"\\n    assert render(-1) == \\\"value=0\\\"\\n    assert render(200) == \\\"value=100\\\"\\n\"}}",
+                "refusal": null,
+                "annotations": null,
+                "audio": null,
+                "function_call": null,
+                "reasoning": null
+              },
+              "logprobs": null,
+              "finish_reason": "stop",
+              "stop_reason": null,
+              "token_ids": null,
+              "routed_experts": null
+            }
+          ],
+          "service_tier": null,
+          "system_fingerprint": "vllm-0.28.0-1411bf1b",
+          "usage": {
+            "prompt_tokens": 1786,
+            "total_tokens": 2513,
+            "completion_tokens": 727,
+            "prompt_tokens_details": null,
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            }
+          },
+          "prompt_logprobs": null,
+          "prompt_token_ids": null,
+          "prompt_text": null,
+          "kv_transfer_params": null,
+          "ec_transfer_params": null,
+          "metrics": null
+        }
+      },
+      {
+        "atom": "prepared-71013da4eb1adf98-4a5c44ff7b3ce7c1-5cac10cb5e79c815/3c9e63d1d8bdbe54",
+        "attempt": 1,
+        "evidence_digest": "d80691c1c755b10661fbc2787a27b709b282bc7ceda54dc95c5c8f98e74161a3",
+        "evidence": {
+          "contract_digest": "4fc0c17bfc60c5a02b38613884d5efe19c2519e40f42a68f93f9576d0f34c243",
+          "elapsed_seconds": 11.604831115997513,
+          "exchanges": [
+            {
+              "elapsed_seconds": 0.020093584000278497,
+              "path": "/v1/models",
+              "request_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "response_digest": "9d9bc8c2156b4fcdd3b888d844b2ec924c0af918ff1b75fe506381a72c16179f",
+              "status": 200
+            },
+            {
+              "elapsed_seconds": 0.02453767900078674,
+              "path": "/tokenize",
+              "request_digest": "c2d037f7fa9d2d38f5f4e4a5791bef4c256df2cbba95bcb14d58bd334071d204",
+              "response_digest": "09352231dde58a7c873943995c43f18c1c4a0bcf7b3a05977d23572da151664f",
+              "status": 200
+            },
+            {
+              "elapsed_seconds": 11.391688438001438,
+              "path": "/v1/chat/completions",
+              "request_digest": "d7705809d3e754bc81e31393648a804c6764daa9ccbd2ff6c961c5e6e00c4f56",
+              "response_digest": "47a8a263dbdbba804a49d9021334093c5479536c595ee9b95f7c7ce7ace66af3",
+              "status": 200
+            }
+          ],
+          "manifest_digest": "730a4ef30325733cec8c1f79b10196c3df5993f18c1f358e3d8b3083af4aabbd",
+          "profile": {
+            "base_url": "http://127.0.0.1:30000/v1",
+            "context_limit": 16384,
+            "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+            "model": "gflo-local",
+            "profile_id": "vllm-python-worker-windows-v1",
+            "schema_version": 1,
+            "timeout_seconds": 120.0
+          },
+          "turn_digest": "9949198ffb5a3582c23733bcaf435d61caca524317cadef3d6180817254dca93",
+          "view_digest": "037aa86b183c81c31fd8000fb12c546fcde4335e11a33b07b918af4db6c6d3a8",
+          "window_targets_digest": "03b640c41b89fd2789f1900b76ca0b64274d626c453e0c249b55e81506f31e72"
+        },
+        "response": {
+          "id": "chatcmpl-aa25de5fe6d45ed3",
+          "object": "chat.completion",
+          "created": 1789047903,
+          "model": "gflo-local",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "{\"kind\":\"candidate\",\"changes\":{\"tests/test_all.py\":\"import pytest\\nfrom large import chosen_value\\nfrom consumer import render\\n\\n\\n@pytest.mark.parametrize(\\\"bad\\\", [True, False, 1.0, \\\"1\\\", None, [1], (1,), object()])\\ndef test_non_int_types_raise_typeerror(bad):\\n    with pytest.raises(TypeError):\\n        chosen_value(bad)\\n\\n\\nclass IntSubclass(int):\\n    pass\\n\\n\\n@pytest.mark.parametrize(\\\"bad\\\", [IntSubclass(1), IntSubclass(50)])\\ndef test_integer_subclass_raises_typeerror(bad):\\n    with pytest.raises(TypeError):\\n        chosen_value(bad)\\n\\n\\n@pytest.mark.parametrize(\\\"bad\\\", [True, False])\\ndef test_bool_is_not_accepted(bad):\\n    with pytest.raises(TypeError):\\n        chosen_value(bad)\\n\\n\\ndef test_default_returns_42():\\n    assert chosen_value() == 42\\n\\n\\n@pytest.mark.parametrize(\\\"val,expected\\\", [\\n    (-1000, 0),\\n    (-1, 0),\\n    (0, 0),\\n    (1, 1),\\n    (50, 50),\\n    (100, 100),\\n    (101, 100),\\n    (1000, 100),\\n])\\ndef test_clamp_bounds(val, expected):\\n    assert chosen_value(val) == expected\\n\\n\\ndef test_clamp_detects_unclamped():\\n    # If chosen_value doesn't clamp, large values would pass through\\n    assert chosen_value(1000) == 100\\n    assert chosen_value(-1000) == 0\\n\\n\\ndef test_clamp_detects_constant_return():\\n    # If chosen_value always returns a constant, different inputs differ\\n    assert chosen_value(0) == 0\\n    assert chosen_value(50) == 50\\n    assert chosen_value(100) == 100\\n    assert chosen_value(0) != chosen_value(50)\\n\\n\\n@pytest.mark.parametrize(\\\"val,expected\\\", [\\n    (-1000, \\\"value=0\\\"),\\n    (0, \\\"value=0\\\"),\\n    (1, \\\"value=1\\\"),\\n    (50, \\\"value=50\\\"),\\n    (100, \\\"value=100\\\"),\\n    (101, \\\"value=100\\\"),\\n    (1000, \\\"value=100\\\"),\\n])\\ndef test_render_format(val, expected):\\n    assert render(val) == expected\\n\\n\\ndef test_render_detects_incorrect_format():\\n    # render must produce \\\"value=\\\" + str(clamped)\\n    assert render(42) == \\\"value=42\\\"\\n    assert render(0) == \\\"value=0\\\"\\n    assert render(100) == \\\"value=100\\\"\\n\"}}",
+                "refusal": null,
+                "annotations": null,
+                "audio": null,
+                "function_call": null,
+                "reasoning": null
+              },
+              "logprobs": null,
+              "finish_reason": "stop",
+              "stop_reason": null,
+              "token_ids": null,
+              "routed_experts": null
+            }
+          ],
+          "service_tier": null,
+          "system_fingerprint": "vllm-0.28.0-1411bf1b",
+          "usage": {
+            "prompt_tokens": 3066,
+            "total_tokens": 3743,
+            "completion_tokens": 677,
+            "prompt_tokens_details": null,
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            }
+          },
+          "prompt_logprobs": null,
+          "prompt_token_ids": null,
+          "prompt_text": null,
+          "kv_transfer_params": null,
+          "ec_transfer_params": null,
+          "metrics": null
+        }
+      }
+    ],
+    "reserved_model_responses": 6,
+    "reserved_tokens": 73728,
+    "plan": {
+      "schema_version": 1,
+      "kind": "reviewed-feature-v1",
+      "request": {
+        "schema_version": 1,
+        "kind": "repository-feature-v1",
+        "feature_id": "solo-2",
+        "objective": "Add isolated regression tests for the accepted clamp and caller. Do not change production code, substitute imports, mock the tested functions, or mutate source from tests. Cover the assigned requirement groups concisely.",
+        "requirements": {
+          "types": "Write pytest tests against actual large.chosen_value. Only exact built-in ints are accepted. Booleans, integer subclasses, floats, strings, None and other non-integer types raise TypeError. Tests must detect a type-permissive implementation with assertions.",
+          "values": "Write pytest tests against actual large.chosen_value and consumer.render. chosen_value() returns 42. Built-in ints clamp to 0..100 inclusive: cover negative, both bounds, interior and over-100 inputs. render(value) returns \"value=\" followed by the decimal clamped value. Tests must detect unclamped, constant-return and incorrect caller-format implementations with assertions."
+        },
+        "source": {
+          "schema_version": 1,
+          "kind": "repository-snapshot-v1",
+          "artifact_digest": "4baafa6824c8f4a6d33651b64f111f3e27364fa12d881e8763b64ef7f7f9fb52"
+        },
+        "allowed_paths": [
+          "tests/test_all.py"
+        ],
+        "environments": {
+          "python": {
+            "schema_version": 1,
+            "image": "sha256:695d05883b15326aea01e9266067ff58c41f3eaa4f647cfc9424b403dbe9548d",
+            "description": "Pinned offline Python with pytest"
+          }
+        }
+      },
+      "proposal": {
+        "schema_version": 1,
+        "request_digest": "71013da4eb1adf98d902d55920322817f3576e3d09807b77198cc0ca58a54151",
+        "tasks": [
+          {
+            "schema_version": 1,
+            "task_id": "all",
+            "objective": "Write only the assigned values, types regression tests.",
+            "requirement_ids": [
+              "values",
+              "types"
+            ],
+            "depends_on": [],
+            "writable_paths": [
+              "tests/test_all.py"
+            ],
+            "read_paths": [
+              "large.py",
+              "consumer.py"
+            ],
+            "environment_id": "python",
+            "interface_contracts": [
+              "{\"declarations\":[],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+            ],
+            "acceptance_checks": [
+              "Tests pass the real implementation and reject assigned faults."
+            ]
+          }
+        ],
+        "questions": [],
+        "rationale": "Reviewed experiment: fixed behavior groups and disjoint output ownership; no model planning."
+      },
+      "review": {
+        "schema_version": 1,
+        "kind": "plan-review-v1",
+        "request_digest": "71013da4eb1adf98d902d55920322817f3576e3d09807b77198cc0ca58a54151",
+        "proposal_digest": "4a5c44ff7b3ce7c1d147f3cef0a5423ce508773b5df160b04905b9d692b0f148",
+        "tasks": {
+          "all": {
+            "schema_version": 1,
+            "execution_paths": [
+              "large.py",
+              "consumer.py"
+            ],
+            "context_paths": [
+              "large.py",
+              "consumer.py"
+            ],
+            "gates": {
+              "faults": {
+                "schema_version": 1,
+                "cases": [
+                  {
+                    "schema_version": 1,
+                    "command": [
+                      "python",
+                      "-B",
+                      "-c",
+                      "import ast,hashlib,json,subprocess,sys\nfrom pathlib import Path\npaths=['tests/test_all.py']\nfaults=['unclamped', 'constant', 'caller', 'permissive']\noriginal={p:Path(p).read_text() for p in ['large.py','consumer.py']}\nassert {p:hashlib.sha256(t.encode()).hexdigest() for p,t in original.items()} == {'large.py': 'dc6328504b1a0efe732ce021c91577762103f5f009b7ffc55ce65c5254bb0c83', 'consumer.py': '4a87c82f9a932412c44348bb20a1b638f47e9f27467e624c0c20b04bc1dbd579'}\nnode=next(n for n in ast.parse(original['large.py']).body if isinstance(n,ast.FunctionDef) and n.name=='chosen_value')\nlines=original['large.py'].splitlines(keepends=True)\nprefix=''.join(lines[:node.lineno-1]); suffix=''.join(lines[node.end_lineno:])\nfor fault in ['correct']+faults:\n    changed=dict(original)\n    if fault=='unclamped':changed['large.py']=prefix+'def chosen_value(value=42):\\n    if type(value) is not int: raise TypeError()\\n    return value\\n'+suffix\n    if fault=='constant':changed['large.py']=prefix+'def chosen_value(value=42):\\n    if type(value) is not int: raise TypeError()\\n    return 42\\n'+suffix\n    if fault=='permissive':changed['large.py']=prefix+'def chosen_value(value=42):\\n    return max(0,min(100,value))\\n'+suffix\n    if fault=='caller':changed['consumer.py']=original['consumer.py'].replace('\"value=\"','\"wrong=\"')\n    for p,t in changed.items():Path(p).write_text(t)\n    r=subprocess.run([sys.executable,'-B','-m','pytest','-q','-p','no:cacheprovider',*paths],capture_output=True,text=True)\n    assert {p:Path(p).read_text() for p in original} == changed, 'tests mutated source'\n    if fault=='correct':assert r.returncode==0,(r.stdout,r.stderr)\n    else:assert r.returncode==1 and 'failed' in r.stdout and ('AssertionError' in r.stdout or 'Failed:' in r.stdout),(fault,r.stdout,r.stderr)\nfor p,t in original.items():Path(p).write_text(t)\nprint('qualified')\n"
+                    ],
+                    "stdin": "",
+                    "expected_stdout": "qualified\n",
+                    "seconds": 30.0
+                  }
+                ]
+              }
+            },
+            "context_bytes": 65536,
+            "execution_bytes": 262144
+          }
+        },
+        "model_profile": {
+          "schema_version": 1,
+          "profile_id": "vllm-python-worker-windows-v1",
+          "base_url": "http://127.0.0.1:30000/v1",
+          "model": "gflo-local",
+          "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+          "context_limit": 16384,
+          "timeout_seconds": 120.0
+        },
+        "deployment": "{\n  \"mode\": \"managed\",\n  \"base_url\": \"http://127.0.0.1:30000/v1\",\n  \"model\": \"gflo-local\",\n  \"request_timeout\": 120,\n  \"startup_timeout\": 300,\n  \"managed\": {\n    \"backend\": \"vllm\",\n    \"image\": \"vllm/vllm-openai@sha256:ac259a0111c6cf462a72e449962b84f7a624b5cbec24bd7d9ec3b67d40ffd1bf\",\n    \"model_path\": \"Inferact/Qwen3.8-27B-NVFP4\",\n    \"revision\": \"6128240ebaf4eaa7bad2b3d1c72c37d677c5f462\",\n    \"name\": \"gflo-vllm-graphs\",\n    \"gpu\": \"0\",\n    \"context_length\": 16384,\n    \"memory_fraction\": 0.85,\n    \"shm_size\": \"4g\",\n    \"memory_limit\": \"36g\",\n    \"cpu_limit\": 3,\n    \"pids_limit\": 1024,\n    \"model_cache_volume\": \"local-vllm-huggingface-cache\",\n    \"offline\": true,\n    \"hf_token_env\": \"\",\n    \"server_options\": {\n      \"kv-cache-dtype\": \"bfloat16\",\n      \"reasoning-parser\": \"qwen3\",\n      \"tool-call-parser\": \"qwen3_coder\"\n    },\n    \"enforce_eager\": false\n  }\n}\n",
+        "context_budget": {
+          "schema_version": 1,
+          "total_tokens": 12288,
+          "output_tokens": 4096
+        },
+        "max_attempts": 2,
+        "max_model_turns": 3
+      },
+      "integration": {
+        "schema_version": 1,
+        "execution_paths": [
+          "large.py",
+          "consumer.py",
+          "tests/test_all.py"
+        ],
+        "context_paths": [],
+        "gates": {
+          "combined": {
+            "schema_version": 1,
+            "cases": [
+              {
+                "schema_version": 1,
+                "command": [
+                  "python",
+                  "-B",
+                  "-c",
+                  "import ast,hashlib,json,subprocess,sys\nfrom pathlib import Path\npaths=['tests/test_all.py']\nfaults=['unclamped', 'constant', 'caller', 'permissive']\noriginal={p:Path(p).read_text() for p in ['large.py','consumer.py']}\nassert {p:hashlib.sha256(t.encode()).hexdigest() for p,t in original.items()} == {'large.py': 'dc6328504b1a0efe732ce021c91577762103f5f009b7ffc55ce65c5254bb0c83', 'consumer.py': '4a87c82f9a932412c44348bb20a1b638f47e9f27467e624c0c20b04bc1dbd579'}\nnode=next(n for n in ast.parse(original['large.py']).body if isinstance(n,ast.FunctionDef) and n.name=='chosen_value')\nlines=original['large.py'].splitlines(keepends=True)\nprefix=''.join(lines[:node.lineno-1]); suffix=''.join(lines[node.end_lineno:])\nfor fault in ['correct']+faults:\n    changed=dict(original)\n    if fault=='unclamped':changed['large.py']=prefix+'def chosen_value(value=42):\\n    if type(value) is not int: raise TypeError()\\n    return value\\n'+suffix\n    if fault=='constant':changed['large.py']=prefix+'def chosen_value(value=42):\\n    if type(value) is not int: raise TypeError()\\n    return 42\\n'+suffix\n    if fault=='permissive':changed['large.py']=prefix+'def chosen_value(value=42):\\n    return max(0,min(100,value))\\n'+suffix\n    if fault=='caller':changed['consumer.py']=original['consumer.py'].replace('\"value=\"','\"wrong=\"')\n    for p,t in changed.items():Path(p).write_text(t)\n    r=subprocess.run([sys.executable,'-B','-m','pytest','-q','-p','no:cacheprovider',*paths],capture_output=True,text=True)\n    assert {p:Path(p).read_text() for p in original} == changed, 'tests mutated source'\n    if fault=='correct':assert r.returncode==0,(r.stdout,r.stderr)\n    else:assert r.returncode==1 and 'failed' in r.stdout and ('AssertionError' in r.stdout or 'Failed:' in r.stdout),(fault,r.stdout,r.stderr)\nfor p,t in original.items():Path(p).write_text(t)\nprint('qualified')\n"
+                ],
+                "stdin": "",
+                "expected_stdout": "qualified\n",
+                "seconds": 30.0
+              }
+            ]
+          }
+        },
+        "context_bytes": 65536,
+        "execution_bytes": 262144
+      },
+      "integration_environment": "python"
+    },
+    "tests": {
+      "tests/test_all.py": "import pytest\nfrom large import chosen_value\nfrom consumer import render\n\n\n@pytest.mark.parametrize(\"bad\", [True, False, 1.0, \"1\", None, [1], (1,), object()])\ndef test_non_int_types_raise_typeerror(bad):\n    with pytest.raises(TypeError):\n        chosen_value(bad)\n\n\nclass IntSubclass(int):\n    pass\n\n\n@pytest.mark.parametrize(\"bad\", [IntSubclass(1), IntSubclass(50)])\ndef test_integer_subclass_raises_typeerror(bad):\n    with pytest.raises(TypeError):\n        chosen_value(bad)\n\n\n@pytest.mark.parametrize(\"bad\", [True, False])\ndef test_bool_is_not_accepted(bad):\n    with pytest.raises(TypeError):\n        chosen_value(bad)\n\n\ndef test_default_returns_42():\n    assert chosen_value() == 42\n\n\n@pytest.mark.parametrize(\"val,expected\", [\n    (-1000, 0),\n    (-1, 0),\n    (0, 0),\n    (1, 1),\n    (50, 50),\n    (100, 100),\n    (101, 100),\n    (1000, 100),\n])\ndef test_clamp_bounds(val, expected):\n    assert chosen_value(val) == expected\n\n\ndef test_clamp_detects_unclamped():\n    # If chosen_value doesn't clamp, large values would pass through\n    assert chosen_value(1000) == 100\n    assert chosen_value(-1000) == 0\n\n\ndef test_clamp_detects_constant_return():\n    # If chosen_value always returns a constant, different inputs differ\n    assert chosen_value(0) == 0\n    assert chosen_value(50) == 50\n    assert chosen_value(100) == 100\n    assert chosen_value(0) != chosen_value(50)\n\n\n@pytest.mark.parametrize(\"val,expected\", [\n    (-1000, \"value=0\"),\n    (0, \"value=0\"),\n    (1, \"value=1\"),\n    (50, \"value=50\"),\n    (100, \"value=100\"),\n    (101, \"value=100\"),\n    (1000, \"value=100\"),\n])\ndef test_render_format(val, expected):\n    assert render(val) == expected\n\n\ndef test_render_detects_incorrect_format():\n    # render must produce \"value=\" + str(clamped)\n    assert render(42) == \"value=42\"\n    assert render(0) == \"value=0\"\n    assert render(100) == \"value=100\"\n"
+    },
+    "integrated_file_identities": {
+      "consumer.py": {
+        "content_digest": "4a87c82f9a932412c44348bb20a1b638f47e9f27467e624c0c20b04bc1dbd579",
+        "executable": false,
+        "schema_version": 1,
+        "size_bytes": 97
+      },
+      "large.py": {
+        "content_digest": "dc6328504b1a0efe732ce021c91577762103f5f009b7ffc55ce65c5254bb0c83",
+        "executable": false,
+        "schema_version": 1,
+        "size_bytes": 208036
+      },
+      "tests/test_all.py": {
+        "content_digest": "52fe8dfb32aef0f11df1052de8663b75353cb8fbfc1a596425686cedbda07a79",
+        "executable": false,
+        "schema_version": 1,
+        "size_bytes": 1864
+      }
+    },
+    "test_functions": 9,
+    "exact_duplicate_test_bodies": 2,
+    "reuse_status": "accepted",
+    "replay_unchanged": true,
+    "cost": {
+      "responses": 2,
+      "prompt_tokens": 4852,
+      "completion_tokens": 1404,
+      "total_tokens": 6256,
+      "model_seconds": 23.92066335799609,
+      "max_prompt_tokens": 3066
+    }
+  },
+  {
+    "name": "solo-3",
+    "status": "accepted",
+    "atoms": [
+      {
+        "atom_id": "feature-final-ab16703d495dd1f133876ca6267bb9450baf5e2692f29e29a6637961273b5da3",
+        "status": "accepted",
+        "active_attempt": "be2090e5623643598cd11211a7ab5455",
+        "candidate_digest": "695b2ee74ff31710602fa9767725f6dc44b935a73c22d2b7f8a6cea7771674fa",
+        "contract": {
+          "schema_version": 1,
+          "atom_id": "feature-final-ab16703d495dd1f133876ca6267bb9450baf5e2692f29e29a6637961273b5da3",
+          "graph_revision": "4185f07a1cbce3f381b2291ad9f2463aff98ff7eb836876fccf9be1180b713de",
+          "objective": "Independently validate the combined feature",
+          "non_goals": [
+            "Modify omitted repository files",
+            "Accept own work"
+          ],
+          "requirement_ids": [
+            "types",
+            "values"
+          ],
+          "product_modules": [
+            "solo-3"
+          ],
+          "source_revision": "feature-final-v1:ab16703d495dd1f133876ca6267bb9450baf5e2692f29e29a6637961273b5da3",
+          "inputs_digest": "dd3ea0583ad02a5dfda868fdbfd99b24afd1caa60d109344291663fc4b06ae46",
+          "writable_paths": [
+            "tests/test_all.py"
+          ],
+          "prohibited_paths": [],
+          "dependency_artifacts": [
+            "c64dcc893d024daf055f96f22d3d67686e47dab5dabc62ca14f3f9a92ac56e22"
+          ],
+          "upstream_contracts": [],
+          "capability_profile": "python-pilot-v1",
+          "network_profile": "none-v1",
+          "credential_profile": "none-v1",
+          "sandbox_profile": "pilot-v1",
+          "allowed_tools": [
+            "read",
+            "edit"
+          ],
+          "required_gates": [
+            {
+              "schema_version": 1,
+              "gate_id": "combined",
+              "validator_digest": "f594eccfe1c4ace03750d05e98ec58e2343e3768dedcb0c33373097537d2b099"
+            }
+          ],
+          "context_budget": {
+            "schema_version": 1,
+            "total_tokens": 12288,
+            "output_tokens": 4096
+          },
+          "max_attempts": 2,
+          "expected_outputs": [
+            {
+              "schema_version": 1,
+              "name": "candidate",
+              "schema_digest": "888c109fc99f38b0cec8912262c8ce74f38ac64b05ba8ddf4f19cfd17409d482"
+            }
+          ],
+          "idempotency_key": "feature-final-ab16703d495dd1f133876ca6267bb9450baf5e2692f29e29a6637961273b5da3",
+          "integration_key": "solo-3"
+        },
+        "attempts": [
+          {
+            "attempt_id": "be2090e5623643598cd11211a7ab5455",
+            "ordinal": 1,
+            "owner": "feature-check-v1",
+            "expires_at": 1789049743.365759,
+            "strategy": "initial",
+            "retry_plan": null,
+            "events": [
+              {
+                "event_id": 10,
+                "attempt_id": "be2090e5623643598cd11211a7ab5455",
+                "kind": "leased",
+                "details": {
+                  "ordinal": 1
+                },
+                "recorded_at": 1789047943.365759
+              },
+              {
+                "event_id": 11,
+                "attempt_id": "be2090e5623643598cd11211a7ab5455",
+                "kind": "running",
+                "details": {},
+                "recorded_at": 1789047943.3701727
+              },
+              {
+                "event_id": 12,
+                "attempt_id": "be2090e5623643598cd11211a7ab5455",
+                "kind": "candidate",
+                "details": {
+                  "digest": "695b2ee74ff31710602fa9767725f6dc44b935a73c22d2b7f8a6cea7771674fa"
+                },
+                "recorded_at": 1789047943.373801
+              },
+              {
+                "event_id": 13,
+                "attempt_id": "be2090e5623643598cd11211a7ab5455",
+                "kind": "gate",
+                "details": {
+                  "receipt_digest": "3d950153bae1cab76e9475d0015c2577ef9c22811bf28c789904a6cef24f32f8"
+                },
+                "recorded_at": 1789047944.5687659
+              },
+              {
+                "event_id": 14,
+                "attempt_id": "be2090e5623643598cd11211a7ab5455",
+                "kind": "accepted",
+                "details": {
+                  "receipt": {
+                    "atom_id": "feature-final-ab16703d495dd1f133876ca6267bb9450baf5e2692f29e29a6637961273b5da3",
+                    "attempt_id": "be2090e5623643598cd11211a7ab5455",
+                    "candidate_digest": "695b2ee74ff31710602fa9767725f6dc44b935a73c22d2b7f8a6cea7771674fa",
+                    "contract_digest": "8e2154b8fe7216d8be0eb1c4f65e0eef97715453f9837c4b994b043b76ee6c46",
+                    "gate_receipts": [
+                      "3d950153bae1cab76e9475d0015c2577ef9c22811bf28c789904a6cef24f32f8"
+                    ],
+                    "inputs_digest": "dd3ea0583ad02a5dfda868fdbfd99b24afd1caa60d109344291663fc4b06ae46",
+                    "schema_version": 1
+                  }
+                },
+                "recorded_at": 1789047944.5846627
+              }
+            ],
+            "gate_receipts": [
+              {
+                "schema_version": 1,
+                "attempt_id": "be2090e5623643598cd11211a7ab5455",
+                "contract_digest": "8e2154b8fe7216d8be0eb1c4f65e0eef97715453f9837c4b994b043b76ee6c46",
+                "inputs_digest": "dd3ea0583ad02a5dfda868fdbfd99b24afd1caa60d109344291663fc4b06ae46",
+                "candidate_digest": "695b2ee74ff31710602fa9767725f6dc44b935a73c22d2b7f8a6cea7771674fa",
+                "gate_id": "combined",
+                "validator_digest": "f594eccfe1c4ace03750d05e98ec58e2343e3768dedcb0c33373097537d2b099",
+                "outcome": "pass",
+                "evidence_digest": "e80ace35b901320ab02e43515ca758da7d8d164c703f2c64b268e12e168d11db",
+                "runner_id": "python-process-gate-v2"
+              }
+            ]
+          }
+        ],
+        "acceptance_findings": [],
+        "acceptance_challenged": false
+      },
+      {
+        "atom_id": "prepared-041217846065ed81-4185f07a1cbce3f3-feb87d7783cd4d12/3c9e63d1d8bdbe54",
+        "status": "accepted",
+        "active_attempt": "94a837d193544b69b7f1134a74780fed",
+        "candidate_digest": "695b2ee74ff31710602fa9767725f6dc44b935a73c22d2b7f8a6cea7771674fa",
+        "contract": {
+          "schema_version": 1,
+          "atom_id": "prepared-041217846065ed81-4185f07a1cbce3f3-feb87d7783cd4d12/3c9e63d1d8bdbe54",
+          "graph_revision": "4185f07a1cbce3f381b2291ad9f2463aff98ff7eb836876fccf9be1180b713de",
+          "objective": "{\"product_objective\": \"Add isolated regression tests for the accepted clamp and caller. Do not change production code, substitute imports, mock the tested functions, or mutate source from tests. Cover the assigned requirement groups concisely.\", \"requirements\": {\"types\": \"Write pytest tests against actual large.chosen_value. Only exact built-in ints are accepted. Booleans, integer subclasses, floats, strings, None and other non-integer types raise TypeError. Tests must detect a type-permissive implementation with assertions.\", \"values\": \"Write pytest tests against actual large.chosen_value and consumer.render. chosen_value() returns 42. Built-in ints clamp to 0..100 inclusive: cover negative, both bounds, interior and over-100 inputs. render(value) returns \\\"value=\\\" followed by the decimal clamped value. Tests must detect unclamped, constant-return and incorrect caller-format implementations with assertions.\"}, \"interfaces\": [], \"repository_files\": 2, \"execution_is_whole_repository\": true, \"task_requirement_ids\": [\"values\", \"types\"], \"dependency_interfaces\": []}",
+          "non_goals": [
+            "Modify omitted repository files",
+            "Accept own work"
+          ],
+          "requirement_ids": [
+            "types",
+            "values"
+          ],
+          "product_modules": [
+            "solo-3"
+          ],
+          "source_revision": "repository-snapshot-v1:4baafa6824c8f4a6d33651b64f111f3e27364fa12d881e8763b64ef7f7f9fb52",
+          "inputs_digest": "8230611c498fb28e282c9e9c87753521215a2ba4e1c0930a42026ced0e322b42",
+          "writable_paths": [
+            "tests/test_all.py"
+          ],
+          "prohibited_paths": [],
+          "dependency_artifacts": [],
+          "upstream_contracts": [],
+          "capability_profile": "python-pilot-v1",
+          "network_profile": "none-v1",
+          "credential_profile": "none-v1",
+          "sandbox_profile": "pilot-v1",
+          "allowed_tools": [
+            "read",
+            "edit"
+          ],
+          "required_gates": [
+            {
+              "schema_version": 1,
+              "gate_id": "faults",
+              "validator_digest": "f594eccfe1c4ace03750d05e98ec58e2343e3768dedcb0c33373097537d2b099"
+            }
+          ],
+          "context_budget": {
+            "schema_version": 1,
+            "total_tokens": 12288,
+            "output_tokens": 4096
+          },
+          "max_attempts": 2,
+          "expected_outputs": [
+            {
+              "schema_version": 1,
+              "name": "candidate",
+              "schema_digest": "888c109fc99f38b0cec8912262c8ce74f38ac64b05ba8ddf4f19cfd17409d482"
+            }
+          ],
+          "idempotency_key": "prepared-041217846065ed81-4185f07a1cbce3f3-feb87d7783cd4d12/3c9e63d1d8bdbe54",
+          "integration_key": "solo-3"
+        },
+        "attempts": [
+          {
+            "attempt_id": "94a837d193544b69b7f1134a74780fed",
+            "ordinal": 1,
+            "owner": "durable-controller-v1",
+            "expires_at": 1789049722.063252,
+            "strategy": "initial",
+            "retry_plan": null,
+            "events": [
+              {
+                "event_id": 1,
+                "attempt_id": "94a837d193544b69b7f1134a74780fed",
+                "kind": "leased",
+                "details": {
+                  "ordinal": 1
+                },
+                "recorded_at": 1789047922.063252
+              },
+              {
+                "event_id": 2,
+                "attempt_id": "94a837d193544b69b7f1134a74780fed",
+                "kind": "running",
+                "details": {},
+                "recorded_at": 1789047922.067493
+              },
+              {
+                "event_id": 3,
+                "attempt_id": "94a837d193544b69b7f1134a74780fed",
+                "kind": "observation",
+                "details": {
+                  "digest": "eafe6133f0d70fd4900dede9fb5a5c39c4630cb120e6797fe8210129f94926e5",
+                  "kind": "model"
+                },
+                "recorded_at": 1789047938.6776533
+              },
+              {
+                "event_id": 4,
+                "attempt_id": "94a837d193544b69b7f1134a74780fed",
+                "kind": "observation",
+                "details": {
+                  "digest": "ccef5ca957af14e05f777d2229cce9990ed350dcb470ad037d5aacacf5b9ee8d",
+                  "kind": "development"
+                },
+                "recorded_at": 1789047938.703281
+              },
+              {
+                "event_id": 5,
+                "attempt_id": "94a837d193544b69b7f1134a74780fed",
+                "kind": "observation",
+                "details": {
+                  "digest": "5200060c305f21435d7b3d809c53106751be114bcffe384200ad5c1c494a56af",
+                  "kind": "development"
+                },
+                "recorded_at": 1789047939.8244748
+              },
+              {
+                "event_id": 6,
+                "attempt_id": "94a837d193544b69b7f1134a74780fed",
+                "kind": "candidate",
+                "details": {
+                  "digest": "695b2ee74ff31710602fa9767725f6dc44b935a73c22d2b7f8a6cea7771674fa"
+                },
+                "recorded_at": 1789047939.8287578
+              },
+              {
+                "event_id": 7,
+                "attempt_id": "94a837d193544b69b7f1134a74780fed",
+                "kind": "observation",
+                "details": {
+                  "digest": "29a1735e03c6de5d1f72cce2311e6beb69f4c419e6bea1eaea23ade9855fca13",
+                  "kind": "candidate-execution"
+                },
+                "recorded_at": 1789047940.9511335
+              },
+              {
+                "event_id": 8,
+                "attempt_id": "94a837d193544b69b7f1134a74780fed",
+                "kind": "gate",
+                "details": {
+                  "receipt_digest": "3f87d72e28dc5d51ccf6bedd9451f3040845fea1d74447726da7c00297dcebdb"
+                },
+                "recorded_at": 1789047942.123104
+              },
+              {
+                "event_id": 9,
+                "attempt_id": "94a837d193544b69b7f1134a74780fed",
+                "kind": "accepted",
+                "details": {
+                  "receipt": {
+                    "atom_id": "prepared-041217846065ed81-4185f07a1cbce3f3-feb87d7783cd4d12/3c9e63d1d8bdbe54",
+                    "attempt_id": "94a837d193544b69b7f1134a74780fed",
+                    "candidate_digest": "695b2ee74ff31710602fa9767725f6dc44b935a73c22d2b7f8a6cea7771674fa",
+                    "contract_digest": "391dbe77f47b095c17387f6e75039595c1b51c42be75005441a967634848798e",
+                    "gate_receipts": [
+                      "3f87d72e28dc5d51ccf6bedd9451f3040845fea1d74447726da7c00297dcebdb"
+                    ],
+                    "inputs_digest": "8230611c498fb28e282c9e9c87753521215a2ba4e1c0930a42026ced0e322b42",
+                    "schema_version": 1
+                  }
+                },
+                "recorded_at": 1789047942.1264539
+              }
+            ],
+            "gate_receipts": [
+              {
+                "schema_version": 1,
+                "attempt_id": "94a837d193544b69b7f1134a74780fed",
+                "contract_digest": "391dbe77f47b095c17387f6e75039595c1b51c42be75005441a967634848798e",
+                "inputs_digest": "8230611c498fb28e282c9e9c87753521215a2ba4e1c0930a42026ced0e322b42",
+                "candidate_digest": "695b2ee74ff31710602fa9767725f6dc44b935a73c22d2b7f8a6cea7771674fa",
+                "gate_id": "faults",
+                "validator_digest": "f594eccfe1c4ace03750d05e98ec58e2343e3768dedcb0c33373097537d2b099",
+                "outcome": "pass",
+                "evidence_digest": "4031350f919c92b2b96ba426e0434972f45179b6336b837b6836b428e9b53584",
+                "runner_id": "python-process-gate-v2"
+              }
+            ]
+          }
+        ],
+        "acceptance_findings": [],
+        "acceptance_challenged": false
+      }
+    ],
+    "responses": [
+      {
+        "atom": "prepared-041217846065ed81-4185f07a1cbce3f3-feb87d7783cd4d12/3c9e63d1d8bdbe54",
+        "attempt": 1,
+        "evidence_digest": "eafe6133f0d70fd4900dede9fb5a5c39c4630cb120e6797fe8210129f94926e5",
+        "evidence": {
+          "contract_digest": "391dbe77f47b095c17387f6e75039595c1b51c42be75005441a967634848798e",
+          "elapsed_seconds": 16.597447932999785,
+          "exchanges": [
+            {
+              "elapsed_seconds": 0.02091784099684446,
+              "path": "/v1/models",
+              "request_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+              "response_digest": "e51ddba222eb968602cee6969931ee93ba823de5179c27f4974b309a173e557e",
+              "status": 200
+            },
+            {
+              "elapsed_seconds": 0.08739720800076611,
+              "path": "/tokenize",
+              "request_digest": "db7a7ed4ee87257c5952ec981930dd225aa93da7a1a7beaaea6a1ea179254cfb",
+              "response_digest": "340ffa1848ff2b81785ceb79af66498a1a01e1ea2ef58c6eeba11cf3f33f6b79",
+              "status": 200
+            },
+            {
+              "elapsed_seconds": 16.31879164199927,
+              "path": "/v1/chat/completions",
+              "request_digest": "ec2deff9dacf45c79395668c0f0383451177b58490ff85288a4d9d33266518b4",
+              "response_digest": "83db05baf00c0edb3c637290044c0fd75a64ef3d47f2e371a19e270630772749",
+              "status": 200
+            }
+          ],
+          "manifest_digest": "3159cfe376534363051958e979e3b449d07800c54a5b17841a54b9c82ccbaa76",
+          "profile": {
+            "base_url": "http://127.0.0.1:30000/v1",
+            "context_limit": 16384,
+            "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+            "model": "gflo-local",
+            "profile_id": "vllm-python-worker-windows-v1",
+            "schema_version": 1,
+            "timeout_seconds": 120.0
+          },
+          "turn_digest": "8e4b8432043fcc6376abfdd230cdb8aafcdf5305446344312636352651e6b69a",
+          "view_digest": "4e36f60cfcf46325753310fd530488cd22edd21e0a7c833be835aeea0cf04b04",
+          "window_targets_digest": "678f613ff6f2f8213d17f47cc832fc822f4e9f6200dbea4093747bf5d5cde30e"
+        },
+        "response": {
+          "id": "chatcmpl-9ce852964c2ada39",
+          "object": "chat.completion",
+          "created": 1789047922,
+          "model": "gflo-local",
+          "choices": [
+            {
+              "index": 0,
+              "message": {
+                "role": "assistant",
+                "content": "{\"kind\":\"candidate\",\"changes\":{\"tests/test_all.py\":\"import pytest\\nfrom large import chosen_value\\nfrom consumer import render\\n\\n\\n# --- types: only exact built-in ints accepted ---\\n\\n@pytest.mark.parametrize(\\\"bad\\\", [\\n    True, False,  # booleans\\n    1.0, 1.5, -0.0,  # floats\\n    \\\"42\\\", \\\"1\\\",  # strings\\n    None,  # None\\n    [1], {},  # containers\\n    (1,),  # tuple\\n    1 + 2j,  # complex\\n    b\\\"42\\\",  # bytes\\n])\\ndef test_non_int_types_raise_typeerror(bad):\\n    with pytest.raises(TypeError):\\n        chosen_value(bad)\\n\\n\\nclass IntSubclass(int):\\n    pass\\n\\n\\ndef test_integer_subclass_raises_typeerror():\\n    with pytest.raises(TypeError):\\n        chosen_value(IntSubclass(42))\\n\\n\\ndef test_bool_true_raises_typeerror():\\n    with pytest.raises(TypeError):\\n        chosen_value(True)\\n\\n\\ndef test_bool_false_raises_typeerror():\\n    with pytest.raises(TypeError):\\n        chosen_value(False)\\n\\n\\n# --- values: clamp to 0..100 inclusive ---\\n\\n@pytest.mark.parametrize(\\\"input_val,expected\\\", [\\n    (42, 42),       # interior\\n    (0, 0),         # lower bound\\n    (100, 100),     # upper bound\\n    (-1, 0),        # negative clamps to 0\\n    (-100, 0),      # very negative clamps to 0\\n    (101, 100),     # over 100 clamps to 100\\n    (1000, 100),    # very large clamps to 100\\n    (50, 50),       # another interior\\n    (1, 1),         # just above lower bound\\n    (99, 99),       # just below upper bound\\n])\\ndef test_clamp_values(input_val, expected):\\n    assert chosen_value(input_val) == expected\\n\\n\\ndef test_chosen_value_returns_42():\\n    assert chosen_value(42) == 42\\n\\n\\n# --- detect unclamped implementation ---\\n\\ndef test_negative_is_clamped_not_passthrough():\\n    result = chosen_value(-5)\\n    assert result == 0, f\\\"Expected 0 (clamped), got {result}\\\"\\n\\n\\ndef test_over_100_is_clamped_not_passthrough():\\n    result = chosen_value(150)\\n    assert result == 100, f\\\"Expected 100 (clamped), got {result}\\\"\\n\\n\\n# --- detect constant-return implementation ---\\n\\ndef test_not_constant_return():\\n    r0 = chosen_value(0)\\n    r50 = chosen_value(50)\\n    r100 = chosen_value(100)\\n    assert r0 == 0\\n    assert r50 == 50\\n    assert r100 == 100\\n    # If implementation returned a constant, these would all be equal\\n    assert not (r0 == r50 == r100), \\\"All values equal: constant return detected\\\"\\n\\n\\n# --- consumer.render tests ---\\n\\n@pytest.mark.parametrize(\\\"input_val,expected_str\\\", [\\n    (42, \\\"value=42\\\"),\\n    (0, \\\"value=0\\\"),\\n    (100, \\\"value=100\\\"),\\n    (-1, \\\"value=0\\\"),\\n    (101, \\\"value=100\\\"),\\n    (50, \\\"value=50\\\"),\\n])\\ndef test_render_format(input_val, expected_str):\\n    assert render(input_val) == expected_str\\n\\n\\ndef test_render_detects_incorrect_format():\\n    # render must produce \\\"value=\\\" + str(clamped)\\n    result = render(42)\\n    assert result == \\\"value=42\\\", f\\\"Got '{result}', expected 'value=42'\\\"\\n    # Ensure it is not just the number without prefix\\n    assert result != \\\"42\\\"\\n    # Ensure it is not some other format\\n    assert result.startswith(\\\"value=\\\")\\n\"}}",
+                "refusal": null,
+                "annotations": null,
+                "audio": null,
+                "function_call": null,
+                "reasoning": null
+              },
+              "logprobs": null,
+              "finish_reason": "stop",
+              "stop_reason": null,
+              "token_ids": null,
+              "routed_experts": null
+            }
+          ],
+          "service_tier": null,
+          "system_fingerprint": "vllm-0.28.0-1411bf1b",
+          "usage": {
+            "prompt_tokens": 1789,
+            "total_tokens": 2771,
+            "completion_tokens": 982,
+            "prompt_tokens_details": null,
+            "completion_tokens_details": {
+              "reasoning_tokens": 0
+            }
+          },
+          "prompt_logprobs": null,
+          "prompt_token_ids": null,
+          "prompt_text": null,
+          "kv_transfer_params": null,
+          "ec_transfer_params": null,
+          "metrics": null
+        }
+      }
+    ],
+    "reserved_model_responses": 6,
+    "reserved_tokens": 73728,
+    "plan": {
+      "schema_version": 1,
+      "kind": "reviewed-feature-v1",
+      "request": {
+        "schema_version": 1,
+        "kind": "repository-feature-v1",
+        "feature_id": "solo-3",
+        "objective": "Add isolated regression tests for the accepted clamp and caller. Do not change production code, substitute imports, mock the tested functions, or mutate source from tests. Cover the assigned requirement groups concisely.",
+        "requirements": {
+          "types": "Write pytest tests against actual large.chosen_value. Only exact built-in ints are accepted. Booleans, integer subclasses, floats, strings, None and other non-integer types raise TypeError. Tests must detect a type-permissive implementation with assertions.",
+          "values": "Write pytest tests against actual large.chosen_value and consumer.render. chosen_value() returns 42. Built-in ints clamp to 0..100 inclusive: cover negative, both bounds, interior and over-100 inputs. render(value) returns \"value=\" followed by the decimal clamped value. Tests must detect unclamped, constant-return and incorrect caller-format implementations with assertions."
+        },
+        "source": {
+          "schema_version": 1,
+          "kind": "repository-snapshot-v1",
+          "artifact_digest": "4baafa6824c8f4a6d33651b64f111f3e27364fa12d881e8763b64ef7f7f9fb52"
+        },
+        "allowed_paths": [
+          "tests/test_all.py"
+        ],
+        "environments": {
+          "python": {
+            "schema_version": 1,
+            "image": "sha256:695d05883b15326aea01e9266067ff58c41f3eaa4f647cfc9424b403dbe9548d",
+            "description": "Pinned offline Python with pytest"
+          }
+        }
+      },
+      "proposal": {
+        "schema_version": 1,
+        "request_digest": "041217846065ed816e86256e880d61bf4878bc2181203cfd3de3405a8938f617",
+        "tasks": [
+          {
+            "schema_version": 1,
+            "task_id": "all",
+            "objective": "Write only the assigned values, types regression tests.",
+            "requirement_ids": [
+              "values",
+              "types"
+            ],
+            "depends_on": [],
+            "writable_paths": [
+              "tests/test_all.py"
+            ],
+            "read_paths": [
+              "large.py",
+              "consumer.py"
+            ],
+            "environment_id": "python",
+            "interface_contracts": [
+              "{\"declarations\":[],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+            ],
+            "acceptance_checks": [
+              "Tests pass the real implementation and reject assigned faults."
+            ]
+          }
+        ],
+        "questions": [],
+        "rationale": "Reviewed experiment: fixed behavior groups and disjoint output ownership; no model planning."
+      },
+      "review": {
+        "schema_version": 1,
+        "kind": "plan-review-v1",
+        "request_digest": "041217846065ed816e86256e880d61bf4878bc2181203cfd3de3405a8938f617",
+        "proposal_digest": "4185f07a1cbce3f381b2291ad9f2463aff98ff7eb836876fccf9be1180b713de",
+        "tasks": {
+          "all": {
+            "schema_version": 1,
+            "execution_paths": [
+              "large.py",
+              "consumer.py"
+            ],
+            "context_paths": [
+              "large.py",
+              "consumer.py"
+            ],
+            "gates": {
+              "faults": {
+                "schema_version": 1,
+                "cases": [
+                  {
+                    "schema_version": 1,
+                    "command": [
+                      "python",
+                      "-B",
+                      "-c",
+                      "import ast,hashlib,json,subprocess,sys\nfrom pathlib import Path\npaths=['tests/test_all.py']\nfaults=['unclamped', 'constant', 'caller', 'permissive']\noriginal={p:Path(p).read_text() for p in ['large.py','consumer.py']}\nassert {p:hashlib.sha256(t.encode()).hexdigest() for p,t in original.items()} == {'large.py': 'dc6328504b1a0efe732ce021c91577762103f5f009b7ffc55ce65c5254bb0c83', 'consumer.py': '4a87c82f9a932412c44348bb20a1b638f47e9f27467e624c0c20b04bc1dbd579'}\nnode=next(n for n in ast.parse(original['large.py']).body if isinstance(n,ast.FunctionDef) and n.name=='chosen_value')\nlines=original['large.py'].splitlines(keepends=True)\nprefix=''.join(lines[:node.lineno-1]); suffix=''.join(lines[node.end_lineno:])\nfor fault in ['correct']+faults:\n    changed=dict(original)\n    if fault=='unclamped':changed['large.py']=prefix+'def chosen_value(value=42):\\n    if type(value) is not int: raise TypeError()\\n    return value\\n'+suffix\n    if fault=='constant':changed['large.py']=prefix+'def chosen_value(value=42):\\n    if type(value) is not int: raise TypeError()\\n    return 42\\n'+suffix\n    if fault=='permissive':changed['large.py']=prefix+'def chosen_value(value=42):\\n    return max(0,min(100,value))\\n'+suffix\n    if fault=='caller':changed['consumer.py']=original['consumer.py'].replace('\"value=\"','\"wrong=\"')\n    for p,t in changed.items():Path(p).write_text(t)\n    r=subprocess.run([sys.executable,'-B','-m','pytest','-q','-p','no:cacheprovider',*paths],capture_output=True,text=True)\n    assert {p:Path(p).read_text() for p in original} == changed, 'tests mutated source'\n    if fault=='correct':assert r.returncode==0,(r.stdout,r.stderr)\n    else:assert r.returncode==1 and 'failed' in r.stdout and ('AssertionError' in r.stdout or 'Failed:' in r.stdout),(fault,r.stdout,r.stderr)\nfor p,t in original.items():Path(p).write_text(t)\nprint('qualified')\n"
+                    ],
+                    "stdin": "",
+                    "expected_stdout": "qualified\n",
+                    "seconds": 30.0
+                  }
+                ]
+              }
+            },
+            "context_bytes": 65536,
+            "execution_bytes": 262144
+          }
+        },
+        "model_profile": {
+          "schema_version": 1,
+          "profile_id": "vllm-python-worker-windows-v1",
+          "base_url": "http://127.0.0.1:30000/v1",
+          "model": "gflo-local",
+          "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+          "context_limit": 16384,
+          "timeout_seconds": 120.0
+        },
+        "deployment": "{\n  \"mode\": \"managed\",\n  \"base_url\": \"http://127.0.0.1:30000/v1\",\n  \"model\": \"gflo-local\",\n  \"request_timeout\": 120,\n  \"startup_timeout\": 300,\n  \"managed\": {\n    \"backend\": \"vllm\",\n    \"image\": \"vllm/vllm-openai@sha256:ac259a0111c6cf462a72e449962b84f7a624b5cbec24bd7d9ec3b67d40ffd1bf\",\n    \"model_path\": \"Inferact/Qwen3.8-27B-NVFP4\",\n    \"revision\": \"6128240ebaf4eaa7bad2b3d1c72c37d677c5f462\",\n    \"name\": \"gflo-vllm-graphs\",\n    \"gpu\": \"0\",\n    \"context_length\": 16384,\n    \"memory_fraction\": 0.85,\n    \"shm_size\": \"4g\",\n    \"memory_limit\": \"36g\",\n    \"cpu_limit\": 3,\n    \"pids_limit\": 1024,\n    \"model_cache_volume\": \"local-vllm-huggingface-cache\",\n    \"offline\": true,\n    \"hf_token_env\": \"\",\n    \"server_options\": {\n      \"kv-cache-dtype\": \"bfloat16\",\n      \"reasoning-parser\": \"qwen3\",\n      \"tool-call-parser\": \"qwen3_coder\"\n    },\n    \"enforce_eager\": false\n  }\n}\n",
+        "context_budget": {
+          "schema_version": 1,
+          "total_tokens": 12288,
+          "output_tokens": 4096
+        },
+        "max_attempts": 2,
+        "max_model_turns": 3
+      },
+      "integration": {
+        "schema_version": 1,
+        "execution_paths": [
+          "large.py",
+          "consumer.py",
+          "tests/test_all.py"
+        ],
+        "context_paths": [],
+        "gates": {
+          "combined": {
+            "schema_version": 1,
+            "cases": [
+              {
+                "schema_version": 1,
+                "command": [
+                  "python",
+                  "-B",
+                  "-c",
+                  "import ast,hashlib,json,subprocess,sys\nfrom pathlib import Path\npaths=['tests/test_all.py']\nfaults=['unclamped', 'constant', 'caller', 'permissive']\noriginal={p:Path(p).read_text() for p in ['large.py','consumer.py']}\nassert {p:hashlib.sha256(t.encode()).hexdigest() for p,t in original.items()} == {'large.py': 'dc6328504b1a0efe732ce021c91577762103f5f009b7ffc55ce65c5254bb0c83', 'consumer.py': '4a87c82f9a932412c44348bb20a1b638f47e9f27467e624c0c20b04bc1dbd579'}\nnode=next(n for n in ast.parse(original['large.py']).body if isinstance(n,ast.FunctionDef) and n.name=='chosen_value')\nlines=original['large.py'].splitlines(keepends=True)\nprefix=''.join(lines[:node.lineno-1]); suffix=''.join(lines[node.end_lineno:])\nfor fault in ['correct']+faults:\n    changed=dict(original)\n    if fault=='unclamped':changed['large.py']=prefix+'def chosen_value(value=42):\\n    if type(value) is not int: raise TypeError()\\n    return value\\n'+suffix\n    if fault=='constant':changed['large.py']=prefix+'def chosen_value(value=42):\\n    if type(value) is not int: raise TypeError()\\n    return 42\\n'+suffix\n    if fault=='permissive':changed['large.py']=prefix+'def chosen_value(value=42):\\n    return max(0,min(100,value))\\n'+suffix\n    if fault=='caller':changed['consumer.py']=original['consumer.py'].replace('\"value=\"','\"wrong=\"')\n    for p,t in changed.items():Path(p).write_text(t)\n    r=subprocess.run([sys.executable,'-B','-m','pytest','-q','-p','no:cacheprovider',*paths],capture_output=True,text=True)\n    assert {p:Path(p).read_text() for p in original} == changed, 'tests mutated source'\n    if fault=='correct':assert r.returncode==0,(r.stdout,r.stderr)\n    else:assert r.returncode==1 and 'failed' in r.stdout and ('AssertionError' in r.stdout or 'Failed:' in r.stdout),(fault,r.stdout,r.stderr)\nfor p,t in original.items():Path(p).write_text(t)\nprint('qualified')\n"
+                ],
+                "stdin": "",
+                "expected_stdout": "qualified\n",
+                "seconds": 30.0
+              }
+            ]
+          }
+        },
+        "context_bytes": 65536,
+        "execution_bytes": 262144
+      },
+      "integration_environment": "python"
+    },
+    "tests": {
+      "tests/test_all.py": "import pytest\nfrom large import chosen_value\nfrom consumer import render\n\n\n# --- types: only exact built-in ints accepted ---\n\n@pytest.mark.parametrize(\"bad\", [\n    True, False,  # booleans\n    1.0, 1.5, -0.0,  # floats\n    \"42\", \"1\",  # strings\n    None,  # None\n    [1], {},  # containers\n    (1,),  # tuple\n    1 + 2j,  # complex\n    b\"42\",  # bytes\n])\ndef test_non_int_types_raise_typeerror(bad):\n    with pytest.raises(TypeError):\n        chosen_value(bad)\n\n\nclass IntSubclass(int):\n    pass\n\n\ndef test_integer_subclass_raises_typeerror():\n    with pytest.raises(TypeError):\n        chosen_value(IntSubclass(42))\n\n\ndef test_bool_true_raises_typeerror():\n    with pytest.raises(TypeError):\n        chosen_value(True)\n\n\ndef test_bool_false_raises_typeerror():\n    with pytest.raises(TypeError):\n        chosen_value(False)\n\n\n# --- values: clamp to 0..100 inclusive ---\n\n@pytest.mark.parametrize(\"input_val,expected\", [\n    (42, 42),       # interior\n    (0, 0),         # lower bound\n    (100, 100),     # upper bound\n    (-1, 0),        # negative clamps to 0\n    (-100, 0),      # very negative clamps to 0\n    (101, 100),     # over 100 clamps to 100\n    (1000, 100),    # very large clamps to 100\n    (50, 50),       # another interior\n    (1, 1),         # just above lower bound\n    (99, 99),       # just below upper bound\n])\ndef test_clamp_values(input_val, expected):\n    assert chosen_value(input_val) == expected\n\n\ndef test_chosen_value_returns_42():\n    assert chosen_value(42) == 42\n\n\n# --- detect unclamped implementation ---\n\ndef test_negative_is_clamped_not_passthrough():\n    result = chosen_value(-5)\n    assert result == 0, f\"Expected 0 (clamped), got {result}\"\n\n\ndef test_over_100_is_clamped_not_passthrough():\n    result = chosen_value(150)\n    assert result == 100, f\"Expected 100 (clamped), got {result}\"\n\n\n# --- detect constant-return implementation ---\n\ndef test_not_constant_return():\n    r0 = chosen_value(0)\n    r50 = chosen_value(50)\n    r100 = chosen_value(100)\n    assert r0 == 0\n    assert r50 == 50\n    assert r100 == 100\n    # If implementation returned a constant, these would all be equal\n    assert not (r0 == r50 == r100), \"All values equal: constant return detected\"\n\n\n# --- consumer.render tests ---\n\n@pytest.mark.parametrize(\"input_val,expected_str\", [\n    (42, \"value=42\"),\n    (0, \"value=0\"),\n    (100, \"value=100\"),\n    (-1, \"value=0\"),\n    (101, \"value=100\"),\n    (50, \"value=50\"),\n])\ndef test_render_format(input_val, expected_str):\n    assert render(input_val) == expected_str\n\n\ndef test_render_detects_incorrect_format():\n    # render must produce \"value=\" + str(clamped)\n    result = render(42)\n    assert result == \"value=42\", f\"Got '{result}', expected 'value=42'\"\n    # Ensure it is not just the number without prefix\n    assert result != \"42\"\n    # Ensure it is not some other format\n    assert result.startswith(\"value=\")\n"
+    },
+    "integrated_file_identities": {
+      "consumer.py": {
+        "content_digest": "4a87c82f9a932412c44348bb20a1b638f47e9f27467e624c0c20b04bc1dbd579",
+        "executable": false,
+        "schema_version": 1,
+        "size_bytes": 97
+      },
+      "large.py": {
+        "content_digest": "dc6328504b1a0efe732ce021c91577762103f5f009b7ffc55ce65c5254bb0c83",
+        "executable": false,
+        "schema_version": 1,
+        "size_bytes": 208036
+      },
+      "tests/test_all.py": {
+        "content_digest": "22a3c007c8bc4f5c671a8079125d6000ca9cab3fbb90e1a3d5c8f714675655fe",
+        "executable": false,
+        "schema_version": 1,
+        "size_bytes": 2879
+      }
+    },
+    "test_functions": 11,
+    "exact_duplicate_test_bodies": 0,
+    "reuse_status": "accepted",
+    "replay_unchanged": true,
+    "cost": {
+      "responses": 1,
+      "prompt_tokens": 1789,
+      "completion_tokens": 982,
+      "total_tokens": 2771,
+      "model_seconds": 16.597447932999785,
+      "max_prompt_tokens": 1789
+    }
+  }
+]

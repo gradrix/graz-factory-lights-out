@@ -224,6 +224,7 @@ def test_oversized_line_is_explicitly_omitted_and_later_window_is_readable(prepa
 
 def test_planning_window_wire_supports_reads_and_direct_documents(prepared, server):
     from test_worker import client_for
+
     from gflo.model import LocalModel
 
     store, atom, _, digest = prepared
@@ -255,6 +256,7 @@ def test_planning_window_wire_supports_reads_and_direct_documents(prepared, serv
 
 def test_window_output_truncation_is_retryable_without_accepting_partial_text(prepared, server):
     from test_worker import client_for
+
     from gflo.model import LocalModel, ModelError
 
     store, atom, _, digest = prepared
@@ -294,10 +296,49 @@ def test_planning_windows_label_text_without_losing_source_identity(prepared):
     from gflo.windows import planning_window_view
 
     store, atom, source, digest = prepared
-    atom = atom.model_copy(update={'writable_paths': ('factory-plan.json',)})
+    atom = atom.model_copy(update={"writable_paths": ("factory-plan.json",)})
     view, _ = window_view(store, atom, digest, source)
     labeled = planning_window_view(view)
-    assert labeled.source_files['main.py:1-1'] == source.files['main.py']
+    assert labeled.source_files["main.py:1-1"] == source.files["main.py"]
     assert labeled.sources == view.sources
     assert labeled.omission_reasons == view.omission_reasons
     assert labeled.contract_digest == view.contract_digest
+
+
+def test_task_created_draft_replacement_preserves_original_authority(prepared):
+    store, atom, base, digest = prepared
+    atom = atom.model_copy(update={"writable_paths": ("main.py", "tests")})
+    draft = SourceBundle(files=base.files | {"tests/test_new.py": "def test_new()\n    pass\n"})
+    view, targets = window_view(store, atom, digest, draft)
+    assert view.instruction["task_created_paths"] == ["tests/test_new.py"]
+    candidate = CandidateResult(
+        kind="candidate", changes={"tests/test_new.py": "def test_new():\n    pass\n"}
+    )
+    assert (
+        parse_window_result(candidate.canonical(), atom, draft, targets, base_source=base)
+        == candidate
+    )
+    # Legacy callers do not acquire new authority implicitly.
+    with pytest.raises(WorkerError, match="exact edits"):
+        parse_window_result(candidate.canonical(), atom, draft, targets)
+    for changes in ({"main.py": "pass\n"}, candidate.changes | {"main.py": "pass\n"}):
+        with pytest.raises(WorkerError, match="exact edits"):
+            parse_window_result(
+                CandidateResult(kind="candidate", changes=changes).canonical(),
+                atom,
+                draft,
+                targets,
+                base_source=base,
+            )
+    with pytest.raises(WorkerError, match="bind contract inputs"):
+        parse_window_result(candidate.canonical(), atom, draft, targets, base_source=draft)
+    with pytest.raises(WorkerError, match="different contract or draft"):
+        parse_window_result(candidate.canonical(), atom, base, targets, base_source=base)
+    with pytest.raises(WorkerError, match="outside granted"):
+        parse_window_result(
+            CandidateResult(kind="candidate", changes={"outside.py": "pass\n"}).canonical(),
+            atom,
+            draft,
+            targets,
+            base_source=base,
+        )

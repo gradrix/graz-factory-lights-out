@@ -705,3 +705,11 @@ passed 497 tests/25 subtests, with an additional retention case verified separat
 These small supervised samples show a planner improvement, not general unattended
 reliability. More local inference is acceptable when it improves checked completion;
 token use remains a secondary measurement for future specialist-budget comparisons.
+
+## Task-created draft repair (2026-09-10)
+
+The previously rejected whole-file repair of a task-created test file passes all original
+fault checks unchanged. Three fresh local-model solo trials accepted, including one
+two-response draft repair. Original input files remain protected by exact window edits.
+These small trials verify the regression, not general reliability.
+[Portable evidence](../.scratch/local-lights-out-factory/draft-repair/README.md).

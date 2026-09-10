@@ -465,7 +465,9 @@ class LocalModel:
                     )
             result: CandidateResult | ReadFileRequest | ContractConflict | WindowRead
             if window_targets is not None:
-                result = parse_window_result(content, atom, current, window_targets)
+                result = parse_window_result(
+                    content, atom, current, window_targets, base_source=source
+                )
             else:
                 result = parse_result(
                     content,
