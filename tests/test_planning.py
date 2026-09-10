@@ -373,3 +373,26 @@ def test_truncated_structured_plan_uses_existing_finite_retry(feature, tmp_path,
     result = draft_feature(feature, profile(), tmp_path / "exhausted", deployment="fixture",
                            structured_interfaces=True)
     assert result["status"] == "exhausted" and len(result["observations"]) == 2
+
+
+def test_window_planner_retains_ranges_without_expanding_to_whole_file(feature, tmp_path, monkeypatch):
+    from gflo.windows import WINDOW_PROFILE, WindowRead
+
+    data = proposal(feature)
+    data["kind"] = "contract-plan-v1"
+    for task in data["tasks"]:
+        task.pop("interface_contracts")
+        task.update(interfaces=[], implementation_suggestions=[])
+    read = WindowRead(path="history.py", start_line=1, max_lines=1)
+    models = fake_model(monkeypatch, [read, CandidateResult(
+        kind="candidate", changes={"factory-plan.json": json.dumps(data)}
+    )])
+    result = draft_feature(feature, profile().model_copy(update={"profile_id": WINDOW_PROFILE}),
+                           tmp_path / "draft", deployment="fixture", structured_interfaces=True)
+    assert result["status"] == "needs-review"
+    assert models[0].calls[1]["window_reads"] == (read,)
+    assert "read_window" in models[0].atoms[0].objective
+    assert result["observations"][0]["read_window"]["max_lines"] == 1
+    diagnostics = models[0].calls[1]["diagnostic_digests"]
+    note = json.loads(models[0].artifacts.read(diagnostics[-1]))["text"]
+    assert "Completed source reads" in note and '"start_line": 1' in note

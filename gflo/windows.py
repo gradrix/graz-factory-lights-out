@@ -88,6 +88,9 @@ Return exactly one JSON object. For existing files use only this turn's window h
 Each old text must occur exactly once INSIDE that window. Combined old/new text <=8192 bytes.
 Never replace an existing whole file. For new files only use
 {"kind":"candidate","changes":{"new.py":"complete text"}}.
+Keep new files concise enough for this response budget. Group test cases with parametrization
+or loops; do not duplicate tests for individual values. Stop after covering the requirements.
+Encode file contents once as JSON strings so decoding yields actual source lines.
 Use the definition index and visible line ranges to request needed context:
 {"kind":"read_window","path":"file.py","start_line":123,"max_lines":60}.
 Each read consumes a turn; submit edits before turns run out. Do not repeat visible reads.

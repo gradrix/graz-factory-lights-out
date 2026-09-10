@@ -178,3 +178,20 @@ def test_replanning_keeps_schema_failure_feedback_after_grounding(feature, tmp_p
     ]
     assert any("exact original requirement quotes" in d.text for d in diagnostics)
     assert any("Field required" in d.text and "questions" in d.text for d in diagnostics)
+
+
+def test_window_planner_grounding_has_no_windows_or_source_authority(feature, tmp_path, monkeypatch):
+    from gflo.windows import WINDOW_PROFILE
+
+    questions, grounding, plan = records(feature)
+    models = fake_model(monkeypatch, [document(json.loads(questions.canonical())),
+                                     document(grounding), document(plan)])
+    result = draft_feature(feature, profile().model_copy(update={"profile_id": WINDOW_PROFILE}),
+                           tmp_path / "plan", deployment="fixture", structured_interfaces=True)
+    assert result["status"] == "needs-review" and len(models) == 2
+    assert len(models[0].calls) == 2 and len(models[1].calls) == 1
+    review = models[1]
+    assert review.calls[0]["selected_paths"] == ()
+    assert "window_reads" not in review.calls[0]
+    assert review.atoms[0].allowed_tools == ("edit",)
+    assert "history.py" not in review.atoms[0].objective

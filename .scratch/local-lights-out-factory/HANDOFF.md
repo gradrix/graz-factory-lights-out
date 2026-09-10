@@ -1,6 +1,30 @@
 # GFLO handoff — repository access foundation
 
-## Current checkpoint — bounded worker windows, 2026-09-10
+## Current checkpoint — window planning and reliability limits, 2026-09-10
+
+Issue 58 implemented and initially qualified. windows-v1 now plans through bounded
+read-only source windows and uses source-free question grounding. Completed reads have
+explicit metadata. Truncated window-worker output is rejected and can use a remaining
+attempt; legacy profiles retain their behavior. 492 tests / 25 subtests with Docker,
+ruff/mypy and historical replay passed. No model/deployment/context-limit changes.
+
+One of four fresh complete-feature trials accepted: local plan, 10,002-line function
+edit, eight tests rejecting three faults, and integration. Three halted; the final
+configuration's run repeated a planner read, then omitted a requirement and was rejected.
+Do not present this as reliable unattended operation. A separate navigation probe did
+quote the actual return statement, but needed two attempts. All failures and generic
+protocol changes are in [portable evidence](window-feature-qualification/README.md).
+The successful feature replay added no events. No candidate or plan was manually fixed.
+
+The user suggested multiple smaller test agents. Next: [issue 59](issues/59-compare-bounded-test-task-decomposition.md),
+compare behavior-scoped test tasks in separate files under equal aggregate budget.
+Avoid concurrent shared-file mutation. [Issue 60](issues/60-improve-planner-read-and-coverage-recovery.md)
+tracks planner read repetition and omitted-requirement recovery. Do not keep adding
+fixture-specific prompt guidance or resetting attempts. Larger execution inputs remain
+separate: SourceBundle still caps the complete prepared bundle at 256 KiB.
+No human decision is required; same-model constraint and push authorization persist.
+
+## Previous checkpoint — bounded worker windows, 2026-09-10
 
 Issue 57 resolved. Opt-in windows-v1 edits existing files through revision-bound ranges,
 with explicit omissions, bounded definition lookup and full-candidate gates. Prepared

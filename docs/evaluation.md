@@ -649,3 +649,22 @@ finding. No manual candidate edits or model changes were used. The real-file can
 remains a qualification artifact. [Portable responses, recipes and outcomes](../.scratch/local-lights-out-factory/window-qualification/README.md)
 show the assistance and failures. Large-file planning and execution above 256 KiB remain
 unqualified; this is not evidence of unattended whole-product reliability.
+
+## Window planning and full-feature trials (2026-09-10)
+
+Direct planning now uses read-only windows with the opt-in windows-v1 profile. Across
+four fresh supervised feature trials on the 10,002-line file, one accepted its local
+plan, implementation, eight generated tests and combined checks. The tests rejected
+three injected faults. That run used six responses total and at most 3,513 prompt
+tokens; replay added no events. The other three runs halted: two on excessive test
+output and one on repeated planning reads followed by an omitted requirement.
+
+The trials span generic protocol changes, so this is not a fixed-configuration success
+rate. The final configuration has not repeated the complete success. A separate
+navigation probe eventually quoted the actual return statement at line 5001, but used
+five responses across two attempts. [Portable fixtures, responses and negative results](../.scratch/local-lights-out-factory/window-feature-qualification/README.md)
+record all assistance. No model or context-limit change and no manual candidate/plan
+repair was used. CPU/Docker verification passed 492 tests and 25 subtests. The new
+retryable output-limit classification is covered by CPU tests; the last GPU trial
+halted before reaching it. Test-task decomposition and navigation recovery are the next
+experiments, not demonstrated solutions. Execution remains capped at 256 KiB.

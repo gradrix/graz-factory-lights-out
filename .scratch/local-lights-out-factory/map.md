@@ -249,3 +249,9 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
 - Issue 57 resolved: bounded worker windows qualified on a 10,002-line synthetic file
   and the real repository reader. [Evidence and failures](window-qualification/README.md).
   Next boundary: whole-file planning and the 256 KiB execution bundle.
+
+- Issue 58 implemented and initially qualified: bounded planning can read a large-file
+  function and complete a feature, but repeated trials expose navigation and output
+  reliability gaps. [All trials](window-feature-qualification/README.md).
+- Next: issue 59 compares behavior-scoped test tasks (user suggestion); issue 60 targets
+  planner read/coverage recovery. Neither permits overlapping mutable file ownership.

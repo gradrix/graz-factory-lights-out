@@ -19,6 +19,7 @@ from gflo.model import IncompleteModelResult, LocalModel, ModelError, ModelProfi
 from gflo.question_grounding import QuestionGrounding, grounding_instruction
 from gflo.records import Digest, Identifier, Record, Text, WorkAtom
 from gflo.repository import Repository, SourceRef
+from gflo.windows import WINDOW_PROFILE, WindowRead
 from gflo.worker import CandidateResult, Diagnostic, InputSnapshot, ReadFileRequest, within
 
 
@@ -279,6 +280,9 @@ def draft_feature(
     Existing directories are refused. Interrupted runs retain observations but are
     not silently resumed or rescored. A draft is never a Work-atom acceptance.
     """
+    windows = profile.profile_id == WINDOW_PROFILE
+    if windows and not structured_interfaces:
+        raise ValueError("Window planning requires direct structured interfaces")
     if structured_interfaces and (specialist is not None or reports):
         raise ValueError("Structured interfaces require direct planning")
     if (specialist is not None or reports) and not isinstance(request, RepositoryFeatureRequest):
@@ -320,7 +324,7 @@ def draft_feature(
     if "factory-plan.json" in source.files:
         raise ValueError("Reserved planning output path already exists")
     profile = ModelProfile.model_validate(profile)
-    if profile.profile_id != "vllm-python-worker-v1":
+    if profile.profile_id not in ("vllm-python-worker-v1", WINDOW_PROFILE):
         raise ValueError("Planning v1 uses the default non-thinking profile with fixed 4K output")
     if hashlib.sha256(deployment.encode()).hexdigest() != profile.deployment_digest:
         raise ValueError("Deployment does not match pinned model profile")
@@ -414,6 +418,13 @@ def draft_feature(
             + json.dumps(brief, separators=(",", ":"))
             + "\nSchema: "
             + json.dumps(adapter.json_schema(), separators=(",", ":"))
+        )
+    if windows:
+        instruction = instruction.replace(
+            "read_file for an available input; at most two reads, retaining only two files. ",
+            "read_window for an available input using path, start_line and max_lines (1..100). "
+            "At most two reads per attempt. Use the bounded definition index for line locations. "
+            "Only shown windows are visible; inspect needed definitions before planning. ",
         )
     if specialist is not None or reports:
         assert isinstance(request, RepositoryFeatureRequest)
@@ -521,6 +532,7 @@ def draft_feature(
     }
     (output / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")
     model = LocalModel(artifacts, profile)
+    active_model = model
     observations: list[dict[str, Any]] = []
     diagnostics: tuple[str, ...] = ()
     result: dict[str, Any] = {
@@ -533,6 +545,7 @@ def draft_feature(
     grounding_active = False
     try:
         for attempt in range(1, 3):
+            window_reads: tuple[WindowRead, ...] = ()
             selected = set(selected_paths[-2:])
             reading_order = list(selected_paths[-2:])
             visited = set(selected)
@@ -546,6 +559,14 @@ def draft_feature(
                         "Return the requested FILE schema inside candidate factory-plan.json. "
                         "No repeated reads or questions answered by the brief."
                     )
+                    if windows and window_reads:
+                        note += (
+                            " Completed source reads: "
+                            + json.dumps([r.model_dump(mode="json") for r in window_reads])
+                            + ". Their text is now supplied in source_files under the handles "
+                            "mapped by instruction.source_windows. Read those supplied excerpts "
+                            "and use them in the plan; do not request them again."
+                        )
                     if structured_interfaces:
                         note = note.replace(
                             "Return the requested FILE schema inside candidate factory-plan.json. ",
@@ -571,12 +592,25 @@ def draft_feature(
                             }
                         )
                     artifacts.publish(turn_atom.canonical().encode())
-                    response = model.turn(
+                    active_model = (
+                        LocalModel(
+                            artifacts,
+                            profile.model_copy(update={"profile_id": "vllm-python-worker-v1"}),
+                        )
+                        if windows and grounding_active
+                        else model
+                    )
+                    response = active_model.turn(
                         turn_atom,
                         source_digest,
                         current_inputs=lambda: atom.inputs_digest,
                         selected_paths=() if grounding_active else tuple(sorted(selected)),
                         diagnostic_digests=() if grounding_active else diagnostics + (note_digest,),
+                        **(
+                            dict[str, Any](window_reads=window_reads)
+                            if windows and not grounding_active
+                            else {}
+                        ),
                         **(dict[str, Any](planning_document=True) if structured_interfaces else {}),
                     )
                     answer = response.result
@@ -623,6 +657,17 @@ def draft_feature(
                                 .encode()
                             ),
                         )
+                        continue
+                    if isinstance(answer, WindowRead):
+                        if not windows or answer.path not in source.files or answer in window_reads:
+                            raise ValueError(
+                                "Window read must select fresh available source context"
+                            )
+                        if turn == 3:
+                            raise ValueError("Final planning turn must return a plan or questions")
+                        window_reads = (*window_reads, answer)
+                        row["read_window"] = answer.model_dump(mode="json")
+                        visited.add(answer.path)
                         continue
                     if isinstance(answer, ReadFileRequest):
                         if answer.path in visited or answer.path not in source.files:
@@ -734,7 +779,7 @@ def draft_feature(
                     row["error"] = failure
                     break
                 finally:
-                    row["model_evidence_digest"] = model.last_evidence_digest
+                    row["model_evidence_digest"] = active_model.last_evidence_digest
                     digest = artifacts.publish(json.dumps(row, sort_keys=True).encode())
                     observations.append(row | {"observation_digest": digest})
                     (output / f"observation-{attempt}-{turn}.json").write_text(

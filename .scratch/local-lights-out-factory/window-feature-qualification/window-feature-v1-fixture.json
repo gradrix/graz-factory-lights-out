@@ -1,0 +1,130 @@
+{
+  "request": {
+    "schema_version": 1,
+    "kind": "repository-feature-v1",
+    "feature_id": "window-feature-v1",
+    "objective": "Extend the large module integer clamp and add isolated regression tests.",
+    "requirements": {
+      "clamp": "In large.py extend chosen_value(value=42) to clamp built-in integers to 0..100 inclusive. With no argument return 42. Reject booleans and every non-built-in-integer input with TypeError. Preserve all other source text exactly. consumer.render is a read-only caller and must work unchanged.",
+      "tests": "Create tests/test_large.py using pytest and the actual large.chosen_value and consumer.render. Cover default 42, negative and over-100 clamping, interior integers and caller rendering, and rejection of booleans, integer subclasses and other non-built-in-integer types. Tests must fail incorrect constant-return, unclamped and type-permissive implementations with assertions. No source changes or import substitution inside tests."
+    },
+    "source": {
+      "schema_version": 1,
+      "kind": "repository-snapshot-v1",
+      "artifact_digest": "2fbd26c7a03c7f3f38bf742537e7411a507c9da04453c38ced4e2fc349a67ee5"
+    },
+    "allowed_paths": [
+      "large.py",
+      "tests/test_large.py"
+    ],
+    "environments": {
+      "python": {
+        "schema_version": 1,
+        "image": "sha256:695d05883b15326aea01e9266067ff58c41f3eaa4f647cfc9424b403dbe9548d",
+        "description": "Offline Python with pytest"
+      }
+    }
+  },
+  "policy": {
+    "schema_version": 1,
+    "kind": "feature-policy-v1",
+    "request_digest": "cd3a087b28ee4fc3ea3efa3ef8dd79668757232fee0ad73f02bb40d9f7086ecc",
+    "file_gates": {
+      "large.py": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-c",
+              "import ast,hashlib\nfrom pathlib import Path\nfrom large import chosen_value\nfrom consumer import render\nassert chosen_value()==42\nfor value in range(-250,251):\n assert chosen_value(value)==min(100,max(0,value))\n assert render(value)=='value='+str(min(100,max(0,value)))\nfor value in [True,False,None,1.0,'42',[],{},type('SubInt',(int,),{})(5)]:\n try:chosen_value(value)\n except TypeError:pass\n else:raise AssertionError(('non-integer accepted',type(value).__name__))\ntext=Path('large.py').read_text()\nnode=next(n for n in ast.parse(text).body if isinstance(n,ast.FunctionDef) and n.name=='chosen_value')\nlines=text.splitlines(keepends=True)\nassert hashlib.sha256(''.join(lines[:node.lineno-1]).encode()).hexdigest()=='782195477833738c5f8ef8b2056fd2f639d2fc633c20a23c453a3b417b32a8da'\nassert hashlib.sha256(''.join(lines[node.end_lineno:]).encode()).hexdigest()=='dc8840c1b238efc6d9153043e55068de3e3c2a67032a57aec38c47f7be6fc963'\nassert hashlib.sha256(Path('consumer.py').read_bytes()).hexdigest()=='4a87c82f9a932412c44348bb20a1b638f47e9f27467e624c0c20b04bc1dbd579'\nprint('window-contract-ok')\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "window-contract-ok\n",
+            "seconds": 10.0
+          }
+        ]
+      },
+      "tests/test_large.py": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-c",
+              "import subprocess,sys\nfrom pathlib import Path\np=Path('large.py'); original=p.read_text()\ndef run():\n return subprocess.run([sys.executable,'-m','pytest','-q','tests/test_large.py'],capture_output=True,text=True)\nr=run();assert r.returncode==0,(r.stdout,r.stderr)\nimport ast\nt=ast.parse(original); n=next(n for n in t.body if isinstance(n,ast.FunctionDef) and n.name=='chosen_value')\nlines=original.splitlines(keepends=True)\nfor body in ['    return value\\n','    return 42\\n','    return max(0,min(100,value))\\n']:\n p.write_text(''.join(lines[:n.lineno-1])+'def chosen_value(value=42):\\n'+body+''.join(lines[n.end_lineno:]))\n r=run();assert r.returncode==1 and 'failed' in r.stdout,(r.stdout,r.stderr)\np.write_text(original)\nprint('tests-qualified')\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "tests-qualified\n",
+            "seconds": 30.0
+          }
+        ]
+      }
+    },
+    "execution_paths": [
+      "large.py",
+      "consumer.py",
+      "tests/test_large.py"
+    ],
+    "planning_paths": [
+      "consumer.py",
+      "large.py"
+    ],
+    "integration_gates": {
+      "behavior": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-c",
+              "import ast,hashlib\nfrom pathlib import Path\nfrom large import chosen_value\nfrom consumer import render\nassert chosen_value()==42\nfor value in range(-250,251):\n assert chosen_value(value)==min(100,max(0,value))\n assert render(value)=='value='+str(min(100,max(0,value)))\nfor value in [True,False,None,1.0,'42',[],{},type('SubInt',(int,),{})(5)]:\n try:chosen_value(value)\n except TypeError:pass\n else:raise AssertionError(('non-integer accepted',type(value).__name__))\ntext=Path('large.py').read_text()\nnode=next(n for n in ast.parse(text).body if isinstance(n,ast.FunctionDef) and n.name=='chosen_value')\nlines=text.splitlines(keepends=True)\nassert hashlib.sha256(''.join(lines[:node.lineno-1]).encode()).hexdigest()=='782195477833738c5f8ef8b2056fd2f639d2fc633c20a23c453a3b417b32a8da'\nassert hashlib.sha256(''.join(lines[node.end_lineno:]).encode()).hexdigest()=='dc8840c1b238efc6d9153043e55068de3e3c2a67032a57aec38c47f7be6fc963'\nassert hashlib.sha256(Path('consumer.py').read_bytes()).hexdigest()=='4a87c82f9a932412c44348bb20a1b638f47e9f27467e624c0c20b04bc1dbd579'\nprint('window-contract-ok')\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "window-contract-ok\n",
+            "seconds": 10.0
+          }
+        ]
+      },
+      "tests": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-c",
+              "import subprocess,sys\nfrom pathlib import Path\np=Path('large.py'); original=p.read_text()\ndef run():\n return subprocess.run([sys.executable,'-m','pytest','-q','tests/test_large.py'],capture_output=True,text=True)\nr=run();assert r.returncode==0,(r.stdout,r.stderr)\nimport ast\nt=ast.parse(original); n=next(n for n in t.body if isinstance(n,ast.FunctionDef) and n.name=='chosen_value')\nlines=original.splitlines(keepends=True)\nfor body in ['    return value\\n','    return 42\\n','    return max(0,min(100,value))\\n']:\n p.write_text(''.join(lines[:n.lineno-1])+'def chosen_value(value=42):\\n'+body+''.join(lines[n.end_lineno:]))\n r=run();assert r.returncode==1 and 'failed' in r.stdout,(r.stdout,r.stderr)\np.write_text(original)\nprint('tests-qualified')\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "tests-qualified\n",
+            "seconds": 30.0
+          }
+        ]
+      }
+    },
+    "environment_id": "python",
+    "model_profile": {
+      "schema_version": 1,
+      "profile_id": "vllm-python-worker-windows-v1",
+      "base_url": "http://127.0.0.1:30000/v1",
+      "model": "gflo-local",
+      "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+      "context_limit": 16384,
+      "timeout_seconds": 120.0
+    },
+    "deployment": "{\n  \"mode\": \"managed\",\n  \"base_url\": \"http://127.0.0.1:30000/v1\",\n  \"model\": \"gflo-local\",\n  \"request_timeout\": 120,\n  \"startup_timeout\": 300,\n  \"managed\": {\n    \"backend\": \"vllm\",\n    \"image\": \"vllm/vllm-openai@sha256:ac259a0111c6cf462a72e449962b84f7a624b5cbec24bd7d9ec3b67d40ffd1bf\",\n    \"model_path\": \"Inferact/Qwen3.8-27B-NVFP4\",\n    \"revision\": \"6128240ebaf4eaa7bad2b3d1c72c37d677c5f462\",\n    \"name\": \"gflo-vllm-graphs\",\n    \"gpu\": \"0\",\n    \"context_length\": 16384,\n    \"memory_fraction\": 0.85,\n    \"shm_size\": \"4g\",\n    \"memory_limit\": \"36g\",\n    \"cpu_limit\": 3,\n    \"pids_limit\": 1024,\n    \"model_cache_volume\": \"local-vllm-huggingface-cache\",\n    \"offline\": true,\n    \"hf_token_env\": \"\",\n    \"server_options\": {\n      \"kv-cache-dtype\": \"bfloat16\",\n      \"reasoning-parser\": \"qwen3\",\n      \"tool-call-parser\": \"qwen3_coder\"\n    },\n    \"enforce_eager\": false\n  }\n}\n",
+    "context_budget": {
+      "schema_version": 1,
+      "total_tokens": 12288,
+      "output_tokens": 4096
+    },
+    "max_tasks": 3,
+    "max_attempts": 2,
+    "max_model_turns": 3,
+    "max_reserved_tokens": 368640
+  }
+}

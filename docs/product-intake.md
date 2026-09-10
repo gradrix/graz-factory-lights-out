@@ -493,6 +493,20 @@ Existing-file changes use `repair_window`: a current opaque target handle plus e
 old/new text. Handles bind the contract, complete current source and visible range.
 The controller rejects stale, read-only, overlapping and out-of-range edits, preserves
 unseen text, and runs the ordinary checks on the complete candidate. New files use the
-existing candidate protocol. Insufficient context can produce a durable review stop.
+existing candidate protocol. Window workers receive compact new-file guidance. A response
+that reaches its output limit is retained and rejected as a worker-output failure; a
+remaining attempt may retry with the diagnostic. Partial text is never applied and no
+extra attempts are granted. Other protocol or infrastructure failures retain their halt
+behavior. Insufficient context can produce a durable review stop.
 
-This does not yet make planning window-based or lift the 256 KiB execution bundle limit.
+The same profile now enables windows for direct structured planning in `build-feature`.
+Planners may read at most twice per attempt before returning a plan or questions, within
+three turns and two attempts. Each completed read is recorded and its supplied ranges
+are identified in the next prompt. Planning windows are read-only; only the plan document
+can be proposed. Source-free question review retains the original requirement-only path.
+Legacy profiles keep whole-file planning. The 256 KiB execution bundle limit remains.
+
+For larger test suites, compare separate behavior-scoped tasks under a fixed aggregate
+budget. Separate pytest files avoid overlapping write ownership. Shared-file proposals
+would require sequential revision-bound integration; simultaneous mutable writes are
+not an execution mode supported by the factory.

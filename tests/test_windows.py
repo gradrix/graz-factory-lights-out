@@ -220,3 +220,71 @@ def test_oversized_line_is_explicitly_omitted_and_later_window_is_readable(prepa
     handle = next(iter(targets.targets))
     result = parse_window_result(edit(handle, "41", "42"), atom, source, targets)
     assert result.changes["main.py"] == source.files["main.py"].replace("41", "42")
+
+
+def test_planning_window_wire_supports_reads_and_direct_documents(prepared, server):
+    from test_worker import client_for
+    from gflo.model import LocalModel
+
+    store, atom, _, digest = prepared
+    atom = atom.model_copy(update={"writable_paths": ("factory-plan.json",)})
+    original = client_for(prepared, server)
+    client = LocalModel(store, original.profile.model_copy(update={"profile_id": WINDOW_PROFILE}))
+    document = {"kind": "planning-questions-v1", "questions": ["Required policy?"]}
+    for payload in [dict(kind="read_window", path="main.py", start_line=1), document]:
+
+        def mutate(response):
+            response["choices"][0]["message"]["content"] = json.dumps(payload)
+            return response
+
+        server[0]["mutate"] = mutate
+        turn = client.turn(
+            atom, digest, current_inputs=lambda: atom.inputs_digest, planning_document=True
+        )
+        if payload is document:
+            assert json.loads(turn.result.changes["factory-plan.json"]) == document
+        else:
+            assert isinstance(turn.result, WindowRead)
+        messages = server[0]["calls"][-1][1]["messages"]
+        assert "repair_window" not in messages[0]["content"]
+        view = json.loads(messages[1]["content"])
+        assert all(
+            not target["writable"] for target in view["instruction"]["source_windows"].values()
+        )
+
+
+def test_window_output_truncation_is_retryable_without_accepting_partial_text(prepared, server):
+    from test_worker import client_for
+    from gflo.model import LocalModel, ModelError
+
+    store, atom, _, digest = prepared
+    old = client_for(prepared, server)
+    client = LocalModel(store, old.profile.model_copy(update={"profile_id": WINDOW_PROFILE}))
+
+    def mutate(response):
+        response["choices"][0]["finish_reason"] = "length"
+        response["choices"][0]["message"]["content"] = '{"kind":"candidate"'
+        return response
+
+    server[0]["mutate"] = mutate
+    with pytest.raises(WorkerError, match="No partial output was applied"):
+        client.turn(atom, digest, current_inputs=lambda: atom.inputs_digest)
+    assert client.last_evidence_digest
+    with pytest.raises(ModelError, match="Incomplete or unsupported"):
+        old.turn(atom, digest, current_inputs=lambda: atom.inputs_digest)
+
+
+def test_repeated_invalid_window_output_exhausts_existing_attempts(tmp_path, plan):
+    plan = plan.model_copy(
+        update={
+            "model_profile": plan.model_profile.model_copy(update={"profile_id": WINDOW_PROFILE})
+        }
+    )
+    with WorkLedger(tmp_path / "ledger.db") as ledger:
+        controller, model, _ = setup(
+            ledger, plan, [WorkerError("output exceeded"), WorkerError("output exceeded")]
+        )
+        result = controller.run(plan.atom.atom_id)
+        assert result["status"] == "quarantined"
+        assert len(result["attempts"]) == 2 and len(model.calls) == 2
+        assert controller.run(plan.atom.atom_id) == result

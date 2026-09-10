@@ -18,10 +18,10 @@ are recorded in [evaluation](evaluation.md) and portable development evidence.
 
 ## Next priorities
 
-1. Extend bounded source windows into large-file planning and qualify a complete feature.
-   Worker window edits now pass the 10,002-line trial and a real repository-file trial.
-   Keep revision binding, explicit omissions and full-candidate checks as execution
-   inputs grow beyond the existing 256 KiB bundle limit.
+1. Improve repeatability of bounded planning and test generation. Window planning now
+   supports a complete large-file feature, but repeated trials still halt on redundant
+   reads, omitted requirements and excessive test output. Compare behavior-scoped test
+   tasks under a fixed aggregate budget, with disjoint file ownership.
 2. Qualify repeated features across different real repositories and uncertain
    interfaces. Measure complete feature success, retries, model cost and review
    effort. Planning JSON reliability and source-selection sufficiency remain open.
@@ -75,6 +75,7 @@ assume provisioned host dependencies and a populated offline model cache. See
 
 The opt-in windows-v1 worker edited the recorded 10,002-line file with a maximum
 3,276-token prompt and complete-source checks; a real repository-file trial also passed.
-Both required development feedback and a repair. Whole-file planning and the 256 KiB
-SourceBundle execution limit remain. See [evaluation](evaluation.md) for retained failures
-and the limits of this qualification.
+Both required development feedback and a repair. Window-based planning also completed
+a feature once, but has not established repeated success on the final configuration.
+The 256 KiB SourceBundle execution limit remains. See [evaluation](evaluation.md) for
+retained failures and the limits of this qualification.

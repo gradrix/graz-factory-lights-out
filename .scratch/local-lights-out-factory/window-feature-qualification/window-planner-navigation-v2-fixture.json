@@ -1,0 +1,37 @@
+{
+  "mode": "planning",
+  "request": {
+    "allowed_paths": [
+      "large.py"
+    ],
+    "environments": {
+      "python": {
+        "description": "Offline Python",
+        "image": "sha256:695d05883b15326aea01e9266067ff58c41f3eaa4f647cfc9424b403dbe9548d",
+        "schema_version": 1
+      }
+    },
+    "feature_id": "window-planner-navigation-v2",
+    "objective": "Plan the clamp change. For review, inspect the current chosen_value body and state its exact current return statement in the plan rationale; do not infer it from the requested new behavior.",
+    "requirements": {
+      "clamp": "In large.py extend chosen_value(value=42) to clamp built-in integers to 0..100 inclusive. With no argument return 42. Reject booleans and every non-built-in-integer input with TypeError. Preserve all other source text exactly. consumer.render is a read-only caller and must work unchanged."
+    },
+    "schema_version": 1,
+    "selected_paths": [
+      "consumer.py",
+      "large.py"
+    ],
+    "source_revision": "large-window-navigation-v1"
+  },
+  "request_digest": "1a0cf557a51bc2254d2eb4b8f4fa29cef08dcb30211ca188acf5ebd0084611d7",
+  "profile": {
+    "schema_version": 1,
+    "profile_id": "vllm-python-worker-windows-v1",
+    "base_url": "http://127.0.0.1:30000/v1",
+    "model": "gflo-local",
+    "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+    "context_limit": 16384,
+    "timeout_seconds": 120.0
+  },
+  "deployment": "{\n  \"mode\": \"managed\",\n  \"base_url\": \"http://127.0.0.1:30000/v1\",\n  \"model\": \"gflo-local\",\n  \"request_timeout\": 120,\n  \"startup_timeout\": 300,\n  \"managed\": {\n    \"backend\": \"vllm\",\n    \"image\": \"vllm/vllm-openai@sha256:ac259a0111c6cf462a72e449962b84f7a624b5cbec24bd7d9ec3b67d40ffd1bf\",\n    \"model_path\": \"Inferact/Qwen3.8-27B-NVFP4\",\n    \"revision\": \"6128240ebaf4eaa7bad2b3d1c72c37d677c5f462\",\n    \"name\": \"gflo-vllm-graphs\",\n    \"gpu\": \"0\",\n    \"context_length\": 16384,\n    \"memory_fraction\": 0.85,\n    \"shm_size\": \"4g\",\n    \"memory_limit\": \"36g\",\n    \"cpu_limit\": 3,\n    \"pids_limit\": 1024,\n    \"model_cache_volume\": \"local-vllm-huggingface-cache\",\n    \"offline\": true,\n    \"hf_token_env\": \"\",\n    \"server_options\": {\n      \"kv-cache-dtype\": \"bfloat16\",\n      \"reasoning-parser\": \"qwen3\",\n      \"tool-call-parser\": \"qwen3_coder\"\n    },\n    \"enforce_eager\": false\n  }\n}\n"
+}
