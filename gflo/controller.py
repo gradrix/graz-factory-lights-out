@@ -15,7 +15,7 @@ from gflo.feedback import validation_feedback
 from gflo.gates import ProcessGate, run_gate
 from gflo.ledger import Conflict, WorkLedger
 from gflo.model import LocalModel, ModelError, ModelProfile
-from gflo.records import Lease, Record, RetryPlan, WorkAtom
+from gflo.records import Acceptance, Lease, Record, RetryPlan, WorkAtom
 from gflo.worker import (
     CandidateResult,
     Diagnostic,
@@ -91,6 +91,41 @@ def prepare_run(ledger: WorkLedger, plan: RunPlan) -> str:
     return plan.atom.atom_id
 
 
+def verify_predecessors(ledger: WorkLedger, atom: WorkAtom) -> None:
+    """Recheck snapshot-worker ancestry, including findings, before execution/reuse."""
+    seen: set[str] = set()
+
+    def visit(contract: WorkAtom, depth: int) -> None:
+        if contract.capability_profile != "python-snapshot-v1":
+            return
+        if depth > 12 or len(contract.dependency_artifacts) > 12:
+            raise Conflict("Snapshot predecessor graph exceeds its bounded profile")
+        for digest in contract.dependency_artifacts:
+            if digest in seen:
+                continue
+            accepted = Acceptance.model_validate_json(ledger.artifacts.read(digest))
+            state = ledger.status(accepted.atom_id)
+            predecessor = WorkAtom.model_validate_json(json.dumps(state["contract"]))
+            if (
+                state["status"] != "accepted"
+                or predecessor.digest() != accepted.contract_digest
+                or state["candidate_digest"] != accepted.candidate_digest
+            ):
+                raise Conflict("Predecessor differs from its pinned acceptance")
+            visit(predecessor, depth + 1)
+            if (
+                ledger.accept(
+                    ledger.active_lease(accepted.atom_id),
+                    current_inputs_digest=accepted.inputs_digest,
+                )
+                != accepted
+            ):
+                raise Conflict("Predecessor acceptance changed")
+            seen.add(digest)
+
+    visit(atom, 0)
+
+
 class Controller:
     def __init__(self, ledger: WorkLedger, model: LocalModel, broker: DockerBroker):
         self.ledger, self.model, self.broker = ledger, model, broker
@@ -146,6 +181,7 @@ class Controller:
         )
 
     def _validate(self, plan: RunPlan, lease: Lease) -> str:
+        verify_predecessors(self.ledger, plan.atom)
         snapshot = self.ledger.status(lease.atom_id)
         if not any(
             e["kind"] == "observation" and e["details"]["kind"] == "candidate-execution"
@@ -186,6 +222,7 @@ class Controller:
                     observation,
                 )
                 return "halt" if receipt["outcome"] == "inconclusive" else "retry"
+        verify_predecessors(self.ledger, plan.atom)
         self.ledger.accept(lease, current_inputs_digest=plan.atom.inputs_digest)
         return "accepted"
 
@@ -196,6 +233,7 @@ class Controller:
         source_digest = plan.source.digest()
         diagnostics = (diagnostic,) if diagnostic else ()
         for _ in range(plan.max_model_turns):
+            verify_predecessors(self.ledger, plan.atom)
             self.ledger.check_lease(lease)
             try:
                 turn = self.model.turn(
@@ -228,6 +266,7 @@ class Controller:
             except BlockingIOError as exc:
                 raise Conflict("Another controller owns this factory run") from exc
             plan = RunPlan.model_validate_json(self.ledger.run_plan(atom_id))
+            verify_predecessors(self.ledger, plan.atom)
             if self.model.profile != plan.model_profile or self.broker.image != plan.broker_image:
                 raise Conflict("Execution services differ from the immutable run plan")
             if (
@@ -291,6 +330,8 @@ class Controller:
                         lease, "Infrastructure/protocol failure: " + str(exc), {"error": str(exc)}
                     )
                     return self.ledger.status(atom_id)
+                except Conflict:
+                    raise
                 except ValueError as exc:
                     self._failure(lease, "Invalid worker result: " + str(exc), {"error": str(exc)})
                     outcome = "retry"

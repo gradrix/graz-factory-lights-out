@@ -216,3 +216,92 @@ def test_check_plan_cli_requires_no_work_ledger(feature, tmp_path, monkeypatch, 
     assert result["task_order"] == ["provider", "cli"]
     assert result["execution_authorized"] is False
     assert not (tmp_path / "missing.db").exists()
+
+
+def test_snapshot_planning_binds_full_source_without_loading_omitted_bytes(
+    feature, tmp_path, monkeypatch
+):
+    from gflo.artifacts import ArtifactStore
+    from gflo.planning import RepositoryFeatureRequest
+    from gflo.repository import FileEdit, Repository, SnapshotSource, snapshot_bundle
+
+    store = ArtifactStore(tmp_path / "source")
+    ref = snapshot_bundle(store, feature.source)
+    repo = Repository(SnapshotSource(store, ref))
+    ref = repo.apply(
+        store,
+        {"large.txt": FileEdit(expected_digest=None, content="x" * 300000)},
+        current_source=ref,
+        writable_paths=("large.txt",),
+    )
+    fields = feature.model_dump(mode="json")
+    fields.pop("selected_paths")
+    fields.pop("source_revision")
+    fields["source"] = ref.model_dump(mode="json")
+    request = RepositoryFeatureRequest.model_validate_json(json.dumps(fields))
+    data = proposal(feature)
+    data["request_digest"] = request.digest()
+    fake_model(
+        monkeypatch,
+        [CandidateResult(kind="candidate", changes={"factory-plan.json": json.dumps(data)})],
+    )
+    output = tmp_path / "draft"
+    result = draft_feature(
+        request,
+        profile(),
+        output,
+        deployment="fixture",
+        repository=Repository(SnapshotSource(store, ref)),
+        context_paths=("history.py", "cli.py"),
+    )
+    assert result["status"] == "needs-review"
+    manifest = json.loads((output / "manifest.json").read_text())
+    assert manifest["request_digest"] == request.digest()
+    assert manifest["source_coverage"]["whole_repository"] is False
+    assert manifest["source_coverage"]["repository_files"] == 3
+    assert "large.txt" not in manifest["source_coverage"]["readable_paths"]
+    with pytest.raises(ValueError, match="bind the request"):
+        draft_feature(
+            request,
+            profile(),
+            tmp_path / "stale",
+            deployment="fixture",
+            repository=Repository(SnapshotSource(store, snapshot_bundle(store, feature.source))),
+            context_paths=("history.py",),
+        )
+
+
+def test_planner_can_request_product_decisions_without_inventing_tasks(
+    feature, tmp_path, monkeypatch
+):
+    from gflo.planning import PlanQuestions
+
+    questions = PlanQuestions(
+        request_digest=feature.digest(),
+        questions=("Which reporting policy?",),
+        rationale="Required policy is not supplied",
+    )
+    fake_model(
+        monkeypatch,
+        [CandidateResult(kind="candidate", changes={"factory-plan.json": questions.canonical()})],
+    )
+    result = draft_feature(feature, profile(), tmp_path / "draft", deployment="fixture")
+    assert result["status"] == "needs-info"
+    assert result["execution_authorized"] is False
+    assert result["proposal_digest"] is None
+    assert result["questions"] == ["Which reporting policy?"]
+    assert (tmp_path / "draft/questions.json").is_file()
+    assert not (tmp_path / "draft/proposal.json").exists()
+
+
+def test_questions_must_bind_the_current_request(feature, tmp_path, monkeypatch):
+    from gflo.planning import PlanQuestions
+
+    questions = PlanQuestions(
+        request_digest="b" * 64, questions=("Unbound question?",), rationale="Wrong base"
+    )
+    answer = CandidateResult(kind="candidate", changes={"factory-plan.json": questions.canonical()})
+    fake_model(monkeypatch, [answer, answer])
+    result = draft_feature(feature, profile(), tmp_path / "draft", deployment="fixture")
+    assert result["status"] == "exhausted"
+    assert all("another request" in row["error"] for row in result["observations"])

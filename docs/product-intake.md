@@ -32,63 +32,92 @@ results and unresolved risks, rather than every source file. Shared interfaces
 need independent combined checks even when each child passes. Decisions that change
 product scope or invalidate a contract must propagate upward and trigger replanning.
 
-## Implemented preparation path
+## Implemented planning and execution
 
 `RepositoryFeatureRequest` identifies the product objective, requirements, immutable
-snapshot, allowed writes, and trusted environment catalog. `PlanProposal` describes
-at most 12 tasks and binds to the exact request digest. The existing `plan-feature`
-command still drafts from its legacy bounded `FeatureRequest`; it does not yet
-autonomously draft from `RepositoryFeatureRequest`. Snapshot-backed proposals must
-currently be supplied by the trusted caller or another explicitly reviewed process.
-Do not rewrite a legacy proposal's request digest and assume it has been reviewed.
-
-A separately supplied `PlanReview` binds the request and proposal digests, provides
-explicit context/execution paths and ProcessGates per task, and pins model/deployment
-and retry/context budgets. It is a trusted controller input, not a signed approval
-or a field the proposing model may authorize. A valid structure does not prove the
-reviewer's checks are sufficient. Whole-feature acceptance needs separate checks.
+snapshot, allowed writes, and trusted environment catalog. `plan-feature` accepts
+this record or the unchanged legacy `FeatureRequest`. Snapshot planning uses an
+explicit bounded source selection; the model sees coverage and cannot assume an
+omitted file is absent. Only two selected files remain visible after reads. Planning
+v3 allows two attempts of three turns, with a 12K total/4K output token budget and
+retained read history. It can return either a `PlanProposal` or `PlanQuestions`.
+Questions produce `needs-info`, no executable tasks, and no permission to invent
+missing product policy. A plan still requires review, even with no questions.
 
 ```sh
-gflo prepare-task request.json proposal.json review.json TASK_ID \
-  --store .gflo/repository-artifacts --current SNAPSHOT_DIGEST > prepared.json
-python3 - <<'PY'
-import json
-from pathlib import Path
-package = json.loads(Path('prepared.json').read_text())
-Path('run.json').write_text(json.dumps(package['run'], indent=2) + '\n')
-PY
-gflo --db .gflo/product.sqlite3 submit-run run.json
+gflo repository --store .gflo/product.sqlite3.artifacts capture .
+gflo plan-feature request.json --store .gflo/product.sqlite3.artifacts \
+  --context-path PATH --profile profile.json --deployment deployment.json --output .gflo/draft
+gflo check-plan request.json .gflo/draft/proposal.json --store .gflo/product.sqlite3.artifacts
 ```
 
-Record schemas are available through `model_json_schema()` on
-`gflo.preparation.RepositoryFeatureRequest`, `PlanReview`, and
-`gflo.planning.PlanProposal`. Preparation publishes immutable evidence and emits a
-package without submitting or running it. `submit-run` uses the existing controller;
-`run ATOM_ID` executes only after the explicit submission step. The trusted caller
-must check that the current snapshot is still current at scheduling and reuse.
+Use the returned snapshot digest in the request. `PATH` is a real file needed for
+planning; repeat `--context-path` for additional files. The output directory must be
+new. Planning writes a proposal or questions and observations; it never launches tasks.
 
-Preparation rejects unresolved questions, mismatched review, missing declared reads,
-omitted existing writable files, over-budget selections, and dependent tasks.
-Only independent root tasks can currently be prepared: a consumer must wait for
-accepted provider results and a reviewed current base. Supplying an unchecked
-candidate as that base would bypass the intended progression contract.
+A controller-authored `PlanReview` binds exact request and proposal digests. It
+provides per-task context/execution paths and ProcessGates, and pins model/deployment
+and retry/context budgets. These are trusted inputs, not model-approved tests or
+signed human approvals. `FeaturePlan` combines the request, proposal, review, an
+independent integration `TaskReview`, and its environment ID. Schemas are available
+through `model_json_schema()` on these classes in `gflo.planning`, `gflo.preparation`,
+and `gflo.progression`. The old `gflo.preparation.RepositoryFeatureRequest` import
+remains available.
 
-The worker initially sees the selected context; its existing read tool can request
-other execution files. Thus context selection controls presentation, not an access
-barrier inside the execution bundle. A task must fit the existing 100-file/256-KiB
-execution capability. An oversized directory write scope requires finer ownership
-or a qualified larger execution capability, not silent omission.
+```sh
+gflo --db .gflo/product.sqlite3 run-feature reviewed-feature.json --current SNAPSHOT_DIGEST
+```
 
-`lift_candidate(store, prepared_digest, candidate, current_source=...)` restores a
-task result into a proposed snapshot while preserving every omitted file. It rejects
-deletions, writes outside scope, stale bases, and missing original evidence. It does
-not grant acceptance, merge Git, or advance dependent tasks.
+The snapshot must be in that ledger's artifact store. This command executes the
+reviewed graph sequentially in deterministic dependency order. Each accepted task
+advances an internal immutable snapshot; later tasks retain original plan/review
+bindings and exact predecessor acceptance evidence. Consumers may reference files
+created by declared providers, but preparation fails if those files are still absent.
+A failed task stops progression. Final independent gates run against an explicit
+combined execution selection, with no model call to approve the result.
 
-## Next qualification
+Repeat the same command to resume. Progress is reconstructed from prepared tasks,
+acceptances, candidates, and receipts rather than a mutable summary file. Reuse
+rechecks findings and evidence, including ancestor findings before direct consumer
+execution/reuse. Interrupted validation can resume without repeating model work.
+Historical acceptance stays immutable; a later finding blocks reuse through these
+controllers. This does not revoke artifacts exported to other systems.
 
-Implement accepted-base progression with retained acceptance/finding checks and
-independent integration gates. Then trial a complete multi-task feature repeatedly,
-including failed providers, contract changes, stale consumers, and restart recovery.
-Extend snapshot-backed planning/navigation before recursive delegation. Add symbol
-and dependency indexing against measured selection failures. Larger isolated builds,
-recursive manager budgets, and million-line product work remain unqualified.
+The CLI checks the supplied current digest, not a live checkout. Python callers can
+supply a current-source callback; they must own the external source while running.
+No Git merge, checkout mutation, deployment, or automatic adoption of the final
+snapshot occurs. A returned feature acceptance covers its supplied finite gates,
+not arbitrary behavior of the whole repository. The result includes integration
+selection coverage.
+
+`prepare-task` remains available for independent root tasks without submission or
+execution. `lift_candidate` preserves omitted files and returns a proposed snapshot;
+it grants no acceptance. The graph controller performs accepted-base progression.
+
+Each task and final validation still fits the broker's 100-file/256-KiB execution
+limit. Context selection controls the initial presentation; the worker read tool
+can request other execution files. Snapshot worker provenance permits at most twelve
+accepted predecessor records, without loading their source into model context or
+relaxing sandbox restrictions. Legacy worker profiles keep their existing semantics.
+
+## Qualification and next work
+
+One well-specified expense-report feature was planned locally and executed three
+times: four tasks per execution, 12 accepted tasks in 12 attempts, and independent
+combined checks including 25 generated valid inputs and five invalid inputs per
+build. Omitted source survived and replay did not call the model again. These runs
+used controller-authored checks and existing scaffold interfaces.
+
+A deliberately underspecified currency/month extension initially exhausted both
+planning attempts rereading files. The first clarification implementation then
+exposed an output-envelope mismatch. Both failures are retained. After explicit
+clarification output and envelope instructions, the planner returned the missing
+policy/schema questions in one turn. This is a narrow escalation probe, not broad
+CEO qualification. See [evaluation](evaluation.md) for retained evidence.
+
+Next, vary products and interface ambiguity, test managers' failure detection and
+escalation, and measure context-selection failures before adding recursive managers.
+Symbol/dependency indexing, larger isolated builds, automatic environment setup,
+and million-line product work remain unqualified. Snapshot capture/edit replay
+still reads original source bytes; current measurements do not establish efficient
+large-repository execution.

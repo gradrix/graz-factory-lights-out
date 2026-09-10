@@ -118,3 +118,46 @@ contributions are not established. Gates and bounded retry limits were retained.
 Prepared tasks and advancing source bases still come from a trusted harness.
 Original 120-run scores and findings remain unchanged; large-system reliability
 remains unqualified. See the [portable results](../.scratch/local-lights-out-factory/stateful-inventory-feedback-results.json).
+
+## Reviewed feature progression and bounded manager probe
+
+A local planner produced a four-task expense-report plan from explicit requirements
+and existing scaffold interfaces. Trusted review supplied separate process gates.
+Three independent executions accepted all 12 tasks in 12 attempts. Each combined
+validation included engine/renderer/documentation checks plus 25 seeded valid CLI
+inputs and five invalid inputs. Omitted archive content was preserved. Replaying
+each completed graph produced the same result without model calls. This is one
+product repeated, not three distinct product benchmarks.
+
+An underspecified currency/month variant initially exhausted six model turns
+rereading files. Adding a clarification-only result exposed an envelope mismatch:
+two responses contained questions but failed the required outer protocol. With an
+explicit envelope instruction, the model returned reporting-currency, rate-source,
+record-schema, output-format, and compatibility questions in one turn. The updated
+planner also produced a valid three-task plan for the specified product; those three
+tasks and the independent combined behavior checks passed in one additional run.
+The earlier failed probes remain failures; the follow-up does not erase them.
+
+These results support bounded planning under reviewed requirements and narrow
+clarification behavior. They do not establish business strategy, recursive manager
+reliability, autonomous test authority, or large-repository build capability.
+Source outside selected inputs was deliberately inert. Earlier campaign scores and
+false-acceptance findings are unchanged.
+
+Portable [results](../.scratch/local-lights-out-factory/feature-progression-results.json)
+and the [fixture](../.scratch/local-lights-out-factory/feature-progression-fixture.json)
+retain the exact request, model proposal, reviewed gates, source recipe, and image
+pins. Recreate the original four-task fixture without executing source or a model:
+
+```sh
+.venv/bin/python scripts/prepare_feature_trial.py --output .gflo/feature-reproduction
+```
+
+The script refuses an existing output directory and verifies the reconstructed
+snapshot identity. It prints the plan, ledger, and snapshot digest. With the pinned
+model service and broker image available, execute the printed plan using
+`gflo --db DATABASE run-feature PLAN --current SNAPSHOT_DIGEST`. This re-executes the
+retained reviewed plan. A new planner run is a separate observation, using the
+emitted request/profile/deployment and the ledger's artifact store. Historical raw
+model exchanges and process receipts remain under ignored `.gflo/evidence/feature-progression-v1/`
+and need separate transfer for forensic replay.

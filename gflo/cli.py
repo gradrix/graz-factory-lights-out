@@ -20,11 +20,18 @@ from gflo.history import change_history, render_history
 from gflo.integration import IntegrationPlan, IntegrationState, integrate
 from gflo.ledger import Conflict, WorkLedger
 from gflo.model import LocalModel, ModelError, ModelProfile
-from gflo.planning import FeatureRequest, PlanProposal, draft_feature, validate_proposal
+from gflo.planning import (
+    FeatureRequest,
+    PlanProposal,
+    draft_feature,
+    validate_proposal,
+    validate_tasks,
+)
 from gflo.preparation import PlanReview, RepositoryFeatureRequest, prepare_task
+from gflo.progression import FeaturePlan, run_feature
 from gflo.records import WorkAtom
 from gflo.reporting import cost_report
-from gflo.repository import SourceRef
+from gflo.repository import Repository, SnapshotSource, SourceRef
 from gflo.repository_cli import configure as configure_repository
 from gflo.repository_cli import execute as execute_repository
 
@@ -69,11 +76,17 @@ def main() -> int:
     planning.add_argument("--profile", type=Path, required=True)
     planning.add_argument("--output", type=Path, required=True)
     planning.add_argument("--deployment", type=Path, required=True)
+    planning.add_argument("--store", type=Path)
+    planning.add_argument("--context-path", action="append", default=[])
+    feature = commands.add_parser("run-feature", help="Execute/replay a reviewed feature graph")
+    feature.add_argument("plan", type=Path)
+    feature.add_argument("--current", required=True)
     check_plan = commands.add_parser(
         "check-plan", help="Validate plan structure and source binding"
     )
     check_plan.add_argument("request", type=Path)
     check_plan.add_argument("proposal", type=Path)
+    check_plan.add_argument("--store", type=Path)
     configure_repository(
         commands.add_parser("repository", help="Capture and query repository snapshots")
     )
@@ -104,19 +117,58 @@ def main() -> int:
         if args.command == "repository":
             print(json.dumps(execute_repository(args), indent=2))
             return 0
+        if args.command == "run-feature":
+            feature_plan = FeaturePlan.model_validate_json(args.plan.read_bytes())
+            current = SourceRef(kind="repository-snapshot-v1", artifact_digest=args.current)
+            args.db.parent.mkdir(parents=True, exist_ok=True)
+            with WorkLedger(args.db, reserve_bytes=args.reserve_bytes) as feature_ledger:
+                result_feature = run_feature(
+                    feature_ledger,
+                    feature_plan,
+                    lambda: current,
+                )
+                print(result_feature.canonical())
+                return 0 if result_feature.status == "accepted" else 1
         if args.command in ("plan-feature", "check-plan"):
-            request = FeatureRequest.model_validate_json(args.request.read_bytes())
+            request_data = args.request.read_bytes()
+            request: FeatureRequest | RepositoryFeatureRequest
+            request_fields = json.loads(request_data)
+            if not isinstance(request_fields, dict):
+                raise ValueError("Feature request must be a JSON object")
+            if request_fields.get("kind") == "repository-feature-v1":
+                request = RepositoryFeatureRequest.model_validate_json(request_data)
+            else:
+                request = FeatureRequest.model_validate_json(request_data)
             if args.command == "plan-feature":
                 result = draft_feature(
                     request,
                     ModelProfile.model_validate_json(args.profile.read_bytes()),
                     args.output,
                     deployment=args.deployment.read_text(),
+                    repository=(
+                        Repository(SnapshotSource(ArtifactStore(args.store), request.source))
+                        if isinstance(request, RepositoryFeatureRequest) and args.store
+                        else None
+                    ),
+                    context_paths=tuple(args.context_path),
                 )
                 print(json.dumps(result, indent=2))
                 return 0 if result["status"] == "needs-review" else 2
             proposal = PlanProposal.model_validate_json(args.proposal.read_bytes())
-            order = validate_proposal(request, proposal)
+            if isinstance(request, RepositoryFeatureRequest):
+                if args.store is None or not args.store.is_dir():
+                    raise ValueError("Snapshot plan checking requires an existing --store")
+                repository = Repository(SnapshotSource(ArtifactStore(args.store), request.source))
+                order = validate_tasks(
+                    proposal,
+                    request_digest=request.digest(),
+                    allowed_paths=request.allowed_paths,
+                    source_paths=repository.source.files.keys(),
+                    environments=request.environments.keys(),
+                    requirements=request.requirements.keys(),
+                )
+            else:
+                order = validate_proposal(request, proposal)
             print(
                 json.dumps(
                     {

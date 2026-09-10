@@ -1,0 +1,439 @@
+{
+  "schema_version": 1,
+  "initial_files": {
+    "README.md": "Expense report program. Python standard library only. Entry: python cli.py.\n",
+    "cli.py": "import json\nimport sys\nfrom engine import totals\nfrom report import render\n\ndef main():\n    \"\"\"Read JSON from stdin and print the report.\"\"\"\n    raise NotImplementedError\n\nif __name__ == \"__main__\":\n    main()\n",
+    "engine.py": "def totals(records):\n    \"\"\"Return category-to-cents totals from expense records.\"\"\"\n    raise NotImplementedError\n",
+    "report.py": "def render(amounts):\n    \"\"\"Return the stable text report for category-to-cents totals.\"\"\"\n    raise NotImplementedError\n"
+  },
+  "omitted_file": {
+    "path": "archive.txt",
+    "line": "archived fixture record\n",
+    "repetitions": 16000
+  },
+  "plan": {
+    "integration": {
+      "context_bytes": 65536,
+      "context_paths": [
+        "engine.py",
+        "report.py",
+        "cli.py",
+        "README.md"
+      ],
+      "execution_bytes": 262144,
+      "execution_paths": [
+        "engine.py",
+        "report.py",
+        "cli.py",
+        "README.md"
+      ],
+      "gates": {
+        "behavior": {
+          "cases": [
+            {
+              "command": [
+                "python",
+                "-c",
+                "import copy\nfrom engine import totals\nx=[{'category':'b','amount_cents':7},{'category':'a','amount_cents':-3},{'category':'b','amount_cents':-7,'extra':1}]\ny=copy.deepcopy(x)\nassert totals(x)=={'a':-3,'b':0} and x==y\nassert totals([])=={}\nassert totals([{'category':'x','amount_cents':10**40}])=={'x':10**40}\nfor bad in (None,{},'',(),[None],[1],[{}],[{'category':'x'}],[{'amount_cents':1}],[{'category':'','amount_cents':1}],[{'category':1,'amount_cents':1}],[{'category':'x','amount_cents':True}],[{'category':'x','amount_cents':False}],[{'category':'x','amount_cents':1.0}],[{'category':'x','amount_cents':'1'}]):\n try: totals(bad)\n except ValueError: pass\n else: raise AssertionError(repr(bad))\nprint('engine-ok')\n"
+              ],
+              "expected_stdout": "engine-ok\n",
+              "schema_version": 1,
+              "seconds": 10.0,
+              "stdin": ""
+            },
+            {
+              "command": [
+                "python",
+                "-c",
+                "from report import render\nassert render({})=='TOTAL: 0'\nassert render({'z':0,'a':-10,'b':30})=='a: -10\\nb: 30\\nz: 0\\nTOTAL: 20'\nassert render({'x':10**40})=='x: '+str(10**40)+'\\nTOTAL: '+str(10**40)\nprint('render-ok')\n"
+              ],
+              "expected_stdout": "render-ok\n",
+              "schema_version": 1,
+              "seconds": 10.0,
+              "stdin": ""
+            },
+            {
+              "command": [
+                "python",
+                "-c",
+                "from pathlib import Path\ns=Path('README.md').read_text()\nassert all(x in s for x in ('python cli.py','category','amount_cents','TOTAL','ERROR'))\nassert not any(x in s.lower() for x in ('todo','placeholder'))\nprint('docs-ok')\n"
+              ],
+              "expected_stdout": "docs-ok\n",
+              "schema_version": 1,
+              "seconds": 10.0,
+              "stdin": ""
+            },
+            {
+              "command": [
+                "python",
+                "-c",
+                "import json, random, subprocess\nr=random.Random(418)\nfor n in range(25):\n records=[{'category':r.choice(['food','rent','travel']),'amount_cents':r.randint(-10000,10000)} for _ in range(n)]\n sums={}\n for row in records: sums[row['category']]=sums.get(row['category'],0)+row['amount_cents']\n expected='\\n'.join([f'{k}: {sums[k]}' for k in sorted(sums)]+[f'TOTAL: {sum(sums.values())}'])+'\\n'\n p=subprocess.run(['python','cli.py'],input=json.dumps(records),text=True,capture_output=True,check=True)\n assert p.stdout==expected and p.stderr==''\nfor bad in ('', '{', '{}', '[null]', '[{\"category\":\"x\",\"amount_cents\":false}]'):\n p=subprocess.run(['python','cli.py'],input=bad,text=True,capture_output=True,check=True)\n assert p.stdout=='ERROR\\n' and p.stderr==''\nprint('combined-ok')\n"
+              ],
+              "expected_stdout": "combined-ok\n",
+              "schema_version": 1,
+              "seconds": 10.0,
+              "stdin": ""
+            }
+          ],
+          "schema_version": 1
+        }
+      },
+      "schema_version": 1
+    },
+    "integration_environment": "python",
+    "kind": "reviewed-feature-v1",
+    "proposal": {
+      "questions": [],
+      "rationale": "The plan splits work into four independently verifiable tasks: engine.totals (provider), report.render (provider), cli.main (consumer of both providers), and docs.readme (documentation). Providers are ordered before consumers. Interface contracts state the AFTER-change signatures with exact parameter names matching the existing stubs (records for totals, amounts for render). Acceptance checks cover all four requirements: aggregation (combining, negatives, zeros, extra keys, empty list), validation (all ValueError cases, no mutation, no floats), rendering (lexicographic order, format, empty dict, negatives, no trailing newline), and cli (valid path, error path, no traceback, one trailing newline, stdlib only). The environment is the pinned python catalog entry. No blocking questions are needed because the requirements are fully specified and the source stubs confirm the existing interface names. Routine presentation choices (e.g., using 'ERROR\n' exactly as specified, lexicographic sort via sorted()) follow the requirements directly.",
+      "request_digest": "e3cf4fb6263531d80b05c3d3ba06cf1f6f695f9baf44487eb53b19fe5318d453",
+      "schema_version": 1,
+      "tasks": [
+        {
+          "acceptance_checks": [
+            "totals([]) returns {}",
+            "totals([{'category':'food','amount_cents':100}]) returns {'food':100}",
+            "totals([{'category':'food','amount_cents':100},{'category':'food','amount_cents':50}]) returns {'food':150}",
+            "totals([{'category':'food','amount_cents':-100}]) returns {'food':-100}",
+            "totals([{'category':'food','amount_cents':0}]) returns {'food':0}",
+            "totals([{'category':'food','amount_cents':100,'extra':1}]) returns {'food':100} (extra keys ignored)",
+            "totals('not a list') raises ValueError",
+            "totals([123]) raises ValueError",
+            "totals([{'category':'food'}]) raises ValueError (missing amount_cents)",
+            "totals([{'amount_cents':100}]) raises ValueError (missing category)",
+            "totals([{'category':'','amount_cents':100}]) raises ValueError (empty category)",
+            "totals([{'category':123,'amount_cents':100}]) raises ValueError (non-string category)",
+            "totals([{'category':'food','amount_cents':1.5}]) raises ValueError (float amount)",
+            "totals([{'category':'food','amount_cents':True}]) raises ValueError (bool amount)",
+            "Input list and dicts are not mutated after call",
+            "No float arithmetic or rounding is used in implementation"
+          ],
+          "depends_on": [],
+          "environment_id": "python",
+          "interface_contracts": [
+            "def totals(records: list[dict]) -> dict[str, int]: Accept a list of dicts; each dict must contain nonempty str 'category' and int (not bool) 'amount_cents'. Combine repeated categories, preserve negative/zero totals, ignore extra keys, return dict[str,int]. Empty list returns {}. Raise ValueError for non-list input, non-dict records, missing keys, empty/non-string category, or non-int/bool amount_cents. Never mutate input. No floats or rounding."
+          ],
+          "objective": "Implement engine.totals to aggregate expense records by category with strict validation and no mutation of input.",
+          "read_paths": [
+            "engine.py"
+          ],
+          "requirement_ids": [
+            "aggregation",
+            "validation"
+          ],
+          "schema_version": 1,
+          "task_id": "engine.totals",
+          "writable_paths": [
+            "engine.py"
+          ]
+        },
+        {
+          "acceptance_checks": [
+            "render({}) returns 'TOTAL: 0'",
+            "render({'food':100}) returns 'food: 100\nTOTAL: 100'",
+            "render({'food':100,'rent':200}) returns 'food: 100\nrent: 200\nTOTAL: 300'",
+            "render({'b':10,'a':20}) returns 'a: 20\nb: 10\nTOTAL: 30' (lexicographic order)",
+            "render({'food':-50}) returns 'food: -50\nTOTAL: -50'",
+            "render({'food':0}) returns 'food: 0\nTOTAL: 0'",
+            "No trailing newline in output",
+            "Lines are joined with single newline characters"
+          ],
+          "depends_on": [],
+          "environment_id": "python",
+          "interface_contracts": [
+            "def render(amounts: dict[str, int]) -> str: Accept a valid dict[str,int]. Return category lines in lexicographic order, each formatted as 'CATEGORY: CENTS', followed by a 'TOTAL: SUM' line. Join lines with newline, no trailing newline. Empty dict returns 'TOTAL: 0'. Negative values use the minus sign."
+          ],
+          "objective": "Implement report.render to produce a stable text report from a valid dict[str,int] of category totals.",
+          "read_paths": [
+            "report.py"
+          ],
+          "requirement_ids": [
+            "rendering"
+          ],
+          "schema_version": 1,
+          "task_id": "report.render",
+          "writable_paths": [
+            "report.py"
+          ]
+        },
+        {
+          "acceptance_checks": [
+            "Valid JSON list of records produces the rendered report with one trailing newline",
+            "Invalid JSON input prints 'ERROR\n' and returns without traceback",
+            "Valid JSON but records that fail validation (e.g., missing keys) prints 'ERROR\n' and returns without traceback",
+            "Empty JSON list produces 'TOTAL: 0\n'",
+            "No traceback is printed to stderr or stdout on any error",
+            "Only standard library modules are imported (json, sys, engine, report)",
+            "Output has exactly one trailing newline"
+          ],
+          "depends_on": [
+            "engine.totals",
+            "report.render"
+          ],
+          "environment_id": "python",
+          "interface_contracts": [
+            "def main() -> None: Read one JSON value from stdin. Parse it as a list of records. Call engine.totals(records) then report.render(amounts). Print the report followed by one trailing newline. On invalid JSON or invalid records (ValueError from engine.totals), print 'ERROR\n' and return normally. Do not print tracebacks. Standard library only."
+          ],
+          "objective": "Implement cli.main to read JSON from stdin, call engine.totals then report.render, print the report with one trailing newline, and handle errors gracefully.",
+          "read_paths": [
+            "cli.py",
+            "engine.py",
+            "report.py"
+          ],
+          "requirement_ids": [
+            "cli"
+          ],
+          "schema_version": 1,
+          "task_id": "cli.main",
+          "writable_paths": [
+            "cli.py"
+          ]
+        },
+        {
+          "acceptance_checks": [
+            "README.md contains a usage example showing piped JSON input",
+            "README.md describes the expected output format",
+            "README.md mentions that invalid input produces 'ERROR'",
+            "README.md does not contain placeholder or TODO text"
+          ],
+          "depends_on": [
+            "cli.main"
+          ],
+          "environment_id": "python",
+          "interface_contracts": [
+            "README.md documents: usage as 'python cli.py', stdin JSON format (list of {category, amount_cents} dicts), output format (category lines + TOTAL line), and error behavior (prints ERROR on invalid input)."
+          ],
+          "objective": "Update README.md to document the CLI usage, input format, and error behavior of the expense report tool.",
+          "read_paths": [
+            "README.md",
+            "cli.py"
+          ],
+          "requirement_ids": [
+            "cli"
+          ],
+          "schema_version": 1,
+          "task_id": "docs.readme",
+          "writable_paths": [
+            "README.md"
+          ]
+        }
+      ]
+    },
+    "request": {
+      "allowed_paths": [
+        "engine.py",
+        "report.py",
+        "cli.py",
+        "README.md"
+      ],
+      "environments": {
+        "python": {
+          "description": "Offline pinned CPython 3.11 with standard library and development dependencies; no installation necessary",
+          "image": "sha256:695d05883b15326aea01e9266067ff58c41f3eaa4f647cfc9424b403dbe9548d",
+          "schema_version": 1
+        }
+      },
+      "feature_id": "expense-report-v1",
+      "kind": "repository-feature-v1",
+      "objective": "Implement a useful command-line expense report using the existing module interfaces. Split implementation into independently verifiable provider and consumer work.",
+      "requirements": {
+        "aggregation": "engine.totals(records) takes a list of dictionaries with category (nonempty string) and amount_cents (int excluding bool); combine repeated categories, preserve negative and zero totals, return dict[str,int]. Extra keys are ignored. Empty list returns {}.",
+        "cli": "cli.main() reads one JSON value from stdin, calls engine.totals then report.render, and prints the report with one trailing newline. Invalid JSON or invalid records prints ERROR with one newline and returns normally. Do not print tracebacks. Standard library only.",
+        "rendering": "report.render(amounts) takes a valid dict[str,int] and returns category lines in lexicographic order, each CATEGORY: CENTS, followed by TOTAL: SUM; join with newline, no trailing newline. Empty dict returns TOTAL: 0. Negative values use the minus sign.",
+        "validation": "engine.totals raises ValueError for non-list input, non-dict records, missing keys, empty/non-string category, or non-int/bool amount_cents. Never mutate input. No floats or rounding."
+      },
+      "schema_version": 1,
+      "source": {
+        "artifact_digest": "8c753d33b2e82da60b322f3d87a423469c5d71561eef4aede2a491aeea47e94f",
+        "kind": "repository-snapshot-v1",
+        "schema_version": 1
+      }
+    },
+    "review": {
+      "context_budget": {
+        "output_tokens": 2048,
+        "schema_version": 1,
+        "total_tokens": 8192
+      },
+      "deployment": "{\n  \"mode\": \"managed\",\n  \"base_url\": \"http://127.0.0.1:30000/v1\",\n  \"model\": \"gflo-local\",\n  \"request_timeout\": 120,\n  \"startup_timeout\": 300,\n  \"managed\": {\n    \"backend\": \"vllm\",\n    \"image\": \"vllm/vllm-openai@sha256:ac259a0111c6cf462a72e449962b84f7a624b5cbec24bd7d9ec3b67d40ffd1bf\",\n    \"model_path\": \"Inferact/Qwen3.8-27B-NVFP4\",\n    \"revision\": \"6128240ebaf4eaa7bad2b3d1c72c37d677c5f462\",\n    \"name\": \"gflo-vllm-graphs\",\n    \"gpu\": \"0\",\n    \"context_length\": 16384,\n    \"memory_fraction\": 0.85,\n    \"shm_size\": \"4g\",\n    \"memory_limit\": \"36g\",\n    \"cpu_limit\": 3,\n    \"pids_limit\": 1024,\n    \"model_cache_volume\": \"local-vllm-huggingface-cache\",\n    \"offline\": true,\n    \"hf_token_env\": \"\",\n    \"server_options\": {\n      \"kv-cache-dtype\": \"bfloat16\",\n      \"reasoning-parser\": \"qwen3\",\n      \"tool-call-parser\": \"qwen3_coder\"\n    },\n    \"enforce_eager\": false\n  }\n}\n",
+      "kind": "plan-review-v1",
+      "max_attempts": 2,
+      "max_model_turns": 3,
+      "model_profile": {
+        "base_url": "http://127.0.0.1:30000/v1",
+        "context_limit": 16384,
+        "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+        "model": "gflo-local",
+        "profile_id": "vllm-python-worker-v1",
+        "schema_version": 1,
+        "timeout_seconds": 120.0
+      },
+      "proposal_digest": "8aecaac11eaf1e116d61d0b18f9133cf9717478f84b39f9015a33768b2f700fb",
+      "request_digest": "e3cf4fb6263531d80b05c3d3ba06cf1f6f695f9baf44487eb53b19fe5318d453",
+      "schema_version": 1,
+      "tasks": {
+        "cli.main": {
+          "context_bytes": 65536,
+          "context_paths": [
+            "engine.py",
+            "report.py",
+            "cli.py"
+          ],
+          "execution_bytes": 262144,
+          "execution_paths": [
+            "engine.py",
+            "report.py",
+            "cli.py"
+          ],
+          "gates": {
+            "behavior": {
+              "cases": [
+                {
+                  "command": [
+                    "python",
+                    "cli.py"
+                  ],
+                  "expected_stdout": "TOTAL: 0\n",
+                  "schema_version": 1,
+                  "seconds": 10.0,
+                  "stdin": "[]"
+                },
+                {
+                  "command": [
+                    "python",
+                    "cli.py"
+                  ],
+                  "expected_stdout": "a: -2\nb: 0\nTOTAL: -2\n",
+                  "schema_version": 1,
+                  "seconds": 10.0,
+                  "stdin": "[{\"category\":\"b\",\"amount_cents\":5},{\"category\":\"a\",\"amount_cents\":-2},{\"category\":\"b\",\"amount_cents\":-5}]"
+                },
+                {
+                  "command": [
+                    "python",
+                    "cli.py"
+                  ],
+                  "expected_stdout": "ERROR\n",
+                  "schema_version": 1,
+                  "seconds": 10.0,
+                  "stdin": "invalid json"
+                },
+                {
+                  "command": [
+                    "python",
+                    "cli.py"
+                  ],
+                  "expected_stdout": "ERROR\n",
+                  "schema_version": 1,
+                  "seconds": 10.0,
+                  "stdin": "{}"
+                },
+                {
+                  "command": [
+                    "python",
+                    "cli.py"
+                  ],
+                  "expected_stdout": "ERROR\n",
+                  "schema_version": 1,
+                  "seconds": 10.0,
+                  "stdin": "[{\"category\":\"x\",\"amount_cents\":true}]"
+                }
+              ],
+              "schema_version": 1
+            }
+          },
+          "schema_version": 1
+        },
+        "docs.readme": {
+          "context_bytes": 65536,
+          "context_paths": [
+            "README.md",
+            "cli.py"
+          ],
+          "execution_bytes": 262144,
+          "execution_paths": [
+            "README.md",
+            "cli.py"
+          ],
+          "gates": {
+            "behavior": {
+              "cases": [
+                {
+                  "command": [
+                    "python",
+                    "-c",
+                    "from pathlib import Path\ns=Path('README.md').read_text()\nassert all(x in s for x in ('python cli.py','category','amount_cents','TOTAL','ERROR'))\nassert not any(x in s.lower() for x in ('todo','placeholder'))\nprint('docs-ok')\n"
+                  ],
+                  "expected_stdout": "docs-ok\n",
+                  "schema_version": 1,
+                  "seconds": 10.0,
+                  "stdin": ""
+                }
+              ],
+              "schema_version": 1
+            }
+          },
+          "schema_version": 1
+        },
+        "engine.totals": {
+          "context_bytes": 65536,
+          "context_paths": [
+            "engine.py"
+          ],
+          "execution_bytes": 262144,
+          "execution_paths": [
+            "engine.py"
+          ],
+          "gates": {
+            "behavior": {
+              "cases": [
+                {
+                  "command": [
+                    "python",
+                    "-c",
+                    "import copy\nfrom engine import totals\nx=[{'category':'b','amount_cents':7},{'category':'a','amount_cents':-3},{'category':'b','amount_cents':-7,'extra':1}]\ny=copy.deepcopy(x)\nassert totals(x)=={'a':-3,'b':0} and x==y\nassert totals([])=={}\nassert totals([{'category':'x','amount_cents':10**40}])=={'x':10**40}\nfor bad in (None,{},'',(),[None],[1],[{}],[{'category':'x'}],[{'amount_cents':1}],[{'category':'','amount_cents':1}],[{'category':1,'amount_cents':1}],[{'category':'x','amount_cents':True}],[{'category':'x','amount_cents':False}],[{'category':'x','amount_cents':1.0}],[{'category':'x','amount_cents':'1'}]):\n try: totals(bad)\n except ValueError: pass\n else: raise AssertionError(repr(bad))\nprint('engine-ok')\n"
+                  ],
+                  "expected_stdout": "engine-ok\n",
+                  "schema_version": 1,
+                  "seconds": 10.0,
+                  "stdin": ""
+                }
+              ],
+              "schema_version": 1
+            }
+          },
+          "schema_version": 1
+        },
+        "report.render": {
+          "context_bytes": 65536,
+          "context_paths": [
+            "report.py"
+          ],
+          "execution_bytes": 262144,
+          "execution_paths": [
+            "report.py"
+          ],
+          "gates": {
+            "behavior": {
+              "cases": [
+                {
+                  "command": [
+                    "python",
+                    "-c",
+                    "from report import render\nassert render({})=='TOTAL: 0'\nassert render({'z':0,'a':-10,'b':30})=='a: -10\\nb: 30\\nz: 0\\nTOTAL: 20'\nassert render({'x':10**40})=='x: '+str(10**40)+'\\nTOTAL: '+str(10**40)\nprint('render-ok')\n"
+                  ],
+                  "expected_stdout": "render-ok\n",
+                  "schema_version": 1,
+                  "seconds": 10.0,
+                  "stdin": ""
+                }
+              ],
+              "schema_version": 1
+            }
+          },
+          "schema_version": 1
+        }
+      }
+    },
+    "schema_version": 1
+  }
+}

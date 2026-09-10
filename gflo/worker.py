@@ -10,7 +10,7 @@ from pydantic import Field, TypeAdapter
 
 from gflo.artifacts import ArtifactStore
 from gflo.broker import SourceBundle
-from gflo.records import Digest, Record, WorkAtom
+from gflo.records import Acceptance, Digest, Record, WorkAtom
 
 
 class WorkerError(ValueError):
@@ -101,7 +101,13 @@ def compose_view(
     for digest in atom.dependency_artifacts:
         artifacts.verify(digest)
     if atom.dependency_artifacts:
-        raise WorkerError("This worker profile requires a self-contained source bundle")
+        if atom.capability_profile != "python-snapshot-v1":
+            raise WorkerError("This worker profile requires a self-contained source bundle")
+        if len(atom.dependency_artifacts) > 12:
+            raise WorkerError("Snapshot workers support at most twelve accepted predecessors")
+        for digest in atom.dependency_artifacts:
+            # Provenance only: never load predecessor source into the worker view.
+            Acceptance.model_validate_json(artifacts.read(digest))
     if len(atom.upstream_contracts) > 16 or len(set(atom.upstream_contracts)) != len(
         atom.upstream_contracts
     ):
@@ -110,7 +116,7 @@ def compose_view(
         digest: artifacts.read(digest).decode("utf-8") for digest in atom.upstream_contracts
     }
     if (
-        atom.capability_profile != "python-pilot-v1"
+        atom.capability_profile not in ("python-pilot-v1", "python-snapshot-v1")
         or atom.network_profile != "none-v1"
         or atom.credential_profile != "none-v1"
         or atom.sandbox_profile != "pilot-v1"

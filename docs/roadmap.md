@@ -27,17 +27,17 @@ Workers remain offline and restricted. Full repository tests required bounded
 batches under the existing 256-KiB limit. Next engineering investigation is an
 intermittent memory-qualification halt; retain strict controls while diagnosing it.
 
-A new bounded planner has produced a four-task feature proposal from repository
-context. Structural checks passed and proposed interfaces were reviewed; tasks
-are not yet materialized or executed automatically. The first trusted
-bridge now prepares reviewed independent tasks from snapshot references and separately
-supplied gates. Dependent tasks remain blocked pending accepted-base progression.
-See [product intake](product-intake.md) for the intended hierarchy and current limits.
+Snapshot-backed planning and reviewed feature progression now run a bounded graph
+through accepted providers, consumers, and independent combined checks. An expense
+report feature passed three executions: 12 tasks accepted in 12 attempts, with
+omitted source preserved and no model calls on replay. The planner's ambiguity probe
+initially failed; a direct clarification result and explicit response instructions
+then produced blocking product questions. All stages remain recorded.
 
-Prepare the task graph and provider contracts, independent per-task gates, and
-whole-feature checks before model work. Split workers where ownership and validation
-are independent; retain combined checks at shared interfaces. Measure complete
-feature success, retries, cost, and discovered false acceptances across repetitions.
+Next qualify different products, uncertain interfaces, and manager escalation before
+recursive delegation. Keep per-task and whole-feature checks independent of model
+prose. Measure complete feature success, retries, costs, and discovered false
+acceptances across repetitions. See [product intake](product-intake.md).
 
 ## Large-repository migration requirement
 
@@ -47,9 +47,9 @@ records the migration: immutable repository identity, bounded context selections
 and separately prepared execution inputs. The first source-access slice is implemented:
 immutable snapshots, bounded reads/search/selections, legacy-bundle parity, and
 digest-bound edits preserving omitted files. A real 193-file, 1.53-MB GFLO snapshot
-yielded a 238-KB execution subset. Reviewed independent tasks now use snapshot-bound preparation while preserving
-historical records. Next: accepted-base progression and combined validation; larger
-execution inputs remain future work.
+yielded a 238-KB execution subset. Reviewed task graphs now use snapshot-bound
+preparation and accepted-base progression while preserving historical records.
+Larger execution inputs remain future work.
 
 The sequence is snapshot-backed access and text search, revision-bound symbol
 lookup, then dependency/impact queries and incremental indexing. Graph storage is
@@ -59,9 +59,9 @@ unselected files and reject stale source/index bindings. See the concrete
 
 Qualify progressively on real repositories, measuring source-selection sufficiency,
 index freshness and resource use, model cost, and repeated whole-feature correctness.
-A large index alone does not establish large-build reliability. Transitive acceptance
-invalidation, native scheduling/promotion, and larger isolated build environments
-remain separate requirements. No million-line support is currently implemented.
+A large index alone does not establish large-build reliability. Ancestor findings now block snapshot-worker reuse; general transitive invalidation,
+parallel/nested scheduling, native promotion, and larger isolated builds remain
+separate requirements. No million-line support is currently implemented.
 
 ## Potential public release
 

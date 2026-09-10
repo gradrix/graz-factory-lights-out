@@ -277,3 +277,12 @@ def test_cli_emits_package_without_submitting(inputs, tmp_path, monkeypatch, cap
     assert data["source"] == request.source.model_dump(mode="json")
     assert data["run"]["selected_paths"] == ["main.py"]
     assert not db.exists()
+
+
+def test_unchanged_candidate_preserves_snapshot_identity(inputs):
+    store, request, _, _ = inputs
+    package = prepare(inputs)
+    assert (
+        lift_candidate(store, package.digest(), package.run.source, current_source=request.source)
+        == request.source
+    )

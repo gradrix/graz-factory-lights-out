@@ -167,9 +167,12 @@ preserves omitted files and executable metadata, and changes no checkout or acce
 Deletion and cross-store export are not implemented. Raw artifacts in `.gflo/` must
 be transferred separately to reuse snapshots on another machine.
 
-## Reviewed task preparation
+## Reviewed task preparation and feature runs
 
-Use `gflo prepare-task` to turn a snapshot-backed request, exact proposal, and trusted
-review into an existing RunPlan. It prepares independent root tasks only and does
-not submit, run, accept, or promote them. See [product intake](product-intake.md)
-for commands, record schemas, authority assumptions, and dependent-task limitations.
+`gflo prepare-task` prepares an independent root task without submitting or running
+it. `gflo run-feature` executes/replays a reviewed snapshot-backed graph, preserving
+accepted-base bindings and stopping on task or combined-validation failure.
+`plan-feature` supports snapshot requests with `--store` and repeated `--context-path`
+flags; `needs-info` means the model returned clarification questions without a plan.
+See [product intake](product-intake.md) for the complete flow, schemas, source-store
+requirements, current-state ownership, and qualification limits.

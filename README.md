@@ -4,7 +4,7 @@ GFLO runs prepared Python coding tasks with a local LLM, validates their output 
 isolated containers, and keeps a durable history of changes, failures, and evidence.
 It can combine accepted changes against pinned inputs and validate the combined result.
 
-**Experimental developer preview.** The latest evaluation verified 109 of 120 runs
+**Experimental developer preview.** The original 120-run evaluation verified 109 runs
 and discovered two false acceptances. Larger-build reliability is still unqualified.
 Read the [evaluation](docs/evaluation.md) before relying on the results.
 
@@ -33,6 +33,7 @@ it, follow [Getting started](docs/getting-started.md) for the local GPU service 
 - [Getting started](docs/getting-started.md): installation, first run, and prerequisites.
 - [Architecture](docs/architecture.md): authority, isolation, and supported boundaries.
 - [Operations](docs/operations.md): run, resume, inspect changes, integrate, and audit.
+- [Product intake](docs/product-intake.md): bounded planning, reviewed task graphs, and escalation.
 - [Evaluation](docs/evaluation.md): measured results and reproduction limits.
 - [Roadmap](docs/roadmap.md): next workload and public-release readiness.
 - [Contributing](CONTRIBUTING.md): development checks and repository layout.

@@ -5,34 +5,18 @@ from __future__ import annotations
 import json
 from typing import Annotated, Literal
 
-from pydantic import Field, model_validator
+from pydantic import Field
 
 from gflo.artifacts import ArtifactStore
 from gflo.broker import SourceBundle
 from gflo.controller import RunPlan
 from gflo.gates import ProcessGate
 from gflo.model import ModelProfile
-from gflo.planning import PlanEnvironment, PlanProposal, _paths, validate_tasks
-from gflo.records import ContextBudget, Digest, Identifier, Record, Text, WorkAtom
+from gflo.planning import PlanProposal, _paths, validate_tasks
+from gflo.planning import RepositoryFeatureRequest as RepositoryFeatureRequest
+from gflo.records import ContextBudget, Digest, Identifier, Record, WorkAtom
 from gflo.repository import FileEdit, Repository, Selection, SnapshotSource, SourceRef
 from gflo.worker import InputSnapshot, within
-
-
-class RepositoryFeatureRequest(Record):
-    kind: Literal["repository-feature-v1"] = "repository-feature-v1"
-    feature_id: Identifier
-    objective: Annotated[str, Field(min_length=1, max_length=4096)]
-    requirements: Annotated[dict[Identifier, Text], Field(min_length=1, max_length=16)]
-    source: SourceRef
-    allowed_paths: Annotated[tuple[str, ...], Field(min_length=1, max_length=32)]
-    environments: Annotated[dict[Identifier, PlanEnvironment], Field(min_length=1, max_length=8)]
-
-    @model_validator(mode="after")
-    def scopes(self) -> RepositoryFeatureRequest:
-        _paths(self.allowed_paths)
-        if self.source.kind != "repository-snapshot-v1":
-            raise ValueError("Repository feature requires a snapshot reference")
-        return self
 
 
 class TaskReview(Record):
@@ -79,16 +63,32 @@ def prepare_task(
     current_source: SourceRef,
 ) -> PreparedTask:
     """Materialize one reviewed root task; publish evidence but do not submit or run."""
+    if current_source != request.source:
+        raise ValueError("Source advanced since product planning")
+    task = next((t for t in proposal.tasks if t.task_id == task_id), None)
+    if task is not None and task.depends_on:
+        raise ValueError("Dependent task requires accepted-base progression")
+    return _materialize(artifacts, request, proposal, review, task_id, current_source, ())
+
+
+def _materialize(
+    artifacts: ArtifactStore,
+    request: RepositoryFeatureRequest,
+    proposal: PlanProposal,
+    review: PlanReview,
+    task_id: str,
+    source: SourceRef,
+    accepted_evidence: tuple[str, ...],
+) -> PreparedTask:
+    """Internal seam: progression verifies predecessor acceptances before calling."""
     request = RepositoryFeatureRequest.model_validate(request)
     review = PlanReview.model_validate(review)
     proposal = PlanProposal.model_validate(proposal)
-    if current_source != request.source:
-        raise ValueError("Source advanced since product planning")
     if review.request_digest != request.digest() or review.proposal_digest != proposal.digest():
         raise ValueError("Review does not bind this request and proposal")
     if proposal.questions:
         raise ValueError("Resolve proposal questions before preparation")
-    repository = Repository(SnapshotSource(artifacts, request.source))
+    repository = Repository(SnapshotSource(artifacts, source))
     order = validate_tasks(
         proposal,
         request_digest=request.digest(),
@@ -102,10 +102,6 @@ def prepare_task(
     task = next((t for t in proposal.tasks if t.task_id == task_id), None)
     if task is None:
         raise ValueError("Unknown task")
-    if task.depends_on:
-        raise ValueError(
-            "Dependent task requires accepted-base progression, not original-base work"
-        )
     policy = review.tasks[task_id]
     _paths(policy.execution_paths)
     _paths(policy.context_paths)
@@ -125,8 +121,17 @@ def prepare_task(
     assert execution.bundle is not None
     # Bind the full snapshot in the legacy revision field, without reinterpreting
     # historical InputSnapshot hashes or changing the controller's record schema.
-    revision = f"repository-snapshot-v1:{request.source.artifact_digest}"
+    revision = f"repository-snapshot-v1:{source.artifact_digest}"
     identity = f"prepared-{request.digest()[:16]}-{proposal.digest()[:16]}-{review.digest()[:16]}"
+    if source != request.source or accepted_evidence:
+        identity += (
+            "-"
+            + artifacts.publish(
+                json.dumps(
+                    [source.model_dump(mode="json"), accepted_evidence], sort_keys=True
+                ).encode()
+            )[:16]
+        )
     atom = WorkAtom.model_validate_json(
         json.dumps(
             dict(
@@ -151,9 +156,9 @@ def prepare_task(
                 ).digest(),
                 writable_paths=task.writable_paths,
                 prohibited_paths=[],
-                dependency_artifacts=[],
+                dependency_artifacts=accepted_evidence,
                 upstream_contracts=[],
-                capability_profile="python-pilot-v1",
+                capability_profile="python-snapshot-v1" if accepted_evidence else "python-pilot-v1",
                 network_profile="none-v1",
                 credential_profile="none-v1",
                 sandbox_profile="pilot-v1",
@@ -191,7 +196,7 @@ def prepare_task(
         proposal_digest=proposal.digest(),
         review_digest=review.digest(),
         task_id=task_id,
-        source=request.source,
+        source=source,
         context=context,
         execution=execution,
         run=run,
@@ -227,6 +232,9 @@ def lift_candidate(
         edits[path] = FileEdit(
             expected_digest=prior.content_digest if prior else None, content=content
         )
+    if not edits:
+        repository.source.retain(artifacts)
+        return prepared.source
     return repository.apply(
         artifacts,
         edits,

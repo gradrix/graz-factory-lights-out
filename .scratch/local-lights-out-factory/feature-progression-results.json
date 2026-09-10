@@ -1,0 +1,447 @@
+{
+  "schema_version": 1,
+  "scope": "One scaffolded, well-specified product with trusted independent gates; one deliberately ambiguous variant. Not autonomous CEO or large-build qualification.",
+  "raw_evidence": ".gflo/evidence/feature-progression-v1",
+  "initial_planning": {
+    "status": "needs-review",
+    "proposal_digest": "8aecaac11eaf1e116d61d0b18f9133cf9717478f84b39f9015a33768b2f700fb",
+    "execution_authorized": false,
+    "task_order": [
+      "engine.totals",
+      "report.render",
+      "cli.main",
+      "docs.readme"
+    ],
+    "questions": [],
+    "observations": [
+      {
+        "attempt": 1,
+        "turn": 1,
+        "model_evidence_digest": "9d068dc2437ecda10ee762c8157593b20d0c8e5a64a171dcd38914a2cc7997ea",
+        "observation_digest": "4d82e0abb15fd6c6779235472ab9d139abd297c4f742f2f6895ceda0479de377"
+      }
+    ]
+  },
+  "runs": [
+    {
+      "run": 1,
+      "status": "accepted",
+      "archive_preserved": true,
+      "replay_identical": true,
+      "source": {
+        "schema_version": 1,
+        "kind": "repository-snapshot-v1",
+        "artifact_digest": "21fa83a4604fe9d100d9183b5e2949eb7a399b41a65bee383e92433af8edca4f"
+      },
+      "tasks": [
+        {
+          "task": "engine.totals",
+          "attempts": 1,
+          "cost": {
+            "attempts": 1,
+            "model_observations": 1,
+            "validated_prompt_tokens": 983,
+            "validated_completion_tokens": 241,
+            "observed_model_seconds": 4.21830194300037,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          }
+        },
+        {
+          "task": "report.render",
+          "attempts": 1,
+          "cost": {
+            "attempts": 1,
+            "model_observations": 1,
+            "validated_prompt_tokens": 901,
+            "validated_completion_tokens": 123,
+            "observed_model_seconds": 2.196091542999966,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          }
+        },
+        {
+          "task": "cli.main",
+          "attempts": 1,
+          "cost": {
+            "attempts": 1,
+            "model_observations": 1,
+            "validated_prompt_tokens": 1411,
+            "validated_completion_tokens": 142,
+            "observed_model_seconds": 2.5288904720000573,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          }
+        },
+        {
+          "task": "docs.readme",
+          "attempts": 1,
+          "cost": {
+            "attempts": 1,
+            "model_observations": 1,
+            "validated_prompt_tokens": 1062,
+            "validated_completion_tokens": 482,
+            "observed_model_seconds": 8.100174504000279,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          }
+        }
+      ]
+    },
+    {
+      "run": 2,
+      "status": "accepted",
+      "archive_preserved": true,
+      "replay_identical": true,
+      "source": {
+        "schema_version": 1,
+        "kind": "repository-snapshot-v1",
+        "artifact_digest": "bae21b20a9d841b0e3ff1ab445136ed4b57203642265d97b37cf52d50514db9c"
+      },
+      "tasks": [
+        {
+          "task": "engine.totals",
+          "attempts": 1,
+          "cost": {
+            "attempts": 1,
+            "model_observations": 1,
+            "validated_prompt_tokens": 983,
+            "validated_completion_tokens": 241,
+            "observed_model_seconds": 4.371030183000585,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          }
+        },
+        {
+          "task": "report.render",
+          "attempts": 1,
+          "cost": {
+            "attempts": 1,
+            "model_observations": 1,
+            "validated_prompt_tokens": 900,
+            "validated_completion_tokens": 109,
+            "observed_model_seconds": 2.017719206000038,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          }
+        },
+        {
+          "task": "cli.main",
+          "attempts": 1,
+          "cost": {
+            "attempts": 1,
+            "model_observations": 1,
+            "validated_prompt_tokens": 1429,
+            "validated_completion_tokens": 142,
+            "observed_model_seconds": 2.5641301790001307,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          }
+        },
+        {
+          "task": "docs.readme",
+          "attempts": 1,
+          "cost": {
+            "attempts": 1,
+            "model_observations": 1,
+            "validated_prompt_tokens": 1073,
+            "validated_completion_tokens": 375,
+            "observed_model_seconds": 6.431131087999347,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          }
+        }
+      ]
+    },
+    {
+      "run": 3,
+      "status": "accepted",
+      "archive_preserved": true,
+      "replay_identical": true,
+      "source": {
+        "schema_version": 1,
+        "kind": "repository-snapshot-v1",
+        "artifact_digest": "1ba12f872ca73e64a3be600586dba6ee1b96851e3b1244f6ee89fa79ca887035"
+      },
+      "tasks": [
+        {
+          "task": "engine.totals",
+          "attempts": 1,
+          "cost": {
+            "attempts": 1,
+            "model_observations": 1,
+            "validated_prompt_tokens": 983,
+            "validated_completion_tokens": 241,
+            "observed_model_seconds": 4.19802199500009,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          }
+        },
+        {
+          "task": "report.render",
+          "attempts": 1,
+          "cost": {
+            "attempts": 1,
+            "model_observations": 1,
+            "validated_prompt_tokens": 901,
+            "validated_completion_tokens": 109,
+            "observed_model_seconds": 2.0189921790006338,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          }
+        },
+        {
+          "task": "cli.main",
+          "attempts": 1,
+          "cost": {
+            "attempts": 1,
+            "model_observations": 1,
+            "validated_prompt_tokens": 1419,
+            "validated_completion_tokens": 142,
+            "observed_model_seconds": 2.5903663850003795,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          }
+        },
+        {
+          "task": "docs.readme",
+          "attempts": 1,
+          "cost": {
+            "attempts": 1,
+            "model_observations": 1,
+            "validated_prompt_tokens": 1073,
+            "validated_completion_tokens": 517,
+            "observed_model_seconds": 8.624985481000294,
+            "observations_without_validated_usage": 0,
+            "observations_without_timing": 0,
+            "usage_complete_for_recorded_observations": true,
+            "timing_complete_for_recorded_observations": true
+          }
+        }
+      ]
+    }
+  ],
+  "original_combined_checks": {
+    "per_run": {
+      "engine_contract_gate": true,
+      "renderer_contract_gate": true,
+      "documentation_gate": true,
+      "seeded_valid_cli_inputs": 25,
+      "invalid_cli_inputs": 5
+    }
+  },
+  "planning_v3": {
+    "status": "needs-review",
+    "proposal_digest": "9c948e641bed7c052c8c8f65d343c4904db260ddc8efb0875a032c291acfa640",
+    "execution_authorized": false,
+    "task_order": [
+      "engine.totals",
+      "report.render",
+      "cli.main"
+    ],
+    "questions": [],
+    "observations": [
+      {
+        "attempt": 1,
+        "turn": 1,
+        "model_evidence_digest": "ae2e8757d0ef49ce45d18a29e9f26596cb0a12803834efb92231ac947de4766c",
+        "observation_digest": "7c41ac7f750f9f870b523d82f5cb3efa3175f000c853d375355207c0b24739a3"
+      }
+    ]
+  },
+  "execution_v3": {
+    "status": "accepted",
+    "tasks": [
+      {
+        "task": "engine.totals",
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 897,
+          "validated_completion_tokens": 247,
+          "observed_model_seconds": 4.30023976099983,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        }
+      },
+      {
+        "task": "report.render",
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 831,
+          "validated_completion_tokens": 121,
+          "observed_model_seconds": 2.2246574750006403,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        }
+      },
+      {
+        "task": "cli.main",
+        "cost": {
+          "attempts": 1,
+          "model_observations": 1,
+          "validated_prompt_tokens": 1373,
+          "validated_completion_tokens": 126,
+          "observed_model_seconds": 2.2700914249999187,
+          "observations_without_validated_usage": 0,
+          "observations_without_timing": 0,
+          "usage_complete_for_recorded_observations": true,
+          "timing_complete_for_recorded_observations": true
+        }
+      }
+    ]
+  },
+  "ambiguity_attempts": [
+    {
+      "directory": "ambiguity-planning",
+      "interpretation": "Exhausted six turns rereading source; no usable clarification.",
+      "result": {
+        "status": "exhausted",
+        "proposal_digest": null,
+        "execution_authorized": false,
+        "observations": [
+          {
+            "attempt": 1,
+            "turn": 1,
+            "evicted_path": "engine.py",
+            "read_path": "cli.py",
+            "model_evidence_digest": "efc1208a8ed06715a021b0f7e53324c789d61aedb2d845d0786f1553af1b9d95",
+            "observation_digest": "7d27f648628054fd5f8aebc42191eecb8ef20a29851ede3a0496382a5fbdaede"
+          },
+          {
+            "attempt": 1,
+            "turn": 2,
+            "evicted_path": "report.py",
+            "read_path": "engine.py",
+            "model_evidence_digest": "47574dcabd012b07031963dc00d217faf1afd1a2bc5797dddbedf1d0d6221882",
+            "observation_digest": "57cc0708ea5c57b30de4d33642f449c00b9b410f8db02a4356d6e8b7f859ec92"
+          },
+          {
+            "attempt": 1,
+            "turn": 3,
+            "evicted_path": "cli.py",
+            "read_path": "report.py",
+            "model_evidence_digest": "b8d5cf65139f6a7baa8bef251baa4377d3ca80434c1d1376c16c445f1b8fed07",
+            "observation_digest": "235682082f6b0b1a1f35bf113d8f769ea7ef5a131c0e255c1468a071d6dce9d2"
+          },
+          {
+            "attempt": 2,
+            "turn": 1,
+            "evicted_path": "engine.py",
+            "read_path": "cli.py",
+            "model_evidence_digest": "d8f881ea582a33a0ece1c951e9325a2c52447a0c8ef96b051b7063953a61ef79",
+            "observation_digest": "be8d7b0906690af729de222055854e8e6474ef60e88d5030ee1b6eeaf485768e"
+          },
+          {
+            "attempt": 2,
+            "turn": 2,
+            "evicted_path": "report.py",
+            "read_path": "engine.py",
+            "model_evidence_digest": "18e2106e6f3d707db57f128ca7e5890252ca50ddff7dee71c2aa6cfbbb3d4fff",
+            "observation_digest": "ea1559e97b90f0bcd19a944f9f624f798a2773afdd6898094ebf44317a209931"
+          },
+          {
+            "attempt": 2,
+            "turn": 3,
+            "evicted_path": "cli.py",
+            "read_path": "report.py",
+            "model_evidence_digest": "4f502a3fc543b8d1aa91e8f0fc44746e9ab222dc80a4c8e49858dd49d48edcf2",
+            "observation_digest": "a092b82ab6401fe12d5809083442e33a37982ab415b35a1554dc54eee5bf4d87"
+          }
+        ]
+      }
+    },
+    {
+      "directory": "ambiguity-planning-v3",
+      "interpretation": "Recognized missing policy but returned questions outside the required candidate envelope; both attempts rejected.",
+      "result": {
+        "status": "exhausted",
+        "proposal_digest": null,
+        "execution_authorized": false,
+        "observations": [
+          {
+            "attempt": 1,
+            "turn": 1,
+            "error": "1 validation error for tagged-union[CandidateResult,ReadFileRequest]\n  Input tag 'planning-questions-v1' found using 'kind' does not match any of the expected tags: 'candidate', 'read_file' [type=union_tag_invalid, input_value={'schema_version': 1, 'ki...he specified behavior.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.13/v/union_tag_invalid",
+            "model_evidence_digest": "8d00ddffce5de1fa91fc369449203a87b872aa181e661fac8b68084a9d94917b",
+            "observation_digest": "d9c66832d4a9884017c9f3b462aba673df1b5d1855f26e0e2b97ba88069f9648"
+          },
+          {
+            "attempt": 2,
+            "turn": 1,
+            "error": "1 validation error for tagged-union[CandidateResult,ReadFileRequest]\n  Input tag 'planning-questions-v1' found using 'kind' does not match any of the expected tags: 'candidate', 'read_file' [type=union_tag_invalid, input_value={'schema_version': 1, 'ki...an cannot be produced.'}, input_type=dict]\n    For further information visit https://errors.pydantic.dev/2.13/v/union_tag_invalid",
+            "model_evidence_digest": "e0d26e80c346293e5b8a0df9547575317387af201324cfc2359417f853221bda",
+            "observation_digest": "dd3be90331adbf848c2052fd759c2fd7d6648edd3f31044e52b1589760792c81"
+          }
+        ]
+      }
+    },
+    {
+      "directory": "ambiguity-planning-v3-envelope",
+      "interpretation": "Returned bound product-policy/schema questions in one turn; no execution authorized.",
+      "result": {
+        "status": "needs-info",
+        "proposal_digest": null,
+        "execution_authorized": false,
+        "questions": [
+          "What is the reporting currency and how are exchange rates provided or looked up for converting foreign-currency amounts into the reporting currency?",
+          "What is the exact record schema (field names and types) for expense records, including how currency and month/date are represented?",
+          "What is the expected output format for monthly company totals: a single consolidated total per month, or per-category totals per month, and in what structure (dict, list, text)?",
+          "How should the existing single-currency report path be preserved: is it a separate code path, a default currency, or a special case of the multi-currency logic?"
+        ],
+        "questions_digest": "870276fb10f7dda089e509ddc199e25805160f2c95638f3d2a89bb432a02e84b",
+        "observations": [
+          {
+            "attempt": 1,
+            "turn": 1,
+            "model_evidence_digest": "77aab3af0af057331c858053460ba3aa8fb91bb9c637bc8212c0e8a8e51a2a16",
+            "observation_digest": "d7a78c89bebfec2f60419104dc6791aa36f0069ab550e7a1c3701d3631bbd909"
+          }
+        ]
+      }
+    }
+  ],
+  "worker_profile": {
+    "schema_version": 1,
+    "profile_id": "vllm-python-worker-v1",
+    "base_url": "http://127.0.0.1:30000/v1",
+    "model": "gflo-local",
+    "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+    "context_limit": 16384,
+    "timeout_seconds": 120.0
+  },
+  "host_suite": "353 passed, 8 optional Docker skips, 25 subtests passed",
+  "worker_execution_budget": {
+    "total_tokens": 8192,
+    "output_tokens": 2048,
+    "max_attempts": 2,
+    "max_turns_per_attempt": 3
+  }
+}

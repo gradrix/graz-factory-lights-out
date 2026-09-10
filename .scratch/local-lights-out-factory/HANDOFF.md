@@ -1,6 +1,45 @@
 # GFLO handoff — repository access foundation
 
-## Current checkpoint — reviewed snapshot root tasks, 2026-09-10
+## Current checkpoint — reviewed feature progression, 2026-09-10
+
+Owner asked to continue implementation and test whether the local model can handle
+manager responsibility. Implemented `gflo.progression`/`run-feature`: sequential
+reviewed DAG execution, exact accepted-base snapshots, retained predecessor evidence,
+findings rechecked before direct consumer execution/reuse, independent final gates,
+and replay from immutable records. No Git/workspace promotion occurs. `prepare-task`
+stays root-only; internal progression preserves dependencies and original plan/review
+bindings. New snapshot provenance profile does not weaken legacy worker restrictions.
+
+`plan-feature`/`check-plan` now support RepositoryFeatureRequest with explicit bounded
+source selection. Planning v3 supports PlanQuestions (`needs-info`) without invented
+tasks, bounded read history and explicit output envelope. Missing paths may be supplied
+by declared ancestors but must exist at consumer preparation. Questioned plans cannot
+execute. Snapshot request import remains compatible through gflo.preparation.
+
+Live evidence: original four-task expense plan executed three times, 12 accepted tasks
+in 12 attempts; each build passed independent combined gates including 25 generated
+valid inputs and five invalid inputs. Replay made no new model calls; omitted archive
+bytes survived. Updated planner's three-task plan also passed one full execution.
+Ambiguous currency/month request initially exhausted six rereads; clarification v3
+first produced malformed outer envelopes, then explicit wrapper wording yielded
+blocking product questions in one turn. Preserve all failures as separate observations.
+See [results](feature-progression-results.json), [portable fixture](feature-progression-fixture.json),
+and [product intake](../../docs/product-intake.md). `scripts/prepare_feature_trial.py`
+reconstructed the exact fixture snapshot in a fresh output directory without model
+or source execution. Raw receipts/model exchanges remain ignored in
+`.gflo/evidence/feature-progression-v1/` and need separate transfer.
+
+Validation: 353 tests passed, eight optional Docker skips, 25 subtests; ruff/mypy
+passed. Original 120-run and earlier campaign scores/findings are unchanged.
+This qualifies one scaffolded product and a narrow ambiguity probe, not general CEO
+or recursive-manager ability. Next: varied product/interface ambiguity and navigation
+selection trials with explicit success targets; then revision-bound symbol indexing,
+larger isolated builds, and hierarchical budgets where evidence justifies them.
+No human decision currently blocks those engineering qualifications. Push/merge
+authorization remains active; license/public supported-release decisions remain open.
+
+## Previous checkpoint — reviewed snapshot root tasks, 2026-09-10
+
 
 `gflo/preparation.py` and `gflo prepare-task` bridge RepositoryFeatureRequest +
 PlanProposal + controller-authored PlanReview to PreparedTask/legacy RunPlan.

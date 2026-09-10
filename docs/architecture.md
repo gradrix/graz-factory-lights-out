@@ -93,12 +93,14 @@ unresolved merges, and unsupported paths are rejected. Limits are 100,000 files,
 file bytes but stores only changed blobs and a new manifest. No garbage collection
 or cross-store snapshot export is implemented.
 
-`FeatureRequest.source`, `RunPlan.source`, and existing candidate construction still
-embed `SourceBundle`. `gflo.preparation` now prepares reviewed independent root tasks from snapshot
-references into these unchanged RunPlans, retaining full source binding and bounded
-execution/context selections. Dependent tasks are blocked until accepted-base
-progression is implemented. See [product intake](product-intake.md). Execution selections retain the broker's 100-file/256-KiB limits;
-a selected subset is explicitly not a full-repository validation.
+Legacy `FeatureRequest.source`, `RunPlan.source`, and candidate construction still
+embed bounded `SourceBundle` objects with their original meanings. New repository
+feature requests use snapshot references. The planner selects a bounded projection;
+`gflo.preparation` materializes reviewed tasks into existing RunPlans. The sequential
+`gflo.progression` controller advances accepted snapshots, binds predecessor evidence,
+and rechecks findings before reuse. Independent final gates use a validation-only
+record, not a model task. Repeated calls reconstruct progress from immutable evidence.
+See [product intake](product-intake.md) for commands and qualification limits.
 
 Search currently scans text with explicit file/byte/hit budgets; no symbol or graph
 index exists. Revision-bound symbol and dependency queries can be added behind the

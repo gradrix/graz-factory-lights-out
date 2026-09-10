@@ -133,3 +133,11 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
   snapshot root tasks prepare existing RunPlans with trusted gates; candidate lifting
   preserves omitted source. Next: accepted-base progression and combined validation
   before recursive managers. Dependent tasks deliberately remain blocked.
+
+- [Issue 34](issues/34-progress-reviewed-features.md) resolved: snapshot planning,
+  sequential accepted-base progression, transitive snapshot-worker reuse checks,
+  combined validation and replay. Local model: original four-task plan passed three
+  executions; v3 three-task follow-up passed once. Ambiguity reread/protocol failures
+  retained; explicit clarification output then passed the narrow escalation probe.
+  See [results](feature-progression-results.json). Next: diverse-product/manager
+  qualification and measured source-selection failures before recursive delegation.
