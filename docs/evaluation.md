@@ -194,3 +194,28 @@ with `snapshot_bundle(store, SourceBundle(files=fixture["source_files"]))` and v
 the request’s snapshot reference before execution. Raw exchanges and receipts live
 in ignored `.gflo/evidence/board-comparison-v1/` and need separate transfer.
 This is one feature and one ambiguity probe, not a large-repository qualification.
+
+
+## Policy-driven build handoff (2026-09-10)
+
+The previously seen checkout feature now runs through one `build-feature` command:
+local planning, deterministic policy compilation, three worker tasks and independent
+combined gates. Trusted file/integration checks were fixed before this new planning
+run; no generated plan was edited to fit them. All three tasks passed in one attempt
+each. Planning used two calls (8,294 tokens); the first omitted required fields and
+is retained as a failure. The three workers used 4,445 validated tokens in total.
+Replay returned the same accepted result without additional recorded planning or
+worker calls. This is workflow qualification, not a new unseen-product benchmark.
+
+The withheld-rounding variant returned `needs-info` in one call (3,092 tokens) and
+started no execution. Fifteen new tests cover policy rejection, question/exhaustion
+halts, changed bindings, tampered proposals, and interrupted execution replay through
+the real ledger/controller with service doubles. Full suite: 375 passed, eight
+optional Docker skips, 25 subtests; ruff/mypy passed. The actual feature trials used
+the local GPU model and Docker gates separately from those skipped host tests.
+
+[Results](../.scratch/local-lights-out-factory/policy-build-results.json) and
+[fixture](../.scratch/local-lights-out-factory/policy-build-fixture.json) are portable.
+`scripts/prepare_policy_trial.py` reconstructed the exact snapshot in a fresh store.
+Raw evidence remains in ignored `.gflo/evidence/policy-build-v1/`. Existing campaign
+scores, board failures, and open memory-qualification findings remain unchanged.

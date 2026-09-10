@@ -1,6 +1,33 @@
 # GFLO handoff — repository access foundation
 
-## Current checkpoint — optional specialist board, 2026-09-10
+## Current checkpoint — policy build handoff, 2026-09-10
+
+Issue 36 closes manual task-review assembly for policy-covered features.
+`build-feature` accepts an exact request-bound FeaturePolicy: file checks, integration
+checks, bounded inputs, environment/model, and maximum budget. It uses single planning,
+compiles the task graph deterministically and runs existing reviewed progression.
+Model acceptance prose never selects commands or relaxes policy. Repeating the same
+build reuses planning and replays accepted execution; changed bindings reject.
+Interrupted/exhausted planning needs a new output directory, not a hidden retry.
+
+Actual local-model checkout trial: initial planning response missing fields, second
+attempt valid; all three worker tasks accepted in one attempt each and final checks
+passed. Replay added no recorded model calls. Missing rounding policy returned two
+questions in one call and started no workers. See [results](policy-build-results.json),
+[fixture](policy-build-fixture.json), and [guide](../../docs/product-intake.md).
+`scripts/prepare_policy_trial.py` reconstructs the exact fixture source/policy in a
+fresh ledger. Raw receipts remain ignored in `.gflo/evidence/policy-build-v1/`.
+
+Validation: 375 tests passed, eight optional Docker skips, 25 subtests; ruff/mypy.
+This qualifies the handoff on a seen product; it is not unfamiliar navigation or
+self-authored independent checks. The owner clarified to prioritize necessary work,
+not autonomy for its own sake. Next: broader product and context-selection trials,
+revision-bound symbol lookup, and issue 30 memory qualification. No recursive
+organization, automatic environment provisioning, Git promotion, or large-build
+claim was added. Single planning stays default. Push authorization remains active.
+
+
+## Previous checkpoint — optional specialist board, 2026-09-10
 
 Issue 35 implemented `plan-feature --board`: bounded independent specialist reports,
 exact synthesis references/dispositions, and immediate clarification on any specialist

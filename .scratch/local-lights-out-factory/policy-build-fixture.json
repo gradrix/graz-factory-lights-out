@@ -1,0 +1,175 @@
+{
+  "schema_version": 1,
+  "source_files": {
+    "api.py": "from pricing import quote\n\ndef handle(payload):\n    \"\"\"Return a total_cents object for a JSON-compatible payload.\"\"\"\n    raise NotImplementedError\n",
+    "cli.py": "import json\nimport sys\nfrom api import handle\n\ndef main():\n    raise NotImplementedError\n\nif __name__ == \"__main__\":\n    main()\n",
+    "legacy.py": "def total(items):\n    return sum(row[\"qty\"] * row[\"price\"] for row in items)\n",
+    "pricing.py": "from legacy import total\n\ndef quote(items, discount_percent=0):\n    \"\"\"Return a discounted integer-cent quote.\"\"\"\n    raise NotImplementedError\n"
+  },
+  "request": {
+    "allowed_paths": [
+      "pricing.py",
+      "api.py",
+      "cli.py"
+    ],
+    "environments": {
+      "python": {
+        "description": "Pinned offline CPython 3.11, standard library; no installation needed.",
+        "image": "sha256:695d05883b15326aea01e9266067ff58c41f3eaa4f647cfc9424b403dbe9548d",
+        "schema_version": 1
+      }
+    },
+    "feature_id": "quote-compatibility-v1",
+    "kind": "repository-feature-v1",
+    "objective": "Add validated discounted checkout quotes while preserving the existing legacy total API.",
+    "requirements": {
+      "api": "api.handle(payload) accepts a dict with required items and optional discount_percent default 0; ignore extra keys. Call pricing.quote and return exactly {\"total_cents\": value}. Non-dict payload or missing items raises ValueError.",
+      "cli": "cli.main reads one JSON value from stdin, calls api.handle and prints json.dumps(result, sort_keys=True) with one newline. On invalid JSON or ValueError print ERROR with one newline and return normally without stderr/tracebacks. Standard library only.",
+      "compatibility": "Do not change legacy.py. Preserve legacy.total(items) signature and all current behavior. New pricing.quote must call legacy.total after validating items.",
+      "pricing": "pricing.quote(items, discount_percent=0) accepts a list of dictionaries with qty and price integer fields excluding bool, both >=0; ignore extra fields. Discount is int excluding bool from 0 to 100 inclusive. Invalid inputs raise ValueError. Empty list returns 0. Do not mutate inputs. Calculate subtotal=sum(qty*price), then floor(subtotal*(100-discount_percent)/100) using exact integer arithmetic; round only once after summation. Return int cents."
+    },
+    "schema_version": 1,
+    "source": {
+      "artifact_digest": "a59731e3c757ebc3660055fdf92ba74270ac788a95c6582c707701fe30424f59",
+      "kind": "repository-snapshot-v1",
+      "schema_version": 1
+    }
+  },
+  "policy": {
+    "context_budget": {
+      "output_tokens": 2048,
+      "schema_version": 1,
+      "total_tokens": 8192
+    },
+    "deployment": "{\n  \"mode\": \"managed\",\n  \"base_url\": \"http://127.0.0.1:30000/v1\",\n  \"model\": \"gflo-local\",\n  \"request_timeout\": 120,\n  \"startup_timeout\": 300,\n  \"managed\": {\n    \"backend\": \"vllm\",\n    \"image\": \"vllm/vllm-openai@sha256:ac259a0111c6cf462a72e449962b84f7a624b5cbec24bd7d9ec3b67d40ffd1bf\",\n    \"model_path\": \"Inferact/Qwen3.8-27B-NVFP4\",\n    \"revision\": \"6128240ebaf4eaa7bad2b3d1c72c37d677c5f462\",\n    \"name\": \"gflo-vllm-graphs\",\n    \"gpu\": \"0\",\n    \"context_length\": 16384,\n    \"memory_fraction\": 0.85,\n    \"shm_size\": \"4g\",\n    \"memory_limit\": \"36g\",\n    \"cpu_limit\": 3,\n    \"pids_limit\": 1024,\n    \"model_cache_volume\": \"local-vllm-huggingface-cache\",\n    \"offline\": true,\n    \"hf_token_env\": \"\",\n    \"server_options\": {\n      \"kv-cache-dtype\": \"bfloat16\",\n      \"reasoning-parser\": \"qwen3\",\n      \"tool-call-parser\": \"qwen3_coder\"\n    },\n    \"enforce_eager\": false\n  }\n}\n",
+    "environment_id": "python",
+    "execution_paths": [
+      "legacy.py",
+      "pricing.py",
+      "api.py",
+      "cli.py"
+    ],
+    "file_gates": {
+      "api.py": {
+        "cases": [
+          {
+            "command": [
+              "python",
+              "-c",
+              "import pricing\ncalls=[]\norig=pricing.quote\ndef spy(items,discount_percent=0):\n calls.append((items,discount_percent)); return orig(items,discount_percent)\npricing.quote=spy\nfrom api import handle\nassert handle({'items':[{'qty':2,'price':101}],'discount_percent':50,'extra':1})=={'total_cents':101}\nassert calls[-1][1]==50\nassert handle({'items':[]})=={'total_cents':0} and calls[-1][1]==0\nfor bad in (None,[],{},True):\n try: handle(bad)\n except ValueError: pass\n else: raise AssertionError(repr(bad))\nprint('api-ok')\n"
+            ],
+            "expected_stdout": "api-ok\n",
+            "schema_version": 1,
+            "seconds": 10.0,
+            "stdin": ""
+          }
+        ],
+        "schema_version": 1
+      },
+      "cli.py": {
+        "cases": [
+          {
+            "command": [
+              "python",
+              "-c",
+              "import json,random,subprocess\nr=random.Random(75)\nfor n in range(25):\n items=[{'qty':r.randrange(0,10),'price':r.randrange(0,1000)} for _ in range(n)]\n discount=r.randrange(0,101)\n expected=json.dumps({'total_cents':sum(i['qty']*i['price'] for i in items)*(100-discount)//100},sort_keys=True)+'\\n'\n p=subprocess.run(['python','cli.py'],input=json.dumps({'items':items,'discount_percent':discount}),text=True,capture_output=True,check=True)\n assert p.stdout==expected and p.stderr==''\nfor bad in ('', '{', '{}', '[]', '{\"items\":null}', '{\"items\":[],\"discount_percent\":true}'):\n p=subprocess.run(['python','cli.py'],input=bad,text=True,capture_output=True,check=True)\n assert p.stdout=='ERROR\\n' and p.stderr==''\nprint('cli-ok')\n"
+            ],
+            "expected_stdout": "cli-ok\n",
+            "schema_version": 1,
+            "seconds": 10.0,
+            "stdin": ""
+          }
+        ],
+        "schema_version": 1
+      },
+      "pricing.py": {
+        "cases": [
+          {
+            "command": [
+              "python",
+              "-c",
+              "import copy, legacy\ncalls=[]\noriginal=legacy.total\ndef spy(items):\n calls.append(copy.deepcopy(items)); return original(items)\nlegacy.total=spy\nfrom pricing import quote\nx=[{'qty':1,'price':1},{'qty':1,'price':1}]; before=copy.deepcopy(x)\nassert quote(x,50)==1 and x==before and calls\nassert quote([],0)==0\nassert quote([{'qty':3,'price':10**30}],33)==(3*10**30*67)//100\nassert quote([{'qty':1,'price':1}],100)==0\nn=len(calls)\nfor bad in (None,{},'',(),[None],[{}],[{'qty':1}],[{'price':1}],[{'qty':-1,'price':1}],[{'qty':True,'price':1}],[{'qty':1,'price':False}],[{'qty':1,'price':1.0}]):\n try: quote(bad)\n except ValueError: pass\n else: raise AssertionError(repr(bad))\nfor bad in (True,False,-1,101,1.0,'1',None):\n try: quote(x,bad)\n except ValueError: pass\n else: raise AssertionError(repr(bad))\nassert len(calls)==n\nprint('pricing-ok')\n"
+            ],
+            "expected_stdout": "pricing-ok\n",
+            "schema_version": 1,
+            "seconds": 10.0,
+            "stdin": ""
+          }
+        ],
+        "schema_version": 1
+      }
+    },
+    "integration_gates": {
+      "api-py": {
+        "cases": [
+          {
+            "command": [
+              "python",
+              "-c",
+              "import pricing\ncalls=[]\norig=pricing.quote\ndef spy(items,discount_percent=0):\n calls.append((items,discount_percent)); return orig(items,discount_percent)\npricing.quote=spy\nfrom api import handle\nassert handle({'items':[{'qty':2,'price':101}],'discount_percent':50,'extra':1})=={'total_cents':101}\nassert calls[-1][1]==50\nassert handle({'items':[]})=={'total_cents':0} and calls[-1][1]==0\nfor bad in (None,[],{},True):\n try: handle(bad)\n except ValueError: pass\n else: raise AssertionError(repr(bad))\nprint('api-ok')\n"
+            ],
+            "expected_stdout": "api-ok\n",
+            "schema_version": 1,
+            "seconds": 10.0,
+            "stdin": ""
+          }
+        ],
+        "schema_version": 1
+      },
+      "cli-py": {
+        "cases": [
+          {
+            "command": [
+              "python",
+              "-c",
+              "import json,random,subprocess\nr=random.Random(75)\nfor n in range(25):\n items=[{'qty':r.randrange(0,10),'price':r.randrange(0,1000)} for _ in range(n)]\n discount=r.randrange(0,101)\n expected=json.dumps({'total_cents':sum(i['qty']*i['price'] for i in items)*(100-discount)//100},sort_keys=True)+'\\n'\n p=subprocess.run(['python','cli.py'],input=json.dumps({'items':items,'discount_percent':discount}),text=True,capture_output=True,check=True)\n assert p.stdout==expected and p.stderr==''\nfor bad in ('', '{', '{}', '[]', '{\"items\":null}', '{\"items\":[],\"discount_percent\":true}'):\n p=subprocess.run(['python','cli.py'],input=bad,text=True,capture_output=True,check=True)\n assert p.stdout=='ERROR\\n' and p.stderr==''\nprint('cli-ok')\n"
+            ],
+            "expected_stdout": "cli-ok\n",
+            "schema_version": 1,
+            "seconds": 10.0,
+            "stdin": ""
+          }
+        ],
+        "schema_version": 1
+      },
+      "pricing-py": {
+        "cases": [
+          {
+            "command": [
+              "python",
+              "-c",
+              "import copy, legacy\ncalls=[]\noriginal=legacy.total\ndef spy(items):\n calls.append(copy.deepcopy(items)); return original(items)\nlegacy.total=spy\nfrom pricing import quote\nx=[{'qty':1,'price':1},{'qty':1,'price':1}]; before=copy.deepcopy(x)\nassert quote(x,50)==1 and x==before and calls\nassert quote([],0)==0\nassert quote([{'qty':3,'price':10**30}],33)==(3*10**30*67)//100\nassert quote([{'qty':1,'price':1}],100)==0\nn=len(calls)\nfor bad in (None,{},'',(),[None],[{}],[{'qty':1}],[{'price':1}],[{'qty':-1,'price':1}],[{'qty':True,'price':1}],[{'qty':1,'price':False}],[{'qty':1,'price':1.0}]):\n try: quote(bad)\n except ValueError: pass\n else: raise AssertionError(repr(bad))\nfor bad in (True,False,-1,101,1.0,'1',None):\n try: quote(x,bad)\n except ValueError: pass\n else: raise AssertionError(repr(bad))\nassert len(calls)==n\nprint('pricing-ok')\n"
+            ],
+            "expected_stdout": "pricing-ok\n",
+            "schema_version": 1,
+            "seconds": 10.0,
+            "stdin": ""
+          }
+        ],
+        "schema_version": 1
+      }
+    },
+    "kind": "feature-policy-v1",
+    "max_attempts": 2,
+    "max_model_turns": 3,
+    "max_reserved_tokens": 368640,
+    "max_tasks": 6,
+    "model_profile": {
+      "base_url": "http://127.0.0.1:30000/v1",
+      "context_limit": 16384,
+      "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+      "model": "gflo-local",
+      "profile_id": "vllm-python-worker-v1",
+      "schema_version": 1,
+      "timeout_seconds": 120.0
+    },
+    "planning_paths": [
+      "api.py",
+      "cli.py",
+      "legacy.py",
+      "pricing.py"
+    ],
+    "request_digest": "2a20b234d2d0dd7d8a96fd699b6418cd542e60f37d48966d382dddcdf025eb52",
+    "schema_version": 1
+  }
+}

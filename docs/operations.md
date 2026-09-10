@@ -186,3 +186,14 @@ plan. The single-planner path remains the normal default; see
 A specialist question or blocker returns `needs-info` immediately. Inspect root
 `questions.json` and the completed role reports; no coordinator synthesis is
 expected on this path.
+
+
+For a preauthorized feature, use `build-feature` as described in
+[product intake](product-intake.md). Inspect root `result.json`, `feature-plan.json`,
+and `planning/` evidence. `needs-info` returns product questions; `policy-halt`
+identifies an unsupported plan; `planning-halt` retains exhausted/interrupted
+planning. Task/integration halts retain the normal ledger evidence. Interrupted
+execution clears prior success in the build result before revalidation and can be
+replayed with the same command. Exit 0 means accepted, 2 means a reported halt,
+1 means an error, and 130 means interruption. Build output binds the local store
+path; portable fixtures recreate a run, not a moved runtime directory's identity.

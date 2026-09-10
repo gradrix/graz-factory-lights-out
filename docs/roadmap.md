@@ -46,6 +46,13 @@ stays default. Specialist blockers now return questions before synthesis. Preser
 failed trials and broaden navigation/ambiguity qualifications before adding a
 recursive organization. See [evaluation](evaluation.md).
 
+`build-feature` now compiles a generated plan against prewritten exact-file and
+integration checks, then executes it without per-task review editing. The seen
+checkout fixture passed three tasks and replay; an ambiguity probe stopped before
+execution. This closes one workflow gap without establishing general autonomy.
+Next prioritize varied product/navigation trials and revision-bound symbol lookup;
+do not add orchestration merely to pursue the organizational metaphor.
+
 ## Large-repository migration requirement
 
 Large-repository support is an architectural requirement, not an assumed property

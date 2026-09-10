@@ -14,6 +14,7 @@ from typing import Any
 from pydantic import ValidationError
 
 from gflo.artifacts import ArtifactStore
+from gflo.autonomy import FeaturePolicy, build_feature
 from gflo.board import draft_board
 from gflo.broker import BrokerError, DockerBroker
 from gflo.controller import Controller, RunPlan, prepare_run
@@ -80,6 +81,13 @@ def main() -> int:
     planning.add_argument("--store", type=Path)
     planning.add_argument("--context-path", action="append", default=[])
     planning.add_argument("--board", action="store_true")
+    build = commands.add_parser(
+        "build-feature", help="Plan and execute within a trusted feature policy"
+    )
+    build.add_argument("request", type=Path)
+    build.add_argument("policy", type=Path)
+    build.add_argument("--output", type=Path, required=True)
+    build.add_argument("--current", required=True)
     feature = commands.add_parser("run-feature", help="Execute/replay a reviewed feature graph")
     feature.add_argument("plan", type=Path)
     feature.add_argument("--current", required=True)
@@ -101,6 +109,17 @@ def main() -> int:
     preparation.add_argument("--current", required=True)
     args = parser.parse_args()
     try:
+        if args.command == "build-feature":
+            build_request = RepositoryFeatureRequest.model_validate_json(args.request.read_bytes())
+            build_policy = FeaturePolicy.model_validate_json(args.policy.read_bytes())
+            build_current = SourceRef(kind="repository-snapshot-v1", artifact_digest=args.current)
+            args.db.parent.mkdir(parents=True, exist_ok=True)
+            with WorkLedger(args.db, reserve_bytes=args.reserve_bytes) as build_ledger:
+                built = build_feature(
+                    build_ledger, build_request, build_policy, args.output, lambda: build_current
+                )
+            print(json.dumps(built, indent=2))
+            return 0 if built["status"] == "accepted" else 2
         if args.command == "prepare-task":
             if not args.store.is_dir():
                 raise ValueError("Repository artifact store does not exist")

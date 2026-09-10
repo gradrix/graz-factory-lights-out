@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "raw_evidence": ".gflo/evidence/policy-build-v1",
+  "scope": "Previously seen checkout-quote fixture; qualifies automatic policy handoff and replay, not unseen-product planning quality.",
+  "status": "accepted",
+  "request_digest": "2a20b234d2d0dd7d8a96fd699b6418cd542e60f37d48966d382dddcdf025eb52",
+  "policy_digest": "442bc7360b5b5611e5f6dae5519860e3aa93799fb935e97532a07137ec00a9be",
+  "plan_digest": "33fd4d36ff4b578725e33ad529b2c751f72be74add00a64a37a42b7aebfa516f",
+  "final_source": {
+    "schema_version": 1,
+    "kind": "repository-snapshot-v1",
+    "artifact_digest": "f7421f1727b6042e9d7b1af8159be35982c22a79fd6392e33736500cd2a9fbeb"
+  },
+  "planning": {
+    "recorded_calls": 2,
+    "prompt_tokens": 6146,
+    "completion_tokens": 2148,
+    "model_seconds": 35.93599302199982,
+    "missing_usage": 0
+  },
+  "planning_failures": [
+    "First response omitted required proposal fields; second bounded attempt succeeded."
+  ],
+  "tasks": [
+    {
+      "task_id": "pricing.quote",
+      "status": "accepted",
+      "cost": {
+        "attempts": 1,
+        "model_observations": 1,
+        "validated_prompt_tokens": 1142,
+        "validated_completion_tokens": 452,
+        "observed_model_seconds": 7.5467983260004985,
+        "observations_without_validated_usage": 0,
+        "observations_without_timing": 0,
+        "usage_complete_for_recorded_observations": true,
+        "timing_complete_for_recorded_observations": true
+      }
+    },
+    {
+      "task_id": "api.handle",
+      "status": "accepted",
+      "cost": {
+        "attempts": 1,
+        "model_observations": 1,
+        "validated_prompt_tokens": 1461,
+        "validated_completion_tokens": 126,
+        "observed_model_seconds": 2.2899482310003805,
+        "observations_without_validated_usage": 0,
+        "observations_without_timing": 0,
+        "usage_complete_for_recorded_observations": true,
+        "timing_complete_for_recorded_observations": true
+      }
+    },
+    {
+      "task_id": "cli.main",
+      "status": "accepted",
+      "cost": {
+        "attempts": 1,
+        "model_observations": 1,
+        "validated_prompt_tokens": 1114,
+        "validated_completion_tokens": 150,
+        "observed_model_seconds": 2.7262037620002957,
+        "observations_without_validated_usage": 0,
+        "observations_without_timing": 0,
+        "usage_complete_for_recorded_observations": true,
+        "timing_complete_for_recorded_observations": true
+      }
+    }
+  ],
+  "accepted_tasks": 3,
+  "worker_attempts": 3,
+  "replay": "Identical result; still one attempt and one model observation per worker task; planning retained two observations.",
+  "ambiguous": {
+    "status": "needs-info",
+    "questions": [
+      "What rounding rule applies when the discounted total is not an integer (e.g., round half up, round half down, floor, ceil, or banker's rounding)?",
+      "Is the discount applied per line item before summation, or to the summed total after all line items are added?"
+    ],
+    "planning": {
+      "recorded_calls": 1,
+      "prompt_tokens": 2851,
+      "completion_tokens": 241,
+      "model_seconds": 4.550686006001342,
+      "missing_usage": 0
+    },
+    "execution_started": false
+  },
+  "host_checks": "375 tests passed, 8 optional Docker skips, 25 subtests; ruff and mypy passed.",
+  "limits": [
+    "Trusted feature-specific file checks and final gates are prewritten.",
+    "Bounded source selection and existing offline environment remain required.",
+    "No automatic Git promotion, recursive delegation or million-line qualification."
+  ]
+}

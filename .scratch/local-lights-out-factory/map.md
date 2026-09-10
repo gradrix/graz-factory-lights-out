@@ -146,3 +146,8 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
   compared on an unfamiliar product. Both plans passed; board cost 3.6 times the
   planning tokens without demonstrated improvement. Keep single default, stop
   immediately on specialist blockers, retain every failed trial before follow-ups.
+
+- [Issue 36](issues/36-execute-features-under-pinned-policy.md): policy compilation
+  removes per-task review assembly for preauthorized exact-file features. Live
+  three-task build and replay passed; missing policy decisions halt. Continue
+  navigation/product qualification before more orchestration.

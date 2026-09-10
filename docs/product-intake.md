@@ -149,3 +149,53 @@ required, and every stage retains its observations on failure.
 A board proposal still needs a controller-authored PlanReview and independent gates.
 It does not alter leases, workers, acceptance, recovery, or repository promotion.
 Recursive manager trees are not implemented by this option.
+
+
+## Build from a trusted feature policy
+
+`build-feature` closes the manual proposal-to-review handoff for a bounded feature.
+An operator supplies a `FeaturePolicy` bound to the exact request digest, with a
+ProcessGate for every exact permitted output file, independent integration gates,
+execution and planning paths, a pinned environment/model, and retry/token budgets.
+The factory drafts a single-planner proposal, compiles its task graph into the
+existing reviewed FeaturePlan, then executes and validates it. No per-task review
+editing is required when the proposal fits the policy.
+
+Gate selection follows exact writable files, not model-written acceptance prose or
+claimed requirement coverage. Directory scopes, missing checks, unhandled reads,
+unknown environments, missing output producers, questions, and excess budgets
+halt rather than acquire new authority. Each task must satisfy its file's complete
+check; policies that require unfinished future work can therefore halt a build.
+Trusted checks still need operator engineering and review. This command does not
+make arbitrary product requests safe or fully specified.
+
+The reservation covers six planning calls at 12,288 tokens each plus
+`max_tasks * max_attempts * max_model_turns * context_budget.total_tokens`.
+It is a conservative admission bound, not measured token consumption or a shared
+quota across separately started builds. Existing execution/context size limits and
+offline Docker restrictions remain unchanged. Accepted snapshots are retained as
+artifacts; the command does not modify or promote a Git checkout.
+
+To recreate and run the measured fixture (requires the existing GPU deployment and
+pinned worker image; preparation itself runs no model or product code):
+
+```sh
+PYTHONPATH=. .venv/bin/python scripts/prepare_policy_trial.py --output .gflo/policy-demo
+.venv/bin/python -m gflo --db .gflo/policy-demo/ledger.db build-feature \
+  .gflo/policy-demo/request.json .gflo/policy-demo/policy.json \
+  --output .gflo/policy-demo/build \
+  --current a59731e3c757ebc3660055fdf92ba74270ac788a95c6582c707701fe30424f59
+```
+
+The source snapshot must already be in the ledger's artifact store; the preparation
+script supplies it for this fixture. `--current` asserts the external snapshot
+identity, just as with `run-feature`; it is not a live Git watch. Library callers
+can supply a current-source callback. Keep build output in trusted control-plane
+storage, outside worker inputs.
+
+Repeat the same command to replay execution from retained evidence. It checks the
+request, policy, store location, and saved proposal digest; it never silently
+replans. Planning exhaustion/interruption needs a new build directory. A changed
+request or policy also needs a new build. The live trial passed three tasks and
+final checks; its ambiguous variant returned questions without executing. See
+[evaluation](evaluation.md) and the [portable fixture](../.scratch/local-lights-out-factory/policy-build-fixture.json).
