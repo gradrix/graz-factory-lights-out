@@ -1,0 +1,175 @@
+diff --git a/gflo/model.py b/gflo/model.py
+index cdf8b3d..7436eaa 100644
+--- a/gflo/model.py
++++ b/gflo/model.py
+@@ -21,7 +21,14 @@ from gflo.artifacts import ArtifactStore
+ from gflo.broker import SourceBundle
+ from gflo.contracts import CONTRACT_PROFILES
+ from gflo.records import Digest, Record, WorkAtom
+-from gflo.windows import WINDOW_PROFILE, WINDOW_SYSTEM, WindowRead, parse_window_result, window_view
++from gflo.windows import (
++    WINDOW_PROFILE,
++    WINDOW_SYSTEM,
++    WindowRead,
++    parse_window_result,
++    planning_window_view,
++    window_view,
++)
+ from gflo.worker import (
+     CandidateResult,
+     ContractConflict,
+@@ -291,6 +298,8 @@ class LocalModel:
+                 evidence["window_targets_digest"] = self.artifacts.publish(
+                     window_targets.canonical().encode()
+                 )
++                if planning_document:
++                    view = planning_window_view(view)
+             models = self._request("/v1/models", None, deadline, exchanges)
+             if not isinstance(models.get("data"), list) or not any(
+                 m.get("id") == self.profile.model
+diff --git a/gflo/planning.py b/gflo/planning.py
+index df5b8b9..3bebcee 100644
+--- a/gflo/planning.py
++++ b/gflo/planning.py
+@@ -543,15 +543,17 @@ def draft_feature(
+     pending_questions: PlanQuestions | None = None
+     grounding_done = False
+     grounding_active = False
++    window_reads: tuple[WindowRead, ...] = ()
++    grounding_diagnostics: tuple[str, ...] = ()
+     try:
+         for attempt in range(1, 3):
+-            window_reads: tuple[WindowRead, ...] = ()
+             selected = set(selected_paths[-2:])
+             reading_order = list(selected_paths[-2:])
+-            visited = set(selected)
++            visited = set(selected) | {read.path for read in window_reads}
+             failure = "Planning turn budget exhausted before a proposal"
+             for turn in range(1, 4):
+                 row: dict[str, Any] = {"attempt": attempt, "turn": turn}
++                proposal = None
+                 try:
+                     note = (
+                         f"Planning turn {turn}/3. Reads remaining before final answer: {3 - turn}. "
+@@ -563,8 +565,8 @@ def draft_feature(
+                         note += (
+                             " Completed source reads: "
+                             + json.dumps([r.model_dump(mode="json") for r in window_reads])
+-                            + ". Their text is now supplied in source_files under the handles "
+-                            "mapped by instruction.source_windows. Read those supplied excerpts "
++                            + ". Their text is in source_files under file:line-range labels. "
++                            "Read those supplied excerpts "
+                             "and use them in the plan; do not request them again."
+                         )
+                     if structured_interfaces:
+@@ -657,6 +659,7 @@ def draft_feature(
+                                 .encode()
+                             ),
+                         )
++                        grounding_diagnostics = diagnostics
+                         continue
+                     if isinstance(answer, WindowRead):
+                         if not windows or answer.path not in source.files or answer in window_reads:
+@@ -665,7 +668,7 @@ def draft_feature(
+                             )
+                         if turn == 3:
+                             raise ValueError("Final planning turn must return a plan or questions")
+-                        window_reads = (*window_reads, answer)
++                        window_reads = (*window_reads[-3:], answer)
+                         row["read_window"] = answer.model_dump(mode="json")
+                         visited.add(answer.path)
+                         continue
+@@ -767,6 +770,17 @@ def draft_feature(
+                         "test inputs or repeat checks. Omit optional implementation advice."
+                     )
+                     row["error"] = failure
++                    if windows:
++                        feedback_digest = artifacts.publish(
++                            Diagnostic(
++                                source_digest=artifacts.publish(failure.encode()), text=failure
++                            )
++                            .canonical()
++                            .encode()
++                        )
++                        row["feedback_digest"] = feedback_digest
++                        diagnostics = grounding_diagnostics + (feedback_digest,)
++                        continue
+                     break
+                 except (ModelError, ArtifactError):
+                     result["status"] = "infrastructure-halt"
+@@ -777,6 +791,33 @@ def draft_feature(
+                         return result
+                     failure = str(error)[:2048]
+                     row["error"] = failure
++                    if windows:
++                        missing = (
++                            sorted(
++                                set(request.requirements)
++                                - {
++                                    requirement
++                                    for task in proposal.tasks
++                                    for requirement in task.requirement_ids
++                                }
++                            )
++                            if proposal is not None
++                            else []
++                        )
++                        feedback = dict(
++                            validation_error=failure,
++                            missing_requirement_ids=missing,
++                            action="Return a corrected complete plan using the retained source.",
++                        )
++                        text = json.dumps(feedback, sort_keys=True)
++                        feedback_digest = artifacts.publish(
++                            Diagnostic(source_digest=artifacts.publish(text.encode()), text=text)
++                            .canonical()
++                            .encode()
++                        )
++                        row["feedback_digest"] = feedback_digest
++                        diagnostics = grounding_diagnostics + (feedback_digest,)
++                        continue
+                     break
+                 finally:
+                     row["model_evidence_digest"] = active_model.last_evidence_digest
+@@ -785,6 +826,8 @@ def draft_feature(
+                     (output / f"observation-{attempt}-{turn}.json").write_text(
+                         json.dumps(row, indent=2) + "\n"
+                     )
++            if windows:
++                continue
+             raw = artifacts.publish(failure.encode())
+             diagnostic = Diagnostic(source_digest=raw, text=failure)
+             failure_digest = artifacts.publish(diagnostic.canonical().encode())
+diff --git a/gflo/windows.py b/gflo/windows.py
+index 1704b4f..e299253 100644
+--- a/gflo/windows.py
++++ b/gflo/windows.py
+@@ -237,6 +237,28 @@ def window_view(
+     ), mapping
+ 
+ 
++def planning_window_view(view: WorkerView) -> WorkerView:
++    """Label read-only excerpts directly by file/range instead of edit handles."""
++    metadata = view.instruction["source_windows"]
++    if not isinstance(metadata, dict):
++        raise WorkerError("Planning source metadata must be a mapping")
++    if any(window["writable"] for window in metadata.values()):
++        raise WorkerError("Planning source windows must be read-only")
++    labels = {
++        key: f"{window['path']}:{window['start_line']}-{window['end_line']}"
++        for key, window in metadata.items()
++    }
++    return view.model_copy(
++        update={
++            "source_files": {labels[key]: text for key, text in view.source_files.items()},
++            "instruction": {
++                **view.instruction,
++                "source_windows": {labels[key]: value for key, value in metadata.items()},
++            },
++        }
++    )
++
++
+ def parse_window_result(
+     content: str, atom: WorkAtom, source: SourceBundle, targets: WindowTargets
+ ) -> CandidateResult | WindowRead | ContractConflict:

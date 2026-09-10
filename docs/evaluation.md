@@ -687,3 +687,21 @@ and 1/3 split. No candidates were manually repaired or failed trials replaced.
 retain all results. Separate files worked through the existing sequential scheduler;
 no shared-file editing or runtime/prompt change was needed. The small supervised sample
 supports selective decomposition, not a general claim that either approach is superior.
+
+
+## Planner recovery and controller-owned identity (2026-09-10)
+
+The final fixed campaign produced valid plans in 6/6 fresh runs, all within the first
+attempt using two turns. Three navigation probes correctly quoted the function at line
+5001; two of three full features also passed workers, tests and integration. The third
+failed a worker source-preservation gate. Accepted replay added no work.
+
+Changes retain read context across retries, give precise validation feedback within
+remaining turns and let the controller supply an omitted request identity. Explicit
+wrong identities still fail. An intermediate campaign's navigation runs exhausted their
+budgets while copying invalid hashes; those failures remain in [portable evidence](../.scratch/local-lights-out-factory/planner-recovery/README.md).
+No model, gate, context or attempt-budget expansion was used. Full Docker regression
+passed 497 tests/25 subtests, with an additional retention case verified separately.
+These small supervised samples show a planner improvement, not general unattended
+reliability. More local inference is acceptable when it improves checked completion;
+token use remains a secondary measurement for future specialist-budget comparisons.

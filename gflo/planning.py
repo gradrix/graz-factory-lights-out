@@ -9,7 +9,7 @@ from collections.abc import Collection
 from pathlib import Path
 from typing import Annotated, Any, Literal
 
-from pydantic import Field, TypeAdapter, model_validator
+from pydantic import Field, TypeAdapter, ValidationError, model_validator
 
 from gflo.artifacts import ArtifactError, ArtifactStore
 from gflo.board_records import Role, ShortText, SpecialistReport
@@ -20,7 +20,14 @@ from gflo.question_grounding import QuestionGrounding, grounding_instruction
 from gflo.records import Digest, Identifier, Record, Text, WorkAtom
 from gflo.repository import Repository, SourceRef
 from gflo.windows import WINDOW_PROFILE, WindowRead
-from gflo.worker import CandidateResult, Diagnostic, InputSnapshot, ReadFileRequest, within
+from gflo.worker import (
+    CandidateResult,
+    Diagnostic,
+    InputSnapshot,
+    ReadFileRequest,
+    strict_json,
+    within,
+)
 
 
 def _paths(paths: tuple[str, ...]) -> None:
@@ -397,7 +404,17 @@ def draft_feature(
     )
     adapter: TypeAdapter[Any] = PLANNING_RESULT
     if structured_interfaces:
-        adapter = TypeAdapter(ContractProposal | PlanQuestions)
+        adapter = TypeAdapter(
+            Annotated[ContractProposal | PlanQuestions, Field(discriminator="kind")]
+            if windows
+            else ContractProposal | PlanQuestions
+        )
+        schema = adapter.json_schema()
+        if windows:
+            for name in ("ContractProposal", "PlanQuestions"):
+                definition = schema["$defs"][name]
+                definition["properties"].pop("request_digest")
+                definition["required"].remove("request_digest")
         instruction = (
             "Inspect the pinned source and return a bounded contract-plan-v1 JSON document, "
             "or planning-questions-v1 if essential product policy is missing. Return the document "
@@ -417,9 +434,12 @@ def draft_feature(
             "execution. Check source before claiming interfaces exist. "
             + json.dumps(brief, separators=(",", ":"))
             + "\nSchema: "
-            + json.dumps(adapter.json_schema(), separators=(",", ":"))
+            + json.dumps(schema, separators=(",", ":"))
         )
     if windows:
+        instruction += (
+            "\nThe controller binds request identity. Omit request_digest from your document."
+        )
         instruction = instruction.replace(
             "read_file for an available input; at most two reads, retaining only two files. ",
             "read_window for an available input using path, start_line and max_lines (1..100). "
@@ -543,15 +563,17 @@ def draft_feature(
     pending_questions: PlanQuestions | None = None
     grounding_done = False
     grounding_active = False
+    window_reads: tuple[WindowRead, ...] = ()
+    grounding_diagnostics: tuple[str, ...] = ()
     try:
         for attempt in range(1, 3):
-            window_reads: tuple[WindowRead, ...] = ()
             selected = set(selected_paths[-2:])
             reading_order = list(selected_paths[-2:])
-            visited = set(selected)
+            visited = set(selected) | {read.path for read in window_reads}
             failure = "Planning turn budget exhausted before a proposal"
             for turn in range(1, 4):
                 row: dict[str, Any] = {"attempt": attempt, "turn": turn}
+                proposal = None
                 try:
                     note = (
                         f"Planning turn {turn}/3. Reads remaining before final answer: {3 - turn}. "
@@ -563,8 +585,8 @@ def draft_feature(
                         note += (
                             " Completed source reads: "
                             + json.dumps([r.model_dump(mode="json") for r in window_reads])
-                            + ". Their text is now supplied in source_files under the handles "
-                            "mapped by instruction.source_windows. Read those supplied excerpts "
+                            + ". Their text is in source_files under file:line-range labels. "
+                            "Read those supplied excerpts "
                             "and use them in the plan; do not request them again."
                         )
                     if structured_interfaces:
@@ -657,15 +679,30 @@ def draft_feature(
                                 .encode()
                             ),
                         )
+                        grounding_diagnostics = diagnostics
                         continue
                     if isinstance(answer, WindowRead):
-                        if not windows or answer.path not in source.files or answer in window_reads:
+                        if (
+                            not windows
+                            or answer.path not in source.files
+                            or any(
+                                prior.path == answer.path
+                                and prior.start_line == answer.start_line
+                                and prior.max_lines >= answer.max_lines
+                                for prior in window_reads
+                            )
+                        ):
                             raise ValueError(
                                 "Window read must select fresh available source context"
                             )
                         if turn == 3:
                             raise ValueError("Final planning turn must return a plan or questions")
-                        window_reads = (*window_reads, answer)
+                        retained = tuple(
+                            prior
+                            for prior in window_reads
+                            if (prior.path, prior.start_line) != (answer.path, answer.start_line)
+                        )
+                        window_reads = (*retained[-3:], answer)
                         row["read_window"] = answer.model_dump(mode="json")
                         visited.add(answer.path)
                         continue
@@ -687,7 +724,18 @@ def draft_feature(
                         "factory-plan.json"
                     }:
                         raise ValueError("Only factory-plan.json may be proposed")
-                    answer_record = adapter.validate_json(answer.changes["factory-plan.json"])
+                    document = answer.changes["factory-plan.json"]
+                    if windows:
+                        fields = strict_json(document)
+                        if not isinstance(fields, dict):
+                            raise ValueError("Plan document must be an object")
+                        # Missing bookkeeping is supplied by the bound controller, never inferred.
+                        # Explicit identities remain subject to the ordinary mismatch checks.
+                        if "request_digest" not in fields:
+                            fields["request_digest"] = request.digest()
+                            row["bound_request_digest"] = request.digest()
+                        document = json.dumps(fields)
+                    answer_record = adapter.validate_json(document)
                     if isinstance(answer_record, ContractProposal) and answer_record.questions:
                         row["questioned_proposal_digest"] = artifacts.publish(
                             answer_record.canonical().encode()
@@ -767,6 +815,17 @@ def draft_feature(
                         "test inputs or repeat checks. Omit optional implementation advice."
                     )
                     row["error"] = failure
+                    if windows:
+                        feedback_digest = artifacts.publish(
+                            Diagnostic(
+                                source_digest=artifacts.publish(failure.encode()), text=failure
+                            )
+                            .canonical()
+                            .encode()
+                        )
+                        row["feedback_digest"] = feedback_digest
+                        diagnostics = grounding_diagnostics + (feedback_digest,)
+                        continue
                     break
                 except (ModelError, ArtifactError):
                     result["status"] = "infrastructure-halt"
@@ -776,7 +835,41 @@ def draft_feature(
                         row["error"] = str(error)[:2048]
                         return result
                     failure = str(error)[:2048]
+                    if windows and isinstance(error, ValidationError):
+                        failure = json.dumps(
+                            [
+                                {"field": item["loc"], "message": item["msg"]}
+                                for item in error.errors(include_input=False, include_url=False)
+                            ]
+                        )[:2048]
                     row["error"] = failure
+                    if windows:
+                        missing = (
+                            sorted(
+                                set(request.requirements)
+                                - {
+                                    requirement
+                                    for task in proposal.tasks
+                                    for requirement in task.requirement_ids
+                                }
+                            )
+                            if proposal is not None
+                            else []
+                        )
+                        feedback = dict(
+                            validation_error=failure,
+                            missing_requirement_ids=missing,
+                            action="Return a corrected complete plan using the retained source.",
+                        )
+                        text = json.dumps(feedback, sort_keys=True)
+                        feedback_digest = artifacts.publish(
+                            Diagnostic(source_digest=artifacts.publish(text.encode()), text=text)
+                            .canonical()
+                            .encode()
+                        )
+                        row["feedback_digest"] = feedback_digest
+                        diagnostics = grounding_diagnostics + (feedback_digest,)
+                        continue
                     break
                 finally:
                     row["model_evidence_digest"] = active_model.last_evidence_digest
@@ -785,6 +878,8 @@ def draft_feature(
                     (output / f"observation-{attempt}-{turn}.json").write_text(
                         json.dumps(row, indent=2) + "\n"
                     )
+            if windows:
+                continue
             raw = artifacts.publish(failure.encode())
             diagnostic = Diagnostic(source_digest=raw, text=failure)
             failure_digest = artifacts.publish(diagnostic.canonical().encode())

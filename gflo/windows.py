@@ -237,6 +237,28 @@ def window_view(
     ), mapping
 
 
+def planning_window_view(view: WorkerView) -> WorkerView:
+    """Label read-only excerpts directly by file/range instead of edit handles."""
+    metadata = view.instruction["source_windows"]
+    if not isinstance(metadata, dict):
+        raise WorkerError("Planning source metadata must be a mapping")
+    if any(window["writable"] for window in metadata.values()):
+        raise WorkerError("Planning source windows must be read-only")
+    labels = {
+        key: f"{window['path']}:{window['start_line']}-{window['end_line']}"
+        for key, window in metadata.items()
+    }
+    return view.model_copy(
+        update={
+            "source_files": {labels[key]: text for key, text in view.source_files.items()},
+            "instruction": {
+                **view.instruction,
+                "source_windows": {labels[key]: value for key, value in metadata.items()},
+            },
+        }
+    )
+
+
 def parse_window_result(
     content: str, atom: WorkAtom, source: SourceBundle, targets: WindowTargets
 ) -> CandidateResult | WindowRead | ContractConflict:

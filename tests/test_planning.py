@@ -396,3 +396,91 @@ def test_window_planner_retains_ranges_without_expanding_to_whole_file(feature, 
     diagnostics = models[0].calls[1]["diagnostic_digests"]
     note = json.loads(models[0].artifacts.read(diagnostics[-1]))["text"]
     assert "Completed source reads" in note and '"start_line": 1' in note
+
+
+def test_window_recovery_retains_reads_and_identifies_missing_requirements(feature, tmp_path, monkeypatch):
+    from gflo.windows import WINDOW_PROFILE, WindowRead
+
+    data = proposal(feature)
+    data['kind'] = 'contract-plan-v1'
+    for task in data['tasks']:
+        task.pop('interface_contracts')
+        task.update(interfaces=[], implementation_suggestions=[])
+    incomplete = dict(data, tasks=data['tasks'][:1])
+    read = WindowRead(path='history.py', start_line=1, max_lines=1)
+    def doc(value):
+        return CandidateResult(kind='candidate', changes={'factory-plan.json': json.dumps(value)})
+    models = fake_model(monkeypatch, [read, read, doc(incomplete), doc(data)])
+    result = draft_feature(feature, profile().model_copy(update={'profile_id': WINDOW_PROFILE}),
+                           tmp_path/'draft', deployment='fixture', structured_interfaces=True)
+    assert result['status'] == 'needs-review'
+    assert [(r['attempt'],r['turn']) for r in result['observations']] == [(1,1),(1,2),(1,3),(2,1)]
+    assert all(c['window_reads'] == (read,) for c in models[0].calls[1:])
+    feedback = json.loads(models[0].artifacts.read(models[0].calls[3]['diagnostic_digests'][0]))
+    assert json.loads(feedback['text'])['missing_requirement_ids'] == ['format']
+
+
+def test_window_invalid_plans_exhaust_finite_turns_without_authorization(feature, tmp_path, monkeypatch):
+    from gflo.windows import WINDOW_PROFILE, WindowRead
+
+    read = WindowRead(path='history.py', start_line=1, max_lines=1)
+    models = fake_model(monkeypatch, [read]*6)
+    result = draft_feature(feature, profile().model_copy(update={'profile_id': WINDOW_PROFILE}),
+                           tmp_path/'draft', deployment='fixture', structured_interfaces=True)
+    assert result['status'] == 'exhausted' and not result['execution_authorized']
+    assert result['proposal_digest'] is None and len(models[0].calls) == 6
+
+
+def test_window_controller_binds_omitted_identity_but_rejects_explicit_wrong_identity(feature, tmp_path, monkeypatch):
+    from gflo.windows import WINDOW_PROFILE
+
+    data = proposal(feature)
+    data['kind'] = 'contract-plan-v1'
+    for task in data['tasks']:
+        task.pop('interface_contracts')
+        task.update(interfaces=[], implementation_suggestions=[])
+    data.pop('request_digest')
+    def doc(value):
+        return CandidateResult(kind='candidate', changes={'factory-plan.json': json.dumps(value)})
+    models = fake_model(monkeypatch, [doc(dict(data, request_digest='f'*64)), doc(data)])
+    out = tmp_path/'draft'
+    result = draft_feature(feature, profile().model_copy(update={'profile_id': WINDOW_PROFILE}),
+                           out, deployment='fixture', structured_interfaces=True)
+    assert result['status'] == 'needs-review'
+    assert 'another request' in result['observations'][0]['error']
+    assert result['observations'][1]['bound_request_digest'] == feature.digest()
+    assert json.loads((out/'proposal.json').read_text())['request_digest'] == feature.digest()
+    assert 'Omit request_digest' in models[0].atoms[0].objective
+
+
+def test_window_schema_feedback_does_not_echo_abbreviated_input(feature, tmp_path, monkeypatch):
+    from gflo.windows import WINDOW_PROFILE
+
+    bad = {'kind': 'contract-plan-v1', 'request_digest': 'abbreviated...identity'}
+    models = fake_model(monkeypatch, [CandidateResult(kind='candidate', changes={
+        'factory-plan.json': json.dumps(bad)
+    })]*6)
+    result = draft_feature(feature, profile().model_copy(update={'profile_id': WINDOW_PROFILE}),
+                           tmp_path/'draft', deployment='fixture', structured_interfaces=True)
+    assert result['status'] == 'exhausted'
+    assert all('abbreviated' not in o['error'] for o in result['observations'])
+    assert len(models[0].calls) == 6
+
+
+def test_smaller_repeated_window_does_not_discard_retained_context(feature, tmp_path, monkeypatch):
+    from gflo.windows import WINDOW_PROFILE, WindowRead
+
+    data = proposal(feature)
+    data['kind'] = 'contract-plan-v1'
+    for task in data['tasks']:
+        task.pop('interface_contracts')
+        task.update(interfaces=[], implementation_suggestions=[])
+    large = WindowRead(path='history.py', start_line=1, max_lines=100)
+    models = fake_model(monkeypatch, [large,
+        WindowRead(path='history.py', start_line=1, max_lines=10),
+        CandidateResult(kind='candidate', changes={'factory-plan.json': json.dumps(data)})])
+    result = draft_feature(feature, profile().model_copy(update={'profile_id': WINDOW_PROFILE}),
+                           tmp_path/'draft', deployment='fixture', structured_interfaces=True)
+    assert result['status'] == 'needs-review'
+    assert models[0].calls[2]['window_reads'] == (large,)
+    assert result['observations'][1]['feedback_digest']

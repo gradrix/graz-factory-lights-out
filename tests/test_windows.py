@@ -288,3 +288,16 @@ def test_repeated_invalid_window_output_exhausts_existing_attempts(tmp_path, pla
         assert result["status"] == "quarantined"
         assert len(result["attempts"]) == 2 and len(model.calls) == 2
         assert controller.run(plan.atom.atom_id) == result
+
+
+def test_planning_windows_label_text_without_losing_source_identity(prepared):
+    from gflo.windows import planning_window_view
+
+    store, atom, source, digest = prepared
+    atom = atom.model_copy(update={'writable_paths': ('factory-plan.json',)})
+    view, _ = window_view(store, atom, digest, source)
+    labeled = planning_window_view(view)
+    assert labeled.source_files['main.py:1-1'] == source.files['main.py']
+    assert labeled.sources == view.sources
+    assert labeled.omission_reasons == view.omission_reasons
+    assert labeled.contract_digest == view.contract_digest

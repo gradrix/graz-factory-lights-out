@@ -519,3 +519,17 @@ for missing its assigned default-value check. Keep one bounded worker as the def
 for this workload. Splitting remains useful to investigate for larger independent
 responsibilities, but each group's gates must catch its own omissions: combined success
 can conceal coverage supplied incidentally by another worker. See [evaluation](evaluation.md).
+
+
+Window planners retain up to four requested source windows across attempts and label
+their content by file and line range. Invalid plans receive targeted feedback, including
+missing requirement IDs, and can use their remaining turns. Request identity is supplied
+by the controller when omitted from a window planner document; an explicitly wrong
+identity still fails. Canonical proposals remain bound to the original request. Product
+policy and missing tasks are never filled in automatically. Source-free question review
+keeps its original checks. Old profiles retain their prior behavior.
+
+Reliability and verified coverage take priority over token savings on the local GPU.
+The equal-budget specialist comparison is provisional: it does not establish whether
+specialists with full individual retry budgets would improve completion. That larger
+budget comparison is planned after the observed draft-repair issue is addressed.

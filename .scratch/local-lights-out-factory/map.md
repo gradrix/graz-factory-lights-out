@@ -261,3 +261,9 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
   split contribution. [Campaign and audit](test-decomposition/README.md).
 - Keep one bounded test worker by default for this workload. Next: issue 60 planner
   recovery; issues 61/62 track new-file draft repair and integration provenance.
+
+- Issue 60 resolved: final campaign planned 6/6 requests within two turns; 2/3 complete
+  features accepted. Controller-bound omitted identity removes fragile hash copying.
+  [Both campaigns](planner-recovery/README.md) retain failures and final results.
+- Owner prioritizes reliability over local token cost. Issue 63 compares larger aggregate
+  specialist budgets after issue 61; equal-budget results do not settle that question.

@@ -1,7 +1,7 @@
 # Improve planner read and coverage recovery
 
 Type: task
-Status: ready-for-agent
+Status: resolved
 
 ## Evidence
 
@@ -21,3 +21,18 @@ scope or reset historical attempts. Preserve source-free product-policy review.
 
 Prefer a tested protocol/state change to accumulating task-specific prompt advice.
 Record first-run and repeated success rates rather than reporting only a best run.
+
+## Answer
+
+Implemented persistent bounded read context, direct file/range labels, recovery within
+remaining turns and specific missing-requirement feedback. Omitted request identity is
+bound by the controller; explicit wrong identities still fail. Clean discriminated
+schema errors no longer echo abbreviated input. Legacy and source-free review behavior
+remain unchanged. No extra attempts, tasks or policy are supplied.
+
+Final frozen campaign: all 6 planners succeeded in their first attempt (2 turns each);
+all 3 navigation rationales correctly quoted return 41; 2/3 complete features accepted.
+The remaining worker failed its preservation gate. Intermediate failed runs are retained
+in [qualification evidence](../planner-recovery/README.md). Full Docker regression plus
+new targeted tests and historical replay pass. Continue with issue 61; issue 63 records
+the owner's reliability-first, larger-specialist-budget comparison preference.

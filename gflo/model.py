@@ -21,7 +21,14 @@ from gflo.artifacts import ArtifactStore
 from gflo.broker import SourceBundle
 from gflo.contracts import CONTRACT_PROFILES
 from gflo.records import Digest, Record, WorkAtom
-from gflo.windows import WINDOW_PROFILE, WINDOW_SYSTEM, WindowRead, parse_window_result, window_view
+from gflo.windows import (
+    WINDOW_PROFILE,
+    WINDOW_SYSTEM,
+    WindowRead,
+    parse_window_result,
+    planning_window_view,
+    window_view,
+)
 from gflo.worker import (
     CandidateResult,
     ContractConflict,
@@ -291,6 +298,8 @@ class LocalModel:
                 evidence["window_targets_digest"] = self.artifacts.publish(
                     window_targets.canonical().encode()
                 )
+                if planning_document:
+                    view = planning_window_view(view)
             models = self._request("/v1/models", None, deadline, exchanges)
             if not isinstance(models.get("data"), list) or not any(
                 m.get("id") == self.profile.model

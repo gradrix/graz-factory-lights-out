@@ -18,10 +18,10 @@ are recorded in [evaluation](evaluation.md) and portable development evidence.
 
 ## Next priorities
 
-1. Improve bounded planner recovery and draft repair. Repeated reads, incomplete plans
-   and confusion about repairing newly created files remain observed failures. The first
-   equal-budget comparison found no advantage from splitting test workers; keep one
-   worker by default for that workload and enforce coverage per task when splitting.
+1. Improve worker draft repair, particularly newly created files. The final planner
+   recovery campaign passed all six planning runs and two of three full features;
+   worker failures remain. Prioritize reliable completion and coverage over token
+   savings, and compare specialists with full per-worker retry budgets after this fix.
 2. Qualify repeated features across different real repositories and uncertain
    interfaces. Measure complete feature success, retries, model cost and review
    effort. Planning JSON reliability and source-selection sufficiency remain open.
@@ -75,7 +75,7 @@ assume provisioned host dependencies and a populated offline model cache. See
 
 The opt-in windows-v1 worker edited the recorded 10,002-line file with a maximum
 3,276-token prompt and complete-source checks; a real repository-file trial also passed.
-Both required development feedback and a repair. Window-based planning also completed
-a feature once, but has not established repeated success on the final configuration.
-The 256 KiB SourceBundle execution limit remains. See [evaluation](evaluation.md) for
-retained failures and the limits of this qualification.
+Both required development feedback and a repair. The final planner-recovery campaign
+produced valid plans in six of six runs and complete features in two of three trials.
+Worker failures and the 256 KiB SourceBundle execution limit remain. See
+[evaluation](evaluation.md) for retained failures and the limits of this qualification.

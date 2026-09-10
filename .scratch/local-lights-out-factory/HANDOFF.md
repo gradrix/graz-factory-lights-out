@@ -1,6 +1,30 @@
 # GFLO handoff — repository access foundation
 
-## Current checkpoint — test decomposition compared, 2026-09-10
+## Current checkpoint — planner recovery, 2026-09-10
+
+Issue 60 resolved. Windows persist across attempts, use direct file/range labels, and
+receive precise validation feedback within the existing six-turn ceiling. The controller
+binds omitted planner request identity; explicit wrong identity remains invalid. Schema
+feedback omits misleading truncated input previews. Source-free question grounding and
+legacy profiles keep their prior semantics. No manual task/plan/candidate correction.
+
+Final fixed campaign: 6/6 planners succeeded on the first attempt in two turns each;
+3/3 navigation plans quoted return 41 at line 5001, and 2/3 full features accepted with
+independent checks. The remaining worker exhausted one attempt and failed a preservation
+gate after retry. Accepted replay added no work. The intermediate campaign's failed
+navigation/hash-copying runs are retained. [Portable evidence](planner-recovery/README.md).
+Docker suite: 497 tests/25 subtests, plus a separately passing new retention regression;
+lint, typing and old replay checks pass. Model/deployment/gates/budgets are unchanged.
+
+Owner explicitly prioritizes reliability over local token cost. The earlier equal-total-
+budget decomposition trial does not answer whether more specialist capacity buys more
+reliability. Issue 63 reserves that comparison with full per-worker retry budgets.
+Next: issue 61 (repair newly created files), then issue 62 (integration provenance).
+Keep finite limits and preserved failures, but do not reject a reliability gain merely
+because it consumes more local inference. Push authorization and same-model constraint
+persist. Execution SourceBundle remains capped at 256 KiB.
+
+## Previous checkpoint — test decomposition compared, 2026-09-10
 
 Issue 59 resolved. Three frozen pairs compared one test worker with two behavior-scoped
 workers using equal six-response ceilings, identical accepted source/model/requirements
