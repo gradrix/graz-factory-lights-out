@@ -375,3 +375,33 @@ not prove broad test adequacy or resist adversarial tests that manipulate pytest
 Keep variants relevant and bounded (at most eight), and preserve earlier acceptance
 findings when preparing repair work. Generated variants must be reviewed before they
 can become mandatory gates.
+
+### Generating fault candidates
+
+`gflo.mutations.propose_faults(module, source, function)` proposes up to eight
+single-site Python mutations within a selected function (`name` or `Class.method`).
+It negates conditions, inverts comparisons and removes zero-argument method calls.
+It parses source without executing it. The bounded source-order prefix is not an
+exhaustive mutation campaign; generated module text is AST-normalized.
+
+`qualify_faults(broker, reference_bundle_digest, tests, variants)` runs each proposal
+against operator-owned reference tests in the qualified offline broker. A proposal
+is selected only when those tests pass the reference implementation and reject the
+proposal with assertions, without errors or skips. The report retains every outcome,
+complete variants, gate identities and sandbox execution evidence. It creates no
+work acceptance receipt. Feed selected variants into `pytest_adequacy_gate` when
+preparing worker-test policy; an empty selection requires further preparation.
+
+For a portable example, run:
+
+```sh
+.venv/bin/python scripts/qualify_python_faults.py \
+  --fixture .scratch/local-lights-out-factory/generated-faults-fixture.json \
+  --output .gflo/evidence/my-fault-qualification
+```
+
+The output directory must be new; Docker and the fixture's pinned worker image must
+already be available. The fixture owns the reference source/tests, module and function
+selection. This runs sandbox checks and makes no model calls. A surviving proposal
+is unqualified, not proven equivalent. Fault selection is only as reliable as the
+trusted reference tests; this does not automate specifying correct product behavior.

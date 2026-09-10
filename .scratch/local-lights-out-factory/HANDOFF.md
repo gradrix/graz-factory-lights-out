@@ -1,6 +1,29 @@
 # GFLO handoff — repository access foundation
 
-## Current checkpoint — reusable test adequacy, 2026-09-10
+## Current checkpoint — generated fault qualification, 2026-09-10
+
+Issue 48 adds gflo.mutations.propose_faults / qualify_faults and the portable
+scripts/qualify_python_faults.py helper. Source-bounded AST mutations (conditions,
+comparisons, zero-argument method calls), at most eight, are qualified through the
+existing pytest gate and broker against operator-owned reference tests. Complete
+outcomes and evidence identities are retained; no acceptance authority changes.
+
+Parser: eight proposals, six selected behavioral faults, two excluded errors.
+Selected faults reject the earlier weak tests and accept the repaired tests. Numeric
+example: two selected faults; unchanged/crashing controls excluded. Initial reference
+wrapper NameError selected nothing; corrected and recorded. No model calls or product
+edits. Trusted reference behavior/function selection remain manual; mutation coverage
+is bounded and survival does not establish equivalence.
+
+[Results](generated-faults-results.json), [fixture](generated-faults-fixture.json).
+Reproduce with scripts/qualify_python_faults.py --fixture FIXTURE --output NEW_DIR;
+pinned Docker image required. Raw evidence: .gflo/evidence/generated-faults-v1 and
+generated-faults-portable-v1. All 445 tests/25 subtests pass with Docker enabled;
+ruff/mypy pass. Next qualify on a prospective feature with reference and generated
+fault gates prepared before worker calls, then larger navigation/execution workloads.
+Same-model constraint and push/merge authorization persist.
+
+## Previous checkpoint — reusable test adequacy, 2026-09-10
 
 Issue 47 adds gflo.test_adequacy.pytest_adequacy_gate: trusted complete module variants,
 candidate success, identical collected tests, genuine assertion failure per variant,

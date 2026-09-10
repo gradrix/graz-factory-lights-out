@@ -481,3 +481,25 @@ def test_qualification_requires_kernel_memory_proof_even_without_docker_flag(bro
         assert broker.qualification_digest is None
     else:
         assert broker.qualify() == broker.qualification_digest
+
+
+def test_live_fault_qualification_requires_behavioral_evidence(live_broker):
+    from gflo.mutations import propose_faults, qualify_faults
+    from gflo.test_adequacy import FaultyVariant
+
+    source = 'def positive(x):\n    return x > 0\n'
+    bundle = SourceBundle(files={
+        'subject.py': source,
+        'test_subject.py': (
+            'from subject import positive\ndef test_zero(): assert not positive(0)\n'
+        ),
+    })
+    digest = live_broker.artifacts.publish(bundle.canonical().encode())
+    variants = propose_faults('subject', source, 'positive') + (
+        FaultyVariant(name='survives', modules={'subject': source}),
+        FaultyVariant(name='crashes', modules={'subject': 'def positive(x): raise ValueError()\n'}),
+    )
+    report = qualify_faults(live_broker, digest, ('test_subject.py',), variants)
+    assert [o['selected'] for o in report['outcomes']] == [True, False, False]
+    live_broker.artifacts.verify(report['evidence_digest'])
+    assert report['reference_bundle_digest'] == digest

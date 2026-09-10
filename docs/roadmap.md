@@ -19,8 +19,9 @@ are recorded in [evaluation](evaluation.md) and portable development evidence.
 ## Next priorities
 
 1. Qualify the reusable pytest adequacy gate prospectively across more features.
-   It detects supplied faulty module variants; selecting sufficient, meaningful
-   variants still needs trusted preparation. Preserve findings and measure first-pass
+   Bounded Python faults can now be generated and filtered against trusted reference
+   tests. Correct reference behavior and sufficient mutation coverage still need
+   trusted preparation. Preserve findings and measure first-pass
    acceptance separately from reviewed correction.
 2. Qualify repeated features across different real repositories and uncertain
    interfaces. Measure complete feature success, retries, model cost and review

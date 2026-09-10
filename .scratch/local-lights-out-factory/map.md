@@ -199,3 +199,8 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
   supplied faulty variants only through real assertion failures; errors/skips do not
   qualify. Retained weak tests rejected and same-instruction local repair passes.
   Trusted variant selection remains necessary; no automatic fault-discovery claim.
+
+- [Issue 48](issues/48-qualify-generated-fault-variants.md): bounded AST fault generation
+  and sandboxed reference qualification replace handwritten variants for supported
+  operators. Six parser faults detect the prior weak suite; error-producing variants
+  and numeric unchanged/crashing controls are excluded. Trusted oracle remains needed.

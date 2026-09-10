@@ -392,3 +392,24 @@ that final gate also passed in one response (2569 prompt / 467 output, 8.19 seco
 and replay added no calls. Fourteen targeted regressions pass. The preceding full
 suite passed 428 tests and 25 subtests with eight optional Docker skips; all 49 broker
 checks passed separately with Docker enabled. Ruff and mypy pass.
+
+## Generated fault qualification, 2026-09-10
+
+The bounded Python mutation generator proposed eight faults in the retained
+leds-service parser. Independent reference tests selected six behavioral faults and
+excluded two error-producing proposals. The selected set rejected the weak worker
+tests on removed key trimming and accepted the repaired tests. Neither faults nor
+prompt adjustments were handwritten for this step. Trusted reference behavior and
+function selection were supplied by Codex.
+
+In a separate numeric example, both generated faults qualified; an unchanged-source
+control and a crashing control did not. An initial reference-wrapper preparation
+error produced no selected faults and remains recorded. The corrected portable
+fixture reproduces the selection in a fresh artifact store. No model calls or new
+product changes were made. This demonstrates bounded fault generation against known
+reference behavior, not automatic specification discovery or broad mutation coverage.
+
+[Results](../.scratch/local-lights-out-factory/generated-faults-results.json) and
+[fixture](../.scratch/local-lights-out-factory/generated-faults-fixture.json) retain
+source, proposals, checks and evidence identities. Validation: 445 tests and 25 subtests
+passed with Docker enabled; ruff and mypy passed.
