@@ -1,0 +1,115 @@
+{
+  "factory": {
+    "status": "task-halt"
+  },
+  "minimal": [
+    {
+      "turn": 1,
+      "usage": {
+        "prompt_tokens": 1061,
+        "total_tokens": 1786,
+        "completion_tokens": 725,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "elapsed_seconds": 11.861456012004055,
+      "passed": false,
+      "candidate_digest": "0e33931a87bf5acb82f6cf738a7dbb5d4af5e57236bba072c4ada3e9f3106cf0",
+      "evidence_digest": "226ff8abd6f4751abc36005eea9ba84d2f9f7a891402d42e69dbc8f5f74abf02",
+      "stderr": "Traceback (most recent call last):\n  File \"/workspace/tabular.py\", line 52, in summarize\n    for row in reader:\n_csv.Error: unexpected end of data\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"<string>\", line 14, in <module>\n  File \"/workspace/tabular.py\", line 72, in summarize\n    raise ValueError(f'row {data_count + 1}: {exc}') from exc\nValueError: row 1: unexpected end of data\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"<string>\", line 15, in <module>\nAssertionError: ('label,quantity\\nx,\"1', 'row 1: unexpected end of data')\n",
+      "stdout": ""
+    },
+    {
+      "turn": 2,
+      "usage": {
+        "prompt_tokens": 1242,
+        "total_tokens": 1974,
+        "completion_tokens": 732,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "elapsed_seconds": 11.982299736999266,
+      "passed": false,
+      "candidate_digest": "e003ccf63cf0c200f88e5ff916b846bd6c1c40f804b0eb8dcc64adaa9253bf96",
+      "evidence_digest": "4e28ab0673d5b4f9d4aab339b2e5b5381dae0b307e9367933b9bf02241fc0160",
+      "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 14, in <module>\n  File \"/workspace/tabular.py\", line 60, in summarize\n    raise ValueError(f'row {data_count}: invalid field count')\nValueError: row 1: invalid field count\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"<string>\", line 15, in <module>\nAssertionError: ('label,quantity\\n\\n', 'row 1: invalid field count')\n",
+      "stdout": ""
+    },
+    {
+      "turn": 3,
+      "usage": {
+        "prompt_tokens": 1188,
+        "total_tokens": 1920,
+        "completion_tokens": 732,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "elapsed_seconds": 12.026021147998108,
+      "passed": false,
+      "candidate_digest": "e003ccf63cf0c200f88e5ff916b846bd6c1c40f804b0eb8dcc64adaa9253bf96",
+      "evidence_digest": "fe97130a13cb80ad043fb426adf7ef9b43c664bfb6876b35a0b10dc72b69aaa0",
+      "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 14, in <module>\n  File \"/workspace/tabular.py\", line 60, in summarize\n    raise ValueError(f'row {data_count}: invalid field count')\nValueError: row 1: invalid field count\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"<string>\", line 15, in <module>\nAssertionError: ('label,quantity\\n\\n', 'row 1: invalid field count')\n",
+      "stdout": ""
+    },
+    {
+      "turn": 4,
+      "usage": {
+        "prompt_tokens": 1188,
+        "total_tokens": 1920,
+        "completion_tokens": 732,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "elapsed_seconds": 12.043645091005601,
+      "passed": false,
+      "candidate_digest": "e003ccf63cf0c200f88e5ff916b846bd6c1c40f804b0eb8dcc64adaa9253bf96",
+      "evidence_digest": "dd24eaa652ba3acd44d9f109a110f5f4cefcbfcf5877bd7876fbab430088bc5c",
+      "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 14, in <module>\n  File \"/workspace/tabular.py\", line 60, in summarize\n    raise ValueError(f'row {data_count}: invalid field count')\nValueError: row 1: invalid field count\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"<string>\", line 15, in <module>\nAssertionError: ('label,quantity\\n\\n', 'row 1: invalid field count')\n",
+      "stdout": ""
+    },
+    {
+      "turn": 5,
+      "usage": {
+        "prompt_tokens": 1188,
+        "total_tokens": 1920,
+        "completion_tokens": 732,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "elapsed_seconds": 12.000926519998757,
+      "passed": false,
+      "candidate_digest": "e003ccf63cf0c200f88e5ff916b846bd6c1c40f804b0eb8dcc64adaa9253bf96",
+      "evidence_digest": "a320866c504597d5a7d46268215fb51d5bfc30db5bfebf286f650da9ce6bb6c6",
+      "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 14, in <module>\n  File \"/workspace/tabular.py\", line 60, in summarize\n    raise ValueError(f'row {data_count}: invalid field count')\nValueError: row 1: invalid field count\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"<string>\", line 15, in <module>\nAssertionError: ('label,quantity\\n\\n', 'row 1: invalid field count')\n",
+      "stdout": ""
+    },
+    {
+      "turn": 6,
+      "usage": {
+        "prompt_tokens": 1188,
+        "total_tokens": 1920,
+        "completion_tokens": 732,
+        "prompt_tokens_details": null,
+        "completion_tokens_details": {
+          "reasoning_tokens": 0
+        }
+      },
+      "elapsed_seconds": 11.98427854700276,
+      "passed": false,
+      "candidate_digest": "e003ccf63cf0c200f88e5ff916b846bd6c1c40f804b0eb8dcc64adaa9253bf96",
+      "evidence_digest": "b865085715a263f34cbee5eb4962e662bfdce243449e0af9756f416b87c58073",
+      "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 14, in <module>\n  File \"/workspace/tabular.py\", line 60, in summarize\n    raise ValueError(f'row {data_count}: invalid field count')\nValueError: row 1: invalid field count\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"<string>\", line 15, in <module>\nAssertionError: ('label,quantity\\n\\n', 'row 1: invalid field count')\n",
+      "stdout": ""
+    }
+  ]
+}

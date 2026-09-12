@@ -1,7 +1,7 @@
 # Choose implementation route after local-model halts
 
 Type: task
-Status: needs-info
+Status: resolved
 
 ## Decision
 
@@ -18,3 +18,9 @@ fixing delivered candidates. Reference code is reviewable under importflow/refer
 with retained checks and runtime receipts; promoting it would change the evidence
 claim. The question was asked asynchronously while remaining verification/docs were
 completed. Do not silently turn a reference into a factory delivery.
+
+## Answer
+
+Owner selected diagnosing small-task factory reliability before larger systems.
+Continue local-model experiments; do not manually complete Importflow or promote its
+reference. Issue 79 implements the first bounded comparison.

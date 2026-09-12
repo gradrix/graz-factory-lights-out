@@ -18,16 +18,15 @@ are recorded in [evaluation](evaluation.md) and portable development evidence.
 
 ## Next priorities
 
-1. Complete the selected Importflow qualification workload. Its streaming/job/HTTP
-   reference passes checks, but three prepared local-model builds and a targeted
-   continuation all halted. The owner must choose direct application implementation
-   versus continued local-model-only reliability work. [Details](importflow-poc.md).
-   Broaden whole-project qualification beyond Taskdock. One complete installable Python
-   project now passes strengthened checks after supervised repair. All three original
-   builds had defects missed by initial gates; unattended readiness remains unproven.
-   Four fresh CSV/DAG builds produced one historical acceptance, then zero fully
-   qualified results after source review. Prioritize valid bounded responses and
-   independent boundary checks; retain all failures, costs and interventions.
+1. Establish small-task reliability before expanding Importflow. Compare a single
+   prepared parser-repair atom with a minimal coding loop using the same model,
+   requirements and checks. Keep durable atom authority; change worker/context/recovery
+   behavior only against measured failures. Then qualify standalone scripts, persistent
+   CLI programs, restartable schedulers and services before larger systems. Count human
+   preparation/interventions separately from unattended completion.
+   [Diagnostic evidence](../.scratch/local-lights-out-factory/repair-comparison/README.md).
+   Importflow remains incomplete; its reference implementation is test infrastructure.
+   [Details](importflow-poc.md).
 2. Qualify repeated features across different real repositories and uncertain
    interfaces. Measure complete feature success, retries, model cost and review
    effort. Planning JSON reliability and source-selection sufficiency remain open.

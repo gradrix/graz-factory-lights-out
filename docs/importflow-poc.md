@@ -4,8 +4,8 @@ Importflow is the chosen CSV inventory-import workload for testing a reusable Py
 factory workflow. A trusted reference implementation passes the current correctness
 and runtime checks. **The local model has not produced a qualifying application.**
 References are test infrastructure, not model deliveries or evidence of unattended
-project creation. The owner has been asked whether to finish the app directly or
-continue working on the pinned model's reliability.
+project creation. The owner selected small-task factory reliability work before resuming the application.
+See the [repair comparison](../.scratch/local-lights-out-factory/repair-comparison/README.md).
 
 ## Intended implementation
 

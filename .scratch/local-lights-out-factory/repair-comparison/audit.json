@@ -1,0 +1,9 @@
+{
+  "factory_responses": 6,
+  "factory_tokens": 20013,
+  "minimal_responses": 6,
+  "minimal_tokens": 11440,
+  "factory_status": "task-halt",
+  "minimal_passed": false,
+  "minimal_unique_candidates": 2
+}

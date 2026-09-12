@@ -339,3 +339,5 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
 - [Reuse operator-prepared qualification plans](issues/77-reuse-operator-prepared-qualification-plans.md):
   explicit supervised planner adapter, normal policy authority and replay preserved;
   536 unique tests/25 subtests pass. Model builds still halt.
+
+- [Compare small repair loops](issues/79-compare-small-repair-loops.md): isolated factory and minimal whole-file loops both failed the same retained parser gate within six responses. Keep durable atom contract; qualify smaller creation/repair tasks and failure-directed recovery before systems.

@@ -1,5 +1,17 @@
 # GFLO handoff — repository access foundation
 
+## Latest direction — small tasks before systems, 2026-09-12
+
+Owner chose to diagnose small-task completion and asked whether Work atoms need
+revision. This supersedes waiting for an Importflow authorship choice: do not finish
+the application manually as a substitute for factory reliability. Issue 79 compares
+one prepared parser-repair atom with a minimal coding loop. Both failed in six responses
+(factory 20,013 tokens; minimal 11,440). Issue 79 is resolved. Next is a smaller
+from-scratch script and repair baseline, not a broad atom rewrite. Keep the original atom
+contract pending evidence; ticket 06 already describes failure-directed recovery.
+See [comparison](repair-comparison/README.md) for frozen inputs and results.
+
+
 ## Active continuation — runtime qualification and complete project, 2026-09-12
 
 Owner authorized proceeding item by item through definition grounding, a complete
