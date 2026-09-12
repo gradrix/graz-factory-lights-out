@@ -1,7 +1,7 @@
 # Choose the first larger-system workload
 
 Type: task
-Status: needs-info
+Status: resolved
 Blocked by: 72, 73
 
 ## Question
@@ -19,3 +19,10 @@ The intended workload determines actual dependency, build, integration and deplo
 requirements; those product choices are not supplied by the existing handoff.
 The owner was asked asynchronously while qualification continued. Do not infer an
 answer or choose an external product architecture on the owner's behalf.
+
+## Answer
+
+Owner selected the proposed CSV inventory-import service using Python, FastAPI,
+SQLite, pytest and Docker, then requested scalable and reusable implementation.
+Proceed through build/recovery/concurrency qualification and a second job handler;
+record measured limits rather than asserting general large-system readiness.

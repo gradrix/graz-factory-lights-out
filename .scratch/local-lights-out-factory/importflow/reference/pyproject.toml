@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+[project]
+name = "importflow-local"
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = ["fastapi==0.141.1", "uvicorn==0.52.4"]
+[project.scripts]
+importflow-api = "api:main"
+importflow-worker = "worker:main"
+[tool.setuptools]
+py-modules = ["blobs", "tabular", "jobs", "worker", "api"]

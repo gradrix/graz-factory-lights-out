@@ -1,0 +1,74 @@
+[
+  {
+    "gate": "blobs",
+    "case": 0,
+    "gate_digest": "c512b39b995befa4eaaa74719a6422980538e59383cb068340e6ba12138b6cbf",
+    "candidate_digest": "fabf9cc73fd4155f3b7919c8497ddbccf99bc86f95db6ebae0f47264154a944e",
+    "evidence_digest": "612bd1ba4d550c6ad3791c78f232b312750bbe79557d04ad999e2df0a3bed696",
+    "exit_code": 0,
+    "stdout_matches": true
+  },
+  {
+    "gate": "tabular",
+    "case": 0,
+    "gate_digest": "1973092e641128b086d57c249602ac085d754d0aa2da7790ebb14b7aec8bdf5e",
+    "candidate_digest": "fabf9cc73fd4155f3b7919c8497ddbccf99bc86f95db6ebae0f47264154a944e",
+    "evidence_digest": "31974a4d2880be3a9b7ea2ecb24ce9ee6fb8bd329f03b2f57513752e13e842d4",
+    "exit_code": 0,
+    "stdout_matches": true
+  },
+  {
+    "gate": "jobs",
+    "case": 0,
+    "gate_digest": "8188475eb1f95c65387d46dab3b1534b953ed8ee7992cad8fcb2f9bb66219cf7",
+    "candidate_digest": "fabf9cc73fd4155f3b7919c8497ddbccf99bc86f95db6ebae0f47264154a944e",
+    "evidence_digest": "f308d49e2df7fb60e07934f588273bdcfc866ddc2330a628319c92e85b6e7974",
+    "exit_code": 0,
+    "stdout_matches": true
+  },
+  {
+    "gate": "worker",
+    "case": 0,
+    "gate_digest": "7d8e6e997e983bc6c4d5f828d5fb53096307ba47be0df410cf3bda5855beb457",
+    "candidate_digest": "fabf9cc73fd4155f3b7919c8497ddbccf99bc86f95db6ebae0f47264154a944e",
+    "evidence_digest": "2db5ad92d803d373b0fc0978201fd64a0323611220ba2bab659fdb56c0b73895",
+    "exit_code": 0,
+    "stdout_matches": true
+  },
+  {
+    "gate": "api",
+    "case": 0,
+    "gate_digest": "6f5fed6f0a830f6cdf52d0ac0b1ad786e8f9a4329dc4c78985de693cd90c4943",
+    "candidate_digest": "fabf9cc73fd4155f3b7919c8497ddbccf99bc86f95db6ebae0f47264154a944e",
+    "evidence_digest": "1e1f76f05200c753a163c2fc378ccd75ab7cd370b914a5e4e6c8020fb7b9ba20",
+    "exit_code": 0,
+    "stdout_matches": true
+  },
+  {
+    "gate": "api",
+    "case": 1,
+    "gate_digest": "6f5fed6f0a830f6cdf52d0ac0b1ad786e8f9a4329dc4c78985de693cd90c4943",
+    "candidate_digest": "fabf9cc73fd4155f3b7919c8497ddbccf99bc86f95db6ebae0f47264154a944e",
+    "evidence_digest": "663a96c890a562b057c950bbd1d0aa00fb148d9bec4ae081fb83ef7ab31bbe32",
+    "exit_code": 0,
+    "stdout_matches": true
+  },
+  {
+    "gate": "package",
+    "case": 0,
+    "gate_digest": "da4e5fd27f6a528b834168af75513c01d8aa589af0a6dad2ecd4fa223185df64",
+    "candidate_digest": "fabf9cc73fd4155f3b7919c8497ddbccf99bc86f95db6ebae0f47264154a944e",
+    "evidence_digest": "f7466b7abc8f5d6426406dd6449b402160fe0dd681e9fa16c5d3cfbd26de8b74",
+    "exit_code": 0,
+    "stdout_matches": true
+  },
+  {
+    "gate": "docs",
+    "case": 0,
+    "gate_digest": "5acc49d493ee0713e3d3b1128011bdc3f64dab3c15a76cca8a398ae4e184b123",
+    "candidate_digest": "fabf9cc73fd4155f3b7919c8497ddbccf99bc86f95db6ebae0f47264154a944e",
+    "evidence_digest": "ea2e993c5a34a35dfd67c83241bbc887ba280bbae2d095af2ee724ec777bac83",
+    "exit_code": 1,
+    "stdout_matches": false
+  }
+]

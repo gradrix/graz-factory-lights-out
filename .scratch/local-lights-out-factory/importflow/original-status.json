@@ -1,0 +1,9 @@
+{
+  "campaign": "importflow-v1",
+  "trial-1": "planning-halt: six responses exhausted",
+  "trial-2": "planning-interrupted: tokenizer admission exceeded reserved context before generation",
+  "trial-3": "not started",
+  "image_sqlite": "3.46.1",
+  "reason_not_promoted": "SQLite WAL-reset fix required for concurrent-worker qualification",
+  "next": "fixed SQLite image and explicit operator-prepared module plan; no generated candidates have been edited"
+}

@@ -1,0 +1,17 @@
+[
+  {
+    "name": "trial-1",
+    "responses": 8,
+    "max_prompt_tokens": 4035
+  },
+  {
+    "name": "trial-2",
+    "responses": 7,
+    "max_prompt_tokens": 5488
+  },
+  {
+    "name": "trial-3",
+    "responses": 7,
+    "max_prompt_tokens": 4495
+  }
+]

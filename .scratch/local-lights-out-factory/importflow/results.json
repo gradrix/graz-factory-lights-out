@@ -1,0 +1,30 @@
+[
+  {
+    "name": "trial-1",
+    "request_digest": "07114446efd4ae78d96c7f6942f9ca76e65cef64c0a8d0a7a84405c49456b212",
+    "policy_digest": "f8eb3d3fe7f1da1706825cb978fd43b23c44b241b0054ff383f24da6a006f30b",
+    "max_responses": 54,
+    "reserved_tokens": 860160,
+    "replay_unchanged": true,
+    "cost": {
+      "responses": 6,
+      "prompt_tokens": 43042,
+      "completion_tokens": 8843,
+      "total_tokens": 51885,
+      "model_seconds": 151.8635953119956
+    },
+    "status": "planning-halt",
+    "planning_status": "exhausted",
+    "questions": [],
+    "reason": null,
+    "evidence_digests": [
+      "91ded2182e22032702a11e16c344c5314488ebcad8375cdbb00ac35374af594f",
+      "bf38358dc7f8fc68531286844fd305a87e987b0535cf1e44cf45dc6c61a2b77c",
+      "bb454ca618cf1d30a3525eba79591cd60685ec29cf0a10b147da72c48bac8795",
+      "25959429ee6b1a877e92e1e577fd8b7313ce39679d932b02dc6dfcdba71347d4",
+      "0a598216ea5d1929382f72498e1774fca0077995c0728ff6a27375d74f6f234c",
+      "e628bb9fe9bdef9b12489799389c696aecfc054915b3bc0365d5d546b6c7ccea"
+    ],
+    "atoms": []
+  }
+]

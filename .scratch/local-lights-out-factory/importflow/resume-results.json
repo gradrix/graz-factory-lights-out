@@ -1,0 +1,207 @@
+[
+  {
+    "name": "trial-1",
+    "request_digest": "e8e268139869c1e3e9a8903065cb241ce4743f03297455ee876bbb9896164c01",
+    "policy_digest": "e69488e07f1ea7f8327e13f56adc560d11a19ba598397ea0f03b0c960f95384a",
+    "max_responses": 42,
+    "reserved_tokens": 663552,
+    "prior_request_digest": "3104d9d6b2a7f497a21a7b3eaa885b9abb5523390295bc91c14ec454c6fc71f0",
+    "adopted_failed_candidate": "3618249bac9396b0ee623d64f56edea5b248734d904daf5c94c3cff122a33314",
+    "proposal": {
+      "questions": [],
+      "rationale": "Operator-prepared one-file module plan from the reviewed brief. All implementation and tests are model-authored; no autonomous planning claim.",
+      "request_digest": "e8e268139869c1e3e9a8903065cb241ce4743f03297455ee876bbb9896164c01",
+      "schema_version": 1,
+      "tasks": [
+        {
+          "acceptance_checks": [
+            "CSV module: tabular.py\n\nExpose summarize(stream, max_rows=1000000, max_labels=1000)->list[dict], accepting\nan iterable of text lines such as TextIO opened with newline=''. Parse incrementally\nusing csv.reader(..., strict=True). Never read all rows into a list. Exact header\nlabel,quantity. Header alone produces []. Blank/missing/extra fields, malformed CSV,\ninvalid UTF-8 decoding, and invalid values raise ValueError whose text includes\n'row N' (1-based logical CSV record, header=1). On decoding errors use the current\nrecord number. csv strict dialect defines quoting validity. CR/LF row endings work.\nLabels: reject CR/LF anywhere raw, then strip; 1..120 characters. Quantities fullmatch\nASCII [+-]?[0-9]{1,10}; integer magnitude <=1000000000. No whitespace, float, Unicode\ndigits, trailing newline or exponent. Sum per normalized label preserving Unicode\nand case, include zero/negative totals; output exactly {\"label\": str,\"quantity\": int}\nsorted by Python string ordering. Reject more than max_rows data records or\nmax_labels distinct normalized labels. Limits must positive integers, not bool.\nDo not expose partial results on failure. Keep memory bounded by distinct labels.\n\nObserved prior failure: empty input incorrectly returned []. Empty input has no required header and must raise ValueError with row 1. Preserve strict validation for every other case."
+          ],
+          "depends_on": [],
+          "environment_id": "python",
+          "interface_contracts": [
+            "{\"declarations\":[{\"declaration\":\"def summarize(stream, max_rows=1000000, max_labels=1000) -> list: ...\",\"path\":\"tabular.py\",\"requirement_ids\":[\"tabular\"],\"schema_version\":1,\"symbol\":\"summarize\"}],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+          ],
+          "objective": "Implement only tabular.py, satisfying the complete tabular requirement. Return concise complete output.",
+          "read_paths": [
+            "ENVIRONMENT.md"
+          ],
+          "requirement_ids": [
+            "tabular"
+          ],
+          "schema_version": 1,
+          "task_id": "tabular",
+          "writable_paths": [
+            "tabular.py"
+          ]
+        },
+        {
+          "acceptance_checks": [
+            "Worker module: worker.py\n\nExpose run_once(store, blob_root, handlers, *, now=None, ttl=30.0)->bool. handlers\nmaps kind strings to callables taking an open binary stream and returning a JSON\nresult. Claim one job with time.time() unless explicit now is supplied; return False\nif none. Open its immutable payload with blobs.open_blob in a with block, invoke\nhandler, then finish result; return True whenever work was claimed. Catch handler/\nread errors and finish a bounded nonempty error, not a traceback. Unknown kind fails\nthat job. Explicit now is a deterministic test clock: use it at claim and finish;\notherwise obtain a fresh wall-clock value at finish so expired work cannot publish.\nDo not catch KeyboardInterrupt/SystemExit: abrupt termination leaves a lease that\ncan be reclaimed. Do not assume current worker still owns the lease after handling.\n\nExpose csv_handler(stream) calling tabular.summarize via io.TextIOWrapper with\nUTF-8 and newline=''. Expose main(argv=None)->int and python -m worker:\n--db PATH --blobs PATH [--once] [--poll SECONDS]. Loop polls (default .2 seconds) or\nprocesses at most one job and exits with --once. Built-in mapping is {'inventory_csv':\ncsv_handler}. Poll must finite >0; argument errors return 2, help returns 0. Catch\nCtrl-C gracefully in the command entry only. Command owns Store creation; run_once\naccepts Store and handlers from callers. A second handler must work without editing\njobs.py or run_once. Output no payload contents or tracebacks for job failures.\n"
+          ],
+          "depends_on": [
+            "tabular"
+          ],
+          "environment_id": "python",
+          "interface_contracts": [
+            "{\"declarations\":[{\"declaration\":\"def run_once(store, blob_root, handlers, *, now=None, ttl=30.0) -> bool: ...\",\"path\":\"worker.py\",\"requirement_ids\":[\"worker\"],\"schema_version\":1,\"symbol\":\"run_once\"},{\"declaration\":\"def csv_handler(stream): ...\",\"path\":\"worker.py\",\"requirement_ids\":[\"worker\"],\"schema_version\":1,\"symbol\":\"csv_handler\"},{\"declaration\":\"def main(argv=None) -> int: ...\",\"path\":\"worker.py\",\"requirement_ids\":[\"worker\"],\"schema_version\":1,\"symbol\":\"main\"},{\"declaration\":\"def put_blob(root, chunks, limit=67108864) -> str: ...\",\"path\":\"blobs.py\",\"requirement_ids\":[\"worker\"],\"schema_version\":1,\"symbol\":\"put_blob\"},{\"declaration\":\"def open_blob(root, digest): ...\",\"path\":\"blobs.py\",\"requirement_ids\":[\"worker\"],\"schema_version\":1,\"symbol\":\"open_blob\"},{\"declaration\":\"def summarize(stream, max_rows=1000000, max_labels=1000) -> list: ...\",\"path\":\"tabular.py\",\"requirement_ids\":[\"worker\"],\"schema_version\":1,\"symbol\":\"summarize\"},{\"declaration\":\"def __init__(self, path, max_pending=10000): ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"worker\"],\"schema_version\":1,\"symbol\":\"Store.__init__\"},{\"declaration\":\"def submit(self, key, kind, payload) -> dict: ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"worker\"],\"schema_version\":1,\"symbol\":\"Store.submit\"},{\"declaration\":\"def get(self, job_id): ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"worker\"],\"schema_version\":1,\"symbol\":\"Store.get\"},{\"declaration\":\"def claim(self, now, ttl=30.0): ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"worker\"],\"schema_version\":1,\"symbol\":\"Store.claim\"},{\"declaration\":\"def finish(self, job_id, token, now, *, result=None, error=None) -> bool: ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"worker\"],\"schema_version\":1,\"symbol\":\"Store.finish\"}],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+          ],
+          "objective": "Implement only worker.py, satisfying the complete worker requirement. Return concise complete output.",
+          "read_paths": [
+            "ENVIRONMENT.md",
+            "blobs.py",
+            "tabular.py",
+            "jobs.py"
+          ],
+          "requirement_ids": [
+            "worker"
+          ],
+          "schema_version": 1,
+          "task_id": "worker",
+          "writable_paths": [
+            "worker.py"
+          ]
+        },
+        {
+          "acceptance_checks": [
+            "HTTP module: api.py\n\nExpose create_app(db_path, blob_root, max_upload_bytes=67108864)->FastAPI and main\nentry python -m api --db PATH --blobs PATH [--host 127.0.0.1] [--port 8000].\n- GET /health returns 200 JSON {\"status\":\"ok\"}.\n- POST /imports accepts raw streamed CSV bytes, with required Idempotency-Key header.\n  Store bytes with blobs.put_blob, submit kind inventory_csv; return 202 public job\n  JSON on new or matching duplicate. Missing/invalid key ->400, changed payload for\n  existing key ->409, over-limit upload ->413, queue full ->429. Use request streaming\n  with bounded temporary spooling rather than request.body()/whole-file reads. Close\n  temporary resources on errors/disconnect. Failed submit may leave an immutable\n  unreferenced blob; document offline retention/cleanup as operational follow-up.\n- GET /imports/{job_id} ->200 public job record, unknown ->404.\n- GET /imports/{job_id}/result ->200 JSON result only when succeeded; unknown ->404,\n  other statuses ->409. No route executes job handlers; worker is a separate process.\n\nKeep upload memory bounded and validate key before storing payload. Persistence comes\nfrom Store. Runtime FastAPI and uvicorn are preinstalled. Use no network calls except\nlocal serving. Input CSV validation happens asynchronously in the worker; upload of\ninvalid CSV still creates a job which later fails with row diagnostics.\n"
+          ],
+          "depends_on": [
+            "worker"
+          ],
+          "environment_id": "python",
+          "interface_contracts": [
+            "{\"declarations\":[{\"declaration\":\"def create_app(db_path, blob_root, max_upload_bytes=67108864): ...\",\"path\":\"api.py\",\"requirement_ids\":[\"api\"],\"schema_version\":1,\"symbol\":\"create_app\"},{\"declaration\":\"def main(argv=None) -> int: ...\",\"path\":\"api.py\",\"requirement_ids\":[\"api\"],\"schema_version\":1,\"symbol\":\"main\"},{\"declaration\":\"def put_blob(root, chunks, limit=67108864) -> str: ...\",\"path\":\"blobs.py\",\"requirement_ids\":[\"api\"],\"schema_version\":1,\"symbol\":\"put_blob\"},{\"declaration\":\"def open_blob(root, digest): ...\",\"path\":\"blobs.py\",\"requirement_ids\":[\"api\"],\"schema_version\":1,\"symbol\":\"open_blob\"},{\"declaration\":\"def __init__(self, path, max_pending=10000): ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"api\"],\"schema_version\":1,\"symbol\":\"Store.__init__\"},{\"declaration\":\"def submit(self, key, kind, payload) -> dict: ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"api\"],\"schema_version\":1,\"symbol\":\"Store.submit\"},{\"declaration\":\"def get(self, job_id): ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"api\"],\"schema_version\":1,\"symbol\":\"Store.get\"},{\"declaration\":\"def claim(self, now, ttl=30.0): ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"api\"],\"schema_version\":1,\"symbol\":\"Store.claim\"},{\"declaration\":\"def finish(self, job_id, token, now, *, result=None, error=None) -> bool: ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"api\"],\"schema_version\":1,\"symbol\":\"Store.finish\"},{\"declaration\":\"def run_once(store, blob_root, handlers, *, now=None, ttl=30.0) -> bool: ...\",\"path\":\"worker.py\",\"requirement_ids\":[\"api\"],\"schema_version\":1,\"symbol\":\"run_once\"},{\"declaration\":\"def csv_handler(stream): ...\",\"path\":\"worker.py\",\"requirement_ids\":[\"api\"],\"schema_version\":1,\"symbol\":\"csv_handler\"},{\"declaration\":\"def main(argv=None) -> int: ...\",\"path\":\"worker.py\",\"requirement_ids\":[\"api\"],\"schema_version\":1,\"symbol\":\"main\"}],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+          ],
+          "objective": "Implement only api.py, satisfying the complete api requirement. Return concise complete output.",
+          "read_paths": [
+            "ENVIRONMENT.md",
+            "blobs.py",
+            "jobs.py",
+            "worker.py"
+          ],
+          "requirement_ids": [
+            "api"
+          ],
+          "schema_version": 1,
+          "task_id": "api",
+          "writable_paths": [
+            "api.py"
+          ]
+        },
+        {
+          "acceptance_checks": [
+            "Packaging: pyproject.toml\n\nDistribution importflow-local 0.1.0, Python >=3.11. setuptools.build_meta, build\nrequirements setuptools and wheel. Include five top-level modules blobs,tabular,jobs,\nworker,api plus no extras. Runtime dependencies fastapi and uvicorn using the exact\nprovisioned versions listed in ENVIRONMENT.md. Console scripts importflow-api=api:main\nand importflow-worker=worker:main. Offline --no-deps --no-build-isolation --target\ninstallation must work. Sandbox writable folders are noexec; invoke installed scripts\nvia Python from outside source. Packaging checks need all implementation modules.\n"
+          ],
+          "depends_on": [
+            "api"
+          ],
+          "environment_id": "python",
+          "interface_contracts": [
+            "{\"declarations\":[{\"declaration\":\"def put_blob(root, chunks, limit=67108864) -> str: ...\",\"path\":\"blobs.py\",\"requirement_ids\":[\"package\"],\"schema_version\":1,\"symbol\":\"put_blob\"},{\"declaration\":\"def open_blob(root, digest): ...\",\"path\":\"blobs.py\",\"requirement_ids\":[\"package\"],\"schema_version\":1,\"symbol\":\"open_blob\"},{\"declaration\":\"def summarize(stream, max_rows=1000000, max_labels=1000) -> list: ...\",\"path\":\"tabular.py\",\"requirement_ids\":[\"package\"],\"schema_version\":1,\"symbol\":\"summarize\"},{\"declaration\":\"def __init__(self, path, max_pending=10000): ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"package\"],\"schema_version\":1,\"symbol\":\"Store.__init__\"},{\"declaration\":\"def submit(self, key, kind, payload) -> dict: ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"package\"],\"schema_version\":1,\"symbol\":\"Store.submit\"},{\"declaration\":\"def get(self, job_id): ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"package\"],\"schema_version\":1,\"symbol\":\"Store.get\"},{\"declaration\":\"def claim(self, now, ttl=30.0): ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"package\"],\"schema_version\":1,\"symbol\":\"Store.claim\"},{\"declaration\":\"def finish(self, job_id, token, now, *, result=None, error=None) -> bool: ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"package\"],\"schema_version\":1,\"symbol\":\"Store.finish\"},{\"declaration\":\"def run_once(store, blob_root, handlers, *, now=None, ttl=30.0) -> bool: ...\",\"path\":\"worker.py\",\"requirement_ids\":[\"package\"],\"schema_version\":1,\"symbol\":\"run_once\"},{\"declaration\":\"def csv_handler(stream): ...\",\"path\":\"worker.py\",\"requirement_ids\":[\"package\"],\"schema_version\":1,\"symbol\":\"csv_handler\"},{\"declaration\":\"def main(argv=None) -> int: ...\",\"path\":\"worker.py\",\"requirement_ids\":[\"package\"],\"schema_version\":1,\"symbol\":\"main\"},{\"declaration\":\"def create_app(db_path, blob_root, max_upload_bytes=67108864): ...\",\"path\":\"api.py\",\"requirement_ids\":[\"package\"],\"schema_version\":1,\"symbol\":\"create_app\"},{\"declaration\":\"def main(argv=None) -> int: ...\",\"path\":\"api.py\",\"requirement_ids\":[\"package\"],\"schema_version\":1,\"symbol\":\"main\"}],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+          ],
+          "objective": "Implement only pyproject.toml, satisfying the complete package requirement. Return concise complete output.",
+          "read_paths": [
+            "ENVIRONMENT.md",
+            "blobs.py",
+            "tabular.py",
+            "jobs.py",
+            "worker.py",
+            "api.py"
+          ],
+          "requirement_ids": [
+            "package"
+          ],
+          "schema_version": 1,
+          "task_id": "package",
+          "writable_paths": [
+            "pyproject.toml"
+          ]
+        },
+        {
+          "acceptance_checks": [
+            "Tests: tests/test_importflow.py\n\nAt least eight collected pytest cases using real implementation (parameterized cases\ncount). Cover CSV validation including newline/type/quote boundaries; blob streaming\nand size rejection; submit idempotency/conflict; stale lease/reclaim; duplicate finish;\nhandler reuse; HTTP processing and errors. Tests must pass independent correct\nreference behavior and fail these faults: parser always [], submit ignores duplicate\nkeys, finish always False. Keep tests concise; don't emit redundant repeated cases.\nDeclare implementation dependencies needed for each test task. No skip/xfail or fake\nimplementation imports.\n"
+          ],
+          "depends_on": [
+            "api"
+          ],
+          "environment_id": "python",
+          "interface_contracts": [
+            "{\"declarations\":[{\"declaration\":\"def put_blob(root, chunks, limit=67108864) -> str: ...\",\"path\":\"blobs.py\",\"requirement_ids\":[\"tests\"],\"schema_version\":1,\"symbol\":\"put_blob\"},{\"declaration\":\"def open_blob(root, digest): ...\",\"path\":\"blobs.py\",\"requirement_ids\":[\"tests\"],\"schema_version\":1,\"symbol\":\"open_blob\"},{\"declaration\":\"def summarize(stream, max_rows=1000000, max_labels=1000) -> list: ...\",\"path\":\"tabular.py\",\"requirement_ids\":[\"tests\"],\"schema_version\":1,\"symbol\":\"summarize\"},{\"declaration\":\"def __init__(self, path, max_pending=10000): ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"tests\"],\"schema_version\":1,\"symbol\":\"Store.__init__\"},{\"declaration\":\"def submit(self, key, kind, payload) -> dict: ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"tests\"],\"schema_version\":1,\"symbol\":\"Store.submit\"},{\"declaration\":\"def get(self, job_id): ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"tests\"],\"schema_version\":1,\"symbol\":\"Store.get\"},{\"declaration\":\"def claim(self, now, ttl=30.0): ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"tests\"],\"schema_version\":1,\"symbol\":\"Store.claim\"},{\"declaration\":\"def finish(self, job_id, token, now, *, result=None, error=None) -> bool: ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"tests\"],\"schema_version\":1,\"symbol\":\"Store.finish\"},{\"declaration\":\"def run_once(store, blob_root, handlers, *, now=None, ttl=30.0) -> bool: ...\",\"path\":\"worker.py\",\"requirement_ids\":[\"tests\"],\"schema_version\":1,\"symbol\":\"run_once\"},{\"declaration\":\"def csv_handler(stream): ...\",\"path\":\"worker.py\",\"requirement_ids\":[\"tests\"],\"schema_version\":1,\"symbol\":\"csv_handler\"},{\"declaration\":\"def main(argv=None) -> int: ...\",\"path\":\"worker.py\",\"requirement_ids\":[\"tests\"],\"schema_version\":1,\"symbol\":\"main\"},{\"declaration\":\"def create_app(db_path, blob_root, max_upload_bytes=67108864): ...\",\"path\":\"api.py\",\"requirement_ids\":[\"tests\"],\"schema_version\":1,\"symbol\":\"create_app\"},{\"declaration\":\"def main(argv=None) -> int: ...\",\"path\":\"api.py\",\"requirement_ids\":[\"tests\"],\"schema_version\":1,\"symbol\":\"main\"}],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+          ],
+          "objective": "Implement only tests/test_importflow.py, satisfying the complete tests requirement. Return concise complete output.",
+          "read_paths": [
+            "ENVIRONMENT.md",
+            "blobs.py",
+            "tabular.py",
+            "jobs.py",
+            "worker.py",
+            "api.py"
+          ],
+          "requirement_ids": [
+            "tests"
+          ],
+          "schema_version": 1,
+          "task_id": "tests",
+          "writable_paths": [
+            "tests/test_importflow.py"
+          ]
+        },
+        {
+          "acceptance_checks": [
+            "Documentation: README.md\n\nDescribe install, API/worker commands, curl upload/status/result examples, pytest,\nlimits, job states, duplicate semantics, stale-worker fencing, 3-attempt recovery,\nSQLite single-host WAL and serialized writes, payload retention, and second-handler\nreuse. Document scale path: shared payload storage and database adapter, bounded\nworkers and resource/load qualification. Do not claim unlimited or multi-host scale.\n"
+          ],
+          "depends_on": [
+            "package"
+          ],
+          "environment_id": "python",
+          "interface_contracts": [
+            "{\"declarations\":[],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+          ],
+          "objective": "Implement only README.md, satisfying the complete docs requirement. Return concise complete output.",
+          "read_paths": [
+            "ENVIRONMENT.md",
+            "pyproject.toml"
+          ],
+          "requirement_ids": [
+            "docs"
+          ],
+          "schema_version": 1,
+          "task_id": "docs",
+          "writable_paths": [
+            "README.md"
+          ]
+        }
+      ]
+    },
+    "replay_unchanged": true,
+    "cost": {
+      "responses": 6,
+      "prompt_tokens": 22390,
+      "completion_tokens": 1796,
+      "total_tokens": 24186,
+      "model_seconds": 33.059655587007
+    },
+    "status": "task-halt",
+    "planning_status": "needs-review",
+    "planner_origin": "operator-prepared-v1",
+    "questions": [],
+    "reason": null,
+    "evidence_digests": [
+      "a37b0f079960ff2c7b87cfbe75d6a13653d0c580da0d309e98e4526d6c60bd58",
+      "e61811d43436953091a4de351cc3955bc30f09cf35d96a92beef4bd67e152363",
+      "c72c65081b27c723ed64d249fe43e5b4d1eba1ce486c42a40ea0ad72c0287736",
+      "7782b64dca45a477b4204c1258cdf723cc9234164f3f65af50a03b8345adee2c",
+      "8d560f65026aef1796daf1d33c39488f42e8aae9b45852128144c013e44f25db",
+      "57e3154d85998f2688192f6af4cfe428d7d926a593bc9a05b9fa76fb856cb415"
+    ],
+    "atoms": [
+      {
+        "atom_id": "prepared-e8e268139869c1e3-0ee84d635fba3160-af2df92ec9d30f3f/01ac17b0976d1ee0",
+        "status": "quarantined",
+        "attempts": 2,
+        "candidate_digest": null
+      }
+    ]
+  }
+]

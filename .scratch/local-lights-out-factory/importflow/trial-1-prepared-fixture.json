@@ -1,0 +1,594 @@
+{
+  "request": {
+    "schema_version": 1,
+    "kind": "repository-feature-v1",
+    "feature_id": "importflow-1",
+    "objective": "# Importflow: reusable durable CSV-import service\n\nProduce a complete Python >=3.11 project: blobs.py, tabular.py, jobs.py, worker.py,\napi.py, pyproject.toml, README.md, tests/test_importflow.py. Runtime packages FastAPI\nand uvicorn are provisioned; tests also have httpx and pytest. The initial repository\ncontains only this brief and archive/preserved.txt. Preserve both exactly. Every\noutput file requires a producer. Prefer one implementation file per task and concise,\ncomplete responses; tests and README are separate tasks. Target single-host Linux,\nmultiple API/worker processes, local filesystem SQLite WAL. Clearly document that\nmulti-host scaling requires shared payload storage and another database adapter.\nImplement concrete small interfaces below; durable job code must not import CSV,\nFastAPI or inventory logic. No candidate source or generated tests are supplied.\n",
+    "requirements": {
+      "blobs": "Payload module: blobs.py\n\nExpose put_blob(root, chunks, limit=67108864)->str and open_blob(root, digest).\nroot is str/Path and may be created. chunks is any iterable yielding bytes; consume\nincrementally, never concatenate the whole upload. At most limit bytes; limit must\nbe an integer >=1, not bool. Non-bytes chunks and over-limit input raise ValueError.\nWrite a same-directory temporary file while computing SHA-256; publish with\nos.replace under lowercase 64-hex content digest. Return that digest. Empty content\nis valid. Equal bytes return equal identities even with different chunk boundaries.\nOn iterable/write/replace failure clean temporary files and preserve existing blobs.\nNever trust filenames from clients. open_blob returns a binary readable file object;\ndigest must fullmatch ASCII [0-9a-f]{64}, otherwise ValueError. Missing blob raises\nFileNotFoundError. Files are immutable through this interface; processing never\nmodifies or deletes existing payloads. Bounded memory depends on chunk size, not\nwhole payload size. A caller owns and closes open_blob's returned handle.\n",
+      "tabular": "CSV module: tabular.py\n\nExpose summarize(stream, max_rows=1000000, max_labels=1000)->list[dict], accepting\nan iterable of text lines such as TextIO opened with newline=''. Parse incrementally\nusing csv.reader(..., strict=True). Never read all rows into a list. Exact header\nlabel,quantity. Header alone produces []. Blank/missing/extra fields, malformed CSV,\ninvalid UTF-8 decoding, and invalid values raise ValueError whose text includes\n'row N' (1-based logical CSV record, header=1). On decoding errors use the current\nrecord number. csv strict dialect defines quoting validity. CR/LF row endings work.\nLabels: reject CR/LF anywhere raw, then strip; 1..120 characters. Quantities fullmatch\nASCII [+-]?[0-9]{1,10}; integer magnitude <=1000000000. No whitespace, float, Unicode\ndigits, trailing newline or exponent. Sum per normalized label preserving Unicode\nand case, include zero/negative totals; output exactly {\"label\": str,\"quantity\": int}\nsorted by Python string ordering. Reject more than max_rows data records or\nmax_labels distinct normalized labels. Limits must positive integers, not bool.\nDo not expose partial results on failure. Keep memory bounded by distinct labels.\n",
+      "jobs": "Durable job module: jobs.py\n\nExpose Store(path, max_pending=10000), with methods:\n- submit(key, kind, payload)->dict. All are strings. key fullmatches\n  ASCII [A-Za-z0-9_-]{1,80}; kind fullmatches [a-z][a-z0-9_]{0,31}; payload is a\n  lowercase SHA-256 digest [0-9a-f]{64}. Invalid arguments raise ValueError.\n  Same key+kind+payload always returns the same job unchanged. Same key with\n  different kind or payload raises ValueError('idempotency conflict'). Atomic across\n  independent processes. New work beyond max_pending queued/running jobs raises\n  OverflowError; duplicate lookup still succeeds at capacity. No database connection\n  remains held by the object. Initialize schema safely, WAL and busy timeout.\n- get(job_id)->dict or None. Returned public records have exactly id,key,kind,payload,\n  status,attempts,token,lease_until,result,error. id is an opaque nonempty string;\n  statuses queued/running/succeeded/failed; attempts is integer starting 0; token,\n  lease_until,result,error initially None. result is JSON-compatible on success;\n  error is string on failure. get is read-only. Unknown IDs return None.\n- claim(now, ttl=30.0)->dict or None. now finite >=0, ttl finite >0; booleans and\n  nonnumeric inputs invalid. One atomic transaction claims the oldest eligible job\n  (submission order): queued or running with lease_until<=now. Increment attempts,\n  assign a fresh opaque token, set lease_until=now+ttl and status running. Concurrent\n  claimers never share ownership. At most 3 attempts per job. Expired running jobs\n  with attempts>=3 become failed with a nonempty error and cleared token/lease.\n- finish(job_id, token, now, *, result=None, error=None)->bool. Validate finite now.\n  Require exactly one of non-None result or non-None error; result JSON must reject\n  NaN/Infinity and encode to <=1MiB UTF-8. error must nonempty str <=2000 chars.\n  Only current running token with lease_until>now may publish. Stale/expired token,\n  duplicate completion or unknown job returns False and changes nothing. On success\n  atomically store result/error, status succeeded/failed, clear token/lease and\n  return True. Publishing result once is the only business side effect; no external\n  side effects or global inventory table. Errors are terminal; abandoned work retries\n  by lease expiry. Submission/claim/finish use short transactions with rollback and\n  no handler execution inside a transaction.\n\npath str/Path parent exists. max_pending positive integer not bool. Results/payload\nIDs are durable across independent Store objects and process restarts. Do not add\nCSV-specific methods or abstract backend classes: storage implementation is hidden\nbehind these four concrete operations and can later be replaced as one module.\n",
+      "worker": "Worker module: worker.py\n\nExpose run_once(store, blob_root, handlers, *, now=None, ttl=30.0)->bool. handlers\nmaps kind strings to callables taking an open binary stream and returning a JSON\nresult. Claim one job with time.time() unless explicit now is supplied; return False\nif none. Open its immutable payload with blobs.open_blob in a with block, invoke\nhandler, then finish result; return True whenever work was claimed. Catch handler/\nread errors and finish a bounded nonempty error, not a traceback. Unknown kind fails\nthat job. Explicit now is a deterministic test clock: use it at claim and finish;\notherwise obtain a fresh wall-clock value at finish so expired work cannot publish.\nDo not catch KeyboardInterrupt/SystemExit: abrupt termination leaves a lease that\ncan be reclaimed. Do not assume current worker still owns the lease after handling.\n\nExpose csv_handler(stream) calling tabular.summarize via io.TextIOWrapper with\nUTF-8 and newline=''. Expose main(argv=None)->int and python -m worker:\n--db PATH --blobs PATH [--once] [--poll SECONDS]. Loop polls (default .2 seconds) or\nprocesses at most one job and exits with --once. Built-in mapping is {'inventory_csv':\ncsv_handler}. Poll must finite >0; argument errors return 2, help returns 0. Catch\nCtrl-C gracefully in the command entry only. Command owns Store creation; run_once\naccepts Store and handlers from callers. A second handler must work without editing\njobs.py or run_once. Output no payload contents or tracebacks for job failures.\n",
+      "api": "HTTP module: api.py\n\nExpose create_app(db_path, blob_root, max_upload_bytes=67108864)->FastAPI and main\nentry python -m api --db PATH --blobs PATH [--host 127.0.0.1] [--port 8000].\n- GET /health returns 200 JSON {\"status\":\"ok\"}.\n- POST /imports accepts raw streamed CSV bytes, with required Idempotency-Key header.\n  Store bytes with blobs.put_blob, submit kind inventory_csv; return 202 public job\n  JSON on new or matching duplicate. Missing/invalid key ->400, changed payload for\n  existing key ->409, over-limit upload ->413, queue full ->429. Use request streaming\n  with bounded temporary spooling rather than request.body()/whole-file reads. Close\n  temporary resources on errors/disconnect. Failed submit may leave an immutable\n  unreferenced blob; document offline retention/cleanup as operational follow-up.\n- GET /imports/{job_id} ->200 public job record, unknown ->404.\n- GET /imports/{job_id}/result ->200 JSON result only when succeeded; unknown ->404,\n  other statuses ->409. No route executes job handlers; worker is a separate process.\n\nKeep upload memory bounded and validate key before storing payload. Persistence comes\nfrom Store. Runtime FastAPI and uvicorn are preinstalled. Use no network calls except\nlocal serving. Input CSV validation happens asynchronously in the worker; upload of\ninvalid CSV still creates a job which later fails with row diagnostics.\n",
+      "package": "Packaging: pyproject.toml\n\nDistribution importflow-local 0.1.0, Python >=3.11. setuptools.build_meta, build\nrequirements setuptools and wheel. Include five top-level modules blobs,tabular,jobs,\nworker,api plus no extras. Runtime dependencies fastapi and uvicorn using the exact\nprovisioned versions listed in ENVIRONMENT.md. Console scripts importflow-api=api:main\nand importflow-worker=worker:main. Offline --no-deps --no-build-isolation --target\ninstallation must work. Sandbox writable folders are noexec; invoke installed scripts\nvia Python from outside source. Packaging checks need all implementation modules.\n",
+      "tests": "Tests: tests/test_importflow.py\n\nAt least eight collected pytest cases using real implementation (parameterized cases\ncount). Cover CSV validation including newline/type/quote boundaries; blob streaming\nand size rejection; submit idempotency/conflict; stale lease/reclaim; duplicate finish;\nhandler reuse; HTTP processing and errors. Tests must pass independent correct\nreference behavior and fail these faults: parser always [], submit ignores duplicate\nkeys, finish always False. Keep tests concise; don't emit redundant repeated cases.\nDeclare implementation dependencies needed for each test task. No skip/xfail or fake\nimplementation imports.\n",
+      "docs": "Documentation: README.md\n\nDescribe install, API/worker commands, curl upload/status/result examples, pytest,\nlimits, job states, duplicate semantics, stale-worker fencing, 3-attempt recovery,\nSQLite single-host WAL and serialized writes, payload retention, and second-handler\nreuse. Document scale path: shared payload storage and database adapter, bounded\nworkers and resource/load qualification. Do not claim unlimited or multi-host scale.\n"
+    },
+    "source": {
+      "schema_version": 1,
+      "kind": "repository-snapshot-v1",
+      "artifact_digest": "b493b66225ac731ff206932086568840f2dcf74eb079045bf30fa439b44bb812"
+    },
+    "allowed_paths": [
+      "blobs.py",
+      "tabular.py",
+      "jobs.py",
+      "worker.py",
+      "api.py",
+      "pyproject.toml",
+      "README.md",
+      "tests/test_importflow.py"
+    ],
+    "environments": {
+      "python": {
+        "schema_version": 1,
+        "image": "sha256:b4ecc8a7633a037fb299dbcf0d4d4dfef1ab1b32cfdeb4227a7de935be4e603d",
+        "description": "Pinned FastAPI/uvicorn/httpx/pytest; no network; SQLite WAL and local filesystem"
+      }
+    }
+  },
+  "policy": {
+    "schema_version": 1,
+    "kind": "feature-policy-v2",
+    "request_digest": "3104d9d6b2a7f497a21a7b3eaa885b9abb5523390295bc91c14ec454c6fc71f0",
+    "file_gates": {
+      "blobs.py": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-B",
+              "-c",
+              "import hashlib\nimport tempfile\nimport tracemalloc\nfrom pathlib import Path\nfrom unittest.mock import patch\nimport blobs\n\nwith tempfile.TemporaryDirectory() as folder:\n    root=Path(folder)/'blobs'\n    key=blobs.put_blob(root,[b'abc',b'def'])\n    assert key==hashlib.sha256(b'abcdef').hexdigest(), 'content digest'\n    assert blobs.put_blob(root,[b'abcdef'])==key\n    with blobs.open_blob(root,key) as stream:\n        assert stream.read()==b'abcdef'\n    for bad in ('../bad','a'*64+'\\n','A'*64,'f'*63):\n        try: blobs.open_blob(root,bad)\n        except ValueError: pass\n        else: raise AssertionError(('invalid digest accepted',repr(bad)))\n    for chunks,limit in (([b'abcd'],3),(['text'],100),([b'ok'],True),([b'ok'],0)):\n        try: blobs.put_blob(root,chunks,limit=limit)\n        except ValueError: pass\n        else: raise AssertionError(('invalid payload accepted',chunks,limit))\n        assert sorted(p.name for p in root.iterdir())==[key], 'temporary leak'\n    def broken():\n        yield b'first'\n        raise OSError('injected producer failure')\n    try: blobs.put_blob(root,broken())\n    except OSError: pass\n    else: raise AssertionError('producer failure swallowed')\n    with patch('os.replace',side_effect=OSError('injected replace failure')):\n        try: blobs.put_blob(root,[b'abcdef'])\n        except OSError: pass\n        else: raise AssertionError('replace failure swallowed')\n    assert sorted(p.name for p in root.iterdir())==[key]\n    assert (root/key).read_bytes()==b'abcdef'\n    tracemalloc.start()\n    large=blobs.put_blob(root,(b'x'*65536 for _ in range(64)))\n    _,peak=tracemalloc.get_traced_memory();tracemalloc.stop()\n    assert peak<1*1024*1024, ('whole payload buffered',peak)\n    assert (root/large).stat().st_size==4*1024*1024\nprint('blobs-ok')\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "blobs-ok\n",
+            "seconds": 60.0
+          }
+        ]
+      },
+      "tabular.py": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-B",
+              "-c",
+              "import io\nimport tracemalloc\nfrom tabular import summarize\n\nassert summarize(io.StringIO('label,quantity\\n'))==[]\nraw='label,quantity\\r\\n\" \u017e,blue \",+03\\r\\na,-1\\r\\na,1\\r\\n'\nassert summarize(io.StringIO(raw,newline=''))==[dict(label='a',quantity=0),dict(label='\u017e,blue',quantity=3)]\ncases=[('',1),('quantity,label\\n',1),('label,quantity\\n\\n',2),('label,quantity\\nx,1,extra\\n',2),('label,quantity\\nx,\"1',2),('label,quantity\\n\"x\"junk,1\\n',2)]\nfor label in ['\\nx','x\\n','x\\r',' ','x'*121]:\n    cases.append(('label,quantity\\n\"'+label+'\",1\\n',2))\nfor qty in ['1.0','\u0661','+','1e2',' 1','1 ','1000000001','12345678901','1\\n']:\n    cases.append(('label,quantity\\nx,\"'+qty+'\"\\n',2))\nfor raw,row in cases:\n    try: summarize(io.StringIO(raw,newline=''))\n    except ValueError as exc: assert f'row {row}' in str(exc), (raw,str(exc))\n    else: raise AssertionError(('invalid CSV accepted',repr(raw)))\nfor options in ({'max_rows':1},{'max_labels':1},{'max_rows':True},{'max_labels':0}):\n    try: summarize(io.StringIO('label,quantity\\na,1\\nb,2\\n'),**options)\n    except ValueError: pass\n    else: raise AssertionError(('limit ignored',options))\ntry: summarize(io.TextIOWrapper(io.BytesIO(b'\\xff'),encoding='utf-8'))\nexcept ValueError as exc: assert 'row ' in str(exc)\nelse: raise AssertionError('bad UTF-8 accepted')\ndef many():\n    yield 'label,quantity\\n'\n    for _ in range(200000): yield 'a,1\\n'\ntracemalloc.start()\nassert summarize(many())==[dict(label='a',quantity=200000)]\n_,peak=tracemalloc.get_traced_memory();tracemalloc.stop()\nassert peak<2*1024*1024, ('all rows buffered',peak)\nprint('tabular-ok')\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "tabular-ok\n",
+            "seconds": 60.0
+          }
+        ]
+      },
+      "jobs.py": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-B",
+              "-c",
+              "import json\nimport subprocess\nimport sys\nimport tempfile\nfrom pathlib import Path\nfrom jobs import Store\n\nfields={'id','key','kind','payload','status','attempts','token','lease_until','result','error'}\nwith tempfile.TemporaryDirectory() as folder:\n    path=Path(folder)/'jobs.db';store=Store(path,max_pending=1)\n    job=store.submit('one','inventory_csv','a'*64)\n    assert set(job)==fields and job['status']=='queued' and type(job['attempts']) is int and job['attempts']==0,job\n    assert all(job[k] is None for k in ('token','lease_until','result','error'))\n    assert Store(path).submit('one','inventory_csv','a'*64)==job\n    for args in [('one','inventory_csv','b'*64),('one','other','a'*64),('x\\n','kind','a'*64),('x','kind\\n','a'*64),('x','kind','a'*64+'\\n')]:\n        try: store.submit(*args)\n        except ValueError: pass\n        else: raise AssertionError(('invalid/conflicting submit',args))\n    try: store.submit('two','kind','b'*64)\n    except OverflowError: pass\n    else: raise AssertionError('capacity ignored')\n    assert store.submit('one','inventory_csv','a'*64)==job\n    first=store.claim(10,ttl=1)\n    assert first['id']==job['id'] and first['attempts']==1 and first['lease_until']==11\n    assert store.claim(10.5,ttl=1) is None\n    assert not store.finish(first['id'],first['token'],11,result=1), 'expired worker committed'\n    second=Store(path).claim(11,ttl=5)\n    assert second['attempts']==2 and second['token']!=first['token']\n    assert not store.finish(first['id'],first['token'],12,result=1), 'stale worker committed'\n    assert store.finish(second['id'],second['token'],12,result={'value':2})\n    assert not store.finish(second['id'],second['token'],12,result={'value':3})\n    done=Store(path).get(job['id']);assert done['result']=={'value':2} and done['status']=='succeeded'\n    assert done['token'] is None and done['lease_until'] is None\n    assert store.get('unknown') is None\n    abandoned=store.submit('abandoned','kind','b'*64)\n    for n in range(3):\n        claimed=store.claim(20+n,ttl=1);assert claimed['attempts']==n+1\n    assert store.claim(23) is None\n    failed=store.get(abandoned['id']);assert failed['status']=='failed' and failed['error']\n    for now in (True,float('nan'),float('inf'),-1):\n        try: store.claim(now)\n        except ValueError: pass\n        else: raise AssertionError(('bad clock',now))\n    for kwargs in ({},{'result':1,'error':'bad'},{'result':float('nan')},{'result':'x'*1048577},{'error':''}):\n        try: store.finish('unknown','token',30,**kwargs)\n        except ValueError: pass\n        else: raise AssertionError(('bad completion',repr(kwargs)[:80]))\n    # Real independent processes contend for one idempotency key.\n    submit=\"from jobs import Store; import sys; print(Store(sys.argv[1]).submit('race','kind','c'*64)['id'])\"\n    procs=[subprocess.Popen([sys.executable,'-c',submit,str(path)],stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True) for _ in range(8)]\n    identities=[]\n    for proc in procs:\n        out,err=proc.communicate(timeout=15);assert proc.returncode==0,err;identities.append(out.strip())\n    assert len(set(identities))==1,identities\n    claim=\"from jobs import Store; import sys,json; print(json.dumps(Store(sys.argv[1]).claim(100,ttl=10)))\"\n    procs=[subprocess.Popen([sys.executable,'-c',claim,str(path)],stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True) for _ in range(8)]\n    winners=[]\n    for proc in procs:\n        out,err=proc.communicate(timeout=15);assert proc.returncode==0,err;winners.append(json.loads(out))\n    assert sum(x is not None for x in winners)==1,winners\nprint('jobs-ok')\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "jobs-ok\n",
+            "seconds": 60.0
+          }
+        ]
+      },
+      "worker.py": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-B",
+              "-c",
+              "import contextlib\nimport io\nimport subprocess\nimport sys\nimport tempfile\nfrom pathlib import Path\nfrom blobs import put_blob\nfrom jobs import Store\nfrom worker import run_once,csv_handler,main\n\nwith tempfile.TemporaryDirectory() as folder:\n    root=Path(folder)/'blobs';path=Path(folder)/'db';store=Store(path)\n    payload=put_blob(root,[b'label,quantity\\nx,2\\nx,-1\\n'])\n    job=store.submit('csv','inventory_csv',payload)\n    assert run_once(store,root,{'inventory_csv':csv_handler},now=10)\n    assert store.get(job['id'])['result']==[dict(label='x',quantity=1)]\n    other=store.submit('other','length',payload)\n    assert run_once(store,root,{'length':lambda stream:len(stream.read())},now=11)\n    assert store.get(other['id'])['result']==len(b'label,quantity\\nx,2\\nx,-1\\n')\n    unknown=store.submit('unknown','unknown',payload)\n    assert run_once(store,root,{},now=12)\n    assert store.get(unknown['id'])['status']=='failed' and store.get(unknown['id'])['error']\n    bad=store.submit('bad','inventory_csv',put_blob(root,[b'label,quantity\\nx,\"1']))\n    run_once(store,root,{'inventory_csv':csv_handler},now=13)\n    assert store.get(bad['id'])['status']=='failed' and 'row 2' in store.get(bad['id'])['error']\n    # Process dies after claim inside handler; next process must reclaim the job.\n    crash=store.submit('crash','die',payload)\n    script=\"import os,sys; from jobs import Store; from worker import run_once; run_once(Store(sys.argv[1]),sys.argv[2],{'die':lambda stream:os._exit(17)},now=20,ttl=1)\"\n    result=subprocess.run([sys.executable,'-c',script,str(path),str(root)],capture_output=True,text=True)\n    assert result.returncode==17,(result.returncode,result.stderr)\n    old=store.get(crash['id']);assert old['status']=='running'\n    assert run_once(Store(path),root,{'die':lambda stream:{'recovered':True}},now=21)\n    assert store.get(crash['id'])['result']=={'recovered':True}\n    assert not store.finish(crash['id'],old['token'],21,result={'wrong':True})\n    assert not run_once(store,root,{},now=30)\n    cli=store.submit('cli','inventory_csv',payload)\n    result=subprocess.run([sys.executable,'-m','worker','--db',str(path),'--blobs',str(root),'--once'],capture_output=True,text=True,timeout=10)\n    assert result.returncode==0,(result.stdout,result.stderr)\n    assert store.get(cli['id'])['status']=='succeeded'\n    for argv,code in (([],2),(['--help'],0),(['--db',str(path),'--blobs',str(root),'--poll','nan'],2)):\n        with contextlib.redirect_stdout(io.StringIO()),contextlib.redirect_stderr(io.StringIO()):\n            actual=main(argv)\n        assert actual==code,(argv,actual,code)\nprint('worker-ok')\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "worker-ok\n",
+            "seconds": 60.0
+          }
+        ]
+      },
+      "api.py": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-B",
+              "-c",
+              "import tempfile\nfrom pathlib import Path\nfrom fastapi.testclient import TestClient\nfrom api import create_app\nfrom jobs import Store\nfrom worker import run_once,csv_handler\n\nwith tempfile.TemporaryDirectory() as folder:\n    db=Path(folder)/'db';root=Path(folder)/'blobs'\n    client=TestClient(create_app(db,root,max_upload_bytes=100))\n    assert client.get('/health').json()=={'status':'ok'}\n    raw=b'label,quantity\\nx,2\\n';headers={'Idempotency-Key':'batch-1'}\n    response=client.post('/imports',headers=headers,content=raw)\n    assert response.status_code==202,(response.status_code,response.text)\n    job=response.json();assert job['status']=='queued'\n    assert client.post('/imports',headers=headers,content=raw).json()==job\n    assert client.post('/imports',headers=headers,content=raw+b'x,1\\n').status_code==409\n    assert client.post('/imports',content=raw).status_code==400\n    assert client.post('/imports',headers={'Idempotency-Key':'bad space'},content=raw).status_code==400\n    assert client.post('/imports',headers={'Idempotency-Key':'large'},content=b'x'*101).status_code==413\n    assert client.get('/imports/unknown').status_code==404\n    assert client.get('/imports/unknown/result').status_code==404\n    assert client.get('/imports/'+job['id']+'/result').status_code==409\n    assert run_once(Store(db),root,{'inventory_csv':csv_handler},now=1)\n    assert client.get('/imports/'+job['id']+'/result').json()==[dict(label='x',quantity=2)]\n    again=TestClient(create_app(db,root))\n    assert again.get('/imports/'+job['id']).json()['status']=='succeeded'\n    invalid=again.post('/imports',headers={'Idempotency-Key':'invalid'},content=b'\\xff')\n    assert invalid.status_code==202\n    assert run_once(Store(db),root,{'inventory_csv':csv_handler},now=2)\n    bad=again.get('/imports/'+invalid.json()['id']).json()\n    assert bad['status']=='failed' and 'row ' in bad['error'],bad\nprint('api-ok')\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "api-ok\n",
+            "seconds": 60.0
+          },
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-B",
+              "-c",
+              "import asyncio\nimport tempfile\nimport tracemalloc\nfrom pathlib import Path\nfrom api import create_app\n\nasync def exercise(app, key, chunks, expected):\n    chunks=iter(chunks);sent=[]\n    async def receive():\n        try: chunk=next(chunks)\n        except StopIteration: return {'type':'http.request','body':b'','more_body':False}\n        return {'type':'http.request','body':chunk,'more_body':True}\n    async def send(message): sent.append(message)\n    scope={'type':'http','asgi':{'version':'3.0'},'http_version':'1.1','method':'POST','scheme':'http','path':'/imports','raw_path':b'/imports','query_string':b'','root_path':'','headers':[(b'idempotency-key',key.encode())],'client':('127.0.0.1',1000),'server':('127.0.0.1',8000)}\n    await app(scope,receive,send)\n    assert sent[0]['status']==expected,sent\n\nwith tempfile.TemporaryDirectory() as folder:\n    app=create_app(Path(folder)/'db',Path(folder)/'blobs',max_upload_bytes=2*1024*1024)\n    # Warm up framework allocations before measuring a larger upload.\n    asyncio.run(exercise(app,'warm',[b'label,quantity\\n'],202))\n    tracemalloc.start()\n    asyncio.run(exercise(app,'large',(b'x'*65536 for _ in range(32)),202))\n    _,peak=tracemalloc.get_traced_memory();tracemalloc.stop()\n    assert peak<1*1024*1024,('upload was buffered in memory',peak)\n    asyncio.run(exercise(app,'oversized',(b'x'*65536 for _ in range(33)),413))\nprint('streaming-ok')\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "streaming-ok\n",
+            "seconds": 60.0
+          }
+        ]
+      },
+      "pyproject.toml": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-B",
+              "-c",
+              "import os\nimport pathlib\nimport subprocess\nimport sys\nimport tempfile\nimport tomllib\n\nmeta=tomllib.loads(pathlib.Path('pyproject.toml').read_text())\nassert meta['build-system']['build-backend']=='setuptools.build_meta'\nassert set(meta['build-system']['requires'])=={'setuptools','wheel'}\nassert meta['project']['name']=='importflow-local' and meta['project']['version']=='0.1.0'\nassert meta['project']['requires-python']=='>=3.11'\nassert set(meta['project']['dependencies'])=={'fastapi==0.141.1','uvicorn==0.52.4'}\nassert meta['project']['scripts']=={'importflow-api':'api:main','importflow-worker':'worker:main'}\nassert set(meta['tool']['setuptools']['py-modules'])=={'blobs','tabular','jobs','worker','api'}\nwith tempfile.TemporaryDirectory() as folder:\n    target=pathlib.Path(folder)/'installed'\n    result=subprocess.run([sys.executable,'-m','pip','install','--no-deps','--no-build-isolation','--target',str(target),'.'],text=True,capture_output=True)\n    assert result.returncode==0,(result.stdout,result.stderr)\n    env=dict(os.environ,PYTHONPATH=str(target))\n    for entry in ('importflow-api','importflow-worker'):\n        result=subprocess.run([sys.executable,str(target/'bin'/entry),'--help'],cwd=folder,env=env,text=True,capture_output=True)\n        assert result.returncode==0 and 'usage:' in result.stdout,(entry,result.stdout,result.stderr)\n    result=subprocess.run([sys.executable,'-c','import api,jobs,worker,blobs,tabular; print(api.__file__)'],cwd=folder,env=env,text=True,capture_output=True)\n    assert result.returncode==0 and str(target) in result.stdout,(result.stdout,result.stderr)\nprint('package-ok')\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "package-ok\n",
+            "seconds": 60.0
+          }
+        ]
+      },
+      "README.md": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-B",
+              "-c",
+              "from pathlib import Path\ntext=Path('README.md').read_text().lower()\nfor word in ('install','pytest','curl','--db','--blobs','/imports','/result','idempot','lease','stale','sqlite','wal','handler','retention','limit','3'):\n    assert word in text,('missing documentation',word)\nassert 'single' in text or 'one host' in text, 'document single-host limit'\nassert len(text)>1000,'README lacks operational detail'\nprint('docs-ok')\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "docs-ok\n",
+            "seconds": 60.0
+          }
+        ]
+      },
+      "tests/test_importflow.py": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-B",
+              "-c",
+              "import json\nimport os\nimport pathlib\nimport shutil\nimport subprocess\nimport sys\nimport tempfile\n\nmutants={\n    'empty':('tabular.py','\\ndef summarize(*args,**kwargs):\\n    return []\\n'),\n    'duplicate':('jobs.py','\\n_saved_submit=Store.submit\\ndef _bad_submit(self,key,kind,payload):\\n    import uuid\\n    return _saved_submit(self,uuid.uuid4().hex,kind,payload)\\nStore.submit=_bad_submit\\n'),\n    'finish':('jobs.py','\\nStore.finish=lambda *args,**kwargs:False\\n'),\n}\nfor name,item in [('correct',None),*mutants.items()]:\n    with tempfile.TemporaryDirectory() as folder:\n        dest=pathlib.Path(folder)\n        for module in ('blobs.py','tabular.py','jobs.py','worker.py','api.py'):\n            shutil.copyfile(module,dest/module)\n        shutil.copytree('tests',dest/'tests')\n        if item:\n            path=dest/item[0];path.write_text(path.read_text()+item[1])\n        # Count actual collected cases, including parametrized cases.\n        count=subprocess.run([sys.executable,'-m','pytest','--collect-only','-q','-p','no:cacheprovider'],cwd=dest,text=True,capture_output=True)\n        cases=[line for line in count.stdout.splitlines() if '::' in line and not line.startswith(' ')]\n        assert count.returncode==0 and len(cases)>=8,('need eight collected cases',count.stdout,count.stderr)\n        run=subprocess.run([sys.executable,'-m','pytest','-q','-p','no:cacheprovider'],cwd=dest,text=True,capture_output=True,timeout=30)\n        assert run.returncode==(0 if name=='correct' else 1),(name,run.returncode,run.stdout,run.stderr)\n        assert not any(word in run.stdout for word in ('skipped','xfailed','xpassed')),(name,run.stdout)\nprint('tests-ok')\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "tests-ok\n",
+            "seconds": 60.0
+          }
+        ]
+      }
+    },
+    "execution_paths": [
+      "BRIEF.md",
+      "ENVIRONMENT.md",
+      "blobs.py",
+      "tabular.py",
+      "jobs.py",
+      "worker.py",
+      "api.py",
+      "pyproject.toml",
+      "README.md",
+      "tests/test_importflow.py"
+    ],
+    "planning_paths": [
+      "BRIEF.md",
+      "ENVIRONMENT.md"
+    ],
+    "integration_gates": {
+      "blobs": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-B",
+              "-c",
+              "import hashlib\nimport tempfile\nimport tracemalloc\nfrom pathlib import Path\nfrom unittest.mock import patch\nimport blobs\n\nwith tempfile.TemporaryDirectory() as folder:\n    root=Path(folder)/'blobs'\n    key=blobs.put_blob(root,[b'abc',b'def'])\n    assert key==hashlib.sha256(b'abcdef').hexdigest(), 'content digest'\n    assert blobs.put_blob(root,[b'abcdef'])==key\n    with blobs.open_blob(root,key) as stream:\n        assert stream.read()==b'abcdef'\n    for bad in ('../bad','a'*64+'\\n','A'*64,'f'*63):\n        try: blobs.open_blob(root,bad)\n        except ValueError: pass\n        else: raise AssertionError(('invalid digest accepted',repr(bad)))\n    for chunks,limit in (([b'abcd'],3),(['text'],100),([b'ok'],True),([b'ok'],0)):\n        try: blobs.put_blob(root,chunks,limit=limit)\n        except ValueError: pass\n        else: raise AssertionError(('invalid payload accepted',chunks,limit))\n        assert sorted(p.name for p in root.iterdir())==[key], 'temporary leak'\n    def broken():\n        yield b'first'\n        raise OSError('injected producer failure')\n    try: blobs.put_blob(root,broken())\n    except OSError: pass\n    else: raise AssertionError('producer failure swallowed')\n    with patch('os.replace',side_effect=OSError('injected replace failure')):\n        try: blobs.put_blob(root,[b'abcdef'])\n        except OSError: pass\n        else: raise AssertionError('replace failure swallowed')\n    assert sorted(p.name for p in root.iterdir())==[key]\n    assert (root/key).read_bytes()==b'abcdef'\n    tracemalloc.start()\n    large=blobs.put_blob(root,(b'x'*65536 for _ in range(64)))\n    _,peak=tracemalloc.get_traced_memory();tracemalloc.stop()\n    assert peak<1*1024*1024, ('whole payload buffered',peak)\n    assert (root/large).stat().st_size==4*1024*1024\nprint('blobs-ok')\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "blobs-ok\n",
+            "seconds": 60.0
+          }
+        ]
+      },
+      "tabular": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-B",
+              "-c",
+              "import io\nimport tracemalloc\nfrom tabular import summarize\n\nassert summarize(io.StringIO('label,quantity\\n'))==[]\nraw='label,quantity\\r\\n\" \u017e,blue \",+03\\r\\na,-1\\r\\na,1\\r\\n'\nassert summarize(io.StringIO(raw,newline=''))==[dict(label='a',quantity=0),dict(label='\u017e,blue',quantity=3)]\ncases=[('',1),('quantity,label\\n',1),('label,quantity\\n\\n',2),('label,quantity\\nx,1,extra\\n',2),('label,quantity\\nx,\"1',2),('label,quantity\\n\"x\"junk,1\\n',2)]\nfor label in ['\\nx','x\\n','x\\r',' ','x'*121]:\n    cases.append(('label,quantity\\n\"'+label+'\",1\\n',2))\nfor qty in ['1.0','\u0661','+','1e2',' 1','1 ','1000000001','12345678901','1\\n']:\n    cases.append(('label,quantity\\nx,\"'+qty+'\"\\n',2))\nfor raw,row in cases:\n    try: summarize(io.StringIO(raw,newline=''))\n    except ValueError as exc: assert f'row {row}' in str(exc), (raw,str(exc))\n    else: raise AssertionError(('invalid CSV accepted',repr(raw)))\nfor options in ({'max_rows':1},{'max_labels':1},{'max_rows':True},{'max_labels':0}):\n    try: summarize(io.StringIO('label,quantity\\na,1\\nb,2\\n'),**options)\n    except ValueError: pass\n    else: raise AssertionError(('limit ignored',options))\ntry: summarize(io.TextIOWrapper(io.BytesIO(b'\\xff'),encoding='utf-8'))\nexcept ValueError as exc: assert 'row ' in str(exc)\nelse: raise AssertionError('bad UTF-8 accepted')\ndef many():\n    yield 'label,quantity\\n'\n    for _ in range(200000): yield 'a,1\\n'\ntracemalloc.start()\nassert summarize(many())==[dict(label='a',quantity=200000)]\n_,peak=tracemalloc.get_traced_memory();tracemalloc.stop()\nassert peak<2*1024*1024, ('all rows buffered',peak)\nprint('tabular-ok')\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "tabular-ok\n",
+            "seconds": 60.0
+          }
+        ]
+      },
+      "jobs": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-B",
+              "-c",
+              "import json\nimport subprocess\nimport sys\nimport tempfile\nfrom pathlib import Path\nfrom jobs import Store\n\nfields={'id','key','kind','payload','status','attempts','token','lease_until','result','error'}\nwith tempfile.TemporaryDirectory() as folder:\n    path=Path(folder)/'jobs.db';store=Store(path,max_pending=1)\n    job=store.submit('one','inventory_csv','a'*64)\n    assert set(job)==fields and job['status']=='queued' and type(job['attempts']) is int and job['attempts']==0,job\n    assert all(job[k] is None for k in ('token','lease_until','result','error'))\n    assert Store(path).submit('one','inventory_csv','a'*64)==job\n    for args in [('one','inventory_csv','b'*64),('one','other','a'*64),('x\\n','kind','a'*64),('x','kind\\n','a'*64),('x','kind','a'*64+'\\n')]:\n        try: store.submit(*args)\n        except ValueError: pass\n        else: raise AssertionError(('invalid/conflicting submit',args))\n    try: store.submit('two','kind','b'*64)\n    except OverflowError: pass\n    else: raise AssertionError('capacity ignored')\n    assert store.submit('one','inventory_csv','a'*64)==job\n    first=store.claim(10,ttl=1)\n    assert first['id']==job['id'] and first['attempts']==1 and first['lease_until']==11\n    assert store.claim(10.5,ttl=1) is None\n    assert not store.finish(first['id'],first['token'],11,result=1), 'expired worker committed'\n    second=Store(path).claim(11,ttl=5)\n    assert second['attempts']==2 and second['token']!=first['token']\n    assert not store.finish(first['id'],first['token'],12,result=1), 'stale worker committed'\n    assert store.finish(second['id'],second['token'],12,result={'value':2})\n    assert not store.finish(second['id'],second['token'],12,result={'value':3})\n    done=Store(path).get(job['id']);assert done['result']=={'value':2} and done['status']=='succeeded'\n    assert done['token'] is None and done['lease_until'] is None\n    assert store.get('unknown') is None\n    abandoned=store.submit('abandoned','kind','b'*64)\n    for n in range(3):\n        claimed=store.claim(20+n,ttl=1);assert claimed['attempts']==n+1\n    assert store.claim(23) is None\n    failed=store.get(abandoned['id']);assert failed['status']=='failed' and failed['error']\n    for now in (True,float('nan'),float('inf'),-1):\n        try: store.claim(now)\n        except ValueError: pass\n        else: raise AssertionError(('bad clock',now))\n    for kwargs in ({},{'result':1,'error':'bad'},{'result':float('nan')},{'result':'x'*1048577},{'error':''}):\n        try: store.finish('unknown','token',30,**kwargs)\n        except ValueError: pass\n        else: raise AssertionError(('bad completion',repr(kwargs)[:80]))\n    # Real independent processes contend for one idempotency key.\n    submit=\"from jobs import Store; import sys; print(Store(sys.argv[1]).submit('race','kind','c'*64)['id'])\"\n    procs=[subprocess.Popen([sys.executable,'-c',submit,str(path)],stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True) for _ in range(8)]\n    identities=[]\n    for proc in procs:\n        out,err=proc.communicate(timeout=15);assert proc.returncode==0,err;identities.append(out.strip())\n    assert len(set(identities))==1,identities\n    claim=\"from jobs import Store; import sys,json; print(json.dumps(Store(sys.argv[1]).claim(100,ttl=10)))\"\n    procs=[subprocess.Popen([sys.executable,'-c',claim,str(path)],stdout=subprocess.PIPE,stderr=subprocess.PIPE,text=True) for _ in range(8)]\n    winners=[]\n    for proc in procs:\n        out,err=proc.communicate(timeout=15);assert proc.returncode==0,err;winners.append(json.loads(out))\n    assert sum(x is not None for x in winners)==1,winners\nprint('jobs-ok')\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "jobs-ok\n",
+            "seconds": 60.0
+          }
+        ]
+      },
+      "worker": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-B",
+              "-c",
+              "import contextlib\nimport io\nimport subprocess\nimport sys\nimport tempfile\nfrom pathlib import Path\nfrom blobs import put_blob\nfrom jobs import Store\nfrom worker import run_once,csv_handler,main\n\nwith tempfile.TemporaryDirectory() as folder:\n    root=Path(folder)/'blobs';path=Path(folder)/'db';store=Store(path)\n    payload=put_blob(root,[b'label,quantity\\nx,2\\nx,-1\\n'])\n    job=store.submit('csv','inventory_csv',payload)\n    assert run_once(store,root,{'inventory_csv':csv_handler},now=10)\n    assert store.get(job['id'])['result']==[dict(label='x',quantity=1)]\n    other=store.submit('other','length',payload)\n    assert run_once(store,root,{'length':lambda stream:len(stream.read())},now=11)\n    assert store.get(other['id'])['result']==len(b'label,quantity\\nx,2\\nx,-1\\n')\n    unknown=store.submit('unknown','unknown',payload)\n    assert run_once(store,root,{},now=12)\n    assert store.get(unknown['id'])['status']=='failed' and store.get(unknown['id'])['error']\n    bad=store.submit('bad','inventory_csv',put_blob(root,[b'label,quantity\\nx,\"1']))\n    run_once(store,root,{'inventory_csv':csv_handler},now=13)\n    assert store.get(bad['id'])['status']=='failed' and 'row 2' in store.get(bad['id'])['error']\n    # Process dies after claim inside handler; next process must reclaim the job.\n    crash=store.submit('crash','die',payload)\n    script=\"import os,sys; from jobs import Store; from worker import run_once; run_once(Store(sys.argv[1]),sys.argv[2],{'die':lambda stream:os._exit(17)},now=20,ttl=1)\"\n    result=subprocess.run([sys.executable,'-c',script,str(path),str(root)],capture_output=True,text=True)\n    assert result.returncode==17,(result.returncode,result.stderr)\n    old=store.get(crash['id']);assert old['status']=='running'\n    assert run_once(Store(path),root,{'die':lambda stream:{'recovered':True}},now=21)\n    assert store.get(crash['id'])['result']=={'recovered':True}\n    assert not store.finish(crash['id'],old['token'],21,result={'wrong':True})\n    assert not run_once(store,root,{},now=30)\n    cli=store.submit('cli','inventory_csv',payload)\n    result=subprocess.run([sys.executable,'-m','worker','--db',str(path),'--blobs',str(root),'--once'],capture_output=True,text=True,timeout=10)\n    assert result.returncode==0,(result.stdout,result.stderr)\n    assert store.get(cli['id'])['status']=='succeeded'\n    for argv,code in (([],2),(['--help'],0),(['--db',str(path),'--blobs',str(root),'--poll','nan'],2)):\n        with contextlib.redirect_stdout(io.StringIO()),contextlib.redirect_stderr(io.StringIO()):\n            actual=main(argv)\n        assert actual==code,(argv,actual,code)\nprint('worker-ok')\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "worker-ok\n",
+            "seconds": 60.0
+          }
+        ]
+      },
+      "api": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-B",
+              "-c",
+              "import tempfile\nfrom pathlib import Path\nfrom fastapi.testclient import TestClient\nfrom api import create_app\nfrom jobs import Store\nfrom worker import run_once,csv_handler\n\nwith tempfile.TemporaryDirectory() as folder:\n    db=Path(folder)/'db';root=Path(folder)/'blobs'\n    client=TestClient(create_app(db,root,max_upload_bytes=100))\n    assert client.get('/health').json()=={'status':'ok'}\n    raw=b'label,quantity\\nx,2\\n';headers={'Idempotency-Key':'batch-1'}\n    response=client.post('/imports',headers=headers,content=raw)\n    assert response.status_code==202,(response.status_code,response.text)\n    job=response.json();assert job['status']=='queued'\n    assert client.post('/imports',headers=headers,content=raw).json()==job\n    assert client.post('/imports',headers=headers,content=raw+b'x,1\\n').status_code==409\n    assert client.post('/imports',content=raw).status_code==400\n    assert client.post('/imports',headers={'Idempotency-Key':'bad space'},content=raw).status_code==400\n    assert client.post('/imports',headers={'Idempotency-Key':'large'},content=b'x'*101).status_code==413\n    assert client.get('/imports/unknown').status_code==404\n    assert client.get('/imports/unknown/result').status_code==404\n    assert client.get('/imports/'+job['id']+'/result').status_code==409\n    assert run_once(Store(db),root,{'inventory_csv':csv_handler},now=1)\n    assert client.get('/imports/'+job['id']+'/result').json()==[dict(label='x',quantity=2)]\n    again=TestClient(create_app(db,root))\n    assert again.get('/imports/'+job['id']).json()['status']=='succeeded'\n    invalid=again.post('/imports',headers={'Idempotency-Key':'invalid'},content=b'\\xff')\n    assert invalid.status_code==202\n    assert run_once(Store(db),root,{'inventory_csv':csv_handler},now=2)\n    bad=again.get('/imports/'+invalid.json()['id']).json()\n    assert bad['status']=='failed' and 'row ' in bad['error'],bad\nprint('api-ok')\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "api-ok\n",
+            "seconds": 60.0
+          },
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-B",
+              "-c",
+              "import asyncio\nimport tempfile\nimport tracemalloc\nfrom pathlib import Path\nfrom api import create_app\n\nasync def exercise(app, key, chunks, expected):\n    chunks=iter(chunks);sent=[]\n    async def receive():\n        try: chunk=next(chunks)\n        except StopIteration: return {'type':'http.request','body':b'','more_body':False}\n        return {'type':'http.request','body':chunk,'more_body':True}\n    async def send(message): sent.append(message)\n    scope={'type':'http','asgi':{'version':'3.0'},'http_version':'1.1','method':'POST','scheme':'http','path':'/imports','raw_path':b'/imports','query_string':b'','root_path':'','headers':[(b'idempotency-key',key.encode())],'client':('127.0.0.1',1000),'server':('127.0.0.1',8000)}\n    await app(scope,receive,send)\n    assert sent[0]['status']==expected,sent\n\nwith tempfile.TemporaryDirectory() as folder:\n    app=create_app(Path(folder)/'db',Path(folder)/'blobs',max_upload_bytes=2*1024*1024)\n    # Warm up framework allocations before measuring a larger upload.\n    asyncio.run(exercise(app,'warm',[b'label,quantity\\n'],202))\n    tracemalloc.start()\n    asyncio.run(exercise(app,'large',(b'x'*65536 for _ in range(32)),202))\n    _,peak=tracemalloc.get_traced_memory();tracemalloc.stop()\n    assert peak<1*1024*1024,('upload was buffered in memory',peak)\n    asyncio.run(exercise(app,'oversized',(b'x'*65536 for _ in range(33)),413))\nprint('streaming-ok')\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "streaming-ok\n",
+            "seconds": 60.0
+          }
+        ]
+      },
+      "package": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-B",
+              "-c",
+              "import os\nimport pathlib\nimport subprocess\nimport sys\nimport tempfile\nimport tomllib\n\nmeta=tomllib.loads(pathlib.Path('pyproject.toml').read_text())\nassert meta['build-system']['build-backend']=='setuptools.build_meta'\nassert set(meta['build-system']['requires'])=={'setuptools','wheel'}\nassert meta['project']['name']=='importflow-local' and meta['project']['version']=='0.1.0'\nassert meta['project']['requires-python']=='>=3.11'\nassert set(meta['project']['dependencies'])=={'fastapi==0.141.1','uvicorn==0.52.4'}\nassert meta['project']['scripts']=={'importflow-api':'api:main','importflow-worker':'worker:main'}\nassert set(meta['tool']['setuptools']['py-modules'])=={'blobs','tabular','jobs','worker','api'}\nwith tempfile.TemporaryDirectory() as folder:\n    target=pathlib.Path(folder)/'installed'\n    result=subprocess.run([sys.executable,'-m','pip','install','--no-deps','--no-build-isolation','--target',str(target),'.'],text=True,capture_output=True)\n    assert result.returncode==0,(result.stdout,result.stderr)\n    env=dict(os.environ,PYTHONPATH=str(target))\n    for entry in ('importflow-api','importflow-worker'):\n        result=subprocess.run([sys.executable,str(target/'bin'/entry),'--help'],cwd=folder,env=env,text=True,capture_output=True)\n        assert result.returncode==0 and 'usage:' in result.stdout,(entry,result.stdout,result.stderr)\n    result=subprocess.run([sys.executable,'-c','import api,jobs,worker,blobs,tabular; print(api.__file__)'],cwd=folder,env=env,text=True,capture_output=True)\n    assert result.returncode==0 and str(target) in result.stdout,(result.stdout,result.stderr)\nprint('package-ok')\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "package-ok\n",
+            "seconds": 60.0
+          }
+        ]
+      },
+      "docs": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-B",
+              "-c",
+              "from pathlib import Path\ntext=Path('README.md').read_text().lower()\nfor word in ('install','pytest','curl','--db','--blobs','/imports','/result','idempot','lease','stale','sqlite','wal','handler','retention','limit','3'):\n    assert word in text,('missing documentation',word)\nassert 'single' in text or 'one host' in text, 'document single-host limit'\nassert len(text)>1000,'README lacks operational detail'\nprint('docs-ok')\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "docs-ok\n",
+            "seconds": 60.0
+          }
+        ]
+      },
+      "tests": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-B",
+              "-c",
+              "import json\nimport os\nimport pathlib\nimport shutil\nimport subprocess\nimport sys\nimport tempfile\n\nmutants={\n    'empty':('tabular.py','\\ndef summarize(*args,**kwargs):\\n    return []\\n'),\n    'duplicate':('jobs.py','\\n_saved_submit=Store.submit\\ndef _bad_submit(self,key,kind,payload):\\n    import uuid\\n    return _saved_submit(self,uuid.uuid4().hex,kind,payload)\\nStore.submit=_bad_submit\\n'),\n    'finish':('jobs.py','\\nStore.finish=lambda *args,**kwargs:False\\n'),\n}\nfor name,item in [('correct',None),*mutants.items()]:\n    with tempfile.TemporaryDirectory() as folder:\n        dest=pathlib.Path(folder)\n        for module in ('blobs.py','tabular.py','jobs.py','worker.py','api.py'):\n            shutil.copyfile(module,dest/module)\n        shutil.copytree('tests',dest/'tests')\n        if item:\n            path=dest/item[0];path.write_text(path.read_text()+item[1])\n        # Count actual collected cases, including parametrized cases.\n        count=subprocess.run([sys.executable,'-m','pytest','--collect-only','-q','-p','no:cacheprovider'],cwd=dest,text=True,capture_output=True)\n        cases=[line for line in count.stdout.splitlines() if '::' in line and not line.startswith(' ')]\n        assert count.returncode==0 and len(cases)>=8,('need eight collected cases',count.stdout,count.stderr)\n        run=subprocess.run([sys.executable,'-m','pytest','-q','-p','no:cacheprovider'],cwd=dest,text=True,capture_output=True,timeout=30)\n        assert run.returncode==(0 if name=='correct' else 1),(name,run.returncode,run.stdout,run.stderr)\n        assert not any(word in run.stdout for word in ('skipped','xfailed','xpassed')),(name,run.stdout)\nprint('tests-ok')\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "tests-ok\n",
+            "seconds": 60.0
+          }
+        ]
+      }
+    },
+    "environment_id": "python",
+    "model_profile": {
+      "schema_version": 1,
+      "profile_id": "vllm-python-worker-windows-v1",
+      "base_url": "http://127.0.0.1:30000/v1",
+      "model": "gflo-local",
+      "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+      "context_limit": 16384,
+      "timeout_seconds": 120.0
+    },
+    "deployment": "{\n  \"mode\": \"managed\",\n  \"base_url\": \"http://127.0.0.1:30000/v1\",\n  \"model\": \"gflo-local\",\n  \"request_timeout\": 120,\n  \"startup_timeout\": 300,\n  \"managed\": {\n    \"backend\": \"vllm\",\n    \"image\": \"vllm/vllm-openai@sha256:ac259a0111c6cf462a72e449962b84f7a624b5cbec24bd7d9ec3b67d40ffd1bf\",\n    \"model_path\": \"Inferact/Qwen3.8-27B-NVFP4\",\n    \"revision\": \"6128240ebaf4eaa7bad2b3d1c72c37d677c5f462\",\n    \"name\": \"gflo-vllm-graphs\",\n    \"gpu\": \"0\",\n    \"context_length\": 16384,\n    \"memory_fraction\": 0.85,\n    \"shm_size\": \"4g\",\n    \"memory_limit\": \"36g\",\n    \"cpu_limit\": 3,\n    \"pids_limit\": 1024,\n    \"model_cache_volume\": \"local-vllm-huggingface-cache\",\n    \"offline\": true,\n    \"hf_token_env\": \"\",\n    \"server_options\": {\n      \"kv-cache-dtype\": \"bfloat16\",\n      \"reasoning-parser\": \"qwen3\",\n      \"tool-call-parser\": \"qwen3_coder\"\n    },\n    \"enforce_eager\": false\n  }\n}\n",
+    "context_budget": {
+      "schema_version": 1,
+      "total_tokens": 16384,
+      "output_tokens": 6144
+    },
+    "max_tasks": 8,
+    "max_attempts": 2,
+    "max_model_turns": 3,
+    "max_reserved_tokens": 860160
+  },
+  "proposal": {
+    "schema_version": 1,
+    "request_digest": "3104d9d6b2a7f497a21a7b3eaa885b9abb5523390295bc91c14ec454c6fc71f0",
+    "tasks": [
+      {
+        "schema_version": 1,
+        "task_id": "blobs",
+        "objective": "Implement only blobs.py, satisfying the complete blobs requirement. Return concise complete output.",
+        "requirement_ids": [
+          "blobs"
+        ],
+        "depends_on": [],
+        "writable_paths": [
+          "blobs.py"
+        ],
+        "read_paths": [
+          "ENVIRONMENT.md"
+        ],
+        "environment_id": "python",
+        "interface_contracts": [
+          "{\"declarations\":[{\"declaration\":\"def put_blob(root, chunks, limit=67108864) -> str: ...\",\"path\":\"blobs.py\",\"requirement_ids\":[\"blobs\"],\"schema_version\":1,\"symbol\":\"put_blob\"},{\"declaration\":\"def open_blob(root, digest): ...\",\"path\":\"blobs.py\",\"requirement_ids\":[\"blobs\"],\"schema_version\":1,\"symbol\":\"open_blob\"}],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+        ],
+        "acceptance_checks": [
+          "Payload module: blobs.py\n\nExpose put_blob(root, chunks, limit=67108864)->str and open_blob(root, digest).\nroot is str/Path and may be created. chunks is any iterable yielding bytes; consume\nincrementally, never concatenate the whole upload. At most limit bytes; limit must\nbe an integer >=1, not bool. Non-bytes chunks and over-limit input raise ValueError.\nWrite a same-directory temporary file while computing SHA-256; publish with\nos.replace under lowercase 64-hex content digest. Return that digest. Empty content\nis valid. Equal bytes return equal identities even with different chunk boundaries.\nOn iterable/write/replace failure clean temporary files and preserve existing blobs.\nNever trust filenames from clients. open_blob returns a binary readable file object;\ndigest must fullmatch ASCII [0-9a-f]{64}, otherwise ValueError. Missing blob raises\nFileNotFoundError. Files are immutable through this interface; processing never\nmodifies or deletes existing payloads. Bounded memory depends on chunk size, not\nwhole payload size. A caller owns and closes open_blob's returned handle.\n"
+        ]
+      },
+      {
+        "schema_version": 1,
+        "task_id": "tabular",
+        "objective": "Implement only tabular.py, satisfying the complete tabular requirement. Return concise complete output.",
+        "requirement_ids": [
+          "tabular"
+        ],
+        "depends_on": [],
+        "writable_paths": [
+          "tabular.py"
+        ],
+        "read_paths": [
+          "ENVIRONMENT.md"
+        ],
+        "environment_id": "python",
+        "interface_contracts": [
+          "{\"declarations\":[{\"declaration\":\"def summarize(stream, max_rows=1000000, max_labels=1000) -> list: ...\",\"path\":\"tabular.py\",\"requirement_ids\":[\"tabular\"],\"schema_version\":1,\"symbol\":\"summarize\"}],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+        ],
+        "acceptance_checks": [
+          "CSV module: tabular.py\n\nExpose summarize(stream, max_rows=1000000, max_labels=1000)->list[dict], accepting\nan iterable of text lines such as TextIO opened with newline=''. Parse incrementally\nusing csv.reader(..., strict=True). Never read all rows into a list. Exact header\nlabel,quantity. Header alone produces []. Blank/missing/extra fields, malformed CSV,\ninvalid UTF-8 decoding, and invalid values raise ValueError whose text includes\n'row N' (1-based logical CSV record, header=1). On decoding errors use the current\nrecord number. csv strict dialect defines quoting validity. CR/LF row endings work.\nLabels: reject CR/LF anywhere raw, then strip; 1..120 characters. Quantities fullmatch\nASCII [+-]?[0-9]{1,10}; integer magnitude <=1000000000. No whitespace, float, Unicode\ndigits, trailing newline or exponent. Sum per normalized label preserving Unicode\nand case, include zero/negative totals; output exactly {\"label\": str,\"quantity\": int}\nsorted by Python string ordering. Reject more than max_rows data records or\nmax_labels distinct normalized labels. Limits must positive integers, not bool.\nDo not expose partial results on failure. Keep memory bounded by distinct labels.\n"
+        ]
+      },
+      {
+        "schema_version": 1,
+        "task_id": "jobs",
+        "objective": "Implement only jobs.py, satisfying the complete jobs requirement. Return concise complete output.",
+        "requirement_ids": [
+          "jobs"
+        ],
+        "depends_on": [],
+        "writable_paths": [
+          "jobs.py"
+        ],
+        "read_paths": [
+          "ENVIRONMENT.md"
+        ],
+        "environment_id": "python",
+        "interface_contracts": [
+          "{\"declarations\":[{\"declaration\":\"def __init__(self, path, max_pending=10000): ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"jobs\"],\"schema_version\":1,\"symbol\":\"Store.__init__\"},{\"declaration\":\"def submit(self, key, kind, payload) -> dict: ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"jobs\"],\"schema_version\":1,\"symbol\":\"Store.submit\"},{\"declaration\":\"def get(self, job_id): ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"jobs\"],\"schema_version\":1,\"symbol\":\"Store.get\"},{\"declaration\":\"def claim(self, now, ttl=30.0): ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"jobs\"],\"schema_version\":1,\"symbol\":\"Store.claim\"},{\"declaration\":\"def finish(self, job_id, token, now, *, result=None, error=None) -> bool: ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"jobs\"],\"schema_version\":1,\"symbol\":\"Store.finish\"}],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+        ],
+        "acceptance_checks": [
+          "Durable job module: jobs.py\n\nExpose Store(path, max_pending=10000), with methods:\n- submit(key, kind, payload)->dict. All are strings. key fullmatches\n  ASCII [A-Za-z0-9_-]{1,80}; kind fullmatches [a-z][a-z0-9_]{0,31}; payload is a\n  lowercase SHA-256 digest [0-9a-f]{64}. Invalid arguments raise ValueError.\n  Same key+kind+payload always returns the same job unchanged. Same key with\n  different kind or payload raises ValueError('idempotency conflict'). Atomic across\n  independent processes. New work beyond max_pending queued/running jobs raises\n  OverflowError; duplicate lookup still succeeds at capacity. No database connection\n  remains held by the object. Initialize schema safely, WAL and busy timeout.\n- get(job_id)->dict or None. Returned public records have exactly id,key,kind,payload,\n  status,attempts,token,lease_until,result,error. id is an opaque nonempty string;\n  statuses queued/running/succeeded/failed; attempts is integer starting 0; token,\n  lease_until,result,error initially None. result is JSON-compatible on success;\n  error is string on failure. get is read-only. Unknown IDs return None.\n- claim(now, ttl=30.0)->dict or None. now finite >=0, ttl finite >0; booleans and\n  nonnumeric inputs invalid. One atomic transaction claims the oldest eligible job\n  (submission order): queued or running with lease_until<=now. Increment attempts,\n  assign a fresh opaque token, set lease_until=now+ttl and status running. Concurrent\n  claimers never share ownership. At most 3 attempts per job. Expired running jobs\n  with attempts>=3 become failed with a nonempty error and cleared token/lease.\n- finish(job_id, token, now, *, result=None, error=None)->bool. Validate finite now.\n  Require exactly one of non-None result or non-None error; result JSON must reject\n  NaN/Infinity and encode to <=1MiB UTF-8. error must nonempty str <=2000 chars.\n  Only current running token with lease_until>now may publish. Stale/expired token,\n  duplicate completion or unknown job returns False and changes nothing. On success\n  atomically store result/error, status succeeded/failed, clear token/lease and\n  return True. Publishing result once is the only business side effect; no external\n  side effects or global inventory table. Errors are terminal; abandoned work retries\n  by lease expiry. Submission/claim/finish use short transactions with rollback and\n  no handler execution inside a transaction.\n\npath str/Path parent exists. max_pending positive integer not bool. Results/payload\nIDs are durable across independent Store objects and process restarts. Do not add\nCSV-specific methods or abstract backend classes: storage implementation is hidden\nbehind these four concrete operations and can later be replaced as one module.\n"
+        ]
+      },
+      {
+        "schema_version": 1,
+        "task_id": "worker",
+        "objective": "Implement only worker.py, satisfying the complete worker requirement. Return concise complete output.",
+        "requirement_ids": [
+          "worker"
+        ],
+        "depends_on": [
+          "blobs",
+          "tabular",
+          "jobs"
+        ],
+        "writable_paths": [
+          "worker.py"
+        ],
+        "read_paths": [
+          "ENVIRONMENT.md",
+          "blobs.py",
+          "tabular.py",
+          "jobs.py"
+        ],
+        "environment_id": "python",
+        "interface_contracts": [
+          "{\"declarations\":[{\"declaration\":\"def run_once(store, blob_root, handlers, *, now=None, ttl=30.0) -> bool: ...\",\"path\":\"worker.py\",\"requirement_ids\":[\"worker\"],\"schema_version\":1,\"symbol\":\"run_once\"},{\"declaration\":\"def csv_handler(stream): ...\",\"path\":\"worker.py\",\"requirement_ids\":[\"worker\"],\"schema_version\":1,\"symbol\":\"csv_handler\"},{\"declaration\":\"def main(argv=None) -> int: ...\",\"path\":\"worker.py\",\"requirement_ids\":[\"worker\"],\"schema_version\":1,\"symbol\":\"main\"},{\"declaration\":\"def put_blob(root, chunks, limit=67108864) -> str: ...\",\"path\":\"blobs.py\",\"requirement_ids\":[\"worker\"],\"schema_version\":1,\"symbol\":\"put_blob\"},{\"declaration\":\"def open_blob(root, digest): ...\",\"path\":\"blobs.py\",\"requirement_ids\":[\"worker\"],\"schema_version\":1,\"symbol\":\"open_blob\"},{\"declaration\":\"def summarize(stream, max_rows=1000000, max_labels=1000) -> list: ...\",\"path\":\"tabular.py\",\"requirement_ids\":[\"worker\"],\"schema_version\":1,\"symbol\":\"summarize\"},{\"declaration\":\"def __init__(self, path, max_pending=10000): ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"worker\"],\"schema_version\":1,\"symbol\":\"Store.__init__\"},{\"declaration\":\"def submit(self, key, kind, payload) -> dict: ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"worker\"],\"schema_version\":1,\"symbol\":\"Store.submit\"},{\"declaration\":\"def get(self, job_id): ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"worker\"],\"schema_version\":1,\"symbol\":\"Store.get\"},{\"declaration\":\"def claim(self, now, ttl=30.0): ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"worker\"],\"schema_version\":1,\"symbol\":\"Store.claim\"},{\"declaration\":\"def finish(self, job_id, token, now, *, result=None, error=None) -> bool: ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"worker\"],\"schema_version\":1,\"symbol\":\"Store.finish\"}],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+        ],
+        "acceptance_checks": [
+          "Worker module: worker.py\n\nExpose run_once(store, blob_root, handlers, *, now=None, ttl=30.0)->bool. handlers\nmaps kind strings to callables taking an open binary stream and returning a JSON\nresult. Claim one job with time.time() unless explicit now is supplied; return False\nif none. Open its immutable payload with blobs.open_blob in a with block, invoke\nhandler, then finish result; return True whenever work was claimed. Catch handler/\nread errors and finish a bounded nonempty error, not a traceback. Unknown kind fails\nthat job. Explicit now is a deterministic test clock: use it at claim and finish;\notherwise obtain a fresh wall-clock value at finish so expired work cannot publish.\nDo not catch KeyboardInterrupt/SystemExit: abrupt termination leaves a lease that\ncan be reclaimed. Do not assume current worker still owns the lease after handling.\n\nExpose csv_handler(stream) calling tabular.summarize via io.TextIOWrapper with\nUTF-8 and newline=''. Expose main(argv=None)->int and python -m worker:\n--db PATH --blobs PATH [--once] [--poll SECONDS]. Loop polls (default .2 seconds) or\nprocesses at most one job and exits with --once. Built-in mapping is {'inventory_csv':\ncsv_handler}. Poll must finite >0; argument errors return 2, help returns 0. Catch\nCtrl-C gracefully in the command entry only. Command owns Store creation; run_once\naccepts Store and handlers from callers. A second handler must work without editing\njobs.py or run_once. Output no payload contents or tracebacks for job failures.\n"
+        ]
+      },
+      {
+        "schema_version": 1,
+        "task_id": "api",
+        "objective": "Implement only api.py, satisfying the complete api requirement. Return concise complete output.",
+        "requirement_ids": [
+          "api"
+        ],
+        "depends_on": [
+          "worker"
+        ],
+        "writable_paths": [
+          "api.py"
+        ],
+        "read_paths": [
+          "ENVIRONMENT.md",
+          "blobs.py",
+          "jobs.py",
+          "worker.py"
+        ],
+        "environment_id": "python",
+        "interface_contracts": [
+          "{\"declarations\":[{\"declaration\":\"def create_app(db_path, blob_root, max_upload_bytes=67108864): ...\",\"path\":\"api.py\",\"requirement_ids\":[\"api\"],\"schema_version\":1,\"symbol\":\"create_app\"},{\"declaration\":\"def main(argv=None) -> int: ...\",\"path\":\"api.py\",\"requirement_ids\":[\"api\"],\"schema_version\":1,\"symbol\":\"main\"},{\"declaration\":\"def put_blob(root, chunks, limit=67108864) -> str: ...\",\"path\":\"blobs.py\",\"requirement_ids\":[\"api\"],\"schema_version\":1,\"symbol\":\"put_blob\"},{\"declaration\":\"def open_blob(root, digest): ...\",\"path\":\"blobs.py\",\"requirement_ids\":[\"api\"],\"schema_version\":1,\"symbol\":\"open_blob\"},{\"declaration\":\"def __init__(self, path, max_pending=10000): ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"api\"],\"schema_version\":1,\"symbol\":\"Store.__init__\"},{\"declaration\":\"def submit(self, key, kind, payload) -> dict: ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"api\"],\"schema_version\":1,\"symbol\":\"Store.submit\"},{\"declaration\":\"def get(self, job_id): ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"api\"],\"schema_version\":1,\"symbol\":\"Store.get\"},{\"declaration\":\"def claim(self, now, ttl=30.0): ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"api\"],\"schema_version\":1,\"symbol\":\"Store.claim\"},{\"declaration\":\"def finish(self, job_id, token, now, *, result=None, error=None) -> bool: ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"api\"],\"schema_version\":1,\"symbol\":\"Store.finish\"},{\"declaration\":\"def run_once(store, blob_root, handlers, *, now=None, ttl=30.0) -> bool: ...\",\"path\":\"worker.py\",\"requirement_ids\":[\"api\"],\"schema_version\":1,\"symbol\":\"run_once\"},{\"declaration\":\"def csv_handler(stream): ...\",\"path\":\"worker.py\",\"requirement_ids\":[\"api\"],\"schema_version\":1,\"symbol\":\"csv_handler\"},{\"declaration\":\"def main(argv=None) -> int: ...\",\"path\":\"worker.py\",\"requirement_ids\":[\"api\"],\"schema_version\":1,\"symbol\":\"main\"}],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+        ],
+        "acceptance_checks": [
+          "HTTP module: api.py\n\nExpose create_app(db_path, blob_root, max_upload_bytes=67108864)->FastAPI and main\nentry python -m api --db PATH --blobs PATH [--host 127.0.0.1] [--port 8000].\n- GET /health returns 200 JSON {\"status\":\"ok\"}.\n- POST /imports accepts raw streamed CSV bytes, with required Idempotency-Key header.\n  Store bytes with blobs.put_blob, submit kind inventory_csv; return 202 public job\n  JSON on new or matching duplicate. Missing/invalid key ->400, changed payload for\n  existing key ->409, over-limit upload ->413, queue full ->429. Use request streaming\n  with bounded temporary spooling rather than request.body()/whole-file reads. Close\n  temporary resources on errors/disconnect. Failed submit may leave an immutable\n  unreferenced blob; document offline retention/cleanup as operational follow-up.\n- GET /imports/{job_id} ->200 public job record, unknown ->404.\n- GET /imports/{job_id}/result ->200 JSON result only when succeeded; unknown ->404,\n  other statuses ->409. No route executes job handlers; worker is a separate process.\n\nKeep upload memory bounded and validate key before storing payload. Persistence comes\nfrom Store. Runtime FastAPI and uvicorn are preinstalled. Use no network calls except\nlocal serving. Input CSV validation happens asynchronously in the worker; upload of\ninvalid CSV still creates a job which later fails with row diagnostics.\n"
+        ]
+      },
+      {
+        "schema_version": 1,
+        "task_id": "package",
+        "objective": "Implement only pyproject.toml, satisfying the complete package requirement. Return concise complete output.",
+        "requirement_ids": [
+          "package"
+        ],
+        "depends_on": [
+          "api"
+        ],
+        "writable_paths": [
+          "pyproject.toml"
+        ],
+        "read_paths": [
+          "ENVIRONMENT.md",
+          "blobs.py",
+          "tabular.py",
+          "jobs.py",
+          "worker.py",
+          "api.py"
+        ],
+        "environment_id": "python",
+        "interface_contracts": [
+          "{\"declarations\":[{\"declaration\":\"def put_blob(root, chunks, limit=67108864) -> str: ...\",\"path\":\"blobs.py\",\"requirement_ids\":[\"package\"],\"schema_version\":1,\"symbol\":\"put_blob\"},{\"declaration\":\"def open_blob(root, digest): ...\",\"path\":\"blobs.py\",\"requirement_ids\":[\"package\"],\"schema_version\":1,\"symbol\":\"open_blob\"},{\"declaration\":\"def summarize(stream, max_rows=1000000, max_labels=1000) -> list: ...\",\"path\":\"tabular.py\",\"requirement_ids\":[\"package\"],\"schema_version\":1,\"symbol\":\"summarize\"},{\"declaration\":\"def __init__(self, path, max_pending=10000): ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"package\"],\"schema_version\":1,\"symbol\":\"Store.__init__\"},{\"declaration\":\"def submit(self, key, kind, payload) -> dict: ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"package\"],\"schema_version\":1,\"symbol\":\"Store.submit\"},{\"declaration\":\"def get(self, job_id): ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"package\"],\"schema_version\":1,\"symbol\":\"Store.get\"},{\"declaration\":\"def claim(self, now, ttl=30.0): ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"package\"],\"schema_version\":1,\"symbol\":\"Store.claim\"},{\"declaration\":\"def finish(self, job_id, token, now, *, result=None, error=None) -> bool: ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"package\"],\"schema_version\":1,\"symbol\":\"Store.finish\"},{\"declaration\":\"def run_once(store, blob_root, handlers, *, now=None, ttl=30.0) -> bool: ...\",\"path\":\"worker.py\",\"requirement_ids\":[\"package\"],\"schema_version\":1,\"symbol\":\"run_once\"},{\"declaration\":\"def csv_handler(stream): ...\",\"path\":\"worker.py\",\"requirement_ids\":[\"package\"],\"schema_version\":1,\"symbol\":\"csv_handler\"},{\"declaration\":\"def main(argv=None) -> int: ...\",\"path\":\"worker.py\",\"requirement_ids\":[\"package\"],\"schema_version\":1,\"symbol\":\"main\"},{\"declaration\":\"def create_app(db_path, blob_root, max_upload_bytes=67108864): ...\",\"path\":\"api.py\",\"requirement_ids\":[\"package\"],\"schema_version\":1,\"symbol\":\"create_app\"},{\"declaration\":\"def main(argv=None) -> int: ...\",\"path\":\"api.py\",\"requirement_ids\":[\"package\"],\"schema_version\":1,\"symbol\":\"main\"}],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+        ],
+        "acceptance_checks": [
+          "Packaging: pyproject.toml\n\nDistribution importflow-local 0.1.0, Python >=3.11. setuptools.build_meta, build\nrequirements setuptools and wheel. Include five top-level modules blobs,tabular,jobs,\nworker,api plus no extras. Runtime dependencies fastapi and uvicorn using the exact\nprovisioned versions listed in ENVIRONMENT.md. Console scripts importflow-api=api:main\nand importflow-worker=worker:main. Offline --no-deps --no-build-isolation --target\ninstallation must work. Sandbox writable folders are noexec; invoke installed scripts\nvia Python from outside source. Packaging checks need all implementation modules.\n"
+        ]
+      },
+      {
+        "schema_version": 1,
+        "task_id": "tests",
+        "objective": "Implement only tests/test_importflow.py, satisfying the complete tests requirement. Return concise complete output.",
+        "requirement_ids": [
+          "tests"
+        ],
+        "depends_on": [
+          "api"
+        ],
+        "writable_paths": [
+          "tests/test_importflow.py"
+        ],
+        "read_paths": [
+          "ENVIRONMENT.md",
+          "blobs.py",
+          "tabular.py",
+          "jobs.py",
+          "worker.py",
+          "api.py"
+        ],
+        "environment_id": "python",
+        "interface_contracts": [
+          "{\"declarations\":[{\"declaration\":\"def put_blob(root, chunks, limit=67108864) -> str: ...\",\"path\":\"blobs.py\",\"requirement_ids\":[\"tests\"],\"schema_version\":1,\"symbol\":\"put_blob\"},{\"declaration\":\"def open_blob(root, digest): ...\",\"path\":\"blobs.py\",\"requirement_ids\":[\"tests\"],\"schema_version\":1,\"symbol\":\"open_blob\"},{\"declaration\":\"def summarize(stream, max_rows=1000000, max_labels=1000) -> list: ...\",\"path\":\"tabular.py\",\"requirement_ids\":[\"tests\"],\"schema_version\":1,\"symbol\":\"summarize\"},{\"declaration\":\"def __init__(self, path, max_pending=10000): ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"tests\"],\"schema_version\":1,\"symbol\":\"Store.__init__\"},{\"declaration\":\"def submit(self, key, kind, payload) -> dict: ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"tests\"],\"schema_version\":1,\"symbol\":\"Store.submit\"},{\"declaration\":\"def get(self, job_id): ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"tests\"],\"schema_version\":1,\"symbol\":\"Store.get\"},{\"declaration\":\"def claim(self, now, ttl=30.0): ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"tests\"],\"schema_version\":1,\"symbol\":\"Store.claim\"},{\"declaration\":\"def finish(self, job_id, token, now, *, result=None, error=None) -> bool: ...\",\"path\":\"jobs.py\",\"requirement_ids\":[\"tests\"],\"schema_version\":1,\"symbol\":\"Store.finish\"},{\"declaration\":\"def run_once(store, blob_root, handlers, *, now=None, ttl=30.0) -> bool: ...\",\"path\":\"worker.py\",\"requirement_ids\":[\"tests\"],\"schema_version\":1,\"symbol\":\"run_once\"},{\"declaration\":\"def csv_handler(stream): ...\",\"path\":\"worker.py\",\"requirement_ids\":[\"tests\"],\"schema_version\":1,\"symbol\":\"csv_handler\"},{\"declaration\":\"def main(argv=None) -> int: ...\",\"path\":\"worker.py\",\"requirement_ids\":[\"tests\"],\"schema_version\":1,\"symbol\":\"main\"},{\"declaration\":\"def create_app(db_path, blob_root, max_upload_bytes=67108864): ...\",\"path\":\"api.py\",\"requirement_ids\":[\"tests\"],\"schema_version\":1,\"symbol\":\"create_app\"},{\"declaration\":\"def main(argv=None) -> int: ...\",\"path\":\"api.py\",\"requirement_ids\":[\"tests\"],\"schema_version\":1,\"symbol\":\"main\"}],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+        ],
+        "acceptance_checks": [
+          "Tests: tests/test_importflow.py\n\nAt least eight collected pytest cases using real implementation (parameterized cases\ncount). Cover CSV validation including newline/type/quote boundaries; blob streaming\nand size rejection; submit idempotency/conflict; stale lease/reclaim; duplicate finish;\nhandler reuse; HTTP processing and errors. Tests must pass independent correct\nreference behavior and fail these faults: parser always [], submit ignores duplicate\nkeys, finish always False. Keep tests concise; don't emit redundant repeated cases.\nDeclare implementation dependencies needed for each test task. No skip/xfail or fake\nimplementation imports.\n"
+        ]
+      },
+      {
+        "schema_version": 1,
+        "task_id": "docs",
+        "objective": "Implement only README.md, satisfying the complete docs requirement. Return concise complete output.",
+        "requirement_ids": [
+          "docs"
+        ],
+        "depends_on": [
+          "package"
+        ],
+        "writable_paths": [
+          "README.md"
+        ],
+        "read_paths": [
+          "ENVIRONMENT.md",
+          "pyproject.toml"
+        ],
+        "environment_id": "python",
+        "interface_contracts": [
+          "{\"declarations\":[],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+        ],
+        "acceptance_checks": [
+          "Documentation: README.md\n\nDescribe install, API/worker commands, curl upload/status/result examples, pytest,\nlimits, job states, duplicate semantics, stale-worker fencing, 3-attempt recovery,\nSQLite single-host WAL and serialized writes, payload retention, and second-handler\nreuse. Document scale path: shared payload storage and database adapter, bounded\nworkers and resource/load qualification. Do not claim unlimited or multi-host scale.\n"
+        ]
+      }
+    ],
+    "questions": [],
+    "rationale": "Operator-prepared one-file module plan from the reviewed brief. All implementation and tests are model-authored; no autonomous planning claim."
+  }
+}

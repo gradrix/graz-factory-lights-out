@@ -1,0 +1,403 @@
+[
+  {
+    "task_id": "blobs",
+    "output": "blobs.py",
+    "depends_on": [],
+    "reads": [
+      "ENVIRONMENT.md"
+    ],
+    "interfaces": [
+      {
+        "path": "blobs.py",
+        "symbol": "put_blob",
+        "declaration": "def put_blob(root, chunks, limit=67108864) -> str: ..."
+      },
+      {
+        "path": "blobs.py",
+        "symbol": "open_blob",
+        "declaration": "def open_blob(root, digest): ..."
+      }
+    ],
+    "objective": "Implement only blobs.py, satisfying the complete blobs requirement. Return concise complete output."
+  },
+  {
+    "task_id": "tabular",
+    "output": "tabular.py",
+    "depends_on": [],
+    "reads": [
+      "ENVIRONMENT.md"
+    ],
+    "interfaces": [
+      {
+        "path": "tabular.py",
+        "symbol": "summarize",
+        "declaration": "def summarize(stream, max_rows=1000000, max_labels=1000) -> list: ..."
+      }
+    ],
+    "objective": "Implement only tabular.py, satisfying the complete tabular requirement. Return concise complete output."
+  },
+  {
+    "task_id": "jobs",
+    "output": "jobs.py",
+    "depends_on": [],
+    "reads": [
+      "ENVIRONMENT.md"
+    ],
+    "interfaces": [
+      {
+        "path": "jobs.py",
+        "symbol": "Store.__init__",
+        "declaration": "def __init__(self, path, max_pending=10000): ..."
+      },
+      {
+        "path": "jobs.py",
+        "symbol": "Store.submit",
+        "declaration": "def submit(self, key, kind, payload) -> dict: ..."
+      },
+      {
+        "path": "jobs.py",
+        "symbol": "Store.get",
+        "declaration": "def get(self, job_id): ..."
+      },
+      {
+        "path": "jobs.py",
+        "symbol": "Store.claim",
+        "declaration": "def claim(self, now, ttl=30.0): ..."
+      },
+      {
+        "path": "jobs.py",
+        "symbol": "Store.finish",
+        "declaration": "def finish(self, job_id, token, now, *, result=None, error=None) -> bool: ..."
+      }
+    ],
+    "objective": "Implement only jobs.py, satisfying the complete jobs requirement. Return concise complete output."
+  },
+  {
+    "task_id": "worker",
+    "output": "worker.py",
+    "depends_on": [
+      "blobs",
+      "tabular",
+      "jobs"
+    ],
+    "reads": [
+      "ENVIRONMENT.md",
+      "blobs.py",
+      "tabular.py",
+      "jobs.py"
+    ],
+    "interfaces": [
+      {
+        "path": "worker.py",
+        "symbol": "run_once",
+        "declaration": "def run_once(store, blob_root, handlers, *, now=None, ttl=30.0) -> bool: ..."
+      },
+      {
+        "path": "worker.py",
+        "symbol": "csv_handler",
+        "declaration": "def csv_handler(stream): ..."
+      },
+      {
+        "path": "worker.py",
+        "symbol": "main",
+        "declaration": "def main(argv=None) -> int: ..."
+      },
+      {
+        "path": "blobs.py",
+        "symbol": "put_blob",
+        "declaration": "def put_blob(root, chunks, limit=67108864) -> str: ..."
+      },
+      {
+        "path": "blobs.py",
+        "symbol": "open_blob",
+        "declaration": "def open_blob(root, digest): ..."
+      },
+      {
+        "path": "tabular.py",
+        "symbol": "summarize",
+        "declaration": "def summarize(stream, max_rows=1000000, max_labels=1000) -> list: ..."
+      },
+      {
+        "path": "jobs.py",
+        "symbol": "Store.__init__",
+        "declaration": "def __init__(self, path, max_pending=10000): ..."
+      },
+      {
+        "path": "jobs.py",
+        "symbol": "Store.submit",
+        "declaration": "def submit(self, key, kind, payload) -> dict: ..."
+      },
+      {
+        "path": "jobs.py",
+        "symbol": "Store.get",
+        "declaration": "def get(self, job_id): ..."
+      },
+      {
+        "path": "jobs.py",
+        "symbol": "Store.claim",
+        "declaration": "def claim(self, now, ttl=30.0): ..."
+      },
+      {
+        "path": "jobs.py",
+        "symbol": "Store.finish",
+        "declaration": "def finish(self, job_id, token, now, *, result=None, error=None) -> bool: ..."
+      }
+    ],
+    "objective": "Implement only worker.py, satisfying the complete worker requirement. Return concise complete output."
+  },
+  {
+    "task_id": "api",
+    "output": "api.py",
+    "depends_on": [
+      "worker"
+    ],
+    "reads": [
+      "ENVIRONMENT.md",
+      "blobs.py",
+      "jobs.py",
+      "worker.py"
+    ],
+    "interfaces": [
+      {
+        "path": "api.py",
+        "symbol": "create_app",
+        "declaration": "def create_app(db_path, blob_root, max_upload_bytes=67108864): ..."
+      },
+      {
+        "path": "api.py",
+        "symbol": "main",
+        "declaration": "def main(argv=None) -> int: ..."
+      },
+      {
+        "path": "blobs.py",
+        "symbol": "put_blob",
+        "declaration": "def put_blob(root, chunks, limit=67108864) -> str: ..."
+      },
+      {
+        "path": "blobs.py",
+        "symbol": "open_blob",
+        "declaration": "def open_blob(root, digest): ..."
+      },
+      {
+        "path": "jobs.py",
+        "symbol": "Store.__init__",
+        "declaration": "def __init__(self, path, max_pending=10000): ..."
+      },
+      {
+        "path": "jobs.py",
+        "symbol": "Store.submit",
+        "declaration": "def submit(self, key, kind, payload) -> dict: ..."
+      },
+      {
+        "path": "jobs.py",
+        "symbol": "Store.get",
+        "declaration": "def get(self, job_id): ..."
+      },
+      {
+        "path": "jobs.py",
+        "symbol": "Store.claim",
+        "declaration": "def claim(self, now, ttl=30.0): ..."
+      },
+      {
+        "path": "jobs.py",
+        "symbol": "Store.finish",
+        "declaration": "def finish(self, job_id, token, now, *, result=None, error=None) -> bool: ..."
+      },
+      {
+        "path": "worker.py",
+        "symbol": "run_once",
+        "declaration": "def run_once(store, blob_root, handlers, *, now=None, ttl=30.0) -> bool: ..."
+      },
+      {
+        "path": "worker.py",
+        "symbol": "csv_handler",
+        "declaration": "def csv_handler(stream): ..."
+      },
+      {
+        "path": "worker.py",
+        "symbol": "main",
+        "declaration": "def main(argv=None) -> int: ..."
+      }
+    ],
+    "objective": "Implement only api.py, satisfying the complete api requirement. Return concise complete output."
+  },
+  {
+    "task_id": "package",
+    "output": "pyproject.toml",
+    "depends_on": [
+      "api"
+    ],
+    "reads": [
+      "ENVIRONMENT.md",
+      "blobs.py",
+      "tabular.py",
+      "jobs.py",
+      "worker.py",
+      "api.py"
+    ],
+    "interfaces": [
+      {
+        "path": "blobs.py",
+        "symbol": "put_blob",
+        "declaration": "def put_blob(root, chunks, limit=67108864) -> str: ..."
+      },
+      {
+        "path": "blobs.py",
+        "symbol": "open_blob",
+        "declaration": "def open_blob(root, digest): ..."
+      },
+      {
+        "path": "tabular.py",
+        "symbol": "summarize",
+        "declaration": "def summarize(stream, max_rows=1000000, max_labels=1000) -> list: ..."
+      },
+      {
+        "path": "jobs.py",
+        "symbol": "Store.__init__",
+        "declaration": "def __init__(self, path, max_pending=10000): ..."
+      },
+      {
+        "path": "jobs.py",
+        "symbol": "Store.submit",
+        "declaration": "def submit(self, key, kind, payload) -> dict: ..."
+      },
+      {
+        "path": "jobs.py",
+        "symbol": "Store.get",
+        "declaration": "def get(self, job_id): ..."
+      },
+      {
+        "path": "jobs.py",
+        "symbol": "Store.claim",
+        "declaration": "def claim(self, now, ttl=30.0): ..."
+      },
+      {
+        "path": "jobs.py",
+        "symbol": "Store.finish",
+        "declaration": "def finish(self, job_id, token, now, *, result=None, error=None) -> bool: ..."
+      },
+      {
+        "path": "worker.py",
+        "symbol": "run_once",
+        "declaration": "def run_once(store, blob_root, handlers, *, now=None, ttl=30.0) -> bool: ..."
+      },
+      {
+        "path": "worker.py",
+        "symbol": "csv_handler",
+        "declaration": "def csv_handler(stream): ..."
+      },
+      {
+        "path": "worker.py",
+        "symbol": "main",
+        "declaration": "def main(argv=None) -> int: ..."
+      },
+      {
+        "path": "api.py",
+        "symbol": "create_app",
+        "declaration": "def create_app(db_path, blob_root, max_upload_bytes=67108864): ..."
+      },
+      {
+        "path": "api.py",
+        "symbol": "main",
+        "declaration": "def main(argv=None) -> int: ..."
+      }
+    ],
+    "objective": "Implement only pyproject.toml, satisfying the complete package requirement. Return concise complete output."
+  },
+  {
+    "task_id": "tests",
+    "output": "tests/test_importflow.py",
+    "depends_on": [
+      "api"
+    ],
+    "reads": [
+      "ENVIRONMENT.md",
+      "blobs.py",
+      "tabular.py",
+      "jobs.py",
+      "worker.py",
+      "api.py"
+    ],
+    "interfaces": [
+      {
+        "path": "blobs.py",
+        "symbol": "put_blob",
+        "declaration": "def put_blob(root, chunks, limit=67108864) -> str: ..."
+      },
+      {
+        "path": "blobs.py",
+        "symbol": "open_blob",
+        "declaration": "def open_blob(root, digest): ..."
+      },
+      {
+        "path": "tabular.py",
+        "symbol": "summarize",
+        "declaration": "def summarize(stream, max_rows=1000000, max_labels=1000) -> list: ..."
+      },
+      {
+        "path": "jobs.py",
+        "symbol": "Store.__init__",
+        "declaration": "def __init__(self, path, max_pending=10000): ..."
+      },
+      {
+        "path": "jobs.py",
+        "symbol": "Store.submit",
+        "declaration": "def submit(self, key, kind, payload) -> dict: ..."
+      },
+      {
+        "path": "jobs.py",
+        "symbol": "Store.get",
+        "declaration": "def get(self, job_id): ..."
+      },
+      {
+        "path": "jobs.py",
+        "symbol": "Store.claim",
+        "declaration": "def claim(self, now, ttl=30.0): ..."
+      },
+      {
+        "path": "jobs.py",
+        "symbol": "Store.finish",
+        "declaration": "def finish(self, job_id, token, now, *, result=None, error=None) -> bool: ..."
+      },
+      {
+        "path": "worker.py",
+        "symbol": "run_once",
+        "declaration": "def run_once(store, blob_root, handlers, *, now=None, ttl=30.0) -> bool: ..."
+      },
+      {
+        "path": "worker.py",
+        "symbol": "csv_handler",
+        "declaration": "def csv_handler(stream): ..."
+      },
+      {
+        "path": "worker.py",
+        "symbol": "main",
+        "declaration": "def main(argv=None) -> int: ..."
+      },
+      {
+        "path": "api.py",
+        "symbol": "create_app",
+        "declaration": "def create_app(db_path, blob_root, max_upload_bytes=67108864): ..."
+      },
+      {
+        "path": "api.py",
+        "symbol": "main",
+        "declaration": "def main(argv=None) -> int: ..."
+      }
+    ],
+    "objective": "Implement only tests/test_importflow.py, satisfying the complete tests requirement. Return concise complete output."
+  },
+  {
+    "task_id": "docs",
+    "output": "README.md",
+    "depends_on": [
+      "package"
+    ],
+    "reads": [
+      "ENVIRONMENT.md",
+      "pyproject.toml"
+    ],
+    "interfaces": [],
+    "objective": "Implement only README.md, satisfying the complete docs requirement. Return concise complete output."
+  }
+]

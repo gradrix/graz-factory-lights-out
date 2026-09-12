@@ -18,7 +18,11 @@ are recorded in [evaluation](evaluation.md) and portable development evidence.
 
 ## Next priorities
 
-1. Broaden whole-project qualification beyond Taskdock. One complete installable Python
+1. Complete the selected Importflow qualification workload. Its streaming/job/HTTP
+   reference passes checks, but three prepared local-model builds and a targeted
+   continuation all halted. The owner must choose direct application implementation
+   versus continued local-model-only reliability work. [Details](importflow-poc.md).
+   Broaden whole-project qualification beyond Taskdock. One complete installable Python
    project now passes strengthened checks after supervised repair. All three original
    builds had defects missed by initial gates; unattended readiness remains unproven.
    Four fresh CSV/DAG builds produced one historical acceptance, then zero fully

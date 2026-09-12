@@ -1,0 +1,23 @@
+[
+  {
+    "name": "trial-1",
+    "request_digest": "3104d9d6b2a7f497a21a7b3eaa885b9abb5523390295bc91c14ec454c6fc71f0",
+    "policy_digest": "17f2c35a700bf37fc9f10327a825f582c8f987e43802a32499346dfb9d312d1c",
+    "max_responses": 54,
+    "reserved_tokens": 860160
+  },
+  {
+    "name": "trial-2",
+    "request_digest": "be38bae875dba52776fef15e8d4bcf6d776cde83391128735c23159b08413e59",
+    "policy_digest": "926a3f3b7738c83e131d75a456d216f52420844bb2993cc2c47e93da29a3256a",
+    "max_responses": 54,
+    "reserved_tokens": 860160
+  },
+  {
+    "name": "trial-3",
+    "request_digest": "af719e8ab692e874cd8e2275c892ab349f323c112c0f2af3030100d6cfc1b194",
+    "policy_digest": "dbbb39afec51a19204626b5a3fd2010b40e851b676279e0e79f5da9be8d7cc00",
+    "max_responses": 54,
+    "reserved_tokens": 860160
+  }
+]

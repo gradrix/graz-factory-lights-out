@@ -50,10 +50,34 @@ No model-generated plans/source/tests were manually corrected.
 Issue 73 resolved: committed factory runtime 381,820 bytes; runtime/tests/config
 708,963 bytes. Snapshot and context work; 256 KiB execution adapter rejects all three
 real workloads before execution. No large build ran and no limits changed.
-Issue 74 needs-info: owner asked which first larger system/repository/stack to target.
-This is the next product choice for execution/dependency qualification. Preserve
-all raw campaigns and the successful supervised Taskdock delivery. No model job
-remains active. Do not reset failed histories or relabel gate passes as correctness.
+Owner selected Importflow CSV inventory service with scalability/reuse; issue 74
+resolved. Issue 75 needs-info, not complete. Actual authoring decision is issue 78:
+owner asked whether Codex may finish the app directly as a factory qualification
+target or local-model-only authorship must continue. No answer assumed. Optional
+scope question defaulted to both app and reusable factory workflow.
+
+Reference modules/checks/runtime harness are in importflow/. No generated app delivery.
+Original planning campaign importflow-v1: first exhausted, second context admission
+interrupted after four responses, third not started. Prepared campaign
+importflow-prepared-v1: all three task-halt; furthest accepted blobs/jobs and failed
+CSV. importflow-resume-v1 preserves/rechecks those providers, adopts unchanged failed
+parser explicitly without acceptance, and clarifies empty input; parser still halts
+on row diagnostics/other checks. Total 38 responses/202,422 tokens, all costs retained.
+Prepared and resume terminal replays/wire audits pass. No jobs remain running.
+
+Issues 76/77 resolved. gflo.qualification.prepared_planner records operator provenance,
+retains policy authority and replay; 527 CPU tests + nine live Docker cases (536
+unique/25 subtests), typing 35 source files. SQLite base 3.46.1 is affected by WAL
+reset; initial LD_LIBRARY_PATH fix is stripped by broker. Use admitted system-loader
+image from importflow/provision-sqlite-system/image-id.txt, proven 3.51.3 in broker
+and child processes. Eleven reference checks and larger reference runtime pass;
+raw .gflo/evidence/importflow-runtime-system-v1-reference retains roughly64MiB/4worker
+measurements. Reference-only tmpfs results, no production-throughput claim.
+
+Preserve all failed histories, candidates, image IDs and preparation corrections.
+Do not reset attempts or promote reference code as a local-model factory delivery.
+Next step depends on owner's authorship choice; full app, second built-in handler,
+three passing fresh builds and general larger-source execution remain unfinished.
 
 ## Current checkpoint — repair definition visibility, 2026-09-12
 

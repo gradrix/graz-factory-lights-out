@@ -330,3 +330,12 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
   four fresh CSV/DAG builds, one historical acceptance, zero fully qualified after
   independent source review. Protocol/output failures and gate blind spots recur;
   44 responses/188,725 tokens, challenged reuse blocked. No default upgrade.
+
+- [Choose the first larger-system workload](issues/74-choose-first-larger-system-workload.md):
+  owner selected Importflow CSV inventory service and requested scale/reuse.
+- [Pin fixed SQLite for concurrent jobs](issues/76-pin-fixed-sqlite-for-concurrent-jobs.md):
+  system-loader pin verified inside sanitized broker and children; reference runtime
+  handles roughly 64 MiB and four workers. No model-app completion implied.
+- [Reuse operator-prepared qualification plans](issues/77-reuse-operator-prepared-qualification-plans.md):
+  explicit supervised planner adapter, normal policy authority and replay preserved;
+  536 unique tests/25 subtests pass. Model builds still halt.

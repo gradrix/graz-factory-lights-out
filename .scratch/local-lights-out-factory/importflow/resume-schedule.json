@@ -1,0 +1,11 @@
+[
+  {
+    "name": "trial-1",
+    "request_digest": "e8e268139869c1e3e9a8903065cb241ce4743f03297455ee876bbb9896164c01",
+    "policy_digest": "e69488e07f1ea7f8327e13f56adc560d11a19ba598397ea0f03b0c960f95384a",
+    "max_responses": 42,
+    "reserved_tokens": 663552,
+    "prior_request_digest": "3104d9d6b2a7f497a21a7b3eaa885b9abb5523390295bc91c14ec454c6fc71f0",
+    "adopted_failed_candidate": "3618249bac9396b0ee623d64f56edea5b248734d904daf5c94c3cff122a33314"
+  }
+]

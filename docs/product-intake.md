@@ -567,3 +567,19 @@ Reliability and verified coverage take priority over token savings on the local 
 The equal-budget specialist comparison is provisional: it does not establish whether
 specialists with full individual retry budgets would improve completion. That larger
 budget comparison is planned after the observed draft-repair issue is addressed.
+
+## Explicitly prepared qualification plans
+
+For a known task graph, `gflo.qualification.prepared_planner(proposal)` can supply
+an operator-prepared `PlanProposal` to `build_feature(..., planner=...)`. It snapshots
+the proposal, checks the request digest before writing, retains the proposal as an
+artifact and records `planner_origin: operator-prepared-v1`. Normal policy compilation
+still binds scopes, dependencies, checks and finite budgets; the adapter grants no
+execution authority and cannot bypass a rejected write scope. Existing build/replay
+semantics apply, so terminal work does not silently replan or generate again.
+
+This is useful for repeatable module qualification when the operator already knows
+the intended interfaces and task graph. It is supervised preparation, not evidence
+that the model planned the project autonomously. Importflow uses it for one-file
+module tasks while retaining failed autonomous planning separately.
+[Qualification status](importflow-poc.md).

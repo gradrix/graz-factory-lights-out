@@ -1,0 +1,158 @@
+[
+  {
+    "name": "trial-1",
+    "responses": 6,
+    "total_tokens": 51885,
+    "tokenizer_counts": [
+      7427,
+      6045,
+      7239,
+      7449,
+      7400,
+      7482
+    ],
+    "evidence": [
+      {
+        "digest": "24083ba137a49482ba935e104d523be6431a4c0bd5acb421d4f1b8f12098c1d9",
+        "usage": {
+          "prompt_tokens": 7427,
+          "total_tokens": 11523,
+          "completion_tokens": 4096,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        }
+      },
+      {
+        "digest": "3b31822e78ad62cc27efad7006c83b5de542937cfc8075dbac5c1983dfabe5cb",
+        "usage": {
+          "prompt_tokens": 7449,
+          "total_tokens": 7837,
+          "completion_tokens": 388,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        }
+      },
+      {
+        "digest": "0a81b618d5f26cafafbdde1e1299d1fb46906b620d52b486fb0a60d36f31d5a8",
+        "usage": {
+          "prompt_tokens": 6045,
+          "total_tokens": 6072,
+          "completion_tokens": 27,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        }
+      },
+      {
+        "digest": "c676acbb6780f417553dd64ac1697604d4bad2d98b638fa4e0e488cdc8f3774b",
+        "usage": {
+          "prompt_tokens": 7239,
+          "total_tokens": 7681,
+          "completion_tokens": 442,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        }
+      },
+      {
+        "digest": "df3daf6f0007b799335ff62df92e4147267314dba534cc53260af975e87ff1fc",
+        "usage": {
+          "prompt_tokens": 7482,
+          "total_tokens": 7509,
+          "completion_tokens": 27,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        }
+      },
+      {
+        "digest": "c477fed7a029b174c8512bbb66fdb90fb4ad170aefd67925d131e55daf0f8be7",
+        "usage": {
+          "prompt_tokens": 7400,
+          "total_tokens": 11263,
+          "completion_tokens": 3863,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "trial-2",
+    "responses": 4,
+    "total_tokens": 36338,
+    "tokenizer_counts": [
+      6046,
+      8528,
+      7401,
+      7240,
+      7405
+    ],
+    "evidence": [
+      {
+        "digest": "3bf0d35166ff8faff10a45921d2d1dbd0296e84f17371c19f7ae9af50886f365",
+        "usage": {
+          "prompt_tokens": 6046,
+          "total_tokens": 6073,
+          "completion_tokens": 27,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        }
+      },
+      {
+        "digest": "fd043d68dec223c20cb23f304ba1859ad0e34781231694126e3e68e821fc8d91",
+        "usage": {
+          "prompt_tokens": 7405,
+          "total_tokens": 11501,
+          "completion_tokens": 4096,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        }
+      },
+      {
+        "digest": "ba230eb49fbecd86c915c97be5cd4b6a1919b38285e7a256bf6005910e992d6e",
+        "usage": {
+          "prompt_tokens": 7240,
+          "total_tokens": 11336,
+          "completion_tokens": 4096,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        }
+      },
+      {
+        "digest": "e13782bfbddfc3397e7993aae2c64ac86eb0fce2cc6584fee3d138d49aff607a",
+        "usage": {
+          "prompt_tokens": 7401,
+          "total_tokens": 7428,
+          "completion_tokens": 27,
+          "prompt_tokens_details": null,
+          "completion_tokens_details": {
+            "reasoning_tokens": 0
+          }
+        }
+      }
+    ]
+  },
+  {
+    "name": "trial-3",
+    "responses": 0,
+    "total_tokens": 0,
+    "tokenizer_counts": [],
+    "evidence": []
+  }
+]

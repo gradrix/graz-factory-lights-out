@@ -1,0 +1,32 @@
+[
+  {
+    "image": "sha256:0c7947a4e21fba3429d222c9eedba908d0780bf4d2347e2fd4a3d1414db435c5",
+    "recipe": "provision",
+    "observed": {
+      "parent": "3.46.1",
+      "child": "3.46.1",
+      "ld_library_path": null
+    },
+    "evidence_digest": "468614f5e23699cdafc41b7691882ecb7f7d6429e3d6924b238f63c3e1e469ac"
+  },
+  {
+    "image": "sha256:b4ecc8a7633a037fb299dbcf0d4d4dfef1ab1b32cfdeb4227a7de935be4e603d",
+    "recipe": "provision-sqlite",
+    "observed": {
+      "parent": "3.46.1",
+      "child": "3.46.1",
+      "ld_library_path": null
+    },
+    "evidence_digest": "c35c3580567706a34d39c5f8fe201fd21332ed219660e571daa0e83a9ef4d65c"
+  },
+  {
+    "image": "sha256:f0088d7444d4eef7563fa71cd4fa354c426a1729fafd5e74d3101529cf536a04",
+    "recipe": "provision-sqlite-system",
+    "observed": {
+      "parent": "3.51.3",
+      "child": "3.51.3",
+      "ld_library_path": null
+    },
+    "evidence_digest": "a5eeb7e655359cf5429902431cadb0f754f243995c7fec5f43b18417e947fcd4"
+  }
+]

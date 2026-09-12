@@ -844,3 +844,20 @@ retained without manual fixes. These supervised trials show protocol/output-budg
 reliability and independent-check coverage both need work. They do not qualify
 unattended projects, large systems, external dependencies or legacy repositories.
 [Portable results and challenged source](../.scratch/local-lights-out-factory/varied-projects/README.md).
+
+## Reusable Importflow POC
+
+The selected streaming CSV/job/HTTP workload has a passing Codex-authored reference,
+not a qualifying model-generated delivery. Whole-project planning used ten responses
+before exhaustion/context admission; three operator-prepared builds then halted, as
+did a bounded continuation. Total generation: 38 responses/202,422 tokens, with no
+manual candidate edits or attempt resets. The reusable prepared-plan adapter preserves
+policy authority and explicitly records operator provenance. Its regressions and
+existing CPU/Docker suite cover 536 unique tests/25 subtests.
+
+The corrected SQLite 3.51.3 image is verified inside the sanitized broker and child
+processes; an earlier LD_LIBRARY_PATH-only fix did not survive sanitization. The
+reference passes eleven process checks and a separate roughly64MiB real-HTTP/four-
+worker runtime audit. That audit uses two CPUs, 512MiB RAM and tmpfs; it is not a
+production-disk throughput claim and does not extend the factory's SourceBundle
+execution limit. [Full status and retained preparation failures](importflow-poc.md).

@@ -1,0 +1,20 @@
+[
+  {
+    "gate": "blobs",
+    "gate_digest": "c512b39b995befa4eaaa74719a6422980538e59383cb068340e6ba12138b6cbf",
+    "evidence_digest": "dd6b47751319c9e05c1339060cb5e5f647fc80a0ba9cb14f62051e5f8d6ba31d",
+    "candidate_digest": "16d8df921005401b940fa97bd5e8b2c718a8a9c3d6ef7545c4861f5eb1302cd9"
+  },
+  {
+    "gate": "jobs",
+    "gate_digest": "13e2c125bf103543ee8c43cda38113a4f659833edb9b909560c62fcd9908dc5d",
+    "evidence_digest": "a60a8c2d3b55c2b226d82efd6ee0e5f0788ca8982d1872cfe7d4b6a0db3e4a98",
+    "candidate_digest": "16d8df921005401b940fa97bd5e8b2c718a8a9c3d6ef7545c4861f5eb1302cd9"
+  },
+  {
+    "gate": "jobs",
+    "gate_digest": "13e2c125bf103543ee8c43cda38113a4f659833edb9b909560c62fcd9908dc5d",
+    "evidence_digest": "b376861d88e2de40befa5b158c327a341c51b2bbf8dd60d908a841dbf0e8bf74",
+    "candidate_digest": "16d8df921005401b940fa97bd5e8b2c718a8a9c3d6ef7545c4861f5eb1302cd9"
+  }
+]
