@@ -18,16 +18,31 @@ real definition twice and still failed exact-edit/output recovery. Generated Mov
 is reported missing. No default upgrade. [Evidence](definition-qualification/README.md).
 
 [Qualify a complete small Python project](issues/70-qualify-a-complete-small-python-project.md)
-is claimed and running at `.gflo/evidence/small-project-v1/`. Three Taskdock builds
-are frozen on established non-reasoning windows, 1,695,744 reserved tokens overall.
+is claimed. Three Taskdock builds completed at `.gflo/evidence/small-project-v1/`
+on established non-reasoning windows, 1,695,744 reserved tokens overall.
 Initial source is only a brief and unrelated sentinel; model must produce API, CLI,
 packaging, docs and tests. Five independent gates and held-out reference audit pass.
 Initial preflight encountered noexec on installed-script launch; brief/check were
 revised before inference to invoke the installed entry via Python, preserving the
 restriction and failed preflight. [Portable preparation](small-project/README.md).
-Do not restart/reset the active campaign. After terminal results run its report,
-audit any delivered tests/docs, record outcome and continue to varied projects and
-larger execution qualification as the owner requested. No known human blocker.
+Original results: 2/3 initially accepted, one CLI halt. Manual review found raw
+leading/trailing CR/LF title acceptance and float version 1.0 acceptance missed by
+the frozen gates. New edge audit fails all three accepted storage implementations;
+exact candidate findings block their reuse and both combined acceptances. Zero
+fully qualified original projects. First exported source is under `challenged/`.
+
+Fresh bounded repair-v1 jobs over the two complete challenged snapshots exhausted
+planning on a controller bug: private Python names beginning `_` were rejected by
+the interface schema. [Accept private Python interface names](issues/71-accept-private-python-interface-names.md)
+is claimed; fix is implemented, exact retained proposals now validate unchanged,
+533 tests/25 subtests with Docker and four historical replays pass.
+Repair-v2 first planner hit context admission after mismatched full-creation requirements
+caused coverage/scope feedback; second job never started. V3 corrects repair requirements
+without changing source, gates, model or budgets. Trial 1 needs-info (incorrect Python
+beliefs), trial 2 accepted and independently audited; unchanged replay passes both.
+Exact supervised delivery: `small-project/deliveries/repair-v3-trial-2/`.
+Issues 70/71 resolved; continue varied projects and larger execution qualification.
+No human blocker. Preserve all previous histories and record preparation assistance.
 
 ## Current checkpoint — repair definition visibility, 2026-09-12
 

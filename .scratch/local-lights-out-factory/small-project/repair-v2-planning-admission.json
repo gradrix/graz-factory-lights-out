@@ -1,0 +1,32 @@
+[
+  {
+    "evidence_digest": "d488bcd371be39f2623d235915b2009c937896a9a4948726a190e307c210ff8a",
+    "tokens": 7393,
+    "result": "{\"kind\":\"read_window\",\"path\":\"tests/test_taskdock.py\",\"start_line\":30,\"max_lines\":100}"
+  },
+  {
+    "evidence_digest": "ef8e7a3e8555d3908a10441be1eac2ad85484d221aaa7f184f9c71539a863e7f",
+    "tokens": 5547,
+    "result": "{\"kind\":\"read_window\",\"path\":\"taskdock.py\",\"start_line\":16,\"max_lines\":60}"
+  },
+  {
+    "evidence_digest": "f74b3908e0cf1713dfc75bfc6271b34b93d7c0665801a5da035d3ed1523aca5e",
+    "tokens": 6423,
+    "result": "{\n  \"kind\": \"contract-plan-v1\",\n  \"schema_version\": 1,\n  \"tasks\": [\n    {\n      \"task_id\": \"repair-storage-validation\",\n      \"obj"
+  },
+  {
+    "evidence_digest": "649dcd99a14b3832c995382290a77381f27c1dee2ae969766d0ec642f8312d6b",
+    "tokens": 6598,
+    "result": "{\"kind\":\"read_window\",\"path\":\"taskdock.py\",\"start_line\":75,\"max_lines\":60}"
+  },
+  {
+    "evidence_digest": "ba4621f5b098e428f8c171e67daf8a48aeb498d925d63e5863941aea60fc272e",
+    "tokens": 6596,
+    "result": "{\n  \"schema_version\": 1,\n  \"kind\": \"contract-plan-v1\",\n  \"tasks\": [\n    {\n      \"task_id\": \"repair-storage\",\n      \"objective\": \"R"
+  },
+  {
+    "evidence_digest": "2cf16de1b25f387af4187b4d05789fc05d9d164cbb6614d840f18da37eda005f",
+    "tokens": 8614,
+    "result": null
+  }
+]

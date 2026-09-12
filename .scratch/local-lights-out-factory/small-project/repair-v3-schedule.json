@@ -1,0 +1,16 @@
+[
+  {
+    "name": "trial-1",
+    "request_digest": "357aae38aef0bb809c024361e6208a8798242ead7bfd7b75450054bd1a04f485",
+    "policy_digest": "df30cd57521ef09943c979f4a10e8f87b0fc3dda9d5780514608133b2d76ac2d",
+    "max_responses": 18,
+    "reserved_tokens": 270336
+  },
+  {
+    "name": "trial-2",
+    "request_digest": "37dfeb4a9546150642342291aee7cb56c687705bd49915c45a275b7b80609a37",
+    "policy_digest": "11a0c46decdf3b99855f37e3cea32c8738ee888eef8ee6e6fb740896853e9cf9",
+    "max_responses": 18,
+    "reserved_tokens": 270336
+  }
+]

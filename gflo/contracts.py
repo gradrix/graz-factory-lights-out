@@ -21,7 +21,9 @@ CONTRACT_PROFILES = (CONTRACT_PROFILE, DEPENDENCY_CONTRACT_PROFILE, *WINDOW_PROF
 
 class InterfaceDeclaration(Record):
     path: Text
-    symbol: Identifier
+    # Python private names can start with '_'; keep the previously accepted namespace
+    # characters and canonical record layout without widening Work-atom identifiers.
+    symbol: Annotated[str, Field(pattern=r"^[A-Za-z0-9_][A-Za-z0-9._:@/-]{0,199}$")]
     declaration: Annotated[str, Field(min_length=1, max_length=2048)]
     requirement_ids: Annotated[tuple[Identifier, ...], Field(min_length=1, max_length=16)]
 

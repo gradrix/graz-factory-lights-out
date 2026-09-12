@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "taskdock-local"
+version = "0.1.0"
+description = "Local task manager"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+taskdock = "taskdock_cli:main"
+
+[tool.setuptools]
+py-modules = ["taskdock", "taskdock_cli"]

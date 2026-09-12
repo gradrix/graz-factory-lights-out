@@ -1,0 +1,214 @@
+{
+  "request": {
+    "schema_version": 1,
+    "kind": "repository-feature-v1",
+    "feature_id": "taskdock-edge-repair-1",
+    "objective": "Repair taskdock.py and tests/test_taskdock.py in this challenged project to meet the original requirements. Audit found raw leading/trailing CR/LF titles and storage version 1.0 accepted. Preserve CLI, packaging, README and all other files. Plan bounded repair work; prior historical acceptance does not establish correctness.",
+    "requirements": {
+      "cli": "CLI \u2014 taskdock_cli.py\n\nExpose main(argv=None) -> int and support python -m taskdock_cli. Global --file PATH\nis required before the subcommand. Commands:\n\n- add TITLE: write a task and print the returned task as one JSON value plus newline.\n- list [--all]: print the matching task array as one JSON value plus newline.\n- done ID: complete the task and print the returned task as one JSON value plus newline.\n- export: print exactly export_markdown's output, with no extra newline.\n\nSuccessful commands exit 0. Invalid arguments, bad storage, unknown IDs and filesystem\nfailures exit 2, write an explanatory error to stderr, leave stdout empty, and show\nno Python traceback. --help exits 0. CLI behavior must call the real storage API,\nand separate subprocess invocations must see persisted tasks.\n\n",
+      "packaging": "Packaging \u2014 pyproject.toml\n\nUse setuptools.build_meta with build requirements setuptools and wheel. Distribution\nname taskdock-local, version 0.1.0, Python >=3.11, no runtime dependencies. Include\nboth top-level modules using setuptools py-modules. Console script taskdock points\nto taskdock_cli:main. Offline pip install --no-deps --no-build-isolation --target DIR .\nmust work in the supplied environment, with the installed entry script usable via\npython DIR/bin/taskdock from outside the source directory using DIR on PYTHONPATH.\nThe sandbox's writable directories are noexec; direct OS launch is not part of this\nqualification. Packaging work needs\nboth modules available for its checks; declare those dependencies in the plan.\n\n",
+      "storage": "Storage API \u2014 taskdock.py\n\nExpose add_task(path, title) -> dict, list_tasks(path, include_done=False) -> list,\ncomplete_task(path, task_id) -> dict, and export_markdown(path) -> str.\npath accepts a str or pathlib.Path. Each task is exactly\n{\"id\": positive integer, \"title\": trimmed string, \"done\": boolean}.\nStorage is a UTF-8 JSON object {\"version\": 1, \"tasks\": [tasks]}.\nA missing file represents an empty list. Reading/listing/exporting never creates it.\nAdd appends a new task with done false and id max(existing ids, default 0)+1;\ncompleted tasks still reserve their IDs. Duplicate titles are permitted.\nTitles must be strings, strip to 1\u2013120 characters, and contain no CR or LF.\nInvalid title input raises ValueError and leaves storage unchanged.\nlist_tasks returns ascending-ID tasks, excluding completed tasks by default; true\ninclude_done includes all tasks. complete_task requires a positive int (not bool),\nraises ValueError for invalid or unknown IDs, and persists done true. Completing an\nalready completed task succeeds idempotently. Functions return task dictionaries.\nexport_markdown includes all tasks sorted by ID. Its exact format is '# Tasks\\n'\nthen one line per task: '- [ ] ID: TITLE\\n' or '- [x] ID: TITLE\\n'. Empty export is\njust '# Tasks\\n'. Preserve Unicode titles literally; Markdown escaping is not required.\n\nReject malformed JSON, invalid root/version/tasks, extra root or task keys,\nnonpositive or duplicate task IDs, bool IDs, invalid stored titles (including\nuntrimmed ones), and nonboolean done values with ValueError. Version must be\ninteger 1, not bool. Never overwrite invalid storage. Storage ordering need not\nbe sorted; API outputs are sorted. Other filesystem errors may propagate as OSError.\nWrites must use a temporary file in the destination directory and os.replace,\ncleaning up temporary files on failure. Failure before replacement must preserve\nexisting bytes. Parent directories must already exist; do not create directories.\n\n",
+      "tests-docs": "\n\nCreate at least six substantive pytest test cases in tests/test_taskdock.py using\ntemporary paths and the real API. Cover persistence, completed filtering, monotonic\nIDs after completion, invalid titles, invalid/corrupt storage preservation, and\nidempotent completion/unknown-ID rejection. Generated tests must pass correct code\nand fail implementations with broken done filtering, ID allocation, completion\npersistence or title validation. No skips or replacement/fake implementation imports.\nTest tasks need the storage implementation as a declared dependency.\n\nREADME.md must explain installation, all four commands with --file examples,\nrunning pytest, JSON storage, and the single-writer limitation. Use no absolute\nmachine-specific paths. CLI work depends on storage. The model may combine related\nfiles into one bounded task; every produced file needs a producer in its plan.\n\nAdd regression cases to tests/test_taskdock.py rejecting leading/trailing CR/LF in raw titles and storage version 1.0, preserving bytes on rejection. These tests must reject faults that strip raw line breaks before validation or accept a float version."
+    },
+    "source": {
+      "schema_version": 1,
+      "kind": "repository-snapshot-v1",
+      "artifact_digest": "5179f4cbf76dd05caa69597e2cc8f9a0c597b9bb8529c7c7f11261aa2bf74a2d"
+    },
+    "allowed_paths": [
+      "taskdock.py",
+      "tests/test_taskdock.py"
+    ],
+    "environments": {
+      "python": {
+        "schema_version": 1,
+        "image": "sha256:695d05883b15326aea01e9266067ff58c41f3eaa4f647cfc9424b403dbe9548d",
+        "description": "Pinned Python with setuptools, wheel and pytest; offline stdlib runtime"
+      }
+    }
+  },
+  "policy": {
+    "schema_version": 1,
+    "kind": "feature-policy-v2",
+    "request_digest": "3f92d7123702044f21cf6dab4788a2590ee85c71d8ac788b6c631d96bf79442b",
+    "file_gates": {
+      "taskdock.py": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-B",
+              "-c",
+              "\"\"\"Post-review checks for explicit input-type and raw-title requirements.\"\"\"\n\nimport json\nimport tempfile\nfrom pathlib import Path\n\nimport taskdock\n\nfailures = []\nwith tempfile.TemporaryDirectory() as directory:\n    path = Path(directory) / \"tasks.json\"\n    for title in (\"\\nvalid\", \"valid\\n\", \"\\rvalid\", \"valid\\r\"):\n        path.unlink(missing_ok=True)\n        try:\n            taskdock.add_task(path, title)\n        except ValueError:\n            pass\n        else:\n            failures.append(\"raw CR/LF title accepted: \" + repr(title))\n        if path.exists():\n            failures.append(\"invalid title wrote storage\")\n    for version in (1.0, True, \"1\"):\n        raw = json.dumps({\"version\": version, \"tasks\": []})\n        path.write_text(raw)\n        for name, call in (\n            (\"list\", lambda: taskdock.list_tasks(path)),\n            (\"add\", lambda: taskdock.add_task(path, \"valid\")),\n            (\"export\", lambda: taskdock.export_markdown(path)),\n        ):\n            path.write_text(raw)\n            try:\n                call()\n            except ValueError:\n                pass\n            else:\n                failures.append(f\"{name} accepted version {version!r}\")\n            if path.read_text() != raw:\n                failures.append(\"invalid version storage was overwritten\")\nassert not failures, failures\nprint(\"edge-ok\")\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "edge-ok\n",
+            "seconds": 30.0
+          },
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-B",
+              "-c",
+              "\"\"\"Independent API/storage checks, outside worker source.\"\"\"\n\nimport importlib\nimport json\nimport tempfile\nfrom pathlib import Path\nfrom unittest.mock import patch\n\nimport taskdock as api\n\n\ndef invalid(call):\n    try:\n        call()\n    except ValueError:\n        return\n    raise AssertionError(\"invalid input accepted\")\n\n\nwith tempfile.TemporaryDirectory() as folder:\n    path = Path(folder) / \"tasks.json\"\n    assert api.list_tasks(path) == []\n    assert api.export_markdown(path) == \"# Tasks\\n\"\n    assert not path.exists()\n    one = api.add_task(str(path), \"  \u017d\u0105sis  \")\n    assert one == {\"id\": 1, \"title\": \"\u017d\u0105sis\", \"done\": False}\n    two = api.add_task(path, \"\u017d\u0105sis\")\n    assert two == {\"id\": 2, \"title\": \"\u017d\u0105sis\", \"done\": False}\n    assert api.complete_task(path, 1) == {**one, \"done\": True}\n    assert api.complete_task(path, 1) == {**one, \"done\": True}\n    assert api.list_tasks(path) == [two]\n    assert api.list_tasks(path, True) == [{**one, \"done\": True}, two]\n    assert api.add_task(path, \"third\")[\"id\"] == 3\n    assert api.export_markdown(path) == \"# Tasks\\n- [x] 1: \u017d\u0105sis\\n- [ ] 2: \u017d\u0105sis\\n- [ ] 3: third\\n\"\n    before = path.read_bytes()\n    for title in (\"\", \"  \", \"a\\nb\", \"a\\rb\", \"x\" * 121, 1, None, True):\n        invalid(lambda: api.add_task(path, title))\n        assert path.read_bytes() == before\n    for task_id in (True, False, 0, -1, \"1\", 999, None, 1.0):\n        invalid(lambda: api.complete_task(path, task_id))\n        assert path.read_bytes() == before\n    # Unsorted valid storage is read without modification.\n    path.write_text(json.dumps({\"version\": 1, \"tasks\": [two, {**one, \"done\": True}]}))\n    before = path.read_bytes()\n    assert [t[\"id\"] for t in api.list_tasks(path, True)] == [1, 2]\n    assert path.read_bytes() == before\n    good = {\"version\": 1, \"tasks\": [one]}\n    malformed = [\n        \"{\",\n        \"null\",\n        \"[]\",\n        \"true\",\n        json.dumps({**good, \"version\": True}),\n        json.dumps({**good, \"extra\": 1}),\n        json.dumps({**good, \"tasks\": [one, one]}),\n        json.dumps({**good, \"tasks\": \"wrong\"}),\n    ]\n    for change in (\n        {\"id\": True},\n        {\"id\": -1},\n        {\"done\": 1},\n        {\"title\": \" untrimmed \"},\n        {\"title\": \"x\\ny\"},\n        {\"title\": \"\"},\n        {\"extra\": 1},\n    ):\n        malformed.append(json.dumps({\"version\": 1, \"tasks\": [{**one, **change}]}))\n    for raw in malformed:\n        path.write_text(raw)\n        for call in (\n            lambda: api.list_tasks(path),\n            lambda: api.add_task(path, \"safe\"),\n            lambda: api.complete_task(path, 1),\n            lambda: api.export_markdown(path),\n        ):\n            invalid(call)\n            assert path.read_text() == raw\n    path.write_text(json.dumps(good))\n    before = path.read_bytes()\n    # Patching before reload also covers `from os import replace` implementations.\n    with patch(\"os.replace\", side_effect=OSError(\"injected replacement failure\")) as replacement:\n        importlib.reload(api)\n        try:\n            api.add_task(path, \"must not persist\")\n        except OSError:\n            pass\n        else:\n            raise AssertionError(\"replacement failure swallowed or atomic replace bypassed\")\n        assert replacement.called\n    importlib.reload(api)\n    assert path.read_bytes() == before\n    assert {p.name for p in Path(folder).iterdir()} == {\"tasks.json\"}\nprint(\"api-ok\")\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "api-ok\n",
+            "seconds": 30.0
+          }
+        ]
+      },
+      "tests/test_taskdock.py": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-B",
+              "-c",
+              "\"\"\"Generated tests must reject behavior faults with assertions, not crashes.\"\"\"\n\nimport subprocess\nimport sys\nimport tempfile\nimport xml.etree.ElementTree as ET\nfrom pathlib import Path\n\nmutants = {\n    \"filter\": \"\\n_saved_list = list_tasks\\ndef list_tasks(path, include_done=False):\\n    return _saved_list(path, True)\\n\",\n    \"ids\": \"\\n_saved_add = add_task\\ndef add_task(path, title):\\n    task = _saved_add(path, title)\\n    return {**task, 'id': 1}\\n\",\n    \"completion\": \"\\n_saved_complete = complete_task\\ndef complete_task(path, task_id):\\n    from pathlib import Path\\n    old = Path(path).read_bytes()\\n    result = _saved_complete(path, task_id)\\n    Path(path).write_bytes(old)\\n    return result\\n\",\n    \"title\": \"\\n_saved_add = add_task\\ndef add_task(path, title):\\n    if isinstance(title, str) and not title.strip():\\n        title = 'accepted empty title'\\n    return _saved_add(path, title)\\n\",\n}\nmutants.update({'raw-title': '\\n_saved_add = add_task\\ndef add_task(path, title):\\n    return _saved_add(path, title.strip() if isinstance(title, str) else title)\\n', 'version-float': \"\\n_saved_list = list_tasks\\ndef list_tasks(path, include_done=False):\\n    import json\\n    from pathlib import Path\\n    if Path(path).exists() and type(json.loads(Path(path).read_text()).get('version')) is float:\\n        return []\\n    return _saved_list(path, include_done)\\n\"})\nrunner = \"\"\"import pytest,sys\nclass Audit:\n    bad_exception = False\n    def pytest_runtest_makereport(self,item,call):\n        if call.excinfo and not issubclass(call.excinfo.type,(AssertionError,pytest.fail.Exception)):\n            self.bad_exception = True\nplugin = Audit()\ncode = pytest.main(sys.argv[1:],plugins=[plugin])\nsys.exit(99 if plugin.bad_exception else code)\n\"\"\"\nsource = Path(\"taskdock.py\")\noriginal = source.read_text()\npreserved = {\n    p: p.read_bytes() for p in Path(\".\").rglob(\"*\") if p.is_file() and \".pyc\" not in p.name\n}\ntry:\n    for name, suffix in [(\"candidate\", \"\"), *mutants.items()]:\n        source.write_text(original + suffix)\n        with tempfile.TemporaryDirectory() as folder:\n            xml = Path(folder) / \"result.xml\"\n            result = subprocess.run(\n                [\n                    sys.executable,\n                    \"-B\",\n                    \"-c\",\n                    runner,\n                    \"-q\",\n                    \"-p\",\n                    \"no:cacheprovider\",\n                    \"--junitxml=\" + str(xml),\n                    \"tests/test_taskdock.py\",\n                ],\n                capture_output=True,\n                text=True,\n            )\n            assert xml.exists(), (name, result.stdout, result.stderr)\n            tree = ET.parse(xml)\n            assert len(tree.findall(\".//testcase\")) >= 6\n            assert not tree.findall(\".//skipped\") and not tree.findall(\".//error\"), (\n                name,\n                result.stdout,\n            )\n            if name == \"candidate\":\n                assert result.returncode == 0, (name, result.stdout, result.stderr)\n            else:\n                assert result.returncode == 1 and tree.findall(\".//failure\"), (\n                    name,\n                    result.stdout,\n                    result.stderr,\n                )\n        assert source.read_text() == original + suffix, \"tests changed implementation\"\n        assert all(p == source or p.read_bytes() == content for p, content in preserved.items())\nfinally:\n    source.write_text(original)\nprint(\"tests-ok\")\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "tests-ok\n",
+            "seconds": 30.0
+          }
+        ]
+      }
+    },
+    "execution_paths": [
+      "BRIEF.md",
+      "taskdock.py",
+      "taskdock_cli.py",
+      "pyproject.toml",
+      "README.md",
+      "tests/test_taskdock.py"
+    ],
+    "planning_paths": [
+      "taskdock.py",
+      "tests/test_taskdock.py"
+    ],
+    "integration_gates": {
+      "api": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-B",
+              "-c",
+              "\"\"\"Post-review checks for explicit input-type and raw-title requirements.\"\"\"\n\nimport json\nimport tempfile\nfrom pathlib import Path\n\nimport taskdock\n\nfailures = []\nwith tempfile.TemporaryDirectory() as directory:\n    path = Path(directory) / \"tasks.json\"\n    for title in (\"\\nvalid\", \"valid\\n\", \"\\rvalid\", \"valid\\r\"):\n        path.unlink(missing_ok=True)\n        try:\n            taskdock.add_task(path, title)\n        except ValueError:\n            pass\n        else:\n            failures.append(\"raw CR/LF title accepted: \" + repr(title))\n        if path.exists():\n            failures.append(\"invalid title wrote storage\")\n    for version in (1.0, True, \"1\"):\n        raw = json.dumps({\"version\": version, \"tasks\": []})\n        path.write_text(raw)\n        for name, call in (\n            (\"list\", lambda: taskdock.list_tasks(path)),\n            (\"add\", lambda: taskdock.add_task(path, \"valid\")),\n            (\"export\", lambda: taskdock.export_markdown(path)),\n        ):\n            path.write_text(raw)\n            try:\n                call()\n            except ValueError:\n                pass\n            else:\n                failures.append(f\"{name} accepted version {version!r}\")\n            if path.read_text() != raw:\n                failures.append(\"invalid version storage was overwritten\")\nassert not failures, failures\nprint(\"edge-ok\")\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "edge-ok\n",
+            "seconds": 30.0
+          },
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-B",
+              "-c",
+              "\"\"\"Independent API/storage checks, outside worker source.\"\"\"\n\nimport importlib\nimport json\nimport tempfile\nfrom pathlib import Path\nfrom unittest.mock import patch\n\nimport taskdock as api\n\n\ndef invalid(call):\n    try:\n        call()\n    except ValueError:\n        return\n    raise AssertionError(\"invalid input accepted\")\n\n\nwith tempfile.TemporaryDirectory() as folder:\n    path = Path(folder) / \"tasks.json\"\n    assert api.list_tasks(path) == []\n    assert api.export_markdown(path) == \"# Tasks\\n\"\n    assert not path.exists()\n    one = api.add_task(str(path), \"  \u017d\u0105sis  \")\n    assert one == {\"id\": 1, \"title\": \"\u017d\u0105sis\", \"done\": False}\n    two = api.add_task(path, \"\u017d\u0105sis\")\n    assert two == {\"id\": 2, \"title\": \"\u017d\u0105sis\", \"done\": False}\n    assert api.complete_task(path, 1) == {**one, \"done\": True}\n    assert api.complete_task(path, 1) == {**one, \"done\": True}\n    assert api.list_tasks(path) == [two]\n    assert api.list_tasks(path, True) == [{**one, \"done\": True}, two]\n    assert api.add_task(path, \"third\")[\"id\"] == 3\n    assert api.export_markdown(path) == \"# Tasks\\n- [x] 1: \u017d\u0105sis\\n- [ ] 2: \u017d\u0105sis\\n- [ ] 3: third\\n\"\n    before = path.read_bytes()\n    for title in (\"\", \"  \", \"a\\nb\", \"a\\rb\", \"x\" * 121, 1, None, True):\n        invalid(lambda: api.add_task(path, title))\n        assert path.read_bytes() == before\n    for task_id in (True, False, 0, -1, \"1\", 999, None, 1.0):\n        invalid(lambda: api.complete_task(path, task_id))\n        assert path.read_bytes() == before\n    # Unsorted valid storage is read without modification.\n    path.write_text(json.dumps({\"version\": 1, \"tasks\": [two, {**one, \"done\": True}]}))\n    before = path.read_bytes()\n    assert [t[\"id\"] for t in api.list_tasks(path, True)] == [1, 2]\n    assert path.read_bytes() == before\n    good = {\"version\": 1, \"tasks\": [one]}\n    malformed = [\n        \"{\",\n        \"null\",\n        \"[]\",\n        \"true\",\n        json.dumps({**good, \"version\": True}),\n        json.dumps({**good, \"extra\": 1}),\n        json.dumps({**good, \"tasks\": [one, one]}),\n        json.dumps({**good, \"tasks\": \"wrong\"}),\n    ]\n    for change in (\n        {\"id\": True},\n        {\"id\": -1},\n        {\"done\": 1},\n        {\"title\": \" untrimmed \"},\n        {\"title\": \"x\\ny\"},\n        {\"title\": \"\"},\n        {\"extra\": 1},\n    ):\n        malformed.append(json.dumps({\"version\": 1, \"tasks\": [{**one, **change}]}))\n    for raw in malformed:\n        path.write_text(raw)\n        for call in (\n            lambda: api.list_tasks(path),\n            lambda: api.add_task(path, \"safe\"),\n            lambda: api.complete_task(path, 1),\n            lambda: api.export_markdown(path),\n        ):\n            invalid(call)\n            assert path.read_text() == raw\n    path.write_text(json.dumps(good))\n    before = path.read_bytes()\n    # Patching before reload also covers `from os import replace` implementations.\n    with patch(\"os.replace\", side_effect=OSError(\"injected replacement failure\")) as replacement:\n        importlib.reload(api)\n        try:\n            api.add_task(path, \"must not persist\")\n        except OSError:\n            pass\n        else:\n            raise AssertionError(\"replacement failure swallowed or atomic replace bypassed\")\n        assert replacement.called\n    importlib.reload(api)\n    assert path.read_bytes() == before\n    assert {p.name for p in Path(folder).iterdir()} == {\"tasks.json\"}\nprint(\"api-ok\")\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "api-ok\n",
+            "seconds": 30.0
+          }
+        ]
+      },
+      "cli": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-B",
+              "-c",
+              "\"\"\"Independent real-process workflows.\"\"\"\n\nimport json\nimport subprocess\nimport sys\nimport tempfile\nfrom pathlib import Path\n\nwith tempfile.TemporaryDirectory() as folder:\n    path = Path(folder) / \"tasks.json\"\n\n    def run(*args, code=0):\n        result = subprocess.run(\n            [sys.executable, \"-B\", \"-m\", \"taskdock_cli\", \"--file\", str(path), *args],\n            capture_output=True,\n            text=True,\n        )\n        assert result.returncode == code, (args, result.stdout, result.stderr)\n        if code:\n            assert result.stderr and not result.stdout and \"Traceback\" not in result.stderr\n        else:\n            assert not result.stderr\n        return result.stdout\n\n    assert json.loads(run(\"list\")) == [] and not path.exists()\n    assert json.loads(run(\"add\", \"  Review caf\u00e9  \")) == {\n        \"id\": 1,\n        \"title\": \"Review caf\u00e9\",\n        \"done\": False,\n    }\n    assert json.loads(run(\"done\", \"1\"))[\"done\"] is True\n    assert json.loads(run(\"list\")) == []\n    assert len(json.loads(run(\"list\", \"--all\"))) == 1\n    assert run(\"export\") == \"# Tasks\\n- [x] 1: Review caf\u00e9\\n\"\n    before = path.read_bytes()\n    for args in ((\"done\", \"99\"), (\"done\", \"wrong\"), (\"add\", \" \"), (\"unknown\",)):\n        run(*args, code=2)\n        assert path.read_bytes() == before\n    path.write_text(\"invalid json\")\n    run(\"list\", code=2)\n    assert path.read_text() == \"invalid json\"\n    path.unlink()\n    path.mkdir()\n    run(\"add\", \"filesystem failure\", code=2)\n    help_result = subprocess.run(\n        [sys.executable, \"-m\", \"taskdock_cli\", \"--help\"], capture_output=True\n    )\n    assert help_result.returncode == 0 and help_result.stdout\nprint(\"cli-ok\")\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "cli-ok\n",
+            "seconds": 30.0
+          }
+        ]
+      },
+      "docs": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-B",
+              "-c",
+              "\"\"\"Check declared documentation topics; this does not judge prose quality.\"\"\"\n\nfrom pathlib import Path\n\ntext = Path(\"README.md\").read_text().lower()\nfor word in (\"install\", \"--file\", \"add\", \"list\", \"done\", \"export\", \"pytest\", \"json\", \"single\"):\n    assert word in text, word\nassert \"/home/\" not in text and \"/users/\" not in text\nprint(\"docs-ok\")\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "docs-ok\n",
+            "seconds": 30.0
+          }
+        ]
+      },
+      "package": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-B",
+              "-c",
+              "\"\"\"Install offline and execute the installed entry point outside the source tree.\"\"\"\n\nimport json\nimport os\nimport subprocess\nimport sys\nimport tempfile\nfrom pathlib import Path\n\nimport tomllib\n\nconfig = tomllib.loads(Path(\"pyproject.toml\").read_text())\nassert config[\"project\"][\"name\"] == \"taskdock-local\"\nassert config[\"project\"][\"version\"] == \"0.1.0\"\nassert config[\"project\"].get(\"dependencies\", []) == []\nassert config[\"project\"][\"requires-python\"] == \">=3.11\"\nassert config[\"project\"][\"scripts\"][\"taskdock\"] == \"taskdock_cli:main\"\nassert config[\"build-system\"][\"build-backend\"] == \"setuptools.build_meta\"\nwith tempfile.TemporaryDirectory() as folder:\n    root = Path(folder)\n    target = root / \"installed\"\n    result = subprocess.run(\n        [\n            sys.executable,\n            \"-m\",\n            \"pip\",\n            \"install\",\n            \"--no-index\",\n            \"--no-deps\",\n            \"--no-build-isolation\",\n            \"--disable-pip-version-check\",\n            \"--target\",\n            str(target),\n            \".\",\n        ],\n        capture_output=True,\n        text=True,\n    )\n    assert result.returncode == 0, (result.stdout, result.stderr)\n    env = {**os.environ, \"PYTHONPATH\": str(target)}\n    # The broker deliberately mounts writable storage noexec. Exercise the installed\n    # entry script through its pinned interpreter without relaxing that boundary.\n    command = [sys.executable, str(target / \"bin/taskdock\"), \"--file\", str(root / \"data.json\")]\n    created = subprocess.run(\n        command + [\"add\", \"installed\"], cwd=root, env=env, capture_output=True, text=True\n    )\n    assert created.returncode == 0, created.stderr\n    assert json.loads(created.stdout) == {\"id\": 1, \"title\": \"installed\", \"done\": False}\n    listed = subprocess.run(command + [\"list\"], cwd=root, env=env, capture_output=True, text=True)\n    assert listed.returncode == 0 and json.loads(listed.stdout) == [json.loads(created.stdout)]\nprint(\"package-ok\")\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "package-ok\n",
+            "seconds": 30.0
+          }
+        ]
+      },
+      "tests": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-B",
+              "-c",
+              "\"\"\"Generated tests must reject behavior faults with assertions, not crashes.\"\"\"\n\nimport subprocess\nimport sys\nimport tempfile\nimport xml.etree.ElementTree as ET\nfrom pathlib import Path\n\nmutants = {\n    \"filter\": \"\\n_saved_list = list_tasks\\ndef list_tasks(path, include_done=False):\\n    return _saved_list(path, True)\\n\",\n    \"ids\": \"\\n_saved_add = add_task\\ndef add_task(path, title):\\n    task = _saved_add(path, title)\\n    return {**task, 'id': 1}\\n\",\n    \"completion\": \"\\n_saved_complete = complete_task\\ndef complete_task(path, task_id):\\n    from pathlib import Path\\n    old = Path(path).read_bytes()\\n    result = _saved_complete(path, task_id)\\n    Path(path).write_bytes(old)\\n    return result\\n\",\n    \"title\": \"\\n_saved_add = add_task\\ndef add_task(path, title):\\n    if isinstance(title, str) and not title.strip():\\n        title = 'accepted empty title'\\n    return _saved_add(path, title)\\n\",\n}\nmutants.update({'raw-title': '\\n_saved_add = add_task\\ndef add_task(path, title):\\n    return _saved_add(path, title.strip() if isinstance(title, str) else title)\\n', 'version-float': \"\\n_saved_list = list_tasks\\ndef list_tasks(path, include_done=False):\\n    import json\\n    from pathlib import Path\\n    if Path(path).exists() and type(json.loads(Path(path).read_text()).get('version')) is float:\\n        return []\\n    return _saved_list(path, include_done)\\n\"})\nrunner = \"\"\"import pytest,sys\nclass Audit:\n    bad_exception = False\n    def pytest_runtest_makereport(self,item,call):\n        if call.excinfo and not issubclass(call.excinfo.type,(AssertionError,pytest.fail.Exception)):\n            self.bad_exception = True\nplugin = Audit()\ncode = pytest.main(sys.argv[1:],plugins=[plugin])\nsys.exit(99 if plugin.bad_exception else code)\n\"\"\"\nsource = Path(\"taskdock.py\")\noriginal = source.read_text()\npreserved = {\n    p: p.read_bytes() for p in Path(\".\").rglob(\"*\") if p.is_file() and \".pyc\" not in p.name\n}\ntry:\n    for name, suffix in [(\"candidate\", \"\"), *mutants.items()]:\n        source.write_text(original + suffix)\n        with tempfile.TemporaryDirectory() as folder:\n            xml = Path(folder) / \"result.xml\"\n            result = subprocess.run(\n                [\n                    sys.executable,\n                    \"-B\",\n                    \"-c\",\n                    runner,\n                    \"-q\",\n                    \"-p\",\n                    \"no:cacheprovider\",\n                    \"--junitxml=\" + str(xml),\n                    \"tests/test_taskdock.py\",\n                ],\n                capture_output=True,\n                text=True,\n            )\n            assert xml.exists(), (name, result.stdout, result.stderr)\n            tree = ET.parse(xml)\n            assert len(tree.findall(\".//testcase\")) >= 6\n            assert not tree.findall(\".//skipped\") and not tree.findall(\".//error\"), (\n                name,\n                result.stdout,\n            )\n            if name == \"candidate\":\n                assert result.returncode == 0, (name, result.stdout, result.stderr)\n            else:\n                assert result.returncode == 1 and tree.findall(\".//failure\"), (\n                    name,\n                    result.stdout,\n                    result.stderr,\n                )\n        assert source.read_text() == original + suffix, \"tests changed implementation\"\n        assert all(p == source or p.read_bytes() == content for p, content in preserved.items())\nfinally:\n    source.write_text(original)\nprint(\"tests-ok\")\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "tests-ok\n",
+            "seconds": 30.0
+          }
+        ]
+      }
+    },
+    "environment_id": "python",
+    "model_profile": {
+      "schema_version": 1,
+      "profile_id": "vllm-python-worker-windows-v1",
+      "base_url": "http://127.0.0.1:30000/v1",
+      "model": "gflo-local",
+      "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+      "context_limit": 16384,
+      "timeout_seconds": 120.0
+    },
+    "deployment": "{\n  \"mode\": \"managed\",\n  \"base_url\": \"http://127.0.0.1:30000/v1\",\n  \"model\": \"gflo-local\",\n  \"request_timeout\": 120,\n  \"startup_timeout\": 300,\n  \"managed\": {\n    \"backend\": \"vllm\",\n    \"image\": \"vllm/vllm-openai@sha256:ac259a0111c6cf462a72e449962b84f7a624b5cbec24bd7d9ec3b67d40ffd1bf\",\n    \"model_path\": \"Inferact/Qwen3.8-27B-NVFP4\",\n    \"revision\": \"6128240ebaf4eaa7bad2b3d1c72c37d677c5f462\",\n    \"name\": \"gflo-vllm-graphs\",\n    \"gpu\": \"0\",\n    \"context_length\": 16384,\n    \"memory_fraction\": 0.85,\n    \"shm_size\": \"4g\",\n    \"memory_limit\": \"36g\",\n    \"cpu_limit\": 3,\n    \"pids_limit\": 1024,\n    \"model_cache_volume\": \"local-vllm-huggingface-cache\",\n    \"offline\": true,\n    \"hf_token_env\": \"\",\n    \"server_options\": {\n      \"kv-cache-dtype\": \"bfloat16\",\n      \"reasoning-parser\": \"qwen3\",\n      \"tool-call-parser\": \"qwen3_coder\"\n    },\n    \"enforce_eager\": false\n  }\n}\n",
+    "context_budget": {
+      "schema_version": 1,
+      "total_tokens": 16384,
+      "output_tokens": 6144
+    },
+    "max_tasks": 2,
+    "max_attempts": 2,
+    "max_model_turns": 3,
+    "max_reserved_tokens": 270336
+  }
+}

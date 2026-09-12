@@ -1,7 +1,7 @@
 # Qualify a complete small Python project
 
 Type: task
-Status: claimed
+Status: resolved
 Blocked by: 69
 
 ## Scope
@@ -19,3 +19,7 @@ qualification. This is supervised task/check/environment preparation; it is not
 automatic product discovery or arbitrary dependency provisioning. After results,
 proceed to varied unfamiliar project trials and larger execution qualification as
 authorized by the owner, stopping for an unresolved owner decision or external blocker.
+
+## Answer
+
+Three original projects: two historical acceptances, one CLI halt, zero fully qualified after independent edge review. Fresh supervised repair yields one complete passing delivery; all gates, held-out audit, protected bytes and terminal replay pass. Other jobs and preparation failures remain recorded in [evidence](../small-project/README.md). This establishes supervised small-project capability only. Continue varied projects and larger execution qualification.

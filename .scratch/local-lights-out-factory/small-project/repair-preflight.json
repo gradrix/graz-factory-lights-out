@@ -1,0 +1,23 @@
+[
+  {
+    "gate": "api",
+    "exit_code": 0,
+    "evidence_digest": "182d9864c822f865113cc5eefb4be03e4acdb6e7e3e661057e0ced8c3dbb6ba6",
+    "candidate_digest": "04b73cd571436f33ab046d172572e13497feb3bd48fbb4341ba43453e86eb122",
+    "gate_digest": "df6b84205fb3afdb425d7d242a7b5a2cf3b84a1529201de73e55002bf99cc13d"
+  },
+  {
+    "gate": "api",
+    "exit_code": 0,
+    "evidence_digest": "640c9c4a2ebc464d502760c0b3d3196d2fa79c651ed777dcc2d96ef84fdff73e",
+    "candidate_digest": "04b73cd571436f33ab046d172572e13497feb3bd48fbb4341ba43453e86eb122",
+    "gate_digest": "df6b84205fb3afdb425d7d242a7b5a2cf3b84a1529201de73e55002bf99cc13d"
+  },
+  {
+    "gate": "tests",
+    "exit_code": 0,
+    "evidence_digest": "fc2e15e58ded60d2e4cfc3780862011ff946393b4f8901728adc550e1019fba1",
+    "candidate_digest": "04b73cd571436f33ab046d172572e13497feb3bd48fbb4341ba43453e86eb122",
+    "gate_digest": "31067f3a1964d73439ff0ecaefdddf465984b132cbe194faf516749fa25aa4a5"
+  }
+]

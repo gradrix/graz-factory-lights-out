@@ -1,0 +1,590 @@
+[
+  {
+    "name": "trial-1",
+    "request_digest": "89d68f3b290fabcba580d2e02e8d362adf10f169c336e145ef500a288ebefdaf",
+    "policy_digest": "3da3551c2045f7c3769fa83fb15b1a1b4b4d511a45f32f85d255fd9b3f2eacd7",
+    "max_responses": 36,
+    "reserved_tokens": 565248,
+    "proposal": {
+      "questions": [],
+      "rationale": "The plan covers all requirements from the brief: storage API, CLI, packaging, and tests/docs. Tasks are split by independent testable components, with dependencies declared where necessary. Interfaces and acceptance checks are derived directly from the brief's specifications. No essential product policy is missing, so no planning questions are needed.",
+      "request_digest": "89d68f3b290fabcba580d2e02e8d362adf10f169c336e145ef500a288ebefdaf",
+      "schema_version": 1,
+      "tasks": [
+        {
+          "acceptance_checks": [
+            "add_task appends a new task with done false and id max(existing ids, default 0)+1.",
+            "list_tasks returns ascending-ID tasks, excluding completed tasks by default; include_done=True includes all tasks.",
+            "complete_task requires a positive int (not bool), raises ValueError for invalid or unknown IDs, and persists done true idempotently.",
+            "export_markdown includes all tasks sorted by ID with the exact format '# Tasks\\n' followed by '- [ ] ID: TITLE\\n' or '- [x] ID: TITLE\\n'.",
+            "Invalid title input raises ValueError and leaves storage unchanged.",
+            "Malformed JSON, invalid root/version/tasks, extra keys, nonpositive/duplicate IDs, bool IDs, untrimmed titles, and nonboolean done values raise ValueError.",
+            "Writes use a temporary file in the destination directory and os.replace, cleaning up temporary files on failure.",
+            "Failure before replacement preserves existing bytes, and parent directories must already exist."
+          ],
+          "depends_on": [],
+          "environment_id": "python",
+          "interface_contracts": [
+            "{\"declarations\":[{\"declaration\":\"def add_task(path: str | pathlib.Path, title: str) -> dict: ...\",\"path\":\"taskdock.py\",\"requirement_ids\":[\"storage\"],\"schema_version\":1,\"symbol\":\"add_task\"},{\"declaration\":\"def list_tasks(path: str | pathlib.Path, include_done: bool = False) -> list: ...\",\"path\":\"taskdock.py\",\"requirement_ids\":[\"storage\"],\"schema_version\":1,\"symbol\":\"list_tasks\"},{\"declaration\":\"def complete_task(path: str | pathlib.Path, task_id: int) -> dict: ...\",\"path\":\"taskdock.py\",\"requirement_ids\":[\"storage\"],\"schema_version\":1,\"symbol\":\"complete_task\"},{\"declaration\":\"def export_markdown(path: str | pathlib.Path) -> str: ...\",\"path\":\"taskdock.py\",\"requirement_ids\":[\"storage\"],\"schema_version\":1,\"symbol\":\"export_markdown\"}],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+          ],
+          "objective": "Implement the storage API in taskdock.py with add_task, list_tasks, complete_task, and export_markdown, enforcing validation, atomic writes, and correct output formats.",
+          "read_paths": [
+            "BRIEF.md"
+          ],
+          "requirement_ids": [
+            "storage"
+          ],
+          "schema_version": 1,
+          "task_id": "storage",
+          "writable_paths": [
+            "taskdock.py"
+          ]
+        },
+        {
+          "acceptance_checks": [
+            "main(argv=None) -> int is exposed and supports python -m taskdock_cli.",
+            "Global --file PATH is required before the subcommand.",
+            "add TITLE writes a task and prints the returned task as one JSON value plus newline.",
+            "list [--all] prints the matching task array as one JSON value plus newline.",
+            "done ID completes the task and prints the returned task as one JSON value plus newline.",
+            "export prints exactly export_markdown's output with no extra newline.",
+            "Successful commands exit 0; invalid arguments, bad storage, unknown IDs, and filesystem failures exit 2 with an explanatory error to stderr and no Python traceback.",
+            "--help exits 0, and separate subprocess invocations see persisted tasks."
+          ],
+          "depends_on": [
+            "storage"
+          ],
+          "environment_id": "python",
+          "interface_contracts": [
+            "{\"declarations\":[{\"declaration\":\"def main(argv: list[str] | None = None) -> int: ...\",\"path\":\"taskdock_cli.py\",\"requirement_ids\":[\"cli\"],\"schema_version\":1,\"symbol\":\"main\"}],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+          ],
+          "objective": "Implement the CLI in taskdock_cli.py with main(argv=None) -> int, supporting add, list, done, and export commands with --file PATH, and ensuring correct exit codes and output formats.",
+          "read_paths": [
+            "BRIEF.md",
+            "taskdock.py"
+          ],
+          "requirement_ids": [
+            "cli"
+          ],
+          "schema_version": 1,
+          "task_id": "cli",
+          "writable_paths": [
+            "taskdock_cli.py"
+          ]
+        },
+        {
+          "acceptance_checks": [
+            "pyproject.toml uses setuptools.build_meta with build requirements setuptools and wheel.",
+            "Distribution name is taskdock-local, version 0.1.0, Python >=3.11, and no runtime dependencies.",
+            "Both top-level modules are included using setuptools py-modules.",
+            "Console script taskdock points to taskdock_cli:main.",
+            "Offline pip install --no-deps --no-build-isolation --target DIR . works in the supplied environment.",
+            "The installed entry script is usable via python DIR/bin/taskdock from outside the source directory using DIR on PYTHONPATH."
+          ],
+          "depends_on": [
+            "storage",
+            "cli"
+          ],
+          "environment_id": "python",
+          "interface_contracts": [
+            "{\"declarations\":[],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+          ],
+          "objective": "Create pyproject.toml for the taskdock-local distribution with setuptools.build_meta, build requirements, Python >=3.11, no runtime dependencies, and a console script taskdock pointing to taskdock_cli:main.",
+          "read_paths": [
+            "BRIEF.md",
+            "taskdock.py",
+            "taskdock_cli.py"
+          ],
+          "requirement_ids": [
+            "packaging"
+          ],
+          "schema_version": 1,
+          "task_id": "packaging",
+          "writable_paths": [
+            "pyproject.toml"
+          ]
+        },
+        {
+          "acceptance_checks": [
+            "At least six substantive pytest test cases are in tests/test_taskdock.py using temporary paths and the real API.",
+            "Tests cover persistence, completed filtering, monotonic IDs after completion, invalid titles, invalid/corrupt storage preservation, and idempotent completion/unknown-ID rejection.",
+            "Generated tests pass correct code and fail implementations with broken done filtering, ID allocation, completion persistence, or title validation.",
+            "No skips or replacement/fake implementation imports are used.",
+            "README.md explains installation, all four commands with --file examples, running pytest, JSON storage, and the single-writer limitation.",
+            "No absolute machine-specific paths are used in README.md."
+          ],
+          "depends_on": [
+            "storage",
+            "cli"
+          ],
+          "environment_id": "python",
+          "interface_contracts": [
+            "{\"declarations\":[],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+          ],
+          "objective": "Create tests/test_taskdock.py with at least six substantive pytest test cases covering persistence, completed filtering, monotonic IDs, invalid titles, invalid/corrupt storage, and idempotent completion/unknown-ID rejection. Create README.md explaining installation, commands, pytest, JSON storage, and single-writer limitation.",
+          "read_paths": [
+            "BRIEF.md",
+            "taskdock.py",
+            "taskdock_cli.py"
+          ],
+          "requirement_ids": [
+            "tests-docs"
+          ],
+          "schema_version": 1,
+          "task_id": "tests-docs",
+          "writable_paths": [
+            "tests/test_taskdock.py",
+            "README.md"
+          ]
+        }
+      ]
+    },
+    "acceptance_challenged": true,
+    "preserved_original_files": 2,
+    "replay_blocked": "Accepted result has contradictory evidence; prepare new repair work",
+    "cost": {
+      "responses": 7,
+      "prompt_tokens": 28091,
+      "completion_tokens": 8445,
+      "total_tokens": 36536,
+      "model_seconds": 142.62947711299785
+    },
+    "status": "accepted",
+    "planning_status": "needs-review",
+    "questions": [],
+    "reason": null,
+    "evidence_digests": [
+      "b9128e07a9247b49f71f18056100eff3c6a89bf16657befbca958b8677804484",
+      "b3a4cf717b6722b1cecb2b8230aaf64765e882ba4be233dfc9445d4faaed6ea3",
+      "dcde167ecd8d47a26b6f395eaa8e15687720ae7868e68641c906c661460be4aa",
+      "d9886b8ee57f512cccd0f25d041267cb1a3e83975fc91fcf5ec3d1a1566196e0",
+      "fce4daec6a4f5347e7101480c487f9729cc1af8d21f3e30759769c88a3084477",
+      "cb9abd363e6977fd18892914b75e10e95a2ddfd9e342c0a5fc77a41daedd8de2",
+      "89ebffe658a343473a127a912a56aadfe89699b19b7edc8deae26dfe34356b52"
+    ],
+    "atoms": [
+      {
+        "atom_id": "feature-final-bd3fe725d9b6ebc4283a3b7d046287b4a4156b32c1b5f238086c1b55abf85b5c",
+        "status": "accepted",
+        "attempts": 1,
+        "candidate_digest": "630a57a635942fe2d91e3c596e989334b060f1286bf21d937305b93aebefecab"
+      },
+      {
+        "atom_id": "prepared-89d68f3b290fabcb-7889cee9c7989a7a-42aefe0e0d55aa88-0612a2bb4b6bf867/5898283256ffc10e",
+        "status": "accepted",
+        "attempts": 1,
+        "candidate_digest": "497ee3a5744d63970032ba31b4514328643ab89dd754715c0e0ee370c949d844"
+      },
+      {
+        "atom_id": "prepared-89d68f3b290fabcb-7889cee9c7989a7a-42aefe0e0d55aa88-5849bea73446cbfd/47129d9fcff565a7",
+        "status": "accepted",
+        "attempts": 1,
+        "candidate_digest": "630a57a635942fe2d91e3c596e989334b060f1286bf21d937305b93aebefecab"
+      },
+      {
+        "atom_id": "prepared-89d68f3b290fabcb-7889cee9c7989a7a-42aefe0e0d55aa88-9ccb1cb3b77d0868/c28b82aa7a1b3cbc",
+        "status": "accepted",
+        "attempts": 1,
+        "candidate_digest": "ec4f358023f1437c21e047f02cc8a24841f9c23577d02be84b61da68642d21d6"
+      },
+      {
+        "atom_id": "prepared-89d68f3b290fabcb-7889cee9c7989a7a-42aefe0e0d55aa88/8b11fdf2fe3f7e7d",
+        "status": "accepted",
+        "attempts": 1,
+        "candidate_digest": "6e5d9b15e4cc1c2c7f347cb03918ae3f2810525398c281e0aed9655140644cae"
+      }
+    ],
+    "heldout": {
+      "exit_code": 0,
+      "candidate_digest": "630a57a635942fe2d91e3c596e989334b060f1286bf21d937305b93aebefecab"
+    }
+  },
+  {
+    "name": "trial-2",
+    "request_digest": "e78821150081ed6b37471f49dd9862c0d98c8c80880d55d3a8c25dab92c482de",
+    "policy_digest": "64684c6e0833d13af5b4ddba3d85dcc22eee01ea8a0e4ec9beeaa2475d34c926",
+    "max_responses": 36,
+    "reserved_tokens": 565248,
+    "proposal": {
+      "questions": [],
+      "rationale": "The plan covers all requirements with meaningful acceptance checks and splits independently testable tasks. The storage API is the foundation, followed by the CLI, packaging, and tests/docs. Dependencies are correctly declared, and interfaces are defined for the storage and CLI tasks. Implementation suggestions are retained for review but not sent to workers.",
+      "request_digest": "e78821150081ed6b37471f49dd9862c0d98c8c80880d55d3a8c25dab92c482de",
+      "schema_version": 1,
+      "tasks": [
+        {
+          "acceptance_checks": [
+            "add_task appends a new task with done false and id max(existing ids, default 0)+1.",
+            "list_tasks returns ascending-ID tasks, excluding completed tasks by default.",
+            "complete_task persists done true and returns the task dictionary.",
+            "export_markdown includes all tasks sorted by ID in the specified format.",
+            "Invalid title input raises ValueError and leaves storage unchanged.",
+            "Malformed JSON or invalid storage structures raise ValueError.",
+            "Writes use a temporary file and os.replace, cleaning up on failure.",
+            "Missing files are treated as empty lists without creating them."
+          ],
+          "depends_on": [],
+          "environment_id": "python",
+          "interface_contracts": [
+            "{\"declarations\":[{\"declaration\":\"def add_task(path: str | pathlib.Path, title: str) -> dict: ...\",\"path\":\"taskdock.py\",\"requirement_ids\":[\"storage\"],\"schema_version\":1,\"symbol\":\"add_task\"},{\"declaration\":\"def list_tasks(path: str | pathlib.Path, include_done: bool = False) -> list: ...\",\"path\":\"taskdock.py\",\"requirement_ids\":[\"storage\"],\"schema_version\":1,\"symbol\":\"list_tasks\"},{\"declaration\":\"def complete_task(path: str | pathlib.Path, task_id: int) -> dict: ...\",\"path\":\"taskdock.py\",\"requirement_ids\":[\"storage\"],\"schema_version\":1,\"symbol\":\"complete_task\"},{\"declaration\":\"def export_markdown(path: str | pathlib.Path) -> str: ...\",\"path\":\"taskdock.py\",\"requirement_ids\":[\"storage\"],\"schema_version\":1,\"symbol\":\"export_markdown\"}],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+          ],
+          "objective": "Implement the storage API in taskdock.py with add_task, list_tasks, complete_task, and export_markdown.",
+          "read_paths": [
+            "BRIEF.md"
+          ],
+          "requirement_ids": [
+            "storage"
+          ],
+          "schema_version": 1,
+          "task_id": "storage",
+          "writable_paths": [
+            "taskdock.py"
+          ]
+        },
+        {
+          "acceptance_checks": [
+            "main(argv=None) -> int is exposed and supports python -m taskdock_cli.",
+            "Global --file PATH is required before the subcommand.",
+            "add TITLE writes a task and prints the returned task as JSON plus newline.",
+            "list [--all] prints the matching task array as JSON plus newline.",
+            "done ID completes the task and prints the returned task as JSON plus newline.",
+            "export prints exactly export_markdown's output with no extra newline.",
+            "Successful commands exit 0; errors exit 2 with stderr messages and no tracebacks.",
+            "Separate subprocess invocations see persisted tasks."
+          ],
+          "depends_on": [
+            "storage"
+          ],
+          "environment_id": "python",
+          "interface_contracts": [
+            "{\"declarations\":[{\"declaration\":\"def main(argv: list[str] | None = None) -> int: ...\",\"path\":\"taskdock_cli.py\",\"requirement_ids\":[\"cli\"],\"schema_version\":1,\"symbol\":\"main\"}],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+          ],
+          "objective": "Implement the CLI in taskdock_cli.py with main(argv=None) -> int and support for add, list, done, and export commands.",
+          "read_paths": [
+            "BRIEF.md",
+            "taskdock.py"
+          ],
+          "requirement_ids": [
+            "cli"
+          ],
+          "schema_version": 1,
+          "task_id": "cli",
+          "writable_paths": [
+            "taskdock_cli.py"
+          ]
+        },
+        {
+          "acceptance_checks": [
+            "pyproject.toml uses setuptools.build_meta with build requirements setuptools and wheel.",
+            "Distribution name is taskdock-local and version is 0.1.0.",
+            "Python >=3.11 is required, and no runtime dependencies are declared.",
+            "Both top-level modules are included using setuptools py-modules.",
+            "Console script taskdock points to taskdock_cli:main.",
+            "Offline pip install --no-deps --no-build-isolation --target DIR . works.",
+            "The installed entry script is usable via python DIR/bin/taskdock with DIR on PYTHONPATH.",
+            "Packaging checks have both modules available."
+          ],
+          "depends_on": [
+            "storage",
+            "cli"
+          ],
+          "environment_id": "python",
+          "interface_contracts": [
+            "{\"declarations\":[],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+          ],
+          "objective": "Create pyproject.toml for packaging the project with setuptools.build_meta and ensure offline installation works.",
+          "read_paths": [
+            "BRIEF.md",
+            "taskdock.py",
+            "taskdock_cli.py"
+          ],
+          "requirement_ids": [
+            "packaging"
+          ],
+          "schema_version": 1,
+          "task_id": "packaging",
+          "writable_paths": [
+            "pyproject.toml"
+          ]
+        },
+        {
+          "acceptance_checks": [
+            "At least six substantive pytest test cases are in tests/test_taskdock.py.",
+            "Tests cover persistence, completed filtering, monotonic IDs after completion, invalid titles, invalid/corrupt storage preservation, and idempotent completion/unknown-ID rejection.",
+            "Tests pass correct code and fail implementations with broken done filtering, ID allocation, completion persistence, or title validation.",
+            "No skips or replacement/fake implementation imports are used.",
+            "The storage implementation is declared as a dependency for test tasks.",
+            "README.md explains installation, all four commands with --file examples, running pytest, JSON storage, and the single-writer limitation.",
+            "No absolute machine-specific paths are used in README.md.",
+            "CLI work depends on storage."
+          ],
+          "depends_on": [
+            "storage",
+            "cli"
+          ],
+          "environment_id": "python",
+          "interface_contracts": [
+            "{\"declarations\":[],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+          ],
+          "objective": "Create tests/test_taskdock.py with at least six substantive pytest test cases and README.md with installation and usage instructions.",
+          "read_paths": [
+            "BRIEF.md",
+            "taskdock.py",
+            "taskdock_cli.py"
+          ],
+          "requirement_ids": [
+            "tests-docs"
+          ],
+          "schema_version": 1,
+          "task_id": "tests-docs",
+          "writable_paths": [
+            "tests/test_taskdock.py",
+            "README.md"
+          ]
+        }
+      ]
+    },
+    "acceptance_challenged": true,
+    "preserved_original_files": 2,
+    "replay_blocked": "Accepted result has contradictory evidence; prepare new repair work",
+    "cost": {
+      "responses": 9,
+      "prompt_tokens": 35422,
+      "completion_tokens": 9077,
+      "total_tokens": 44499,
+      "model_seconds": 154.29711063699506
+    },
+    "status": "accepted",
+    "planning_status": "needs-review",
+    "questions": [],
+    "reason": null,
+    "evidence_digests": [
+      "5a9a4142ad9f4d26fb33d36a9906880fa0ab85d4be16a99ad436c24735bd151d",
+      "00637efa79ac84485ab86372a3cba3deb9a54f2f9b442e68cf8a88dd72585f45",
+      "23fcfddcb9e8ab971364e7c7f29b5182856fd68f4d7271cac47730945c527170",
+      "c5051012a71389b2fb261c688d22123fd6859b78efad2442bc4c39f8ae3688fd",
+      "97e4d6d5b959724e236f0d4287e50cc9a156e83c1814d8632663e6e4a37c0116",
+      "bf170a30b18b72bfb126df1ca60d34c15ca0aad4a1d0d5f471f2d3e2df8c1c9c",
+      "6e4d6270aa097b4a9d2e36ed268738de7febc149612807ec1346b54528f062ee",
+      "0a5d31fd10cc18a8b837878fb3c97869e3151c603d20df1efff4e178b73999c0",
+      "af379de6d71ca55059b0cfb6dc3cf7950619d74c5d8c5e9704976a5647f16949"
+    ],
+    "atoms": [
+      {
+        "atom_id": "feature-final-ed3d97495f29cc8053017ddf8e593f9b463da521eb47426094ad11f859a5d95e",
+        "status": "accepted",
+        "attempts": 1,
+        "candidate_digest": "54fd27c8f94869c6bcb58fb5da967cee2e2b21b90576394392a1dcffcca1dbf5"
+      },
+      {
+        "atom_id": "prepared-e78821150081ed6b-385de6b1bee70e76-e7b0aa84378f29b7-320e9d4a3428650d/b3a0d05bd0c82416",
+        "status": "accepted",
+        "attempts": 1,
+        "candidate_digest": "c9ea4bee0ffcb246e8ee9d9621dd696a45da365853d549b1d8c18c7420b13e06"
+      },
+      {
+        "atom_id": "prepared-e78821150081ed6b-385de6b1bee70e76-e7b0aa84378f29b7-877bb6b2f91d0760/443d34db1ad08f73",
+        "status": "accepted",
+        "attempts": 1,
+        "candidate_digest": "b4d88a25b8101594ddaf958953a3b3850108105748d746f2753cc0ed8838a509"
+      },
+      {
+        "atom_id": "prepared-e78821150081ed6b-385de6b1bee70e76-e7b0aa84378f29b7-ec2fab197cbfb3a1/5e1128b1d35bc61e",
+        "status": "accepted",
+        "attempts": 1,
+        "candidate_digest": "54fd27c8f94869c6bcb58fb5da967cee2e2b21b90576394392a1dcffcca1dbf5"
+      },
+      {
+        "atom_id": "prepared-e78821150081ed6b-385de6b1bee70e76-e7b0aa84378f29b7/ff2bf2495330447d",
+        "status": "accepted",
+        "attempts": 1,
+        "candidate_digest": "0526b141bf1123c06aa4b0281b82ef6270484567e5b6c43b5ea0cec53a7eaacf"
+      }
+    ],
+    "heldout": {
+      "exit_code": 0,
+      "candidate_digest": "54fd27c8f94869c6bcb58fb5da967cee2e2b21b90576394392a1dcffcca1dbf5"
+    }
+  },
+  {
+    "name": "trial-3",
+    "request_digest": "3c88a244a8fab8d3c9b764779f87a7803cb2b0baae9a2bd29f79bc2c60da82fb",
+    "policy_digest": "72f82849aee1039f85caa23f298ee16a79a3ba20b2295da467841dc6cde25ea2",
+    "max_responses": 36,
+    "reserved_tokens": 565248,
+    "proposal": {
+      "questions": [],
+      "rationale": "The plan covers all requirements (storage, cli, packaging, tests-docs) with meaningful acceptance checks. Tasks are split by independent testability: storage is foundational, cli depends on storage, packaging depends on both modules, and tests-docs depend on storage and cli. Interfaces are declared for storage and cli, with implementation suggestions retained for review. All paths are writable and read paths exist before task start.",
+      "request_digest": "3c88a244a8fab8d3c9b764779f87a7803cb2b0baae9a2bd29f79bc2c60da82fb",
+      "schema_version": 1,
+      "tasks": [
+        {
+          "acceptance_checks": [
+            "add_task appends a new task with done=False and id=max(existing_ids, 0)+1.",
+            "list_tasks returns tasks sorted by ID, excluding completed tasks by default.",
+            "complete_task persists done=True and returns the task dict; idempotent for already completed tasks.",
+            "export_markdown returns '# Tasks\\n' followed by lines '- [ ] ID: TITLE\\n' or '- [x] ID: TITLE\\n' sorted by ID.",
+            "Invalid titles (non-string, empty, >120 chars, containing CR/LF) raise ValueError and leave storage unchanged.",
+            "Malformed JSON or invalid schema (extra keys, bool IDs, version != 1) raises ValueError and preserves existing bytes.",
+            "Writes use a temporary file in the destination directory and os.replace; failure preserves existing bytes.",
+            "Missing file represents an empty list; reading/listing/exporting never creates the file."
+          ],
+          "depends_on": [],
+          "environment_id": "python",
+          "interface_contracts": [
+            "{\"declarations\":[{\"declaration\":\"def add_task(path: str | pathlib.Path, title: str) -> dict: ...\",\"path\":\"taskdock.py\",\"requirement_ids\":[\"storage\"],\"schema_version\":1,\"symbol\":\"add_task\"},{\"declaration\":\"def list_tasks(path: str | pathlib.Path, include_done: bool = False) -> list: ...\",\"path\":\"taskdock.py\",\"requirement_ids\":[\"storage\"],\"schema_version\":1,\"symbol\":\"list_tasks\"},{\"declaration\":\"def complete_task(path: str | pathlib.Path, task_id: int) -> dict: ...\",\"path\":\"taskdock.py\",\"requirement_ids\":[\"storage\"],\"schema_version\":1,\"symbol\":\"complete_task\"},{\"declaration\":\"def export_markdown(path: str | pathlib.Path) -> str: ...\",\"path\":\"taskdock.py\",\"requirement_ids\":[\"storage\"],\"schema_version\":1,\"symbol\":\"export_markdown\"}],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+          ],
+          "objective": "Implement the taskdock storage API in taskdock.py with add_task, list_tasks, complete_task, and export_markdown, enforcing validation, atomic writes, and correct JSON persistence.",
+          "read_paths": [
+            "BRIEF.md"
+          ],
+          "requirement_ids": [
+            "storage"
+          ],
+          "schema_version": 1,
+          "task_id": "storage",
+          "writable_paths": [
+            "taskdock.py"
+          ]
+        },
+        {
+          "acceptance_checks": [
+            "main(argv=None) returns 0 for successful commands and 2 for errors.",
+            "add TITLE writes a task and prints the returned task as JSON plus newline.",
+            "list [--all] prints the matching task array as JSON plus newline.",
+            "done ID completes the task and prints the returned task as JSON plus newline.",
+            "export prints exactly export_markdown's output with no extra newline.",
+            "Invalid arguments, bad storage, unknown IDs, or filesystem failures exit 2, write error to stderr, leave stdout empty, and show no traceback.",
+            "--help exits 0.",
+            "Separate subprocess invocations see persisted tasks via the real storage API."
+          ],
+          "depends_on": [
+            "storage"
+          ],
+          "environment_id": "python",
+          "interface_contracts": [
+            "{\"declarations\":[{\"declaration\":\"def main(argv: list[str] | None = None) -> int: ...\",\"path\":\"taskdock_cli.py\",\"requirement_ids\":[\"cli\"],\"schema_version\":1,\"symbol\":\"main\"}],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+          ],
+          "objective": "Implement the taskdock CLI in taskdock_cli.py with main(argv=None) -> int, supporting add, list, done, and export commands with --file global option, calling the real storage API.",
+          "read_paths": [
+            "BRIEF.md",
+            "taskdock.py"
+          ],
+          "requirement_ids": [
+            "cli"
+          ],
+          "schema_version": 1,
+          "task_id": "cli",
+          "writable_paths": [
+            "taskdock_cli.py"
+          ]
+        },
+        {
+          "acceptance_checks": [
+            "pyproject.toml uses setuptools.build_meta with build requirements setuptools and wheel.",
+            "Distribution name is taskdock-local, version 0.1.0, Python >=3.11, no runtime dependencies.",
+            "Both top-level modules (taskdock, taskdock_cli) are included via setuptools py-modules.",
+            "Console script taskdock points to taskdock_cli:main.",
+            "Offline pip install --no-deps --no-build-isolation --target DIR . succeeds in the supplied environment.",
+            "Installed entry script is usable via python DIR/bin/taskdock from outside the source directory using DIR on PYTHONPATH."
+          ],
+          "depends_on": [
+            "storage",
+            "cli"
+          ],
+          "environment_id": "python",
+          "interface_contracts": [
+            "{\"declarations\":[],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+          ],
+          "objective": "Create pyproject.toml for the taskdock-local distribution with setuptools.build_meta, including both modules and a console script entry point.",
+          "read_paths": [
+            "BRIEF.md",
+            "taskdock.py",
+            "taskdock_cli.py"
+          ],
+          "requirement_ids": [
+            "packaging"
+          ],
+          "schema_version": 1,
+          "task_id": "packaging",
+          "writable_paths": [
+            "pyproject.toml"
+          ]
+        },
+        {
+          "acceptance_checks": [
+            "tests/test_taskdock.py contains at least six substantive pytest test cases.",
+            "Tests use temporary paths and the real storage API.",
+            "Tests cover persistence, completed filtering, monotonic IDs after completion, invalid titles, invalid/corrupt storage preservation, and idempotent completion/unknown-ID rejection.",
+            "Tests pass correct code and fail implementations with broken done filtering, ID allocation, completion persistence, or title validation.",
+            "No skips or replacement/fake implementation imports in tests.",
+            "README.md explains installation, all four commands with --file examples, running pytest, JSON storage, and the single-writer limitation.",
+            "README.md uses no absolute machine-specific paths."
+          ],
+          "depends_on": [
+            "storage",
+            "cli"
+          ],
+          "environment_id": "python",
+          "interface_contracts": [
+            "{\"declarations\":[],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+          ],
+          "objective": "Create tests/test_taskdock.py with at least six substantive pytest test cases covering storage behavior, and README.md explaining installation, commands, pytest, JSON storage, and single-writer limitation.",
+          "read_paths": [
+            "BRIEF.md",
+            "taskdock.py",
+            "taskdock_cli.py"
+          ],
+          "requirement_ids": [
+            "tests-docs"
+          ],
+          "schema_version": 1,
+          "task_id": "tests-docs",
+          "writable_paths": [
+            "tests/test_taskdock.py",
+            "README.md"
+          ]
+        }
+      ]
+    },
+    "acceptance_challenged": true,
+    "replay_blocked": "Accepted result has contradictory evidence; prepare new repair work",
+    "cost": {
+      "responses": 11,
+      "prompt_tokens": 45541,
+      "completion_tokens": 7013,
+      "total_tokens": 52554,
+      "model_seconds": 121.45916838799894
+    },
+    "status": "task-halt",
+    "planning_status": "needs-review",
+    "questions": [],
+    "reason": null,
+    "evidence_digests": [
+      "af29446d788e5beac61721d54060dc78bdb16317f22be35eb6b598447f07d9ab",
+      "d6f65ecb96067769c82321994a43178964dd895a5651421778694a87b37f47e1",
+      "dc042d35b1dbb9c13266b2d66ffc752f882b1fde01b511e6d09a34cebd65d6ff",
+      "006c1a224705c2c5aec37ba0569b0966369ca260dd76108d2fef9fb0ea703610",
+      "70f31cb169820e199d4847c14b45c9ceef2bde59579bbb5df37ef3f14691ea24",
+      "ff67f5c9e99c8d1a88dc0e9c1bf86d34d942014e836128a2f105460967dac43e",
+      "478d1b9e83e6c343c61bf9768bad1d5cc2b5da67139b21bef300bd6f867f3d9a",
+      "a910fdc0c4440de2e5aef48ef9092b4f1a0b2bad4426aa69f4cbd7cbc3908623",
+      "d0be8a6a9b818311e05ac622afd480faab2cf541cda24d4f436f2395a5104845",
+      "fa16c3b84ebeb0e62f8a1ba8060367c8f17ac74ec4be6c4e56680865c293b163",
+      "61cb3d56ee2ff6df917b70cae688d3aad98fb12a5fe8861dcd8f03b76d9df51b"
+    ],
+    "atoms": [
+      {
+        "atom_id": "prepared-3c88a244a8fab8d3-34c598d8495f73e4-f37c73a899428996-9fa8db35db4ae0a1/02e4974a4b39594d",
+        "status": "quarantined",
+        "attempts": 2,
+        "candidate_digest": "04f04d0f9307da50f19fa4b25998cfb3c8802d0f843e3773d1221baf569d21b2"
+      },
+      {
+        "atom_id": "prepared-3c88a244a8fab8d3-34c598d8495f73e4-f37c73a899428996/fa1664c0b49244be",
+        "status": "accepted",
+        "attempts": 1,
+        "candidate_digest": "495aabd110b06027cb094e1a598f25a1e28118e80cb8783a065bb2e79d3a7e92"
+      }
+    ]
+  }
+]

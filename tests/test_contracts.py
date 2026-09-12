@@ -14,6 +14,24 @@ from gflo.preparation import prepare_task
 from gflo.worker import CandidateResult, ContractConflict, parse_result
 
 
+@pytest.mark.parametrize("symbol", ["_validate_title", "_validate_storage", "_Outer._helper"])
+def test_private_python_interface_names_are_valid_without_widening_general_identifiers(symbol):
+    from pydantic import TypeAdapter, ValidationError
+
+    from gflo.contracts import InterfaceDeclaration
+    from gflo.records import Identifier
+
+    declaration = InterfaceDeclaration(
+        path="taskdock.py",
+        symbol=symbol,
+        declaration=f"def {symbol.rsplit('.', 1)[-1]}(value): ...",
+        requirement_ids=("storage",),
+    )
+    assert declaration.symbol == symbol
+    with pytest.raises(ValidationError):
+        TypeAdapter(Identifier).validate_python("_work_atom")
+
+
 @pytest.mark.parametrize(
     "text",
     [

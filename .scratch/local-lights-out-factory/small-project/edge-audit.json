@@ -1,0 +1,50 @@
+[
+  {
+    "kind": "reference",
+    "exit_code": 0,
+    "candidate_digest": "8c9a2d11edc35186e1c71f772bb580cc2f3bb828a7c16bb9421f9ee3053864c7",
+    "evidence_digest": "36f3c22399e93a3715890ab7a4f659e72edb1083a179b391cadd733a2e099eff"
+  },
+  {
+    "kind": "trial-1",
+    "atom_id": "feature-final-bd3fe725d9b6ebc4283a3b7d046287b4a4156b32c1b5f238086c1b55abf85b5c",
+    "candidate_digest": "630a57a635942fe2d91e3c596e989334b060f1286bf21d937305b93aebefecab",
+    "exit_code": 1,
+    "evidence_digest": "7d289ce2ddea09fb7963eac8b1fb89a549cda7cc40df9313062d67ce3fb1a8d6",
+    "finding_digest": "549333ba436770e2f81bb5eed0510c9c2aad16b3212c1755705471216823cda1",
+    "error": "AssertionError: [\"raw CR/LF title accepted: '\\\\nvalid'\", 'invalid title wrote storage', \"raw CR/LF title accepted: 'valid\\\\n'\", 'invalid title wrote storage', \"raw CR/LF title accepted: '\\\\rvalid'\", 'invalid title wrote storage', \"raw CR/LF title accepted: 'valid\\\\r'\", 'invalid title wrote storage', 'list accepted version 1.0', 'add accepted version 1.0', 'invalid version storage was overwritten', 'export accepted version 1.0']"
+  },
+  {
+    "kind": "trial-1",
+    "atom_id": "prepared-89d68f3b290fabcb-7889cee9c7989a7a-42aefe0e0d55aa88/8b11fdf2fe3f7e7d",
+    "candidate_digest": "6e5d9b15e4cc1c2c7f347cb03918ae3f2810525398c281e0aed9655140644cae",
+    "exit_code": 1,
+    "evidence_digest": "8ae16501978428d4d764f3e05e589609b66731507776ad077cba7820693013a3",
+    "finding_digest": "1539c97091dba889f396e029f008ac827b8da448d8a3c6fa2fe7aa671ebc4b22",
+    "error": "AssertionError: [\"raw CR/LF title accepted: '\\\\nvalid'\", 'invalid title wrote storage', \"raw CR/LF title accepted: 'valid\\\\n'\", 'invalid title wrote storage', \"raw CR/LF title accepted: '\\\\rvalid'\", 'invalid title wrote storage', \"raw CR/LF title accepted: 'valid\\\\r'\", 'invalid title wrote storage', 'list accepted version 1.0', 'add accepted version 1.0', 'invalid version storage was overwritten', 'export accepted version 1.0']"
+  },
+  {
+    "kind": "trial-2",
+    "atom_id": "feature-final-ed3d97495f29cc8053017ddf8e593f9b463da521eb47426094ad11f859a5d95e",
+    "candidate_digest": "54fd27c8f94869c6bcb58fb5da967cee2e2b21b90576394392a1dcffcca1dbf5",
+    "evidence_digest": "31a3e8aac6b83ff8e91219b33f45cd29f17ac38d2ea1ce91969ffa2b0245657a",
+    "exit_code": 1,
+    "finding_digest": "b5cf1c40569b3790ce7d45ea027051fe17cddb42073aaaa4acdeb6f5844a7308"
+  },
+  {
+    "kind": "trial-2",
+    "atom_id": "prepared-e78821150081ed6b-385de6b1bee70e76-e7b0aa84378f29b7/ff2bf2495330447d",
+    "candidate_digest": "0526b141bf1123c06aa4b0281b82ef6270484567e5b6c43b5ea0cec53a7eaacf",
+    "evidence_digest": "3e1470db9ff6e6df4063cba35dbb819a1e2bea49d1ea10e61ffeb95e55b13a47",
+    "exit_code": 1,
+    "finding_digest": "74e7b1807545d2e6de436b25ab2238b1617d1f378e036d45d7764e43d8155926"
+  },
+  {
+    "kind": "trial-3",
+    "atom_id": "prepared-3c88a244a8fab8d3-34c598d8495f73e4-f37c73a899428996/fa1664c0b49244be",
+    "candidate_digest": "495aabd110b06027cb094e1a598f25a1e28118e80cb8783a065bb2e79d3a7e92",
+    "evidence_digest": "2deb28eee6b599c63a9a20726e11b78c7d14bc1fbd3e3d70fd065b53f6cbe4dc",
+    "exit_code": 1,
+    "finding_digest": "8ca3f029d29ecf04c40f8d3e30bb5da0721f693238e5de2a546db28f9877e333"
+  }
+]

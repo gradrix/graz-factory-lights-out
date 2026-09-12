@@ -1,0 +1,58 @@
+[
+  {
+    "name": "trial-1",
+    "request_digest": "3f92d7123702044f21cf6dab4788a2590ee85c71d8ac788b6c631d96bf79442b",
+    "policy_digest": "735a37aad968e410e44edc38fefd7bf4c3f95bd6fb42bf2acc6e8371e911358d",
+    "max_responses": 18,
+    "reserved_tokens": 270336,
+    "replay_unchanged": true,
+    "cost": {
+      "responses": 6,
+      "prompt_tokens": 41821,
+      "completion_tokens": 6655,
+      "total_tokens": 48476,
+      "model_seconds": 115.4982137049883
+    },
+    "status": "planning-halt",
+    "planning_status": "exhausted",
+    "questions": [],
+    "reason": null,
+    "evidence_digests": [
+      "b98fba12b9387f1b79b42324ec34910bcbdf0c414d97ef94fd382a270c2259a0",
+      "b8aa70d56e47bf9616367b56ffbcdc2aa30ed806d3449ace764ed9b5ac49d9d4",
+      "83986a58cb3e958f4b709f51fedbbdabb248a66c9ae23ccbf2a5f7d8840f399e",
+      "318fa6aa5dac906340e40949a9ff67777c178cbcf4db2a284e860856e6b8467e",
+      "1443afef25b05bc6fbfe1b6e8b4a0603d4ec0f325a7388b305233fd216757b27",
+      "fec2a917ac6431386a92ff40644aea8d1227565ff29a56fe920514f48d2fcb0e"
+    ],
+    "atoms": []
+  },
+  {
+    "name": "trial-2",
+    "request_digest": "8024ebebf0065c5a40ce580d82645df8018e723280af3311a5c5066eee50dad3",
+    "policy_digest": "ddaf6cc0209a65c62e2de11e08c46507d956e8b09282f22531468ffff2a43e3f",
+    "max_responses": 18,
+    "reserved_tokens": 270336,
+    "replay_unchanged": true,
+    "cost": {
+      "responses": 6,
+      "prompt_tokens": 40848,
+      "completion_tokens": 2858,
+      "total_tokens": 43706,
+      "model_seconds": 52.21757359199546
+    },
+    "status": "planning-halt",
+    "planning_status": "exhausted",
+    "questions": [],
+    "reason": null,
+    "evidence_digests": [
+      "cc0655fff69b73d5194809da7f7bca8fc88fea055c3aac20fbace8e98f04c13f",
+      "7ab5afdcb4828ad9e518837e85faaa8a824d46f2c54b6d2ddce77d3cb78be719",
+      "8819de1ef2ff8869c394bff19caba6c574295be92ebd66042e415f9c0950f355",
+      "202eb6ab67fa11050643cd41ee65951b05753d72fa65878434a13ddd2d42b642",
+      "a4641c279c7282b43a5d54ab563ad873cd6076d3187f60ddcf6811c106ac3ecd",
+      "c8e876b6293f34b6a6dc2dd6cc6874a4c3f42b4cbe5482ac8783b1a7a03e6c0d"
+    ],
+    "atoms": []
+  }
+]

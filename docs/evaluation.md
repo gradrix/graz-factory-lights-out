@@ -798,3 +798,20 @@ missing. This establishes live bounded source delivery, not improved repair comp
 All 35 responses passed wire/budget audits; all six terminal states and four older
 accepted/halted/challenged histories replayed without new events. Keep the profile
 opt-in. [Frozen results and limitations](../.scratch/local-lights-out-factory/definition-qualification/README.md).
+
+## Complete Python project qualification
+
+Taskdock exercises API, persistent JSON, subprocess CLI, offline installation,
+documentation and generated tests. Three original builds yielded two historical
+acceptances and a CLI halt. Manual review found raw CR/LF and float-version defects
+missed by the gates in all three storage implementations; recorded findings block
+reuse. Original fully qualified completion is therefore 0/3.
+
+Supervised corrective trials exposed a private-interface schema bug (fixed; 533 tests
+and 25 subtests pass) and a repair-request preparation mismatch. Correctly scoped
+fresh repairs yielded one needs-info and one complete delivery, with all strengthened
+gates, held-out state/atomicity audit and unchanged replay passing. That delivery used
+9 repair responses and 48,385 tokens, in addition to original and failed trial costs.
+No generated source was manually corrected. This supports supervised small-project
+creation, not reliable unattended whole-product delivery or large-system readiness.
+[Full portable evidence and unchanged delivery](../.scratch/local-lights-out-factory/small-project/README.md).

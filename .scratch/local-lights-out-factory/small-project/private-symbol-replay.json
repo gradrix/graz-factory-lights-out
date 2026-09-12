@@ -1,0 +1,32 @@
+[
+  {
+    "trial": 1,
+    "response_digest": "4dca9714e5b5c3df3c3e01702622b962a00c8f2ecfb2006bd675ed9a84a84a81",
+    "proposal_digest": "a27b936decdd14d1e042d09b84857b95c1d47bd338b993be105bad43b8ecb8b6",
+    "symbols": [
+      "_validate_title",
+      "_validate_storage",
+      "add_task",
+      "list_tasks",
+      "complete_task",
+      "export_markdown",
+      "test_reject_raw_cr_lf_titles",
+      "test_reject_float_version"
+    ]
+  },
+  {
+    "trial": 2,
+    "response_digest": "d1463256f7092999dbeee56f681ad223f52bcec77d0a12eb58ee8523ac096b02",
+    "proposal_digest": "48bc1784f279aeee07cc384bb0683992f72ca0c9aa7146bb5cbbb591bc0998df",
+    "symbols": [
+      "_validate_title",
+      "_validate_storage",
+      "add_task",
+      "list_tasks",
+      "complete_task",
+      "export_markdown",
+      "test_invalid_titles",
+      "test_corrupt_storage_preserved"
+    ]
+  }
+]

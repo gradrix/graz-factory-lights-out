@@ -1,0 +1,156 @@
+[
+  {
+    "name": "trial-1",
+    "request_digest": "357aae38aef0bb809c024361e6208a8798242ead7bfd7b75450054bd1a04f485",
+    "policy_digest": "df30cd57521ef09943c979f4a10e8f87b0fc3dda9d5780514608133b2d76ac2d",
+    "max_responses": 18,
+    "reserved_tokens": 270336,
+    "replay_unchanged": true,
+    "cost": {
+      "responses": 3,
+      "prompt_tokens": 13447,
+      "completion_tokens": 605,
+      "total_tokens": 14052,
+      "model_seconds": 11.824868726995192
+    },
+    "status": "needs-info",
+    "planning_status": "needs-info",
+    "questions": [
+      "The audit states that raw leading/trailing CR/LF titles are accepted, but the visible _validate_title code strips the title before checking for CR/LF, which would reject such titles. Is the audit based on a different source revision, or should the plan assume the visible code is the current state and the repair must change _validate_title to reject raw CR/LF before stripping?",
+      "The audit states that storage version 1.0 is accepted, but the visible _validate_storage code checks data['version'] != 1, which would reject 1.0. Is the audit based on a different source revision, or should the plan assume the visible code is the current state and the repair must change _validate_storage to reject float versions?",
+      "The objective says to preserve CLI, packaging, and README, but the source coverage shows only taskdock.py and tests/test_taskdock.py as readable paths. Are there other files in the repository that need to be inspected or preserved, and if so, what are their paths and contents?"
+    ],
+    "reason": null,
+    "evidence_digests": [
+      "3869920ef1450aeff360dfa8504e2fcb07abebb3d1ccf1fb6b142ee47aff8c6f",
+      "da458c51ecf593d9fb513737fd2b041cf3bdfd9f83f23194a6e54c63c67f4ed1",
+      "305c167693e6138d7607a78459031639ca6391332420434fa1dfea254aaa37d8"
+    ],
+    "atoms": []
+  },
+  {
+    "name": "trial-2",
+    "request_digest": "37dfeb4a9546150642342291aee7cb56c687705bd49915c45a275b7b80609a37",
+    "policy_digest": "11a0c46decdf3b99855f37e3cea32c8738ee888eef8ee6e6fb740896853e9cf9",
+    "max_responses": 18,
+    "reserved_tokens": 270336,
+    "proposal": {
+      "questions": [],
+      "rationale": "The plan addresses the audit findings by repairing taskdock.py to reject raw CR/LF titles and float version 1.0, and adding regression tests to verify these behaviors. The tasks are split into independent repair and test additions, with clear acceptance checks and implementation suggestions.",
+      "request_digest": "37dfeb4a9546150642342291aee7cb56c687705bd49915c45a275b7b80609a37",
+      "schema_version": 1,
+      "tasks": [
+        {
+          "acceptance_checks": [
+            "add_task rejects titles with leading/trailing CR or LF and raises ValueError.",
+            "add_task rejects titles with internal CR or LF and raises ValueError.",
+            "_validate_storage rejects version 1.0 (float) and raises ValueError.",
+            "_validate_storage rejects version True (bool) and raises ValueError.",
+            "_read_storage raises ValueError for malformed JSON without modifying the file.",
+            "_read_storage raises ValueError for invalid storage structure without modifying the file.",
+            "_write_storage preserves existing bytes if writing fails before os.replace.",
+            "add_task does not write to storage if title validation fails."
+          ],
+          "depends_on": [],
+          "environment_id": "python",
+          "interface_contracts": [
+            "{\"declarations\":[{\"declaration\":\"def _validate_title(title: str) -> str: ...\",\"path\":\"taskdock.py\",\"requirement_ids\":[\"storage\"],\"schema_version\":1,\"symbol\":\"_validate_title\"},{\"declaration\":\"def _validate_storage(data: dict) -> dict: ...\",\"path\":\"taskdock.py\",\"requirement_ids\":[\"storage\"],\"schema_version\":1,\"symbol\":\"_validate_storage\"},{\"declaration\":\"def _read_storage(path: str | pathlib.Path) -> dict: ...\",\"path\":\"taskdock.py\",\"requirement_ids\":[\"storage\"],\"schema_version\":1,\"symbol\":\"_read_storage\"},{\"declaration\":\"def _write_storage(path: str | pathlib.Path, data: dict) -> None: ...\",\"path\":\"taskdock.py\",\"requirement_ids\":[\"storage\"],\"schema_version\":1,\"symbol\":\"_write_storage\"},{\"declaration\":\"def add_task(path: str | pathlib.Path, title: str) -> dict: ...\",\"path\":\"taskdock.py\",\"requirement_ids\":[\"storage\"],\"schema_version\":1,\"symbol\":\"add_task\"},{\"declaration\":\"def list_tasks(path: str | pathlib.Path, include_done: bool = False) -> list: ...\",\"path\":\"taskdock.py\",\"requirement_ids\":[\"storage\"],\"schema_version\":1,\"symbol\":\"list_tasks\"},{\"declaration\":\"def complete_task(path: str | pathlib.Path, task_id: int) -> dict: ...\",\"path\":\"taskdock.py\",\"requirement_ids\":[\"storage\"],\"schema_version\":1,\"symbol\":\"complete_task\"},{\"declaration\":\"def export_markdown(path: str | pathlib.Path) -> str: ...\",\"path\":\"taskdock.py\",\"requirement_ids\":[\"storage\"],\"schema_version\":1,\"symbol\":\"export_markdown\"}],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+          ],
+          "objective": "Repair taskdock.py to reject raw leading/trailing CR/LF in titles and storage version 1.0, preserving bytes on rejection.",
+          "read_paths": [
+            "taskdock.py"
+          ],
+          "requirement_ids": [
+            "storage"
+          ],
+          "schema_version": 1,
+          "task_id": "repair-storage-validation",
+          "writable_paths": [
+            "taskdock.py"
+          ]
+        },
+        {
+          "acceptance_checks": [
+            "test_raw_cr_lf_titles passes and verifies add_task rejects titles with leading/trailing CR or LF.",
+            "test_float_version_rejected passes and verifies _read_storage rejects version 1.0.",
+            "Tests verify that storage file bytes are preserved after rejection.",
+            "Tests use the real taskdock API and do not import fake implementations.",
+            "Tests do not skip or replace the storage implementation."
+          ],
+          "depends_on": [
+            "repair-storage-validation"
+          ],
+          "environment_id": "python",
+          "interface_contracts": [
+            "{\"declarations\":[{\"declaration\":\"def test_raw_cr_lf_titles(storage_path: pathlib.Path) -> None: ...\",\"path\":\"tests/test_taskdock.py\",\"requirement_ids\":[\"tests\"],\"schema_version\":1,\"symbol\":\"test_raw_cr_lf_titles\"},{\"declaration\":\"def test_float_version_rejected(storage_path: pathlib.Path) -> None: ...\",\"path\":\"tests/test_taskdock.py\",\"requirement_ids\":[\"tests\"],\"schema_version\":1,\"symbol\":\"test_float_version_rejected\"}],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+          ],
+          "objective": "Add regression tests to tests/test_taskdock.py for rejecting raw CR/LF titles and storage version 1.0, preserving bytes on rejection.",
+          "read_paths": [
+            "tests/test_taskdock.py",
+            "taskdock.py"
+          ],
+          "requirement_ids": [
+            "tests"
+          ],
+          "schema_version": 1,
+          "task_id": "add-regression-tests",
+          "writable_paths": [
+            "tests/test_taskdock.py"
+          ]
+        }
+      ]
+    },
+    "preserved_original_files": 5,
+    "changes": {
+      "taskdock.py": "import json\nimport os\nimport pathlib\nimport tempfile\n\n\ndef _resolve_path(path):\n    if isinstance(path, str):\n        return pathlib.Path(path)\n    if isinstance(path, pathlib.Path):\n        return path\n    raise TypeError(\"path must be str or pathlib.Path\")\n\n\ndef _validate_title(title):\n    if not isinstance(title, str):\n        raise ValueError(\"title must be a string\")\n    if '\\r' in title or '\\n' in title:\n        raise ValueError(\"title must not contain CR or LF\")\n    stripped = title.strip()\n    if len(stripped) < 1 or len(stripped) > 120:\n        raise ValueError(\"title must be 1-120 characters after stripping\")\n    return stripped\n\n\ndef _validate_task(task):\n    if not isinstance(task, dict):\n        raise ValueError(\"task must be a dict\")\n    if set(task.keys()) != {\"id\", \"title\", \"done\"}:\n        raise ValueError(\"task has invalid keys\")\n    tid = task[\"id\"]\n    if isinstance(tid, bool) or not isinstance(tid, int) or tid < 1:\n        raise ValueError(\"task id must be a positive integer\")\n    title = task[\"title\"]\n    if not isinstance(title, str):\n        raise ValueError(\"task title must be a string\")\n    if title != title.strip():\n        raise ValueError(\"task title must be trimmed\")\n    if len(title) < 1 or len(title) > 120:\n        raise ValueError(\"task title must be 1-120 characters\")\n    if '\\r' in title or '\\n' in title:\n        raise ValueError(\"task title must not contain CR or LF\")\n    done = task[\"done\"]\n    if not isinstance(done, bool):\n        raise ValueError(\"task done must be a boolean\")\n\n\ndef _validate_storage(data):\n    if not isinstance(data, dict):\n        raise ValueError(\"storage root must be a dict\")\n    if set(data.keys()) != {\"version\", \"tasks\"}:\n        raise ValueError(\"storage root has invalid keys\")\n    version = data[\"version\"]\n    if isinstance(version, bool) or not isinstance(version, int) or version != 1:\n        raise ValueError(\"version must be integer 1\")\n    tasks = data[\"tasks\"]\n    if not isinstance(tasks, list):\n        raise ValueError(\"tasks must be a list\")\n    seen_ids = set()\n    for task in tasks:\n        _validate_task(task)\n        tid = task[\"id\"]\n        if tid in seen_ids:\n            raise ValueError(\"duplicate task id\")\n        seen_ids.add(tid)\n    return data\n\n\ndef _validate_storage_strict(data):\n    \"\"\"Validate storage with strict version check (rejects version 1.0).\"\"\"\n    if not isinstance(data, dict):\n        raise ValueError(\"storage root must be a dict\")\n    if set(data.keys()) != {\"version\", \"tasks\"}:\n        raise ValueError(\"storage root has invalid keys\")\n    version = data[\"version\"]\n    if isinstance(version, bool) or not isinstance(version, int) or version != 1:\n        raise ValueError(\"version must be integer 1\")\n    tasks = data[\"tasks\"]\n    if not isinstance(tasks, list):\n        raise ValueError(\"tasks must be a list\")\n    seen_ids = set()\n    for task in tasks:\n        _validate_task(task)\n        tid = task[\"id\"]\n        if tid in seen_ids:\n            raise ValueError(\"duplicate task id\")\n        seen_ids.add(tid)\n    return data\n\n\ndef _read_storage(path):\n    p = _resolve_path(path)\n    if not p.exists():\n        return {\"version\": 1, \"tasks\": []}\n    try:\n        with open(p, \"r\", encoding=\"utf-8\") as f:\n            data = json.load(f)\n    except json.JSONDecodeError:\n        raise ValueError(\"malformed JSON\")\n    return _validate_storage(data)\n\n\ndef _write_storage(path, data):\n    p = _resolve_path(path)\n    parent = p.parent\n    if not parent.exists():\n        raise OSError(f\"parent directory does not exist: {parent}\")\n    tmp_fd = None\n    tmp_path = None\n    try:\n        tmp_fd, tmp_path = tempfile.mkstemp(dir=str(parent), suffix=\".tmp\")\n        with os.fdopen(tmp_fd, \"w\", encoding=\"utf-8\") as f:\n            tmp_fd = None\n            json.dump(data, f, ensure_ascii=False)\n        os.replace(tmp_path, str(p))\n        tmp_path = None\n    except BaseException:\n        if tmp_fd is not None:\n            os.close(tmp_fd)\n        if tmp_path is not None and os.path.exists(tmp_path):\n            os.unlink(tmp_path)\n        raise\n\n\ndef add_task(path, title):\n    p = _resolve_path(path)\n    title = _validate_title(title)\n    data = _read_storage(p)\n    tasks = data[\"tasks\"]\n    max_id = max((t[\"id\"] for t in tasks), default=0)\n    new_task = {\"id\": max_id + 1, \"title\": title, \"done\": False}\n    tasks.append(new_task)\n    _write_storage(p, data)\n    return new_task\n\n\ndef list_tasks(path, include_done=False):\n    data = _read_storage(path)\n    tasks = sorted(data[\"tasks\"], key=lambda t: t[\"id\"])\n    if not include_done:\n        tasks = [t for t in tasks if not t[\"done\"]]\n    return tasks\n\n\ndef complete_task(path, task_id):\n    if isinstance(task_id, bool) or not isinstance(task_id, int) or task_id < 1:\n        raise ValueError(\"task_id must be a positive integer\")\n    p = _resolve_path(path)\n    data = _read_storage(p)\n    found = None\n    for t in data[\"tasks\"]:\n        if t[\"id\"] == task_id:\n            found = t\n            break\n    if found is None:\n        raise ValueError(f\"unknown task id: {task_id}\")\n    found[\"done\"] = True\n    _write_storage(p, data)\n    return found\n\n\ndef export_markdown(path):\n    data = _read_storage(path)\n    tasks = sorted(data[\"tasks\"], key=lambda t: t[\"id\"])\n    lines = [\"# Tasks\\n\"]\n    for t in tasks:\n        check = \"x\" if t[\"done\"] else \" \"\n        lines.append(f\"- [{check}] {t['id']}: {t['title']}\\n\")\n    return \"\".join(lines)\n",
+      "tests/test_taskdock.py": "import json\nimport os\nimport pathlib\nimport pytest\n\nimport taskdock\n\n\n@pytest.fixture\ndef storage_path(tmp_path):\n    return tmp_path / \"tasks.json\"\n\n\ndef test_persistence(storage_path):\n    \"\"\"Added tasks persist across separate API calls.\"\"\"\n    t1 = taskdock.add_task(storage_path, \"First\")\n    t2 = taskdock.add_task(storage_path, \"Second\")\n    assert t1[\"id\"] == 1\n    assert t2[\"id\"] == 2\n    # Re-read from disk\n    tasks = taskdock.list_tasks(storage_path)\n    assert len(tasks) == 2\n    assert tasks[0][\"title\"] == \"First\"\n    assert tasks[1][\"title\"] == \"Second\"\n\n\ndef test_completed_filtering(storage_path):\n    \"\"\"list_tasks excludes completed by default; include_done shows all.\"\"\"\n    taskdock.add_task(storage_path, \"A\")\n    taskdock.add_task(storage_path, \"B\")\n    taskdock.complete_task(storage_path, 1)\n    active = taskdock.list_tasks(storage_path)\n    assert len(active) == 1\n    assert active[0][\"id\"] == 2\n    all_tasks = taskdock.list_tasks(storage_path, include_done=True)\n    assert len(all_tasks) == 2\n\n\ndef test_monotonic_ids_after_completion(storage_path):\n    \"\"\"IDs are monotonic even after completing tasks.\"\"\"\n    taskdock.add_task(storage_path, \"A\")\n    taskdock.add_task(storage_path, \"B\")\n    taskdock.complete_task(storage_path, 1)\n    t3 = taskdock.add_task(storage_path, \"C\")\n    assert t3[\"id\"] == 3\n\n\ndef test_invalid_titles(storage_path):\n    \"\"\"Invalid titles raise ValueError and leave storage unchanged.\"\"\"\n    with pytest.raises(ValueError):\n        taskdock.add_task(storage_path, \"\")\n    with pytest.raises(ValueError):\n        taskdock.add_task(storage_path, \" \" * 130)\n    with pytest.raises(ValueError):\n        taskdock.add_task(storage_path, \"\\n\")\n    with pytest.raises(ValueError):\n        taskdock.add_task(storage_path, 123)\n    # Storage should not exist or be empty\n    assert not storage_path.exists() or taskdock.list_tasks(storage_path) == []\n\n\ndef test_corrupt_storage_preserved(storage_path):\n    \"\"\"Malformed JSON raises ValueError and original bytes are preserved.\"\"\"\n    storage_path.write_text(\"{not valid json\", encoding=\"utf-8\")\n    with pytest.raises(ValueError):\n        taskdock.list_tasks(storage_path)\n    # Original content preserved\n    assert storage_path.read_text(encoding=\"utf-8\") == \"{not valid json\"\n\n\ndef test_idempotent_completion_and_unknown_id(storage_path):\n    \"\"\"Completing an already-done task is idempotent; unknown IDs raise ValueError.\"\"\"\n    taskdock.add_task(storage_path, \"A\")\n    result1 = taskdock.complete_task(storage_path, 1)\n    assert result1[\"done\"] is True\n    # Idempotent\n    result2 = taskdock.complete_task(storage_path, 1)\n    assert result2[\"done\"] is True\n    # Unknown ID\n    with pytest.raises(ValueError):\n        taskdock.complete_task(storage_path, 999)\n    # Non-positive / bool\n    with pytest.raises(ValueError):\n        taskdock.complete_task(storage_path, 0)\n    with pytest.raises(ValueError):\n        taskdock.complete_task(storage_path, True)\n\n\ndef test_export_markdown(storage_path):\n    \"\"\"export_markdown produces correct format.\"\"\"\n    taskdock.add_task(storage_path, \"Alpha\")\n    taskdock.add_task(storage_path, \"Beta\")\n    taskdock.complete_task(storage_path, 1)\n    md = taskdock.export_markdown(storage_path)\n    assert md == \"# Tasks\\n- [x] 1: Alpha\\n- [ ] 2: Beta\\n\"\n\n\ndef test_export_empty(storage_path):\n    \"\"\"Empty export is just '# Tasks\\n'.\"\"\"\n    md = taskdock.export_markdown(storage_path)\n    assert md == \"# Tasks\\n\"\n\n\ndef test_unicode_titles(storage_path):\n    \"\"\"Unicode titles are preserved literally.\"\"\"\n    t = taskdock.add_task(storage_path, \"\\u00e9\\u00e8\\u00ea\\u00fc\\u00f6\")\n    assert t[\"title\"] == \"\\u00e9\\u00e8\\u00ea\\u00fc\\u00f6\"\n    md = taskdock.export_markdown(storage_path)\n    assert \"\\u00e9\\u00e8\\u00ea\\u00fc\\u00f6\" in md\n\n\ndef test_missing_file_no_creation(storage_path):\n    \"\"\"Reading/listing/exporting a missing file does not create it.\"\"\"\n    assert taskdock.list_tasks(storage_path) == []\n    assert not storage_path.exists()\n    assert taskdock.export_markdown(storage_path) == \"# Tasks\\n\"\n    assert not storage_path.exists()\n\n\ndef test_raw_cr_lf_titles(storage_path):\n    \"\"\"Raw leading/trailing CR or LF in titles must be rejected, not stripped.\"\"\"\n    # Leading CR\n    with pytest.raises(ValueError):\n        taskdock.add_task(storage_path, \"\\rTitle\")\n    # Trailing CR\n    with pytest.raises(ValueError):\n        taskdock.add_task(storage_path, \"Title\\r\")\n    # Leading LF\n    with pytest.raises(ValueError):\n        taskdock.add_task(storage_path, \"\\nTitle\")\n    # Trailing LF\n    with pytest.raises(ValueError):\n        taskdock.add_task(storage_path, \"Title\\n\")\n    # Leading CR+LF\n    with pytest.raises(ValueError):\n        taskdock.add_task(storage_path, \"\\r\\nTitle\")\n    # Trailing CR+LF\n    with pytest.raises(ValueError):\n        taskdock.add_task(storage_path, \"Title\\r\\n\")\n    # Storage must not have been created or modified\n    assert not storage_path.exists() or taskdock.list_tasks(storage_path) == []\n\n\ndef test_float_version_rejected(storage_path):\n    \"\"\"Storage with version 1.0 (float) must be rejected, not accepted as int 1.\"\"\"\n    # Write storage with float version 1.0\n    storage_path.write_text(\n        json.dumps({\"version\": 1.0, \"tasks\": []}),\n        encoding=\"utf-8\",\n    )\n    # Reading should raise ValueError because version must be integer 1, not bool/float\n    with pytest.raises(ValueError):\n        taskdock.list_tasks(storage_path)\n    # Original bytes must be preserved\n    assert storage_path.read_text(encoding=\"utf-8\") == json.dumps(\n        {\"version\": 1.0, \"tasks\": []}\n    )\n    # Also test that add_task on float-version storage raises and preserves bytes\n    with pytest.raises(ValueError):\n        taskdock.add_task(storage_path, \"Test\")\n    assert storage_path.read_text(encoding=\"utf-8\") == json.dumps(\n        {\"version\": 1.0, \"tasks\": []}\n    )\n"
+    },
+    "replay_unchanged": true,
+    "cost": {
+      "responses": 9,
+      "prompt_tokens": 44550,
+      "completion_tokens": 3835,
+      "total_tokens": 48385,
+      "model_seconds": 69.19839208700432
+    },
+    "status": "accepted",
+    "planning_status": "needs-review",
+    "questions": [],
+    "reason": null,
+    "evidence_digests": [
+      "9fa9108eeb87ec57829b538065c63d99156cbf5f51d3bab1559ab71656257bce",
+      "a8d40fe957c188c609d32f61b449910c0a4ed5932c0a89bf7c0026ee7cbae43a",
+      "c716c5e6e20daee4faaa0166efc5a243bfdde57e8c1207e5dcde9d85ec04ba02",
+      "f45b6b84b71a2947ebc4472a8c44d914f7244cf0ae108d917692ee7e0719a967",
+      "39736856ea22d3198fe865375be54898d6597fc19963f416ceb0c3679a0ab6b7",
+      "5ed085850f7a325b50277073331bece6f4048f01e17877cca21d15d8944adc57",
+      "0fe8a4ed28cada5a9b1f221d14fd041cc82d028766b5fb6b19858ccc64102138",
+      "db7c1374cadeb7e80a7569e1051457240fe48f4c09b3eb8a6885a875d0375442",
+      "4f30e31b6fe2c236a06dc64bc302d7a394c4f3935476b15e7d5ab97475dfaee4"
+    ],
+    "atoms": [
+      {
+        "atom_id": "feature-final-182ee15f9a07d73d4c32f2436dc6ceab078934db338223e8b1a5e7bf1e55937f",
+        "status": "accepted",
+        "attempts": 1,
+        "candidate_digest": "87394f9a24699c12a4841ea3535a4d974b899f933bce13ef41638c6710745936"
+      },
+      {
+        "atom_id": "prepared-37dfeb4a95461506-507746551895954d-d95b3b558821018f-8ab587b3f216c5a3/c8e968d85a60278b",
+        "status": "accepted",
+        "attempts": 2,
+        "candidate_digest": "87394f9a24699c12a4841ea3535a4d974b899f933bce13ef41638c6710745936"
+      },
+      {
+        "atom_id": "prepared-37dfeb4a95461506-507746551895954d-d95b3b558821018f/c50a61629ccd967e",
+        "status": "accepted",
+        "attempts": 1,
+        "candidate_digest": "e6f4d826679a544fbfeb4561dfbd1827a0ea096b372172fdfcc1da18d92655fa"
+      }
+    ],
+    "heldout": {
+      "exit_code": 0,
+      "candidate_digest": "87394f9a24699c12a4841ea3535a4d974b899f933bce13ef41638c6710745936"
+    }
+  }
+]

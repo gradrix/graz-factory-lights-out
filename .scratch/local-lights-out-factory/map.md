@@ -313,3 +313,8 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
   resolved: opt-in revision-bound context reaches live repair, but retained repair
   still fails. Complete features 1/2 versus 0/2; no demonstrated causal reliability
   gain. [Evidence](definition-qualification/README.md). Continue complete-project trials.
+
+- Issues 70/71 resolved: complete Taskdock delivered after supervised repair; zero
+  fully qualified original builds after edge review. Private interface-name schema
+  fixed, 533 tests/25 subtests pass. [Evidence](small-project/README.md). Continue
+  varied projects and larger execution qualification; unattended readiness unproven.

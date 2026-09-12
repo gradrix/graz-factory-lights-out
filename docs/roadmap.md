@@ -18,12 +18,10 @@ are recorded in [evaluation](evaluation.md) and portable development evidence.
 
 ## Next priorities
 
-1. Qualify complete small Python projects from a brief, including installation,
-   persistent behavior, documentation and substantive tests. The opt-in definition
-   bridge now supplies real helper source in live repair, but has not demonstrated
-   improved completion: retained repairs failed with and without it. Keep finite
-   budgets, all failures and the established default profile. Measure every human
-   intervention and audit delivered bytes independently.
+1. Broaden whole-project qualification beyond Taskdock. One complete installable Python
+   project now passes strengthened checks after supervised repair. All three original
+   builds had defects missed by initial gates; unattended readiness remains unproven.
+   Freeze different project types and retain all failures, costs and interventions.
 2. Qualify repeated features across different real repositories and uncertain
    interfaces. Measure complete feature success, retries, model cost and review
    effort. Planning JSON reliability and source-selection sufficiency remain open.
