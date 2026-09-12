@@ -1,0 +1,34 @@
+[
+  {
+    "condition": "baseline",
+    "exit_code": 1,
+    "expected": true,
+    "measurements": {
+      "bridge": false,
+      "failed_definition_visible": false,
+      "indexed_names": [
+        "RecorderDb.createPlayer",
+        "RecorderDb.createGame"
+      ],
+      "next_definition_visible": false,
+      "source_bytes": 3769,
+      "windows": 3
+    }
+  },
+  {
+    "condition": "bridge",
+    "exit_code": 0,
+    "expected": true,
+    "measurements": {
+      "bridge": true,
+      "failed_definition_visible": true,
+      "indexed_names": [
+        "RecorderDb.createPlayer",
+        "RecorderDb.createGame"
+      ],
+      "next_definition_visible": false,
+      "source_bytes": 4363,
+      "windows": 4
+    }
+  }
+]

@@ -1,5 +1,28 @@
 # GFLO handoff — repository access foundation
 
+## Current checkpoint — repair definition visibility, 2026-09-12
+
+[Ground repair calls in revision-bound definitions](issues/68-ground-repair-calls-in-visible-definitions.md)
+resolved. Audited seven retained generation requests: createPlayer/createGame names
+and locations were indexed but their definitions were never requested or shown.
+Failure windows showed only the caller. Last-turn repair fixed one signature and
+failed the next. No source-window omission explains this; relevant entries survive
+the truncated definition listing. Requested addMoves context resets across attempts,
+but preserving it would not supply the missing helpers.
+
+A portable CPU probe fails the exact visibility assertion under existing behavior.
+An experimental revision-bound qualified-name bridge passes with 594 extra source
+bytes, respecting authority and source-window bounds, but leaves the next callee unseen.
+No runtime changes, model calls, candidate corrections or historical resets.
+[Audit, fixture and experiment](definition-grounding/README.md).
+Validation: 32 window/symbol tests pass; probe authority/staleness checks, focused
+lint and documentation links pass. Baseline CPU visibility assertion fails as expected.
+
+Next: [Qualify bounded failed-call definition context](issues/69-qualify-failed-call-definition-context.md),
+an explicitly versioned runtime policy with finite fresh comparisons and independent
+gates. Do not treat CPU visibility as model reliability or upgrade existing profiles.
+Same-model constraint, reliability priority and existing push/merge authorization persist.
+
 ## Current checkpoint — bounded window reasoning, 2026-09-10
 
 Issues 66/67 resolved. Added opt-in vllm-python-worker-windows-reasoning-low-v1:

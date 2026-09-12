@@ -18,12 +18,14 @@ are recorded in [evaluation](evaluation.md) and portable development evidence.
 
 ## Next priorities
 
-1. Investigate revision-bound helper-definition grounding for repair workers.
+1. Qualify opt-in revision-bound helper-definition context for repair workers.
    The opt-in reasoning profile accepted 1/3 stateful full features versus 0/3
    control; neither repaired the two retained drafts. Reasoning-only truncation
    now retries correctly, but fresh follow-ups still failed invented helper calls
-   or exhausted output. Establish missing context before changing behavior; keep
-   finite budgets and all failures. No default profile upgrade is justified.
+   or exhausted output. Retained requests confirm definitions were indexed but
+   never shown or requested. A CPU bridge supplies the failed callee, but leaves
+   the next helper unseen; model repair remains unqualified. Keep finite budgets
+   and all failures. No default profile upgrade is justified.
 2. Qualify repeated features across different real repositories and uncertain
    interfaces. Measure complete feature success, retries, model cost and review
    effort. Planning JSON reliability and source-selection sufficiency remain open.

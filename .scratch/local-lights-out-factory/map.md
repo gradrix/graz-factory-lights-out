@@ -298,3 +298,8 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
   features (helper-signature failure / repeated truncation). No partial edits or
   budget reset. [Evidence](window-reasoning/README.md). Next: issue 68 investigates
   revision-bound definition grounding; no default reasoning upgrade.
+
+- [Ground repair calls in revision-bound definitions](issues/68-ground-repair-calls-in-visible-definitions.md)
+  resolved: helper definitions were indexed but never shown/requested; a CPU bridge
+  supplies the failed callee, leaving the next helper unseen. Runtime qualification
+  remains prospective. [Portable evidence](definition-grounding/README.md).

@@ -1,7 +1,7 @@
 # Ground repair calls in revision-bound definitions
 
 Type: task
-Status: ready-for-agent
+Status: resolved
 Blocked by: 67
 
 ## Evidence
@@ -24,3 +24,24 @@ Preserve immutable source identity, read authority, window count/byte/token ceil
 exact-edit binding and historical profiles. If a runtime change is justified, qualify
 it with fresh finite work using unchanged requirements and independent tests; retain
 all failures. Record whether it supplies missing context or merely changes prompting.
+
+## Answer
+
+Audited all seven retained generation requests and bound manifests. Both helper names
+and definition locations were indexed, but neither definition was shown or requested.
+The repair view showed the failing caller; its last response fixed createPlayer from
+the error message and left the invented createGame call for final validation to reject.
+No window omission or token-limit exhaustion explains the missing definitions. The
+definition listing is truncated, but both relevant names are included.
+
+A portable CPU fixture reproduces the missing-callee assertion through real window
+projection. An experimental unique qualified-name lookup supplies 594 bytes of new
+source within existing bounds; generic names and authority/staleness checks pass.
+It still omits the next helper. This establishes feasibility and missing information,
+not successful model repair. No runtime behavior or historical profile was changed.
+
+[Audit, reproduction, measurements and decision](../definition-grounding/README.md).
+The resulting prospective implementation/qualification is
+[Qualify bounded failed-call definition context](69-qualify-failed-call-definition-context.md).
+Worker read retention also resets across attempts in this run, but retaining the
+requested addMoves window cannot supply the never-requested helper definitions.

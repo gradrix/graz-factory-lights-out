@@ -774,3 +774,15 @@ invented helper signatures; the other on another truncation. They used 13 respon
 109,344 tokens and 593.50 model seconds; wire/budget audits passed. No default
 profile upgrade or general reliability ranking follows from this sample.
 [Portable plans, drafts and all outcomes](../.scratch/local-lights-out-factory/window-reasoning/README.md).
+
+## Repair definition visibility (2026-09-12)
+
+An audit of seven retained generation requests found the failing helper definitions
+were indexed by name/location but never requested or shown. Failure-local windows
+showed the caller. A CPU reproduction through the real window projector fails an
+assertion that the failed callee is visible; an experimental revision-bound lookup
+supplies it with 594 additional source bytes within existing bounds. The subsequent
+bad helper call remains ungrounded. Authority, ambiguity, incomplete-index and stale
+source checks pass. This investigation changes no runtime policy and spends no model
+responses: improved visibility is established, improved repair completion is not.
+[Portable audit and CPU reproduction](../.scratch/local-lights-out-factory/definition-grounding/README.md).
