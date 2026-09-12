@@ -15,7 +15,7 @@ from gflo.broker import SourceBundle
 from gflo.contracts import WINDOW_PROFILE as WINDOW_PROFILE
 from gflo.records import Digest, Record, WorkAtom
 from gflo.repository import Repository, RepositoryError, SnapshotSource, SourceRef, snapshot_bundle
-from gflo.symbols import FileSymbols, SymbolIndex, build_symbols
+from gflo.symbols import FileSymbols, SymbolIndex, build_symbols, query_symbols
 from gflo.worker import (
     CandidateResult,
     ContextSource,
@@ -140,6 +140,7 @@ def window_view(
     selected_paths: tuple[str, ...] | None = None,
     reads: tuple[WindowRead, ...] = (),
     diagnostic_digests: tuple[str, ...] = (),
+    definition_context: bool = False,
 ) -> tuple[WorkerView, WindowTargets]:
     if len(reads) > 4:
         raise WorkerError("At most four requested windows fit the window view")
@@ -165,7 +166,15 @@ def window_view(
     failure_reads = (
         _failure_windows(view.diagnostics, visible) if "read" in atom.allowed_tools else ()
     )
-    for read in (*failure_reads, *reads):
+    built = build_symbols(repo, store) if definition_context else None
+    hints: list[dict[str, Any]] = []
+    hint_reads: list[WindowRead] = []
+    hint_truncated = False
+    if built is not None:
+        hints, hint_reads, hint_truncated = _definition_hints(
+            repo, store, built.index_digest, atom, view.diagnostics
+        )
+    for read in (*failure_reads, *hint_reads, *reads):
         if "read" not in atom.allowed_tools or read.path not in visible:
             raise WorkerError("Window read is missing, prohibited or unauthorized")
         specs = [s for s in specs if (s.path, s.start_line) != (read.path, read.start_line)]
@@ -217,7 +226,7 @@ def window_view(
     mapping = WindowTargets(
         contract_digest=atom.digest(), source_digest=current.digest(), targets=targets
     )
-    built = build_symbols(repo, store)
+    built = built or build_symbols(repo, store)
     index = SymbolIndex.model_validate_json(store.read(built.index_digest))
     definitions: list[dict[str, Any]] = []
     total = 0
@@ -250,6 +259,23 @@ def window_view(
         "task_created_paths": sorted(set(current.files) - set(base.files)),
         "coverage": "Only shown windows are visible; all other bytes are omitted.",
     }
+    if definition_context:
+        for hint in hints:
+            if hint["status"] == "matched":
+                shown = [
+                    t
+                    for t in targets.values()
+                    if t.path == hint["path"] and t.start_line <= hint["line"] <= t.end_line
+                ]
+                hint["status"] = "shown" if shown else "omitted"
+        instruction["definition_context"] = dict(
+            policy="failed-call-definitions-v1",
+            hints=hints,
+            truncated=hint_truncated,
+            index_digest=built.index_digest,
+            meaning="Diagnostic names are navigation hints, not verified runtime bindings.",
+            priority="Explicit reads, failed-call definitions, failure locations, initial headers",
+        )
     return view.model_copy(
         update=dict(
             instruction=instruction,
@@ -271,6 +297,63 @@ def window_view(
             },
         )
     ), mapping
+
+
+def _definition_hints(
+    repo: Repository,
+    store: ArtifactStore,
+    index_digest: str,
+    atom: WorkAtom,
+    diagnostics: tuple[Diagnostic, ...],
+) -> tuple[list[dict[str, Any]], list[WindowRead], bool]:
+    """Bounded qualified-name hints, resolved only against this authorized revision."""
+    names: list[str] = []
+    truncated = False
+    pattern = re.compile(r"TypeError: ([A-Za-z_]\w*(?:\.[A-Za-z_]\w*)+)\(\)")
+    for diagnostic in reversed(diagnostics):
+        for match in pattern.finditer(diagnostic.text):
+            name = match[1]
+            if len(name) > 200 or name in names:
+                continue
+            if len(names) == 4:
+                truncated = True
+                break
+            names.append(name)
+        if truncated:
+            break
+    hints: list[dict[str, Any]] = []
+    reads: list[WindowRead] = []
+    for name in names:
+        hint: dict[str, Any] = dict(name=name)
+        if "read" not in atom.allowed_tools:
+            hint["status"] = "read-not-authorized"
+        elif len(reads) == 2:
+            hint["status"] = "hint-budget"
+        else:
+            result = query_symbols(repo, store, index_digest, name, max_hits=2)
+            if result.skipped:
+                hint["status"] = "partial-index"
+            elif result.truncated or len(result.hits) > 1:
+                hint["status"] = "ambiguous"
+            elif not result.hits:
+                hint["status"] = "missing"
+            else:
+                hit = result.hits[0]
+                hint.update(
+                    status="matched",
+                    path=hit.path,
+                    line=hit.definition.line,
+                    file_digest=hit.file_digest,
+                )
+                reads.append(
+                    WindowRead(
+                        path=hit.path,
+                        start_line=hit.definition.line,
+                        max_lines=min(25, hit.definition.end_line - hit.definition.line + 1),
+                    )
+                )
+        hints.append(hint)
+    return hints, reads, truncated
 
 
 def planning_window_view(view: WorkerView) -> WorkerView:

@@ -1,0 +1,38 @@
+[
+  {
+    "name": "feature-2-control",
+    "plan_digest": "2cf51e0c744f231139050a436b9888252486f64143e5318dc45febf9f73b5e16",
+    "responses_reserved": 12,
+    "tokens_reserved": 196608
+  },
+  {
+    "name": "feature-2-definitions",
+    "plan_digest": "f817d59dad332512f6dc3683545f9991fcd1afd3af60d63cc8d3585f8af46f54",
+    "responses_reserved": 12,
+    "tokens_reserved": 196608
+  },
+  {
+    "name": "feature-3-definitions",
+    "plan_digest": "80c12103221ffdae3d65c4501c3cf84718ae2aee44dbc1a7082c916dbb153836",
+    "responses_reserved": 12,
+    "tokens_reserved": 196608
+  },
+  {
+    "name": "feature-3-control",
+    "plan_digest": "b47915a422f26d753cb1a9d75a46c9145c073b9688e19f39fbb572e80fc7cd85",
+    "responses_reserved": 12,
+    "tokens_reserved": 196608
+  },
+  {
+    "name": "retained-2-control",
+    "plan_digest": "5bb253860ad6cfe64bdeb08a2078420a161b2e87a8bb843663f789762f485e1c",
+    "responses_reserved": 6,
+    "tokens_reserved": 98304
+  },
+  {
+    "name": "retained-2-definitions",
+    "plan_digest": "68ec3bfe5ce27d4e891d09a79fbe22f5622e973a958fa660a1c1d4b395e83c38",
+    "responses_reserved": 6,
+    "tokens_reserved": 98304
+  }
+]

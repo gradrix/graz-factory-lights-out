@@ -8,6 +8,11 @@ Produce a research-backed feasibility verdict, architecture specification, and s
 
 ## Notes
 
+- 2026-09-12 continuation: owner authorized executing the roadmap item by item across
+  tickets until an uncertain decision needs owner input or an external blocker prevents
+  progress. This extends the original planning-only destination for the current work:
+  qualify definition context, a complete small Python project, varied projects, then
+  larger execution environments. Keep finite trials and record all assistance/failures.
 - Use the `research`, `grilling`, `domain-modeling`, and `prototype` skills as named by each ticket.
 - Planning only: this map ends at an implementation-ready plan and validation strategy, not a production implementation.
 - Optimize Work atoms and Product modules for the smallest context that preserves correctness; extra local inference time and token use are acceptable.
@@ -303,3 +308,8 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
   resolved: helper definitions were indexed but never shown/requested; a CPU bridge
   supplies the failed callee, leaving the next helper unseen. Runtime qualification
   remains prospective. [Portable evidence](definition-grounding/README.md).
+
+- [Qualify bounded failed-call definition context](issues/69-qualify-failed-call-definition-context.md)
+  resolved: opt-in revision-bound context reaches live repair, but retained repair
+  still fails. Complete features 1/2 versus 0/2; no demonstrated causal reliability
+  gain. [Evidence](definition-qualification/README.md). Continue complete-project trials.

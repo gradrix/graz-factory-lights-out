@@ -1,0 +1,700 @@
+[
+  {
+    "name": "feature-2-control",
+    "status": "task-halt",
+    "reserved_model_responses": 6,
+    "reserved_tokens": 73728,
+    "cost": {
+      "responses": 6,
+      "prompt_tokens": 34521,
+      "completion_tokens": 16244,
+      "total_tokens": 50765,
+      "model_seconds": 277.274451391997,
+      "max_prompt_tokens": 6213
+    },
+    "wire": [
+      {
+        "view_digest": "1306da8058e74c9107fe057df5634371268c4af439c93f0df1324bc894b37af8",
+        "manifest_digest": "945930923efbfeb8e9f7b5471e77b5c243e557bb09a4c98e03c482a8abd17f9c",
+        "definition_context": null,
+        "source_bytes": 1866
+      },
+      {
+        "view_digest": "fa3cfc554bd10e4d0d41b1f60de22e8081b2b9f89042117fcaa9871b0a4e887c",
+        "manifest_digest": "ed6dd1e1977a379125f22aea85b2be20b9e0cb40d52e4fbee716922707141596",
+        "definition_context": null,
+        "source_bytes": 4807
+      },
+      {
+        "view_digest": "681e15f94bad0366ae6d58383a972111fc4cf3971bf248a4ca59e9915077fa4b",
+        "manifest_digest": "4b4bb20138277d2226f2595ab31e6585266e95418913074ff51c9ead5a44ce6e",
+        "definition_context": null,
+        "source_bytes": 1866
+      },
+      {
+        "view_digest": "9c2340f2c6742bc7c2c38393caad6852a5c858f98127f3b520384666f16c578c",
+        "manifest_digest": "082791f180bdfeccf9e6fcf45c3102d1ead7c0fbdffae5034f6420ec23a76714",
+        "definition_context": null,
+        "source_bytes": 4037
+      },
+      {
+        "view_digest": "8b711e449309c47e2425c09d99a6fdc4fd08de26127f669b07096f2a988797f9",
+        "manifest_digest": "05e6cbf1b02944e3eac0da5ba64bbbef1da7dedbafc1028a1c42dcc1f5f59f4c",
+        "definition_context": null,
+        "source_bytes": 1866
+      },
+      {
+        "view_digest": "c4ffc7c22d0ab7402e477cb64dd2f78699eafb82ace025a774596217a804d146",
+        "manifest_digest": "96b16e37725140ea8a40704abd7490ae0967087bb19abc2a4612f5a29e89f500",
+        "definition_context": null,
+        "source_bytes": 4077
+      }
+    ],
+    "plan_digest": "2cf51e0c744f231139050a436b9888252486f64143e5318dc45febf9f73b5e16",
+    "responses_reserved": 12,
+    "tokens_reserved": 196608,
+    "replay_unchanged": true,
+    "atoms": [
+      {
+        "atom_id": "prepared-a99a30cf318f645a-f0b4826271117a3b-2a1696d0d699bca0-5b9d63f79d48f69c/fedf90d9d67951c9",
+        "status": "quarantined",
+        "attempts": 2,
+        "candidate_digest": null
+      },
+      {
+        "atom_id": "prepared-a99a30cf318f645a-f0b4826271117a3b-2a1696d0d699bca0/ce648d3ef42015ab",
+        "status": "accepted",
+        "attempts": 1,
+        "candidate_digest": "0e0c2365ff5b4bd74961a7bcb66bcb904b01f1aa6c71dada0a00174f12b0ccbd"
+      }
+    ],
+    "evidence_digests": [
+      "4114b620286e0658d72e563b5cbace2feb986e96b85fc103ca4353620123410a",
+      "e548dda3b81386d63d1487beac6a068cc0df305f36e20774483c28d0a70670e2",
+      "49049a32ab920bd27554066a4a5bf18ff82d642d4e782d8ed5d94037070a6fe7",
+      "e4f1ccb565d1167903369bf0681dfc49d808b5edc423ba810182e5ae1d0e0013",
+      "3cea9a1061361c712c9bde96fec22a7bbbdad27980e2b42b99bb4e92d3980872",
+      "a2037e2747b99c254c258a0cf2b68797dd77e3b83d52b6c6bd3c30f0f157adba"
+    ]
+  },
+  {
+    "name": "feature-2-definitions",
+    "status": "accepted",
+    "reserved_model_responses": 6,
+    "reserved_tokens": 73728,
+    "tests": {
+      "tests/test_atomic_moves.py": "import pytest\nfrom unittest.mock import patch\n\nimport game_server.state.recorderdb as recorderdb\nfrom game_server.state.recorderdb import RecorderDb\nfrom common.models.move import Move\n\n\n@pytest.fixture\ndef db(tmp_path):\n    db_path = str(tmp_path / \"test.db\")\n    with patch.object(recorderdb, \"RECORDER_DB\", db_path):\n        rdb = RecorderDb()\n        yield rdb\n\n\ndef make_move(**kwargs):\n    defaults = dict(id=0, gameid=1, playerid=1, idx=0, move=\"X\", date=1000)\n    defaults.update(kwargs)\n    return Move(**defaults)\n\n\ndef test_committed_rows_and_indices(db):\n    moves = [\n        make_move(move=\"A\", date=100),\n        make_move(move=\"B\", date=200),\n        make_move(move=\"C\", date=300),\n    ]\n    result = db.addMoves(moves)\n    assert result is True\n    rows = db.conn.execute(\n        \"SELECT gameid, playerid, idx, move, date FROM moves ORDER BY id\"\n    ).fetchall()\n    assert len(rows) == 3\n    assert rows[0] == (1, 1, 0, \"A\", 100)\n    assert rows[1] == (1, 1, 1, \"B\", 200)\n    assert rows[2] == (1, 1, 2, \"C\", 300)\n\n\ndef test_empty_batch(db):\n    result = db.addMoves([])\n    assert result is True\n    rows = db.conn.execute(\"SELECT * FROM moves\").fetchall()\n    assert len(rows) == 0\n\n\ndef test_first_row_constraint_failure(db):\n    moves = [make_move(move=None, date=100)]\n    result = db.addMoves(moves)\n    assert result == -1\n    rows = db.conn.execute(\"SELECT * FROM moves\").fetchall()\n    assert len(rows) == 0\n\n\ndef test_later_row_constraint_failure(db):\n    moves = [\n        make_move(move=\"X\", date=100),\n        make_move(move=None, date=200),\n    ]\n    result = db.addMoves(moves)\n    assert result == -1\n    rows = db.conn.execute(\"SELECT * FROM moves\").fetchall()\n    assert len(rows) == 0\n\n\ndef test_rollback_preserves_prior_committed_rows(db):\n    assert db.addMoves([make_move(move=\"A\", date=100)]) is True\n    assert db.addMoves([make_move(move=None, date=200)]) == -1\n    rows = db.conn.execute(\"SELECT * FROM moves\").fetchall()\n    assert len(rows) == 1\n    assert rows[0][4] == \"A\"\n\n\ndef test_recovery_after_failure(db):\n    assert db.addMoves([make_move(move=None, date=100)]) == -1\n    assert db.addMoves([make_move(move=\"Y\", date=200)]) is True\n    rows = db.conn.execute(\"SELECT * FROM moves\").fetchall()\n    assert len(rows) == 1\n    assert rows[0][4] == \"Y\"\n",
+      "tests/test_winner_windows.py": "\"\"\"Regression coverage for contiguous winning windows and draw potential.\"\"\"\n\nfrom copy import deepcopy\n\nimport pytest\n\nfrom game_server.games.ticktaktoe import E, O, X, TikTakToe\n\n\ndef make_game(width, height, length, cells=(), figure=X):\n    game = TikTakToe(width, height, length)\n    for x, y in cells:\n        assert game.placeFigure(x, y, figure)\n    return game\n\n\n@pytest.mark.parametrize(\"cells\", [\n    [(0, 0), (2, 0), (4, 0)],\n    [(0, 0), (0, 2), (0, 4)],\n    [(0, 0), (2, 2), (4, 4)],\n    [(0, 4), (2, 2), (4, 0)],\n])\ndef test_separated_pieces_do_not_form_a_winning_line(cells):\n    game = make_game(5, 5, 3, cells)\n    assert game.checkForWinner() is False\n    assert game.stillCouldHaveWinner is True\n\n\n@pytest.mark.parametrize(\"figure\", [X, O])\ndef test_anti_diagonal_starting_away_from_left_edge(figure):\n    game = make_game(5, 5, 3, [(2, 4), (3, 3), (4, 2)], figure)\n    assert game.checkForWinner() == figure\n    assert game.stillCouldHaveWinner is True\n\n\n@pytest.mark.parametrize(\"width,height,cells\", [\n    (7, 4, [(4, 3), (5, 3), (6, 3)]),\n    (4, 7, [(3, 4), (3, 5), (3, 6)]),\n    (7, 4, [(4, 1), (5, 2), (6, 3)]),\n    (4, 7, [(1, 6), (2, 5), (3, 4)]),\n])\n@pytest.mark.parametrize(\"figure\", [X, O])\ndef test_rectangular_boards_cover_all_four_directions(width, height, cells, figure):\n    game = make_game(width, height, 3, cells, figure)\n    before = deepcopy(game.grid)\n    assert game.checkForWinner() == figure\n    assert game.checkForWinner() == figure\n    assert game.grid == before\n    assert game.stillCouldHaveWinner is True\n\n\ndef test_full_draw_has_no_possible_winning_window():\n    game = make_game(3, 3, 3)\n    game.grid = [[X, O, X], [X, O, O], [O, X, X]]\n    assert game.checkForWinner() is False\n    assert game.stillCouldHaveWinner is False\n\n\ndef test_empty_board_has_potential_and_recomputes_it_after_a_draw():\n    game = make_game(3, 3, 3)\n    game.grid = [[X, O, X], [X, O, O], [O, X, X]]\n    assert game.checkForWinner() is False\n    assert game.stillCouldHaveWinner is False\n    game.grid = [[E] * 3 for _ in range(3)]\n    assert game.checkForWinner() is False\n    assert game.stillCouldHaveWinner is True\n\n\ndef test_already_winning_window_counts_as_possible():\n    game = make_game(3, 3, 3)\n    game.grid = [[E, X, O], [E, X, O], [X, X, X]]\n    assert game.checkForWinner() == X\n    assert game.stillCouldHaveWinner is True\n"
+    },
+    "integrated_file_identities": {
+      "common/__init__.py": {
+        "content_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "executable": false,
+        "schema_version": 1,
+        "size_bytes": 0
+      },
+      "common/models/__init__.py": {
+        "content_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "executable": false,
+        "schema_version": 1,
+        "size_bytes": 0
+      },
+      "common/models/enums.py": {
+        "content_digest": "fde964b5c0f9ed8dc3de8b6008db5ded8b5152e8ac9751f4972400a288ad8d93",
+        "executable": false,
+        "schema_version": 1,
+        "size_bytes": 437
+      },
+      "common/models/game.py": {
+        "content_digest": "83696567d1a383ff6d0726f6a7d5ea1de090388d9cd6a9fd1822695d959c6e1e",
+        "executable": false,
+        "schema_version": 1,
+        "size_bytes": 367
+      },
+      "common/models/gamebase.py": {
+        "content_digest": "0ec3d69afebaa322847af82d995623dbdb568a12f5801e90503eec5a2261bc0f",
+        "executable": false,
+        "schema_version": 1,
+        "size_bytes": 951
+      },
+      "common/models/move.py": {
+        "content_digest": "8dca92ab7afb2a7d57b942a5336cf566806b5ae942a6f286a72f34ee11159886",
+        "executable": false,
+        "schema_version": 1,
+        "size_bytes": 145
+      },
+      "common/models/player.py": {
+        "content_digest": "4dc6041b355ea38a55f0cce586dfda590bc2b2f41127c922335859d00d100d2e",
+        "executable": false,
+        "schema_version": 1,
+        "size_bytes": 386
+      },
+      "common/timehelpers.py": {
+        "content_digest": "f4978173ac6078463f4ef8b3fcd4131c900ad9c8fcc900c0dbf784dd64412fc6",
+        "executable": false,
+        "schema_version": 1,
+        "size_bytes": 158
+      },
+      "game_server/__init__.py": {
+        "content_digest": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "executable": false,
+        "schema_version": 1,
+        "size_bytes": 0
+      },
+      "game_server/games/ticktaktoe.py": {
+        "content_digest": "36081507624246f5aada10971e60df3d7a0cb55906394225ceb28fce40347381",
+        "executable": false,
+        "schema_version": 1,
+        "size_bytes": 8635
+      },
+      "game_server/state/game_records_schema.sql": {
+        "content_digest": "6db0147db14baaabf8f0f97df7525808756c069647d15bd90679f7080e38cfb7",
+        "executable": false,
+        "schema_version": 1,
+        "size_bytes": 2478
+      },
+      "game_server/state/gamestatemanager.py": {
+        "content_digest": "0c03bb48f18247aba6d36e7e3822702ec3134b35077766b8c4897b9bea30e688",
+        "executable": false,
+        "schema_version": 1,
+        "size_bytes": 6063
+      },
+      "game_server/state/recorderdb.py": {
+        "content_digest": "2d220c933926181a8526695798bd92f08a7468cde8cfcc0cbe4eee61a65e7f8d",
+        "executable": false,
+        "schema_version": 1,
+        "size_bytes": 6818
+      },
+      "tests/test_atomic_moves.py": {
+        "content_digest": "82bd2f3d6f48e88a9b711f5ab00339f65a70a9730065bb962d1e3d519a47e3b1",
+        "executable": false,
+        "schema_version": 1,
+        "size_bytes": 2304
+      },
+      "tests/test_winner_windows.py": {
+        "content_digest": "98b65e1973995c2521bac27439bc7d97bb2624839469a4c0791c700fe15c3001",
+        "executable": false,
+        "schema_version": 1,
+        "size_bytes": 2368
+      }
+    },
+    "test_functions": 12,
+    "exact_duplicate_test_bodies": 0,
+    "reuse_status": "accepted",
+    "replay_unchanged": true,
+    "cost": {
+      "responses": 6,
+      "prompt_tokens": 34930,
+      "completion_tokens": 15268,
+      "total_tokens": 50198,
+      "model_seconds": 258.5579221819935,
+      "max_prompt_tokens": 6306
+    },
+    "wire": [
+      {
+        "view_digest": "db802b1bd7d12c76e28d3463dad328c8ffeca56e76c605568e235d3bd9ee3cf2",
+        "manifest_digest": "cf7dc87d6fca43237db1d35eb1d02a9e285c0278238a135cc447098641df245a",
+        "definition_context": {
+          "hints": [],
+          "index_digest": "8933e80ca8fcfac1edc8ccdefe22f9de6feb68dcdb975369a4fd0aa88da317b5",
+          "meaning": "Diagnostic names are navigation hints, not verified runtime bindings.",
+          "policy": "failed-call-definitions-v1",
+          "priority": "Explicit reads, failed-call definitions, failure locations, initial headers",
+          "truncated": false
+        },
+        "source_bytes": 1866
+      },
+      {
+        "view_digest": "3ae861e359c5bb1d7f19f35f14c52198bdf3caa8df71fb163b268aa7ba120562",
+        "manifest_digest": "8edab127241c1309f537e1f8ee8b529d49653627b9103c152fe18492756ae521",
+        "definition_context": {
+          "hints": [],
+          "index_digest": "8933e80ca8fcfac1edc8ccdefe22f9de6feb68dcdb975369a4fd0aa88da317b5",
+          "meaning": "Diagnostic names are navigation hints, not verified runtime bindings.",
+          "policy": "failed-call-definitions-v1",
+          "priority": "Explicit reads, failed-call definitions, failure locations, initial headers",
+          "truncated": false
+        },
+        "source_bytes": 4037
+      },
+      {
+        "view_digest": "d003d1bc6addebae824ba849edd96344f2a35576b464410036bccacf8a649c18",
+        "manifest_digest": "e7a370c500a1fc856fd9bbcfd1888abc49c76d82c1068204f7b3728ed26333f7",
+        "definition_context": {
+          "hints": [],
+          "index_digest": "8933e80ca8fcfac1edc8ccdefe22f9de6feb68dcdb975369a4fd0aa88da317b5",
+          "meaning": "Diagnostic names are navigation hints, not verified runtime bindings.",
+          "policy": "failed-call-definitions-v1",
+          "priority": "Explicit reads, failed-call definitions, failure locations, initial headers",
+          "truncated": false
+        },
+        "source_bytes": 1866
+      },
+      {
+        "view_digest": "f9db30ef88e3cc6eec0278c6db59b69d6ac13250cd3a88fdfc395e61f01d45a1",
+        "manifest_digest": "7fa6807a1fa25cc92d7d04d1db376720c35d7e3f4fe5fad5950efcf7fdc21bc8",
+        "definition_context": {
+          "hints": [],
+          "index_digest": "8933e80ca8fcfac1edc8ccdefe22f9de6feb68dcdb975369a4fd0aa88da317b5",
+          "meaning": "Diagnostic names are navigation hints, not verified runtime bindings.",
+          "policy": "failed-call-definitions-v1",
+          "priority": "Explicit reads, failed-call definitions, failure locations, initial headers",
+          "truncated": false
+        },
+        "source_bytes": 4037
+      },
+      {
+        "view_digest": "1523e10cec2b14e5d7b62070378915b556eece68518ac7f46bbfbd580e4d529b",
+        "manifest_digest": "0eefcd7ab71c62f5b8f7cd7d9926f5415389786c9fa8d953f215e5f9744e0aee",
+        "definition_context": {
+          "hints": [],
+          "index_digest": "a5ecb5d0da342dde7267f7ed61c1ca9c3d0e617eb7adaa742b71c63055f397a9",
+          "meaning": "Diagnostic names are navigation hints, not verified runtime bindings.",
+          "policy": "failed-call-definitions-v1",
+          "priority": "Explicit reads, failed-call definitions, failure locations, initial headers",
+          "truncated": false
+        },
+        "source_bytes": 1866
+      },
+      {
+        "view_digest": "74ccb9923ba2e53a2b41783d74f22c3ff3b578cb2093fa183067c922468c14d3",
+        "manifest_digest": "c0159bef712cc641476578a33a59733faa68bf9fdf2352be102baf2a217a7793",
+        "definition_context": {
+          "hints": [],
+          "index_digest": "a5ecb5d0da342dde7267f7ed61c1ca9c3d0e617eb7adaa742b71c63055f397a9",
+          "meaning": "Diagnostic names are navigation hints, not verified runtime bindings.",
+          "policy": "failed-call-definitions-v1",
+          "priority": "Explicit reads, failed-call definitions, failure locations, initial headers",
+          "truncated": false
+        },
+        "source_bytes": 4077
+      }
+    ],
+    "plan_digest": "f817d59dad332512f6dc3683545f9991fcd1afd3af60d63cc8d3585f8af46f54",
+    "responses_reserved": 12,
+    "tokens_reserved": 196608,
+    "atoms": [
+      {
+        "atom_id": "feature-final-b6b1cd1a61b761fc93c05a80241c93ca408fa440bee1a48951638b22070bcab7",
+        "status": "accepted",
+        "attempts": 1,
+        "candidate_digest": "320ecf6b2f92cac0a21bd36f7f2c9801e5dfc0a710a78bfa303786a9d2de722a"
+      },
+      {
+        "atom_id": "prepared-a99a30cf318f645a-f0b4826271117a3b-7421b2f7e3aa37d0-90cf1c585e1e2ffe/fedf90d9d67951c9",
+        "status": "accepted",
+        "attempts": 2,
+        "candidate_digest": "320ecf6b2f92cac0a21bd36f7f2c9801e5dfc0a710a78bfa303786a9d2de722a"
+      },
+      {
+        "atom_id": "prepared-a99a30cf318f645a-f0b4826271117a3b-7421b2f7e3aa37d0/ce648d3ef42015ab",
+        "status": "accepted",
+        "attempts": 1,
+        "candidate_digest": "0e0c2365ff5b4bd74961a7bcb66bcb904b01f1aa6c71dada0a00174f12b0ccbd"
+      }
+    ],
+    "evidence_digests": [
+      "492aba071f04377743a87f0f55d5a8ecc29e6835d674ba8088f79fdaef4f2b8d",
+      "faee52de8a015badf652f9e4d355ddc9557bd6e88b4d06033c8b7503446aeaba",
+      "f9f7116abefadd0ebbec92ad4f3efacf6099bd794ee6b9ed6b98d5e8fc1e4a30",
+      "f3b1b481c766cfe7c6d2f7f66376770eb28601af07d40ca7e4e0dc057b8a5769",
+      "a7b661f9a29d4a5e15f6ff6f5f9722a44d344e45d1ecfc2d45180ade7cefcb7c",
+      "f0a261bcf7c20c56b3b312d71ce11dae0c6e79d795e49535697369c6dd65aef2"
+    ],
+    "heldout": {
+      "exit_code": 0,
+      "candidate_digest": "320ecf6b2f92cac0a21bd36f7f2c9801e5dfc0a710a78bfa303786a9d2de722a"
+    }
+  },
+  {
+    "name": "feature-3-definitions",
+    "status": "task-halt",
+    "reserved_model_responses": 6,
+    "reserved_tokens": 73728,
+    "cost": {
+      "responses": 6,
+      "prompt_tokens": 34920,
+      "completion_tokens": 18617,
+      "total_tokens": 53537,
+      "model_seconds": 314.52397976000066,
+      "max_prompt_tokens": 7045
+    },
+    "wire": [
+      {
+        "view_digest": "efd2af642fe3ff00f3f662fba95ed3a6b143ac501ee22ce7247d249509081527",
+        "manifest_digest": "bcd973b773738f68498a793f56b44b5a55e64e12aaac6b094256cfc2c3b84c4d",
+        "definition_context": {
+          "hints": [],
+          "index_digest": "8933e80ca8fcfac1edc8ccdefe22f9de6feb68dcdb975369a4fd0aa88da317b5",
+          "meaning": "Diagnostic names are navigation hints, not verified runtime bindings.",
+          "policy": "failed-call-definitions-v1",
+          "priority": "Explicit reads, failed-call definitions, failure locations, initial headers",
+          "truncated": false
+        },
+        "source_bytes": 1721
+      },
+      {
+        "view_digest": "e1618b9b61c8f6e73c0c44f0a2d0024ffd92a9d6e78ec94fc1c64734b6979895",
+        "manifest_digest": "1b6a5ac24cfa79c23825f5e4f2cfab990f61d9509099315413dddea69ba775a6",
+        "definition_context": {
+          "hints": [],
+          "index_digest": "8933e80ca8fcfac1edc8ccdefe22f9de6feb68dcdb975369a4fd0aa88da317b5",
+          "meaning": "Diagnostic names are navigation hints, not verified runtime bindings.",
+          "policy": "failed-call-definitions-v1",
+          "priority": "Explicit reads, failed-call definitions, failure locations, initial headers",
+          "truncated": false
+        },
+        "source_bytes": 3892
+      },
+      {
+        "view_digest": "8e3aa037b35f060edc07bf9fb3cc839199e8c4522d91213d2c54626dd05a571c",
+        "manifest_digest": "9f80920d438ac7b2fbbc574785828bd5569d6a293a772ee07122babff9d030f6",
+        "definition_context": {
+          "hints": [],
+          "index_digest": "8933e80ca8fcfac1edc8ccdefe22f9de6feb68dcdb975369a4fd0aa88da317b5",
+          "meaning": "Diagnostic names are navigation hints, not verified runtime bindings.",
+          "policy": "failed-call-definitions-v1",
+          "priority": "Explicit reads, failed-call definitions, failure locations, initial headers",
+          "truncated": false
+        },
+        "source_bytes": 1721
+      },
+      {
+        "view_digest": "8872f3d8e7e305cb7689c0c608aa71720325231166fbfac0a681ff8a48b12736",
+        "manifest_digest": "01211c374b2328d5fc42400f3fd190123864b6868f9c25f99f1dee171ec80e41",
+        "definition_context": {
+          "hints": [
+            {
+              "name": "Move.__init__",
+              "status": "missing"
+            }
+          ],
+          "index_digest": "fb7bace2ae1b5392fe89ad7093f143a077b4cb4184464734db1971a4c6e4f5c7",
+          "meaning": "Diagnostic names are navigation hints, not verified runtime bindings.",
+          "policy": "failed-call-definitions-v1",
+          "priority": "Explicit reads, failed-call definitions, failure locations, initial headers",
+          "truncated": false
+        },
+        "source_bytes": 3192
+      },
+      {
+        "view_digest": "ed1a69114624814b53c38b1419d709557814a11a6ab88ea6dfce46a31c967044",
+        "manifest_digest": "d08138f2731c11b031cf669b38059e865e556e0283ae198d1c28079a8a7d83ad",
+        "definition_context": {
+          "hints": [],
+          "index_digest": "a5ecb5d0da342dde7267f7ed61c1ca9c3d0e617eb7adaa742b71c63055f397a9",
+          "meaning": "Diagnostic names are navigation hints, not verified runtime bindings.",
+          "policy": "failed-call-definitions-v1",
+          "priority": "Explicit reads, failed-call definitions, failure locations, initial headers",
+          "truncated": false
+        },
+        "source_bytes": 1721
+      },
+      {
+        "view_digest": "bed00b999a335c9396201689fb9a7173e2e5e12a5650dc93f3b7ee80fab6c58a",
+        "manifest_digest": "1a349ad16f609e2678844ab768d266a21c1c43a4975644d0c3c20efec2ae6b03",
+        "definition_context": {
+          "hints": [],
+          "index_digest": "a5ecb5d0da342dde7267f7ed61c1ca9c3d0e617eb7adaa742b71c63055f397a9",
+          "meaning": "Diagnostic names are navigation hints, not verified runtime bindings.",
+          "policy": "failed-call-definitions-v1",
+          "priority": "Explicit reads, failed-call definitions, failure locations, initial headers",
+          "truncated": false
+        },
+        "source_bytes": 4613
+      }
+    ],
+    "plan_digest": "80c12103221ffdae3d65c4501c3cf84718ae2aee44dbc1a7082c916dbb153836",
+    "responses_reserved": 12,
+    "tokens_reserved": 196608,
+    "replay_unchanged": true,
+    "atoms": [
+      {
+        "atom_id": "prepared-af83808e5b3fe29b-8a1dc862d63c38cc-d820a0d5ac35c52c-d61e50d516e793d6/63d682fafb8a4279",
+        "status": "quarantined",
+        "attempts": 2,
+        "candidate_digest": null
+      },
+      {
+        "atom_id": "prepared-af83808e5b3fe29b-8a1dc862d63c38cc-d820a0d5ac35c52c/36b4b3d43e1a581d",
+        "status": "accepted",
+        "attempts": 1,
+        "candidate_digest": "0e0c2365ff5b4bd74961a7bcb66bcb904b01f1aa6c71dada0a00174f12b0ccbd"
+      }
+    ],
+    "evidence_digests": [
+      "b13f53a4612336fdb0a40f6ddc95d5aecdda6b46c3fb04244162621e6e55e521",
+      "08ec33c1f51ed70abcd1adcb15e6f361accb34065175d6ca54be40790c2d6fa5",
+      "d5a4917e5df31ac0b1623c5373b3100a388982f9252bbe9509f154ef36f8f4be",
+      "a8fe023922405c0c37d2c9fa1df24bb33bd13afb8e9fab85b1b47abc4694078a",
+      "79a0b4206e37b860f79e1df6cff3dafe230455ebfcee8f1d4aec7710e3b73578",
+      "6d2fb3c9eabb2f678ec96ee68fd2ff48787431a222301f343c9904002812e719"
+    ]
+  },
+  {
+    "name": "feature-3-control",
+    "status": "task-halt",
+    "reserved_model_responses": 6,
+    "reserved_tokens": 73728,
+    "cost": {
+      "responses": 6,
+      "prompt_tokens": 33411,
+      "completion_tokens": 15921,
+      "total_tokens": 49332,
+      "model_seconds": 269.02279382500274,
+      "max_prompt_tokens": 6031
+    },
+    "wire": [
+      {
+        "view_digest": "0754e8285c6b443b37bf9c4d8451990cf744b3df78d303944374cad577c526cd",
+        "manifest_digest": "a7c590a8f58548a6f8e8c62f0fa30ade9bd00d0fcff6ccbde24c70171e40d355",
+        "definition_context": null,
+        "source_bytes": 1721
+      },
+      {
+        "view_digest": "b6b89aadd4cc383e07c8cbb94d48aaea0726480d96d5a5c5f22fc830b4ff5c00",
+        "manifest_digest": "a9281fd1ddbf799204a3d78f7fe57dff154f3aea160dbbbada6603b0d168e338",
+        "definition_context": null,
+        "source_bytes": 4662
+      },
+      {
+        "view_digest": "f795ee7bce68048838b0ce9427ef764cf474813aa5f6cb2d20b96c40da78794b",
+        "manifest_digest": "ff37608b2497899b354540f72905b096100289376698e3bbd510f86a52677480",
+        "definition_context": null,
+        "source_bytes": 1721
+      },
+      {
+        "view_digest": "93ad48972eb8041161b51d73ff92c8493c63f1afb18ccbd5a72468409e831e0f",
+        "manifest_digest": "196a11c2c4ec515b5873e49c3e0a666c40d2074fa69a06e25fc7d0ad51847633",
+        "definition_context": null,
+        "source_bytes": 3892
+      },
+      {
+        "view_digest": "e241a1258c52d728b4686680c6ed95c84ad778b9efe7aec20435301c14e92838",
+        "manifest_digest": "19f878aa5c5000eb759440313e2d8c8d41ad95fa38aeed3aa7f08adc46d47b6b",
+        "definition_context": null,
+        "source_bytes": 1721
+      },
+      {
+        "view_digest": "2342dabc32cb5558284e750b547ab673f80e182fbddc1d8c084d176c55064562",
+        "manifest_digest": "0c4544b2ba63200d13f574c6480cd4371722e815f8b3a9199afa4b25bcf2d44f",
+        "definition_context": null,
+        "source_bytes": 3932
+      }
+    ],
+    "plan_digest": "b47915a422f26d753cb1a9d75a46c9145c073b9688e19f39fbb572e80fc7cd85",
+    "responses_reserved": 12,
+    "tokens_reserved": 196608,
+    "replay_unchanged": true,
+    "atoms": [
+      {
+        "atom_id": "prepared-af83808e5b3fe29b-8a1dc862d63c38cc-6ca4099dc137cbd6-d7f1134dde4366da/63d682fafb8a4279",
+        "status": "quarantined",
+        "attempts": 2,
+        "candidate_digest": null
+      },
+      {
+        "atom_id": "prepared-af83808e5b3fe29b-8a1dc862d63c38cc-6ca4099dc137cbd6/36b4b3d43e1a581d",
+        "status": "accepted",
+        "attempts": 1,
+        "candidate_digest": "0e0c2365ff5b4bd74961a7bcb66bcb904b01f1aa6c71dada0a00174f12b0ccbd"
+      }
+    ],
+    "evidence_digests": [
+      "6182e05ebfdf8b7c30d1d07f659aac07841c7f11f8c00766f2b4ad7700d42582",
+      "200a2bf152e16ca22d2a4d0aa03c5a854d4d7e51c3d8e2d2300441655bc9576f",
+      "b1dc30db357a9bf3415dfe22bbb42db36bf9199b7c19682fac71e58bf59ac0dc",
+      "756559442ddc203c60eea1ae335726ad36ea77ce486b38d5a67105847867155a",
+      "c312375d0718255939d77e9f261c5b67cb3ec5c9ddbe638f74b5f074909c1221",
+      "b486df052eb5e6a1ec3b2b381058a6591e6731c3e075207975dba90148c66cca"
+    ]
+  },
+  {
+    "name": "retained-2-control",
+    "status": "task-halt",
+    "reserved_model_responses": 6,
+    "reserved_tokens": 73728,
+    "cost": {
+      "responses": 6,
+      "prompt_tokens": 41690,
+      "completion_tokens": 18531,
+      "total_tokens": 60221,
+      "model_seconds": 314.2460125599973,
+      "max_prompt_tokens": 7905
+    },
+    "wire": [
+      {
+        "view_digest": "692f271eef84da2c04c67f6bcb358a2dc80a837aef4c07115383f0b7d483019b",
+        "manifest_digest": "b0948d58b5a38b40a05f7b1a0251a59bf3fb8299c389a24e39210ed59844bfe1",
+        "definition_context": null,
+        "source_bytes": 2712
+      },
+      {
+        "view_digest": "e1ebfaa115009de2f677e151576dcd23bac662382736ec0414c07674e9b63ade",
+        "manifest_digest": "fdbed507bf28d4324c2a6076696a2850ec4d9e4deebd3b29d5a35e6120634322",
+        "definition_context": null,
+        "source_bytes": 3508
+      },
+      {
+        "view_digest": "fdffb280927ce684d3eddb607275f035fb159dd513370bd373496009a8466604",
+        "manifest_digest": "e8d1726f59b416fdf7323ad9e7b7be9afa9172b8943a1a5060309b8a63df9fa8",
+        "definition_context": null,
+        "source_bytes": 6601
+      },
+      {
+        "view_digest": "4c84759ef1c3d0986e6511ac5c4defcfa00771c7e1a77e660621fd6f93313975",
+        "manifest_digest": "7001387b7d816814e9d5937ef87f29471d4cc22ad770da0462412e89d705060a",
+        "definition_context": null,
+        "source_bytes": 2712
+      },
+      {
+        "view_digest": "3f279a59615ee60360d40d64a792a1e3e5937ba98a5e755842656c3dbbccb736",
+        "manifest_digest": "94f7304e5908840a4fd9031baa494b84f4a9233a4cc4429a2cfbd77a7e081aa9",
+        "definition_context": null,
+        "source_bytes": 6429
+      },
+      {
+        "view_digest": "6c89cf59e442fa3bd6e14694a6e82f5a4dcc14a1d07f4ee8a715c7d607fee239",
+        "manifest_digest": "45b00308cf18fafd3928f586ab0c863ccf15e5cee03e18ab3f8dbe7f438b557f",
+        "definition_context": null,
+        "source_bytes": 8592
+      }
+    ],
+    "plan_digest": "5bb253860ad6cfe64bdeb08a2078420a161b2e87a8bb843663f789762f485e1c",
+    "responses_reserved": 6,
+    "tokens_reserved": 98304,
+    "replay_unchanged": true,
+    "atoms": [
+      {
+        "atom_id": "prepared-f446f16ae9fe0b25-fc017b1bd2950cb3-4da2f31e6279ebb9/7ad587e62f806f2d",
+        "status": "quarantined",
+        "attempts": 2,
+        "candidate_digest": null
+      }
+    ],
+    "evidence_digests": [
+      "b26a07d8fbb7939a295375406d17bf35dae636becae2fe79ec0b02a40191897d",
+      "220185fda9d23762724d4034be74fca7ade5038465a763bba0a0c0213bafa04b",
+      "6dd79ff4e38e984ac83948ea7452f4788a99a0a4477f6d5c90b4edc91c043a2d",
+      "a9ba9dfa9449a287e4d5ff68f7789f54f57ae9931481d13bb6424820cbb7bb8d",
+      "ac5d4e950c46d18ad939f2ce88ee5f5b9fdd2215443e42ccbf8714c60070932d",
+      "2be02ddda4740fcc025b500c42958db74a4423aa3c2ff635cbc089fdd23fce5c"
+    ]
+  },
+  {
+    "name": "retained-2-definitions",
+    "status": "task-halt",
+    "reserved_model_responses": 6,
+    "reserved_tokens": 73728,
+    "cost": {
+      "responses": 5,
+      "prompt_tokens": 33801,
+      "completion_tokens": 17791,
+      "total_tokens": 51592,
+      "model_seconds": 300.60137566900084,
+      "max_prompt_tokens": 8142
+    },
+    "wire": [
+      {
+        "view_digest": "3d8a3d95b57b56fe1e7be298e731a560787e637900b39cd379fc7eb97b71f71d",
+        "manifest_digest": "af4b473bff372cac1da5d77af45bf32db39205b58b4b48d45ff51e87db585b8a",
+        "definition_context": {
+          "hints": [],
+          "index_digest": "3ca9e50b971e27e8e312935cd8dfe4d421cf772539e4587760185615a367eff7",
+          "meaning": "Diagnostic names are navigation hints, not verified runtime bindings.",
+          "policy": "failed-call-definitions-v1",
+          "priority": "Explicit reads, failed-call definitions, failure locations, initial headers",
+          "truncated": false
+        },
+        "source_bytes": 2712
+      },
+      {
+        "view_digest": "bbb03b3d7f9f99db30c146ac077f26027902a60ee43931951568685c71dd4d50",
+        "manifest_digest": "939fc35d1210802c69aebb239b4a76fc7129c6fcaab4894c12891c2ff9de20b6",
+        "definition_context": {
+          "hints": [
+            {
+              "file_digest": "11a23f156f4a45bd2e32099c6c659b418bfbe24a0d0131390c26f12289c79ab7",
+              "line": 53,
+              "name": "RecorderDb.createPlayer",
+              "path": "game_server/state/recorderdb.py",
+              "status": "shown"
+            }
+          ],
+          "index_digest": "9ed2f7812c1e83fc88fdc3e41408ec25fd3c98a20fa73cd6b32b4d3d67e41a18",
+          "meaning": "Diagnostic names are navigation hints, not verified runtime bindings.",
+          "policy": "failed-call-definitions-v1",
+          "priority": "Explicit reads, failed-call definitions, failure locations, initial headers",
+          "truncated": false
+        },
+        "source_bytes": 4159
+      },
+      {
+        "view_digest": "496c368bf618907cfc0b5be4400e7638207885ff8386ac473fd2592f0338cd2f",
+        "manifest_digest": "1be2fefc3d2c9e004b4eaf6f4aa965ac5811590bc82fba5eb5f775c44ff4ea60",
+        "definition_context": {
+          "hints": [
+            {
+              "file_digest": "11a23f156f4a45bd2e32099c6c659b418bfbe24a0d0131390c26f12289c79ab7",
+              "line": 53,
+              "name": "RecorderDb.createPlayer",
+              "path": "game_server/state/recorderdb.py",
+              "status": "shown"
+            }
+          ],
+          "index_digest": "9ed2f7812c1e83fc88fdc3e41408ec25fd3c98a20fa73cd6b32b4d3d67e41a18",
+          "meaning": "Diagnostic names are navigation hints, not verified runtime bindings.",
+          "policy": "failed-call-definitions-v1",
+          "priority": "Explicit reads, failed-call definitions, failure locations, initial headers",
+          "truncated": false
+        },
+        "source_bytes": 6254
+      },
+      {
+        "view_digest": "e6c24775035c4b643ebd6041d20950198862e7e5ebeccc617338c02ce14ea376",
+        "manifest_digest": "5261f40799b3a19b872efa1e55fbabc5330691bc9a4adc71533779e990211550",
+        "definition_context": {
+          "hints": [],
+          "index_digest": "9ed2f7812c1e83fc88fdc3e41408ec25fd3c98a20fa73cd6b32b4d3d67e41a18",
+          "meaning": "Diagnostic names are navigation hints, not verified runtime bindings.",
+          "policy": "failed-call-definitions-v1",
+          "priority": "Explicit reads, failed-call definitions, failure locations, initial headers",
+          "truncated": false
+        },
+        "source_bytes": 2718
+      },
+      {
+        "view_digest": "4e727b5acc65505148dac17894bdc8c800d8a8db473b5e62e6ecc000825b2b1c",
+        "manifest_digest": "b530d9238856209b25a5e35c69a62408aec73774f9ccd6c19681fada609279ad",
+        "definition_context": {
+          "hints": [],
+          "index_digest": "9ed2f7812c1e83fc88fdc3e41408ec25fd3c98a20fa73cd6b32b4d3d67e41a18",
+          "meaning": "Diagnostic names are navigation hints, not verified runtime bindings.",
+          "policy": "failed-call-definitions-v1",
+          "priority": "Explicit reads, failed-call definitions, failure locations, initial headers",
+          "truncated": false
+        },
+        "source_bytes": 3450
+      }
+    ],
+    "plan_digest": "68ec3bfe5ce27d4e891d09a79fbe22f5622e973a958fa660a1c1d4b395e83c38",
+    "responses_reserved": 6,
+    "tokens_reserved": 98304,
+    "replay_unchanged": true,
+    "atoms": [
+      {
+        "atom_id": "prepared-f446f16ae9fe0b25-fc017b1bd2950cb3-21a3ba01a0952564/7ad587e62f806f2d",
+        "status": "quarantined",
+        "attempts": 2,
+        "candidate_digest": null
+      }
+    ],
+    "evidence_digests": [
+      "9a99cb9803bdc89f9713acefbf5cb69c5c0c9b7fb40a720ee00815120057b097",
+      "0ac7cc5e2a7431b33bf7cb6b3fe006f7a80b864483afcd520aaab989a06bde5b",
+      "4e727c055a6595e7ead9881d855bc31aad1f3e8d7c3ef346e6902f4d2af23aef",
+      "b8cf263229d3f36c9c6204080e092e80be0f03dd5ef1e67e34ea49ab4ffecad4",
+      "7566e2abc525c8bc47efb30e04c18054c48b155a302f9715d52c2078ae424ae8"
+    ]
+  }
+]

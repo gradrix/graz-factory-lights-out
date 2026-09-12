@@ -1,5 +1,34 @@
 # GFLO handoff — repository access foundation
 
+## Active continuation — runtime qualification and complete project, 2026-09-12
+
+Owner authorized proceeding item by item through definition grounding, a complete
+small Python project, varied projects and larger execution qualification until an
+uncertain owner decision or external blocker prevents progress. Continue across
+Wayfinder tickets; do not stop merely after one ticket. Same model and finite budgets
+remain required; existing push/merge authorization persists.
+
+[Qualify bounded failed-call definition context](issues/69-qualify-failed-call-definition-context.md)
+resolved. Opt-in runtime passes 529 full-suite tests/25 subtests with Docker plus the
+additional count-budget regression, lint, typing and four historical replays. Six
+fresh trials: complete features control 0/2, definitions 1/2; retained repairs 0/1
+both. All 35 responses pass wire/budget audits; all terminal replays are unchanged.
+Accepted audit passes but used no hints. The retained repair received createPlayer's
+real definition twice and still failed exact-edit/output recovery. Generated Move.__init__
+is reported missing. No default upgrade. [Evidence](definition-qualification/README.md).
+
+[Qualify a complete small Python project](issues/70-qualify-a-complete-small-python-project.md)
+is claimed and running at `.gflo/evidence/small-project-v1/`. Three Taskdock builds
+are frozen on established non-reasoning windows, 1,695,744 reserved tokens overall.
+Initial source is only a brief and unrelated sentinel; model must produce API, CLI,
+packaging, docs and tests. Five independent gates and held-out reference audit pass.
+Initial preflight encountered noexec on installed-script launch; brief/check were
+revised before inference to invoke the installed entry via Python, preserving the
+restriction and failed preflight. [Portable preparation](small-project/README.md).
+Do not restart/reset the active campaign. After terminal results run its report,
+audit any delivered tests/docs, record outcome and continue to varied projects and
+larger execution qualification as the owner requested. No known human blocker.
+
 ## Current checkpoint — repair definition visibility, 2026-09-12
 
 [Ground repair calls in revision-bound definitions](issues/68-ground-repair-calls-in-visible-definitions.md)

@@ -10,7 +10,10 @@ from test_worker import prepared as prepared
 from test_worker import server as server
 
 from gflo.broker import SourceBundle
-from gflo.contracts import WINDOW_PROFILES, WINDOW_REASONING_PROFILE
+from gflo.contracts import (
+    WINDOW_PROFILES,
+    WINDOW_REASONING_PROFILES,
+)
 from gflo.ledger import WorkLedger
 from gflo.windows import WINDOW_PROFILE, WindowRead, parse_window_result, window_view
 from gflo.worker import CandidateResult, WorkerError
@@ -459,7 +462,8 @@ def test_failure_windows_keep_explicit_reads_and_total_limits(prepared):
 
 
 @pytest.mark.parametrize("overflow", [False, True])
-def test_reasoning_windows_bind_effort_budget_and_exact_edits(prepared, server, overflow):
+@pytest.mark.parametrize("profile", WINDOW_REASONING_PROFILES)
+def test_reasoning_windows_bind_effort_budget_and_exact_edits(prepared, server, overflow, profile):
     from test_worker import change_atom, client_for
 
     from gflo.model import LocalModel, ModelError
@@ -467,9 +471,7 @@ def test_reasoning_windows_bind_effort_budget_and_exact_edits(prepared, server, 
     store, atom, source, digest = prepared
     atom = change_atom(atom, context_budget={"total_tokens": 16384, "output_tokens": 6144})
     original = client_for(prepared, server)
-    client = LocalModel(
-        store, original.profile.model_copy(update={"profile_id": WINDOW_REASONING_PROFILE})
-    )
+    client = LocalModel(store, original.profile.model_copy(update={"profile_id": profile}))
     if overflow:
         server[0]["count"] = 10241
 
@@ -493,6 +495,10 @@ def test_reasoning_windows_bind_effort_budget_and_exact_edits(prepared, server, 
     assert tokenize["chat_template_kwargs"] == {"enable_thinking": True, "reasoning_effort": "low"}
     assert generate["chat_template_kwargs"] == tokenize["chat_template_kwargs"]
     assert generate["max_tokens"] == 6144
+    wire_view = json.loads(generate["messages"][1]["content"])
+    assert ("definition_context" in wire_view["instruction"]) == (
+        profile == "vllm-python-worker-windows-definitions-low-v1"
+    )
     manifest = json.loads(store.read(turn.manifest_digest))
     assert manifest["output_reserved"] == 6144 and manifest["total_limit"] == 16384
     assert turn.result.changes == {"main.py": "print('fixed')\n"}
@@ -501,17 +507,17 @@ def test_reasoning_windows_bind_effort_budget_and_exact_edits(prepared, server, 
 @pytest.mark.parametrize(
     "finish,valid_usage", [("length", True), ("length", False), ("stop", True)]
 )
+@pytest.mark.parametrize("profile", WINDOW_REASONING_PROFILES)
 def test_reasoning_only_truncation_preserves_accounting_and_protocol(
-    prepared, server, finish, valid_usage
+    prepared, server, finish, valid_usage, profile
 ):
     from test_worker import client_for
+
     from gflo.model import LocalModel, ModelError
 
     store, atom, _, digest = prepared
     old = client_for(prepared, server)
-    client = LocalModel(
-        store, old.profile.model_copy(update={"profile_id": WINDOW_REASONING_PROFILE})
-    )
+    client = LocalModel(store, old.profile.model_copy(update={"profile_id": profile}))
 
     def mutate(response):
         response["choices"][0]["finish_reason"] = finish

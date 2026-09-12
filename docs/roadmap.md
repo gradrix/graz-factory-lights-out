@@ -18,14 +18,12 @@ are recorded in [evaluation](evaluation.md) and portable development evidence.
 
 ## Next priorities
 
-1. Qualify opt-in revision-bound helper-definition context for repair workers.
-   The opt-in reasoning profile accepted 1/3 stateful full features versus 0/3
-   control; neither repaired the two retained drafts. Reasoning-only truncation
-   now retries correctly, but fresh follow-ups still failed invented helper calls
-   or exhausted output. Retained requests confirm definitions were indexed but
-   never shown or requested. A CPU bridge supplies the failed callee, but leaves
-   the next helper unseen; model repair remains unqualified. Keep finite budgets
-   and all failures. No default profile upgrade is justified.
+1. Qualify complete small Python projects from a brief, including installation,
+   persistent behavior, documentation and substantive tests. The opt-in definition
+   bridge now supplies real helper source in live repair, but has not demonstrated
+   improved completion: retained repairs failed with and without it. Keep finite
+   budgets, all failures and the established default profile. Measure every human
+   intervention and audit delivered bytes independently.
 2. Qualify repeated features across different real repositories and uncertain
    interfaces. Measure complete feature success, retries, model cost and review
    effort. Planning JSON reliability and source-selection sufficiency remain open.

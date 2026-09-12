@@ -1,0 +1,51 @@
+[
+  {
+    "name": "feature-2-control",
+    "gate": "behavior",
+    "exit_code": 0,
+    "candidate_digest": "549deb85f37dcb525c0611eb9c52eba6335c7af6c775bf12b4ebe842a3f2b038",
+    "outcome": "completed"
+  },
+  {
+    "name": "feature-2-control",
+    "gate": "regression",
+    "exit_code": 0,
+    "candidate_digest": "549deb85f37dcb525c0611eb9c52eba6335c7af6c775bf12b4ebe842a3f2b038",
+    "outcome": "completed"
+  },
+  {
+    "name": "feature-2-control",
+    "gate": "tests",
+    "exit_code": 0,
+    "candidate_digest": "549deb85f37dcb525c0611eb9c52eba6335c7af6c775bf12b4ebe842a3f2b038",
+    "outcome": "completed"
+  },
+  {
+    "name": "retained-2-control",
+    "gate": "behavior",
+    "exit_code": 0,
+    "candidate_digest": "549deb85f37dcb525c0611eb9c52eba6335c7af6c775bf12b4ebe842a3f2b038",
+    "outcome": "completed"
+  },
+  {
+    "name": "retained-2-control",
+    "gate": "regression",
+    "exit_code": 0,
+    "candidate_digest": "549deb85f37dcb525c0611eb9c52eba6335c7af6c775bf12b4ebe842a3f2b038",
+    "outcome": "completed"
+  },
+  {
+    "name": "retained-2-control",
+    "gate": "tests",
+    "exit_code": 0,
+    "candidate_digest": "549deb85f37dcb525c0611eb9c52eba6335c7af6c775bf12b4ebe842a3f2b038",
+    "outcome": "completed"
+  },
+  {
+    "name": "retained-2-control",
+    "gate": "retained-failure",
+    "exit_code": 1,
+    "candidate_digest": "d481738089b78045424211531f3116e6bfb47c73f5a88bae3c17a0f5de7d1b5e",
+    "outcome": "completed"
+  }
+]

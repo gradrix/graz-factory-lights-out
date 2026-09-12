@@ -1,0 +1,50 @@
+[
+  {
+    "gate": "api",
+    "exit_code": 0,
+    "candidate_digest": "8c9a2d11edc35186e1c71f772bb580cc2f3bb828a7c16bb9421f9ee3053864c7",
+    "outcome": "completed",
+    "gate_digest": "526774da66b239d1260df02d84584cf536f786524babf468edfeee13583bed2b",
+    "stdout_matches": true
+  },
+  {
+    "gate": "cli",
+    "exit_code": 0,
+    "candidate_digest": "8c9a2d11edc35186e1c71f772bb580cc2f3bb828a7c16bb9421f9ee3053864c7",
+    "outcome": "completed",
+    "gate_digest": "40f661669e311426471aac8dc1f3c5d29001b1238f734809f7fd671fcd25985a",
+    "stdout_matches": true
+  },
+  {
+    "gate": "package",
+    "exit_code": 0,
+    "candidate_digest": "8c9a2d11edc35186e1c71f772bb580cc2f3bb828a7c16bb9421f9ee3053864c7",
+    "outcome": "completed",
+    "gate_digest": "fb723a515d8824c21bd10d148e9a23ef627eae778073c1d7135a6485f20e1a14",
+    "stdout_matches": true
+  },
+  {
+    "gate": "docs",
+    "exit_code": 0,
+    "candidate_digest": "8c9a2d11edc35186e1c71f772bb580cc2f3bb828a7c16bb9421f9ee3053864c7",
+    "outcome": "completed",
+    "gate_digest": "33cf52699f17268aa396d3c7663bfa0e82244aca05675dfab449c178d36b8310",
+    "stdout_matches": true
+  },
+  {
+    "gate": "tests",
+    "exit_code": 0,
+    "candidate_digest": "8c9a2d11edc35186e1c71f772bb580cc2f3bb828a7c16bb9421f9ee3053864c7",
+    "outcome": "completed",
+    "gate_digest": "4ebeffa7655def4d4e85bbb1c38625eed04b470f29fca50f8cf145b75997ec4c",
+    "stdout_matches": true
+  },
+  {
+    "gate": "heldout",
+    "exit_code": 0,
+    "candidate_digest": "8c9a2d11edc35186e1c71f772bb580cc2f3bb828a7c16bb9421f9ee3053864c7",
+    "outcome": "completed",
+    "gate_digest": "e88ab6da0a447276de40f801e48b0b1e90395885564d1b46583af3dfc4329b25",
+    "stdout_matches": true
+  }
+]

@@ -1,0 +1,27 @@
+[
+  {
+    "run": "leds-color-handles-v1",
+    "status": "accepted",
+    "new_events": 0,
+    "plan_digest": "4a8e0af2a3c3c93a98e6e150e8173d517b77bfb4c6334f3353d9b7a039bfbbf3"
+  },
+  {
+    "run": "leds-generic-adequacy-v2",
+    "status": "accepted",
+    "new_events": 0,
+    "plan_digest": "cc4589ae44a007acf4e51b4cc33b4ac6116243bae040763e2fcb5225c643c390"
+  },
+  {
+    "run": "ai-gamer-coverage-repair-v1",
+    "status": "task-halt",
+    "new_events": 0,
+    "plan_digest": "e02e8ac038a991514d0779e52a90ae01d674983aeb26d83c54aaccac25aeeb85"
+  },
+  {
+    "run": "leds-config-v1",
+    "status": "blocked",
+    "reason": "Accepted result has contradictory evidence; prepare new repair work",
+    "new_events": 0,
+    "plan_digest": "70298c6c941b67bcfd71e70196936a04a424d78f24451ecbcba7b375524c0ef7"
+  }
+]

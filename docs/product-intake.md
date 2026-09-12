@@ -486,6 +486,18 @@ necessary. Review does not add policy or authorize execution.
 ## Bounded worker source windows
 
 Opt into `vllm-python-worker-windows-v1` in the model profile for prepared Python tasks.
+The opt-in `vllm-python-worker-windows-definitions-low-v1` profile additionally treats
+qualified Python TypeError names as revision-bound definition navigation hints. It
+uses low reasoning with the same reviewed token and retry budgets. Up to four unique
+names are considered and at most two definition windows of 25 lines are requested.
+Only unique results from a complete index of authorized current source qualify;
+this does not resolve Python dynamic receiver bindings. Hint status distinguishes
+missing names, ambiguous results, partial indexes, missing read authority, exhausted
+hint budget and source omitted by window bounds. Explicit worker reads take priority,
+followed by definition hints, failure locations and initial headers. The eight-window
+and 12,000-source-byte bounds still apply, and tokenizer admission still reserves
+the requested output tokens. Existing profiles retain their behavior and identities.
+
 The separate `vllm-python-worker-windows-reasoning-low-v1` profile enables low-effort
 reasoning on every worker turn while retaining the same window/edit protocol. Select
 its context and output reservation explicitly in the reviewed budget; reasoning uses

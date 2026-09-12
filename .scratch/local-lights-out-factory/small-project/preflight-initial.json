@@ -1,0 +1,26 @@
+[
+  {
+    "gate": "api",
+    "exit_code": 0,
+    "candidate_digest": "67e760e7f9a1dddbd8a6afe5fbeb8a5afb24317e0eca3576438f5c227e071d14",
+    "outcome": "completed",
+    "gate_digest": "aa1e6df817c4fcb19c50b5c32f08c9f42c130e6a127bcf708511e9e3fb2aa324",
+    "stdout_matches": true
+  },
+  {
+    "gate": "cli",
+    "exit_code": 0,
+    "candidate_digest": "67e760e7f9a1dddbd8a6afe5fbeb8a5afb24317e0eca3576438f5c227e071d14",
+    "outcome": "completed",
+    "gate_digest": "2da375a091e404f7e74a06867a3fe73825e4a862b18323722a465b4f7f3ea928",
+    "stdout_matches": true
+  },
+  {
+    "gate": "package",
+    "exit_code": 1,
+    "candidate_digest": "67e760e7f9a1dddbd8a6afe5fbeb8a5afb24317e0eca3576438f5c227e071d14",
+    "outcome": "completed",
+    "gate_digest": "d353e2b49d97d97247a2263c8189dfc43500d2d595bafb5d8f548d1b12a9c164",
+    "stdout_matches": false
+  }
+]

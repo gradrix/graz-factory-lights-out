@@ -786,3 +786,15 @@ bad helper call remains ungrounded. Authority, ambiguity, incomplete-index and s
 source checks pass. This investigation changes no runtime policy and spends no model
 responses: improved visibility is established, improved repair completion is not.
 [Portable audit and CPU reproduction](../.scratch/local-lights-out-factory/definition-grounding/README.md).
+
+## Live failed-call definition context (2026-09-12)
+
+The new opt-in definition-context profile completed 1/2 frozen full features versus
+0/2 existing low reasoning, with 0/1 retained repairs in both conditions. The accepted
+feature passed held-out commit recovery and unchanged replay, but used no hints.
+The retained repair received the actual failed helper definition twice and still
+exhausted edit-protocol/output recovery. A generated constructor lookup was reported
+missing. This establishes live bounded source delivery, not improved repair completion.
+All 35 responses passed wire/budget audits; all six terminal states and four older
+accepted/halted/challenged histories replayed without new events. Keep the profile
+opt-in. [Frozen results and limitations](../.scratch/local-lights-out-factory/definition-qualification/README.md).
