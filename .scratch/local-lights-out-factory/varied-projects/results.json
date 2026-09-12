@@ -1,0 +1,839 @@
+[
+  {
+    "name": "csvfold-1",
+    "project": "csvfold",
+    "request_digest": "71e75ee379967cb4fce3c9903a9ba80240c027ef40bc6d3c3d99850971360090",
+    "policy_digest": "7e7a4f48b72ce43e0b8eef98d8747950d348cd1b6cbee389f7e6ad49dfa99833",
+    "max_responses": 36,
+    "reserved_tokens": 565248,
+    "proposal": {
+      "questions": [],
+      "rationale": "Plan covers all four requirements: core, cli, packaging, tests_docs. Tasks are ordered with dependencies: core first, then cli, packaging, tests, readme. Each task has clear acceptance checks and implementation suggestions. No missing product policy; all requirements are explicit in BRIEF.md.",
+      "request_digest": "71e75ee379967cb4fce3c9903a9ba80240c027ef40bc6d3c3d99850971360090",
+      "schema_version": 1,
+      "tasks": [
+        {
+          "acceptance_checks": [
+            "run('label,quantity\\nA,1\\nB,2') returns [{'label':'A','quantity':1},{'label':'B','quantity':2}]",
+            "run('label,quantity') returns []",
+            "run('') raises ValueError",
+            "run('label,quantity\\nA,1\\nA,2') returns [{'label':'A','quantity':3}]",
+            "run('label,quantity\\nA,1.0') raises ValueError",
+            "run('label,quantity\\nA,1\\nB,2,3') raises ValueError",
+            "run('label,quantity\\nA,1\\nB,2\\n') raises ValueError for blank row",
+            "run('label,quantity\\nA,1\\nB,2\\r\\n') works with CRLF endings"
+          ],
+          "depends_on": [],
+          "environment_id": "python",
+          "interface_contracts": [
+            "{\"declarations\":[{\"declaration\":\"def run(text: str) -> list[dict]: ...\",\"path\":\"core.py\",\"requirement_ids\":[\"core\"],\"schema_version\":1,\"symbol\":\"run\"}],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+          ],
+          "objective": "Implement core.py with run(text: str)->list[dict] that parses CSV with exact header label,quantity, supports quoting/embedded commas, validates labels and quantities, sums per normalized label, and returns sorted list of dicts.",
+          "read_paths": [
+            "BRIEF.md"
+          ],
+          "requirement_ids": [
+            "core"
+          ],
+          "schema_version": 1,
+          "task_id": "core",
+          "writable_paths": [
+            "core.py"
+          ]
+        },
+        {
+          "acceptance_checks": [
+            "main(['input.csv']) returns 0 and prints JSON result followed by newline",
+            "main(['nonexistent.csv']) returns 2, prints to stderr, stdout empty",
+            "main(['--help']) returns 0",
+            "main() with invalid input raises ValueError caught, returns 2",
+            "python -m cli input.csv works",
+            "Input file remains unchanged after invocation"
+          ],
+          "depends_on": [
+            "core"
+          ],
+          "environment_id": "python",
+          "interface_contracts": [
+            "{\"declarations\":[{\"declaration\":\"def main(argv: list[str] | None = None) -> int: ...\",\"path\":\"cli.py\",\"requirement_ids\":[\"cli\"],\"schema_version\":1,\"symbol\":\"main\"}],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+          ],
+          "objective": "Implement cli.py with main(argv=None)->int that reads UTF-8 input from a required positional file path, calls core.run, prints JSON result followed by newline, returns 0 on success, 2 on errors with stderr message and empty stdout, supports --help returning 0, and supports python -m cli.",
+          "read_paths": [
+            "BRIEF.md",
+            "core.py"
+          ],
+          "requirement_ids": [
+            "cli"
+          ],
+          "schema_version": 1,
+          "task_id": "cli",
+          "writable_paths": [
+            "cli.py"
+          ]
+        },
+        {
+          "acceptance_checks": [
+            "pyproject.toml exists and is valid TOML",
+            "pip install --no-deps --no-build-isolation --target DIR . succeeds offline",
+            "python DIR/bin/csvfold --help returns 0",
+            "Installed console script points to cli:main",
+            "No runtime dependencies declared"
+          ],
+          "depends_on": [
+            "core",
+            "cli"
+          ],
+          "environment_id": "python",
+          "interface_contracts": [
+            "{\"declarations\":[],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+          ],
+          "objective": "Create pyproject.toml with setuptools.build_meta, distribution csvfold-local version 0.1.0, Python >=3.11, no runtime dependencies, include core and cli modules, console script csvfold pointing to cli:main, and ensure offline pip install --no-deps --no-build-isolation --target DIR . works.",
+          "read_paths": [
+            "BRIEF.md",
+            "core.py",
+            "cli.py"
+          ],
+          "requirement_ids": [
+            "packaging"
+          ],
+          "schema_version": 1,
+          "task_id": "packaging",
+          "writable_paths": [
+            "pyproject.toml"
+          ]
+        },
+        {
+          "acceptance_checks": [
+            "At least six tests in tests/test_core.py",
+            "Tests use real core.run, no mocks or skips",
+            "Tests cover valid, empty, invalid, ordering, duplicate cases",
+            "pytest tests/test_core.py passes with correct implementation",
+            "Tests fail if core.run always returns []",
+            "Tests fail if ordering is reversed"
+          ],
+          "depends_on": [
+            "core"
+          ],
+          "environment_id": "python",
+          "interface_contracts": [
+            "{\"declarations\":[],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+          ],
+          "objective": "Create tests/test_core.py with at least six substantive pytest tests using real core.run, covering valid, empty, invalid inputs, ordering, and duplicate handling. Tests must fail implementations that always return [], reverse ordering, or accept invalid input as []. No skips or fake imports.",
+          "read_paths": [
+            "BRIEF.md",
+            "core.py"
+          ],
+          "requirement_ids": [
+            "tests_docs"
+          ],
+          "schema_version": 1,
+          "task_id": "tests",
+          "writable_paths": [
+            "tests/test_core.py"
+          ]
+        },
+        {
+          "acceptance_checks": [
+            "README.md exists and is non-empty",
+            "README explains installation, CLI, Python API, pytest, input format, ordering, invalid-input behavior",
+            "README is accurate and matches implemented behavior"
+          ],
+          "depends_on": [
+            "core",
+            "cli",
+            "packaging"
+          ],
+          "environment_id": "python",
+          "interface_contracts": [
+            "{\"declarations\":[],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+          ],
+          "objective": "Create README.md explaining installation, CLI usage, Python API, pytest, input format, ordering, and invalid-input behavior.",
+          "read_paths": [
+            "BRIEF.md",
+            "core.py",
+            "cli.py",
+            "pyproject.toml"
+          ],
+          "requirement_ids": [
+            "tests_docs"
+          ],
+          "schema_version": 1,
+          "task_id": "readme",
+          "writable_paths": [
+            "README.md"
+          ]
+        }
+      ]
+    },
+    "acceptance_challenged": true,
+    "replay_blocked": "Accepted result has contradictory evidence; prepare new repair work",
+    "cost": {
+      "responses": 10,
+      "prompt_tokens": 29671,
+      "completion_tokens": 15582,
+      "total_tokens": 45253,
+      "model_seconds": 260.7565967919945
+    },
+    "status": "task-halt",
+    "planning_status": "needs-review",
+    "questions": [],
+    "reason": null,
+    "evidence_digests": [
+      "ac9a876a471ac071856fd9e24ebbbc9d02a57312e7670f006e8a08e46275a447",
+      "586ed9124def2f73b8a5606c835c77cd441665a39f2b30fafd452486084dbda7",
+      "2651cbfbd6f1f92c77598d71c1da91bbca053f7b5b195c9e30f652798f2aa942",
+      "c1fbcf08f778c4b3ba54e3eba2bce08409bf81556e4051eaa9a05e6db33e3c60",
+      "312f45704157a43ed31ac1a439dfdc4d96b5b544778f9a11fc00c6e3f9a9c985",
+      "dbd9b022842f0b29b22783ea970952aafaf7d0220ce02018d2bd94fd801027b9",
+      "f014faf3c77aab5be1b117b87917e466bdc3d09384e697643be851b964ce9824",
+      "261a20335d35679eeebf0f0a55567b24c1d72a04e2c4d1baf429498d38ad224d",
+      "533684cbf1a869a644a7b68b4d65f848b1709694335c35d5c51814f005d4078b",
+      "49c89894e694e19d47dc4921663ba7717328311572c06caa48d75f553ebb86f0"
+    ],
+    "atoms": [
+      {
+        "atom_id": "prepared-71e75ee379967cb4-ded68f53363f2919-d594f85e8a10f770-307e5220e0d43f29/32bca8d0902856a8",
+        "status": "accepted",
+        "attempts": 1,
+        "candidate_digest": "ddadb428fa259edc97ab1f3fe838de0ec2c7476b23a74ccbbe7423a5a1f06b2c"
+      },
+      {
+        "atom_id": "prepared-71e75ee379967cb4-ded68f53363f2919-d594f85e8a10f770-7fd6bd974cc280d3/7a3cbc34a376f041",
+        "status": "quarantined",
+        "attempts": 2,
+        "candidate_digest": null
+      },
+      {
+        "atom_id": "prepared-71e75ee379967cb4-ded68f53363f2919-d594f85e8a10f770/9e83acfc9182acc0",
+        "status": "accepted",
+        "attempts": 1,
+        "candidate_digest": "87b7f2ba0fe986bdd0b1110a3c360c92f39d5a6a761fb034b0f9a1c62dd536a8"
+      }
+    ]
+  },
+  {
+    "name": "csvfold-2",
+    "project": "csvfold",
+    "request_digest": "34fb570bb2486498851f6b042f144b3af939701c14a9cf9179fb298593e7a26f",
+    "policy_digest": "03205820f1c52ce299c07c418d956e9311b0c17b1628983d1df267b3d25e8b09",
+    "max_responses": 36,
+    "reserved_tokens": 565248,
+    "proposal": {
+      "questions": [],
+      "rationale": "The plan covers all four requirements (core, cli, packaging, tests_docs) with independent tasks. Each task has clear acceptance checks, interfaces, and implementation suggestions. Dependencies are correctly ordered: core is first, cli depends on core, packaging depends on core and cli, and tests_docs depends on core. All paths are within allowed_paths, and no prohibited paths are used. The plan adheres to the schema and constraints.",
+      "request_digest": "34fb570bb2486498851f6b042f144b3af939701c14a9cf9179fb298593e7a26f",
+      "schema_version": 1,
+      "tasks": [
+        {
+          "acceptance_checks": [
+            "run('label,quantity\\nA,1\\nB,2') returns [{'label': 'A', 'quantity': 1}, {'label': 'B', 'quantity': 2}].",
+            "run('label,quantity') returns [].",
+            "run('') raises ValueError.",
+            "run('label,quantity\\nA,1\\nA,2') returns [{'label': 'A', 'quantity': 3}].",
+            "run('label,quantity\\nA,1.0') raises ValueError.",
+            "run('label,quantity\\nA,1\\nB,2\\nC,3') returns sorted by label: [{'label': 'A', 'quantity': 1}, {'label': 'B', 'quantity': 2}, {'label': 'C', 'quantity': 3}].",
+            "run('label,quantity\\nA,1\\nB,2\\n') raises ValueError for blank data row.",
+            "run('label,quantity\\nA,1\\nB,2\\nC,3\\nD,4') with CRLF endings returns correct sorted results."
+          ],
+          "depends_on": [],
+          "environment_id": "python",
+          "interface_contracts": [
+            "{\"declarations\":[{\"declaration\":\"def run(text: str) -> list[dict]: ...\",\"path\":\"core.py\",\"requirement_ids\":[\"core\"],\"schema_version\":1,\"symbol\":\"run\"}],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+          ],
+          "objective": "Implement core.py with run(text: str) -> list[dict] that parses CSV with exact header label,quantity, validates labels and quantities, sums quantities per normalized label, and returns sorted results.",
+          "read_paths": [
+            "BRIEF.md"
+          ],
+          "requirement_ids": [
+            "core"
+          ],
+          "schema_version": 1,
+          "task_id": "core",
+          "writable_paths": [
+            "core.py"
+          ]
+        },
+        {
+          "acceptance_checks": [
+            "main(['input.csv']) with valid input returns 0 and prints JSON result followed by one newline.",
+            "main(['input.csv']) with invalid input returns 2, prints to stderr, and leaves stdout empty.",
+            "main(['--help']) returns 0 and prints help text.",
+            "main() with no arguments returns 2 and prints to stderr.",
+            "main(['nonexistent.csv']) returns 2 and prints to stderr.",
+            "python -m cli input.csv works and returns 0 for valid input.",
+            "Input file remains unchanged after execution.",
+            "Separate invocations of main() do not share state."
+          ],
+          "depends_on": [
+            "core"
+          ],
+          "environment_id": "python",
+          "interface_contracts": [
+            "{\"declarations\":[{\"declaration\":\"def main(argv: list[str] | None = None) -> int: ...\",\"path\":\"cli.py\",\"requirement_ids\":[\"cli\"],\"schema_version\":1,\"symbol\":\"main\"}],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+          ],
+          "objective": "Implement cli.py with main(argv=None) -> int that reads UTF-8 input from a required positional file path, calls core.run(text), prints JSON result followed by one newline, and handles errors with exit code 2.",
+          "read_paths": [
+            "BRIEF.md",
+            "core.py"
+          ],
+          "requirement_ids": [
+            "cli"
+          ],
+          "schema_version": 1,
+          "task_id": "cli",
+          "writable_paths": [
+            "cli.py"
+          ]
+        },
+        {
+          "acceptance_checks": [
+            "pyproject.toml specifies setuptools.build_meta as the build backend.",
+            "Build requirements include setuptools and wheel.",
+            "Distribution name is csvfold-local and version is 0.1.0.",
+            "Python requirement is >=3.11.",
+            "No runtime dependencies are declared.",
+            "Top-level modules core and cli are included.",
+            "Console script csvfold points to cli:main.",
+            "Offline pip install --no-deps --no-build-isolation --target DIR . succeeds."
+          ],
+          "depends_on": [
+            "core",
+            "cli"
+          ],
+          "environment_id": "python",
+          "interface_contracts": [
+            "{\"declarations\":[],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+          ],
+          "objective": "Create pyproject.toml for csvfold-local version 0.1.0 with setuptools.build_meta, Python >=3.11, no runtime dependencies, and console script csvfold pointing to cli:main.",
+          "read_paths": [
+            "BRIEF.md",
+            "core.py",
+            "cli.py"
+          ],
+          "requirement_ids": [
+            "packaging"
+          ],
+          "schema_version": 1,
+          "task_id": "packaging",
+          "writable_paths": [
+            "pyproject.toml"
+          ]
+        },
+        {
+          "acceptance_checks": [
+            "tests/test_core.py contains at least six substantive pytest tests.",
+            "Tests use the real core.run and cover valid, empty, invalid inputs, ordering, and duplicate handling.",
+            "Tests fail implementations that always return [], reverse result ordering, or accept invalid input as [].",
+            "No skips or fake implementation imports in tests.",
+            "README.md explains installation, CLI usage, Python API, pytest, input format, ordering, and invalid-input behavior.",
+            "pytest tests/test_core.py passes with the implemented core.run.",
+            "Tests do not mutate external state.",
+            "README.md is accurate and complete for the specified requirements."
+          ],
+          "depends_on": [
+            "core"
+          ],
+          "environment_id": "python",
+          "interface_contracts": [
+            "{\"declarations\":[],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+          ],
+          "objective": "Create tests/test_core.py with at least six substantive pytest tests using the real core.run, and README.md explaining installation, CLI usage, Python API, pytest, input format, ordering, and invalid-input behavior.",
+          "read_paths": [
+            "BRIEF.md",
+            "core.py"
+          ],
+          "requirement_ids": [
+            "tests_docs"
+          ],
+          "schema_version": 1,
+          "task_id": "tests_docs",
+          "writable_paths": [
+            "tests/test_core.py",
+            "README.md"
+          ]
+        }
+      ]
+    },
+    "acceptance_challenged": true,
+    "replay_blocked": "Accepted result has contradictory evidence; prepare new repair work",
+    "cost": {
+      "responses": 8,
+      "prompt_tokens": 23708,
+      "completion_tokens": 17103,
+      "total_tokens": 40811,
+      "model_seconds": 284.55037239199737
+    },
+    "status": "task-halt",
+    "planning_status": "needs-review",
+    "questions": [],
+    "reason": null,
+    "evidence_digests": [
+      "637a7b03eccdfcf68e13d5084ccc87193d3e2549ec426c9769057d240e439920",
+      "a66b468630eae46977ee228d6d5f379acabb5410900fbfa66c90e7d0828234f5",
+      "e03d03ddf895339b1ad8d11bc4f3becc9d94e6432482cb6004edb134f8b5aa6b",
+      "1a419e74f99907ec68eeb8e9e7d868ec68e2685de3f737b25265750644196ab4",
+      "a3e7c1479d81a98393019d200cd077a6778dcc810b5f2693276d7cca8a594f54",
+      "269f3c3a6b4eaf0e76f88df477a4dbd87435cfa5952d920dfa531f52681d973e",
+      "b2f6474316566eea060d52dc1579ec42c2a8e06d5024242a0ee1fa015d7b5bf9",
+      "d64b9fd1d99e00673fe063893f2d8aa568cf6a18b59ec24803519bcd024090e4"
+    ],
+    "atoms": [
+      {
+        "atom_id": "prepared-34fb570bb2486498-90a3a59efe5a7469-ff2c1cdabf42ae3d-831c9b24786c5b14/097008a3e59672e1",
+        "status": "quarantined",
+        "attempts": 2,
+        "candidate_digest": null
+      },
+      {
+        "atom_id": "prepared-34fb570bb2486498-90a3a59efe5a7469-ff2c1cdabf42ae3d-e4fef3eeaf949673/94376f94bbd902a7",
+        "status": "accepted",
+        "attempts": 1,
+        "candidate_digest": "141199e04d7a7cc79616e25d802b9dac72b3ffecddf50b2f1c59f82040e5c65d"
+      },
+      {
+        "atom_id": "prepared-34fb570bb2486498-90a3a59efe5a7469-ff2c1cdabf42ae3d/dca696068d19041a",
+        "status": "accepted",
+        "attempts": 1,
+        "candidate_digest": "d4f81a5d691c42b346ca7ec80005b1b7567a69c8030975c0adfb644dc33520ec"
+      }
+    ]
+  },
+  {
+    "name": "dagorder-1",
+    "project": "dagorder",
+    "request_digest": "a5c3c12fd591399b029f4298fb6aa036935eb9adffbde2e31724049785628601",
+    "policy_digest": "4da8ab511a8caa8a28e1e5632dcdeba19155f1f9c7a85ef8d10e1cbca531ed6e",
+    "max_responses": 36,
+    "reserved_tokens": 565248,
+    "proposal": {
+      "questions": [],
+      "rationale": "Plan covers all four requirements: core, cli, packaging, tests_docs. Tasks are ordered by dependency: core first, then cli and tests_docs depend on core, packaging depends on core and cli. All acceptance checks are derived from the brief requirements. No essential product policy is missing; the brief provides complete specifications for all components.",
+      "request_digest": "a5c3c12fd591399b029f4298fb6aa036935eb9adffbde2e31724049785628601",
+      "schema_version": 1,
+      "tasks": [
+        {
+          "acceptance_checks": [
+            "run('{}') returns []",
+            "run('{\"a\":[],\"b\":[\"a\"],\"z\":[]}') returns [\"a\",\"b\",\"z\"]",
+            "run('not json') raises ValueError",
+            "run('{\"a\":[\"a\"]}') raises ValueError for self-dependency",
+            "run('{\"a\":[\"b\"],\"b\":[\"a\"]}') raises ValueError for cycle",
+            "run('{\"a\":[\"x\"]}') raises ValueError for missing prerequisite key",
+            "run('{\"a\":[\"A\"]}') raises ValueError for invalid name",
+            "run('123') raises ValueError for non-object root"
+          ],
+          "depends_on": [],
+          "environment_id": "python",
+          "interface_contracts": [
+            "{\"declarations\":[{\"declaration\":\"def run(text: str) -> list[str]:\\n    ...\",\"path\":\"core.py\",\"requirement_ids\":[\"core\"],\"schema_version\":1,\"symbol\":\"run\"}],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+          ],
+          "objective": "Implement core.py with run(text: str)->list[str] that parses JSON graph and returns topological order.",
+          "read_paths": [
+            "BRIEF.md"
+          ],
+          "requirement_ids": [
+            "core"
+          ],
+          "schema_version": 1,
+          "task_id": "core",
+          "writable_paths": [
+            "core.py"
+          ]
+        },
+        {
+          "acceptance_checks": [
+            "main(['input.json']) returns 0 for valid input",
+            "main(['missing.json']) returns 2 with stderr message",
+            "main(['--help']) returns 0",
+            "main() returns 2 for invalid JSON input",
+            "stdout contains JSON result followed by newline on success",
+            "stderr contains explanation on error, stdout is empty",
+            "Input file remains unchanged after invocation",
+            "Separate invocations work independently"
+          ],
+          "depends_on": [
+            "core"
+          ],
+          "environment_id": "python",
+          "interface_contracts": [
+            "{\"declarations\":[{\"declaration\":\"def main(argv: list[str] | None = None) -> int:\\n    ...\",\"path\":\"cli.py\",\"requirement_ids\":[\"cli\"],\"schema_version\":1,\"symbol\":\"main\"}],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+          ],
+          "objective": "Implement cli.py with main(argv=None)->int and python -m cli support.",
+          "read_paths": [
+            "BRIEF.md",
+            "core.py"
+          ],
+          "requirement_ids": [
+            "cli"
+          ],
+          "schema_version": 1,
+          "task_id": "cli",
+          "writable_paths": [
+            "cli.py"
+          ]
+        },
+        {
+          "acceptance_checks": [
+            "pyproject.toml exists and is valid TOML",
+            "Distribution name is dagorder-local version 0.1.0",
+            "Python >=3.11 is required",
+            "No runtime dependencies declared",
+            "Console script dagorder points to cli:main",
+            "Offline pip install --no-deps --no-build-isolation --target DIR . succeeds",
+            "python DIR/bin/dagorder works with DIR on PYTHONPATH",
+            "Build requires setuptools and wheel"
+          ],
+          "depends_on": [
+            "core",
+            "cli"
+          ],
+          "environment_id": "python",
+          "interface_contracts": [
+            "{\"declarations\":[],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+          ],
+          "objective": "Create pyproject.toml for offline build and install of dagorder-local 0.1.0.",
+          "read_paths": [
+            "BRIEF.md",
+            "core.py",
+            "cli.py"
+          ],
+          "requirement_ids": [
+            "packaging"
+          ],
+          "schema_version": 1,
+          "task_id": "packaging",
+          "writable_paths": [
+            "pyproject.toml"
+          ]
+        },
+        {
+          "acceptance_checks": [
+            "tests/test_core.py exists with at least six tests",
+            "Tests use real core.run, no fake imports",
+            "Tests cover valid, empty, invalid inputs, ordering, duplicate handling",
+            "Tests fail implementations that always return []",
+            "Tests fail implementations that reverse result ordering",
+            "Tests fail implementations that accept invalid input as []",
+            "No skips in tests",
+            "README.md explains installation, CLI usage, Python API, pytest, input format, ordering, invalid-input behavior"
+          ],
+          "depends_on": [
+            "core"
+          ],
+          "environment_id": "python",
+          "interface_contracts": [
+            "{\"declarations\":[],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+          ],
+          "objective": "Create tests/test_core.py with at least six pytest tests and README.md documentation.",
+          "read_paths": [
+            "BRIEF.md",
+            "core.py"
+          ],
+          "requirement_ids": [
+            "tests_docs"
+          ],
+          "schema_version": 1,
+          "task_id": "tests_docs",
+          "writable_paths": [
+            "tests/test_core.py",
+            "README.md"
+          ]
+        }
+      ]
+    },
+    "acceptance_challenged": true,
+    "replay_blocked": "Accepted result has contradictory evidence; prepare new repair work",
+    "cost": {
+      "responses": 12,
+      "prompt_tokens": 38044,
+      "completion_tokens": 6864,
+      "total_tokens": 44908,
+      "model_seconds": 117.85752892201708
+    },
+    "status": "task-halt",
+    "planning_status": "needs-review",
+    "questions": [],
+    "reason": null,
+    "evidence_digests": [
+      "568dafe33b39b0e138e012952737fd4fd691c367963f9aa100d4ef5dd35faf48",
+      "347c4f9864a7115f12e0ed0dbb1c6858021d0045c913f4d5c2ab538ba3201052",
+      "3bf10c5b80cc7944da2d5ee578823456a05c24a635c9e630c4456d396f1c4a5a",
+      "5cc3209af23bf308a8312469ce292723efcb5ee9efea0dced1e633b301acde9f",
+      "d3fa47c03a40082a41ce3f92b9382700f846096718e403cd2bc6c2711843871e",
+      "842a756e22327885ed7ac819bd24a6264458a771af57a186b105c384b520ec2e",
+      "9ecb8eca0c6e1878ff68d69d38eaa0f35cae8d403ac00ab392215e4e2b0d6a60",
+      "2797e65092d571f2cd0b3aaa312a46bed01a206e303232b6ee00c7b75e2ab018",
+      "8983d6275998d386cdc91cf8a06a336733b935bc1ac94cdcb06af71942a537ae",
+      "a87d71e9b5640a1180e071285fc635bdaaac5d954d17213e4a26e33a13b752ac",
+      "9011916c2700650622af209c1c206ff8a0fc2a568585422091ea210d7cf9b2b2",
+      "39eb9ad682ba335f1892503b32475e141e08d28dc354df5b93b2b2ab39ab7f5a"
+    ],
+    "atoms": [
+      {
+        "atom_id": "prepared-a5c3c12fd591399b-cb6073f471066d61-2478842c19ce4e42-6a0fdbff20a62264/0a20529e2dc5d270",
+        "status": "quarantined",
+        "attempts": 2,
+        "candidate_digest": null
+      },
+      {
+        "atom_id": "prepared-a5c3c12fd591399b-cb6073f471066d61-2478842c19ce4e42-ebb10edd3ebef0a8/f6f017ef24377b32",
+        "status": "accepted",
+        "attempts": 2,
+        "candidate_digest": "d8d69ce341fc03374a4709ff3250e9b2cba49eec6985a08c874ed5aedab7b9ed"
+      },
+      {
+        "atom_id": "prepared-a5c3c12fd591399b-cb6073f471066d61-2478842c19ce4e42/ffcaf2a289850a58",
+        "status": "accepted",
+        "attempts": 1,
+        "candidate_digest": "6fdc2b53dad383ead7ec41f4c677bcb13cb043903360463f8eb83d7c7d8e3aea"
+      }
+    ]
+  },
+  {
+    "name": "dagorder-2",
+    "project": "dagorder",
+    "request_digest": "1d2ac5d020e15d427b2de10da40ce2681b47a6a75c330e92b24ab5d094c7bfd2",
+    "policy_digest": "e013a65b58ef7e62ac0cc518e988d2b3a7dd5b597ea768c3932b951450e7a2a7",
+    "max_responses": 36,
+    "reserved_tokens": 565248,
+    "proposal": {
+      "questions": [],
+      "rationale": "The plan covers all requirements: core.py implements the topological sort with validation, cli.py provides the command-line interface, pyproject.toml handles packaging, tests/test_core.py ensures correctness, and README.md documents usage. Dependencies are correctly ordered, and acceptance checks are meaningful and testable.",
+      "request_digest": "1d2ac5d020e15d427b2de10da40ce2681b47a6a75c330e92b24ab5d094c7bfd2",
+      "schema_version": 1,
+      "tasks": [
+        {
+          "acceptance_checks": [
+            "run('{}') returns []",
+            "run('{\"a\": [], \"b\": [\"a\"], \"z\": []}') returns [\"a\", \"b\", \"z\"]",
+            "run('{\"a\": [\"a\"]}') raises ValueError (self-dependency)",
+            "run('{\"a\": [\"b\"], \"b\": [\"a\"]}') raises ValueError (cycle)",
+            "run('not json') raises ValueError",
+            "run('123') raises ValueError (non-object root)",
+            "run('{\"a\": [\"a\", \"a\"]}') raises ValueError (duplicate prerequisites)",
+            "run('{\"a\": [\"x\"]}') raises ValueError (missing prerequisite key)"
+          ],
+          "depends_on": [],
+          "environment_id": "python",
+          "interface_contracts": [
+            "{\"declarations\":[{\"declaration\":\"def run(text: str) -> list[str]:\\n    ...\",\"path\":\"core.py\",\"requirement_ids\":[\"core\"],\"schema_version\":1,\"symbol\":\"run\"}],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+          ],
+          "objective": "Implement core.py with run(text: str) -> list[str] that parses JSON, validates graph constraints, and returns topological order using lexicographically smallest available node at each step.",
+          "read_paths": [
+            "BRIEF.md"
+          ],
+          "requirement_ids": [
+            "core"
+          ],
+          "schema_version": 1,
+          "task_id": "core.py",
+          "writable_paths": [
+            "core.py"
+          ]
+        },
+        {
+          "acceptance_checks": [
+            "main(['input.json']) returns 0 for valid input",
+            "main(['nonexistent.json']) returns 2 with stderr message",
+            "main(['--help']) returns 0",
+            "main([]) returns 2 for missing argument",
+            "Output is JSON followed by one newline",
+            "Input file remains unchanged after execution"
+          ],
+          "depends_on": [
+            "core.py"
+          ],
+          "environment_id": "python",
+          "interface_contracts": [
+            "{\"declarations\":[{\"declaration\":\"def main(argv: list[str] | None = None) -> int:\\n    ...\",\"path\":\"cli.py\",\"requirement_ids\":[\"cli\"],\"schema_version\":1,\"symbol\":\"main\"}],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+          ],
+          "objective": "Implement cli.py with main(argv=None) -> int that reads UTF-8 input from a positional file path, calls core.run, prints JSON result, and handles errors with exit code 2.",
+          "read_paths": [
+            "core.py",
+            "BRIEF.md"
+          ],
+          "requirement_ids": [
+            "cli"
+          ],
+          "schema_version": 1,
+          "task_id": "cli.py",
+          "writable_paths": [
+            "cli.py"
+          ]
+        },
+        {
+          "acceptance_checks": [
+            "pyproject.toml is valid TOML",
+            "Distribution name is dagorder-local",
+            "Version is 0.1.0",
+            "Python requirement is >=3.11",
+            "No runtime dependencies",
+            "Console script dagorder points to cli:main",
+            "Offline pip install works with --no-deps --no-build-isolation --target DIR ."
+          ],
+          "depends_on": [
+            "core.py",
+            "cli.py"
+          ],
+          "environment_id": "python",
+          "interface_contracts": [
+            "{\"declarations\":[],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+          ],
+          "objective": "Create pyproject.toml for setuptools.build_meta with distribution dagorder-local version 0.1.0, Python >=3.11, no runtime dependencies, and console script dagorder pointing to cli:main.",
+          "read_paths": [
+            "core.py",
+            "cli.py",
+            "BRIEF.md"
+          ],
+          "requirement_ids": [
+            "packaging"
+          ],
+          "schema_version": 1,
+          "task_id": "pyproject.toml",
+          "writable_paths": [
+            "pyproject.toml"
+          ]
+        },
+        {
+          "acceptance_checks": [
+            "At least six tests are present",
+            "Tests use the real core.run",
+            "Tests cover valid, empty, invalid inputs, ordering, and duplicate handling",
+            "Tests fail implementations that always return []",
+            "Tests fail implementations that reverse result ordering",
+            "Tests fail implementations that accept invalid input as []",
+            "No skips or fake implementation imports"
+          ],
+          "depends_on": [
+            "core.py"
+          ],
+          "environment_id": "python",
+          "interface_contracts": [
+            "{\"declarations\":[],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+          ],
+          "objective": "Create tests/test_core.py with at least six substantive pytest tests using the real core.run, covering valid, empty, invalid inputs, ordering, and duplicate handling.",
+          "read_paths": [
+            "core.py",
+            "BRIEF.md"
+          ],
+          "requirement_ids": [
+            "tests_docs"
+          ],
+          "schema_version": 1,
+          "task_id": "tests/test_core.py",
+          "writable_paths": [
+            "tests/test_core.py"
+          ]
+        },
+        {
+          "acceptance_checks": [
+            "README.md exists",
+            "Explains installation",
+            "Explains CLI usage",
+            "Explains Python API",
+            "Explains pytest",
+            "Explains input format",
+            "Explains ordering",
+            "Explains invalid-input behavior"
+          ],
+          "depends_on": [
+            "core.py",
+            "cli.py",
+            "pyproject.toml"
+          ],
+          "environment_id": "python",
+          "interface_contracts": [
+            "{\"declarations\":[],\"kind\":\"interface-declarations-v1\",\"schema_version\":1}"
+          ],
+          "objective": "Create README.md explaining installation, CLI usage, Python API, pytest, input format, ordering, and invalid-input behavior.",
+          "read_paths": [
+            "core.py",
+            "cli.py",
+            "pyproject.toml",
+            "BRIEF.md"
+          ],
+          "requirement_ids": [
+            "tests_docs"
+          ],
+          "schema_version": 1,
+          "task_id": "README.md",
+          "writable_paths": [
+            "README.md"
+          ]
+        }
+      ]
+    },
+    "acceptance_challenged": true,
+    "preserved_original_files": 2,
+    "replay_blocked": "Accepted result has contradictory evidence; prepare new repair work",
+    "cost": {
+      "responses": 14,
+      "prompt_tokens": 50889,
+      "completion_tokens": 6864,
+      "total_tokens": 57753,
+      "model_seconds": 120.04565650800942
+    },
+    "status": "accepted",
+    "planning_status": "needs-review",
+    "questions": [],
+    "reason": null,
+    "evidence_digests": [
+      "42e9528e5c3e90039cc74ac331381cec53a96d7025a9b15f179acfb8598723a5",
+      "5c569b57a99b49aae4504b3d9df9fe36d96ffe04e144d87b944ea035496ffd4e",
+      "f39d592ad3835f2b8e65b5c500df28ff3842fbd52f4f17b539a52fdab61f6cf1",
+      "e7c2cac21c638461c8b67ed99d5a69a38a3c91e217cc7713194de59962eaab05",
+      "a8947d5f94476de1d5fa35a323e4012e1dd5e816a03da149b1604e6163b0f0a1",
+      "7bb1b6581fc6a413e4caa25ffde0ae2912e7270eedb4cfda129190d6065c3f71",
+      "b02f5eda01731b72726169731062cd76a39acac8e7d517ec5b9fc92b8f7e91c8",
+      "cc3231baee27e32d36b845ad6d418307a57a72c88fedfe0a8cb50adee3d7d25c",
+      "74767616c7b3b7b3c99a9c1f80637ab25d1d4afce0cbcd358234be1f131246bd",
+      "9ddf722830ea141f88ca0f85a06579c0f3553f82afce9029050e6c6fb6732d50",
+      "3de7251b2e8030ac65b53b1ff83eea86eaa8d41c8b2313de6f03b38ae250392f",
+      "e918e1c124dd963fffa002e53962b33319a881781b79f7f2fb93d1c235303274",
+      "66fb687b08914b428333e7f17f35005087a918ec496d59b93ffabc6d49fd81ad",
+      "d1c317c3bb824ba89ef1ceb174d4ebff5edad99358fc78f74a169425ed5a2b65"
+    ],
+    "atoms": [
+      {
+        "atom_id": "feature-final-5050cb0ca3464d4058a2e762800266f9ba7067273fb0846811aa658b4fd8c37f",
+        "status": "accepted",
+        "attempts": 1,
+        "candidate_digest": "e862f329e7157b176fa724ed135bd37deed2676e3aeb194b138828979766b3a2"
+      },
+      {
+        "atom_id": "prepared-1d2ac5d020e15d42-74811668d8fb4cba-e6bd624c32148d97-36922fc2929cb304/a99f148464f0a940",
+        "status": "accepted",
+        "attempts": 1,
+        "candidate_digest": "07c077d59c94af289ae4a772da7b817e5f58af0c9c7dbbc4c0c99b0fc1ddaf11"
+      },
+      {
+        "atom_id": "prepared-1d2ac5d020e15d42-74811668d8fb4cba-e6bd624c32148d97-55fb3da11d11b8df/b0ffed58579974a4",
+        "status": "accepted",
+        "attempts": 1,
+        "candidate_digest": "d3608ccdf28abe426c4b65091ae6f5b1ae754aa752ed8e79b1a35eb777e1af3f"
+      },
+      {
+        "atom_id": "prepared-1d2ac5d020e15d42-74811668d8fb4cba-e6bd624c32148d97-619b15bdc853723b/4e8cb68c7cdf4db4",
+        "status": "accepted",
+        "attempts": 1,
+        "candidate_digest": "e862f329e7157b176fa724ed135bd37deed2676e3aeb194b138828979766b3a2"
+      },
+      {
+        "atom_id": "prepared-1d2ac5d020e15d42-74811668d8fb4cba-e6bd624c32148d97-b0ba9081744a4003/6d0577dde891a0fe",
+        "status": "accepted",
+        "attempts": 1,
+        "candidate_digest": "88f25f0ff9ff7d92cbd4835a019e139a9d5f7955c0c5ba78a8717c49db140237"
+      },
+      {
+        "atom_id": "prepared-1d2ac5d020e15d42-74811668d8fb4cba-e6bd624c32148d97/bc0b7d8bb80d1def",
+        "status": "accepted",
+        "attempts": 1,
+        "candidate_digest": "d06de77de292dba6adcd0e3d302f87acc4eb09280f68ac8798e48b0ff164de33"
+      }
+    ],
+    "heldout": {
+      "exit_code": 0,
+      "candidate_digest": "e862f329e7157b176fa724ed135bd37deed2676e3aeb194b138828979766b3a2"
+    }
+  }
+]

@@ -1,0 +1,43 @@
+{
+  "commit": "3085d463a3a66563f813be4bb1d34647813edc78",
+  "snapshot": {
+    "schema_version": 1,
+    "kind": "repository-snapshot-v1",
+    "artifact_digest": "90eaac852a59c1f1bd2ac028f904309f5a3c25108c1496f2bdd47b2530f5d0eb"
+  },
+  "snapshot_files": 65,
+  "snapshot_bytes": 708963,
+  "bounded_context_admitted": true,
+  "execution_limit_bytes": 262144,
+  "execution_limit_files": 100,
+  "workloads": [
+    {
+      "name": "runtime",
+      "file_count": 34,
+      "source_bytes": 381820,
+      "bundle_admitted": false,
+      "bundle_error": "Value error, Bundle exceeds 256 KiB",
+      "execution_admitted": false,
+      "execution_error": "Execution selection must include every explicitly requested file"
+    },
+    {
+      "name": "tests",
+      "file_count": 30,
+      "source_bytes": 326381,
+      "bundle_admitted": false,
+      "bundle_error": "Value error, Bundle exceeds 256 KiB",
+      "execution_admitted": false,
+      "execution_error": "Execution selection must include every explicitly requested file"
+    },
+    {
+      "name": "full-python-build",
+      "file_count": 65,
+      "source_bytes": 708963,
+      "bundle_admitted": false,
+      "bundle_error": "Value error, Bundle exceeds 256 KiB",
+      "execution_admitted": false,
+      "execution_error": "Execution selection must include every explicitly requested file"
+    }
+  ],
+  "conclusion": "Snapshot identity and bounded context work; current SourceBundle execution cannot admit even all runtime files. No large build was executed."
+}

@@ -1,0 +1,22 @@
+[
+  {
+    "name": "csvfold-1",
+    "responses": 10,
+    "max_prompt_tokens": 4151
+  },
+  {
+    "name": "csvfold-2",
+    "responses": 8,
+    "max_prompt_tokens": 4010
+  },
+  {
+    "name": "dagorder-1",
+    "responses": 12,
+    "max_prompt_tokens": 4041
+  },
+  {
+    "name": "dagorder-2",
+    "responses": 14,
+    "max_prompt_tokens": 5399
+  }
+]

@@ -314,7 +314,19 @@ The inventory API slice passed; proceeding to [stateful work](issues/28-qualify-
   still fails. Complete features 1/2 versus 0/2; no demonstrated causal reliability
   gain. [Evidence](definition-qualification/README.md). Continue complete-project trials.
 
-- Issues 70/71 resolved: complete Taskdock delivered after supervised repair; zero
+- [Qualify a complete small Python project](issues/70-qualify-a-complete-small-python-project.md)
+  and [Accept private Python interface names](issues/71-accept-private-python-interface-names.md):
+  complete Taskdock delivered after supervised repair; zero
   fully qualified original builds after edge review. Private interface-name schema
   fixed, 533 tests/25 subtests pass. [Evidence](small-project/README.md). Continue
   varied projects and larger execution qualification; unattended readiness unproven.
+
+- [Measure larger build admission](issues/73-measure-larger-build-admission.md):
+  real factory runtime (381,820 bytes) and full Python build (708,963 bytes) exceed
+  the execution adapter; snapshots/context work. No large build ran. Next workload
+  and dependencies need the owner's intended larger system/repository/stack.
+
+- [Qualify varied Python projects](issues/72-qualify-varied-python-projects.md):
+  four fresh CSV/DAG builds, one historical acceptance, zero fully qualified after
+  independent source review. Protocol/output failures and gate blind spots recur;
+  44 responses/188,725 tokens, challenged reuse blocked. No default upgrade.

@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dagorder-local"
+version = "0.1.0"
+description = "Topological sort of a JSON dependency graph."
+requires-python = ">=3.11"
+dependencies = []
+
+[project.scripts]
+dagorder = "cli:main"
+
+[tool.setuptools]
+py-modules = ["core", "cli"]

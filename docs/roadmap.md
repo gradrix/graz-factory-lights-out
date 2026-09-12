@@ -21,7 +21,9 @@ are recorded in [evaluation](evaluation.md) and portable development evidence.
 1. Broaden whole-project qualification beyond Taskdock. One complete installable Python
    project now passes strengthened checks after supervised repair. All three original
    builds had defects missed by initial gates; unattended readiness remains unproven.
-   Freeze different project types and retain all failures, costs and interventions.
+   Four fresh CSV/DAG builds produced one historical acceptance, then zero fully
+   qualified results after source review. Prioritize valid bounded responses and
+   independent boundary checks; retain all failures, costs and interventions.
 2. Qualify repeated features across different real repositories and uncertain
    interfaces. Measure complete feature success, retries, model cost and review
    effort. Planning JSON reliability and source-selection sufficiency remain open.
@@ -47,7 +49,11 @@ Qualify progressively on larger real repositories, measuring selection sufficien
 index freshness, resource use and repeated whole-feature correctness. Graph storage
 is an implementation choice rather than a scheduler dependency. General transitive
 invalidation, parallel/nested scheduling, native promotion and larger isolated builds
-remain separate requirements. Million-line repository capability is unqualified.
+remain separate requirements. Million-line repository capability is unqualified. The real factory runtime at
+commit 3085d46 is already 381,820 source bytes; runtime/tests/config total 708,963
+bytes. Both exceed the 256 KiB execution adapter, while snapshot capture and bounded
+context succeed. No larger build ran in this admission probe. See
+[portable evidence](../.scratch/local-lights-out-factory/large-execution/README.md).
 
 ## Potential public release
 

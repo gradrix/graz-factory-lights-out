@@ -1,0 +1,243 @@
+{
+  "request": {
+    "schema_version": 1,
+    "kind": "repository-feature-v1",
+    "feature_id": "dagorder-2",
+    "objective": "Create complete dagorder project exactly as specified. Model produces all five output files; preserve initial brief and sentinel.",
+    "requirements": {
+      "core": "Expose run(text: str)->list[str] in core.py. Parse JSON object mapping node\nnames to prerequisite lists. Names match ASCII [a-z][a-z0-9_]{0,31}. Every\nprerequisite must name a key, and lists contain distinct names. Empty object yields\n[]. Non-string input, malformed JSON, duplicate JSON object keys, non-object root,\ninvalid names, non-list values, non-string entries, duplicate prerequisites,\nmissing prerequisite keys, self-dependencies and cycles raise ValueError.\nReturn every node exactly once in topological order, prerequisites first. At EACH\nstep choose the lexicographically smallest currently available node (not whole\nsorted layers). Example {\"a\":[],\"b\":[\"a\"],\"z\":[]} -> [\"a\",\"b\",\"z\"]. Result\nmust be independent of object-key order and prerequisite-list order. No external\nstate, graph mutation, network or dynamic code execution.\n",
+      "cli": "Expose main(argv=None)->int in cli.py and support python -m cli. Read UTF-8\ninput from the one required positional file path. Call core.run(text), print its\nJSON result followed by one newline. Success returns 0. Invalid arguments, invalid\ninput, missing/unreadable files return 2, explanatory stderr, empty stdout, no\ntraceback. --help returns 0. main must return status for library callers including\nargument errors/help. Separate invocations must work. Input files remain unchanged.\n",
+      "packaging": "Use setuptools.build_meta with build requirements setuptools and wheel.\nDistribution dagorder-local version 0.1.0, Python >=3.11, no runtime dependencies.\nInclude top-level modules core and cli. Console script dagorder points to cli:main.\nOffline pip install --no-deps --no-build-isolation --target DIR . must work.\nInvoke installed console entry as python DIR/bin/dagorder with DIR on PYTHONPATH from\noutside source (sandbox writable directories are noexec). Packaging checks need\ncore.py and cli.py; declare those task dependencies.\n",
+      "tests_docs": "Create at least six substantive pytest tests in tests/test_core.py using the\nreal core.run. Cover valid, empty, invalid inputs, ordering and duplicate handling.\nTests must fail implementations that always return [], reverse the result ordering,\nor accept invalid input as []. No skips or fake implementation imports. Test work\nneeds core.py as a declared dependency. README.md must explain installation, CLI\nusage, Python API, pytest, input format, ordering and invalid-input behavior.\n"
+    },
+    "source": {
+      "schema_version": 1,
+      "kind": "repository-snapshot-v1",
+      "artifact_digest": "458f764060a5f2453416335c883c45169161af6b08e4b799366b69dafb815a0f"
+    },
+    "allowed_paths": [
+      "core.py",
+      "cli.py",
+      "pyproject.toml",
+      "README.md",
+      "tests/test_core.py"
+    ],
+    "environments": {
+      "python": {
+        "schema_version": 1,
+        "image": "sha256:695d05883b15326aea01e9266067ff58c41f3eaa4f647cfc9424b403dbe9548d",
+        "description": "Offline Python with setuptools, wheel, pytest; stdlib runtime"
+      }
+    }
+  },
+  "policy": {
+    "schema_version": 1,
+    "kind": "feature-policy-v2",
+    "request_digest": "1d2ac5d020e15d427b2de10da40ce2681b47a6a75c330e92b24ab5d094c7bfd2",
+    "file_gates": {
+      "core.py": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-B",
+              "-c",
+              "import core\nvalid = [('{}', []), ('{\"z\":[],\"b\":[\"a\"],\"a\":[]}', ['a', 'b', 'z']), ('{\"c\":[\"a\",\"b\"],\"b\":[],\"a\":[]}', ['a', 'b', 'c'])]\ninvalid = [None, 1, True, '', '[]', '{\"a\":[],\"a\":[]}', '{\"A\":[]}', '{\"a\":{}}', '{\"a\":[true]}', '{\"a\":[\"b\"]}', '{\"a\":[\"a\"]}', '{\"a\":[\"b\"],\"b\":[\"a\"]}', '{\"a\":[],\"b\":[\"a\",\"a\"]}', '{\"a\":[],\"b\":[1]}']\nfor raw, expected in valid:\n    actual = core.run(raw)\n    assert actual == expected, (raw, expected, actual)\nfor raw in invalid:\n    try:\n        core.run(raw)\n    except ValueError:\n        pass\n    else:\n        raise AssertionError(('invalid accepted', raw))\nprint('api-ok')\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "api-ok\n",
+            "seconds": 60.0
+          }
+        ]
+      },
+      "cli.py": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-B",
+              "-c",
+              "VALID = ('{\"z\":[],\"b\":[\"a\"],\"a\":[]}', ['a', 'b', 'z'])\nINVALID = '{\"a\":[],\"b\":[1]}'\nimport contextlib, io, json, os, pathlib, subprocess, sys, tempfile\nimport cli\n\ndef check(command, code, expected=None, error=False):\n    proc = subprocess.run(command, text=True, capture_output=True)\n    assert proc.returncode == code, (command, code, proc.returncode, proc.stdout, proc.stderr)\n    assert 'Traceback' not in proc.stderr, proc.stderr\n    if error:\n        assert proc.stderr.strip() and not proc.stdout, (command, proc.stdout, proc.stderr)\n    if expected is not None:\n        assert json.loads(proc.stdout) == expected, (proc.stdout, expected)\n    return proc\nwith tempfile.TemporaryDirectory() as folder:\n    path = pathlib.Path(folder)/'input.txt'\n    raw, expected = VALID\n    path.write_text(raw, encoding='utf-8')\n    check([sys.executable, '-m', 'cli', str(path)], 0, expected)\n    assert path.read_text() == raw\n    check([sys.executable, '-m', 'cli', '--help'], 0)\n    check([sys.executable, '-m', 'cli'], 2, error=True)\n    check([sys.executable, '-m', 'cli', str(path)+'missing'], 2, error=True)\n    path.write_text(INVALID)\n    check([sys.executable, '-m', 'cli', str(path)], 2, error=True)\n    assert path.read_text() == INVALID\n    for args, status in (([], 2), (['--help'], 0), ([str(path)], 2)):\n        with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):\n            actual = cli.main(args)\n        assert actual == status, (args, status, actual)\nprint('cli-ok')\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "cli-ok\n",
+            "seconds": 60.0
+          }
+        ]
+      },
+      "pyproject.toml": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-B",
+              "-c",
+              "NAME = 'dagorder'\nVALID = ('{\"z\":[],\"b\":[\"a\"],\"a\":[]}', ['a', 'b', 'z'])\nimport json, os, pathlib, subprocess, sys, tempfile, tomllib\nmeta = tomllib.loads(pathlib.Path('pyproject.toml').read_text())\nassert meta['build-system']['build-backend'] == 'setuptools.build_meta'\nassert set(meta['build-system']['requires']) == {'setuptools', 'wheel'}\nassert meta['project']['name'] == NAME+'-local' and meta['project']['version'] == '0.1.0'\nassert meta['project']['requires-python'] == '>=3.11'\nassert meta['project'].get('dependencies', []) == []\nassert meta['project']['scripts'][NAME] == 'cli:main'\nassert set(meta['tool']['setuptools']['py-modules']) == {'core', 'cli'}\nwith tempfile.TemporaryDirectory() as folder:\n    target = pathlib.Path(folder)/'installed'\n    proc = subprocess.run([sys.executable, '-m', 'pip', 'install', '--no-deps', '--no-build-isolation', '--target', str(target), '.'], text=True, capture_output=True)\n    assert proc.returncode == 0, (proc.stdout, proc.stderr)\n    path = pathlib.Path(folder)/'input.txt'\n    path.write_text(VALID[0])\n    env = dict(os.environ, PYTHONPATH=str(target))\n    proc = subprocess.run([sys.executable, str(target/'bin'/NAME), str(path)], cwd=folder, env=env, text=True, capture_output=True)\n    assert proc.returncode == 0, (proc.stdout, proc.stderr)\n    assert json.loads(proc.stdout) == VALID[1], proc.stdout\n    probe = subprocess.run([sys.executable, '-c', 'import core; print(core.__file__)'], cwd=folder, env=env, text=True, capture_output=True)\n    assert str(target) in probe.stdout, probe.stdout\nprint('package-ok')\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "package-ok\n",
+            "seconds": 60.0
+          }
+        ]
+      },
+      "README.md": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-B",
+              "-c",
+              "from pathlib import Path\ntext = Path('README.md').read_text().lower()\nfor word in ('install', 'cli', 'core.run', 'pytest', 'input', 'order', 'invalid'):\n    assert word in text, ('missing documentation', word)\nassert len(text) >= 250, 'README too small'\nprint('docs-ok')\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "docs-ok\n",
+            "seconds": 60.0
+          }
+        ]
+      },
+      "tests/test_core.py": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-B",
+              "-c",
+              "import pathlib, shutil, subprocess, sys, tempfile\nsource = pathlib.Path('core.py').read_text()\nmutants = {\n    'empty': '\\ndef run(text):\\n    return []\\n',\n    'reverse': '\\n_original = run\\ndef run(text):\\n    return list(reversed(_original(text)))\\n',\n    'accept-invalid': '\\n_original = run\\ndef run(text):\\n    try:\\n        return _original(text)\\n    except ValueError:\\n        return []\\n',\n}\nimport ast\ntree = ast.parse(pathlib.Path('tests/test_core.py').read_text())\nassert len([n for n in ast.walk(tree) if isinstance(n, ast.FunctionDef) and n.name.startswith('test_')]) >= 6, 'six tests required'\nfor name, suffix in [('correct', ''), *mutants.items()]:\n    with tempfile.TemporaryDirectory() as folder:\n        dest = pathlib.Path(folder)\n        (dest/'core.py').write_text(source + suffix)\n        shutil.copytree('tests', dest/'tests')\n        result = subprocess.run([sys.executable, '-m', 'pytest', '-q', '-p', 'no:cacheprovider'], cwd=dest, text=True, capture_output=True)\n        assert (result.returncode == 0) if name == 'correct' else (result.returncode == 1), (name, result.returncode, result.stdout, result.stderr)\n        assert 'skipped' not in result.stdout and 'xfailed' not in result.stdout, result.stdout\nprint('tests-ok')\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "tests-ok\n",
+            "seconds": 60.0
+          }
+        ]
+      }
+    },
+    "execution_paths": [
+      "BRIEF.md",
+      "core.py",
+      "cli.py",
+      "pyproject.toml",
+      "README.md",
+      "tests/test_core.py"
+    ],
+    "planning_paths": [
+      "BRIEF.md"
+    ],
+    "integration_gates": {
+      "api": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-B",
+              "-c",
+              "import core\nvalid = [('{}', []), ('{\"z\":[],\"b\":[\"a\"],\"a\":[]}', ['a', 'b', 'z']), ('{\"c\":[\"a\",\"b\"],\"b\":[],\"a\":[]}', ['a', 'b', 'c'])]\ninvalid = [None, 1, True, '', '[]', '{\"a\":[],\"a\":[]}', '{\"A\":[]}', '{\"a\":{}}', '{\"a\":[true]}', '{\"a\":[\"b\"]}', '{\"a\":[\"a\"]}', '{\"a\":[\"b\"],\"b\":[\"a\"]}', '{\"a\":[],\"b\":[\"a\",\"a\"]}', '{\"a\":[],\"b\":[1]}']\nfor raw, expected in valid:\n    actual = core.run(raw)\n    assert actual == expected, (raw, expected, actual)\nfor raw in invalid:\n    try:\n        core.run(raw)\n    except ValueError:\n        pass\n    else:\n        raise AssertionError(('invalid accepted', raw))\nprint('api-ok')\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "api-ok\n",
+            "seconds": 60.0
+          }
+        ]
+      },
+      "cli": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-B",
+              "-c",
+              "VALID = ('{\"z\":[],\"b\":[\"a\"],\"a\":[]}', ['a', 'b', 'z'])\nINVALID = '{\"a\":[],\"b\":[1]}'\nimport contextlib, io, json, os, pathlib, subprocess, sys, tempfile\nimport cli\n\ndef check(command, code, expected=None, error=False):\n    proc = subprocess.run(command, text=True, capture_output=True)\n    assert proc.returncode == code, (command, code, proc.returncode, proc.stdout, proc.stderr)\n    assert 'Traceback' not in proc.stderr, proc.stderr\n    if error:\n        assert proc.stderr.strip() and not proc.stdout, (command, proc.stdout, proc.stderr)\n    if expected is not None:\n        assert json.loads(proc.stdout) == expected, (proc.stdout, expected)\n    return proc\nwith tempfile.TemporaryDirectory() as folder:\n    path = pathlib.Path(folder)/'input.txt'\n    raw, expected = VALID\n    path.write_text(raw, encoding='utf-8')\n    check([sys.executable, '-m', 'cli', str(path)], 0, expected)\n    assert path.read_text() == raw\n    check([sys.executable, '-m', 'cli', '--help'], 0)\n    check([sys.executable, '-m', 'cli'], 2, error=True)\n    check([sys.executable, '-m', 'cli', str(path)+'missing'], 2, error=True)\n    path.write_text(INVALID)\n    check([sys.executable, '-m', 'cli', str(path)], 2, error=True)\n    assert path.read_text() == INVALID\n    for args, status in (([], 2), (['--help'], 0), ([str(path)], 2)):\n        with contextlib.redirect_stdout(io.StringIO()), contextlib.redirect_stderr(io.StringIO()):\n            actual = cli.main(args)\n        assert actual == status, (args, status, actual)\nprint('cli-ok')\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "cli-ok\n",
+            "seconds": 60.0
+          }
+        ]
+      },
+      "package": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-B",
+              "-c",
+              "NAME = 'dagorder'\nVALID = ('{\"z\":[],\"b\":[\"a\"],\"a\":[]}', ['a', 'b', 'z'])\nimport json, os, pathlib, subprocess, sys, tempfile, tomllib\nmeta = tomllib.loads(pathlib.Path('pyproject.toml').read_text())\nassert meta['build-system']['build-backend'] == 'setuptools.build_meta'\nassert set(meta['build-system']['requires']) == {'setuptools', 'wheel'}\nassert meta['project']['name'] == NAME+'-local' and meta['project']['version'] == '0.1.0'\nassert meta['project']['requires-python'] == '>=3.11'\nassert meta['project'].get('dependencies', []) == []\nassert meta['project']['scripts'][NAME] == 'cli:main'\nassert set(meta['tool']['setuptools']['py-modules']) == {'core', 'cli'}\nwith tempfile.TemporaryDirectory() as folder:\n    target = pathlib.Path(folder)/'installed'\n    proc = subprocess.run([sys.executable, '-m', 'pip', 'install', '--no-deps', '--no-build-isolation', '--target', str(target), '.'], text=True, capture_output=True)\n    assert proc.returncode == 0, (proc.stdout, proc.stderr)\n    path = pathlib.Path(folder)/'input.txt'\n    path.write_text(VALID[0])\n    env = dict(os.environ, PYTHONPATH=str(target))\n    proc = subprocess.run([sys.executable, str(target/'bin'/NAME), str(path)], cwd=folder, env=env, text=True, capture_output=True)\n    assert proc.returncode == 0, (proc.stdout, proc.stderr)\n    assert json.loads(proc.stdout) == VALID[1], proc.stdout\n    probe = subprocess.run([sys.executable, '-c', 'import core; print(core.__file__)'], cwd=folder, env=env, text=True, capture_output=True)\n    assert str(target) in probe.stdout, probe.stdout\nprint('package-ok')\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "package-ok\n",
+            "seconds": 60.0
+          }
+        ]
+      },
+      "docs": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-B",
+              "-c",
+              "from pathlib import Path\ntext = Path('README.md').read_text().lower()\nfor word in ('install', 'cli', 'core.run', 'pytest', 'input', 'order', 'invalid'):\n    assert word in text, ('missing documentation', word)\nassert len(text) >= 250, 'README too small'\nprint('docs-ok')\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "docs-ok\n",
+            "seconds": 60.0
+          }
+        ]
+      },
+      "tests": {
+        "schema_version": 1,
+        "cases": [
+          {
+            "schema_version": 1,
+            "command": [
+              "python",
+              "-B",
+              "-c",
+              "import pathlib, shutil, subprocess, sys, tempfile\nsource = pathlib.Path('core.py').read_text()\nmutants = {\n    'empty': '\\ndef run(text):\\n    return []\\n',\n    'reverse': '\\n_original = run\\ndef run(text):\\n    return list(reversed(_original(text)))\\n',\n    'accept-invalid': '\\n_original = run\\ndef run(text):\\n    try:\\n        return _original(text)\\n    except ValueError:\\n        return []\\n',\n}\nimport ast\ntree = ast.parse(pathlib.Path('tests/test_core.py').read_text())\nassert len([n for n in ast.walk(tree) if isinstance(n, ast.FunctionDef) and n.name.startswith('test_')]) >= 6, 'six tests required'\nfor name, suffix in [('correct', ''), *mutants.items()]:\n    with tempfile.TemporaryDirectory() as folder:\n        dest = pathlib.Path(folder)\n        (dest/'core.py').write_text(source + suffix)\n        shutil.copytree('tests', dest/'tests')\n        result = subprocess.run([sys.executable, '-m', 'pytest', '-q', '-p', 'no:cacheprovider'], cwd=dest, text=True, capture_output=True)\n        assert (result.returncode == 0) if name == 'correct' else (result.returncode == 1), (name, result.returncode, result.stdout, result.stderr)\n        assert 'skipped' not in result.stdout and 'xfailed' not in result.stdout, result.stdout\nprint('tests-ok')\n"
+            ],
+            "stdin": "",
+            "expected_stdout": "tests-ok\n",
+            "seconds": 60.0
+          }
+        ]
+      }
+    },
+    "environment_id": "python",
+    "model_profile": {
+      "schema_version": 1,
+      "profile_id": "vllm-python-worker-windows-v1",
+      "base_url": "http://127.0.0.1:30000/v1",
+      "model": "gflo-local",
+      "deployment_digest": "74b8c2846717d0c0b26eaf57c507bcc7692478defbe0498a743988c4d650ab2b",
+      "context_limit": 16384,
+      "timeout_seconds": 120.0
+    },
+    "deployment": "{\n  \"mode\": \"managed\",\n  \"base_url\": \"http://127.0.0.1:30000/v1\",\n  \"model\": \"gflo-local\",\n  \"request_timeout\": 120,\n  \"startup_timeout\": 300,\n  \"managed\": {\n    \"backend\": \"vllm\",\n    \"image\": \"vllm/vllm-openai@sha256:ac259a0111c6cf462a72e449962b84f7a624b5cbec24bd7d9ec3b67d40ffd1bf\",\n    \"model_path\": \"Inferact/Qwen3.8-27B-NVFP4\",\n    \"revision\": \"6128240ebaf4eaa7bad2b3d1c72c37d677c5f462\",\n    \"name\": \"gflo-vllm-graphs\",\n    \"gpu\": \"0\",\n    \"context_length\": 16384,\n    \"memory_fraction\": 0.85,\n    \"shm_size\": \"4g\",\n    \"memory_limit\": \"36g\",\n    \"cpu_limit\": 3,\n    \"pids_limit\": 1024,\n    \"model_cache_volume\": \"local-vllm-huggingface-cache\",\n    \"offline\": true,\n    \"hf_token_env\": \"\",\n    \"server_options\": {\n      \"kv-cache-dtype\": \"bfloat16\",\n      \"reasoning-parser\": \"qwen3\",\n      \"tool-call-parser\": \"qwen3_coder\"\n    },\n    \"enforce_eager\": false\n  }\n}\n",
+    "context_budget": {
+      "schema_version": 1,
+      "total_tokens": 16384,
+      "output_tokens": 6144
+    },
+    "max_tasks": 5,
+    "max_attempts": 2,
+    "max_model_turns": 3,
+    "max_reserved_tokens": 565248
+  }
+}

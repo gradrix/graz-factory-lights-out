@@ -1,0 +1,98 @@
+[
+  {
+    "project": "csvfold",
+    "gate": "api",
+    "gate_digest": "527d49f827062743e97ff78fa0e14e96bbfac1e9178f8fc8d11e08838351f29e",
+    "evidence_digest": "7aaf84811fa6773bf8e505eebf2a3107ad8e3b167ad3a136767ee766067d7ae8",
+    "exit_code": 0,
+    "stdout_matches": true
+  },
+  {
+    "project": "csvfold",
+    "gate": "cli",
+    "gate_digest": "c11d27ef9591f129c90993d81ddcbafe96c07f2e5769dfb927ee26a99dad8534",
+    "evidence_digest": "6bcbc927a6a87215810582daf3c6896f41468b8f52b1bdb9fd57a1e9f64b2263",
+    "exit_code": 0,
+    "stdout_matches": true
+  },
+  {
+    "project": "csvfold",
+    "gate": "package",
+    "gate_digest": "b5d0706772a937971c875bbb9be8bf590e5ffd026a6eb239b529d352267bfdf9",
+    "evidence_digest": "35bde9b6d7cdcf88f23393f7ad78cc6872f21d13e5514b86ccfda99f3fac6fa7",
+    "exit_code": 0,
+    "stdout_matches": true
+  },
+  {
+    "project": "csvfold",
+    "gate": "docs",
+    "gate_digest": "fc2b09186b88def9c75fb5ee680ddb2bcbd1dc59d44453958aeb9cd4154f1510",
+    "evidence_digest": "7aefcc662599cd7cdc3b7855b7d7ecfae4ed2cdfdc075216ce625f493c5225bd",
+    "exit_code": 0,
+    "stdout_matches": true
+  },
+  {
+    "project": "csvfold",
+    "gate": "tests",
+    "gate_digest": "83515c007f2ee6f48894c0d24747b3ed3f12193dbe912abaf4d61b00af5ac5d8",
+    "evidence_digest": "305be67cb309b2e6e3b5ddf8071b6bd6196b617c93cbcc7975fd8cb9b7466558",
+    "exit_code": 0,
+    "stdout_matches": true
+  },
+  {
+    "project": "csvfold",
+    "gate": "heldout",
+    "gate_digest": "5b05d2512806964e24cf4e06ca7718d073da11e6f63e76e98d0d5e5393043758",
+    "evidence_digest": "06142e9a63d36426d00b1cae39ca1b897366b747c1225086a5bf73eb64a39d91",
+    "exit_code": 0,
+    "stdout_matches": true
+  },
+  {
+    "project": "dagorder",
+    "gate": "api",
+    "gate_digest": "81d0c672a555c14150f2274d532fd6e7008cbaedf722009273248a5167d20283",
+    "evidence_digest": "90ef7ecc9bd63bd4124626001b406913c4740d25a2e57dc359d466a5add3e920",
+    "exit_code": 0,
+    "stdout_matches": true
+  },
+  {
+    "project": "dagorder",
+    "gate": "cli",
+    "gate_digest": "a7e005c2ace17df4749c0b1c4c738744c04788952094b5e75b052469fbcdc4ea",
+    "evidence_digest": "8250ed93469e995a71b2c8772fe367e40201b77ca6ee183e0faa37882dceb777",
+    "exit_code": 0,
+    "stdout_matches": true
+  },
+  {
+    "project": "dagorder",
+    "gate": "package",
+    "gate_digest": "6493239c9de429e6c9533acc46143484abeb20bc11e592f8dd9223150e05aee8",
+    "evidence_digest": "7bd36aaaa0dd743f602872ea45b7cae82a8acf4f4b112a83c13fc35f21279c08",
+    "exit_code": 0,
+    "stdout_matches": true
+  },
+  {
+    "project": "dagorder",
+    "gate": "docs",
+    "gate_digest": "fc2b09186b88def9c75fb5ee680ddb2bcbd1dc59d44453958aeb9cd4154f1510",
+    "evidence_digest": "c0b891e037b0275056accc20c037ad0b67e07e7a395ed9405c318903d1cbf0a0",
+    "exit_code": 0,
+    "stdout_matches": true
+  },
+  {
+    "project": "dagorder",
+    "gate": "tests",
+    "gate_digest": "83515c007f2ee6f48894c0d24747b3ed3f12193dbe912abaf4d61b00af5ac5d8",
+    "evidence_digest": "d8e434efb5d782115434b2a2228b5f8e5a58aff699cf19a2e0a0debacc3271aa",
+    "exit_code": 0,
+    "stdout_matches": true
+  },
+  {
+    "project": "dagorder",
+    "gate": "heldout",
+    "gate_digest": "2d91be885fa99285d4f73f5e01cfb4a8bbdaa58b6479752fbd3e3aed297541f9",
+    "evidence_digest": "3bdb8b8633611b3899a2d0025d66a5f4d54a893e4cc34d28569c7df24ec19d76",
+    "exit_code": 0,
+    "stdout_matches": true
+  }
+]

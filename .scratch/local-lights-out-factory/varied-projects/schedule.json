@@ -1,0 +1,34 @@
+[
+  {
+    "name": "csvfold-1",
+    "project": "csvfold",
+    "request_digest": "71e75ee379967cb4fce3c9903a9ba80240c027ef40bc6d3c3d99850971360090",
+    "policy_digest": "7e7a4f48b72ce43e0b8eef98d8747950d348cd1b6cbee389f7e6ad49dfa99833",
+    "max_responses": 36,
+    "reserved_tokens": 565248
+  },
+  {
+    "name": "csvfold-2",
+    "project": "csvfold",
+    "request_digest": "34fb570bb2486498851f6b042f144b3af939701c14a9cf9179fb298593e7a26f",
+    "policy_digest": "03205820f1c52ce299c07c418d956e9311b0c17b1628983d1df267b3d25e8b09",
+    "max_responses": 36,
+    "reserved_tokens": 565248
+  },
+  {
+    "name": "dagorder-1",
+    "project": "dagorder",
+    "request_digest": "a5c3c12fd591399b029f4298fb6aa036935eb9adffbde2e31724049785628601",
+    "policy_digest": "4da8ab511a8caa8a28e1e5632dcdeba19155f1f9c7a85ef8d10e1cbca531ed6e",
+    "max_responses": 36,
+    "reserved_tokens": 565248
+  },
+  {
+    "name": "dagorder-2",
+    "project": "dagorder",
+    "request_digest": "1d2ac5d020e15d427b2de10da40ce2681b47a6a75c330e92b24ab5d094c7bfd2",
+    "policy_digest": "e013a65b58ef7e62ac0cc518e988d2b3a7dd5b597ea768c3932b951450e7a2a7",
+    "max_responses": 36,
+    "reserved_tokens": 565248
+  }
+]

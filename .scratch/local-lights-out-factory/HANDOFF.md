@@ -41,8 +41,19 @@ caused coverage/scope feedback; second job never started. V3 corrects repair req
 without changing source, gates, model or budgets. Trial 1 needs-info (incorrect Python
 beliefs), trial 2 accepted and independently audited; unchanged replay passes both.
 Exact supervised delivery: `small-project/deliveries/repair-v3-trial-2/`.
-Issues 70/71 resolved; continue varied projects and larger execution qualification.
-No human blocker. Preserve all previous histories and record preparation assistance.
+Issues 70/71 resolved; checkpoint 3085d46 pushed. Issue 72 resolved: four fresh
+CSV/DAG builds completed. One historical acceptance, but all accepted cores and the
+combined DAG acceptance fail post-review explicit-input checks. Fully qualified 0/4.
+44 responses/188,725 tokens; wire audit passes, all terminal replays unchanged and
+challenged reuse blocked. Exact DAG source is under varied-projects/challenged/.
+No model-generated plans/source/tests were manually corrected.
+Issue 73 resolved: committed factory runtime 381,820 bytes; runtime/tests/config
+708,963 bytes. Snapshot and context work; 256 KiB execution adapter rejects all three
+real workloads before execution. No large build ran and no limits changed.
+Issue 74 needs-info: owner asked which first larger system/repository/stack to target.
+This is the next product choice for execution/dependency qualification. Preserve
+all raw campaigns and the successful supervised Taskdock delivery. No model job
+remains active. Do not reset failed histories or relabel gate passes as correctness.
 
 ## Current checkpoint — repair definition visibility, 2026-09-12
 

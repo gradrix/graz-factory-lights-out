@@ -1,0 +1,42 @@
+[
+  {
+    "kind": "csvfold-1",
+    "atom_id": "prepared-71e75ee379967cb4-ded68f53363f2919-d594f85e8a10f770/9e83acfc9182acc0",
+    "candidate_digest": "87b7f2ba0fe986bdd0b1110a3c360c92f39d5a6a761fb034b0f9a1c62dd536a8",
+    "evidence_digest": "e89c43fa63d7c8528d4d53523b9f976291573ba87940c9e78ce79baa0a2bc2a5",
+    "exit_code": 1,
+    "finding_digest": "4a5f90892d571ae6b0144123e3d735f7c11d7709762b06303ba44804793e0966"
+  },
+  {
+    "kind": "csvfold-2",
+    "atom_id": "prepared-34fb570bb2486498-90a3a59efe5a7469-ff2c1cdabf42ae3d/dca696068d19041a",
+    "candidate_digest": "d4f81a5d691c42b346ca7ec80005b1b7567a69c8030975c0adfb644dc33520ec",
+    "evidence_digest": "ba49d3adaa8a1e77f2b55eb91ad43b552002efbdc9140fc9dd398c6e8f829ea7",
+    "exit_code": 1,
+    "finding_digest": "ce17df0da7e35279434d96854d2594484feddf98372b97dc16c579a148ac9b22"
+  },
+  {
+    "kind": "dagorder-1",
+    "atom_id": "prepared-a5c3c12fd591399b-cb6073f471066d61-2478842c19ce4e42/ffcaf2a289850a58",
+    "candidate_digest": "6fdc2b53dad383ead7ec41f4c677bcb13cb043903360463f8eb83d7c7d8e3aea",
+    "evidence_digest": "73f618fccde9e35e99c49dac826b87368759abae24a563b91da18e8fe72559c6",
+    "exit_code": 1,
+    "finding_digest": "72d1c437891fd0c38bb4071e03214e5ca174734d2a32a2a9e6dfa0c88fa0c7b6"
+  },
+  {
+    "kind": "dagorder-2",
+    "atom_id": "feature-final-5050cb0ca3464d4058a2e762800266f9ba7067273fb0846811aa658b4fd8c37f",
+    "candidate_digest": "e862f329e7157b176fa724ed135bd37deed2676e3aeb194b138828979766b3a2",
+    "evidence_digest": "c7b7a5a4701d40f232f2490424f7e9283fc2bce2bff535c8948596753345d719",
+    "exit_code": 1,
+    "finding_digest": "e11887889bd16cb5118e7bfcff51ffc16963962d10547fc101873998930d9d99"
+  },
+  {
+    "kind": "dagorder-2",
+    "atom_id": "prepared-1d2ac5d020e15d42-74811668d8fb4cba-e6bd624c32148d97/bc0b7d8bb80d1def",
+    "candidate_digest": "d06de77de292dba6adcd0e3d302f87acc4eb09280f68ac8798e48b0ff164de33",
+    "evidence_digest": "ea7a9fd77d94e71a0f36a82d1ac28710825e2ae33e973360e0fe450348338c3a",
+    "exit_code": 1,
+    "finding_digest": "36c224714f104269f2aa59ee0d7262a93edb10be546ea1c35c391dffda94230b"
+  }
+]

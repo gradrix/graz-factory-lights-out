@@ -815,3 +815,32 @@ gates, held-out state/atomicity audit and unchanged replay passing. That deliver
 No generated source was manually corrected. This supports supervised small-project
 creation, not reliable unattended whole-product delivery or large-system readiness.
 [Full portable evidence and unchanged delivery](../.scratch/local-lights-out-factory/small-project/README.md).
+
+## Larger execution admission
+
+A fixed real factory commit (3085d46) contains 34 runtime files/381,820 bytes and
+30 test files/326,381 bytes. With pyproject.toml the build input is 65 files/708,963
+bytes. Repository snapshot identity and bounded context selection succeed. The
+existing 256 KiB SourceBundle adapter and execution selector reject runtime, tests
+and combined build. No larger build was executed; host test success is not evidence
+that this adapter can execute the workload. A separately versioned execution-input
+path and workload-specific dependency qualification remain required by ADR 0001.
+[Exact probe and identities](../.scratch/local-lights-out-factory/large-execution/README.md).
+
+## Varied complete Python projects
+
+Four frozen new projects (two strict CSV aggregation builds, two dependency-ordering
+builds) used the same model, established windows profile and finite project budgets.
+Three halted on repeated output truncation or incorrect response structure. One DAG
+build passed its frozen gates and randomized audit. Subsequent source review found
+CSV malformed-quote acceptance, DAG trailing-newline name acceptance and invalid
+UTF-8 escaping the DAG CLI error path. New reference-qualified checks fail all four
+accepted cores and the combined DAG acceptance, whose reuse now blocks. Fully
+qualified original completion is **0/4**, not the historical 1/4 gate acceptance.
+
+All 44 responses/188,725 tokens pass tokenizer/generation wire checks (largest prompt
+5,399 tokens); terminal replay adds no work/events. Source and failed histories are
+retained without manual fixes. These supervised trials show protocol/output-budget
+reliability and independent-check coverage both need work. They do not qualify
+unattended projects, large systems, external dependencies or legacy repositories.
+[Portable results and challenged source](../.scratch/local-lights-out-factory/varied-projects/README.md).
