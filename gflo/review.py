@@ -78,7 +78,10 @@ def complete(client, system, payload, phase):
         'temperature':0, 'max_tokens':4096, 'reasoning_effort':'medium',
         'thinking_budget_tokens':1024, 'chat_template_kwargs':{'enable_thinking':True},
         'response_format':{'type':'json_object'}}, timeout=120)
-    return json.loads(response['choices'][0]['message']['content'])
+    try:
+        return json.loads(response['choices'][0]['message']['content'])
+    except (ValueError, TypeError, KeyError, IndexError) as error:
+        raise RuntimeError('Local assessment returned a malformed JSON verdict') from error
 
 
 def assess_question(client, objective, question):
@@ -89,7 +92,7 @@ def assess_question(client, objective, question):
     if (not isinstance(result, dict) or set(result) != {'needed','basis','guidance'} or
         type(result['needed']) is not bool or not isinstance(result['basis'], str) or
         len(result['basis'].strip()) < 8 or result['basis'] not in objective or
-        not isinstance(result['guidance'], str) or not 1 <= len(result['guidance']) <= 4000):
+        not isinstance(result['guidance'], str) or not 1 <= len(result['guidance'].strip()) <= 4000):
         raise RuntimeError('Question assessment needs a grounded decision')
     client.observe('question_review_result', needed=result['needed'])
     return result

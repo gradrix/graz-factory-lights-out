@@ -140,3 +140,12 @@ class ReviewTests(unittest.TestCase):
         worker.request = lambda *a, **kw: next(responses)
         with self.assertRaisesRegex(RuntimeError, 'Question assessment'):
             worker(workspace, {'objective':'Undecided policy','checks':[],'max_turns':2}, None, 1)
+
+    def test_empty_assessment_response_has_a_useful_failure(self):
+        from gflo.review import assess_question
+        class Client:
+            config = {'model':'local'}
+            observe = staticmethod(lambda *a, **kw: None)
+            def request(self, *a, **kw): return {'choices': []}
+        with self.assertRaisesRegex(RuntimeError, 'malformed JSON verdict'):
+            assess_question(Client(), 'The product policy is undecided.', 'Which policy?')
