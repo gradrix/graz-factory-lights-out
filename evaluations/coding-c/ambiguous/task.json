@@ -1,0 +1,16 @@
+{
+  "repo": "source",
+  "objective": "Add a booking action across domain, API and CLI that chooses which customer receives the last available appointment when several customers request it simultaneously. The product owner has not decided whether paid membership has priority over earliest request time; these rules give different winners. Ask the owner to choose the policy before implementing winner selection. Preserve identity.",
+  "acceptance": "acceptance",
+  "checks": [
+    [
+      "python",
+      "-B",
+      "-I",
+      "/acceptance/check.py"
+    ]
+  ],
+  "max_attempts": 3,
+  "max_turns": 24,
+  "wall_time_seconds": 900
+}

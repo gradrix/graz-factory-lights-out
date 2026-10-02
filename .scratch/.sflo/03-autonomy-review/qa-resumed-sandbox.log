@@ -1,0 +1,10 @@
+test_closed_owner_pipe_never_starts_a_new_writer (test_sandbox.SandboxTests) ... ok
+test_generated_regression_failure_blocks_passing_acceptance (test_sandbox.SandboxTests) ... ok
+test_killed_owner_does_not_leave_container_writer (test_sandbox.SandboxTests) ... ok
+test_real_offline_sandbox_and_readonly_verification (test_sandbox.SandboxTests) ... ok
+test_worker_arguments_are_not_rewritten_as_docker_flags (test_sandbox.SandboxTests) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 6.653s
+
+OK

@@ -1,0 +1,198 @@
+{
+  "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578",
+  "python": "Python 3.11.15",
+  "outcomes": [
+    {
+      "task": "01-seat-allocation",
+      "kind": "baseline",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 15, in <module>\n    assert json_equal(dispatch(p),expected),(p,'wrong result')\n                      ^^^^^^^^^^^\n  File \"/workspace/api.py\", line 5, in dispatch\n    raise ValueError(\"unknown action: \"+str(action))\nValueError: unknown action: allocate\n"
+    },
+    {
+      "task": "01-seat-allocation",
+      "kind": "reference",
+      "exit_code": 0,
+      "expected_outcome_confirmed": true,
+      "stdout": "PASS\n",
+      "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "task": "02-grid-distance",
+      "kind": "baseline",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 15, in <module>\n    assert json_equal(dispatch(p),expected),(p,'wrong result')\n                      ^^^^^^^^^^^\n  File \"/workspace/api.py\", line 5, in dispatch\n    raise ValueError(\"unknown action: \"+str(action))\nValueError: unknown action: distance\n"
+    },
+    {
+      "task": "02-grid-distance",
+      "kind": "reference",
+      "exit_code": 0,
+      "expected_outcome_confirmed": true,
+      "stdout": "PASS\n",
+      "stderr": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "task": "03-bit-fields",
+      "kind": "baseline",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 15, in <module>\n    assert json_equal(dispatch(p),expected),(p,'wrong result')\n                      ^^^^^^^^^^^\n  File \"/workspace/api.py\", line 5, in dispatch\n    raise ValueError(\"unknown action: \"+str(action))\nValueError: unknown action: pack\n"
+    },
+    {
+      "task": "03-bit-fields",
+      "kind": "reference",
+      "exit_code": 0,
+      "expected_outcome_confirmed": true,
+      "stdout": "PASS\n",
+      "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "task": "04-polynomial",
+      "kind": "baseline",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 15, in <module>\n    assert json_equal(dispatch(p),expected),(p,'wrong result')\n                      ^^^^^^^^^^^\n  File \"/workspace/api.py\", line 5, in dispatch\n    raise ValueError(\"unknown action: \"+str(action))\nValueError: unknown action: evaluate\n"
+    },
+    {
+      "task": "04-polynomial",
+      "kind": "reference",
+      "exit_code": 0,
+      "expected_outcome_confirmed": true,
+      "stdout": "PASS\n",
+      "stderr": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "task": "05-paragraph-wrap",
+      "kind": "baseline",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 15, in <module>\n    assert json_equal(dispatch(p),expected),(p,'wrong result')\n                      ^^^^^^^^^^^\n  File \"/workspace/api.py\", line 5, in dispatch\n    raise ValueError(\"unknown action: \"+str(action))\nValueError: unknown action: wrap\n"
+    },
+    {
+      "task": "05-paragraph-wrap",
+      "kind": "reference",
+      "exit_code": 0,
+      "expected_outcome_confirmed": true,
+      "stdout": "PASS\n",
+      "stderr": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "task": "06-luhn-check",
+      "kind": "baseline",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 15, in <module>\n    assert json_equal(dispatch(p),expected),(p,'wrong result')\n                      ^^^^^^^^^^^\n  File \"/workspace/api.py\", line 5, in dispatch\n    raise ValueError(\"unknown action: \"+str(action))\nValueError: unknown action: check\n"
+    },
+    {
+      "task": "06-luhn-check",
+      "kind": "reference",
+      "exit_code": 0,
+      "expected_outcome_confirmed": true,
+      "stdout": "PASS\n",
+      "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "task": "07-monthly-calendar",
+      "kind": "baseline",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 15, in <module>\n    assert json_equal(dispatch(p),expected),(p,'wrong result')\n                      ^^^^^^^^^^^\n  File \"/workspace/api.py\", line 5, in dispatch\n    raise ValueError(\"unknown action: \"+str(action))\nValueError: unknown action: occurrences\n"
+    },
+    {
+      "task": "07-monthly-calendar",
+      "kind": "reference",
+      "exit_code": 0,
+      "expected_outcome_confirmed": true,
+      "stdout": "PASS\n",
+      "stderr": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "task": "08-resource-matching",
+      "kind": "baseline",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 15, in <module>\n    assert json_equal(dispatch(p),expected),(p,'wrong result')\n                      ^^^^^^^^^^^\n  File \"/workspace/api.py\", line 5, in dispatch\n    raise ValueError(\"unknown action: \"+str(action))\nValueError: unknown action: match\n"
+    },
+    {
+      "task": "08-resource-matching",
+      "kind": "reference",
+      "exit_code": 0,
+      "expected_outcome_confirmed": true,
+      "stdout": "PASS\n",
+      "stderr": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "task": "09-duration-language",
+      "kind": "baseline",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 15, in <module>\n    assert json_equal(dispatch(p),expected),(p,'wrong result')\n                      ^^^^^^^^^^^\n  File \"/workspace/api.py\", line 5, in dispatch\n    raise ValueError(\"unknown action: \"+str(action))\nValueError: unknown action: seconds\n"
+    },
+    {
+      "task": "09-duration-language",
+      "kind": "reference",
+      "exit_code": 0,
+      "expected_outcome_confirmed": true,
+      "stdout": "PASS\n",
+      "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "task": "10-approval-ballots",
+      "kind": "baseline",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 15, in <module>\n    assert json_equal(dispatch(p),expected),(p,'wrong result')\n                      ^^^^^^^^^^^\n  File \"/workspace/api.py\", line 5, in dispatch\n    raise ValueError(\"unknown action: \"+str(action))\nValueError: unknown action: tally\n"
+    },
+    {
+      "task": "10-approval-ballots",
+      "kind": "reference",
+      "exit_code": 0,
+      "expected_outcome_confirmed": true,
+      "stdout": "PASS\n",
+      "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "task": "11-run-length-codec",
+      "kind": "baseline",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 15, in <module>\n    assert json_equal(dispatch(p),expected),(p,'wrong result')\n                      ^^^^^^^^^^^\n  File \"/workspace/api.py\", line 5, in dispatch\n    raise ValueError(\"unknown action: \"+str(action))\nValueError: unknown action: encode\n"
+    },
+    {
+      "task": "11-run-length-codec",
+      "kind": "reference",
+      "exit_code": 0,
+      "expected_outcome_confirmed": true,
+      "stdout": "PASS\n",
+      "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "task": "12-form-query",
+      "kind": "baseline",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 15, in <module>\n    assert json_equal(dispatch(p),expected),(p,'wrong result')\n                      ^^^^^^^^^^^\n  File \"/workspace/api.py\", line 5, in dispatch\n    raise ValueError(\"unknown action: \"+str(action))\nValueError: unknown action: parse\n"
+    },
+    {
+      "task": "12-form-query",
+      "kind": "reference",
+      "exit_code": 0,
+      "expected_outcome_confirmed": true,
+      "stdout": "PASS\n",
+      "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n"
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578",
+  "outcomes": [
+    {
+      "kind": "reference",
+      "exit_code": 0,
+      "expected_outcome_confirmed": true,
+      "domain_sha256": "a5887392ce7917ffb29ec498153242c2985475efe3f075dce2a33e0781ac773e",
+      "stdout": "PASS\n",
+      "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "kind": "integer_boolean_mutant",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "domain_sha256": "ea8059b33ff8adf7b94b19f163fdc3ceb83a466e66c4193d29e8bd875d90196f",
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 15, in <module>\n    assert json_equal(dispatch(p),expected),(p,'wrong result')\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: ({'action': 'check', 'number': '7992 7398-713'}, 'wrong result')\n"
+    }
+  ]
+}

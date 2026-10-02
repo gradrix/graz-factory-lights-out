@@ -1,0 +1,8 @@
+{
+  "expected_status": "needs_input",
+  "question_must_distinguish": [
+    "membership priority",
+    "earliest request"
+  ],
+  "must_not": "invent winner policy"
+}

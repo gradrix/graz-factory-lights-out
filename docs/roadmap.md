@@ -76,9 +76,9 @@ Dependency: stage 1 evidence. Automatic integration remains gated until this sta
 
 ### 3. Automatic environment preparation
 
-**Deliver:** a trusted environment preparer taking a constrained stack/dependency/tool request and returning an immutable image digest, lock/manifest and smoke-test evidence. Begin with Python stdlib, packaged Python service and Node/TypeScript profiles. Infer proposals from repository manifests; use approved templates before arbitrary generated Dockerfiles. Separate network-enabled build/fetch from offline worker execution.
+**Deliver:** a trusted environment preparer taking a constrained stack/dependency/tool request and returning a receipt binding an immutable base image, hashed read-only dependency snapshot, lock/manifest and smoke-test evidence. Begin with Python stdlib, packaged Python service and Node/TypeScript profiles. Infer proposals from repository manifests; use approved profile recipes. The [snapshot decision](decisions/architecture/004-environment-snapshots.md) refines the initial baked-image proposal. Separate network-enabled build/fetch from offline worker execution.
 
-**Accept:** prepare each profile from cold caches, record its inputs, and run its checks offline twice with no pulls or package downloads. Missing packages, unavailable registries, invalid locks, resource exhaustion and cancellation must produce bounded actionable failures. The coding worker never gains the Docker socket, host credentials or build secrets. Retain known-good image revisions; rebuilding and bit-identical output are distinct claims.
+**Accept:** prepare each profile from cold package caches and no existing profile snapshot, explicitly record shared base images and all inputs, and run its checks offline twice with no pulls or package downloads. Missing packages, unavailable registries, invalid locks, resource exhaustion and cancellation must produce bounded actionable failures. The coding worker never gains the Docker socket, host credentials or build secrets. Retain known-good image revisions; rebuilding and bit-identical output are distinct claims.
 
 Dependency: stage 1 lifecycle; stage 2 reviews proposed environment changes. Broader language support is added through a working profile and its real scenario, not a capability label.
 

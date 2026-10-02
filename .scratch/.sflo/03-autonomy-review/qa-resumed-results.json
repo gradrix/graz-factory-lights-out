@@ -1,0 +1,30 @@
+[
+  {
+    "case": "clean",
+    "status": "accepted",
+    "attempts": 1,
+    "review_calls": 1,
+    "run": "/home/gradrix/repos/gflo/.scratch/.sflo/03-autonomy-review/qa-resumed-trx04c52/clean/028ac1f7f8e5"
+  },
+  {
+    "case": "generated-repair",
+    "status": "accepted",
+    "attempts": 2,
+    "review_calls": 1,
+    "run": "/home/gradrix/repos/gflo/.scratch/.sflo/03-autonomy-review/qa-resumed-trx04c52/generated-repair/0e0c54f856a7"
+  },
+  {
+    "case": "external-failure",
+    "status": "exhausted",
+    "attempts": 2,
+    "review_calls": 0,
+    "run": "/home/gradrix/repos/gflo/.scratch/.sflo/03-autonomy-review/qa-resumed-trx04c52/external-failure/7946f8a892e8"
+  },
+  {
+    "case": "generated-import-error",
+    "status": "exhausted",
+    "attempts": 2,
+    "review_calls": 0,
+    "run": "/home/gradrix/repos/gflo/.scratch/.sflo/03-autonomy-review/qa-resumed-trx04c52/generated-import-error/5532237a66df"
+  }
+]

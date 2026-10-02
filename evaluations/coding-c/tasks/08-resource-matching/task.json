@@ -1,0 +1,16 @@
+{
+  "repo": "source",
+  "objective": "Action match: choices is a list of lists of resource names (nonempty strings). Each outer entry is one job; resources can be assigned to at most one job. Return maximum number of jobs that can receive one of their listed resources. Duplicate choices do not change result. Empty jobs/choices are allowed. At most 30 jobs and 30 distinct resources. Implement in domain.py and route through api.dispatch(payload) and python cli.py (one JSON input on stdin, one JSON result on stdout). Preserve existing identity action for any JSON value, unknown-action ValueError, successful JSON CLI behavior, and CLI exit 2 with nonempty stderr without traceback on ValueError. Never mutate input, including on failure: operations are atomic from the caller perspective. Standard library, Python 3.12+, UTF-8. Types/shapes/bounds are guaranteed except explicitly specified validation errors; do not invent validation. Add at least three meaningful unittest test methods discoverable with python -m unittest discover, covering normal, boundary and relevant rejected inputs (or a second boundary if no rejection is specified). Tests must pass and test public behavior. Expand README.md with new action usage, an executable CLI example, and boundary/error semantics (at least 40 words in the complete README). Preserve all public interfaces; helpers are allowed.",
+  "acceptance": "acceptance",
+  "checks": [
+    [
+      "python",
+      "-B",
+      "-I",
+      "/acceptance/check.py"
+    ]
+  ],
+  "max_attempts": 3,
+  "max_turns": 24,
+  "wall_time_seconds": 900
+}

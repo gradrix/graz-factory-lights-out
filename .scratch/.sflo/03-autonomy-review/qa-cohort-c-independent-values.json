@@ -1,0 +1,17 @@
+[
+  {
+    "task": "01",
+    "independent_expected_values": 7,
+    "passed": true
+  },
+  {
+    "task": "07",
+    "independent_expected_values": 5,
+    "passed": true
+  },
+  {
+    "task": "08",
+    "independent_expected_values": 69,
+    "passed": true
+  }
+]

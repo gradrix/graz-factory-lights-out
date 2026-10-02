@@ -1,0 +1,79 @@
+[
+  {
+    "task": "01-seat-allocation",
+    "kind": "reference",
+    "exit_code": 0,
+    "stdout": "PASS\n",
+    "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n"
+  },
+  {
+    "task": "07-monthly-calendar",
+    "kind": "reference",
+    "exit_code": 0,
+    "stdout": "PASS\n",
+    "stderr": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n"
+  },
+  {
+    "task": "08-resource-matching",
+    "kind": "reference",
+    "exit_code": 0,
+    "stdout": "PASS\n",
+    "stderr": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n"
+  },
+  {
+    "task": "06-luhn-check",
+    "kind": "reference",
+    "exit_code": 0,
+    "stdout": "PASS\n",
+    "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n"
+  },
+  {
+    "task": "01-seat-allocation",
+    "kind": "float-quota",
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 15, in <module>\n    assert json_equal(dispatch(p),expected),(p,'wrong result')\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: ({'action': 'allocate', 'weights': [1000000000000000000000000000000, 1000000000000000000000000000001], 'seats': 1}, 'wrong result')\n"
+  },
+  {
+    "task": "07-monthly-calendar",
+    "kind": "persistent-clamp",
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 15, in <module>\n    assert json_equal(dispatch(p),expected),(p,'wrong result')\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: ({'action': 'occurrences', 'start': '2024-01-31', 'day': 29, 'count': 3}, 'wrong result')\n"
+  },
+  {
+    "task": "08-resource-matching",
+    "kind": "greedy",
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 15, in <module>\n    assert json_equal(dispatch(p),expected),(p,'wrong result')\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: ({'action': 'match', 'choices': [['a', 'b'], ['a']]}, 'wrong result')\n"
+  },
+  {
+    "task": "06-luhn-check",
+    "kind": "integer-instead-of-boolean",
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 15, in <module>\n    assert json_equal(dispatch(p),expected),(p,'wrong result')\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: ({'action': 'check', 'number': '7992 7398-713'}, 'wrong result')\n"
+  },
+  {
+    "task": "08-resource-matching",
+    "kind": "missing-tests",
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 31, in <module>\n    assert suite.countTestCases()>=3,'need three discoverable regression tests'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: need three discoverable regression tests\n"
+  },
+  {
+    "task": "08-resource-matching",
+    "kind": "failing-tests",
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "FFF\n======================================================================\nFAIL: test_case_0 (test_behavior.BehaviorTests.test_case_0)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/test_behavior.py\", line 5, in test_case_0\n    self.fail();self.assertEqual(dispatch({'action': 'match', 'choices': [['a', 'b'], ['a']]}), 2)\n    ^^^^^^^^^^^\nAssertionError: None\n\n======================================================================\nFAIL: test_case_1 (test_behavior.BehaviorTests.test_case_1)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/test_behavior.py\", line 7, in test_case_1\n    self.fail();self.assertEqual(dispatch({'action': 'match', 'choices': [['a'], ['a'], []]}), 1)\n    ^^^^^^^^^^^\nAssertionError: None\n\n======================================================================\nFAIL: test_case_2 (test_behavior.BehaviorTests.test_case_2)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/test_behavior.py\", line 9, in test_case_2\n    self.fail();self.assertEqual(dispatch({'action': 'match', 'choices': []}), 0)\n    ^^^^^^^^^^^\nAssertionError: None\n\n----------------------------------------------------------------------\nRan 3 tests in 0.001s\n\nFAILED (failures=3)\nTraceback (most recent call last):\n  File \"/acceptance/check.py\", line 33, in <module>\n    assert result.wasSuccessful(),'generated tests failed'\n           ^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: generated tests failed\n"
+  },
+  {
+    "task": "08-resource-matching",
+    "kind": "missing-docs",
+    "exit_code": 1,
+    "stdout": "",
+    "stderr": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\nTraceback (most recent call last):\n  File \"/acceptance/check.py\", line 35, in <module>\n    assert len(readme.split())>=40 and 'cli.py' in readme and all(a in readme for a in ['match']),'document new CLI usage'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: document new CLI usage\n"
+  }
+]

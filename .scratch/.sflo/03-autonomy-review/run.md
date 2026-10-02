@@ -6,10 +6,10 @@ Contract: sha256:dc3142601c442941057ce3167b9b9c7e8228fab75db914449c53d4645be5543
 
 ## Execution
 
-Status: blocked on final qualification
+Status: active — resumed qualification
 Owner: /root
 Candidate: c17821c (runtime); deployed trial copy matches source hashes
-Next: fresh s-qa verification of c17821c, strengthen semantic qualification from recorded misses, then qualify the revised candidate on unused tasks. No stage3 mutation before acceptance.
+Next: complete frozen cohort C-v2 qualification on c17821c. Fresh controller and remaining semantic QA now passed; no stage3 mutation before acceptance.
 
 ## Checks and repairs
 
@@ -36,3 +36,11 @@ Cohort B completed:11/12 raw accepted, ambiguity correctly needs_input, nine del
 Repeated real-model regression from frozen bad task02 output under c17821c completed on attempt3 in350.61s. First attempt was blocked by the new project-test gate, second by local review, third accepted; docs and failing assertion corrected. Source hashes and both check suites passed readback. This is known-case repair evidence, not an unseen score. See project-test-repair-rig/. All qualification processes have completed.
 
 Publication includes compact accepted patches/verification/review identities; raw trajectories, private state databases and credentials remain private. Fresh independent final QA is unavailable: both s-qa/review agents returned the account usage-limit error. Coordinator tests and semantic inspection are explicitly labeled. Stage2 remains unaccepted. Next maintained-product stage is blocked on this acceptance; three environment profile fixtures/research are prepared but unimplemented.
+
+## Resumption after user reports limits cleared
+
+Fresh qa_resume and semantic_resume agents ran successfully. Targeted c17821c slice passed32 regressions and real-Docker false-pass/repair/import/evidence probes (qa-resumed.md). Independent semantic QA confirmed tasks05–08/10–12, repaired task02 with35 passing tests and fixed docs, original task03's noncritical extreme-input defect and task09's genuine failure (qa-semantic-resumed.md). The account blocker is cleared. Cohort C is being prepared independently with precise bounds and stronger immutable test/docs checks; original A/B evidence stays intact. Environment build-boundary research/prototype may overlap; maintained Stage3 work remains gated.
+
+## Frozen cohort C-v2 in progress
+
+Fixture manifest 560c3e5645ed2d9ea91404e05aa4ddb2f4c9b1eb01f8629a98ec6e6ae738938b; independent pre-exposure gate passed (qa-cohort-c-v2.md). Original C was never exposed: QA found Python boolean/integer equality weakened its oracle; revision2 uses recursive type-and-value equality without changing contracts or budgets. All97 bound hashes verified. Public fixtures evaluations/coding-c; rig state .gflo/stage2-coding-c; runtime remains c17821c. Three attempts,24 turns,900 seconds per task,12 tasks plus ambiguity. Independent semantic_resume audits terminal outputs in parallel without model calls. Early task03 exhausted on missing default unittest discovery; preserve this genuine delivery failure. No runtime edits during the batch.

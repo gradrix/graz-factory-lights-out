@@ -1,0 +1,12 @@
+manifest verified 97
+01-seat-allocation reference 0
+07-monthly-calendar reference 0
+08-resource-matching reference 0
+06-luhn-check reference 0
+01-seat-allocation float-quota 1
+07-monthly-calendar persistent-clamp 1
+08-resource-matching greedy 1
+06-luhn-check integer-instead-of-boolean 1
+08-resource-matching missing-tests 1
+08-resource-matching failing-tests 1
+08-resource-matching missing-docs 1

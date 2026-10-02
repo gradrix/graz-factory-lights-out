@@ -1,0 +1,279 @@
+{
+  "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+  "sandbox": [
+    "docker",
+    "run",
+    "--rm",
+    "--network=none",
+    "--read-only",
+    "--cap-drop=ALL",
+    "--security-opt=no-new-privileges",
+    "--pids-limit=64",
+    "--memory=256m",
+    "--cpus=1",
+    "--user=65534:65534",
+    "--tmpfs=/tmp:rw,noexec,nosuid,size=16m",
+    "-e",
+    "PYTHONDONTWRITEBYTECODE=1",
+    "-v",
+    "/home/gradrix/repos/gflo/.gflo/semantic-b/3c48308dd1cc/workspace:/workspace:ro",
+    "-v",
+    "/home/gradrix/repos/gflo/evaluations/coding-b/tasks/03-retry-schedule/acceptance:/acceptance:ro",
+    "-w"
+  ],
+  "results": [
+    {
+      "task": "05",
+      "run": "3a580376311a",
+      "identity": "3518f889a01d0f2253bb954fb96d50aa1eccf64a6d84fdd4d1200e73cfdc27b7",
+      "file_hashes": {
+        "README.md": "b8ede5fc1d52e6e25d878611055748818c5b42a099f48ac9ec22d9bacc9777a9",
+        "api.py": "6595f0ba2d0bc1149e98a71abc39a3829a00c322354e7357bc447c024705ae09",
+        "cli.py": "2d7a5223f2bb9d7e07433caaee9c6982156d142f1fa485dba8c8c0e9ae038b1e",
+        "domain.py": "a1e8c50362aee7d10e0bf2fa3a973ecdc35d2448a1e15b7dddaaf65e3565774f",
+        "tests/test_domain.py": "584383276a416e92d42b9b4391d30c6566a30d824bff09e827f81c97e687f96a"
+      },
+      "checks": {
+        "acceptance": {
+          "exit": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        "generated": {
+          "exit": 0,
+          "stdout": "",
+          "stderr": "test_cli_success (test_domain.EncodeDecode.test_cli_success) ... ok\ntest_cli_value_error (test_domain.EncodeDecode.test_cli_value_error) ... ok\ntest_decode_basic (test_domain.EncodeDecode.test_decode_basic) ... ok\ntest_decode_duplicate_key (test_domain.EncodeDecode.test_decode_duplicate_key) ... ok\ntest_decode_empty_line (test_domain.EncodeDecode.test_decode_empty_line) ... ok\ntest_decode_empty_value (test_domain.EncodeDecode.test_decode_empty_value) ... ok\ntest_decode_first_equals_only (test_domain.EncodeDecode.test_decode_first_equals_only) ... ok\ntest_decode_invalid_key (test_domain.EncodeDecode.test_decode_invalid_key) ... ok\ntest_decode_no_equals (test_domain.EncodeDecode.test_decode_no_equals) ... ok\ntest_decode_trailing_escape (test_domain.EncodeDecode.test_decode_trailing_escape) ... ok\ntest_decode_trailing_tab (test_domain.EncodeDecode.test_decode_trailing_tab) ... ok\ntest_decode_unescapes (test_domain.EncodeDecode.test_decode_unescapes) ... ok\ntest_decode_unknown_escape (test_domain.EncodeDecode.test_decode_unknown_escape) ... ok\ntest_dispatch_routing (test_domain.EncodeDecode.test_dispatch_routing) ... ok\ntest_encode_does_not_escape_equals_or_unicode (test_domain.EncodeDecode.test_encode_does_not_escape_equals_or_unicode) ... ok\ntest_encode_empty_fields (test_domain.EncodeDecode.test_encode_empty_fields) ... ok\ntest_encode_escapes (test_domain.EncodeDecode.test_encode_escapes) ... ok\ntest_encode_invalid_key (test_domain.EncodeDecode.test_encode_invalid_key) ... ok\ntest_encode_sorted_keys (test_domain.EncodeDecode.test_encode_sorted_keys) ... ok\ntest_no_input_mutation (test_domain.EncodeDecode.test_no_input_mutation) ... ok\ntest_roundtrip (test_domain.EncodeDecode.test_roundtrip) ... ok\ntest_unknown_action (test_domain.EncodeDecode.test_unknown_action) ... ok\n\n----------------------------------------------------------------------\nRan 22 tests in 0.140s\n\nOK\n"
+        }
+      }
+    },
+    {
+      "task": "06",
+      "run": "df03c8b4fc28",
+      "identity": "4ee6a11446e9b0b16f846cac5295312a73b086dba8e0e575f800b023ea57f241",
+      "file_hashes": {
+        "README.md": "e2fdf40ad405c156ff6f609ccdc118b1f259f818b352de7db1b86ba7d97db3af",
+        "api.py": "9a05e986f7af322acb6e79d287f7a25c46ec24c7f86d0599349cc862e4b51a0d",
+        "cli.py": "35467a9ac35421c30d77e0f4885453a683ea53a4f5c5aac600d16bc29c9bdb08",
+        "domain.py": "0811c93d8f9a232bdab68acd980e5029da203f96669d9abcdeb42b42a4e98e53",
+        "tests/test_validate.py": "9e170fab8a525e1c464fb1c1b18042a35fa783c672bd2b4c91b4459125e1f03d"
+      },
+      "checks": {
+        "acceptance": {
+          "exit": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        "generated": {
+          "exit": 0,
+          "stdout": "",
+          "stderr": "test_ancestor_conflict (test_validate.ValidateTests.test_ancestor_conflict) ... ok\ntest_ancestor_conflict_either_order (test_validate.ValidateTests.test_ancestor_conflict_either_order) ... ok\ntest_dot_segments_ignored (test_validate.ValidateTests.test_dot_segments_ignored) ... ok\ntest_duplicate_normalized_paths (test_validate.ValidateTests.test_duplicate_normalized_paths) ... ok\ntest_empty_entries (test_validate.ValidateTests.test_empty_entries) ... ok\ntest_equality_allowed (test_validate.ValidateTests.test_equality_allowed) ... ok\ntest_existing_sizes_action (test_validate.ValidateTests.test_existing_sizes_action) ... ok\ntest_input_not_mutated (test_validate.ValidateTests.test_input_not_mutated) ... ok\ntest_invalid_paths (test_validate.ValidateTests.test_invalid_paths) ... ok\ntest_negative_max_total (test_validate.ValidateTests.test_negative_max_total) ... ok\ntest_negative_size (test_validate.ValidateTests.test_negative_size) ... ok\ntest_prefix_but_not_whole_segment_ok (test_validate.ValidateTests.test_prefix_but_not_whole_segment_ok) ... ok\ntest_rejected_input_not_mutated (test_validate.ValidateTests.test_rejected_input_not_mutated) ... ok\ntest_sizes_preserved (test_validate.ValidateTests.test_sizes_preserved) ... ok\ntest_success_sorted_and_normalized (test_validate.ValidateTests.test_success_sorted_and_normalized) ... ok\ntest_total_exceeds_max_total (test_validate.ValidateTests.test_total_exceeds_max_total) ... ok\ntest_unknown_action (test_validate.ValidateTests.test_unknown_action) ... ok\n\n----------------------------------------------------------------------\nRan 17 tests in 0.001s\n\nOK\n"
+        }
+      }
+    },
+    {
+      "task": "07",
+      "run": "fb1fb7b64726",
+      "identity": "965b9e8563538d9c96f511eb8f5e7dd219b2ac07c9538630a95dbc768692356e",
+      "file_hashes": {
+        "README.md": "679b0bb27c9f8047f00c44517091616ce56dc26fe34d6191c4e4349101568a17",
+        "api.py": "0f7caaa84f2d495bf5b694ddd15819dc7d93c78bdb6231de34abee5bbe034b39",
+        "cli.py": "35467a9ac35421c30d77e0f4885453a683ea53a4f5c5aac600d16bc29c9bdb08",
+        "domain.py": "7f49f71a3a0059e09bd67fcece26e25ce8edabff4fd110dc718c61e7cb4923fe",
+        "tests/test_domain.py": "be44a597eb3211af9a3180ac9f041b2fcd868ee7368b77c625476b710d707094"
+      },
+      "checks": {
+        "acceptance": {
+          "exit": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        "generated": {
+          "exit": 0,
+          "stdout": "",
+          "stderr": "test_cli_unknown_action_exit_2 (test_domain.UpdateTests.test_cli_unknown_action_exit_2) ... ok\ntest_cli_update_success (test_domain.UpdateTests.test_cli_update_success) ... ok\ntest_create_only_rejected_when_present (test_domain.UpdateTests.test_create_only_rejected_when_present) ... ok\ntest_create_when_absent (test_domain.UpdateTests.test_create_when_absent) ... ok\ntest_expected_on_missing_id_rejected (test_domain.UpdateTests.test_expected_on_missing_id_rejected) ... ok\ntest_input_payload_never_mutated (test_domain.UpdateTests.test_input_payload_never_mutated) ... ok\ntest_match_merges_and_increments (test_domain.UpdateTests.test_match_merges_and_increments) ... ok\ntest_mismatch_rejected (test_domain.UpdateTests.test_mismatch_rejected) ... ok\ntest_read_missing_id_returns_null (test_domain.UpdateTests.test_read_missing_id_returns_null) ... ok\ntest_read_returns_independent_data (test_domain.UpdateTests.test_read_returns_independent_data) ... ok\ntest_unknown_action_raises_valueerror (test_domain.UpdateTests.test_unknown_action_raises_valueerror) ... ok\n\n----------------------------------------------------------------------\nRan 11 tests in 0.178s\n\nOK\n"
+        }
+      }
+    },
+    {
+      "task": "08",
+      "run": "751bc03d4c4b",
+      "identity": "e149fe559ca1dbe572bca8957c265235e58524bdd605fb862980e9923445074a",
+      "file_hashes": {
+        "README.md": "a8ac8e255c1ef314544f7b6ebf1512921be786a3d74af32573abfa1e8160cec8",
+        "api.py": "086baf3f44fb734eee4226b1e73f58a8a27f34e69a89b569d348f53db9c94e8d",
+        "cli.py": "35467a9ac35421c30d77e0f4885453a683ea53a4f5c5aac600d16bc29c9bdb08",
+        "domain.py": "1d2f401b81a090b8ec6ae48da927d561c02124476aad2934ad22a7a2ce4fe6ef",
+        "tests/test_group.py": "6837fb16f962927fb25b6f949d420cfbc3709bfb3fa828b989811824b6bf2ec7"
+      },
+      "checks": {
+        "acceptance": {
+          "exit": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        "generated": {
+          "exit": 0,
+          "stdout": "",
+          "stderr": "test_cli_existing_ids_action (test_group.CliBehaviour.test_cli_existing_ids_action) ... ok\ntest_cli_success (test_group.CliBehaviour.test_cli_success) ... ok\ntest_cli_unknown_action_exit_2 (test_group.CliBehaviour.test_cli_unknown_action_exit_2) ... ok\ntest_cli_value_error_exit_2 (test_group.CliBehaviour.test_cli_value_error_exit_2) ... ok\ntest_empty_requested (test_group.GroupOrdering.test_empty_requested) ... ok\ntest_failure_error_strings (test_group.GroupOrdering.test_failure_error_strings) ... ok\ntest_falsey_values_stay_in_successes (test_group.GroupOrdering.test_falsey_values_stay_in_successes) ... ok\ntest_missing_ids_only_in_missing (test_group.GroupOrdering.test_missing_ids_only_in_missing) ... ok\ntest_requested_order_independent_of_response_order (test_group.GroupOrdering.test_requested_order_independent_of_response_order) ... ok\ntest_duplicate_requested_ids (test_group.GroupRejections.test_duplicate_requested_ids) ... ok\ntest_duplicate_responses (test_group.GroupRejections.test_duplicate_responses) ... ok\ntest_unknown_action_still_rejected (test_group.GroupRejections.test_unknown_action_still_rejected) ... ok\ntest_unknown_response_id (test_group.GroupRejections.test_unknown_response_id) ... ok\ntest_existing_ids_action_unchanged (test_group.NoMutation.test_existing_ids_action_unchanged) ... ok\ntest_input_payload_not_mutated_even_when_rejected (test_group.NoMutation.test_input_payload_not_mutated_even_when_rejected) ... ok\ntest_rejected_payload_not_mutated (test_group.NoMutation.test_rejected_payload_not_mutated) ... ok\n\n----------------------------------------------------------------------\nRan 16 tests in 0.276s\n\nOK\n"
+        }
+      }
+    },
+    {
+      "task": "09",
+      "run": "fa94c69430ad",
+      "identity": "c2a5878b6ebba6a70d1225d43adee57bfb50876b0ec4bca90420c2286f3d8752",
+      "file_hashes": {
+        "README.md": "781f770a2f1adfd24c9e3b59670da58e9e84bc5a56466c097935a5e205f37977",
+        "api.py": "d6b5dca42d43567fec914b1d79bf4ce0c896114f97e72734907f56253b8942f7",
+        "cli.py": "35467a9ac35421c30d77e0f4885453a683ea53a4f5c5aac600d16bc29c9bdb08",
+        "domain.py": "91e9ab18e7d2829e6f8c3da521489714f27478b11b4dc5ae2df9d68527909a25",
+        "tests/test_migrate.py": "2f4994f2d07cb6d6ac3596bd79409d07a51a6cd1423fefc09fcbd33a6d0f75f0"
+      },
+      "checks": {
+        "acceptance": {
+          "exit": 1,
+          "stdout": "",
+          "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 37, in <module>\n    assert r=={'revision':3,'accounts':{'b':{'profile':{'name':' B '},'enabled':False},'a':{'profile':{'name':'\u00c1'},'enabled':True}},'order':['b','a'],'meta':{'v':[1]}}\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+        },
+        "generated": {
+          "exit": 0,
+          "stdout": "",
+          "stderr": "test_duplicate_ids_raise (test_migrate.MigrateTests.test_duplicate_ids_raise) ... ok\ntest_empty_users (test_migrate.MigrateTests.test_empty_users) ... ok\ntest_existing_revision_action (test_migrate.MigrateTests.test_existing_revision_action) ... ok\ntest_idempotent (test_migrate.MigrateTests.test_idempotent) ... ok\ntest_no_shared_nested_containers (test_migrate.MigrateTests.test_no_shared_nested_containers) ... ok\ntest_revision1_conversion (test_migrate.MigrateTests.test_revision1_conversion) ... ok\ntest_revision2_conversion (test_migrate.MigrateTests.test_revision2_conversion) ... ok\ntest_revision3_deep_independent_copy (test_migrate.MigrateTests.test_revision3_deep_independent_copy) ... ok\ntest_unknown_action_raises (test_migrate.MigrateTests.test_unknown_action_raises) ... ok\ntest_unsupported_revision_raises (test_migrate.MigrateTests.test_unsupported_revision_raises) ... ok\n\n----------------------------------------------------------------------\nRan 10 tests in 0.001s\n\nOK\n"
+        }
+      }
+    },
+    {
+      "task": "10",
+      "run": "ef27abbc21eb",
+      "identity": "fdab3bf841c6da9751b7810029c4b8e44106cc182893e8cdc6d5bb54a45da20c",
+      "file_hashes": {
+        "README.md": "03645202a78fe16f0145b426ca0dd0aae37a76ad016d43fd66dba1166239382c",
+        "api.py": "c24bd7dd47ca294d864e8cb9835d7a8703b9bb6705815cfdd4b96adf354cef9c",
+        "cli.py": "35467a9ac35421c30d77e0f4885453a683ea53a4f5c5aac600d16bc29c9bdb08",
+        "domain.py": "0daf998d2102a6caa9de6e8a022bca4a0378d1f1a23123d17b55cb85243a86e5",
+        "tests/test_cache.py": "b3a596f5df7188203e5e4927ea20b228a8ee92ee7be81c48b1ef5ecb344ec3a7"
+      },
+      "checks": {
+        "acceptance": {
+          "exit": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        "generated": {
+          "exit": 0,
+          "stdout": "",
+          "stderr": "test_acceptance_example (test_cache.CacheTests.test_acceptance_example) ... ok\ntest_capacity_zero (test_cache.CacheTests.test_capacity_zero) ... ok\ntest_empty_operations (test_cache.CacheTests.test_empty_operations) ... ok\ntest_get_promotes_and_miss_keeps_order (test_cache.CacheTests.test_get_promotes_and_miss_keeps_order) ... ok\ntest_input_not_mutated (test_cache.CacheTests.test_input_not_mutated) ... ok\ntest_invalid_capacity_raises (test_cache.CacheTests.test_invalid_capacity_raises) ... ok\ntest_invalid_weight_raises (test_cache.CacheTests.test_invalid_weight_raises) ... ok\ntest_json_values_preserved (test_cache.CacheTests.test_json_values_preserved) ... ok\ntest_multi_eviction_order (test_cache.CacheTests.test_multi_eviction_order) ... ok\ntest_replacement_evicts_only_others (test_cache.CacheTests.test_replacement_evicts_only_others) ... ok\ntest_too_heavy_put_leaves_cache_untouched (test_cache.CacheTests.test_too_heavy_put_leaves_cache_untouched) ... ok\ntest_unknown_action_still_raises (test_cache.CacheTests.test_unknown_action_still_raises) ... ok\ntest_unknown_operation_raises (test_cache.CacheTests.test_unknown_operation_raises) ... ok\ntest_weight_action_preserved (test_cache.CacheTests.test_weight_action_preserved) ... ok\n\n----------------------------------------------------------------------\nRan 14 tests in 0.001s\n\nOK\n"
+        }
+      }
+    },
+    {
+      "task": "11",
+      "run": "c38088d51d73",
+      "identity": "67ddd3fdab3775f52c7a878ee6385214c2881c73ed8d6b0bec6e0529bb7a3f8e",
+      "file_hashes": {
+        "README.md": "6da4adeb10ed8ef6277477446c196b3962f1652784c5d88f894cd283c5c526e6",
+        "api.py": "911bdbedf2a625dd220fb4ff86b66d8f2f015ad0495080208e7fa67a4d427205",
+        "cli.py": "35467a9ac35421c30d77e0f4885453a683ea53a4f5c5aac600d16bc29c9bdb08",
+        "domain.py": "c3810ccce6c986aa1bc9d25f42ca0c2c2265530b60a4494c2d3556ca94f503ec",
+        "tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tests/test_ingest.py": "3d8720de5d4293e2d7c7810a04809ed94835b504fbf5160b816b38255c23e384"
+      },
+      "checks": {
+        "acceptance": {
+          "exit": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        "generated": {
+          "exit": 0,
+          "stdout": "",
+          "stderr": "test_basic_release (test_ingest.IngestTests.test_basic_release) ... ok\ntest_bool_not_conflated_with_number (test_ingest.IngestTests.test_bool_not_conflated_with_number) ... ok\ntest_cli_success (test_ingest.IngestTests.test_cli_success) ... ok\ntest_cli_valueerror_exit_2 (test_ingest.IngestTests.test_cli_valueerror_exit_2) ... ok\ntest_conflicting_data_raises (test_ingest.IngestTests.test_conflicting_data_raises) ... ok\ntest_conflicts_among_ignored_events_do_not_matter (test_ingest.IngestTests.test_conflicts_among_ignored_events_do_not_matter) ... ok\ntest_duplicate_identical_data_accepted (test_ingest.IngestTests.test_duplicate_identical_data_accepted) ... ok\ntest_existing_sources_action_preserved (test_ingest.IngestTests.test_existing_sources_action_preserved) ... ok\ntest_gap_retains_later_events (test_ingest.IngestTests.test_gap_retains_later_events) ... ok\ntest_huge_seq_contiguous_run_released (test_ingest.IngestTests.test_huge_seq_contiguous_run_released) ... ok\ntest_huge_seq_no_gap_iteration_blowup (test_ingest.IngestTests.test_huge_seq_no_gap_iteration_blowup) ... ok\ntest_input_not_mutated (test_ingest.IngestTests.test_input_not_mutated) ... ok\ntest_large_int_nested_conflict (test_ingest.IngestTests.test_large_int_nested_conflict) ... ok\ntest_large_ints_are_distinct_not_duplicates (test_ingest.IngestTests.test_large_ints_are_distinct_not_duplicates) ... ok\ntest_missing_source_starts_at_zero (test_ingest.IngestTests.test_missing_source_starts_at_zero) ... ok\ntest_numeric_equality_nested (test_ingest.IngestTests.test_numeric_equality_nested) ... ok\ntest_numeric_json_equality_duplicate (test_ingest.IngestTests.test_numeric_json_equality_duplicate) ... ok\ntest_sorting_by_source_then_seq (test_ingest.IngestTests.test_sorting_by_source_then_seq) ... ok\ntest_unknown_action_raises (test_ingest.IngestTests.test_unknown_action_raises) ... ok\ntest_watermarks_retain_original_sources (test_ingest.IngestTests.test_watermarks_retain_original_sources) ... ok\n\n----------------------------------------------------------------------\nRan 20 tests in 0.178s\n\nOK\n"
+        },
+        "supplemental": {
+          "command": "from api import dispatch\ndef run(a,b):\n return dispatch({'action':'ingest','watermarks':{},'events':[{'source':'x','seq':1,'data':a},{'source':'x','seq':1,'data':b}]})\nassert len(run({'a':[1]}, {'a':[1.0]})['released'])==1\nfor a,b in [(True,1),({'a':[False]},{'a':[0]}),(10**20+1,float(10**20))]:\n try: run(a,b)\n except ValueError: pass\n else: raise AssertionError((a,b))\nr=dispatch({'action':'ingest','watermarks':{},'events':[{'source':'x','seq':10**30,'data':None}]});assert r['watermarks']=={'x':0} and len(r['pending'])==1\nprint('equality and sparse sequence probes pass')",
+          "exit": 0,
+          "stdout": "equality and sparse sequence probes pass\n",
+          "stderr": ""
+        }
+      }
+    },
+    {
+      "task": "12",
+      "run": "aefc008cb097",
+      "identity": "37acad7fe700eb49656bf2a53e3f759e1a61c774ddf996fe633b223aefbd7fba",
+      "file_hashes": {
+        "README.md": "f5495e4bb0a021a9ae32af9476ea2082f91d3020be40f34792b36a5e6370f102",
+        "api.py": "a04605e3ef77b836e6ded5f4c59162b6b05c826cc7a88ccf61d83fb4e026d947",
+        "cli.py": "35467a9ac35421c30d77e0f4885453a683ea53a4f5c5aac600d16bc29c9bdb08",
+        "domain.py": "ced1caaed74c2d6c4498c8e622af07baad9991f9ea8bc7d0c33f75751c5b3c87",
+        "tests/test_domain.py": "344377b2c559c35843f55937f895213e0ea9c4d29c7068e601b27cd5fa7c93f2"
+      },
+      "checks": {
+        "acceptance": {
+          "exit": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        "generated": {
+          "exit": 0,
+          "stdout": "",
+          "stderr": "test_ascii (test_domain.IndexTests.test_ascii) ... ok\ntest_beyond_length (test_domain.IndexTests.test_beyond_length) ... ok\ntest_combining (test_domain.IndexTests.test_combining) ... ok\ntest_emoji (test_domain.IndexTests.test_emoji) ... ok\ntest_empty_offsets (test_domain.IndexTests.test_empty_offsets) ... ok\ntest_empty_text (test_domain.IndexTests.test_empty_text) ... ok\ntest_input_not_mutated (test_domain.IndexTests.test_input_not_mutated) ... ok\ntest_inside_multibyte (test_domain.IndexTests.test_inside_multibyte) ... ok\ntest_length_action_preserved (test_domain.IndexTests.test_length_action_preserved) ... ok\ntest_multibyte (test_domain.IndexTests.test_multibyte) ... ok\ntest_negative_offset (test_domain.IndexTests.test_negative_offset) ... ok\ntest_rejected_input_not_mutated (test_domain.IndexTests.test_rejected_input_not_mutated) ... ok\ntest_repeated_offsets (test_domain.IndexTests.test_repeated_offsets) ... ok\ntest_unknown_action (test_domain.IndexTests.test_unknown_action) ... ok\n\n----------------------------------------------------------------------\nRan 14 tests in 0.001s\n\nOK\n"
+        }
+      }
+    },
+    {
+      "task": "02-repair",
+      "run": "repair",
+      "identity": "ef27c01e6a2854604af3a8d629ae48279b774439ef9d3510588aae1b6fed6f05",
+      "file_hashes": {
+        "README.md": "7af099f5b81693d5ee43d868c4e98d2458bfaeb13a07b2c77ed41c010b674354",
+        "api.py": "3c19d13f36611bb02ee147a66b84c61476958cf5f488f961bcb07efad7bc5dea",
+        "cli.py": "35467a9ac35421c30d77e0f4885453a683ea53a4f5c5aac600d16bc29c9bdb08",
+        "domain.py": "780908f1d0587fe6bb2de98638440ffb4f5db581d3e56b8dd91cda0d17d85827",
+        "tests/test_admit.py": "5f40305f5d71e64b76a70233608540bed5bf6cca67b0851f2fe9816d1e801c9e"
+      },
+      "checks": {
+        "acceptance": {
+          "exit": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        "generated": {
+          "exit": 0,
+          "stdout": "",
+          "stderr": "test_admitted_appends_now (test_admit.AdmitTests.test_admitted_appends_now) ... ok\ntest_admitted_history_remains_nondecreasing (test_admit.AdmitTests.test_admitted_history_remains_nondecreasing) ... ok\ntest_denied_history_is_active_only (test_admit.AdmitTests.test_denied_history_is_active_only) ... ok\ntest_empty_history_admitted (test_admit.AdmitTests.test_empty_history_admitted) ... ok\ntest_existing_count_action_preserved (test_admit.AdmitTests.test_existing_count_action_preserved) ... ok\ntest_expired_entries_dropped (test_admit.AdmitTests.test_expired_entries_dropped) ... ok\ntest_full_window_denied_with_retry (test_admit.AdmitTests.test_full_window_denied_with_retry) ... ok\ntest_future_timestamp_raises (test_admit.AdmitTests.test_future_timestamp_raises) ... ok\ntest_input_payload_not_mutated (test_admit.AdmitTests.test_input_payload_not_mutated) ... ok\ntest_input_payload_not_mutated_when_admitted (test_admit.AdmitTests.test_input_payload_not_mutated_when_admitted) ... ok\ntest_invalid_limit_raises (test_admit.AdmitTests.test_invalid_limit_raises) ... ok\ntest_invalid_window_raises (test_admit.AdmitTests.test_invalid_window_raises) ... ok\ntest_left_boundary_excluded (test_admit.AdmitTests.test_left_boundary_excluded) ... ok\ntest_limit_zero_denies_with_null_retry (test_admit.AdmitTests.test_limit_zero_denies_with_null_retry) ... ok\ntest_limit_zero_ignores_history (test_admit.AdmitTests.test_limit_zero_ignores_history) ... ok\ntest_multiple_requests_same_timestamp (test_admit.AdmitTests.test_multiple_requests_same_timestamp) ... ok\ntest_negative_timestamps (test_admit.AdmitTests.test_negative_timestamps) ... ok\ntest_non_integer_limit_raises (test_admit.AdmitTests.test_non_integer_limit_raises) ... ok\ntest_non_integer_window_raises (test_admit.AdmitTests.test_non_integer_window_raises) ... ok\ntest_now_equal_to_oldest (test_admit.AdmitTests.test_now_equal_to_oldest) ... ok\ntest_rejected_input_payload_untouched (test_admit.AdmitTests.test_rejected_input_payload_untouched) ... ok\ntest_retry_normal_case_oldest_plus_window (test_admit.AdmitTests.test_retry_normal_case_oldest_plus_window) ... ok\ntest_retry_ties_at_drop_boundary (test_admit.AdmitTests.test_retry_ties_at_drop_boundary) ... ok\ntest_retry_when_all_active_share_timestamp (test_admit.AdmitTests.test_retry_when_all_active_share_timestamp) ... ok\ntest_retry_when_all_expire_together (test_admit.AdmitTests.test_retry_when_all_expire_together) ... ok\ntest_retry_when_count_exceeds_limit (test_admit.AdmitTests.test_retry_when_count_exceeds_limit) ... ok\ntest_retry_with_many_excess_entries (test_admit.AdmitTests.test_retry_with_many_excess_entries) ... ok\ntest_unknown_action_raises (test_admit.AdmitTests.test_unknown_action_raises) ... ok\ntest_unsorted_history_raises (test_admit.AdmitTests.test_unsorted_history_raises) ... ok\ntest_window_one_boundary (test_admit.AdmitTests.test_window_one_boundary) ... ok\ntest_window_one_boundary_denied (test_admit.AdmitTests.test_window_one_boundary_denied) ... ok\ntest_cli_count_still_works (test_admit.CliTests.test_cli_count_still_works) ... ok\ntest_cli_success (test_admit.CliTests.test_cli_success) ... ok\ntest_cli_unknown_action_exit_2 (test_admit.CliTests.test_cli_unknown_action_exit_2) ... ok\ntest_cli_value_error_exit_2 (test_admit.CliTests.test_cli_value_error_exit_2) ... ok\n\n----------------------------------------------------------------------\nRan 35 tests in 0.294s\n\nOK\n"
+        }
+      }
+    },
+    {
+      "task": "03",
+      "run": "3c48308dd1cc",
+      "identity": "3732ded9860ded49d42ae5b500a3e0e79b08af5878b2bceb71be4b550c0252a4",
+      "file_hashes": {
+        "README.md": "c3f5412fa7b8506643d578452a795251a60972de2c3cc8f1e1578451e510da51",
+        "api.py": "3d62cef20a149d24722b49756f195aa57087002e7d438304d197df163669d94a",
+        "cli.py": "35467a9ac35421c30d77e0f4885453a683ea53a4f5c5aac600d16bc29c9bdb08",
+        "domain.py": "d06e918234f56e7285ae2cacd756ecc6f8ca8fadab2226192682189544cfa56b",
+        "tests/test_schedule.py": "05ecd24f25e167af3d053f04c37abc3a5734a3fc3299923a927960ef8eb44a09"
+      },
+      "checks": {
+        "acceptance": {
+          "exit": 0,
+          "stdout": "",
+          "stderr": ""
+        },
+        "generated": {
+          "exit": 0,
+          "stdout": "",
+          "stderr": "test_cli_attempts_success (test_schedule.CliTests.test_cli_attempts_success) ... ok\ntest_cli_invalid_schedule_exit_2 (test_schedule.CliTests.test_cli_invalid_schedule_exit_2) ... ok\ntest_cli_success (test_schedule.CliTests.test_cli_success) ... ok\ntest_cli_value_error_exit_2 (test_schedule.CliTests.test_cli_value_error_exit_2) ... ok\ntest_existing_attempts_action (test_schedule.ScheduleTests.test_existing_attempts_action) ... ok\ntest_input_not_mutated (test_schedule.ScheduleTests.test_input_not_mutated) ... ok\ntest_invalid_attempt (test_schedule.ScheduleTests.test_invalid_attempt) ... ok\ntest_invalid_base (test_schedule.ScheduleTests.test_invalid_base) ... ok\ntest_invalid_cap (test_schedule.ScheduleTests.test_invalid_cap) ... ok\ntest_invalid_max_attempts (test_schedule.ScheduleTests.test_invalid_max_attempts) ... ok\ntest_invalid_now (test_schedule.ScheduleTests.test_invalid_now) ... ok\ntest_invalid_outcome_even_without_retry (test_schedule.ScheduleTests.test_invalid_outcome_even_without_retry) ... ok\ntest_invalid_retry_after (test_schedule.ScheduleTests.test_invalid_retry_after) ... ok\ntest_large_exponent_exact_arithmetic (test_schedule.ScheduleTests.test_large_exponent_exact_arithmetic) ... ok\ntest_permanent_no_retry (test_schedule.ScheduleTests.test_permanent_no_retry) ... ok\ntest_rejected_input_not_mutated (test_schedule.ScheduleTests.test_rejected_input_not_mutated) ... ok\ntest_retry_after_above_backoff (test_schedule.ScheduleTests.test_retry_after_above_backoff) ... ok\ntest_retry_after_below_backoff (test_schedule.ScheduleTests.test_retry_after_below_backoff) ... ok\ntest_retry_after_exceeds_cap (test_schedule.ScheduleTests.test_retry_after_exceeds_cap) ... ok\ntest_retry_after_null (test_schedule.ScheduleTests.test_retry_after_null) ... ok\ntest_retry_after_zero (test_schedule.ScheduleTests.test_retry_after_zero) ... ok\ntest_success_no_retry (test_schedule.ScheduleTests.test_success_no_retry) ... ok\ntest_transient_capped (test_schedule.ScheduleTests.test_transient_capped) ... ok\ntest_transient_exponential_backoff (test_schedule.ScheduleTests.test_transient_exponential_backoff) ... ok\ntest_transient_last_attempt_no_retry (test_schedule.ScheduleTests.test_transient_last_attempt_no_retry) ... ok\ntest_transient_retry_within_cap (test_schedule.ScheduleTests.test_transient_retry_within_cap) ... ok\ntest_unknown_action (test_schedule.ScheduleTests.test_unknown_action) ... ok\n\n----------------------------------------------------------------------\nRan 27 tests in 0.275s\n\nOK\n"
+        },
+        "extreme": {
+          "command": "import resource;resource.setrlimit(resource.RLIMIT_AS,(128*1024*1024,128*1024*1024));from api import dispatch; p={'action':'schedule','now':0,'attempt':10**30,'base':1,'cap':10,'max_attempts':10**30+1,'outcome':'transient'}; control={'retry':True,'at':10,'delay':10}; assert max(min(p['cap'],p['base'] << min(p['attempt']-1,p['cap'].bit_length())),0)==10; print('control passes',flush=True); print(dispatch(p))",
+          "exit": 1,
+          "stdout": "control passes\n",
+          "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/workspace/api.py\", line 7, in dispatch\n    return actions[action](payload)\n           ^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/domain.py\", line 34, in schedule\n    delay = max(min(cap, base * 2 ** (attempt - 1)), retry_after or 0)\n                                ~~^^~~~~~~~~~~~~~~\nMemoryError\n"
+        }
+      }
+    }
+  ]
+}
