@@ -45,7 +45,7 @@ def main():
                'critical': oracle['critical_seed'], 'review': review,
                'elapsed_s': round(time.monotonic()-started, 2)}
         results.append(row)
-        receipt = {'model': config['model'], 'review_prompt_sha256': hashlib.sha256(SYSTEM.encode()).hexdigest(), 'manifest_sha256': hashlib.sha256((args.fixtures / 'manifest.json').read_bytes()).hexdigest(), 'request_budget_s': 120, 'max_output_tokens': 4096, 'results': results}
+        receipt = {'model': config['model'], 'review_prompt_sha256': hashlib.sha256(SYSTEM.encode()).hexdigest(), 'manifest_sha256': hashlib.sha256((args.fixtures / 'manifest.json').read_bytes()).hexdigest(), 'request_budget_s': 120, 'thinking_budget_tokens': 1024, 'max_output_tokens': 4096, 'results': results}
         save(args.output, receipt)
         print(json.dumps({k:v for k,v in row.items() if k != 'review'} | {'decision': review['decision']}), flush=True)
     primary = [r for r in results if not r['supplemental']]

@@ -42,8 +42,9 @@ class Reviewer:
         response = self.client.request('/v1/chat/completions', {
             'model': self.client.config['model'],
             'messages': [{'role': 'system', 'content': SYSTEM}, {'role': 'user', 'content': payload}],
-            'temperature': 0, 'max_tokens': 4096, 'reasoning_effort': 'none',
-            'chat_template_kwargs': {'enable_thinking': False},
+            'temperature': 0, 'max_tokens': 4096, 'reasoning_effort': 'medium',
+            'thinking_budget_tokens': 1024,
+            'chat_template_kwargs': {'enable_thinking': True},
             'response_format': {'type': 'json_object'}}, timeout=120)
         result = validate(json.loads(response['choices'][0]['message']['content']), files)
         self.client.observe('review_result', decision=result['decision'], findings=len(result['findings']))
