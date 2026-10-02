@@ -1,0 +1,11 @@
+{
+  "docs/document-evidence.md": "109c9b62f8d113daf07fce3299bbc627d00e61a0a0728b9d85bab6a67eb3b391",
+  "gflo/__main__.py": "f11294c39ce7ec10736517584789a3e303763888b30025ae680ac5389712e024",
+  "gflo/documents.py": "ac39b8dab36e52561f1e08206096ca6602cf874b7b8c65af31fbcfe4dbc1a169",
+  "gflo/recipes/document.py": "f6795e60f08e387dbed96e1ce555b2fc75bd84a6a7ea23c82c677f85a8d71cf4",
+  "gflo/recipes/document_extract.py": "5201f7b93b1ff6d650d4a035873663f7451112e441e084d303b2e2d0147fdca3",
+  "gflo/worker.py": "2ddce17fd1dcda0700cf9923d2d0a4edbea4d7df9debd1b1a4003966ad7afb0a",
+  "tests/test_document_answer_process.py": "c5f3514c0ab9244ad390fcce0175da64ec860257a8e5ddeac92455a5c28302cd",
+  "tests/test_document_protocol.py": "e1239e8fb513a4480613cbf8caf21ba14cd93bdf809d671f5e7ba684948850c7",
+  "tests/test_documents.py": "146eec5d4ec3687d84b6a600316bf2d001ae01cf46b162955be551106e59759c"
+}

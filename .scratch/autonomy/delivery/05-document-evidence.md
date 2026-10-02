@@ -1,6 +1,6 @@
 # Approved document evidence and local answers
 
-Status: active
+Status: accepted; candidate2049361
 Owner: /root
 Depends on: supported environments accepted25f75c3; installed runtime8fdde15
 
@@ -11,3 +11,5 @@ Execution: .scratch/.sflo/05-autonomy-documents/run.md.
 Design: .scratch/autonomy/document-evidence-boundary.md; docs/research/research-browser-route.md.
 
 No new external-account writes or cloud inference. Agent chose the initial limits and officialPython documentation scenario; user authorized incremental local autonomy.
+
+Acceptance: [.scratch/.sflo/05-autonomy-documents/acceptance.md](../../.sflo/05-autonomy-documents/acceptance.md). FullStage4 remains pending.

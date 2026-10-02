@@ -1,0 +1,27 @@
+{
+  "candidate": "2049361",
+  "prior_source": "25f75c3",
+  "source_hashes": {
+    "review.py": "28f4e3ca944a125960786a487cff7a730cc8ed9356b9965f8e253bbf7c86194d",
+    "prepare.py": "2da306ab140fd2214cff6d3aa76c7a4b9539c9a2c9c7c75736dcd9157d1c7f25",
+    "environment.py": "ad3c90434182f18f2e123b57f9316ba4d942f2ac78441037c0de3ab8c8a566c4",
+    "guard.py": "8f623a2ff7f9958ef2e1d0a99686ab83f31ab2100fbf5124097bcf1ae88ace48",
+    "worker.py": "2ddce17fd1dcda0700cf9923d2d0a4edbea4d7df9debd1b1a4003966ad7afb0a",
+    "sandbox.py": "b2cafa3f1ad779a2a022143c5aff8f09c1b945efcd8aa2fba90c923e769c36a0",
+    "observe.py": "8674c78a8d7654c0fb642e4a9186c061b86058808b72db997e54ba7efb0a145b",
+    "web.py": "05dcae9983bc9584f82209f21f3190f0250ba8ff1f6a7cf9a8af78530c785acd",
+    "documents.py": "ac39b8dab36e52561f1e08206096ca6602cf874b7b8c65af31fbcfe4dbc1a169",
+    "__main__.py": "f11294c39ce7ec10736517584789a3e303763888b30025ae680ac5389712e024",
+    "__init__.py": "6cbddf667328e01dd8f766ea554f7e0c10e19d6618b1eaa688e3e6548b8f275e",
+    "artifacts.py": "53f94a54cdc948a752ab757c7f4bf943319073d71d82a601844a7d3825516b48",
+    "runner.py": "8938794b61fab8082d7b88d69dc161fa059a61d3b498f7e070e8b25697e58297",
+    "recipes/validate.py": "36226b01a39388ddb665a286f139feb98fde179e95cc8fed8ff5ed6662922739",
+    "recipes/document.py": "f6795e60f08e387dbed96e1ce555b2fc75bd84a6a7ea23c82c677f85a8d71cf4",
+    "recipes/document_extract.py": "5201f7b93b1ff6d650d4a035873663f7451112e441e084d303b2e2d0147fdca3",
+    "recipes/fetch.py": "c0a798534ab2d29cac84f53ff1b88adad94e60b3f63f04ec3be5d8fbe516fcd8",
+    "recipes/python-api/assemble.py": "e7656414445a4c35b17e40e1130f9ab8a7857c94218aa055ec19e1276120310d"
+  },
+  "documents_cli": "usage: __main__.py documents [-h] [--store STORE]\n                             {acquire,inspect,answer,replay,cleanup} ...\n\npositional arguments:\n  {acquire,inspect,answer,replay,cleanup}\n    cleanup             Explicit cleanup of this store's interrupted work\n\noptions:\n  -h, --help            show this help message and exit\n  --store STORE\n",
+  "state_config_untouched": true,
+  "temporary_previous_source_removed": true
+}

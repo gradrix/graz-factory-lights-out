@@ -1,0 +1,56 @@
+{
+  "candidate_sha256": "fba3e2f5fe14c640818808b32242c617b7a2ed78c3b2fbb332e7080764b6f336",
+  "results": [
+    {
+      "case": "URL-rejections",
+      "count": 9
+    },
+    {
+      "case": "nonpublic-DNS-before-connect",
+      "count": 7
+    },
+    {
+      "case": "numeric-destination-original-TLS-name-failure-closes",
+      "passed": true
+    },
+    {
+      "case": "retention-transport-reject",
+      "count": 14
+    },
+    {
+      "case": "body-exact-boundary-controls-plus-extra-truncation",
+      "passed": true
+    },
+    {
+      "case": "frame-facts-digest-duplicate-nonfinite-bounds",
+      "passed": true
+    },
+    {
+      "case": "inert-extraction-and-bounds",
+      "passed": true,
+      "visible_instruction_remains_untrusted_data": true
+    },
+    {
+      "case": "immutable-record-tamper-controls",
+      "count": 8
+    },
+    {
+      "case": "cancel-after-root-sync-before-commit",
+      "passed": true
+    },
+    {
+      "case": "tool-free-citation-provenance-controls",
+      "passed": true
+    },
+    {
+      "case": "answer-child-positive-size-error-cancel",
+      "passed": true
+    },
+    {
+      "case": "actual-answer-owner-SIGKILL",
+      "child_state": "absent",
+      "lease_released": true,
+      "passed": true
+    }
+  ]
+}

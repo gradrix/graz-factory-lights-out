@@ -1,0 +1,14 @@
+{
+  "candidate_sha256": "fba3e2f5fe14c640818808b32242c617b7a2ed78c3b2fbb332e7080764b6f336",
+  "files": {
+    "docs/document-evidence.md": "d74f78bcd0511c4cb5487f9e068f610664ff72848e583c481b23e55191cd8a50",
+    "gflo/__main__.py": "f11294c39ce7ec10736517584789a3e303763888b30025ae680ac5389712e024",
+    "gflo/documents.py": "911336d9521d201ac40cb3b78cd8b31918813792cad014b4a6aaf21f3619d41b",
+    "gflo/recipes/document.py": "f6795e60f08e387dbed96e1ce555b2fc75bd84a6a7ea23c82c677f85a8d71cf4",
+    "gflo/recipes/document_extract.py": "5201f7b93b1ff6d650d4a035873663f7451112e441e084d303b2e2d0147fdca3",
+    "gflo/worker.py": "2ddce17fd1dcda0700cf9923d2d0a4edbea4d7df9debd1b1a4003966ad7afb0a",
+    "tests/test_document_answer_process.py": "c5f3514c0ab9244ad390fcce0175da64ec860257a8e5ddeac92455a5c28302cd",
+    "tests/test_document_protocol.py": "e1239e8fb513a4480613cbf8caf21ba14cd93bdf809d671f5e7ba684948850c7",
+    "tests/test_documents.py": "12d5bbf6c6c09a8fd01663fcd238d9ae593566fd29bfefdebc4d1bea998cd3e7"
+  }
+}

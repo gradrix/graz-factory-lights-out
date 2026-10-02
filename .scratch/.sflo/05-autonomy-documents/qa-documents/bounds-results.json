@@ -1,0 +1,38 @@
+[
+  {
+    "case": "text-at",
+    "passed": true,
+    "id": "ca0ae24379da75aac2f1c03740c66cd32c01ee04885dbb90e744dc3a151f062c"
+  },
+  {
+    "case": "text-over",
+    "reject": "Document extract failed (1): Empty or oversized extracted text\n"
+  },
+  {
+    "case": "depth-at",
+    "passed": true,
+    "id": "504e200a6727fbd96e05cee578c7326526ba1f1ef42fcfe9abc405d527dce4ba"
+  },
+  {
+    "case": "depth-over",
+    "reject": "Document extract failed (1): HTML depth limit\n"
+  },
+  {
+    "case": "blocks-at",
+    "passed": true,
+    "id": "207b64f89ece2178d71b20f78313f7d8da469753fedd72852e263233f0cb44d2"
+  },
+  {
+    "case": "blocks-over",
+    "reject": "Document extract failed (1): Empty or oversized extracted text\n"
+  },
+  {
+    "case": "events-at",
+    "passed": true,
+    "id": "9108d9fe07f62429ca3c344eff0b995e8a9f3651a28fe65e4382c568fe8dff81"
+  },
+  {
+    "case": "events-over",
+    "reject": "Document extract failed (1): HTML event limit\n"
+  }
+]

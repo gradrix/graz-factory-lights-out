@@ -14,4 +14,4 @@ Later acceptance-bearing stages are in [the roadmap](../../docs/roadmap.md). The
 
 - [Prepare supported environments](delivery/04-environments.md) — accepted; runtime25f75c3 and96K/Q4 manager8fdde15. Three profile paths passed executable/local-review/independent semantic checks; original failed cohort is preserved. See the [acceptance record](../.sflo/04-autonomy-environments/acceptance.md).
 
-- [Approved document evidence](delivery/05-document-evidence.md) — active; first Stage4 slice, following environment acceptance.
+- [Approved document evidence](delivery/05-document-evidence.md) — accepted at2049361; first Stage4 slice, two actual local answers and offline replay independently verified.

@@ -1,0 +1,34 @@
+{
+  "cancel": {
+    "observed_container": true,
+    "remaining_containers": [],
+    "reusable_records": [],
+    "before_cleanup": [
+      ".lock",
+      ".cleanup-required"
+    ],
+    "after_cleanup": [
+      ".lock"
+    ],
+    "exit": 0,
+    "stdout": "Document operation cancelled before publication\n",
+    "stderr": ""
+  },
+  "owner-death": {
+    "observed_container": true,
+    "remaining_containers": [],
+    "reusable_records": [],
+    "before_cleanup": [
+      ".stage-5s8lcfzo",
+      ".work-5_p8peaw",
+      ".lock",
+      ".cleanup-required"
+    ],
+    "after_cleanup": [
+      ".lock"
+    ],
+    "exit": -9,
+    "stdout": "",
+    "stderr": ""
+  }
+}

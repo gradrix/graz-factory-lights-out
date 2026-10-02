@@ -1,0 +1,33 @@
+{
+  "url": "https://docs.python.org/3.12/library/json.html",
+  "source_version": "Python 3.12 documentation historical snapshot; floating series URL, not an exact runtime-patch guarantee",
+  "questions": [
+    {
+      "name": "separators",
+      "question": "How do default separators differ when indent is None versus non-None, and which separators remove separator whitespace?",
+      "expected_status": "supported",
+      "semantic_facts": [
+        "Default with indent=None: (', ', ': ')",
+        "Default with non-None indent: (',', ': ')",
+        "Compact separators: (',', ':')"
+      ],
+      "citation_requirement": "Every claim must cite exact frozen evidence spans that support it."
+    },
+    {
+      "name": "unsupported_future_date",
+      "question": "On what exact calendar date will Python 3.20.0 be released?",
+      "expected_status": "insufficient",
+      "semantic_facts": [],
+      "citation_requirement": "No invented date or citation; clearly report insufficient supplied evidence."
+    }
+  ],
+  "profile": {
+    "model": "flash-next-coder",
+    "context": 98304,
+    "cache": "q4_0",
+    "reasoning": "medium",
+    "max_output_tokens": 2048,
+    "request_timeout_s": 120
+  },
+  "policy": "Freeze before target-model calls. Saved replay must make no fetch or inference requests. Failures remain recorded."
+}

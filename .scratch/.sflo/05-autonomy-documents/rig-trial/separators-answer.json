@@ -1,0 +1,61 @@
+{
+  "id": "d5d47a808460b75d4c3d170529826af6be3780f21ee98e1bb9d96d4560294870",
+  "evidence_id": "8e6d0aae07e8aa97daf49feb029ceb60d55c74ab0383ecb4378b3c484a8b9cf1",
+  "answer": {
+    "status": "supported",
+    "claims": [
+      {
+        "text": "When separators is None (the default), the separators default to (', ', ': ') if indent is None, and (',', ': ') if indent is not None.",
+        "citations": [
+          {
+            "evidence_id": "8e6d0aae07e8aa97daf49feb029ceb60d55c74ab0383ecb4378b3c484a8b9cf1",
+            "span": 73,
+            "excerpt": "If None (the default), separators defaults to (', ', ': ') if indent is None, and (',', ': ') otherwise."
+          },
+          {
+            "evidence_id": "8e6d0aae07e8aa97daf49feb029ceb60d55c74ab0383ecb4378b3c484a8b9cf1",
+            "span": 173,
+            "excerpt": "The default is (', ', ': ') if indent is None and (',', ': ') otherwise."
+          }
+        ]
+      },
+      {
+        "text": "Specifying (',', ':') as separators eliminates whitespace to produce the most compact JSON representation.",
+        "citations": [
+          {
+            "evidence_id": "8e6d0aae07e8aa97daf49feb029ceb60d55c74ab0383ecb4378b3c484a8b9cf1",
+            "span": 73,
+            "excerpt": "For the most compact JSON, specify (',', ':') to eliminate whitespace."
+          },
+          {
+            "evidence_id": "8e6d0aae07e8aa97daf49feb029ceb60d55c74ab0383ecb4378b3c484a8b9cf1",
+            "span": 173,
+            "excerpt": "To get the most compact JSON representation, you should specify (',', ':') to eliminate whitespace."
+          }
+        ]
+      },
+      {
+        "text": "The change to use (',', ': ') as default when indent is not None was introduced in version 3.4.",
+        "citations": [
+          {
+            "evidence_id": "8e6d0aae07e8aa97daf49feb029ceb60d55c74ab0383ecb4378b3c484a8b9cf1",
+            "span": 77,
+            "excerpt": "Changed in version 3.4: Use (',', ': ') as default if indent is not None."
+          },
+          {
+            "evidence_id": "8e6d0aae07e8aa97daf49feb029ceb60d55c74ab0383ecb4378b3c484a8b9cf1",
+            "span": 174,
+            "excerpt": "Changed in version 3.4: Use (',', ': ') as default if indent is not None."
+          }
+        ]
+      }
+    ],
+    "reason": ""
+  },
+  "source_url": "https://docs.python.org/3.12/library/json.html",
+  "source_version": "Python 3.12 documentation historical snapshot; floating series URL, not an exact runtime-patch guarantee",
+  "retrieved_utc": "2026-10-02T15:00:44.248940+00:00",
+  "age_seconds": 31,
+  "freshness": "historical snapshot; current accuracy is not established",
+  "verdict": "citation_provenance_valid_not_semantic_entailment"
+}

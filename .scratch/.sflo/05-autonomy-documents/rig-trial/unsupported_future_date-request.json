@@ -1,0 +1,9 @@
+{
+  "request_sha256": "29c8d939e241feb71fb1351e04bf7e45fb18d172986aef2842906ba128b15584",
+  "timeout_s": 120,
+  "max_response_bytes": 65536,
+  "tools_present": false,
+  "max_tokens": 2048,
+  "reasoning_effort": "medium",
+  "thinking_budget_tokens": 512
+}

@@ -52,6 +52,32 @@ PYTHONPATH=. python3 ops/qualify_coding.py .gflo/repeated-d .gflo/repeated-d-res
 
 Use the qualified configuration and installed pinned image. Existing destinations are refused. Published hashes identify the original model-visible inputs; new Git commit metadata can differ. Acceptance checks remain outside the writable worker mount. These now-known cases cannot be labeled unseen in a rerun.
 
-## Supported environments — implementation next
+## Supported environments — accepted
 
-Approved design uses pinned bases plus immutable read-only dependency snapshots. Fetch, offline assembly, hostile artifacts and publication require their own qualification. Three model-task fixtures passed independent pre-exposure checks after two oracle false passes were repaired; this is fixture evidence, not an implemented environment capability. [Delivery unit](../../.scratch/autonomy/delivery/04-environments.md).
+Runtime **25f75c3**, serving manager **8fdde15**, 2026-10-02. Three profiles passed cold package-cache preparation and two fresh offline smoke checks each on the rig; pinned base images were already installed. Independent input, artifact, lifecycle and publication checks passed. The complete runtime gate passed88 tests at85% branch-aware coverage.
+
+The original128K/Q4 coding cohort remains **1/3 accepted**: stdlib passed; API and Node exceeded their frozen budgets. Independent review found genuine documentation omissions and two oracle defects. Those outcomes were preserved. Distinct API and TypeScript follow-ups used corrected, independently checked oracles and96K/Q4:
+
+| Task | Accepted attempt | Elapsed | Independent semantic result |
+| --- | ---: | ---: | --- |
+| Original stdlib |1|482.71s|Passed |
+| Fresh telemetry API |1|285.71s|100 domain cases,15 HTTP cases and README commands passed |
+| Fresh availability TypeScript CLI |2|178.41s|150 interval cases,10 CLI cases and relocated README commands passed |
+
+The Node follow-up automatically repaired an empty first attempt. These qualify three profile paths, not a3/3 original cohort or general project autonomy. The accepted runtime was installed at `MONSTER-GAMING-PC:~/gflo-runtime`, preserving state/config.
+
+A fixed16947-token input measured roughly74 generation tokens/s at96K/Q4 versus16.5 at128K/Q4. An81441-input-token retrieval check passed three exact lookups; this does not establish full-window coding quality. The default is96K/Q4;128K remains an explicit option.
+
+[Acceptance](../../.scratch/.sflo/04-autonomy-environments/acceptance.md), [original cohort](../../.scratch/.sflo/04-autonomy-environments/rig-model-25f75c3.json), [API semantic QA](../../.scratch/.sflo/04-autonomy-environments/qa-model-api-followup.md), [Node semantic QA](../../.scratch/.sflo/04-autonomy-environments/qa-model-node-followup.md), [serving assessment](../../.scratch/.sflo/04-autonomy-environments/qa-serving-profile.md).
+
+## Approved documentation — first slice accepted
+
+Candidate **2049361**, 2026-10-02. Exact approved public documentation is fetched under fixed limits, extracted offline, stored with hashes and used for a tool-free local answer with checked span citations. Saved answers replay without network or inference. This does not implement search or browsing.
+
+The complete gate passed **119 tests,86% branch-aware coverage**. Independent functional QA passed. Independent security found two publication/recovery defects in the initial candidate; repaired code passed27 independent fault probes. Actual rig cancellation/owner-death checks left no reusable partial records or containers; explicit cleanup recovered the private store.
+
+On the5090 at96K/Q4, the first frozen question received complete, source-supported JSON separator rules in30.996s. The unsupported future release-date question correctly received insufficient evidence in14.849s. Each used one call, about10.1K prompt tokens, and the existing2048-output-token/120s limits. Independent semantic QA verified every claim, including an extra Python3.4 fact. Both saved answers replayed in a network-none container with unchanged record hashes.
+
+This is two questions against one historical official page, not general research reliability. Citation matching proves provenance; semantic support needs separate assessment. The full Stage4 ten-question/five-browser-journey gate remains pending.
+
+[Usage](../document-evidence.md), [semantic QA](../../.scratch/.sflo/05-autonomy-documents/qa-rig-documents.md), [security recheck](../../.scratch/.sflo/05-autonomy-documents/security-documents-recheck.md), [raw trial](../../.scratch/.sflo/05-autonomy-documents/rig-trial/receipt.json).

@@ -1,0 +1,40 @@
+{
+  "candidate": "20493612b62de19a5e4dbb713803abd8a9667b0b",
+  "checks": [
+    {
+      "name": "separators",
+      "answer_id": "d5d47a808460b75d4c3d170529826af6be3780f21ee98e1bb9d96d4560294870",
+      "citation_count": 6,
+      "elapsed_s": 30.996337226999458,
+      "usage": {
+        "completion_tokens": 888,
+        "prompt_tokens": 10100,
+        "total_tokens": 10988,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        }
+      },
+      "request_response_hashes": true,
+      "replay_equal_except_age": true
+    },
+    {
+      "name": "unsupported_future_date",
+      "answer_id": "df1c58cca2da34875344007f2d7deaeca2c14dc086fec776e774677b36d861b3",
+      "citation_count": 0,
+      "elapsed_s": 14.849034674989525,
+      "usage": {
+        "completion_tokens": 262,
+        "prompt_tokens": 10096,
+        "total_tokens": 10358,
+        "prompt_tokens_details": {
+          "cached_tokens": 127
+        }
+      },
+      "request_response_hashes": true,
+      "replay_equal_except_age": true
+    }
+  ],
+  "record_hashes": true,
+  "replay_executor_verified": true,
+  "total_elapsed_s": 47.818559409992304
+}

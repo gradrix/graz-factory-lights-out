@@ -1,0 +1,24 @@
+usage: qualify-documents.py [-h] --repo REPO --candidate CANDIDATE
+                            --candidate-sha256 CANDIDATE_SHA256 --contract
+                            CONTRACT --contract-sha256 CONTRACT_SHA256
+                            --config CONFIG --serving-container
+                            SERVING_CONTAINER --expected-serving-id
+                            EXPECTED_SERVING_ID --expected-serving-image
+                            EXPECTED_SERVING_IMAGE --output OUTPUT [--run]
+
+Root-operated rig trial. No inference unless explicitly invoked with --run.
+
+options:
+  -h, --help            show this help message and exit
+  --repo REPO
+  --candidate CANDIDATE
+  --candidate-sha256 CANDIDATE_SHA256
+  --contract CONTRACT
+  --contract-sha256 CONTRACT_SHA256
+  --config CONFIG       Existing private rig config; contents never emitted
+  --serving-container SERVING_CONTAINER
+  --expected-serving-id EXPECTED_SERVING_ID
+  --expected-serving-image EXPECTED_SERVING_IMAGE
+  --output OUTPUT       New directory; refuses existing output/store
+  --run                 Authorize exactly two answer attempts; no automatic
+                        retries

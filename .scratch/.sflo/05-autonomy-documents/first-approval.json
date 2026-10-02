@@ -1,0 +1,1 @@
+{"url":"https://docs.python.org/3.12/library/json.html","source_version":"Python 3.12 documentation snapshot; floating series, not an exact runtime patch guarantee","question":"How do default separators differ when indent is None versus non-None, and which separators remove separator whitespace?"}

@@ -1,0 +1,134 @@
+{
+  "root": "/tmp/gflo-doc-life-_mqiwkr4",
+  "rows": [
+    {
+      "phase": "fetch-owner-SIGKILL",
+      "actual": {
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "name": "gflo-document-d5440eec148c452fb273806df1251e46",
+        "host": {
+          "Runtime": "runc",
+          "NetworkMode": "bridge",
+          "ReadonlyRootfs": true,
+          "CapDrop": [
+            "ALL"
+          ],
+          "SecurityOpt": [
+            "no-new-privileges"
+          ],
+          "Memory": 268435456,
+          "MemorySwap": 268435456,
+          "NanoCpus": 1000000000,
+          "PidsLimit": 64,
+          "ShmSize": 8388608,
+          "Tmpfs": {
+            "/tmp": "rw,nosuid,nodev,size=16m,mode=1777"
+          },
+          "Devices": [],
+          "DeviceRequests": null
+        },
+        "config": {
+          "User": "1000:1000",
+          "Env": [
+            "HOME=/tmp",
+            "PYTHONDONTWRITEBYTECODE=1",
+            "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "LANG=C.UTF-8",
+            "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+            "PYTHON_VERSION=3.12.13",
+            "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684"
+          ],
+          "WorkingDir": "/tmp"
+        },
+        "mounts": [
+          {
+            "Type": "bind",
+            "Source": "/tmp/gflo-doc-life-_mqiwkr4/death/.work-lsj_gete/fetch-request",
+            "Destination": "/approved",
+            "RW": false
+          },
+          {
+            "Type": "bind",
+            "Source": "/tmp/gflo-doc-life-_mqiwkr4/helpers/document.py",
+            "Destination": "/helpers/document.py",
+            "RW": false
+          },
+          {
+            "Type": "bind",
+            "Source": "/tmp/gflo-doc-life-_mqiwkr4/helpers/fetch.py",
+            "Destination": "/helpers/fetch.py",
+            "RW": false
+          }
+        ]
+      },
+      "container_removed": true,
+      "no_receipt": true,
+      "explicit_recovery": true
+    },
+    {
+      "phase": "offline-extraction-cancel",
+      "actual": [
+        {
+          "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+          "name": "gflo-document-775a549314894e96949088d692b8c3c7",
+          "host": {
+            "Runtime": "runc",
+            "NetworkMode": "none",
+            "ReadonlyRootfs": true,
+            "CapDrop": [
+              "ALL"
+            ],
+            "SecurityOpt": [
+              "no-new-privileges"
+            ],
+            "Memory": 268435456,
+            "MemorySwap": 268435456,
+            "NanoCpus": 1000000000,
+            "PidsLimit": 64,
+            "ShmSize": 8388608,
+            "Tmpfs": {
+              "/tmp": "rw,nosuid,nodev,size=16m,mode=1777"
+            },
+            "Devices": [],
+            "DeviceRequests": null
+          },
+          "config": {
+            "User": "1000:1000",
+            "Env": [
+              "HOME=/tmp",
+              "PYTHONDONTWRITEBYTECODE=1",
+              "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+              "LANG=C.UTF-8",
+              "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+              "PYTHON_VERSION=3.12.13",
+              "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684"
+            ],
+            "WorkingDir": "/tmp"
+          },
+          "mounts": [
+            {
+              "Type": "bind",
+              "Source": "/tmp/gflo-doc-life-_mqiwkr4/cancel/.work-d9w5qj3l/extract-request",
+              "Destination": "/approved",
+              "RW": false
+            },
+            {
+              "Type": "bind",
+              "Source": "/tmp/gflo-doc-life-_mqiwkr4/helpers/document_extract.py",
+              "Destination": "/helpers/document_extract.py",
+              "RW": false
+            },
+            {
+              "Type": "bind",
+              "Source": "/tmp/gflo-doc-life-_mqiwkr4/cancel/.work-d9w5qj3l/body",
+              "Destination": "/body",
+              "RW": false
+            }
+          ]
+        }
+      ],
+      "container_removed": true,
+      "no_receipt": true
+    }
+  ]
+}

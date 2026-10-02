@@ -37,7 +37,7 @@ The filesystem is not quota-managed. Keep task inputs and generated output bound
 
 `Factory(state, worker, verifier, cleanup)` owns task transitions. The worker callable receives `(workspace, task, previous_evidence, attempt_number)` and returns a report. The verifier receives `(workspace, task, acceptance_directory)` and returns a boolean verdict plus check evidence. Cleanup terminates retained execution before observing a resumed candidate.
 
-These callables also enable deterministic fault injection in tests. Production uses one implementation of each. The implemented profiles cover Python stdlib, packaged Python APIs and CommonJS TypeScript. Each profile supplies pinned inputs, actual runtime context and offline checks; the three-profile model qualification remains in progress. Unsupported dependencies require a new approved recipe. Symlink-containing input repositories and Git submodules are rejected explicitly.
+These callables also enable deterministic fault injection in tests. Production uses one implementation of each. The implemented profiles cover Python stdlib, packaged Python APIs and CommonJS TypeScript. Each profile supplies pinned inputs, actual runtime context and offline checks; the three-profile paths have passed bounded rig qualification, with failed original trials retained in the evidence. Unsupported dependencies require a new approved recipe. Symlink-containing input repositories and Git submodules are rejected explicitly.
 
 Automatic planning/delegation is a later stage. First accumulate real-task completion, repair, interruption and regression evidence. SFLO inspired explicit acceptance/repair stages; Gas City inspired work state that survives disposable sessions. Neither is a runtime dependency. The new [roadmap](roadmap.md) describes the staged autonomy work; the [feasibility research](research/autonomy-feasibility.md) supplies current primary sources.
 
@@ -52,3 +52,7 @@ Automatic planning/delegation is a later stage. First accumulate real-task compl
 `prepare.py` separates trusted, hash-checked registry acquisition from offline assembly and smoke tests. `artifacts.py` validates complete bounded archives before extraction. `environment.py` publishes immutable receipts binding the base image, dependency tree, recipe, locks and runtime facts. New task contracts bind the receipt before inference; resume and each executor resolve it again. Changed receipts, dependency bytes or frozen project manifests cannot silently change an accepted task. Legacy tasks remain explicitly unbound.
 
 Use an existing environment ID for registry-independent execution. Automatic preparation can fetch approved packages, so initial setup requires network access and preprovisioned base images. See [environment use and measured limits](environments.md).
+
+## Approved documentation
+
+`documents.py` owns bounded historical snapshots, checked citations and offline saved answers. Fixed fetch and inert extraction helpers run in separate restricted containers; only fetch has network access. Local inference receives source text as untrusted data with no tools. The controller approves the URL/question and validates citations; semantic entailment remains separately assessed. See [usage and limits](document-evidence.md). Search, browser journeys and automatic research delegation remain later units.

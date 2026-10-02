@@ -1,0 +1,32 @@
+test_bounded_child_returns_response (test_document_answer_process.AnswerProcessTests) ... ok
+test_child_errors_oversize_and_cancellation_are_bounded (test_document_answer_process.AnswerProcessTests) ... ok
+test_owner_death_terminates_child_and_releases_lease (test_document_answer_process.AnswerProcessTests) ... ok
+test_ambiguous_duplicate_json_fields_are_rejected (test_document_protocol.DocumentProtocolTests) ... ok
+test_approval_rejects_url_options_and_unbounded_authority (test_document_protocol.DocumentProtocolTests) ... ok
+test_extraction_preserves_order_without_active_content (test_document_protocol.DocumentProtocolTests) ... ok
+test_extraction_rejects_incomplete_or_oversized_evidence (test_document_protocol.DocumentProtocolTests) ... ok
+test_fetch_requires_exact_body_and_never_follows_redirect (test_document_protocol.DocumentProtocolTests) ... ok
+test_frames_reject_identity_size_policy_and_connection_mismatch (test_document_protocol.DocumentProtocolTests) ... ok
+test_parser_instruction_events_are_bounded (test_document_protocol.DocumentProtocolTests) ... ok
+test_retention_and_transport_fail_closed (test_document_protocol.DocumentProtocolTests) ... ok
+test_approved_acquisition_resolves_inert_spans_and_detects_tampering (test_documents.DocumentsTests) ... ok
+test_cancellation_and_invalid_question_do_not_infer (test_documents.DocumentsTests) ... ok
+test_cleanup_failure_blocks_new_work_until_explicit_recovery (test_documents.DocumentsTests) ... ok
+test_cli_acquire_inspect_answer_and_cleanup (test_documents.DocumentsTests) ... ok
+test_cli_saved_replay_does_not_construct_a_model_client (test_documents.DocumentsTests) ... ok
+test_exclusive_lease_and_interrupted_scratch (test_documents.DocumentsTests) ... ok
+test_explicit_new_question_reuses_evidence_without_fetch (test_documents.DocumentsTests) ... ok
+test_extractor_failure_and_runtime_cleanup_failure_publish_nothing (test_documents.DocumentsTests) ... ok
+test_failed_publication_preserves_existing_snapshot (test_documents.DocumentsTests) ... ok
+test_inspection_discloses_historical_age_and_version (test_documents.DocumentsTests) ... ok
+test_invalid_citations_and_tool_calls_never_publish (test_documents.DocumentsTests) ... ok
+test_model_response_read_is_bounded (test_documents.DocumentsTests) ... ok
+test_pending_and_extra_files_cannot_be_reused (test_documents.DocumentsTests) ... ok
+test_receipt_hash_and_text_hash_reject_tampering (test_documents.DocumentsTests) ... ok
+test_store_and_record_reject_links_and_permissions (test_documents.DocumentsTests) ... ok
+test_store_refuses_full_quota_without_eviction (test_documents.DocumentsTests) ... ok
+
+----------------------------------------------------------------------
+Ran 27 tests in 0.422s
+
+OK

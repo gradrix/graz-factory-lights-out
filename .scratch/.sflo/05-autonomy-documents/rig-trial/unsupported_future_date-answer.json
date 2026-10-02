@@ -1,0 +1,15 @@
+{
+  "id": "df1c58cca2da34875344007f2d7deaeca2c14dc086fec776e774677b36d861b3",
+  "evidence_id": "8e6d0aae07e8aa97daf49feb029ceb60d55c74ab0383ecb4378b3c484a8b9cf1",
+  "answer": {
+    "status": "insufficient_evidence",
+    "claims": [],
+    "reason": "The provided evidence is from Python 3.12 documentation (json module page) and contains no information about Python 3.20.0 or any future release dates."
+  },
+  "source_url": "https://docs.python.org/3.12/library/json.html",
+  "source_version": "Python 3.12 documentation historical snapshot; floating series URL, not an exact runtime-patch guarantee",
+  "retrieved_utc": "2026-10-02T15:00:44.248940+00:00",
+  "age_seconds": 45,
+  "freshness": "historical snapshot; current accuracy is not established",
+  "verdict": "citation_provenance_valid_not_semantic_entailment"
+}

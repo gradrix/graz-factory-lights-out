@@ -1,0 +1,213 @@
+{
+  "candidate_sha256": "9c01da103e9f145bfc426e4a4c3f02780b85a845594a4716d1437d36c413cb3c",
+  "results": [
+    {
+      "case": "publication-control",
+      "passed": true,
+      "operation_succeeded": true,
+      "error": null,
+      "prior_good_unchanged": true,
+      "postcommit_filesystem_operations": 0
+    },
+    {
+      "case": "publication-original-postcommit-faults",
+      "passed": true,
+      "operation_succeeded": true,
+      "error": null,
+      "prior_good_unchanged": true,
+      "postcommit_filesystem_operations": 0
+    },
+    {
+      "case": "publication-first-stage-sync",
+      "passed": true,
+      "operation_succeeded": false,
+      "error": "stage sync1",
+      "prior_good_unchanged": true,
+      "postcommit_filesystem_operations": 0
+    },
+    {
+      "case": "publication-last-stage-sync",
+      "passed": true,
+      "operation_succeeded": false,
+      "error": "stage sync2",
+      "prior_good_unchanged": true,
+      "postcommit_filesystem_operations": 0
+    },
+    {
+      "case": "publication-last-sync-plus-cleanup",
+      "passed": true,
+      "operation_succeeded": false,
+      "error": "staging cleanup unavailable",
+      "prior_good_unchanged": true,
+      "postcommit_filesystem_operations": 0
+    },
+    {
+      "case": "publication-final-rename",
+      "passed": true,
+      "operation_succeeded": false,
+      "error": "commit rename unavailable",
+      "prior_good_unchanged": true,
+      "postcommit_filesystem_operations": 0
+    },
+    {
+      "case": "publication-pending-unlink",
+      "passed": true,
+      "operation_succeeded": false,
+      "error": "pending unlink unavailable",
+      "prior_good_unchanged": true,
+      "postcommit_filesystem_operations": 0
+    },
+    {
+      "case": "publication-final-validation",
+      "passed": true,
+      "operation_succeeded": false,
+      "error": "staged invalid",
+      "prior_good_unchanged": true,
+      "postcommit_filesystem_operations": 0
+    },
+    {
+      "case": "publication-cancel-last-stage-sync",
+      "passed": true,
+      "operation_succeeded": false,
+      "error": "Document operation cancelled before publication",
+      "prior_good_unchanged": true,
+      "postcommit_filesystem_operations": 0
+    },
+    {
+      "case": "publication-postcommit-I/O-prohibited",
+      "passed": true,
+      "operation_succeeded": true,
+      "error": null,
+      "prior_good_unchanged": true,
+      "postcommit_filesystem_operations": 0
+    },
+    {
+      "case": "answer-render-before-commit-and-offline-replay",
+      "passed": true
+    },
+    {
+      "case": "cleanup-fetch-1",
+      "passed": true,
+      "retry_refused_before_executor": true,
+      "failed_recovery_kept_fence": true,
+      "explicit_recovery_then_success": true,
+      "prior_good_unchanged": true
+    },
+    {
+      "case": "cleanup-fetch-124",
+      "passed": true,
+      "retry_refused_before_executor": true,
+      "failed_recovery_kept_fence": true,
+      "explicit_recovery_then_success": true,
+      "prior_good_unchanged": true
+    },
+    {
+      "case": "cleanup-fetch-125",
+      "passed": true,
+      "retry_refused_before_executor": true,
+      "failed_recovery_kept_fence": true,
+      "explicit_recovery_then_success": true,
+      "prior_good_unchanged": true
+    },
+    {
+      "case": "cleanup-fetch-130",
+      "passed": true,
+      "retry_refused_before_executor": true,
+      "failed_recovery_kept_fence": true,
+      "explicit_recovery_then_success": true,
+      "prior_good_unchanged": true
+    },
+    {
+      "case": "cleanup-fetch-cleanup failure",
+      "passed": true,
+      "retry_refused_before_executor": true,
+      "failed_recovery_kept_fence": true,
+      "explicit_recovery_then_success": true,
+      "prior_good_unchanged": true
+    },
+    {
+      "case": "cleanup-fetch-docker inaccessible",
+      "passed": true,
+      "retry_refused_before_executor": true,
+      "failed_recovery_kept_fence": true,
+      "explicit_recovery_then_success": true,
+      "prior_good_unchanged": true
+    },
+    {
+      "case": "cleanup-fetch-Command '['docker', 'rm', '-f', 'owned']' timed out after 30 seconds",
+      "passed": true,
+      "retry_refused_before_executor": true,
+      "failed_recovery_kept_fence": true,
+      "explicit_recovery_then_success": true,
+      "prior_good_unchanged": true
+    },
+    {
+      "case": "cleanup-extract-1",
+      "passed": true,
+      "retry_refused_before_executor": true,
+      "failed_recovery_kept_fence": true,
+      "explicit_recovery_then_success": true,
+      "prior_good_unchanged": true
+    },
+    {
+      "case": "cleanup-extract-124",
+      "passed": true,
+      "retry_refused_before_executor": true,
+      "failed_recovery_kept_fence": true,
+      "explicit_recovery_then_success": true,
+      "prior_good_unchanged": true
+    },
+    {
+      "case": "cleanup-extract-125",
+      "passed": true,
+      "retry_refused_before_executor": true,
+      "failed_recovery_kept_fence": true,
+      "explicit_recovery_then_success": true,
+      "prior_good_unchanged": true
+    },
+    {
+      "case": "cleanup-extract-130",
+      "passed": true,
+      "retry_refused_before_executor": true,
+      "failed_recovery_kept_fence": true,
+      "explicit_recovery_then_success": true,
+      "prior_good_unchanged": true
+    },
+    {
+      "case": "cleanup-extract-cleanup failure",
+      "passed": true,
+      "retry_refused_before_executor": true,
+      "failed_recovery_kept_fence": true,
+      "explicit_recovery_then_success": true,
+      "prior_good_unchanged": true
+    },
+    {
+      "case": "cleanup-extract-docker inaccessible",
+      "passed": true,
+      "retry_refused_before_executor": true,
+      "failed_recovery_kept_fence": true,
+      "explicit_recovery_then_success": true,
+      "prior_good_unchanged": true
+    },
+    {
+      "case": "cleanup-extract-Command '['docker', 'rm', '-f', 'owned']' timed out after 30 seconds",
+      "passed": true,
+      "retry_refused_before_executor": true,
+      "failed_recovery_kept_fence": true,
+      "explicit_recovery_then_success": true,
+      "prior_good_unchanged": true
+    },
+    {
+      "case": "actual-owner-SIGKILL-before-rename",
+      "passed": true,
+      "new_ids_resolvable": 0,
+      "prior_good_preserved": true
+    },
+    {
+      "case": "actual-owner-SIGKILL-after-rename",
+      "passed": true,
+      "new_ids_resolvable": 1,
+      "prior_good_preserved": true
+    }
+  ]
+}

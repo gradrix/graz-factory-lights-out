@@ -1,0 +1,66 @@
+{
+  "candidate_sha256": "fba3e2f5fe14c640818808b32242c617b7a2ed78c3b2fbb332e7080764b6f336",
+  "measurements": "controlled local; no network/Docker/model",
+  "results": [
+    {
+      "case": "control",
+      "error": null,
+      "new_ids": [
+        "e3190edbe4b84966fc03a22aab1ec4b689167387f17132efed9e966191c79ae7"
+      ],
+      "new_resolvable_ids": [
+        "e3190edbe4b84966fc03a22aab1ec4b689167387f17132efed9e966191c79ae7"
+      ],
+      "prior_good_unchanged": true,
+      "bug_observed": false
+    },
+    {
+      "case": "final-sync-failure",
+      "error": "controlled final record fsync failure",
+      "new_ids": [],
+      "new_resolvable_ids": [],
+      "prior_good_unchanged": true,
+      "bug_observed": false
+    },
+    {
+      "case": "final-sync-and-retirement-failure",
+      "error": "controlled retirement rename failure",
+      "new_ids": [
+        "43c0bf376c74df3e7246e4c17f2916f38a33721b4b950c8ecb3488dd239700de"
+      ],
+      "new_resolvable_ids": [
+        "43c0bf376c74df3e7246e4c17f2916f38a33721b4b950c8ecb3488dd239700de"
+      ],
+      "prior_good_unchanged": true,
+      "bug_observed": true
+    },
+    {
+      "case": "ordinary-cleanup125",
+      "error": "ValueError: Document fetch failed (125): Container cleanup failed; resume requires successful cleanup",
+      "cleanup_required_marker": true,
+      "retry_published": false,
+      "bug_observed": false
+    },
+    {
+      "case": "cleanup-timeout-exception",
+      "error": "TimeoutExpired: Command '['docker', 'rm', '-f', 'controlled-owned']' timed out after 30 seconds",
+      "cleanup_required_marker": false,
+      "retry_published": true,
+      "bug_observed": true
+    },
+    {
+      "case": "cleanup-failure-masked-by-timeout",
+      "error": "ValueError: Document fetch failed (124): Container cleanup failed; resume requires successful cleanup",
+      "cleanup_required_marker": false,
+      "retry_published": true,
+      "bug_observed": true
+    },
+    {
+      "case": "cleanup-failure-masked-by-cancel",
+      "error": "ValueError: Document fetch failed (130): Container cleanup failed; resume requires successful cleanup",
+      "cleanup_required_marker": false,
+      "retry_published": true,
+      "bug_observed": true
+    }
+  ]
+}
