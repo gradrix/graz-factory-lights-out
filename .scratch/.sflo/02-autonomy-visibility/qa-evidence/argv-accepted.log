@@ -1,0 +1,2 @@
+--keep {'command': ['python', '-c', "import sys; assert sys.argv[1] == '--keep'", '--keep'], 'exit_code': 0, 'timed_out': False, 'output': '', 'elapsed_s': 0.31597338104620576, 'image': 'sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578'}
+--rm {'command': ['python', '-c', "import sys; assert sys.argv[1] == '--rm'", '--rm'], 'exit_code': 0, 'timed_out': False, 'output': '', 'elapsed_s': 0.3674048287793994, 'image': 'sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578'}

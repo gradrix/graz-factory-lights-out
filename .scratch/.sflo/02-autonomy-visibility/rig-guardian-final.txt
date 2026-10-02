@@ -1,0 +1,9 @@
+test_closed_owner_pipe_never_starts_a_new_writer (test_sandbox.SandboxTests.test_closed_owner_pipe_never_starts_a_new_writer) ... ok
+test_killed_owner_does_not_leave_container_writer (test_sandbox.SandboxTests.test_killed_owner_does_not_leave_container_writer) ... ok
+test_real_offline_sandbox_and_readonly_verification (test_sandbox.SandboxTests.test_real_offline_sandbox_and_readonly_verification) ... ok
+test_worker_arguments_are_not_rewritten_as_docker_flags (test_sandbox.SandboxTests.test_worker_arguments_are_not_rewritten_as_docker_flags) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 4.924s
+
+OK

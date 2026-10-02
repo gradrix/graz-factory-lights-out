@@ -1,0 +1,6 @@
+Control: inactive pending cancellation -> cancelled PASS
+Startup cancellation status: {"status": "pending", "phase": "starting", "owner_alive": false, "cancel_requested": true}
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo/.scratch/.sflo/02-autonomy-visibility/qa-evidence/startup_cancel_probe.py", line 29, in <module>
+    assert s['status']=='cancelled',s
+AssertionError: {'id': 'd640fbbc13f0', 'status': 'pending', 'attempts': 0, 'contract_hash': 'd853664e17a65e149d72ffab821b897870cfca62bc7e1ba560025b961b61d0a4', 'message': '', 'budget': {'max_attempts': 3, 'max_turns': 24}, 'owner_alive': False, 'phase': 'starting', 'heartbeat': 1790928601.7141488, 'heartbeat_age_s': 0.0, 'last_action_at': 1790928601.7141488, 'action_age_s': 0.0, 'detail': {}, 'cancel_requested': True, 'waiting_on_model': False, 'model_slow': False, 'artifacts': []}

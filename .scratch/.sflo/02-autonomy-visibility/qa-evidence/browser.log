@@ -1,0 +1,25 @@
+----------------------------------------
+Exception occurred during processing of request from ('127.0.0.1', 33520)
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/socketserver.py", line 683, in process_request_thread
+    self.finish_request(request, client_address)
+  File "/usr/lib/python3.10/socketserver.py", line 360, in finish_request
+    self.RequestHandlerClass(request, client_address, self)
+  File "/usr/lib/python3.10/socketserver.py", line 747, in __init__
+    self.handle()
+  File "/usr/lib/python3.10/http/server.py", line 433, in handle
+    self.handle_one_request()
+  File "/usr/lib/python3.10/http/server.py", line 421, in handle_one_request
+    method()
+  File "/home/gradrix/repos/gflo/gflo/web.py", line 50, in do_GET
+    data = json.dumps(observer.status())
+  File "/home/gradrix/repos/gflo/gflo/observe.py", line 103, in status
+    with self.connect() as db:
+  File "/usr/lib/python3.10/contextlib.py", line 135, in __enter__
+    return next(self.gen)
+  File "/home/gradrix/repos/gflo/gflo/observe.py", line 94, in connect
+    db = sqlite3.connect((self.state / 'state.sqlite').as_uri() + '?mode=ro', uri=True)
+sqlite3.OperationalError: unable to open database file
+----------------------------------------
+Rendered desktop light/mobile dark: empty and accepted state, artifact link, no horizontal overflow, disconnect retains snapshot, reconnect PASS
+Fresh-state defect: RemoteDisconnected Remote end closed connection without response

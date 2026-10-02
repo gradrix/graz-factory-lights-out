@@ -1,0 +1,56 @@
+[
+  {
+    "task": "invoice",
+    "run": "792b77bb209f",
+    "injection": "cancel",
+    "injected": true,
+    "status": "accepted",
+    "attempts": 2,
+    "elapsed_s": 136.4,
+    "event_count": 110,
+    "accepted_events": 1,
+    "phases_observed": [
+      "cancelled",
+      "container_running",
+      "model_wait",
+      "pending"
+    ],
+    "polls": 32
+  },
+  {
+    "task": "inventory",
+    "run": "d50695aba41b",
+    "injection": "kill",
+    "injected": true,
+    "status": "accepted",
+    "attempts": 2,
+    "elapsed_s": 165.5,
+    "event_count": 108,
+    "accepted_events": 1,
+    "phases_observed": [
+      "container_finished",
+      "container_running",
+      "interrupted",
+      "model_wait",
+      "pending"
+    ],
+    "polls": 32
+  },
+  {
+    "task": "log-summary",
+    "run": "605edac6fdcb",
+    "injection": null,
+    "injected": false,
+    "status": "accepted",
+    "attempts": 1,
+    "elapsed_s": 74.2,
+    "event_count": 53,
+    "accepted_events": 1,
+    "phases_observed": [
+      "container_running",
+      "model_wait",
+      "pending"
+    ],
+    "polls": 17
+  }
+]

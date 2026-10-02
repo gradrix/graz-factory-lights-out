@@ -1,0 +1,5 @@
+--keep {'command': ['python', '-c', "import sys; assert sys.argv[1] == '--keep'", '--keep'], 'exit_code': 0, 'timed_out': False, 'output': '', 'elapsed_s': 0.3159288256429136, 'image': 'sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578'}
+--rm {'command': ['python', '-c', "import sys; assert sys.argv[1] == '--rm'", '--rm'], 'exit_code': 1, 'timed_out': False, 'output': 'Traceback (most recent call last):\n  File "<string>", line 1, in <module>\nIndexError: list index out of range\n', 'elapsed_s': 0.31593750789761543, 'image': 'sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578'}
+Traceback (most recent call last):
+  File "<stdin>", line 7, in <module>
+AssertionError

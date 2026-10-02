@@ -1,0 +1,8 @@
+test_closed_owner_pipe_never_starts_a_new_writer (test_sandbox.SandboxTests) ... ok
+test_killed_owner_does_not_leave_container_writer (test_sandbox.SandboxTests) ... ok
+test_real_offline_sandbox_and_readonly_verification (test_sandbox.SandboxTests) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 4.464s
+
+OK

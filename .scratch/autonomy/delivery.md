@@ -6,6 +6,8 @@
 
 ## Next implementation frontier
 
-- [Observe and control one local run](delivery/02-visibility.md) — active; user authorized implementation; owner /root.
+- [Observe and control one local run](delivery/02-visibility.md) — accepted; candidate 18a274f, real rig and independent QA evidence linked.
 
 Later acceptance-bearing stages are in [the roadmap](../../docs/roadmap.md). They remain progressively specified plans, not a pile of preclaimed implementation tickets. No automatic production deployment or external-account action is authorized here.
+
+- [Independent local review](delivery/03-local-review.md) — active; owner /root.

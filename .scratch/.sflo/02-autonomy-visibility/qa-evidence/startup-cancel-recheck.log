@@ -1,0 +1,2 @@
+Control: inactive pending cancellation -> cancelled PASS
+Startup cancellation status: {"status": "cancelled", "phase": "cancelled", "owner_alive": false, "cancel_requested": true}

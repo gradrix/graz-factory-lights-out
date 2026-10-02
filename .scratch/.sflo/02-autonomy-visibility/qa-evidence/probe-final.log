@@ -1,0 +1,5 @@
+kill real Docker writer stopped; honest death; resumed at attempt 2; accepted once; cursor reconnect PASS
+cancel real Docker writer stopped; honest death; resumed at attempt 2; accepted once; cursor reconnect PASS
+external HTTP client sees all three accepted runs PASS
+HTTP writes/host/path/private artifacts/symlinks rejected; secret redaction and 1MiB bound PASS
+accepted workspace tampering invalidates HTTP status PASS
