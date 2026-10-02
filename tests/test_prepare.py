@@ -72,6 +72,14 @@ class PrepareTests(unittest.TestCase):
             result = sandbox.execute(workspace, ['python', '-c',
                 'from fastapi import FastAPI; from fastapi.testclient import TestClient; a=FastAPI(); a.get("/")(lambda: {"ok":True}); assert TestClient(a).get("/").json()=={"ok":True}'])
             self.assertEqual(result['exit_code'], 0, result)
+            import shutil
+            shutil.copytree('evaluations/environment-coding/python-api/source', workspace, dirs_exist_ok=True)
+            (workspace / 'tests').mkdir()
+            (workspace / 'tests/test_package.py').write_text('import unittest\nfrom reservation_preview.app import app\nclass Package(unittest.TestCase):\n def test_import(self): self.assertTrue(app.title)\n')
+            acceptance = root / 'acceptance'; acceptance.mkdir()
+            (acceptance / 'check.py').write_text('assert True\n')
+            verdict = sandbox.verify(workspace, {'checks': [['python', '/acceptance/check.py']]}, acceptance)
+            self.assertTrue(verdict['passed'], verdict)
 
     def test_node_typescript_prepares_locked_packages_and_compiles_offline(self):
         with tempfile.TemporaryDirectory() as directory:

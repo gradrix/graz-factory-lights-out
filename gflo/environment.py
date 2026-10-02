@@ -258,5 +258,8 @@ def runtime_context(task):
     value = task.get('environment')
     if value is None:
         return 'Execution environment: legacy-unbound (runtime was not frozen).'
-    return 'Frozen execution environment: ' + json.dumps(
+    usage = {'python-stdlib': 'Python standard library only.',
+             'python-api': 'Dependencies are at /opt/deps via PYTHONPATH. Build your project wheel with pip wheel --no-index --no-deps --no-build-isolation; install it with pip install --no-index --no-deps --target /tmp/installed and include that path in PYTHONPATH for tests. Acceptance builds a separate offline wheel.',
+             'node-ts': 'Dependencies are at /node_modules. Invoke node /node_modules/typescript/bin/tsc explicitly; no npm download or install is needed.'}
+    return usage[value['profile']] + '\nFrozen execution environment: ' + json.dumps(
         {key: value[key] for key in ('profile', 'image', 'runtime')}, sort_keys=True)

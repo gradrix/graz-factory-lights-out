@@ -11,6 +11,23 @@ from .environment import EnvironmentStore
 DEFAULT_IMAGE = 'sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc'
 
 
+PACKAGE_TESTS = """import os, pathlib, shutil, subprocess, sys, tempfile
+with tempfile.TemporaryDirectory() as directory:
+    root = pathlib.Path(directory)
+    project, installed, wheels = root/'project', root/'installed', root/'wheels'
+    shutil.copytree('/workspace', project, ignore=shutil.ignore_patterns('__pycache__', '.git'))
+    subprocess.run([sys.executable, '-m', 'pip', 'wheel', str(project), '--no-index',
+                    '--no-deps', '--no-build-isolation', '--wheel-dir', str(wheels)], check=True, cwd=root)
+    built = list(wheels.glob('*.whl'))
+    if len(built) != 1: raise ValueError('Project must produce one wheel')
+    subprocess.run([sys.executable, '-m', 'pip', 'install', '--no-index', '--no-deps',
+                    '--target', str(installed), str(built[0])], check=True, cwd=root)
+    env = dict(os.environ, PYTHONPATH=str(installed)+os.pathsep+'/opt/deps')
+    subprocess.run([sys.executable, '-B', '-m', 'unittest', 'discover', '-s', str(project/'tests')],
+                   check=True, cwd=root, env=env)
+"""
+
+
 class Sandbox:
     def __init__(self, image=DEFAULT_IMAGE):
         if not (image.startswith('sha256:') or '@sha256:' in image):
@@ -79,7 +96,10 @@ class Sandbox:
         # The current profile is Python stdlib. Generated regressions supplement
         # the immutable external checks and must not be silently left unexecuted.
         if (self.environment is None or self.environment.profile != 'node-ts') and (Path(workspace) / 'tests').is_dir():
-            commands.append(['python', '-B', '-m', 'unittest', 'discover', '-s', 'tests'])
+            if self.environment is not None and self.environment.profile == 'python-api':
+                commands.append(['python', '-B', '-c', PACKAGE_TESTS])
+            else:
+                commands.append(['python', '-B', '-m', 'unittest', 'discover', '-s', 'tests'])
         results = [self.execute(workspace, command, acceptance=acceptance, timeout=120)
                    for command in commands]
         return {'passed': bool(results) and all(r['exit_code'] == 0 for r in results), 'checks': results}
