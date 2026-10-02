@@ -44,3 +44,7 @@ Fresh qa_resume and semantic_resume agents ran successfully. Targeted c17821c sl
 ## Frozen cohort C-v2 in progress
 
 Fixture manifest 560c3e5645ed2d9ea91404e05aa4ddb2f4c9b1eb01f8629a98ec6e6ae738938b; independent pre-exposure gate passed (qa-cohort-c-v2.md). Original C was never exposed: QA found Python boolean/integer equality weakened its oracle; revision2 uses recursive type-and-value equality without changing contracts or budgets. All97 bound hashes verified. Public fixtures evaluations/coding-c; rig state .gflo/stage2-coding-c; runtime remains c17821c. Three attempts,24 turns,900 seconds per task,12 tasks plus ambiguity. Independent semantic_resume audits terminal outputs in parallel without model calls. Early task03 exhausted on missing default unittest discovery; preserve this genuine delivery failure. No runtime edits during the batch.
+
+## Runtime mismatch discovered during C
+
+Readback confirms actual current sandbox a8a3e0 is Python3.11.15, not3.12. C objectives target3.12+. Preserve this batch and raw reference validation as executed; no target-matched qualification claim. Independent terminal-output checks use alternate official3.12.13 fb1118f... and must be labeled separately. The latter base was pulled by immutable registry digest on the rig and verified as3.12.13; config and running cohort were not changed. Stage2 stays active. Tasks03/06 failed without repair progress despite intact feedback; a disposable matched-budget reasoning comparison is being prepared, no model calls until current batch finishes.

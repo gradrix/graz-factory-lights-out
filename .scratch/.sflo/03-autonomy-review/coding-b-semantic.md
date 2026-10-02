@@ -1,5 +1,7 @@
 # Cohort B semantic evaluation
 
+**Runtime correction (2026-10-02):** The factory executed in Python3.11.15 (image a8a3e0), while supplemental host checks below used3.12.12. References to a matching or target runtime describe the intended target, not alignment with the production sandbox. See [provenance addendum](qa-runtime-provenance-addendum.md). Original measurements and findings are retained.
+
 **All twelve task outcomes inspected: first four by the independent QA agent, remaining eight by the coordinator after the account usage limit.** Raw controller score 11/12; nine deliveries have no identified requirement gap, task02 has test/docs defects, task03 has an extreme valid-input limitation, and task09 stopped. No accepted critical functional miss identified in this inspection. This mixed inspection is not a completed fresh-agent final QA. Cohort A remains 7/12.
 
 Frozen runtime reported by controller: `04c7ef6`. Frozen cohort-B manifest: `a4fa7ffef4dc63642356e402c02174947896f9d12863ac2f2eeb828e3aa46d60`.

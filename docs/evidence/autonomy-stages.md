@@ -24,6 +24,8 @@ The first no-thinking Flash run identified ten seeded causes and passed all nomi
 
 Fixture revision 2 corrects the money control/reference, adds large-value and exponent assertions without narrowing the objective, and retains the original defective control as a supplemental case. A stronger prompt alone still missed it. Unrestricted reasoning spent 8,192 output tokens without a verdict on the two money inputs. A separate 1,024-token thinking budget inside the 4,096-token total allowance distinguished defective money, corrected money and a state-transition defect in roughly 8–16 seconds. The complete bounded Flash repeat identified ten seeded defects plus the supplemental defect, with two false blocks and no format failures. Suggested repairs still need execution and re-review: some were incomplete.
 
+**Runtime correction:** The factory sandbox used Python3.11.15, although later task objectives specified3.12+. Supplemental semantic checks used host3.12.12 or a separate3.12.13 image. The current cohort therefore does not establish target-runtime conformance. [Independent provenance audit](../../.scratch/.sflo/03-autonomy-review/qa-runtime-provenance-addendum.md).
+
 These are repeated-set results used to improve the profile, not unseen-project success rates. The clean controls' two blocked portability concerns do not fail the intended Python 3.12/UTF-8 runtime; target-runtime context belongs in the next environment receipt. Numeric benchmark labels were not changed after observing these blocks.
 
 [Controller recheck](../../.scratch/.sflo/03-autonomy-review/qa-recheck.md), [semantic recheck](../../.scratch/.sflo/03-autonomy-review/semantic-bounded-receipt.md), [frozen fixture lineage](../../evaluations/local-review/LINEAGE.json).

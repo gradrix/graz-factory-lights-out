@@ -17,7 +17,7 @@ User direction, 2026-10-02: push the first version, delete previous implementati
 
 ## Not yet specified
 
-[Local review reliability](issues/02-review-reliability.md) has completed further local trials and remains unaccepted after semantic gaps; resumed independent QA passed, and unused revised-candidate qualification is next. Model reliability across unfamiliar larger projects; useful task/context sizes; review false-negative rates; acceptable unattended throughput. These need experiments rather than promises. [Environment preparation research](issues/03-environment-preparation.md) is resolved; implementation waits for review acceptance. [Bounded environment executor](issues/04-environment-build-boundary.md) is resolved toward immutable bases plus dependency snapshots; actual preparation remains unimplemented.
+[Local review reliability](issues/02-review-reliability.md) has completed further local trials and remains unaccepted after semantic gaps; resumed independent QA passed, and frozen revised-candidate qualification is running, with a newly found target-runtime mismatch and repair-stagnation diagnosis. Model reliability across unfamiliar larger projects; useful task/context sizes; review false-negative rates; acceptable unattended throughput. These need experiments rather than promises. [Environment preparation research](issues/03-environment-preparation.md) is resolved; implementation waits for review acceptance. [Bounded environment executor](issues/04-environment-build-boundary.md) is resolved toward immutable bases plus dependency snapshots; actual preparation remains unimplemented.
 
 ## Out of scope
 

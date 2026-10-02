@@ -1,0 +1,16 @@
+# Frozen cohort C repair diagnosis
+
+**Conclusion:** actionable failures reached the model intact. These are model repair failures, with different immediate causes; no omitted/truncated feedback or false acceptance was found. No runtime, prompt, oracle, candidate, or GPU changes were made.
+
+Evidence root on `monster-gaming-pc.lan`: `/home/gradrix/gflo-runtime/.gflo/stage2-coding-c/`. Sanitized extraction: `qa-coding-c-repair-evidence.json` beside this report. For both runs, `attempts/{2,3}/trajectory.jsonl:2` contains a first request whose previous-evidence JSON is exactly equal to the preceding `verification.json`. No trajectory events were marked truncated.
+
+| Run | Observed failure and repair behavior |
+|---|---|
+| Task 03, `43b7647311b0` | All three verification records have exits `[1,0]`: external check rejects fewer than three tests from default discovery; explicit `-s tests` runs three successfully. Workspace contains `tests/test_domain.py` without `tests/__init__.py`. Candidate hash remains `9bf105498bc2780ad476b0cf669e88b2fd15c7e5af14602263e6f39bcb529520`. Attempt 1 trajectory lines 34/37 and attempt 2 lines 37/40 expose default discovery zero versus explicit discovery three. The model repeatedly probes discovery, including nonexistent unittest APIs, without fixing packaging. Attempt 1 hits identical-call limit; attempts 2/3 exhaust 24 turns. Each repair receives 1009 characters of complete prior evidence. |
+| Task 06, `fbb865b3744f` | All verification records have exits `[1,1]`: generated tests assert append(`7992781`) equals `79927812` and check(`79927812`) is true. Correct check digit is 0; the delivered code produces `79927810`. Tests are discoverable (`tests/__init__.py` exists). Both gates reject these generated tests. The model's own diagnostic computes remainder 2 for `79927812` and 0 for `79927810`, but it repeats calculations without correcting tests. Candidate hash remains `cc6a178e8d61d2a51c8754fab3c6269649bb977301515aecb07cca25b3a3ff89`. Attempt 1 exhausts 24 turns; attempts 2/3 hit identical-call limits. Each repair receives 3233 characters of complete prior evidence. |
+
+The feedback path already forwards the full previous verdict (`gflo/worker.py:75`) and tool results. Automatic test success does not override external failure. The differing discovery commands are visible in the verdict and correspond to an explicit default-discovery objective; there is no evidence that a factory instruction concealed that requirement.
+
+**Minimal future recommendation:** preserve these outcomes. If improving repair behavior after the batch, evaluate a generic no-progress intervention: when the same failed candidate survives repeated diagnostics, require a new hypothesis, a concrete edit, and rerunning the exact failing command. Do not hardcode either task's fix or replace independent acceptance with generated-suite success. This is an improvement opportunity, not a proven missing-feedback defect.
+
+Separate environment observation: task 03's recorded tool output reports Python **3.11.15**, while task objectives specify **3.12+**. Resolve that mismatch before a future qualification. It does not explain the observed default-discovery packaging failure or incorrect Luhn test expectations; neither repair needs a newer interpreter.

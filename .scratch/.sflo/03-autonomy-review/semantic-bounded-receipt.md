@@ -1,5 +1,7 @@
 # Bounded Flash review: semantic receipt
 
+**Runtime correction (2026-10-02):** The factory executed in Python3.11.15 (image a8a3e0), while supplemental host checks below used3.12.12. References to a matching or target runtime describe the intended target, not alignment with the production sandbox. See [provenance addendum](qa-runtime-provenance-addendum.md). Original measurements and findings are retained.
+
 **The frozen numeric gate passes, with no seeded false-catch mismatch: 10/10 defects caught, all four critical seeds caught, two false blocks and zero request errors.** The separately scored original large-money defect is also genuinely identified. Keep those exact labels. This is a repeat trial on revised fixtures and changed inference/prompt settings, not new held-out evidence; the original supplemental false acceptance remains part of the history.
 
 ## Identity and independent checks
