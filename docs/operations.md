@@ -42,16 +42,16 @@ On the rig, configure `.gflo/config.json` with endpoint `http://127.0.0.1:18000`
 
 ## Sandbox image
 
-The first profile uses locally installed Python 3.11.15 image ID:
+The qualified default profile uses locally installed Python 3.12.13 image ID:
 
 ```text
-sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578
+sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc
 ```
 
-Its publisher reference is `python@sha256:ae52c5bef62a6bdd42cd1e8dffef86b9cd284bde9427da79839de7a4b983e7ca`. Preparing another machine may require a one-time download, or transfer it from the rig without accessing a registry:
+Its publisher reference is `python@sha256:3d5ed973e45820f5ba5e46bd065bd88b3a504ff0724d85980dcd05eab361fcf4`. Preparing another machine may require a one-time download, or transfer it from the rig without accessing a registry:
 
 ```sh
-ssh monster-gaming-pc.lan 'docker save python@sha256:ae52c5bef62a6bdd42cd1e8dffef86b9cd284bde9427da79839de7a4b983e7ca' | docker load
+ssh monster-gaming-pc.lan 'docker save python@sha256:3d5ed973e45820f5ba5e46bd065bd88b3a504ff0724d85980dcd05eab361fcf4' | docker load
 ```
 
 The configured local image ID works after that transfer. Use a newly pinned prepared image for additional dependencies; the factory will not install them on demand.
@@ -88,7 +88,7 @@ New CLI runs require fresh-context local review after executable checks pass. `r
 
 The reviewer receives the objective and the complete bounded candidate (up to 200,000 source bytes / 1,000 files), with no tools or writable mount. Larger inputs fail visibly and require an explicitly smaller task. Its findings identify source locations, severity, concrete evidence and requested repair. Missing/malformed/contradictory review stops the run. A blocking review returns evidence to the worker for repair, then checks and review repeat. Review alone cannot establish acceptance. Accepted receipts hash both verification and review artifacts; changing/removing them invalidates reported acceptance.
 
-The candidate review profile uses local reasoning with a 1,024-token thinking budget inside a 4,096-token output limit and a 120-second request timeout. This is being qualified against the installed llama.cpp profile; arbitrary OpenAI-compatible servers are not assumed to honor its budget extension. Coder tool turns keep their separately configured reasoning mode. See the delivery map for current qualification status and limitations.
+The qualified profile uses medium reasoning for coding, with a requested 1,024-token thinking budget inside a 4,096-token output limit. Fresh review uses the same token limits and a 120-second request timeout. The installed llama.cpp profile completed the recorded qualification; actual reasoning-token consumption is not reported separately, and arbitrary OpenAI-compatible servers are not assumed to honor this extension. See the delivery map and qualification evidence for remaining review and documentation limitations.
 
 A worker can call `question` for a consequential missing product decision; a reviewer can also return `needs_input`. The run stops with its question and retained evidence. Repeated `resume` does not invent an answer or spend another attempt. Resolve the product choice in a new explicit task contract and create a new run; an in-place answer/revision API is not implemented yet.
 

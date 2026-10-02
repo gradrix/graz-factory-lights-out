@@ -9,7 +9,7 @@ import threading
 import time
 import uuid
 
-DEFAULT_IMAGE = 'sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578'
+DEFAULT_IMAGE = 'sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc'
 
 
 class Sandbox:
