@@ -1,0 +1,281 @@
+{
+  "candidate": "25f75c3275739cc7cc2a4fc5a4e16580b81511d1",
+  "root": "/tmp/gflo-lifecycle-qa-uy9xncuw",
+  "results": [
+    {
+      "case": "timeout",
+      "error": "Environment container failed (124): ",
+      "elapsed": 3.1155134248547256,
+      "owned": [
+        "gflo-prepare-b4988f0205f64d3f"
+      ],
+      "removed": true,
+      "no_receipt": true
+    },
+    {
+      "case": "cancel",
+      "error": "Environment container failed (130): ",
+      "elapsed": 2.1082810927182436,
+      "owned": [
+        "gflo-prepare-1038af4e4ad94941"
+      ],
+      "removed": true,
+      "no_receipt": true
+    },
+    {
+      "case": "actual-owner-SIGKILL",
+      "owner_exit": -9,
+      "owned": [
+        "gflo-prepare-1861b8c9f7e442d3"
+      ],
+      "removed": true,
+      "cleanup_elapsed": 0.17123257089406252,
+      "no_receipt": true
+    },
+    {
+      "case": "scratch-full",
+      "result": {
+        "exit_code": 0,
+        "timed_out": false,
+        "limited": false,
+        "output": "{\"errno\": 28, \"scratch_full\": true}\n",
+        "stdout_bytes": 36,
+        "elapsed_s": 0.3020879686810076
+      },
+      "facts": {
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "host": {
+          "Runtime": "runc",
+          "NetworkMode": "none",
+          "ReadonlyRootfs": true,
+          "CapDrop": [
+            "ALL"
+          ],
+          "SecurityOpt": [
+            "no-new-privileges"
+          ],
+          "Memory": 1073741824,
+          "MemorySwap": 1073741824,
+          "NanoCpus": 1000000000,
+          "PidsLimit": 128,
+          "ShmSize": 16777216,
+          "Tmpfs": {
+            "/tmp": "rw,nosuid,nodev,size=16m,mode=1777",
+            "/work": "rw,nosuid,nodev,size=480m,mode=1777"
+          },
+          "Devices": [],
+          "DeviceRequests": null
+        },
+        "config": {
+          "User": "1000:1000",
+          "Env": [
+            "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+            "HOME=/tmp",
+            "LANG=C.UTF-8",
+            "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "PIP_CONFIG_FILE=/dev/null",
+            "PIP_NO_INDEX=1",
+            "PYTHONDONTWRITEBYTECODE=1",
+            "PYTHONPATH=/opt/deps",
+            "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684",
+            "PYTHON_VERSION=3.12.13"
+          ],
+          "WorkingDir": "/work"
+        },
+        "mounts": []
+      },
+      "actual": {
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "name": "gflo-prepare-e343ffe6545746c3",
+        "host": {
+          "Runtime": "runc",
+          "NetworkMode": "none",
+          "ReadonlyRootfs": true,
+          "CapDrop": [
+            "ALL"
+          ],
+          "SecurityOpt": [
+            "no-new-privileges"
+          ],
+          "Memory": 1073741824,
+          "MemorySwap": 1073741824,
+          "NanoCpus": 1000000000,
+          "PidsLimit": 128,
+          "ShmSize": 16777216,
+          "Tmpfs": {
+            "/tmp": "rw,nosuid,nodev,size=16m,mode=1777",
+            "/work": "rw,nosuid,nodev,size=480m,mode=1777"
+          },
+          "Devices": [],
+          "DeviceRequests": null
+        },
+        "config": {
+          "User": "1000:1000",
+          "Env": [
+            "PYTHONDONTWRITEBYTECODE=1",
+            "PYTHONPATH=/opt/deps",
+            "PIP_CONFIG_FILE=/dev/null",
+            "PIP_NO_INDEX=1",
+            "HOME=/tmp",
+            "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "LANG=C.UTF-8",
+            "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+            "PYTHON_VERSION=3.12.13",
+            "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684"
+          ],
+          "WorkingDir": "/work"
+        },
+        "mounts": []
+      },
+      "elapsed": 0.3191408612765372,
+      "removed": true
+    },
+    {
+      "case": "pid-limit",
+      "result": {
+        "exit_code": 0,
+        "timed_out": false,
+        "limited": false,
+        "output": "{\"children\": 126, \"errno\": 11}\n",
+        "stdout_bytes": 31,
+        "elapsed_s": 0.5034485929645598
+      },
+      "facts": {
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "host": {
+          "Runtime": "runc",
+          "NetworkMode": "none",
+          "ReadonlyRootfs": true,
+          "CapDrop": [
+            "ALL"
+          ],
+          "SecurityOpt": [
+            "no-new-privileges"
+          ],
+          "Memory": 1073741824,
+          "MemorySwap": 1073741824,
+          "NanoCpus": 1000000000,
+          "PidsLimit": 128,
+          "ShmSize": 16777216,
+          "Tmpfs": {
+            "/tmp": "rw,nosuid,nodev,size=16m,mode=1777",
+            "/work": "rw,nosuid,nodev,size=480m,mode=1777"
+          },
+          "Devices": [],
+          "DeviceRequests": null
+        },
+        "config": {
+          "User": "1000:1000",
+          "Env": [
+            "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+            "HOME=/tmp",
+            "LANG=C.UTF-8",
+            "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "PIP_CONFIG_FILE=/dev/null",
+            "PIP_NO_INDEX=1",
+            "PYTHONDONTWRITEBYTECODE=1",
+            "PYTHONPATH=/opt/deps",
+            "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684",
+            "PYTHON_VERSION=3.12.13"
+          ],
+          "WorkingDir": "/work"
+        },
+        "mounts": []
+      },
+      "actual": {
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "name": "gflo-prepare-8a09abf0e24641ea",
+        "host": {
+          "Runtime": "runc",
+          "NetworkMode": "none",
+          "ReadonlyRootfs": true,
+          "CapDrop": [
+            "ALL"
+          ],
+          "SecurityOpt": [
+            "no-new-privileges"
+          ],
+          "Memory": 1073741824,
+          "MemorySwap": 1073741824,
+          "NanoCpus": 1000000000,
+          "PidsLimit": 128,
+          "ShmSize": 16777216,
+          "Tmpfs": {
+            "/tmp": "rw,nosuid,nodev,size=16m,mode=1777",
+            "/work": "rw,nosuid,nodev,size=480m,mode=1777"
+          },
+          "Devices": [],
+          "DeviceRequests": null
+        },
+        "config": {
+          "User": "1000:1000",
+          "Env": [
+            "HOME=/tmp",
+            "PYTHONDONTWRITEBYTECODE=1",
+            "PYTHONPATH=/opt/deps",
+            "PIP_CONFIG_FILE=/dev/null",
+            "PIP_NO_INDEX=1",
+            "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "LANG=C.UTF-8",
+            "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+            "PYTHON_VERSION=3.12.13",
+            "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684"
+          ],
+          "WorkingDir": "/work"
+        },
+        "mounts": []
+      },
+      "elapsed": 0.5246136169880629,
+      "removed": true
+    },
+    {
+      "case": "memory-limit",
+      "error": "Environment container failed (137): ",
+      "actual": {
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "name": "gflo-prepare-3e2d59a80c144cba",
+        "host": {
+          "Runtime": "runc",
+          "NetworkMode": "none",
+          "ReadonlyRootfs": true,
+          "CapDrop": [
+            "ALL"
+          ],
+          "SecurityOpt": [
+            "no-new-privileges"
+          ],
+          "Memory": 1073741824,
+          "MemorySwap": 1073741824,
+          "NanoCpus": 1000000000,
+          "PidsLimit": 128,
+          "ShmSize": 16777216,
+          "Tmpfs": {
+            "/tmp": "rw,nosuid,nodev,size=16m,mode=1777",
+            "/work": "rw,nosuid,nodev,size=480m,mode=1777"
+          },
+          "Devices": [],
+          "DeviceRequests": null
+        },
+        "config": {
+          "User": "1000:1000",
+          "Env": [
+            "HOME=/tmp",
+            "PYTHONDONTWRITEBYTECODE=1",
+            "PYTHONPATH=/opt/deps",
+            "PIP_CONFIG_FILE=/dev/null",
+            "PIP_NO_INDEX=1",
+            "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "LANG=C.UTF-8",
+            "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+            "PYTHON_VERSION=3.12.13",
+            "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684"
+          ],
+          "WorkingDir": "/work"
+        },
+        "mounts": []
+      },
+      "elapsed": 0.6237800009548664,
+      "removed": true
+    }
+  ]
+}

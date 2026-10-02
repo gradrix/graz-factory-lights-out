@@ -1,0 +1,2 @@
+{"host": "files.pythonhosted.org", "connected": "1.1.1.1", "filename": "x.whl", "bytes": 4, "algorithm": "sha256", "digest": "770e607624d689265ca6c44884d0807d9b054d23c473c106c72be9de08b7376c"}
+PASS fetch controls/failures and missing/corrupt/lock mismatch without publication

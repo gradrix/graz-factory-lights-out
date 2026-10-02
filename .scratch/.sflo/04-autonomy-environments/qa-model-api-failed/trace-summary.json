@@ -1,0 +1,462 @@
+{
+  "1": {
+    "events": {
+      "start": 1,
+      "request": 24,
+      "response": 24,
+      "tool": 25
+    },
+    "tools": [
+      {
+        "turn": 1,
+        "name": null,
+        "result_keys": [
+          "command",
+          "image",
+          "exit_code",
+          "timed_out",
+          "output",
+          "elapsed_s"
+        ]
+      },
+      {
+        "turn": 1,
+        "name": null,
+        "result_keys": [
+          "command",
+          "image",
+          "exit_code",
+          "timed_out",
+          "output",
+          "elapsed_s"
+        ]
+      },
+      {
+        "turn": 2,
+        "name": null,
+        "result_keys": [
+          "command",
+          "image",
+          "exit_code",
+          "timed_out",
+          "output",
+          "elapsed_s"
+        ]
+      },
+      {
+        "turn": 3,
+        "name": null,
+        "result_keys": [
+          "command",
+          "image",
+          "exit_code",
+          "timed_out",
+          "output",
+          "elapsed_s"
+        ]
+      },
+      {
+        "turn": 4,
+        "name": null,
+        "result_keys": [
+          "command",
+          "image",
+          "exit_code",
+          "timed_out",
+          "output",
+          "elapsed_s"
+        ]
+      },
+      {
+        "turn": 5,
+        "name": null,
+        "result_keys": [
+          "command",
+          "image",
+          "exit_code",
+          "timed_out",
+          "output",
+          "elapsed_s"
+        ]
+      },
+      {
+        "turn": 6,
+        "name": null,
+        "result_keys": [
+          "command",
+          "image",
+          "exit_code",
+          "timed_out",
+          "output",
+          "elapsed_s"
+        ]
+      },
+      {
+        "turn": 7,
+        "name": null,
+        "result_keys": [
+          "command",
+          "image",
+          "exit_code",
+          "timed_out",
+          "output",
+          "elapsed_s"
+        ]
+      },
+      {
+        "turn": 8,
+        "name": null,
+        "result_keys": [
+          "command",
+          "image",
+          "exit_code",
+          "timed_out",
+          "output",
+          "elapsed_s"
+        ]
+      },
+      {
+        "turn": 9,
+        "name": null,
+        "result_keys": [
+          "command",
+          "image",
+          "exit_code",
+          "timed_out",
+          "output",
+          "elapsed_s"
+        ]
+      },
+      {
+        "turn": 10,
+        "name": null,
+        "result_keys": [
+          "command",
+          "image",
+          "exit_code",
+          "timed_out",
+          "output",
+          "elapsed_s"
+        ]
+      },
+      {
+        "turn": 11,
+        "name": null,
+        "result_keys": [
+          "command",
+          "image",
+          "exit_code",
+          "timed_out",
+          "output",
+          "elapsed_s"
+        ]
+      },
+      {
+        "turn": 12,
+        "name": null,
+        "result_keys": [
+          "command",
+          "image",
+          "exit_code",
+          "timed_out",
+          "output",
+          "elapsed_s"
+        ]
+      },
+      {
+        "turn": 13,
+        "name": null,
+        "result_keys": [
+          "command",
+          "image",
+          "exit_code",
+          "timed_out",
+          "output",
+          "elapsed_s"
+        ]
+      },
+      {
+        "turn": 14,
+        "name": null,
+        "result_keys": [
+          "command",
+          "image",
+          "exit_code",
+          "timed_out",
+          "output",
+          "elapsed_s"
+        ]
+      },
+      {
+        "turn": 15,
+        "name": null,
+        "result_keys": [
+          "command",
+          "image",
+          "exit_code",
+          "timed_out",
+          "output",
+          "elapsed_s"
+        ]
+      },
+      {
+        "turn": 16,
+        "name": null,
+        "result_keys": [
+          "command",
+          "image",
+          "exit_code",
+          "timed_out",
+          "output",
+          "elapsed_s"
+        ]
+      },
+      {
+        "turn": 17,
+        "name": null,
+        "result_keys": [
+          "command",
+          "image",
+          "exit_code",
+          "timed_out",
+          "output",
+          "elapsed_s"
+        ]
+      },
+      {
+        "turn": 18,
+        "name": null,
+        "result_keys": [
+          "command",
+          "image",
+          "exit_code",
+          "timed_out",
+          "output",
+          "elapsed_s"
+        ]
+      },
+      {
+        "turn": 19,
+        "name": null,
+        "result_keys": [
+          "command",
+          "image",
+          "exit_code",
+          "timed_out",
+          "output",
+          "elapsed_s"
+        ]
+      },
+      {
+        "turn": 20,
+        "name": null,
+        "result_keys": [
+          "command",
+          "image",
+          "exit_code",
+          "timed_out",
+          "output",
+          "elapsed_s"
+        ]
+      },
+      {
+        "turn": 21,
+        "name": null,
+        "result_keys": [
+          "command",
+          "image",
+          "exit_code",
+          "timed_out",
+          "output",
+          "elapsed_s"
+        ]
+      },
+      {
+        "turn": 22,
+        "name": null,
+        "result_keys": [
+          "command",
+          "image",
+          "exit_code",
+          "timed_out",
+          "output",
+          "elapsed_s"
+        ]
+      },
+      {
+        "turn": 23,
+        "name": null,
+        "result_keys": [
+          "command",
+          "image",
+          "exit_code",
+          "timed_out",
+          "output",
+          "elapsed_s"
+        ]
+      },
+      {
+        "turn": 24,
+        "name": null,
+        "result_keys": [
+          "command",
+          "image",
+          "exit_code",
+          "timed_out",
+          "output",
+          "elapsed_s"
+        ]
+      }
+    ]
+  },
+  "2": {
+    "events": {
+      "start": 1,
+      "request": 10,
+      "response": 9,
+      "tool": 12
+    },
+    "tools": [
+      {
+        "turn": 1,
+        "name": null,
+        "result_keys": [
+          "command",
+          "image",
+          "exit_code",
+          "timed_out",
+          "output",
+          "elapsed_s"
+        ]
+      },
+      {
+        "turn": 1,
+        "name": null,
+        "result_keys": [
+          "command",
+          "image",
+          "exit_code",
+          "timed_out",
+          "output",
+          "elapsed_s"
+        ]
+      },
+      {
+        "turn": 2,
+        "name": null,
+        "result_keys": [
+          "command",
+          "image",
+          "exit_code",
+          "timed_out",
+          "output",
+          "elapsed_s"
+        ]
+      },
+      {
+        "turn": 3,
+        "name": null,
+        "result_keys": [
+          "command",
+          "image",
+          "exit_code",
+          "timed_out",
+          "output",
+          "elapsed_s"
+        ]
+      },
+      {
+        "turn": 4,
+        "name": null,
+        "result_keys": [
+          "command",
+          "image",
+          "exit_code",
+          "timed_out",
+          "output",
+          "elapsed_s"
+        ]
+      },
+      {
+        "turn": 4,
+        "name": null,
+        "result_keys": [
+          "command",
+          "image",
+          "exit_code",
+          "timed_out",
+          "output",
+          "elapsed_s"
+        ]
+      },
+      {
+        "turn": 5,
+        "name": null,
+        "result_keys": [
+          "command",
+          "image",
+          "exit_code",
+          "timed_out",
+          "output",
+          "elapsed_s"
+        ]
+      },
+      {
+        "turn": 5,
+        "name": null,
+        "result_keys": [
+          "command",
+          "image",
+          "exit_code",
+          "timed_out",
+          "output",
+          "elapsed_s"
+        ]
+      },
+      {
+        "turn": 6,
+        "name": null,
+        "result_keys": [
+          "command",
+          "image",
+          "exit_code",
+          "timed_out",
+          "output",
+          "elapsed_s"
+        ]
+      },
+      {
+        "turn": 7,
+        "name": null,
+        "result_keys": [
+          "command",
+          "image",
+          "exit_code",
+          "timed_out",
+          "output",
+          "elapsed_s"
+        ]
+      },
+      {
+        "turn": 8,
+        "name": null,
+        "result_keys": [
+          "command",
+          "image",
+          "exit_code",
+          "timed_out",
+          "output",
+          "elapsed_s"
+        ]
+      },
+      {
+        "turn": 9,
+        "name": null,
+        "result_keys": [
+          "passed",
+          "checks"
+        ]
+      }
+    ]
+  }
+}

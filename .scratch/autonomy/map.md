@@ -17,7 +17,9 @@ User direction, 2026-10-02: push the first version, delete previous implementati
 
 ## Not yet specified
 
-[Local review qualification](issues/02-review-reliability.md) is accepted at3bd8ae2 after target-matched D12/12 plus independent QA; minor quality and reviewer false-positive limitations remain explicit. Model reliability across unfamiliar larger projects; useful task/context sizes; review false-negative rates; acceptable unattended throughput. These need experiments rather than promises. [Environment preparation research](issues/03-environment-preparation.md) is resolved; implementation is now the active frontier. [Bounded environment executor](issues/04-environment-build-boundary.md) is resolved toward immutable bases plus dependency snapshots; actual preparation remains unimplemented.
+[Serving throughput under useful context](issues/05-serving-throughput.md) is an open measurement question after slower Stage3 samples; an equal-input replay is queued after the frozen model batch. [Browser/research route](../../docs/research/research-browser-route.md) is primary-source discovery for the next stage, not implementation.
+
+[Local review qualification](issues/02-review-reliability.md) is accepted at3bd8ae2 after target-matched D12/12 plus independent QA; minor quality and reviewer false-positive limitations remain explicit. Model reliability across unfamiliar larger projects; useful task/context sizes; review false-negative rates; acceptable unattended throughput. These need experiments rather than promises. [Environment preparation research](issues/03-environment-preparation.md) is resolved; implementation is now the active frontier. [Bounded environment executor](issues/04-environment-build-boundary.md) is resolved toward immutable bases plus dependency snapshots; three profiles are implemented and have passed cold preparation on the rig; final lifecycle/input checks and model-task qualification are active.
 
 ## Out of scope
 

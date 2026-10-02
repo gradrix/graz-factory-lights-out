@@ -1,0 +1,230 @@
+{
+  "candidate": "25f75c3275739cc7cc2a4fc5a4e16580b81511d1",
+  "root": "/tmp/gflo-phase-qa-mj3vekd8",
+  "results": [
+    {
+      "phase": "fetch",
+      "fault": "simulated blocked DNS in actual fetch container",
+      "error": "Environment container failed (124): QA_SIMULATED_DNS_WAIT\n",
+      "elapsed": 3.166659691836685,
+      "executors": [
+        {
+          "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+          "name": "gflo-prepare-a7e68a3742f04073",
+          "host": {
+            "Runtime": "runc",
+            "NetworkMode": "bridge",
+            "ReadonlyRootfs": true,
+            "CapDrop": [
+              "ALL"
+            ],
+            "SecurityOpt": [
+              "no-new-privileges"
+            ],
+            "Memory": 1073741824,
+            "MemorySwap": 1073741824,
+            "NanoCpus": 1000000000,
+            "PidsLimit": 128,
+            "ShmSize": 16777216,
+            "Tmpfs": {
+              "/tmp": "rw,nosuid,nodev,size=16m,mode=1777",
+              "/work": "rw,nosuid,nodev,size=480m,mode=1777"
+            },
+            "Devices": [],
+            "DeviceRequests": null
+          },
+          "config": {
+            "User": "1000:1000",
+            "Env": [
+              "PYTHONDONTWRITEBYTECODE=1",
+              "PYTHONPATH=/opt/deps",
+              "PIP_CONFIG_FILE=/dev/null",
+              "PIP_NO_INDEX=1",
+              "HOME=/tmp",
+              "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+              "LANG=C.UTF-8",
+              "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+              "PYTHON_VERSION=3.12.13",
+              "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684"
+            ],
+            "WorkingDir": "/work"
+          },
+          "mounts": [
+            {
+              "Type": "bind",
+              "Source": "/tmp/gflo-phase-qa-mj3vekd8/recipes/fetch.py",
+              "Destination": "/recipe",
+              "RW": false
+            },
+            {
+              "Type": "bind",
+              "Source": "/tmp/gflo-phase-qa-mj3vekd8/recipes/python-api",
+              "Destination": "/approved",
+              "RW": false
+            }
+          ]
+        }
+      ],
+      "removed": true,
+      "no_receipt": true
+    },
+    {
+      "phase": "final-publication-smoke",
+      "fault": "cancellation during second actual smoke executor",
+      "error": "Environment container failed (130): QA_FINAL_SMOKE_WAIT\n",
+      "executors": [
+        {
+          "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+          "name": "gflo-prepare-33edb8efa2144c90",
+          "host": {
+            "Runtime": "runc",
+            "NetworkMode": "none",
+            "ReadonlyRootfs": true,
+            "CapDrop": [
+              "ALL"
+            ],
+            "SecurityOpt": [
+              "no-new-privileges"
+            ],
+            "Memory": 1073741824,
+            "MemorySwap": 1073741824,
+            "NanoCpus": 1000000000,
+            "PidsLimit": 128,
+            "ShmSize": 16777216,
+            "Tmpfs": {
+              "/tmp": "rw,nosuid,nodev,size=16m,mode=1777",
+              "/work": "rw,nosuid,nodev,size=480m,mode=1777"
+            },
+            "Devices": [],
+            "DeviceRequests": null
+          },
+          "config": {
+            "User": "1000:1000",
+            "Env": [
+              "HOME=/tmp",
+              "PYTHONDONTWRITEBYTECODE=1",
+              "PYTHONPATH=/opt/deps",
+              "PIP_CONFIG_FILE=/dev/null",
+              "PIP_NO_INDEX=1",
+              "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+              "LANG=C.UTF-8",
+              "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+              "PYTHON_VERSION=3.12.13",
+              "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684"
+            ],
+            "WorkingDir": "/work"
+          },
+          "mounts": []
+        },
+        {
+          "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+          "name": "gflo-prepare-7eb5fb5c9df34e04",
+          "host": {
+            "Runtime": "runc",
+            "NetworkMode": "none",
+            "ReadonlyRootfs": true,
+            "CapDrop": [
+              "ALL"
+            ],
+            "SecurityOpt": [
+              "no-new-privileges"
+            ],
+            "Memory": 1073741824,
+            "MemorySwap": 1073741824,
+            "NanoCpus": 1000000000,
+            "PidsLimit": 128,
+            "ShmSize": 16777216,
+            "Tmpfs": {
+              "/tmp": "rw,nosuid,nodev,size=16m,mode=1777",
+              "/work": "rw,nosuid,nodev,size=480m,mode=1777"
+            },
+            "Devices": [],
+            "DeviceRequests": null
+          },
+          "config": {
+            "User": "1000:1000",
+            "Env": [
+              "PYTHONDONTWRITEBYTECODE=1",
+              "PYTHONPATH=/opt/deps",
+              "PIP_CONFIG_FILE=/dev/null",
+              "PIP_NO_INDEX=1",
+              "HOME=/tmp",
+              "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+              "LANG=C.UTF-8",
+              "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+              "PYTHON_VERSION=3.12.13",
+              "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684"
+            ],
+            "WorkingDir": "/work"
+          },
+          "mounts": [
+            {
+              "Type": "bind",
+              "Source": "/tmp/gflo-phase-qa-mj3vekd8/final-smoke/.work-bb623mw_/probe-deps",
+              "Destination": "/opt/deps",
+              "RW": false
+            }
+          ]
+        },
+        {
+          "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+          "name": "gflo-prepare-398e16929f6d45b3",
+          "host": {
+            "Runtime": "runc",
+            "NetworkMode": "none",
+            "ReadonlyRootfs": true,
+            "CapDrop": [
+              "ALL"
+            ],
+            "SecurityOpt": [
+              "no-new-privileges"
+            ],
+            "Memory": 1073741824,
+            "MemorySwap": 1073741824,
+            "NanoCpus": 1000000000,
+            "PidsLimit": 128,
+            "ShmSize": 16777216,
+            "Tmpfs": {
+              "/tmp": "rw,nosuid,nodev,size=16m,mode=1777",
+              "/work": "rw,nosuid,nodev,size=480m,mode=1777"
+            },
+            "Devices": [],
+            "DeviceRequests": null
+          },
+          "config": {
+            "User": "1000:1000",
+            "Env": [
+              "HOME=/tmp",
+              "PYTHONDONTWRITEBYTECODE=1",
+              "PYTHONPATH=/opt/deps",
+              "PIP_CONFIG_FILE=/dev/null",
+              "PIP_NO_INDEX=1",
+              "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+              "LANG=C.UTF-8",
+              "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+              "PYTHON_VERSION=3.12.13",
+              "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684"
+            ],
+            "WorkingDir": "/work"
+          },
+          "mounts": [
+            {
+              "Type": "bind",
+              "Source": "/tmp/gflo-phase-qa-mj3vekd8/final-smoke/.prepare-9sa015is/deps",
+              "Destination": "/opt/deps",
+              "RW": false
+            }
+          ]
+        }
+      ],
+      "staging_seen": true,
+      "removed": true,
+      "prior_good_unchanged": true
+    },
+    {
+      "phase": "recovery",
+      "same_prior_good_id": "36cd138cbdc332246a2db473301200117f82404a4504c675db95966645348975",
+      "passed": true
+    }
+  ]
+}

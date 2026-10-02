@@ -1,0 +1,33 @@
+{
+  "runtime_candidate": "25f75c3",
+  "scope": "stdlib coder responses, reviewer excluded",
+  "run": "d535632d4d5f",
+  "responses": 16,
+  "trajectory_lines": 49,
+  "malformed_lines": [],
+  "max_prompt_tokens": 18902,
+  "median_prompt_tokens": 13454.0,
+  "completion_tokens": 9227,
+  "median_generation_tokens_per_s": 18.912216067613535,
+  "generation_tokens_per_s": [
+    46.208051753017955,
+    42.778508372417896,
+    38.30845603285783,
+    34.96878143529603,
+    29.236280497321278,
+    21.95756383180096,
+    20.90926744278003,
+    19.567358143950674,
+    18.257073991276393,
+    17.616644205445304,
+    17.133819766586356,
+    16.73106157010974,
+    16.57900272265712,
+    15.78347712203344,
+    15.697283390570277,
+    15.020753495850029
+  ],
+  "trajectory_sha256": {
+    "attempts/1/trajectory.jsonl": "d37e4f07a597455c88c4d1ccd2a6a20ffd5ab5b755f52000a497182a6eb1e3d9"
+  }
+}

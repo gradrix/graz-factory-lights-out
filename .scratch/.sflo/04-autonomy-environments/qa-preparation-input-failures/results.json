@@ -1,0 +1,73 @@
+{
+  "candidate": "25f75c3275739cc7cc2a4fc5a4e16580b81511d1",
+  "root": "/tmp/gflo-input-qa-bco4kdu5",
+  "results": [
+    {
+      "case": "fetch-control",
+      "passed": true,
+      "reads": 2
+    },
+    {
+      "case": "fetch-non200",
+      "passed": true,
+      "reads": 0
+    },
+    {
+      "case": "fetch-redirect",
+      "passed": true,
+      "reads": 0
+    },
+    {
+      "case": "fetch-truncated",
+      "passed": true,
+      "reads": 2
+    },
+    {
+      "case": "fetch-declared-cap",
+      "passed": true,
+      "reads": 0
+    },
+    {
+      "case": "fetch-actual-cap",
+      "passed": true,
+      "reads": 1
+    },
+    {
+      "case": "fetch-hash",
+      "passed": true,
+      "reads": 2
+    },
+    {
+      "case": "DNS-timeout-propagates-before-connection",
+      "passed": true
+    },
+    {
+      "case": "numeric-connect-timeout-closes-socket",
+      "passed": true
+    },
+    {
+      "case": "local-locked-control-real-offline-assembly",
+      "passed": true,
+      "id": "9ad835622c356294974829a25636f2c09d142a05e77221d0ab6d7cd586157432",
+      "artifacts": 16
+    },
+    {
+      "case": "prepare-missing",
+      "passed": true,
+      "error": "Fetched artifact set does not match approved lock",
+      "prior_good_unchanged": true
+    },
+    {
+      "case": "prepare-corrupt",
+      "passed": true,
+      "error": "Fetched artifact hash or size does not match approved lock",
+      "prior_good_unchanged": true
+    },
+    {
+      "case": "prepare-lock-mismatch",
+      "passed": true,
+      "error": "Environment container failed (1): Looking in links: /artifacts\nProcessing /artifacts/annotated_types-0.8.0-py3-none-any.whl (from -r /approved/requirements.lock (line 1))\nERROR: THESE PACKAGES DO NOT MATCH THE HASHES FROM THE REQUIREMENTS FILE. If you have updated the package versions, please update the hashes. Otherwise, examine the package contents carefully; someone may have tampered with them.\n    annotated-types==0.8.0 from file:///artifacts/annotated_types-0.8.0-py3-none-any.whl (from -r /approved/requirements.lock (line 1)):\n        Expected sha256 0072f4d804ea359e4eaf198b1af7a8b0943881a87f31bb764f8bf219bb9419e0\n             Got        f072f4d804ea359e4eaf198b1af7a8b0943881a87f31bb764f8bf219bb9419e0\n\nTraceback (most recent call last):\n  File \"/recipe\", line 11, in <module>\n    subprocess.run([sys.executable, '-m', 'pip', 'install', '--no-index', '--no-cache-dir',\n  File \"/usr/local/lib/python3.12/subprocess.py\", line 571, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command '['/usr/local/bin/python', '-m', 'pip', 'install', '--no-index', '--no-cache-dir', '--no-compile', '--no-deps', '--require-hashes', '--only-binary=:all:', '--find-links', '/artifacts', '--target', '/work/deps', '-r', '/approved/requirements.lock']' returned non-zero exit status 1.\n",
+      "prior_good_unchanged": true
+    }
+  ]
+}

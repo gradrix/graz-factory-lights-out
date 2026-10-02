@@ -4,7 +4,7 @@ A small local software factory: give it a repository, a task and executable acce
 
 **Works today:** bounded Python tasks using prepared dependencies, durable progress visibility and controlled recovery. [Incremental acceptance evidence](docs/evidence/autonomy-stages.md).
 
-**Destination:** end-to-end autonomous local delivery, introduced through measured stages: visibility, independent review, environment preparation, research/browser tools, planning and integration. See the [roadmap](docs/roadmap.md) and [feasibility research](docs/research/autonomy-feasibility.md). Visibility and controlled recovery are implemented and qualified on the rig. Independent local review has passed the bounded qualification (12/12 fresh tasks, with documented quality limitations); automatic environment preparation, research/browser tools, decomposition and merging remain planned.
+**Destination:** end-to-end autonomous local delivery, introduced through measured stages: visibility, independent review, environment preparation, research/browser tools, planning and integration. See the [roadmap](docs/roadmap.md) and [feasibility research](docs/research/autonomy-feasibility.md). Visibility and controlled recovery are implemented and qualified on the rig. Independent local review has passed the bounded qualification (12/12 fresh tasks, with documented quality limitations); three environment profiles are implemented and undergoing final qualification. Research/browser tools, decomposition and merging remain planned. See [environment preparation and offline use](docs/environments.md).
 
 ## Run on MONSTER-GAMING-PC
 
@@ -37,7 +37,7 @@ Commit the intended input in a clean Git repository. Create an acceptance direct
 }
 ```
 
-Paths are relative to the task file. Checks are argument lists, not shell expressions. They run in `/workspace` with the candidate and `/acceptance` mounted read-only. Use `/tmp` for test databases and other temporary output. Dependencies must already exist in the configured, pinned sandbox image.
+Paths are relative to the task file. Checks are argument lists, not shell expressions. They run in `/workspace` with the candidate and `/acceptance` mounted read-only. Use `/tmp` for test databases and other temporary output. New runs freeze a prepared environment receipt. The checkout can infer and validate an approved profile from manifests; use an existing receipt ID to run without registry access. See [supported profiles](docs/environments.md).
 
 Acceptance checks are trusted operator code. Make them test observable requirements and fail on missing tests, not just print a success message. The [examples](examples/) demonstrate behavior checks and a separate quality check requiring discoverable tests, documentation and removal of scratch files.
 
@@ -75,6 +75,6 @@ make coverage
 
 The tests include real offline Docker execution, so the pinned image must be installed. Development coverage tooling needs a one-time installation; the factory runtime does not.
 
-The implementation has three responsibilities: [runner](gflo/runner.py) owns durable state and acceptance, [worker](gflo/worker.py) owns the model/tool conversation, and [sandbox](gflo/sandbox.py) executes commands and verification. [CLI](gflo/__main__.py) connects them. Start extension with a concrete task or a prepared image and new checks; add a new module only when a demonstrated responsibility needs one.
+The task loop has three central responsibilities: [runner](gflo/runner.py) owns durable state and acceptance, [worker](gflo/worker.py) owns the model/tool conversation, and [sandbox](gflo/sandbox.py) executes commands and verification. [CLI](gflo/__main__.py) connects them. Environment preparation and immutable receipts are handled by [prepare](gflo/prepare.py) and [environment](gflo/environment.py); [review](gflo/review.py) owns fresh local assessment. Extend a supported profile through a concrete task and executable checks.
 
 Read [architecture and limits](docs/architecture.md), [operations and rollback](docs/operations.md), and [pilot results](docs/pilot-results.md). The previous factory implementation and documentation have been removed. The new [roadmap](docs/roadmap.md) governs future work.

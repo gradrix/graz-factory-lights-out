@@ -1,0 +1,189 @@
+{
+  "command": [
+    "docker",
+    "run",
+    "--runtime=runc",
+    "--rm",
+    "--network=none",
+    "--read-only",
+    "--cap-drop=ALL",
+    "--security-opt=no-new-privileges",
+    "--pids-limit=128",
+    "--memory=512m",
+    "--cpus=1",
+    "--user=65534:65534",
+    "--tmpfs=/tmp:rw,exec,nosuid,size=512m",
+    "-e",
+    "PYTHONDONTWRITEBYTECODE=1",
+    "-v",
+    "/home/gradrix/repos/gflo/.gflo/stage3-evidence/70a187241924/workspace:/project with spaces:ro",
+    "-v",
+    "/home/gradrix/repos/gflo/.gflo/stage3-evidence/70a187241924/acceptance:/acceptance:ro",
+    "-v",
+    "/home/gradrix/repos/gflo/.gflo/environment-locks/python-api/wheels:/wheels:ro",
+    "-v",
+    "/home/gradrix/repos/gflo/.scratch/.sflo/04-autonomy-environments/qa-model-api-failed/probe.py:/probe.py:ro",
+    "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+    "timeout",
+    "180",
+    "python",
+    "-B",
+    "/probe.py"
+  ],
+  "exit": 0,
+  "stderr": "",
+  "checks": [
+    {
+      "label": "offline-dependencies",
+      "command": [
+        "/usr/local/bin/python",
+        "-m",
+        "pip",
+        "install",
+        "--no-index",
+        "--find-links",
+        "/wheels",
+        "--target",
+        "/tmp/deps",
+        "fastapi==0.115.12",
+        "uvicorn==0.34.2",
+        "pydantic==2.13.5",
+        "setuptools==78.1.0",
+        "httpx==0.28.1"
+      ],
+      "cwd": "/tmp",
+      "exit": 0,
+      "stdout": "Looking in links: /wheels\nProcessing /wheels/fastapi-0.115.12-py3-none-any.whl\nProcessing /wheels/uvicorn-0.34.2-py3-none-any.whl\nProcessing /wheels/pydantic-2.13.5-py3-none-any.whl\nProcessing /wheels/setuptools-78.1.0-py3-none-any.whl\nProcessing /wheels/httpx-0.28.1-py3-none-any.whl\nProcessing /wheels/starlette-0.46.2-py3-none-any.whl (from fastapi==0.115.12)\nProcessing /wheels/typing_extensions-4.16.0-py3-none-any.whl (from fastapi==0.115.12)\nProcessing /wheels/click-8.5.0-py3-none-any.whl (from uvicorn==0.34.2)\nProcessing /wheels/h11-0.16.0-py3-none-any.whl (from uvicorn==0.34.2)\nProcessing /wheels/annotated_types-0.8.0-py3-none-any.whl (from pydantic==2.13.5)\nProcessing /wheels/pydantic_core-2.46.5-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (from pydantic==2.13.5)\nProcessing /wheels/typing_inspection-0.4.4-py3-none-any.whl (from pydantic==2.13.5)\nProcessing /wheels/anyio-4.15.1-py3-none-any.whl (from httpx==0.28.1)\nProcessing /wheels/certifi-2026.7.22-py3-none-any.whl (from httpx==0.28.1)\nProcessing /wheels/httpcore-1.0.9-py3-none-any.whl (from httpx==0.28.1)\nProcessing /wheels/idna-3.20-py3-none-any.whl (from httpx==0.28.1)\nInstalling collected packages: typing-extensions, setuptools, idna, h11, click, certifi, annotated-types, uvicorn, typing-inspection, pydantic-core, httpcore, anyio, starlette, pydantic, httpx, fastapi\nSuccessfully installed annotated-types-0.8.0 anyio-4.15.1 certifi-2026.7.22 click-8.5.0 fastapi-0.115.12 h11-0.16.0 httpcore-1.0.9 httpx-0.28.1 idna-3.20 pydantic-2.13.5 pydantic-core-2.46.5 setuptools-78.1.0 starlette-0.46.2 typing-extensions-4.16.0 typing-inspection-0.4.4 uvicorn-0.34.2\n",
+      "stderr": "WARNING: The directory '/nonexistent/.cache/pip' or its parent directory is not owned or is not writable by the current user. The cache has been disabled. Check the permissions and owner of that directory. If executing pip with sudo, you should use sudo's -H flag.\n"
+    },
+    {
+      "label": "frozen-oracle",
+      "command": [
+        "/usr/local/bin/python",
+        "-B",
+        "/acceptance/check.py",
+        "/project with spaces"
+      ],
+      "cwd": "/tmp",
+      "exit": 1,
+      "stdout": "Processing ./project\n  Preparing metadata (pyproject.toml): started\n  Preparing metadata (pyproject.toml): finished with status 'done'\nBuilding wheels for collected packages: gflo-reservation-preview\n  Building wheel for gflo-reservation-preview (pyproject.toml): started\n  Building wheel for gflo-reservation-preview (pyproject.toml): finished with status 'done'\n  Created wheel for gflo-reservation-preview: filename=gflo_reservation_preview-0.0.1-py3-none-any.whl size=2722 sha256=e70ee6ace0ec56064071a63b4e1d32efb00a77b420b35879f0e768f0467d71d7\n  Stored in directory: /tmp/pip-ephem-wheel-cache-l8qt7ik1/wheels/34/27/4c/533f057b7031e080f644925f21182e166347fd195c14379981\nSuccessfully built gflo-reservation-preview\nProcessing ./wheels/gflo_reservation_preview-0.0.1-py3-none-any.whl\nInstalling collected packages: gflo-reservation-preview\nSuccessfully installed gflo-reservation-preview-0.0.1\n",
+      "stderr": "WARNING: The directory '/nonexistent/.cache/pip' or its parent directory is not owned or is not writable by the current user. The cache has been disabled. Check the permissions and owner of that directory. If executing pip with sudo, you should use sudo's -H flag.\nWARNING: The directory '/nonexistent/.cache/pip' or its parent directory is not owned or is not writable by the current user. The cache has been disabled. Check the permissions and owner of that directory. If executing pip with sudo, you should use sudo's -H flag.\n.............\n----------------------------------------------------------------------\nRan 13 tests in 0.035s\n\nOK\nTraceback (most recent call last):\n  File \"/acceptance/check.py\", line 50, in <module>\n    doc=(project/'README.md').read_text();assert len(doc.split())>=40 and '/reservations/preview' in doc and 'pip' in doc,'new documentation required'\n                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: new documentation required\n"
+    },
+    {
+      "label": "diagnostic-oracle-without-literal-token",
+      "command": [
+        "/usr/local/bin/python",
+        "-B",
+        "/tmp/check-without-pip.py",
+        "/project with spaces"
+      ],
+      "cwd": "/tmp",
+      "exit": 0,
+      "stdout": "Processing ./project\n  Preparing metadata (pyproject.toml): started\n  Preparing metadata (pyproject.toml): finished with status 'done'\nBuilding wheels for collected packages: gflo-reservation-preview\n  Building wheel for gflo-reservation-preview (pyproject.toml): started\n  Building wheel for gflo-reservation-preview (pyproject.toml): finished with status 'done'\n  Created wheel for gflo-reservation-preview: filename=gflo_reservation_preview-0.0.1-py3-none-any.whl size=2722 sha256=6bfb4730d284719d5338defc9b7175e818a629332a31065e1170b228d07699e6\n  Stored in directory: /tmp/pip-ephem-wheel-cache-4xg23j5q/wheels/95/3b/cc/455f28c9991f301d5bbf9f7afae4bb738cf7d4125ed0082e0e\nSuccessfully built gflo-reservation-preview\nProcessing ./wheels/gflo_reservation_preview-0.0.1-py3-none-any.whl\nInstalling collected packages: gflo-reservation-preview\nSuccessfully installed gflo-reservation-preview-0.0.1\nPASS\n",
+      "stderr": "WARNING: The directory '/nonexistent/.cache/pip' or its parent directory is not owned or is not writable by the current user. The cache has been disabled. Check the permissions and owner of that directory. If executing pip with sudo, you should use sudo's -H flag.\nWARNING: The directory '/nonexistent/.cache/pip' or its parent directory is not owned or is not writable by the current user. The cache has been disabled. Check the permissions and owner of that directory. If executing pip with sudo, you should use sudo's -H flag.\n.............\n----------------------------------------------------------------------\nRan 13 tests in 0.034s\n\nOK\n"
+    },
+    {
+      "label": "wheel-build",
+      "command": [
+        "/usr/local/bin/python",
+        "-m",
+        "pip",
+        "wheel",
+        "/tmp/project",
+        "--no-build-isolation",
+        "--no-deps",
+        "--no-index",
+        "--wheel-dir",
+        "/tmp/wheels"
+      ],
+      "cwd": "/tmp",
+      "exit": 0,
+      "stdout": "Processing ./project\n  Preparing metadata (pyproject.toml): started\n  Preparing metadata (pyproject.toml): finished with status 'done'\nBuilding wheels for collected packages: gflo-reservation-preview\n  Building wheel for gflo-reservation-preview (pyproject.toml): started\n  Building wheel for gflo-reservation-preview (pyproject.toml): finished with status 'done'\n  Created wheel for gflo-reservation-preview: filename=gflo_reservation_preview-0.0.1-py3-none-any.whl size=2722 sha256=9a3566fcf2808ea147074a5971f267695f44fbb66a146859cebb3e1fc7673808\n  Stored in directory: /tmp/pip-ephem-wheel-cache-go4mvatg/wheels/3a/3b/44/a635a299f1d7619235a8cbde1949e8b21d96e88175412af443\nSuccessfully built gflo-reservation-preview\n",
+      "stderr": "WARNING: The directory '/nonexistent/.cache/pip' or its parent directory is not owned or is not writable by the current user. The cache has been disabled. Check the permissions and owner of that directory. If executing pip with sudo, you should use sudo's -H flag.\n"
+    },
+    {
+      "label": "wheel-install",
+      "command": [
+        "/usr/local/bin/python",
+        "-m",
+        "pip",
+        "install",
+        "--no-index",
+        "--no-deps",
+        "--target",
+        "/tmp/installed",
+        "/tmp/wheels/gflo_reservation_preview-0.0.1-py3-none-any.whl"
+      ],
+      "cwd": "/tmp",
+      "exit": 0,
+      "stdout": "Processing ./wheels/gflo_reservation_preview-0.0.1-py3-none-any.whl\nInstalling collected packages: gflo-reservation-preview\nSuccessfully installed gflo-reservation-preview-0.0.1\n",
+      "stderr": "WARNING: The directory '/nonexistent/.cache/pip' or its parent directory is not owned or is not writable by the current user. The cache has been disabled. Check the permissions and owner of that directory. If executing pip with sudo, you should use sudo's -H flag.\n"
+    },
+    {
+      "label": "documented-uvicorn-import",
+      "command": [
+        "/usr/local/bin/python",
+        "-c",
+        "from uvicorn.importer import import_from_string; from fastapi import FastAPI; assert isinstance(import_from_string('reservation_preview:app'),FastAPI)"
+      ],
+      "cwd": "/tmp",
+      "exit": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/tmp/deps/uvicorn/importer.py\", line 29, in import_from_string\n    instance = getattr(instance, attr_str)\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: module 'reservation_preview' has no attribute 'app'\n\nDuring handling of the above exception, another exception occurred:\n\nTraceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/tmp/deps/uvicorn/importer.py\", line 32, in import_from_string\n    raise ImportFromStringError(message.format(attrs_str=attrs_str, module_str=module_str))\nuvicorn.importer.ImportFromStringError: Attribute \"app\" not found in module \"reservation_preview\".\n"
+    },
+    {
+      "label": "correct-uvicorn-import-control",
+      "command": [
+        "/usr/local/bin/python",
+        "-c",
+        "from uvicorn.importer import import_from_string; from fastapi import FastAPI; assert isinstance(import_from_string('reservation_preview.app:app'),FastAPI); print('correct app import passes')"
+      ],
+      "cwd": "/tmp",
+      "exit": 0,
+      "stdout": "correct app import passes\n",
+      "stderr": ""
+    },
+    {
+      "label": "disposable-readme-repair-original-oracle",
+      "command": [
+        "/usr/local/bin/python",
+        "-B",
+        "/acceptance/check.py",
+        "/tmp/project"
+      ],
+      "cwd": "/tmp",
+      "exit": 0,
+      "stdout": "Processing ./project\n  Preparing metadata (pyproject.toml): started\n  Preparing metadata (pyproject.toml): finished with status 'done'\nBuilding wheels for collected packages: gflo-reservation-preview\n  Building wheel for gflo-reservation-preview (pyproject.toml): started\n  Building wheel for gflo-reservation-preview (pyproject.toml): finished with status 'done'\n  Created wheel for gflo-reservation-preview: filename=gflo_reservation_preview-0.0.1-py3-none-any.whl size=2722 sha256=9279e6b2ba3b36b97b2cf357110d949b1229310cf2b312df91567cc3a6199488\n  Stored in directory: /tmp/pip-ephem-wheel-cache-m_ki_t9p/wheels/d6/56/b0/a6018a63c94f3216cf687cc2900c8e13f8982b1fe73467d4a9\nSuccessfully built gflo-reservation-preview\nProcessing ./wheels/gflo_reservation_preview-0.0.1-py3-none-any.whl\nInstalling collected packages: gflo-reservation-preview\nSuccessfully installed gflo-reservation-preview-0.0.1\nPASS\n",
+      "stderr": "WARNING: The directory '/nonexistent/.cache/pip' or its parent directory is not owned or is not writable by the current user. The cache has been disabled. Check the permissions and owner of that directory. If executing pip with sudo, you should use sudo's -H flag.\nWARNING: The directory '/nonexistent/.cache/pip' or its parent directory is not owned or is not writable by the current user. The cache has been disabled. Check the permissions and owner of that directory. If executing pip with sudo, you should use sudo's -H flag.\n.............\n----------------------------------------------------------------------\nRan 13 tests in 0.034s\n\nOK\n"
+    }
+  ],
+  "hashes": {
+    "task.json": "e99abe3e7b80071d22e8073d54451dc7b30ea007ea54790a0c4ba7d8f089a12a",
+    "cli.log": "6b013cd47cb947cee4d612d83bccf9a8132959cedf050cf01880b9eec2735cc0",
+    "workspace/README.md": "063e4480ad3c18c12024ac764aa3a3e9a50fa13951429c2823b762d3acea8ef4",
+    "workspace/pyproject.toml": "45e729f41defabafc4e7312eb01bf7216aab2960947ce03b518715e4a9cf29c3",
+    "workspace/build/lib/reservation_preview/app.py": "4eab6f54dfdafd5d4040a22ffc947ac3ba7e709300a360adbed277f5f3302d8f",
+    "workspace/build/lib/reservation_preview/domain.py": "e6b481acfdbf444a5c3f1c30e49a1c598d0ea81b98c42baab333a378a43aca8a",
+    "workspace/build/lib/reservation_preview/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "workspace/build/lib/reservation_preview/schemas.py": "ec69e61c72b58b3bd0eb5c05caf5bbfac53db9754b1caa6ee36eb8f40a226c9f",
+    "workspace/tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "workspace/tests/test_reservation_preview.py": "c8874a122b18d950769c485ad210c68248d2694625d9d445d987d7e02e7ac3d3",
+    "workspace/src/reservation_preview/app.py": "4eab6f54dfdafd5d4040a22ffc947ac3ba7e709300a360adbed277f5f3302d8f",
+    "workspace/src/reservation_preview/domain.py": "e6b481acfdbf444a5c3f1c30e49a1c598d0ea81b98c42baab333a378a43aca8a",
+    "workspace/src/reservation_preview/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "workspace/src/reservation_preview/schemas.py": "ec69e61c72b58b3bd0eb5c05caf5bbfac53db9754b1caa6ee36eb8f40a226c9f",
+    "workspace/src/gflo_reservation_preview.egg-info/dependency_links.txt": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "workspace/src/gflo_reservation_preview.egg-info/top_level.txt": "4cf9d4097ca7baae32e720a916fc2f6088ab7b128883e54169303d152c29fdf7",
+    "workspace/src/gflo_reservation_preview.egg-info/SOURCES.txt": "e9deb0bfaabbe896b7aa3783e85eefa1a1ddb1802c92f54d5239ccb2b6dbfc24",
+    "workspace/src/gflo_reservation_preview.egg-info/PKG-INFO": "d692c26859a693d1a2692b18b576e0e17144cdb039628331c1c45184ae53e932",
+    "workspace/src/gflo_reservation_preview.egg-info/requires.txt": "bba14ae9162aa5d015b149673c00771b8b4e048a5938055e3d82a53992f4d39e",
+    "attempts/2/interruption.json": "8125b3caaf638d017e58f1ed95c493bcca3af06956d4313110715f0e7d541be5",
+    "attempts/2/input.json": "550310aac430222157a2cbaf38e04fc39d34273b97d0b21c7baecb9a602e6e57",
+    "attempts/2/trajectory.jsonl": "cf2490ede9b9afb88c68173f0c628a29999226343bc39dd0c6cb6cf7841dbd21",
+    "attempts/1/input.json": "40ecd4d57e5f6083adad553c8a87ac7105862eac4eea99f7fed42ca3d2da112c",
+    "attempts/1/worker.json": "6d892210226e9906672662d5352b4c96ea7e726d9ff48f329c3feaf0e128a2c7",
+    "attempts/1/trajectory.jsonl": "878e300c0ef4e21bea99101b99f03b952a92b1a94bf1dd06ee656b0a67ced09e",
+    "attempts/1/verification.json": "2d7393041ffa3d2e59f926748594fcacc10b7a87963ba5ce570bd87c6f9d93af",
+    "acceptance/check.py": "ac859f5805bb469eb16b1ee9ccef69a1042f3d10d312519d8418e4e988082d4c"
+  }
+}
