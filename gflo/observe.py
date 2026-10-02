@@ -100,6 +100,8 @@ class Observer:
 
     def status(self, run=None):
         from .runner import fingerprint
+        if run is None and not (self.state / 'state.sqlite').exists():
+            return []
         with self.connect() as db:
             if run is None:
                 return [self.status(r['id']) for r in db.execute('SELECT id FROM runs ORDER BY rowid DESC LIMIT 100')]
@@ -121,8 +123,8 @@ class Observer:
                           phase=execution['phase'], last_action_at=execution['action_at'],
                           action_age_s=round(time.time() - execution['action_at'], 1),
                           detail=json.loads(execution['detail']), cancel_requested=bool(execution['cancel_requested']))
-            if not alive and result['status'] in ('running', 'repairing'):
-                result.update(status='interrupted', phase='interrupted', message='Runner process ended; resume to recover retained work')
+            if not alive and (result['status'] in ('running', 'repairing') or (result['status'] == 'pending' and execution['pid'])):
+                result.update(status='cancelled' if execution['cancel_requested'] else 'interrupted', phase='interrupted', message='Runner process ended; resume to recover retained work')
             result['waiting_on_model'] = alive and result['phase'] == 'model_wait'
             # Elapsed silence is observable; it is not proof that inference is deadlocked.
             result['model_slow'] = result['waiting_on_model'] and result['action_age_s'] >= 30

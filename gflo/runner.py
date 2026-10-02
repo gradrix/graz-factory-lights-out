@@ -240,6 +240,11 @@ class Factory:
                     setter(execution.emit)
                 try:
                     return self._resume(run_id)
+                except (Exception, KeyboardInterrupt) as error:
+                    if self.status(run_id)['status'] not in ('accepted', 'exhausted', 'invalidated', 'cancelled', 'interrupted'):
+                        control = self.db.execute('SELECT cancel_requested FROM execution WHERE run_id=?', (run_id,)).fetchone()
+                        self._state(run_id, 'cancelled' if control and control[0] else 'interrupted', str(error) or 'Interrupted during startup')
+                    raise
                 finally:
                     self.report = lambda *a, **kw: None
                     if setter:

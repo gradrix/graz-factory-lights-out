@@ -117,3 +117,27 @@ f.resume(sys.argv[2])
             self.assertLess(status['heartbeat_age_s'], 2)
             self.assertGreater(status['action_age_s'], 40)
         self.assertNotIn('sensitive', redact('Authorization: Bearer sensitive password=sensitive api_key="sensitive"'))
+
+    def test_observer_can_start_before_first_task(self):
+        from gflo.observe import Observer
+        self.assertEqual(Observer(self.root / 'not-created').status(), [])
+
+    def test_cancel_during_startup_is_terminal_and_resumable(self):
+        from gflo.runner import Factory
+        from gflo.observe import Observer
+        state = self.root / 'state'
+        factory = Factory(state, None, None); run = factory.create(self.task)
+        code = '''import sys,time
+from gflo.runner import Factory
+Factory(sys.argv[1],lambda *a:{},lambda *a:{'passed':True},cleanup=lambda *a:time.sleep(60)).resume(sys.argv[2])
+'''
+        process = subprocess.Popen([sys.executable, '-c', code, str(state), run], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        try:
+            for _ in range(100):
+                if Observer(state).status(run).get('owner_alive'): break
+                time.sleep(.05)
+            factory.cancel(run); process.wait(timeout=10)
+            self.assertEqual(Observer(state).status(run)['status'], 'cancelled')
+            self.assertEqual(Factory(state, lambda *a: {}, lambda *a: {'passed': True}).resume(run)['status'], 'accepted')
+        finally:
+            if process.poll() is None: process.kill(); process.wait()

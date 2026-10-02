@@ -3,6 +3,7 @@ __pycache__/
 .gflo/
 .venv/
 .coverage
+.coverage.*
 htmlcov/
 .env
 *.local.json
