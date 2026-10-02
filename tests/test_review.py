@@ -68,3 +68,18 @@ class ReviewTests(unittest.TestCase):
         (f.state / run / 'attempts/1/review.json').unlink()
         self.assertEqual(f.status(run)['status'], 'invalidated')
         self.assertEqual(Observer(f.state).status(run)['status'], 'invalidated')
+
+    def test_review_needs_input_is_not_repaired_without_a_new_contract(self):
+        f = Factory(self.root / 'state', lambda *a: {}, lambda *a: {'passed': True}, reviewer=lambda *a: {'decision':'needs_input','findings':[],'question':'Which rate?'})
+        run = f.create(self.task)
+        self.assertEqual(f.resume(run)['status'], 'needs_input')
+        self.assertEqual(f.resume(run)['attempts'], 1)
+
+    def test_worker_question_tool_produces_a_bounded_question(self):
+        from gflo.worker import ModelWorker
+        from test_worker import FakeSandbox
+        workspace = self.root / 'workspace'; workspace.mkdir()
+        worker = ModelWorker({'endpoint':'http://127.0.0.1:18000','model':'test'}, FakeSandbox())
+        worker.request = lambda *a, **kw: {'choices':[{'message':{'role':'assistant','tool_calls':[{'id':'q','function':{'name':'question','arguments':'{"question":"Flat fee or percentage?"}'}}]}}]}
+        result = worker(workspace, {'objective':'Undecided policy','checks':[],'max_turns':1}, None, 1)
+        self.assertEqual(result['question'], 'Flat fee or percentage?')
