@@ -1,48 +1,80 @@
-# GFLO — local software factory
+# GFLO
 
-GFLO runs prepared Python coding tasks with a local LLM, validates their output in
-isolated containers, and keeps a durable history of changes, failures, and evidence.
-It can plan and build bounded features under prewritten validation policies, combine
-accepted changes against pinned inputs, and validate the combined result. Repository
-snapshots support text search and revision-bound Python definition lookup.
+A small local software factory: give it a repository, a task and executable acceptance checks. It edits an isolated copy, checks the result and repairs failures within a fixed budget. Your source repository stays unchanged. An accepted run produces a patch and its evidence.
 
-**Experimental developer preview.** The original 120-run evaluation verified 109 runs
-and discovered two false acceptances. Larger-build reliability is still unqualified.
-Read the [evaluation](docs/evaluation.md) before relying on the results.
+**Works today:** bounded Python tasks using prepared dependencies.
 
-## Start here
+**Destination:** end-to-end autonomous local delivery, introduced through measured stages: visibility, independent review, environment preparation, research/browser tools, planning and integration. See the [roadmap](docs/roadmap.md) and [feasibility research](docs/research/autonomy-feasibility.md). Those capabilities are planned; automatic decomposition, semantic review and merging are not implemented yet.
 
-Requires Python 3.11+; the development environment was tested with Python 3.13.5.
-From a source checkout:
+## Run on MONSTER-GAMING-PC
+
+The prepared installation is `/home/gradrix/gflo-runtime`. The model and sandbox image are already on disk. Once installed, these commands need no Internet connection:
 
 ```sh
-python3 scripts/setup.py
+cd /home/gradrix/gflo-runtime
+python3 -m gflo doctor
+python3 examples/prepare.py .gflo/examples
+python3 -m gflo run .gflo/examples/invoice/task.json
+python3 -m gflo status
 ```
 
-This creates `.venv`, installs pinned dependencies, prepares the demo, and reports
-CPU/Docker readiness. To inspect prerequisites without installing:
+`prepare.py` creates new example repositories; it refuses to overwrite existing ones. Run the other examples with `inventory/task.json` and `log-summary/task.json`. Run one task at a time using the same state directory.
+
+To use this checkout with the rig's model, see [local setup](docs/operations.md). Python 3.10+, Git and Docker are required. The runtime uses only Python's standard library; no agent subscription, hosted API or cloud fallback is involved.
+
+## Bring a task
+
+Commit the intended input in a clean Git repository. Create an acceptance directory outside the worker repository and a task JSON file:
+
+```json
+{
+  "repo": "path/to/repository",
+  "objective": "Describe the required behavior, compatibility and deliverables.",
+  "acceptance": "acceptance",
+  "checks": [["python", "-I", "/acceptance/check.py"]],
+  "max_attempts": 3,
+  "max_turns": 24
+}
+```
+
+Paths are relative to the task file. Checks are argument lists, not shell expressions. They run in `/workspace` with the candidate and `/acceptance` mounted read-only. Use `/tmp` for test databases and other temporary output. Dependencies must already exist in the configured, pinned sandbox image.
+
+Acceptance checks are trusted operator code. Make them test observable requirements and fail on missing tests, not just print a success message. The [examples](examples/) demonstrate behavior checks and a separate quality check requiring discoverable tests, documentation and removal of scratch files.
 
 ```sh
-python3 scripts/setup.py --check-only
+python3 -m gflo run task.json
+python3 -m gflo status RUN_ID
+python3 -m gflo resume RUN_ID
 ```
 
-The default setup downloads Python packages and checks Docker availability, but
-does not start a model or execute worker code. It prepares real, hash-bound work. To execute
-it, follow [Getting started](docs/getting-started.md) for the local GPU service and broker.
+An interrupted attempt consumes its attempt allowance; resume keeps its files and passes interruption evidence to the next attempt. A saved completed verdict can be reconciled without repeating the worker. Exhausted runs stop; revise the task deliberately and start a new run. Modified accepted artifacts are reported as invalidated.
 
-## Documentation
+Exit codes: `0` accepted/read-only command success, `2` exhausted, `1` configuration/runtime failure, `130` interruption. Run ID and evidence directory print before execution; status works without the model.
 
-- [Getting started](docs/getting-started.md): installation, first run, and prerequisites.
-- [Architecture](docs/architecture.md): authority, isolation, and supported boundaries.
-- [Operations](docs/operations.md): run, resume, inspect changes, integrate, and audit.
-- [Product intake](docs/product-intake.md): bounded planning, reviewed task graphs, and escalation.
-- [Evaluation](docs/evaluation.md): measured results and reproduction limits.
-- [Roadmap](docs/roadmap.md): next workload and public-release readiness.
-- [Contributing](CONTRIBUTING.md): development checks and repository layout.
+## Inspect the result
 
-The documentation follows the short entry point and linked guides used by
-[SFLO](https://github.com/simonasrazm/simon-factory-lights-out) and
-[Gas City](https://github.com/gastownhall/gascity). GFLO is a separate experiment.
+`.gflo/runs/RUN_ID/` contains the frozen task, acceptance files, candidate workspace, per-attempt conversation and verification results, and `change.patch`. Acceptance means the configured checks passed for that candidate; it does not certify requirements the checks never exercised.
 
-The repository is public as an experimental developer preview. No license has
-been selected yet; a supported release and license choice remain pending.
+Review the patch before applying it to the source repository at the recorded base commit:
+
+```sh
+git -C /path/to/repository apply --check /absolute/path/to/change.patch
+git -C /path/to/repository apply /absolute/path/to/change.patch
+```
+
+GFLO never pushes, merges or deploys generated changes. Full prompts and tool output are retained locally in run artifacts; treat them with the same privacy as the source code.
+
+## Develop and extend
+
+```sh
+make test
+python3 -m venv .venv
+.venv/bin/pip install -r requirements-dev.txt
+make coverage
+```
+
+The tests include real offline Docker execution, so the pinned image must be installed. Development coverage tooling needs a one-time installation; the factory runtime does not.
+
+The implementation has three responsibilities: [runner](gflo/runner.py) owns durable state and acceptance, [worker](gflo/worker.py) owns the model/tool conversation, and [sandbox](gflo/sandbox.py) executes commands and verification. [CLI](gflo/__main__.py) connects them. Start extension with a concrete task or a prepared image and new checks; add a new module only when a demonstrated responsibility needs one.
+
+Read [architecture and limits](docs/architecture.md), [operations and rollback](docs/operations.md), and [pilot results](docs/pilot-results.md). The previous factory implementation and documentation have been removed. The new [roadmap](docs/roadmap.md) governs future work.

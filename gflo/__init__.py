@@ -1,1 +1,1 @@
-"""Trusted GFLO control-plane primitives. Never import this package into a worker."""
+"""A small local software factory."""

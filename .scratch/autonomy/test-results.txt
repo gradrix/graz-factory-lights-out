@@ -1,0 +1,56 @@
+python3 -m unittest discover -s tests -v
+test_doctor_checks_image_and_model (test_cli.CliTests) ... ok
+test_missing_config_is_actionable (test_cli.CliTests) ... ok
+test_status_needs_no_model_or_config (test_cli.CliTests) ... ok
+test_zero_tests_and_scratch_files_fail_against_passing_control (test_example_quality.ExampleQualityTests) ... ok
+test_acceptance_is_snapshotted_and_tampering_is_rejected (test_runner.RunnerTests) ... ok
+test_changed_accepted_workspace_or_patch_is_not_reported_as_accepted (test_runner.RunnerTests) ... Attempt 1: verifying candidate
+ok
+test_changed_patch_invalidates_acceptance (test_runner.RunnerTests) ... Attempt 1: verifying candidate
+ok
+test_cleanup_happens_before_recovery_observes_workspace (test_runner.RunnerTests) ... Attempt 1: verifying candidate
+ok
+test_cli_run_resume_and_status_without_source_mutation (test_runner.RunnerTests) ... Attempt 1: verifying candidate
+ok
+test_contract_change_and_unknown_id_fail_closed (test_runner.RunnerTests) ... ok
+test_dirty_source_is_rejected (test_runner.RunnerTests) ... ok
+test_exhaustion_never_becomes_success (test_runner.RunnerTests) ... Attempt 1: verifying candidate
+Attempt 2: verifying candidate
+ok
+test_failure_evidence_drives_repair_and_source_is_unchanged (test_runner.RunnerTests) ... Attempt 1: verifying candidate
+Attempt 2: verifying candidate
+ok
+test_interrupted_attempt_resumes_with_retained_work (test_runner.RunnerTests) ... Attempt 2: verifying candidate
+ok
+test_resume_after_attempt_directory_was_created_before_transaction (test_runner.RunnerTests) ... Attempt 1: verifying candidate
+ok
+test_resume_published_verification_does_not_repeat_worker (test_runner.RunnerTests) ... Attempt 1: verifying candidate
+ok
+test_task_validation_and_single_runner_lock (test_runner.RunnerTests) ... ok
+test_real_offline_sandbox_and_readonly_verification (test_sandbox.SandboxTests) ... ok
+test_http_requests_use_key_file_and_report_errors (test_worker.WorkerTests) ... ok
+test_malformed_tools_and_repeated_calls_are_bounded (test_worker.WorkerTests) ... Attempt 1, model turn 1/8
+  unknown: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+Attempt 1, model turn 2/8
+  unknown: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+Attempt 1, model turn 3/8
+  unknown: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+Attempt 1, model turn 4/8
+  unknown: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+Attempt 1, model turn 5/8
+ok
+test_remote_inference_and_redirects_are_not_implicitly_allowed (test_worker.WorkerTests) ... ok
+test_tools_and_completion_leave_a_replayable_trace (test_worker.WorkerTests) ... Attempt 1, model turn 1/4
+  run: 0
+Attempt 1, model turn 2/4
+  check: False
+Attempt 1, model turn 3/4
+ok
+test_turn_budget_and_redirect_rejection (test_worker.WorkerTests) ... Attempt 1, model turn 1/1
+  run: 0
+ok
+
+----------------------------------------------------------------------
+Ran 23 tests in 3.886s
+
+OK

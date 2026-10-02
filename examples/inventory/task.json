@@ -1,0 +1,19 @@
+{
+  "repo": "source",
+  "objective": "Add atomic inventory reservation to this SQLite application. Add store.reserve(path, sku, quantity) -> bool and CLI action reserve using existing argument order: python cli.py DB reserve SKU QUANTITY. Positive integer quantity is required; invalid quantity must produce stderr and exit 2 without traceback. Unknown SKU or insufficient stock returns false and leaves stock unchanged. Success subtracts once. CLI reserve prints JSON {sku, reserved: bool, quantity: remaining-or-null}. Concurrent processes must never oversell: two reservations of 4 from stock 5 result in exactly one success and 1 remaining. Preserve put/get behavior. Add regression tests including concurrency and document usage. Python standard library only. Put at least three discoverable regression tests under tests/ (test_* methods). Remove scratch files; deliver only Python source/tests and Markdown documentation.",
+  "acceptance": "acceptance",
+  "checks": [
+    [
+      "python",
+      "-I",
+      "/acceptance/check.py"
+    ],
+    [
+      "python",
+      "-I",
+      "/acceptance/quality.py"
+    ]
+  ],
+  "max_attempts": 3,
+  "max_turns": 24
+}

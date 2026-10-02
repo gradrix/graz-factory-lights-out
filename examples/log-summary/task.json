@@ -1,0 +1,19 @@
+{
+  "repo": "source",
+  "objective": "Build a small standard-library Python CLI log_summary.py that summarizes JSON Lines logs. Usage: python log_summary.py PATH [--strict], with PATH '-' reading stdin. Each nonblank line must be a JSON object containing nonempty string service and level. Trim service whitespace; trim and uppercase level. Count any nonempty level name. Default mode skips invalid records and counts them as invalid; blank lines are ignored entirely. Output one JSON object {total: valid_count, invalid: invalid_count, by_service: {service: count}, by_level: {LEVEL: count}}. In --strict mode stop on the first invalid record, exit 2, print a useful line-number error to stderr with no traceback and no summary to stdout. Missing files exit 2 with clear stderr. Stream input line by line. Add meaningful unittest tests under tests/ and a concise README with examples. Do not add dependencies or frameworks. Put at least three discoverable regression tests under tests/ (test_* methods). Remove scratch files; deliver only Python source/tests and Markdown documentation.",
+  "acceptance": "acceptance",
+  "checks": [
+    [
+      "python",
+      "-I",
+      "/acceptance/check.py"
+    ],
+    [
+      "python",
+      "-I",
+      "/acceptance/quality.py"
+    ]
+  ],
+  "max_attempts": 3,
+  "max_turns": 24
+}

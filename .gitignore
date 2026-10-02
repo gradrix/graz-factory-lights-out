@@ -1,12 +1,14 @@
 __pycache__/
 *.pyc
 .gflo/
-infra/serving/*.local.json
-.env
 .venv/
-.pytest_cache/
-.mypy_cache/
-.ruff_cache/
-*.egg-info/
-build/
-dist/
+.coverage
+htmlcov/
+.env
+*.local.json
+# Local research traces and obsolete run snapshots are not publication inputs.
+.scratch/*
+!.scratch/autonomy/
+!.scratch/.sflo/
+.scratch/.sflo/*
+!.scratch/.sflo/01-autonomy-publication/

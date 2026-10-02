@@ -1,0 +1,11 @@
+# Local autonomy delivery
+
+## Current turn
+
+- [Clean and publish baseline plus autonomy plan](delivery/01-publish-plan.md) — active; owner /root.
+
+## Next implementation frontier
+
+- [Observe and control one local run](delivery/02-visibility.md) — planned, unclaimed; starts after publication and a subsequent implementation instruction.
+
+Later acceptance-bearing stages are in [the roadmap](../../docs/roadmap.md). They remain progressively specified plans, not a pile of preclaimed implementation tickets. No automatic production deployment or external-account action is authorized here.

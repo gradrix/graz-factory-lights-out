@@ -1,0 +1,122 @@
+{
+  "date": "2026-10-01",
+  "initial_runs": [
+    {
+      "scenario": "invoice",
+      "id": "0b179de9a58a",
+      "status": "accepted",
+      "attempts": 1,
+      "elapsed_s": 71.67257590100053,
+      "turns": 12,
+      "max_prompt_tokens": 11809,
+      "completion_tokens": 4058,
+      "check_requests": [
+        true
+      ],
+      "test_counts": [
+        [
+          "4"
+        ],
+        [
+          "17"
+        ]
+      ],
+      "candidate": "c4131afdb8238e316aa8c07e63ef926e54449ac6273a1dd0f1a32697b1975877",
+      "model_time_s": 62.49748199999999
+    },
+    {
+      "scenario": "inventory",
+      "id": "1ed0f9902508",
+      "status": "accepted",
+      "attempts": 1,
+      "elapsed_s": 96.98904934100574,
+      "turns": 17,
+      "max_prompt_tokens": 14824,
+      "completion_tokens": 5201,
+      "check_requests": [
+        true
+      ],
+      "test_counts": [
+        [
+          "2"
+        ],
+        [
+          "11"
+        ]
+      ],
+      "candidate": "2897697f267b53344e2c319d520d628e297d1d20445571ba3c75621c5f059f02",
+      "model_time_s": 79.94543500000002
+    },
+    {
+      "scenario": "log-summary",
+      "id": "cb7453d0b5d0",
+      "status": "accepted",
+      "attempts": 1,
+      "elapsed_s": 100.67703788800281,
+      "turns": 17,
+      "max_prompt_tokens": 16928,
+      "completion_tokens": 5608,
+      "check_requests": [
+        false,
+        true
+      ],
+      "test_counts": [
+        [
+          "3"
+        ],
+        [
+          "8"
+        ]
+      ],
+      "candidate": "a953b6b13e0c519b91dad3e426359b657eb1dc22badd53ee7f6c0f1be89915ec",
+      "model_time_s": 86.17297400000001
+    }
+  ],
+  "review_repairs": [
+    {
+      "scenario": "invoice",
+      "id": "08187f980bed",
+      "status": "accepted",
+      "attempts": 1,
+      "elapsed_s": 82.57772344199475,
+      "contract_hash": "88e2b3c061e8e08f1406a54528ae5aaf146eb6afab9bed6e4ec02492ad4b326a"
+    },
+    {
+      "scenario": "inventory",
+      "id": "ff554c2e0dfd",
+      "status": "accepted",
+      "attempts": 1,
+      "elapsed_s": 47.45759995302069,
+      "contract_hash": "1491e147fee853886b1e22abe38f4a22560647d2d2f13489516a563f4a8868ff"
+    },
+    {
+      "scenario": "invoice-header-review",
+      "id": "41fbdafe38ff",
+      "status": "accepted",
+      "attempts": 1,
+      "elapsed_s": 33.90321507799672,
+      "contract_hash": "90d6ab541e614fe5b963eae70b9e97e35d27594883735ccc658b740360b283ec"
+    }
+  ],
+  "runtime_tests": 23,
+  "coverage": {
+    "covered_lines": 391,
+    "num_statements": 421,
+    "percent_covered": 90.09345794392523,
+    "percent_covered_display": "90",
+    "missing_lines": 30,
+    "excluded_lines": 0,
+    "percent_statements_covered": 92.87410926365796,
+    "percent_statements_covered_display": "93",
+    "num_branches": 114,
+    "num_partial_branches": 19,
+    "covered_branches": 91,
+    "missing_branches": 23,
+    "percent_branches_covered": 79.82456140350877,
+    "percent_branches_covered_display": "80"
+  },
+  "warm_short_decode_tokens_s": 95.34698838178949,
+  "configured_context": 131072,
+  "runtime_qa": "passed independent process-death, orphan cleanup, artifact integrity and patch-application probes",
+  "semantic_review": "initial invoice and inventory rejected; all final bounded deliverables passed after local-model corrections"
+}

@@ -1,243 +1,63 @@
-# Operations
+# Local operation
 
-All commands operate on a local ledger and its associated artifact store. Run
-`gflo --help` and `gflo COMMAND --help` for argument details.
+## Installed model
 
-| Command | Purpose |
-| --- | --- |
-| `submit CONTRACT` | Store a validated Work atom; a contract alone is not executable. |
-| `submit-run PLAN` | Store a complete, verified RunPlan and its input artifacts. |
-| `run ATOM` | Execute a submitted plan within its attempt and model-turn budgets. |
-| `resume ATOM` | Reconcile and continue a prepared run. |
-| `resume` | Reconcile expired leases only; dispatch no workers. |
-| `status ATOM` | Inspect attempts, receipts, events, and acceptance findings. |
-| `history ATOM` | Review retained candidate diffs and outcomes; supports `--format json` and `--attempt N` for a positive attempt ordinal. |
-| `report ATOM` | Sum recorded model time and tokens across attempts, including failures. |
-| `audit-artifacts` | Report missing, corrupt, unreferenced, and staged bytes; delete nothing. |
-| `integrate PLAN --current-state STATE` | Validate a prepared combination of accepted changes. |
+`gflo-model` on MONSTER-GAMING-PC serves the tested **ISTA-DASLab Flash-Next GSQ-RCO Coder export**, using the downloaded two-part GGUF and llama.cpp b11284. This is a pruned Coder export, not the complete official Flash model.
 
-Pass `--db PATH` and optional `--reserve-bytes N` before the command. The storage
-reserve is an admission check, not a disk quota or reservation; zero disables it.
-Qualification campaigns use 256 MiB. Reports flag missing usage instead of inventing
-costs, and do not measure energy or work lost before it was recorded.
+Default: 131072 context, Q4 K/V cache, batch and microbatch 512, one slot. Model files and runtime are under `/home/gradrix/benchmark-5090/flash`. The CUDA image is pinned by image ID in `ops/model.py`. No downloads occur on startup (`--pull never`, model `--offline`). A configured context includes instructions, input, reasoning and output; reserve space for the response.
 
-## Recovery
+The endpoint is authenticated and bound only to `127.0.0.1:18000`. Its key lives at `/home/gradrix/.local/state/gflo-model/api-key` with mode 0600. Do not put the key in Git or command-line arguments. `unless-stopped` restarts the container when Docker restarts. The original `local-vllm` container is preserved, stopped, with automatic restart disabled to avoid GPU contention.
 
-A prepared atom follows `ready → leased → running → validating → accepted`.
-Failure makes it `retry-ready` while attempts remain, otherwise `quarantined`.
-Contracts permit at most ten attempts. Retries retain earlier candidates and cite
-failure evidence. Infrastructure failures halt the loop until explicit resume.
-
-Structured-contract workers can stop earlier with a durable `review-request`
-observation for a contradiction or repeated failed draft. The ledger may still show
-`retry-ready`, but the controller will not claim another attempt under that contract.
-Use `review-handoff ATOM_ID` to inspect the reason, draft and evidence. A new reviewed
-contract is required to continue; restarting the controller does not clear the stop.
-
-Expired leases fence prior work. The controller reconciles owned execution
-containers before retrying. Interrupted running work gets a fresh attempt;
-interrupted validation can reuse its durable candidate and receipts. Replaying
-accepted work verifies stored evidence without creating a second acceptance.
-Source files in your checkout are never modified by this loop.
-
-Keep the ledger and artifacts together on local storage. Stop controllers before
-making a consistent backup that includes SQLite WAL state. Multi-host operation,
-host-clock changes, storage loss, and unattended supervision remain unqualified.
-An artifact audit detects loss; it cannot reconstruct missing bytes. Orphan and
-staging files remain available for investigation rather than automatic deletion.
-
-## Acceptance findings
-
-Historical `accepted` status is not sufficient permission to reuse a result.
-`status` also exposes `acceptance_challenged` and `acceptance_findings`.
-A trusted caller records independently verified contradictory evidence using
-`WorkLedger.record_finding(AcceptanceFinding(...))`. The record binds the atom,
-contract, candidate, evidence artifact, and reason. There is no worker-facing or
-CLI mutation command for this operation.
-
-Findings preserve the original acceptance and appear in history. Controller replay
-and integration reject challenged candidates; an accepted integration also rechecks
-its children when reused. Losing the finding's evidence bytes does not clear the
-block. Repair needs a new atom with independently passing evidence; there is no
-clear/dismiss operation or automatic revocation of external copies.
-
-The first finding atomically advances the ledger reader version from 2 to 3.
-Older readers refuse new opens. Stop already-running older controllers before
-upgrading: a schema marker cannot replace code on an open connection. New readers
-also support version-2 ledgers, and version-1 ledgers migrate to version 2.
-
-## Prepared integration
+From the rig:
 
 ```sh
-gflo --db RUN/ledger.db integrate RUN/integration-plan.json --current-state RUN/current-state.json
+python3 /home/gradrix/benchmark-5090/gflo-model.py status
+python3 /home/gradrix/benchmark-5090/gflo-model.py up
+# Alternative measured profile; stops/replaces only GFLO's model container:
+python3 /home/gradrix/benchmark-5090/gflo-model.py up --context 65536
+# Restore the original container and its original restart policy:
+python3 /home/gradrix/benchmark-5090/gflo-model.py rollback
 ```
 
-The plan pins the common base, accepted children, upstream contracts, scopes,
-broker image, and mandatory combined gates. The current-state file is trusted
-input: update it when the base or provider contracts change. Overlapping edits,
-deletions, stale inputs, and challenged children are rejected. Every child must
-have a RunPlan; integration of integration children is not implemented.
+`up` defaults to 128K/Q4; 64K uses Q8. Loading takes time and can evict host file cache. Replacing the model disrupts active requests, so change profiles only when runs are idle. Failed setup restores original vLLM automatically for caught failures; after abrupt process/host death, inspect status and run the explicit rollback if needed.
 
-Repeated integration resumes retained validation or reuses a verified acceptance.
-Semantic failure retains evidence and requires new prepared repair work. Current
-input checks do not provide an external compare-and-swap or Git promotion.
+The rollback was tested against original container/image/command/environment/mount/port identities and an authenticated generation. `up` never edits the separate `ai-playground` configuration or deletes original cache volumes.
 
-## Opt-in bounded escalation
+## Use this checkout remotely
 
-`vllm-python-worker-escalating-low-v1` uses one model turn per attempt.
-`vllm-python-worker-escalating-tools-v1` permits three turns, allowing source reads
-before an edit. Both require exactly two attempts, an 8,192-token context budget,
-and a 4,096-token output reserve in the WorkAtom. Initial turns use at most 2,048
-output tokens without thinking; retry turns use at most 4,096 including reasoning
-with explicit low effort. RunPlan validates these limits. Resume preserves attempts
-and the pinned profile; changing a failed run's profile in place is rejected.
-
-These profiles are opt-in. The low-effort single-turn profile passed a scoped
-23/24-task qualification; the tool-capable profile passed the scoped three-build
-stateful qualification after feedback and interface-context improvements. The default worker profile remains unchanged.
-
-Failed process gates provide bounded feedback from observed execution data. For
-JSON stdout, up to eight `error` fields are surfaced before truncated logs, with
-JSON paths to locate them in the workflow. These fields can include deliberate
-invalid-request cases; their presence alone does not identify a gate mismatch.
-Expected outputs remain private, and complete raw output remains in artifacts.
-
-To inspect only the second attempt, use `gflo --db PATH history ATOM --attempt 2`.
-Add `--format json` for structured output. The filter preserves task-level status,
-accepted candidate identity, and acceptance warnings. Unknown ordinals fail;
-all retained history integrity checks still run, including unselected attempts.
-
-## Draft a feature plan
-
-`gflo plan-feature REQUEST --profile PROFILE --deployment DEPLOYMENT --output NEW_DIR`
-asks the local model to propose tasks, dependencies, interface contracts, tests,
-and documentation work from a pinned source snapshot. REQUEST is a `FeatureRequest`:
-feature ID, objective, requirement mapping, source revision and SourceBundle, allowed
-paths, initially selected paths, and a catalog of named pinned environments.
-PROFILE is the existing default non-thinking ModelProfile; DEPLOYMENT must match
-its recorded digest. Environments are selected from the trusted catalog, not installed
-by the model. Generate the request schema with:
+Create `.gflo`, copy the private key through SSH, and forward only the model port:
 
 ```sh
-.venv/bin/python -c 'import json; from gflo.planning import FeatureRequest; print(json.dumps(FeatureRequest.model_json_schema(), indent=2))'
+mkdir -p .gflo
+chmod 700 .gflo
+scp monster-gaming-pc.lan:/home/gradrix/.local/state/gflo-model/api-key .gflo/model-key
+chmod 600 .gflo/model-key
+cp config.example.json .gflo/config.json
+ssh -N -L 127.0.0.1:18080:127.0.0.1:18000 monster-gaming-pc.lan
 ```
 
-`gflo check-plan REQUEST PROPOSAL` checks binding, requirement coverage, source
-references, scopes, known environments, dependency cycles, and unordered overlapping
-writes. It does not assess semantic quality or authorize execution. Review proposed
-interfaces and test adequacy before preparing WorkAtoms and trusted gates.
+Keep that SSH terminal open. In another terminal, `python3 -m gflo doctor`. Host-key checking remains enabled. Do not expose this endpoint publicly.
 
-Planning v2 uses two attempts, three turns each, 12K total / 4K output tokens,
-without thinking. Source reads retain the two most recent files, with a bounded
-interface index for navigation. Existing output directories are refused: there is
-no implicit restart or budget reset. Raw calls and observations remain in the run's
-artifact store. Interrupted runs can have incomplete summary files; immutable
-artifacts are the retained evidence. Transport/model errors halt explicitly.
-A `needs-review` result may contain unanswered questions and is always a draft.
+On the rig, configure `.gflo/config.json` with endpoint `http://127.0.0.1:18000` and `api_key_file` set to the absolute private key path above. No SSH tunnel or second machine is needed for local execution.
 
-## Repository snapshots
+## Sandbox image
 
-Capture source on the trusted host, which requires Git and a quiescent checkout.
-Keep the artifact store ignored or outside the captured repository:
+The first profile uses locally installed Python 3.11.15 image ID:
+
+```text
+sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578
+```
+
+Its publisher reference is `python@sha256:ae52c5bef62a6bdd42cd1e8dffef86b9cd284bde9427da79839de7a4b983e7ca`. Preparing another machine may require a one-time download, or transfer it from the rig without accessing a registry:
 
 ```sh
-gflo repository --store .gflo/repository-artifacts capture .
-gflo repository --store .gflo/repository-artifacts list SNAPSHOT_DIGEST --scope gflo
-gflo repository --store .gflo/repository-artifacts read SNAPSHOT_DIGEST gflo/cli.py --max-lines 80
-gflo repository --store .gflo/repository-artifacts search SNAPSHOT_DIGEST validate --scope gflo
-gflo repository --store .gflo/repository-artifacts select SNAPSHOT_DIGEST gflo/cli.py --purpose context
+ssh monster-gaming-pc.lan 'docker save python@sha256:ae52c5bef62a6bdd42cd1e8dffef86b9cd284bde9427da79839de7a4b983e7ca' | docker load
 ```
 
-Use `artifact_digest` from capture as `SNAPSHOT_DIGEST`. Commands return JSON without
-creating a work ledger. Search returns one hit per matching line (first occurrence),
-with source/file identities and explicit completeness and budget reasons. Listing
-supports `--after`; reads preserve complete lines within byte/line budgets. No scope
-means all snapshot paths for this trusted API. Worker access is not enabled implicitly.
+The configured local image ID works after that transfer. Use a newly pinned prepared image for additional dependencies; the factory will not install them on demand.
 
-Context selection reports omitted requested files. `--purpose execution` refuses
-any omitted requested file; an explicit subset still does not validate the whole
-repository. Both selections retain existing bundle limits. Capture rejects unsupported
-files rather than silently dropping them; see [architecture](architecture.md#repository-scale-source-access).
+## Recovery and retention
 
-To propose edits, create a JSON mapping from path to
-`{"expected_digest": "ORIGINAL_FILE_DIGEST", "content": "replacement text"}`.
-Use `null` as expected digest only for a new file. Then run:
+Run `status` first, then `resume RUN_ID`. Pending model requests are not replayed as trusted results. An interrupted attempt consumes its allowance, leftover workspace containers are stopped, and a new attempt receives the retained files and interruption evidence. A completed saved verdict is reconciled only when candidate identity matches.
 
-```sh
-gflo repository --store .gflo/repository-artifacts apply SNAPSHOT_DIGEST edits.json --current SNAPSHOT_DIGEST --writable gflo/cli.py
-```
-
-The caller supplies the trusted current identity; this command cannot establish
-checkout freshness for them. It publishes a derived snapshot in the same store,
-preserves omitted files and executable metadata, and changes no checkout or acceptance.
-Deletion and cross-store export are not implemented. Raw artifacts in `.gflo/` must
-be transferred separately to reuse snapshots on another machine.
-
-## Reviewed task preparation and feature runs
-
-`gflo prepare-task` prepares an independent root task without submitting or running
-it. `gflo run-feature` executes/replays a reviewed snapshot-backed graph, preserving
-accepted-base bindings and stopping on task or combined-validation failure.
-`plan-feature` supports snapshot requests with `--store` and repeated `--context-path`
-flags; `needs-info` means the model returned clarification questions without a plan.
-See [product intake](product-intake.md) for the complete flow, schemas, source-store
-requirements, current-state ownership, and qualification limits.
-
-For the opt-in planning comparison, add `--board` to a snapshot `plan-feature` command.
-Inspect each role's `report.json`, the coordinator's `synthesis.json`, and the top-level
-`result.json`. An advisory-budget halt or specialist failure produces no executable
-plan. The single-planner path remains the normal default; see
-[the board experiment](product-intake.md#optional-specialist-board-experiment).
-
-A specialist question or blocker returns `needs-info` immediately. Inspect root
-`questions.json` and the completed role reports; no coordinator synthesis is
-expected on this path.
-
-
-For a preauthorized feature, use `build-feature` as described in
-[product intake](product-intake.md). Inspect root `result.json`, `feature-plan.json`,
-and `planning/` evidence. `needs-info` returns product questions; `policy-halt`
-identifies an unsupported plan; `planning-halt` retains exhausted/interrupted
-planning. Task/integration halts retain the normal ledger evidence. Interrupted
-execution clears prior success in the build result before revalidation and can be
-replayed with the same command. Exit 0 means accepted, 2 means a reported halt,
-1 means an error, and 130 means interruption. Build output binds the local store
-path; portable fixtures recreate a run, not a moved runtime directory's identity.
-
-
-Memory qualification uses a trusted supervisor with a bounded allocator child.
-It requires increasing `memory.events.local` limit/OOM/kill counters in the same
-cgroup and child SIGKILL, with clean supervisor completion. Docker's `OOMKilled`
-flag is retained in execution evidence but is not the memory-qualification proof;
-we observed it remain false during a kernel-confirmed OOM. Exit 137 alone remains
-insufficient. The existing 128-MiB memory/no-swap/PID/network restrictions are unchanged.
-To repeat qualification and retain each report:
-
-```sh
-PYTHONPATH=. .venv/bin/python scripts/qualify_broker.py \
-  --image sha256:695d05883b15326aea01e9266067ff58c41f3eaa4f647cfc9424b403dbe9548d \
-  --output .gflo/qualification-check --repetitions 10
-```
-
-Use a new output directory. The script stops on the first halt and retains evidence.
-
-
-Reviewed task and final-validation gate order is deterministic across JSON mapping
-order. For older runs, replay preserves the exact retained gate ordering after
-checking that gate specifications and all other contract fields match. It does not
-rewrite historical acceptance or permit changed gates/budgets under an existing ID.
-
-The repair worker uses a dedicated system instruction matching its enforced response
-protocol: exact edits for existing files (including retained drafts), full candidates
-only for new files. Default workers retain their existing system instruction. Token
-counts and generation use the same messages, and recorded requests preserve the exact
-instruction used by each historical run. This does not change hash/scope checks or
-retry limits. Invalid full-file responses remain rejected by the repair parser.
-
-Repair workers now receive short, turn-bound file targets in
-`instruction.repair_targets`. A `repair_handle` response contains a target plus exact
-old/new text; the controller resolves it to the complete file hash. The immutable
-mapping binds the full current draft and work contract, includes only visible writable
-files, and is retained with model evidence. Targets are regenerated for every turn;
-unknown targets and mappings for another draft/contract are rejected. Existing hash
-repairs remain parseable, and final acceptance still requires all independent gates.
+Keep `.gflo/runs` together: SQLite, acceptance snapshots, private Git snapshots and artifacts form one recoverable set. Do not edit an active run. To change the requirement or exhausted budget, create a new task/run. No automatic cleanup removes old evidence; archive old run directories and their database together when desired.

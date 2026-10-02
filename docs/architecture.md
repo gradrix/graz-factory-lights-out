@@ -1,144 +1,42 @@
-# Architecture
+# Architecture and limits
 
-GFLO implements a prepared-task execution loop. A trusted caller supplies the work
-contract, immutable Python source, model deployment profile, and independent gates.
-Autonomous product planning and checkout promotion are future work.
+## One task through three responsibilities
 
-```mermaid
-flowchart LR
-    P[Prepared plan] --> C[Controller]
-    C --> W[Bounded model view]
-    W --> E[Edit proposal]
-    E --> B[Isolated execution]
-    B --> G[Independent gates]
-    G --> L[Durable acceptance or failure]
-    L --> C
-    L --> H[History and evidence]
+The CLI snapshots a clean Git commit and operator-owned acceptance files. The runner records a task in SQLite, then invokes the worker. The worker gets two tools: a shell in an offline container and a request to run acceptance checks. A final verification runs independently of the worker's completion message.
+
+```text
+pending → running → verification → accepted
+              ↑           │
+              └─ repair ──┘
+                 │
+              exhausted
+
+process interruption → interrupted → resume within original budget
+accepted artifact changed → invalidated
 ```
 
-## Authority
+SQLite stores run/attempt states; files store complete requests, outputs, checks and patches. An OS file lock serializes runs in one state directory. Each new attempt receives the objective and previous failure evidence, with the retained workspace. There is no accumulated conversation across attempts and no hidden context condensation. Oversized model requests fail visibly.
 
-The controller owns scheduling, leased attempts, validation, and acceptance. The
-model can propose complete file replacements within granted paths or request a
-file from the immutable source bundle. It cannot accept work, alter gates, delete
-files, access host files, or grant itself tools. Controller and worker orchestration
-currently share a process; the code execution sandbox is a separate container.
+The worker cannot mount the controller database, private Git index, credentials or acceptance files. Its shell container has no network, a read-only root filesystem, a writable candidate mount, a bounded temporary filesystem, resource limits and a non-root user. Verification uses a fresh container with both mounts read-only. The runner cleans leftover containers for its workspace before reconciling a resumed run.
 
-`bounded-python-v4` composes source, requirements, up to sixteen verified upstream
-contract excerpts, and bounded readable failure observations. Excerpts are limited
-to 16,384 characters each and still subject to the exact overall tokenizer budget.
-Task text is untrusted data. Expected gate outputs stay outside the worker view.
-Opaque cross-bundle dependency artifacts are not supported by this worker profile.
+Generated code still runs in the same kernel through Docker. This is practical isolation for local coding, not a hardened hostile multi-tenant service. Tests can be incomplete or deceptive; operator-owned black-box checks and patch review remain necessary. The system does not infer the adequacy of a test suite from an exit code.
 
-The model client accepts a numeric-loopback HTTP endpoint, serializes requests,
-and checks the server's tokenizer and usage. The routine budget is 8K tokens with
-2K reserved for output, temperature 0, seed 42, and thinking disabled. The explicit
-`vllm-python-worker-reasoning-v1` model profile enables thinking for both exact
-tokenization and generation. Its reasoning and final answer share the atom's output
-reserve; changing the profile does not enlarge that reserve. Reasoning text is
-retained as untrusted response evidence, never parsed as a candidate. Malformed or
-truncated responses retain diagnostic evidence. There is no cloud fallback.
+## Bounds
 
-## Execution and validation
+- Default three attempts; permitted range one to ten.
+- Default 24 model turns per attempt; permitted range one to 100.
+- Five identical tool requests stop an attempt's model loop.
+- Model request timeout up to 300 seconds; worker stops scheduling turns after 30 minutes. An already-started command can finish after that scheduling deadline.
+- Shell commands: 60 seconds. Each acceptance command: 120 seconds.
+- Container: 1 GiB RAM, two CPUs, 128 processes, 128 MiB `/tmp`; shell output retains its final 16 KiB.
+- No dependency downloads during runs. Shell containers use `--network none`, images use `--pull never`, and inference is restricted to loopback, directly or through an explicit SSH tunnel.
 
-The broker accepts self-contained text bundles: at most 100 paths and 256 KiB of
-serialized source. Each process runs in a fresh local Docker container, with no
-network, credentials, host checkout, Docker socket, or GPU. It uses UID/GID 65534,
-a read-only root, bounded tmpfs, dropped capabilities, 128 MiB RAM, no additional
-swap, one CPU, and 32 PIDs. Qualification checks actual memory and PID enforcement.
-The Docker daemon and shared host kernel remain trusted infrastructure.
+The filesystem is not quota-managed. Keep task inputs and generated output bounded and monitor disk space. The state directory lock does not serialize unrelated state directories or other clients of the GPU. A Windows/WSL shutdown stops the rig; Docker restart policy resumes serving when Docker starts again, but does not boot Windows or WSL.
 
-Process gates compare observed output with controller-owned expectations. Every
-case runs independently, separate from candidate smoke execution. Receipt checks
-bind candidate, command, stdin, purpose, image, and container identity. Malformed
-or mismatched evidence is inconclusive. Finite gates can miss defects; later
-contradictory evidence is an [Acceptance finding](operations.md#acceptance-findings).
+## Extension seams
 
-This capability does not install dependencies, build arbitrary repositories, or
-export mutable container workspaces. Binary editing/execution and general shell
-workflows need additional capabilities and qualification. Opaque snapshot preservation
-is supported independently of those worker capabilities.
+`Factory(state, worker, verifier, cleanup)` owns task transitions. The worker callable receives `(workspace, task, previous_evidence, attempt_number)` and returns a report. The verifier receives `(workspace, task, acceptance_directory)` and returns a boolean verdict plus check evidence. Cleanup terminates retained execution before observing a resumed candidate.
 
-## Durable state and integration
+These callables also enable deterministic fault injection in tests. Production uses one implementation of each. Further stacks can supply a pinned local image and acceptance commands; shell tooling and the prompt currently assume a Python project. Symlink-containing input repositories and Git submodules are rejected explicitly.
 
-SQLite stores contracts, attempts, events, receipts, and acceptances with WAL and
-FULL synchronization. Leases fence stale results. The artifact store publishes
-immutable bytes by content hash; referenced bytes are reverified on reuse. There
-is no garbage collection. Together these support retry, crash recovery, cumulative
-cost reporting, and candidate diffs against the original source.
-
-Prepared integration combines non-overlapping accepted changes from one pinned
-base. It rechecks child contracts, candidate hashes, current input identities, and
-upstream contracts, then runs independent combined gates. Children must have
-RunPlans; nested IntegrationPlans are not supported. The caller owns current-state
-accuracy. Integration produces an artifact, not an atomic Git or deployment update.
-
-For the domain vocabulary see [CONTEXT.md](../CONTEXT.md); for commands and recovery
-semantics see [Operations](operations.md).
-
-## Repository-scale source access
-
-[ADR 0001](adr/0001-repository-snapshots-and-bounded-task-inputs.md) separates
-repository identity from bounded task inputs. `gflo.repository` now provides real
-legacy-bundle and immutable-snapshot backends: scoped listing, exact line reads,
-bounded literal search, context/execution selection, and digest-bound edits.
-Results identify the snapshot and files and report incomplete coverage. Edits
-preserve every unselected file, rejecting stale bases and missing source evidence.
-Historical bundle and record identities remain unchanged.
-
-Capture inventories Git-visible file bytes, including dirty and nonignored untracked
-files, and checks inventory/content again before publishing. It requires a quiescent
-checkout; it is not an atomic filesystem snapshot. Symlinks, submodules, binaries,
-unresolved merges, and unsupported paths are rejected. Limits are 100,000 files,
-8 MiB per file, and 512 MiB total. Same-store edit assembly verifies all original
-file bytes but stores only changed blobs and a new manifest. No garbage collection
-or cross-store snapshot export is implemented.
-
-Legacy `FeatureRequest.source`, `RunPlan.source`, and candidate construction still
-embed bounded `SourceBundle` objects with their original meanings. New repository
-feature requests use snapshot references. The planner selects a bounded projection;
-`gflo.preparation` materializes reviewed tasks into existing RunPlans. The sequential
-`gflo.progression` controller advances accepted snapshots, binds predecessor evidence,
-and rechecks findings before reuse. Independent final gates use a validation-only
-record, not a model task. Repeated calls reconstruct progress from immutable evidence.
-See [product intake](product-intake.md) for commands and qualification limits.
-
-Search currently scans text with explicit file/byte/hit budgets; no symbol or graph
-index exists. Revision-bound symbol and dependency queries can be added behind the
-module without coupling scheduling to graph storage. The task dependency graph
-orders work; repository dependencies provide impact evidence. Large-repository
-qualification still needs selection sufficiency, freshness, resource measurements,
-and repeated whole-feature correctness on real repositories.
-
-## Relationship to SFLO and Gas City
-
-The original [foundation decision](../.scratch/local-lights-out-factory/research/orchestration-foundations.md)
-selected a small GFLO core borrowing contracts rather than adopting either runtime.
-SFLO documents artifact-gated product stages with distinct PM, developer, QA and
-security roles. Gas City provides configurable multi-agent orchestration primitives,
-including work tracking/routing and reconciliation. See their current
-[SFLO](https://github.com/simonasrazm/simon-factory-lights-out) and
-[Gas City](https://github.com/gastownhall/gascity) descriptions (checked 2026-09-10).
-
-GFLO follows those ideas through bounded work, retained artifacts, separate validation,
-and durable progress. It does not implement SFLO's exact pipeline or Gas City's
-runtime. The optional specialist board is a GFLO planning-policy experiment above
-that core. Its consensus has no acceptance authority. More roles become defaults
-only when measured outcomes justify the additional coordination and model cost.
-
-
-Snapshot capture preserves bounded opaque files, such as existing SQLite databases,
-as immutable blobs. Text reads/search/selections still reject non-UTF-8 or NUL content;
-workers receive only reviewed text selections. This permits unrelated binary assets
-to survive text changes without importing, executing, or pretending to understand them.
-The snapshot record and existing identities are unchanged; only capture admission
-now accepts opaque bytes within the existing limits.
-
-The opt-in development repair protocol retains draft bundles separately from the
-immutable task input. Scope validation precedes draft projection and sandbox checks;
-file hashes and unique non-overlapping matches bind small repairs to the current
-draft. The controller may run the first pinned gate case for development feedback
-within existing model turns. These observations create no gate receipt or acceptance;
-independent final gates still validate the submitted candidate. Drafts survive
-interruption and remain auditable even without candidate publication. Exhausted
-policy builds export review packets without resetting work or selecting another model.
+Automatic planning/delegation is a later stage. First accumulate real-task completion, repair, interruption and regression evidence. SFLO inspired explicit acceptance/repair stages; Gas City inspired work state that survives disposable sessions. Neither is a runtime dependency. The new [roadmap](roadmap.md) describes the staged autonomy work; the [feasibility research](research/autonomy-feasibility.md) supplies current primary sources.
