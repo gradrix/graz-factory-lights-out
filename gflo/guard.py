@@ -15,7 +15,18 @@ def main():
     process = None
     result = 130
     try:
-        process = subprocess.Popen(spec['args'], stdin=subprocess.DEVNULL)
+        # Complete creation before starting any writer. Removing a name while
+        # an asynchronous `docker run` is still creating it can strand a late job.
+        create = [x for x in spec['args'] if x != '--rm']
+        create[1] = 'create'
+        created = subprocess.run(create, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE,
+                                 stderr=subprocess.PIPE, timeout=30)
+        if created.returncode:
+            sys.stdout.buffer.write(created.stderr)
+            return created.returncode
+        if select.select([sys.stdin.buffer], [], [], 0)[0] and not sys.stdin.buffer.read(1):
+            return 130
+        process = subprocess.Popen(['docker', 'start', '-a', spec['name']], stdin=subprocess.DEVNULL)
         deadline = time.monotonic() + spec['timeout']
         while process.poll() is None:
             if time.monotonic() >= deadline:

@@ -47,3 +47,19 @@ Sandbox().execute(sys.argv[1], ['sh','-c','while true; do echo x >> ticks; sleep
             finally:
                 if owner.poll() is None: owner.kill(); owner.wait()
                 Sandbox().cleanup(workspace)
+
+    def test_closed_owner_pipe_never_starts_a_new_writer(self):
+        import json
+        import subprocess
+        import sys
+        import uuid
+        with tempfile.TemporaryDirectory() as directory:
+            name = 'gflo-job-' + uuid.uuid4().hex[:16]
+            args = ['docker', 'run', '--rm', '--pull', 'never', '--name', name,
+                    '--network', 'none', '--mount', f'type=bind,src={directory},dst=/workspace',
+                    DEFAULT_IMAGE, 'sh', '-c', 'echo unsafe > /workspace/started']
+            spec = json.dumps({'args': args, 'name': name, 'timeout': 10}) + '\n'
+            result = subprocess.run([sys.executable, '-m', 'gflo.guard'], input=spec, text=True, capture_output=True, timeout=45)
+            self.assertEqual(result.returncode, 130, result)
+            self.assertFalse((Path(directory) / 'started').exists())
+            self.assertNotEqual(subprocess.run(['docker', 'inspect', name], capture_output=True).returncode, 0)
