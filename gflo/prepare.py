@@ -53,10 +53,16 @@ def preparation(store):
         for stale in store.root.glob('.work-*'):
             discard(stale)
         work = Path(tempfile.mkdtemp(prefix='.work-', dir=store.root))
+        cleaned = False
+        def cleanup():
+            nonlocal cleaned
+            if not cleaned:
+                discard(work)
+                cleaned = True
         try:
-            yield work
+            yield work, cleanup
         finally:
-            discard(work)
+            cleanup()
 
 
 def execute(image, command, work, *, dependencies=None, output=None, timeout=60, cancelled=lambda: False,
@@ -105,7 +111,7 @@ def execute(image, command, work, *, dependencies=None, output=None, timeout=60,
 def check(environment, *, cancelled=lambda: False):
     store = EnvironmentStore(environment.store)
     environment = store.resolve(environment.id, environment.receipt_hash)
-    with preparation(store) as work:
+    with preparation(store) as (work, cleanup):
         return smoke(environment.image, environment.dependencies, work, profile=environment.profile, cancelled=cancelled)
 
 
@@ -143,7 +149,7 @@ def prepare(store, profile, *, timeout=180, cancelled=lambda: False):
                                    capture_output=True, text=True, timeout=min(20, remaining()))
         if installed.returncode or installed.stdout.strip() != base:
             raise ValueError('Approved base image is missing; provision it before preparation: ' + base)
-    with preparation(store) as work:
+    with preparation(store) as (work, cleanup):
         approved = None if profile == 'python-stdlib' else RECIPES / profile
         metadata = {'profile': profile, 'image': image, 'platform': 'linux/amd64',
                     'recipe_sha256': hashlib.sha256(encoded({'recipe': RECIPE, 'preparer': hashlib.sha256(Path(__file__).read_bytes()).hexdigest()})).hexdigest(), 'locks': {}}
@@ -189,6 +195,8 @@ def prepare(store, profile, *, timeout=180, cancelled=lambda: False):
             def verify(dependencies):
                 result = smoke(image, dependencies, work, profile=profile, timeout=remaining(), cancelled=cancelled)
                 result['preparation'] = preparation_evidence
+                archive.close()
+                cleanup()  # No fallible staging cleanup remains after publication commits.
                 return result
             return store.publish(archive, metadata, verify,
                 cancelled=lambda: cancelled() or time.monotonic() >= deadline)
@@ -204,7 +212,7 @@ def validate_project(store, profile, project):
     names = {'python-api': ['pyproject.toml'], 'node-ts': ['package.json', 'package-lock.json']}.get(profile)
     if names is None:
         raise ValueError('Unsupported environment profile')
-    with preparation(store) as work:
+    with preparation(store) as (work, cleanup):
         inputs = work / 'inputs'
         inputs.mkdir()
         hashes = {}

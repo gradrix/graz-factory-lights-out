@@ -111,3 +111,13 @@ class PrepareTests(unittest.TestCase):
         from gflo.prepare import infer_profile
         for profile in ('python-stdlib', 'python-api', 'node-ts'):
             self.assertEqual(infer_profile(Path('evaluations/environment-coding') / profile / 'source'), profile)
+
+    def test_failed_outer_cleanup_leaves_no_reusable_environment(self):
+        from unittest.mock import patch
+        with tempfile.TemporaryDirectory() as directory:
+            store = EnvironmentStore(Path(directory) / 'store')
+            with patch('gflo.prepare.discard', side_effect=OSError('cleanup unavailable')):
+                with self.assertRaisesRegex(OSError, 'cleanup unavailable'):
+                    prepare(store, 'python-stdlib')
+            published = [p for p in store.root.iterdir() if not p.name.startswith('.')]
+            self.assertEqual(published, [], 'failed preparation left a reusable environment')
