@@ -1,0 +1,21 @@
+{
+  "run": "43b7647311b0",
+  "status": "exhausted",
+  "attempts": 3,
+  "contract": "ff8bf5bf04c9a9a5c8ff3a1daa14c0b1d3705ce4156308d5d48698fb702b9c8c",
+  "hashes": {
+    "task.json": "ff8bf5bf04c9a9a5c8ff3a1daa14c0b1d3705ce4156308d5d48698fb702b9c8c",
+    "workspace/domain.py": "046876362d6c270b58b934b0bb60cdb884adafe68ebd8cc4c222fa5965b7452a",
+    "workspace/cli.py": "7b7892e1a2bda5caf8d09ef44fb75e8a24398546b69052fb9cb5b3d44f4d9384",
+    "workspace/api.py": "2fe7a4684a649f7860530589783f08442c8f0649f47953f3a46ff0336c1d82e5",
+    "workspace/tests/test_domain.py": "c2c4ffca7c25555a8d86a632e7f3cfe67beb9ee4fb2e81d5ab73e0a6fcdb2bb1",
+    "workspace/README.md": "7870f3500a52d5d764530b276d68398af763573ff1104e6818da28765309fe4f",
+    "acceptance/check.py": "2afaab196a08d595d9289cbd9dd3dfc21d3e9cea5bcde0ce519d7f8997ea06fd",
+    "attempts/2/verification.json": "cfa7b30a1026723a49d44a8088724070525986d2876d180a3d1634d2da116892",
+    "attempts/1/verification.json": "62ad8902b45061453c2b9d60b56cd3b8720b34068503b2cc3e57e0d03e77836d",
+    "attempts/3/verification.json": "4b2e39933056a4408a3dcc866184cae739dfac6489ee7cac55aff8af9466bbe2"
+  },
+  "task": "03-bit-fields",
+  "checks": [],
+  "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc"
+}

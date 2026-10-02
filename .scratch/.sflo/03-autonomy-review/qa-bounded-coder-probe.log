@@ -1,0 +1,25 @@
+[
+  {
+    "case": "structured-control",
+    "json_valid": true,
+    "secret_suffix_exposed": false
+  },
+  {
+    "case": "quoted-space",
+    "json_valid": true,
+    "secret_suffix_exposed": true
+  },
+  {
+    "case": "quoted-escape",
+    "json_valid": true,
+    "secret_suffix_exposed": true
+  },
+  {
+    "case": "malformed",
+    "http_status": 404
+  },
+  {
+    "case": "oversized",
+    "http_status": 404
+  }
+]

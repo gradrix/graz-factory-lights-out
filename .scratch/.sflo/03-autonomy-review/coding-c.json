@@ -1,0 +1,170 @@
+{
+  "manifest_sha256": "560c3e5645ed2d9ea91404e05aa4ddb2f4c9b1eb01f8629a98ec6e6ae738938b",
+  "wall_budget_s_per_task": 900,
+  "results": [
+    {
+      "task": "01-seat-allocation",
+      "run": "cc965a7d716d",
+      "status": "accepted",
+      "attempts": 1,
+      "elapsed_s": 107.79,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "pass"
+      ],
+      "independent_checks_passed": true
+    },
+    {
+      "task": "02-grid-distance",
+      "run": "2914f77232b0",
+      "status": "accepted",
+      "attempts": 1,
+      "elapsed_s": 81.57,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "pass"
+      ],
+      "independent_checks_passed": true
+    },
+    {
+      "task": "03-bit-fields",
+      "run": "43b7647311b0",
+      "status": "exhausted",
+      "attempts": 3,
+      "elapsed_s": 173.75,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [],
+      "independent_checks_passed": null
+    },
+    {
+      "task": "04-polynomial",
+      "run": "7e948830a4a9",
+      "status": "accepted",
+      "attempts": 1,
+      "elapsed_s": 83.61,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "pass"
+      ],
+      "independent_checks_passed": true
+    },
+    {
+      "task": "05-paragraph-wrap",
+      "run": "df444f4008b1",
+      "status": "accepted",
+      "attempts": 1,
+      "elapsed_s": 86.57,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "pass"
+      ],
+      "independent_checks_passed": true
+    },
+    {
+      "task": "06-luhn-check",
+      "run": "fbb865b3744f",
+      "status": "exhausted",
+      "attempts": 3,
+      "elapsed_s": 150.57,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [],
+      "independent_checks_passed": null
+    },
+    {
+      "task": "07-monthly-calendar",
+      "run": "8e64a711a6ca",
+      "status": "accepted",
+      "attempts": 1,
+      "elapsed_s": 81.18,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "pass"
+      ],
+      "independent_checks_passed": true
+    },
+    {
+      "task": "08-resource-matching",
+      "run": "353c1b95e636",
+      "status": "interrupted",
+      "attempts": 3,
+      "elapsed_s": 900.41,
+      "timeout": true,
+      "question": null,
+      "review_decisions": [],
+      "independent_checks_passed": null
+    },
+    {
+      "task": "09-duration-language",
+      "run": "dbc86949d658",
+      "status": "accepted",
+      "attempts": 1,
+      "elapsed_s": 68.4,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "pass"
+      ],
+      "independent_checks_passed": true
+    },
+    {
+      "task": "10-approval-ballots",
+      "run": "7a6dd457c3fb",
+      "status": "accepted",
+      "attempts": 2,
+      "elapsed_s": 120.91,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "pass"
+      ],
+      "independent_checks_passed": true
+    },
+    {
+      "task": "11-run-length-codec",
+      "run": "9785dca7d431",
+      "status": "accepted",
+      "attempts": 1,
+      "elapsed_s": 139.6,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "pass"
+      ],
+      "independent_checks_passed": true
+    },
+    {
+      "task": "12-form-query",
+      "run": "4f1f0bb04c57",
+      "status": "accepted",
+      "attempts": 2,
+      "elapsed_s": 213.32,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "pass"
+      ],
+      "independent_checks_passed": true
+    },
+    {
+      "task": "ambiguous",
+      "run": "da2fc7d2e36b",
+      "status": "needs_input",
+      "attempts": 1,
+      "elapsed_s": 9.79,
+      "timeout": false,
+      "question": "For the new booking action: when multiple customers request the last available appointment simultaneously, which winner-selection policy should apply \u2014 (A) paid membership takes priority over earliest request time (a paid customer requesting later still wins over a free customer requesting earlier), or (B) earliest request time takes priority over paid membership (first-come wins regardless of membership)? Please confirm the exact tie-break for equal request times as well.",
+      "review_decisions": [],
+      "independent_checks_passed": null
+    }
+  ],
+  "accepted": 9,
+  "ambiguity_stopped": true,
+  "gate_passed": false
+}

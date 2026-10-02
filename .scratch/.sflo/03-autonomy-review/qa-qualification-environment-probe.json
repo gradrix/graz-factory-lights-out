@@ -1,0 +1,181 @@
+[
+  {
+    "case": "actual-D-environment",
+    "result": {
+      "passed": true,
+      "expected": {
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "version": "3.12.13",
+        "sys_version": "3.12.13 (main, Mar 16 2026, 23:06:54) [GCC 14.2.0]",
+        "implementation": "CPython"
+      },
+      "observed": {
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "version": "3.12.13",
+        "implementation": "CPython",
+        "sys_version": "3.12.13 (main, Mar 16 2026, 23:06:54) [GCC 14.2.0]"
+      },
+      "error": "",
+      "check": {
+        "command": [
+          "python",
+          "-c",
+          "import json,platform,sys;print(json.dumps(dict(version=platform.python_version(),implementation=platform.python_implementation(),sys_version=sys.version)))"
+        ],
+        "exit_code": 0,
+        "timed_out": false,
+        "output": "{\"version\": \"3.12.13\", \"implementation\": \"CPython\", \"sys_version\": \"3.12.13 (main, Mar 16 2026, 23:06:54) [GCC 14.2.0]\"}\n",
+        "elapsed_s": 1.3738008718937635,
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc"
+      }
+    }
+  },
+  {
+    "case": "version-mismatch",
+    "result": {
+      "passed": false,
+      "expected": {
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "version": "0.0.0",
+        "sys_version": "3.12.13 (main, Mar 16 2026, 23:06:54) [GCC 14.2.0]",
+        "implementation": "CPython"
+      },
+      "observed": {
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "version": "3.12.13",
+        "implementation": "CPython",
+        "sys_version": "3.12.13 (main, Mar 16 2026, 23:06:54) [GCC 14.2.0]"
+      },
+      "error": "version: expected '0.0.0', observed '3.12.13'",
+      "check": {
+        "command": [
+          "python",
+          "-c",
+          "import json,platform,sys;print(json.dumps(dict(version=platform.python_version(),implementation=platform.python_implementation(),sys_version=sys.version)))"
+        ],
+        "exit_code": 0,
+        "timed_out": false,
+        "output": "{\"version\": \"3.12.13\", \"implementation\": \"CPython\", \"sys_version\": \"3.12.13 (main, Mar 16 2026, 23:06:54) [GCC 14.2.0]\"}\n",
+        "elapsed_s": 0.9200569447129965,
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc"
+      }
+    }
+  },
+  {
+    "case": "missing-image",
+    "result": {
+      "passed": false,
+      "expected": {
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "version": "3.12.13",
+        "sys_version": "3.12.13 (main, Mar 16 2026, 23:06:54) [GCC 14.2.0]",
+        "implementation": "CPython"
+      },
+      "observed": {
+        "image": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      },
+      "error": "Sandbox interpreter probe failed; inspect check output; image: expected 'sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc', observed 'sha256:0000000000000000000000000000000000000000000000000000000000000000'; version: expected '3.12.13', observed None; implementation: expected 'CPython', observed None",
+      "check": {
+        "command": [
+          "python",
+          "-c",
+          "import json,platform,sys;print(json.dumps(dict(version=platform.python_version(),implementation=platform.python_implementation(),sys_version=sys.version)))"
+        ],
+        "exit_code": 1,
+        "timed_out": false,
+        "output": "Error response from daemon: No such image: sha256:0000000000000000000000000000000000000000000000000000000000000000\n",
+        "elapsed_s": 0.1158886649645865,
+        "image": "sha256:0000000000000000000000000000000000000000000000000000000000000000"
+      }
+    }
+  },
+  {
+    "case": "malformed-runtime",
+    "result": {
+      "passed": false,
+      "expected": {
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "version": "3.12.13",
+        "sys_version": "3.12.13 (main, Mar 16 2026, 23:06:54) [GCC 14.2.0]",
+        "implementation": "CPython"
+      },
+      "observed": {
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc"
+      },
+      "error": "Sandbox interpreter probe returned invalid runtime facts; version: expected '3.12.13', observed None; implementation: expected 'CPython', observed None",
+      "check": {
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "exit_code": 0,
+        "output": "invalid JSON"
+      }
+    }
+  },
+  {
+    "case": "malformed-runtime",
+    "result": {
+      "passed": false,
+      "expected": {
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "version": "3.12.13",
+        "sys_version": "3.12.13 (main, Mar 16 2026, 23:06:54) [GCC 14.2.0]",
+        "implementation": "CPython"
+      },
+      "observed": {
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc"
+      },
+      "error": "Sandbox interpreter probe returned invalid runtime facts; version: expected '3.12.13', observed None; implementation: expected 'CPython', observed None",
+      "check": {
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "exit_code": 0,
+        "output": "[]"
+      }
+    }
+  },
+  {
+    "case": "malformed-runtime",
+    "result": {
+      "passed": false,
+      "expected": {
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "version": "3.12.13",
+        "sys_version": "3.12.13 (main, Mar 16 2026, 23:06:54) [GCC 14.2.0]",
+        "implementation": "CPython"
+      },
+      "observed": {
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc"
+      },
+      "error": "Sandbox interpreter probe returned invalid runtime facts; version: expected '3.12.13', observed None; implementation: expected 'CPython', observed None",
+      "check": {
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "exit_code": 0,
+        "output": "{\"version\":\"3.12.13\",\"implementation\":\"CPython\"}"
+      }
+    }
+  },
+  {
+    "case": "legacy-observed-facts",
+    "result": {
+      "passed": true,
+      "expected": null,
+      "observed": {
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "version": "3.12.13",
+        "implementation": "CPython",
+        "sys_version": "3.12.13 (main, Mar 16 2026, 23:06:54) [GCC 14.2.0]"
+      },
+      "error": "",
+      "check": {
+        "command": [
+          "python",
+          "-c",
+          "import json,platform,sys;print(json.dumps(dict(version=platform.python_version(),implementation=platform.python_implementation(),sys_version=sys.version)))"
+        ],
+        "exit_code": 0,
+        "timed_out": false,
+        "output": "{\"version\": \"3.12.13\", \"implementation\": \"CPython\", \"sys_version\": \"3.12.13 (main, Mar 16 2026, 23:06:54) [GCC 14.2.0]\"}\n",
+        "elapsed_s": 0.869302858132869,
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc"
+      }
+    }
+  }
+]

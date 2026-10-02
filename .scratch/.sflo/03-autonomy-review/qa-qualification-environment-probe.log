@@ -1,0 +1,3 @@
+Qualification environment mismatch: version: expected '0.0.0', observed '3.12.13'
+Qualification environment mismatch: Sandbox interpreter probe failed; inspect check output; image: expected 'sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc', observed 'sha256:0000000000000000000000000000000000000000000000000000000000000000'; version: expected '3.12.13', observed None; implementation: expected 'CPython', observed None
+PASS actual D target, mismatch-before-model, missing-image-before-model, malformed runtime fail closed, legacy facts; no model calls

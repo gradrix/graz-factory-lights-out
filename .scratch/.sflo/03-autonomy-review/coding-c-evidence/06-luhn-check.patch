@@ -1,0 +1,139 @@
+--- a/README.md
++++ b/README.md
+@@ -1,3 +1,35 @@
+ # JSON utility
+ 
+-Run `python cli.py` with JSON on stdin. The identity action returns its value unchanged.
++Run `python cli.py` with one JSON object on stdin; one JSON result is written to
++stdout. On a `ValueError` (including unknown actions) the CLI prints the error
++message to stderr, exits with code 2, and prints no traceback. Operations never
++mutate the input payload, even when they fail.
++
++Actions:
++
++- `identity`: `{"action":"identity","value":<any JSON value>}` returns the value
++  unchanged.
++- `check`: `{"action":"check","number":"4992 781-2"}` returns `true` when the
++  Luhn checksum of the number is divisible by ten. The number may contain up to
++  100 ASCII decimal digits, spaces and hyphens; spaces and hyphens are removed.
++  If no digit remains, it returns `false`.
++- `append`: `{"action":"append","number":"4992 781"}` returns the normalized
++  digits plus the unique Luhn check digit, e.g. `"49927816"`. Leading zeroes are
++  preserved. It raises `ValueError` (CLI exit 2, message on stderr) when no digit
++  remains after removing spaces and hyphens.
++
++Example:
++
++```console
++$ echo '{"action":"append","number":"4992 781"}' | python cli.py
++"49927816"
++$ echo '{"action":"check","number":"4992 781-6"}' | python cli.py
++true
++$ echo '{"action":"append","number":"- -"}' | python cli.py
++at least one digit is required
++$ echo ...; echo $?   # 2
++```
++
++Boundary semantics: an empty or separator-only `number` gives `check` false and
++`append` a `ValueError`; a single digit is valid for both. Unknown actions raise
++`ValueError`.
+--- a/api.py
++++ b/api.py
+@@ -2,4 +2,6 @@
+ def dispatch(payload):
+  action=payload["action"]
+  if action=="identity":return domain.identity(payload)
++ if action=="check":return domain.check(payload)
++ if action=="append":return domain.append(payload)
+  raise ValueError("unknown action: "+str(action))
+--- a/domain.py
++++ b/domain.py
+@@ -1,2 +1,46 @@
++"""Domain actions: identity, Luhn checksum validation, Luhn check-digit append."""
++
+ def identity(payload):
+- return payload['value']
++    return payload['value']
++
++def _digits(payload):
++    """Return the digit characters of payload['number'], spaces and hyphens removed."""
++    return ''.join(c for c in payload['number'] if c not in ' -')
++
++def _luhn_sum(digits):
++    """Sum of the Luhn-weighted digits: rightmost is the check digit, alternate
++    digits moving left are doubled (subtract 9 when the doubling exceeds 9)."""
++    total = 0
++    double = False
++    for c in reversed(digits):
++        d = ord(c) - 48
++        if double:
++            d *= 2
++            if d > 9:
++                d -= 9
++        total += d
++        double = not double
++    return total
++
++def check(payload):
++    """True when the number's Luhn checksum is divisible by ten.
++
++    Input syntax: 0..100 ASCII decimal digits, spaces and hyphens. If no digit
++    remains after removing spaces and hyphens, return False.
++    """
++    digits = _digits(payload)
++    if not digits:
++        return False
++    return _luhn_sum(digits) % 10 == 0
++
++def append(payload):
++    """Return the normalized digits plus the unique Luhn check digit.
++
++    Raises ValueError when no digit remains after removing spaces and hyphens.
++    Leading zeroes are preserved.
++    """
++    digits = _digits(payload)
++    if not digits:
++        raise ValueError('at least one digit is required')
++    check_digit = (10 - _luhn_sum(digits + '0') % 10) % 10
++    return digits + str(check_digit)
+--- a/tests/test_public.py
++++ b/tests/test_public.py
+@@ -0,0 +1,38 @@
++import unittest
++from api import dispatch
++
++class CheckAction(unittest.TestCase):
++    def test_check_normal_and_boundary(self):
++        # Canonical Luhn example: valid; separators ignored; empty/all-separator
++        # inputs are the boundary and return False.
++        self.assertIs(dispatch({"action": "check", "number": "7992 781-2"}), True)
++        self.assertIs(dispatch({"action": "check", "number": "0000"}), True)
++        self.assertIs(dispatch({"action": "check", "number": "18"}), True)
++        self.assertIs(dispatch({"action": "check", "number": "0"}), True)
++        self.assertIs(dispatch({"action": "check", "number": "1"}), False)
++        self.assertIs(dispatch({"action": "check", "number": ""}), False)
++        self.assertIs(dispatch({"action": "check", "number": " -  - "}), False)
++
++    def test_append_normal_and_leading_zero(self):
++        # Check digit is unique and leading zeroes survive normalization.
++        self.assertEqual(dispatch({"action": "append", "number": "7992 781"}), "79927812")
++        self.assertEqual(dispatch({"action": "append", "number": "001234567890123"}), "0012345678901237")
++        self.assertEqual(dispatch({"action": "append", "number": "-0-0-0-"}), "0000")
++        self.assertEqual(dispatch({"action": "append", "number": "1"}), "18")
++        # Appended result always passes check.
++        for number in ("7992 781", "001234567890123", "9" * 100):
++            result = dispatch({"action": "append", "number": number})
++            self.assertIs(dispatch({"action": "check", "number": result}), True)
++
++    def test_rejected_and_preserved_behaviors(self):
++        # append with no digit raises ValueError; unknown action raises ValueError.
++        with self.assertRaises(ValueError):
++            dispatch({"action": "append", "number": " - "})
++        with self.assertRaises(ValueError):
++            dispatch({"action": "frobnicate", "value": 1})
++        # identity is preserved for any JSON value, including containers.
++        value = {"nested": [1, None, True, "x"]}
++        self.assertEqual(dispatch({"action": "identity", "value": value}), value)
++
++if __name__ == "__main__":
++    unittest.main()

@@ -1,0 +1,10 @@
+{
+  "question": "For the new booking action: when multiple customers request the last available appointment simultaneously, which winner-selection policy should apply \u2014 (A) paid membership takes priority over earliest request time (a paid customer requesting later still wins over a free customer requesting earlier), or (B) earliest request time takes priority over paid membership (first-come wins regardless of membership)? Please confirm the exact tie-break for equal request times as well.",
+  "question_review": {
+    "needed": true,
+    "basis": "The product owner has not decided whether paid membership has priority over earliest request time; these rules give different winners. Ask the owner to choose the policy before implementing winner selection.",
+    "guidance": "The objective explicitly states the winner-selection policy is undecided and instructs the implementer to ask the owner before coding. The proposed question correctly surfaces this unresolved product choice (paid-membership priority vs. earliest-request-time priority) and also asks about the equal-request-time tie-break, which is a consequential sub-decision needed to implement the chosen policy. This is a genuine business decision that cannot be inferred from definitions or existing constraints."
+  },
+  "turns": 3,
+  "tool_calls": 3
+}

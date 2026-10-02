@@ -1,0 +1,40 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "command": [
+        "python",
+        "-B",
+        "-I",
+        "/acceptance/check.py"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "output": ".....\n----------------------------------------------------------------------\nRan 5 tests in 0.108s\n\nOK\nPASS\n",
+      "elapsed_s": 0.8188707899826113,
+      "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578"
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "output": ".....\n----------------------------------------------------------------------\nRan 5 tests in 0.102s\n\nOK\n",
+      "elapsed_s": 0.5174599479942117,
+      "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578"
+    }
+  ],
+  "review": {
+    "decision": "pass",
+    "findings": [],
+    "question": ""
+  },
+  "candidate": "3e4b7521b25dbd6b6aceff1664caa33f40c14a5a4a821e73c986b8cd5e3fc8ce"
+}

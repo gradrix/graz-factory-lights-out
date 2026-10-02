@@ -1,0 +1,34 @@
+{
+  "candidate": "4346ba5",
+  "source_hashes": {
+    "gflo/__init__.py": "6cbddf667328e01dd8f766ea554f7e0c10e19d6618b1eaa688e3e6548b8f275e",
+    "gflo/__main__.py": "273b9ce8ef89f754b739a01e2ec4b7b028058d34fe08e111b740924347417474",
+    "gflo/guard.py": "d0e26343a074f68c0c0870b8690c45462010f7c2a3d6a9987f77022903a1923c",
+    "gflo/observe.py": "cd28db8c5af5ce5e74b4aeb372f012249b50c69afbd64c5553e37a61822a4edc",
+    "gflo/review.py": "66c78cb1d196dd8e40561bc9589c380543c44762a1e6fa5079964903d3168a0e",
+    "gflo/runner.py": "f14df846d472b98b3abca5645d34049eda09ef93330926c979618eff409603dc",
+    "gflo/sandbox.py": "9138e47403f3aa881375e6e74dd3f438a36126bd3d677d5a51f0375e278b7eb1",
+    "gflo/web.py": "05dcae9983bc9584f82209f21f3190f0250ba8ff1f6a7cf9a8af78530c785acd",
+    "gflo/worker.py": "709ae888e689280ea9ab3b36b70f9d1a8bf4729ae388b00dd4c463d9aeb70f15",
+    "ops/qualify_coding.py": "3a9cd88d4df90ee2f94ecb50f06bb5e8d7bdb3779eb184f4ecf8faf7a805ae59"
+  },
+  "doctor": {
+    "ready": true,
+    "endpoint": "http://127.0.0.1:18000",
+    "model": "flash-next-coder",
+    "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+    "context": 131072
+  },
+  "coder_profile": {
+    "reasoning_effort": "medium",
+    "thinking_budget_tokens": 1024,
+    "max_tokens": 4096
+  },
+  "fixture_manifest": "da7a8d364c326a61bb8c22f0873188c0498d98213a676c23107c1d730a143d0b",
+  "qualification_config": "private dedicated file; default config unchanged",
+  "budgets": {
+    "attempts": 3,
+    "turns": 24,
+    "wall_seconds_per_task": 900
+  }
+}

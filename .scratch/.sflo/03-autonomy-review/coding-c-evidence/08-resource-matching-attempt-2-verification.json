@@ -1,0 +1,19 @@
+{
+  "passed": false,
+  "checks": [
+    {
+      "command": [
+        "python",
+        "-B",
+        "-I",
+        "/acceptance/check.py"
+      ],
+      "exit_code": 1,
+      "timed_out": false,
+      "output": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 15, in <module>\n    assert json_equal(dispatch(p),expected),(p,'wrong result')\n                      ^^^^^^^^^^^\n  File \"/workspace/api.py\", line 5, in dispatch\n    raise ValueError(\"unknown action: \"+str(action))\nValueError: unknown action: match\n",
+      "elapsed_s": 0.41729179699905217,
+      "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578"
+    }
+  ],
+  "candidate": "a9e81c3be38180f2fc863852a8ff529eccc74f227d461d5a5cc0c3f5549a4dc8"
+}

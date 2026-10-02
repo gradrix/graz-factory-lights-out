@@ -1,0 +1,118 @@
+--- a/README.md
++++ b/README.md
+@@ -1,3 +1,17 @@
+ # JSON utility
+ 
+-Run `python cli.py` with JSON on stdin. The identity action returns its value unchanged.
++Run `python cli.py` with one JSON object on stdin; one JSON result is printed on stdout.
++
++## Actions
++
++- `identity`: returns `payload["value"]` unchanged, for any JSON value.
++- `distance` (also accepted as `action_distance`): expects `grid` (rectangular list of strings of `.` and `#`, dimensions 1..30), `start` and `end` as `[row, column]` integer coordinates inside the grid. Returns the shortest orthogonal path length (edge count) avoiding `#`, or `null` when unreachable. A blocked `start` or `end` returns `null`, even when `start` and `end` are the same blocked cell. Same open cell returns `0`.
++
++## Example
++
++    echo '{"action":"distance","grid":["...",".#.","..."],"start":[0,0],"end":[2,2]}' | python cli.py
++    # => 4
++
++## Errors and boundaries
++
++Unknown actions raise `ValueError`; the CLI exits with code 2, prints the error message to stderr (no traceback), and stdout stays empty. Invalid JSON input behaves the same way. Operations never mutate the input payload, including on failure. Types, shapes and bounds are guaranteed by contract except for the specified validation errors.
+--- a/api.py
++++ b/api.py
+@@ -1,5 +1,9 @@
+ import domain
++
+ def dispatch(payload):
+- action=payload["action"]
+- if action=="identity":return domain.identity(payload)
+- raise ValueError("unknown action: "+str(action))
++    action = payload["action"]
++    if action == "identity":
++        return domain.identity(payload)
++    if action in ("action_distance", "distance"):
++        return domain.action_distance(payload)
++    raise ValueError("unknown action: " + str(action))
+--- a/domain.py
++++ b/domain.py
+@@ -1,2 +1,32 @@
++from collections import deque
++
+ def identity(payload):
+- return payload['value']
++    return payload['value']
++
++def shortest_path(grid, start, end):
++    rows = len(grid)
++    if start == end and grid[start[0]][start[1]] != '#':
++        return 0
++    if grid[start[0]][start[1]] == '#' or grid[end[0]][end[1]] == '#':
++        return None
++    cols = len(grid[0])
++    start_node = (start[0], start[1])
++    end_node = (end[0], end[1])
++    distances = {start_node: 0}
++    queue = deque([start_node])
++    while queue:
++        row, col = queue.popleft()
++        distance = distances[(row, col)]
++        for drow, dcol in ((1, 0), (-1, 0), (0, 1), (0, -1)):
++            nrow, ncol = row + drow, col + dcol
++            if 0 <= nrow < rows and 0 <= ncol < cols and grid[nrow][ncol] != '#':
++                node = (nrow, ncol)
++                if node == end_node:
++                    return distance + 1
++                if node not in distances:
++                    distances[node] = distance + 1
++                    queue.append(node)
++    return None
++
++def action_distance(payload):
++    return shortest_path(payload['grid'], payload['start'], payload['end'])
+--- a/tests/test_actions.py
++++ b/tests/test_actions.py
+@@ -0,0 +1,43 @@
++import unittest
++from api import dispatch
++
++class ActionDistanceTests(unittest.TestCase):
++    def test_normal_path_around_wall(self):
++        payload = {
++            "action": "action_distance",
++            "grid": ["...", ".#.", "..."],
++            "start": [0, 0],
++            "end": [2, 2],
++        }
++        self.assertEqual(dispatch(payload), 4)
++
++    def test_boundary_blocked_start_end_identical(self):
++        payload = {
++            "action": "action_distance",
++            "grid": ["#"],
++            "start": [0, 0],
++            "end": [0, 0],
++        }
++        self.assertIsNone(dispatch(payload))
++
++    def test_boundary_unreachable_and_input_not_mutated(self):
++        grid = ["..#", "###", "..#"]
++        payload = {
++            "action": "action_distance",
++            "grid": grid,
++            "start": [0, 0],
++            "end": [2, 0],
++        }
++        self.assertIsNone(dispatch(payload))
++        self.assertEqual(grid, ["..#", "###", "..#"])
++
++    def test_identity_still_works_and_unknown_action_rejected(self):
++        self.assertEqual(
++            dispatch({"action": "identity", "value": {"anything": [1, None]}}),
++            {"anything": [1, None]},
++        )
++        with self.assertRaises(ValueError):
++            dispatch({"action": "nope", "value": 1})
++
++if __name__ == "__main__":
++    unittest.main()

@@ -1,0 +1,9 @@
+test_executed_runtime_can_match_and_wrong_image_identity_cannot (test_qualification.QualificationTests) ... ok
+test_existing_qualification_evidence_is_never_replaced (test_qualification.QualificationTests) ... ok
+test_runtime_mismatch_is_recorded_before_any_model_or_task_creation (test_qualification.QualificationTests) ... Qualification environment mismatch: version: expected '0.0.0', observed '3.11.15'
+ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 1.271s
+
+OK

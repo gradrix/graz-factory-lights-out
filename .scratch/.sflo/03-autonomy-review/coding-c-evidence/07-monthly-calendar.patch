@@ -1,0 +1,159 @@
+--- a/README.md
++++ b/README.md
+@@ -1,3 +1,48 @@
+ # JSON utility
+ 
+-Run `python cli.py` with JSON on stdin. The identity action returns its value unchanged.
++Run `python cli.py` with one JSON object on stdin; one JSON result is written to stdout.
++The identity action returns its `value` unchanged for any JSON value.
++
++## Actions
++
++### identity
++
++`{"action": "identity", "value": <any JSON value>}` — returns `value` unchanged.
++
++### occurrences
++
++`{"action": "occurrences", "start": "YYYY-MM-DD", "day": <1..31>, "count": <0..24>}`
++— returns a list of exactly `count` ISO date strings.
++
++Semantics: iteration starts with the month containing `start`. In each month the
++desired `day` is used, but it is clamped to that month's last day when the desired
++day is absent (for example day 31 in April yields `YYYY-04-30`). Clamping is
++independent per month: February lacking the day never changes the desired day in
++later months. Dates whose clamped value is earlier than `start` are omitted
++(inclusive `start`), and iteration continues into following months (crossing year
++boundaries) until `count` results are produced. `count` 0 yields `[]`.
++
++## Executable CLI example
++
++```console
++$ printf '{"action":"occurrences","start":"2021-03-31","day":31,"count":4}' | python cli.py
++["2021-03-31", "2021-04-30", "2021-05-31", "2021-06-30"]
++$ printf '{"action":"identity","value":{"a":[1,2]}}' | python cli.py
++{"a": [1, 2]}
++```
++
++## Boundary and error semantics
++
++- Boundaries: `start` is a valid ISO date in years 2000..2090, `day` is 1..31,
++  `count` is 0..24; month-end clamping, year rollover and omission of dates
++  before `start` are shown above.
++- Errors: an unknown action raises `ValueError`; the CLI prints the error message
++  to stderr, writes nothing to stdout and exits with status 2 (no traceback).
++- Other types/shapes/bounds are guaranteed by the caller; no extra validation is
++  invented. Operations never mutate the input payload, even when they fail.
++
++## Tests
++
++`python -m unittest discover` (run from the project root) exercises the public
++`api.dispatch` behavior: normal walks, month/year boundaries, clamping,
++omission rules, identity for arbitrary JSON values, and rejected unknown actions.
+--- a/api.py
++++ b/api.py
+@@ -2,4 +2,5 @@
+ def dispatch(payload):
+  action=payload["action"]
+  if action=="identity":return domain.identity(payload)
++ if action=="occurrences":return domain.occurrences(payload)
+  raise ValueError("unknown action: "+str(action))
+--- a/domain.py
++++ b/domain.py
+@@ -1,2 +1,32 @@
++import calendar
++
++
+ def identity(payload):
+- return payload['value']
++    return payload['value']
++
++
++def occurrences(payload):
++    """Return count ISO dates on the requested day, clamped per month.
++
++    Starts with the month containing start; months whose clamped day falls
++    before start are omitted; iteration continues into later months until
++    count dates are produced. Each month clamps independently (a February
++    without the requested day never changes the desired day elsewhere).
++    """
++    start = payload['start']
++    day = payload['day']
++    count = payload['count']
++    results = []
++    year = int(start[0:4])
++    month = int(start[5:7])
++    while len(results) < count:
++        last = calendar.monthrange(year, month)[1]
++        current = day if day <= last else last
++        candidate = "%04d-%02d-%02d" % (year, month, current)
++        if candidate >= start:
++            results.append(candidate)
++        month += 1
++        if month > 12:
++            month = 1
++            year += 1
++    return results
+--- a/tests/test_domain.py
++++ b/tests/test_domain.py
+@@ -0,0 +1,60 @@
++import unittest
++from api import dispatch
++
++
++class OccurrencesNormal(unittest.TestCase):
++    def test_normal_month_walk(self):
++        result = dispatch({"action": "occurrences", "start": "2021-01-15", "day": 15, "count": 4})
++        self.assertEqual(result, ["2021-01-15", "2021-02-15", "2021-03-15", "2021-04-15"])
++
++    def test_identity_preserved_for_any_json_value(self):
++        for value in (None, True, 0, "", [], {"nested": [1, {"x": None}]}):
++            self.assertEqual(dispatch({"action": "identity", "value": value}), value)
++
++
++class OccurrencesBoundaries(unittest.TestCase):
++    def test_clamping_and_year_rollover(self):
++        # 31st absent in April/June -> last day of those months; February keeps 31st desired
++        # elsewhere; iteration crosses the year boundary.
++        result = dispatch({"action": "occurrences", "start": "2021-03-31", "day": 31, "count": 4})
++        self.assertEqual(result, ["2021-03-31", "2021-04-30", "2021-05-31", "2021-06-30"])
++
++    def test_february_leap_and_non_leap(self):
++        self.assertEqual(dispatch({"action": "occurrences", "start": "2024-02-01", "day": 29, "count": 3}),
++                         ["2024-02-29", "2024-03-29", "2024-04-29"])
++        self.assertEqual(dispatch({"action": "occurrences", "start": "2023-02-01", "day": 29, "count": 3}),
++                         ["2023-02-28", "2023-03-29", "2023-04-29"])
++
++    def test_omission_of_dates_before_start(self):
++        # start after the requested day: month's date omitted, next month used.
++        self.assertEqual(dispatch({"action": "occurrences", "start": "2020-05-20", "day": 1, "count": 2}),
++                         ["2020-06-01", "2020-07-01"])
++        # start on the last day of a shorter month: that month yields its own last day.
++        self.assertEqual(dispatch({"action": "occurrences", "start": "2021-04-30", "day": 31, "count": 2}),
++                         ["2021-04-30", "2021-05-31"])
++
++    def test_count_zero_and_year_bounds(self):
++        self.assertEqual(dispatch({"action": "occurrences", "start": "2000-01-01", "day": 31, "count": 0}), [])
++        self.assertEqual(dispatch({"action": "occurrences", "start": "2090-12-31", "day": 31, "count": 1}),
++                         ["2090-12-31"])
++
++
++class RejectedInputs(unittest.TestCase):
++    def test_unknown_action_raises_value_error(self):
++        with self.assertRaises(ValueError) as error:
++            dispatch({"action": "occurrences2", "start": "2021-01-01", "day": 1, "count": 1})
++        self.assertEqual(str(error.exception), "unknown action: occurrences2")
++
++    def test_input_never_mutated_even_on_failure(self):
++        payload = {"action": "nope", "value": {"deep": [1, 2]}}
++        with self.assertRaises(ValueError):
++            dispatch(payload)
++        self.assertEqual(payload, {"action": "nope", "value": {"deep": [1, 2]}})
++        payload = {"action": "occurrences", "start": "2021-01-31", "day": 31, "count": 2}
++        result = dispatch(payload)
++        self.assertEqual(result, ["2021-01-31", "2021-02-28"])
++        self.assertEqual(payload, {"action": "occurrences", "start": "2021-01-31", "day": 31, "count": 2})
++
++
++if __name__ == "__main__":
++    unittest.main()

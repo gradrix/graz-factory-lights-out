@@ -1,0 +1,326 @@
+{
+  "runtime": "c17821c",
+  "model": "flash-next-coder",
+  "configured_context": 131072,
+  "executed_python": "3.11.15",
+  "scope": "complete coder token metadata from durable events; reviewer/question assessments excluded; generation speeds only parseable trajectory responses",
+  "coder_requests": 384,
+  "coder_responses": 384,
+  "max_prompt_tokens": 34266,
+  "median_prompt_tokens": 8191.0,
+  "total_completion_tokens": 84929,
+  "generation_speed_samples": 383,
+  "median_generation_tokens_per_s": 80.48695974833501,
+  "summed_task_wall_s": 2207.68,
+  "max_task_wall_s": 900.41,
+  "malformed_trajectory_lines": [
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "2",
+      "line": 4,
+      "error": "Expecting ',' delimiter",
+      "position": 3289
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "2",
+      "line": 5,
+      "error": "Expecting ',' delimiter",
+      "position": 8594
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "2",
+      "line": 8,
+      "error": "Expecting ',' delimiter",
+      "position": 8594
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "2",
+      "line": 11,
+      "error": "Expecting ',' delimiter",
+      "position": 8594
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "2",
+      "line": 14,
+      "error": "Expecting ',' delimiter",
+      "position": 8594
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "2",
+      "line": 17,
+      "error": "Expecting ',' delimiter",
+      "position": 8594
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "2",
+      "line": 20,
+      "error": "Expecting ',' delimiter",
+      "position": 8594
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "2",
+      "line": 23,
+      "error": "Expecting ',' delimiter",
+      "position": 8594
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "2",
+      "line": 26,
+      "error": "Expecting ',' delimiter",
+      "position": 8594
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "2",
+      "line": 29,
+      "error": "Expecting ',' delimiter",
+      "position": 8595
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "2",
+      "line": 32,
+      "error": "Expecting ',' delimiter",
+      "position": 8595
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "2",
+      "line": 35,
+      "error": "Expecting ',' delimiter",
+      "position": 8595
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "2",
+      "line": 38,
+      "error": "Expecting ',' delimiter",
+      "position": 8595
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "2",
+      "line": 41,
+      "error": "Expecting ',' delimiter",
+      "position": 8595
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "2",
+      "line": 44,
+      "error": "Expecting ',' delimiter",
+      "position": 8595
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "2",
+      "line": 47,
+      "error": "Expecting ',' delimiter",
+      "position": 8595
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "2",
+      "line": 50,
+      "error": "Expecting ',' delimiter",
+      "position": 8595
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "2",
+      "line": 53,
+      "error": "Expecting ',' delimiter",
+      "position": 8595
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "2",
+      "line": 56,
+      "error": "Expecting ',' delimiter",
+      "position": 8595
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "2",
+      "line": 59,
+      "error": "Expecting ',' delimiter",
+      "position": 8595
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "2",
+      "line": 62,
+      "error": "Expecting ',' delimiter",
+      "position": 8595
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "2",
+      "line": 65,
+      "error": "Expecting ',' delimiter",
+      "position": 8595
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "2",
+      "line": 68,
+      "error": "Expecting ',' delimiter",
+      "position": 8595
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "1",
+      "line": 15,
+      "error": "Expecting ',' delimiter",
+      "position": 2291
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "1",
+      "line": 16,
+      "error": "Expecting ',' delimiter",
+      "position": 2167
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "1",
+      "line": 17,
+      "error": "Expecting ',' delimiter",
+      "position": 10704
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "1",
+      "line": 20,
+      "error": "Expecting ',' delimiter",
+      "position": 10704
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "1",
+      "line": 23,
+      "error": "Expecting ',' delimiter",
+      "position": 10704
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "1",
+      "line": 26,
+      "error": "Expecting ',' delimiter",
+      "position": 10704
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "1",
+      "line": 29,
+      "error": "Expecting ',' delimiter",
+      "position": 10705
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "1",
+      "line": 32,
+      "error": "Expecting ',' delimiter",
+      "position": 10705
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "1",
+      "line": 35,
+      "error": "Expecting ',' delimiter",
+      "position": 10705
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "1",
+      "line": 38,
+      "error": "Expecting ',' delimiter",
+      "position": 10705
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "1",
+      "line": 41,
+      "error": "Expecting ',' delimiter",
+      "position": 10705
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "1",
+      "line": 44,
+      "error": "Expecting ',' delimiter",
+      "position": 10705
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "1",
+      "line": 47,
+      "error": "Expecting ',' delimiter",
+      "position": 10705
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "1",
+      "line": 50,
+      "error": "Expecting ',' delimiter",
+      "position": 10705
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "1",
+      "line": 53,
+      "error": "Expecting ',' delimiter",
+      "position": 10705
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "1",
+      "line": 56,
+      "error": "Expecting ',' delimiter",
+      "position": 10705
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "1",
+      "line": 59,
+      "error": "Expecting ',' delimiter",
+      "position": 10705
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "1",
+      "line": 62,
+      "error": "Expecting ',' delimiter",
+      "position": 10705
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "1",
+      "line": 65,
+      "error": "Expecting ',' delimiter",
+      "position": 10705
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "1",
+      "line": 68,
+      "error": "Expecting ',' delimiter",
+      "position": 10705
+    },
+    {
+      "run": "4f1f0bb04c57",
+      "attempt": "1",
+      "line": 71,
+      "error": "Expecting ',' delimiter",
+      "position": 10705
+    }
+  ]
+}

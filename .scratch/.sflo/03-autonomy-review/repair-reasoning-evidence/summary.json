@@ -1,0 +1,82 @@
+[
+  {
+    "label": "03-bit-fields-none",
+    "run": "802dd724143a",
+    "initial_source_hash": "9bf105498bc2780ad476b0cf669e88b2fd15c7e5af14602263e6f39bcb529520",
+    "workspace_sha256": "0494f0a15a5b6c9683e456c3ee7b4aa9a88147293f5eb0cb155730e18fa14944",
+    "receipt_sha256": "09b64defd30b77abf24c4c78e2eb688e4e326ff30d7c392620603378ab8071a2",
+    "profile": {
+      "model": "flash-next-coder",
+      "max_tokens": 4096,
+      "temperature": 0,
+      "reasoning_effort": "none",
+      "thinking_budget_tokens": null,
+      "chat_template_kwargs": {
+        "enable_thinking": false
+      }
+    },
+    "requests": 17,
+    "elapsed_seconds": 34.524,
+    "status": "exhausted"
+  },
+  {
+    "label": "03-bit-fields-thinking1024",
+    "run": "068017f2ddf1",
+    "initial_source_hash": "9bf105498bc2780ad476b0cf669e88b2fd15c7e5af14602263e6f39bcb529520",
+    "workspace_sha256": "8f88f484a82e8e0201eb5038a55b9b4d646e6241cbecd29c70651383b3b7c9a2",
+    "receipt_sha256": "224d10eb6f891f229b93faecb587545e74596510235cff96b817ddd7ff5cf80d",
+    "profile": {
+      "model": "flash-next-coder",
+      "max_tokens": 4096,
+      "temperature": 0,
+      "reasoning_effort": "medium",
+      "thinking_budget_tokens": 1024,
+      "chat_template_kwargs": {
+        "enable_thinking": true
+      }
+    },
+    "requests": 6,
+    "elapsed_seconds": 64.525,
+    "status": "accepted"
+  },
+  {
+    "label": "06-failed-candidate-thinking1024",
+    "run": "1c5a06cc463b",
+    "initial_source_hash": "cc6a178e8d61d2a51c8754fab3c6269649bb977301515aecb07cca25b3a3ff89",
+    "workspace_sha256": "85101c485b50201cf6d3cb34061472efe7a20f1c39e519adb62c16b298ee0fe6",
+    "receipt_sha256": "3517d9051fe06be23baa9520c7675a93f67eaaf93551112796625ae8bfebcc63",
+    "profile": {
+      "model": "flash-next-coder",
+      "max_tokens": 4096,
+      "temperature": 0,
+      "reasoning_effort": "medium",
+      "thinking_budget_tokens": 1024,
+      "chat_template_kwargs": {
+        "enable_thinking": true
+      }
+    },
+    "requests": 21,
+    "elapsed_seconds": 319.129,
+    "status": "accepted"
+  },
+  {
+    "label": "06-failed-candidate-none",
+    "run": "fb5a89c634de",
+    "initial_source_hash": "cc6a178e8d61d2a51c8754fab3c6269649bb977301515aecb07cca25b3a3ff89",
+    "workspace_sha256": "b75ab36d065294f08cc793bf9bba582d05b21de5e71ca38d93453f9e104442e3",
+    "receipt_sha256": "4fa29b71bc6e6ac6725c54a7d73f879e4b8c7589a4f9c101c7ecb9f72ee82d35",
+    "profile": {
+      "model": "flash-next-coder",
+      "max_tokens": 4096,
+      "temperature": 0,
+      "reasoning_effort": "none",
+      "thinking_budget_tokens": null,
+      "chat_template_kwargs": {
+        "enable_thinking": false
+      }
+    },
+    "requests": 12,
+    "elapsed_seconds": 39.635,
+    "status": "exhausted"
+  }
+]

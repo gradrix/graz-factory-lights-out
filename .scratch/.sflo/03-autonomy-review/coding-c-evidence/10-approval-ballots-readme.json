@@ -1,0 +1,32 @@
+{
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--network=none",
+    "--read-only",
+    "--cap-drop=ALL",
+    "--security-opt=no-new-privileges",
+    "--pids-limit=64",
+    "--memory=256m",
+    "--cpus=1",
+    "--user=65534:65534",
+    "--tmpfs=/tmp:rw,noexec,nosuid,size=16m",
+    "-e",
+    "PYTHONDONTWRITEBYTECODE=1",
+    "-v",
+    "/home/gradrix/repos/gflo/.gflo/semantic-c/7a6dd457c3fb/workspace:/workspace:ro",
+    "-v",
+    "/home/gradrix/repos/gflo/evaluations/coding-c/tasks/10-approval-ballots/acceptance:/acceptance:ro",
+    "-w",
+    "/workspace",
+    "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+    "python",
+    "-B",
+    "-c",
+    "from api import dispatch\np={'action':'tally','candidates':['a','b','c'],'ballots':[['c','a'],['a','a','b']]}\nexpected=[{'candidate':'a','votes':2},{'candidate':'b','votes':1},{'candidate':'c','votes':1}]\nassert dispatch(p)==expected\nprint(dispatch(p))\nassert [x['candidate'] for x in dispatch(p)]!=['a','c','b'], 'README should be detected as wrong'"
+  ],
+  "exit": 0,
+  "stdout": "[{'candidate': 'a', 'votes': 2}, {'candidate': 'b', 'votes': 1}, {'candidate': 'c', 'votes': 1}]\n",
+  "stderr": ""
+}

@@ -1,0 +1,22 @@
+{
+  "run": "fbb865b3744f",
+  "status": "exhausted",
+  "attempts": 3,
+  "contract": "5d18569354a0a7cf1208cb56d37ad53c64d4be801710db9ccd67dc4e66d378c9",
+  "hashes": {
+    "task.json": "5d18569354a0a7cf1208cb56d37ad53c64d4be801710db9ccd67dc4e66d378c9",
+    "workspace/domain.py": "8642f05d2eb1136a9bcfd39ddd84c8ae95d23e55cf4933048ca279ede0d467e1",
+    "workspace/cli.py": "7b7892e1a2bda5caf8d09ef44fb75e8a24398546b69052fb9cb5b3d44f4d9384",
+    "workspace/api.py": "9a6acea6f2683b534d88496c227a6669d5e6ffb7493c6ed8a42e15092ced0fb3",
+    "workspace/tests/test_public.py": "8dc9306caf9f643a4336417ff718157b32bb61387bc7e56fa98435398d8953fb",
+    "workspace/tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "workspace/README.md": "1dfe7a770ad343c8fb836b49160e6c17053fd5f31de3bce3f7f15aed1a4ae995",
+    "acceptance/check.py": "06119ce054d528a40a182b30696b5775cecc63a07890a38dac391f0149137e1b",
+    "attempts/2/verification.json": "9aa84390543994d042489b4597d16ffeb213d7398999bfbe1001e42bea8c3a96",
+    "attempts/1/verification.json": "2562abc05a9d3d371ab6dccd246cad31ae22a954b8d944f03a569121951392c9",
+    "attempts/3/verification.json": "41b84292d42ecce2e87538851c937990145aa903e995e7ff7a588d501880afeb"
+  },
+  "task": "06-luhn-check",
+  "checks": [],
+  "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc"
+}

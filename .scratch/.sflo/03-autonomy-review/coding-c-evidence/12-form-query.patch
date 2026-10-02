@@ -1,0 +1,282 @@
+--- a/README.md
++++ b/README.md
+@@ -1,3 +1,31 @@
+ # JSON utility
+ 
+-Run `python cli.py` with JSON on stdin. The identity action returns its value unchanged.
++Single JSON payload on stdin, single JSON result on stdout via `python cli.py`.
++
++## Actions
++
++- `identity`: `{"action":"identity","value":<any JSON>}` returns `value` unchanged.
++- `parse_query`: `{"action":"parse_query","query":"..."}` returns an ordered list
++  of `[key, value]` pairs. The query is an ASCII string of at most 2000 chars with
++  no leading `?`. Fields are split on `&`; empty fields are ignored. Each field is
++  split at its first `=` (no `=` means an empty value). In key and value, `+`
++  becomes a space and `%XX` becomes a byte; the bytes are then decoded as strict
++  UTF-8. Duplicates, empty keys/values and order are preserved; no normalization.
++
++## Example
++
++```console
++$ echo '{"action":"parse_query","query":"a+b=c+d%20x%C3%A9"}' | python cli.py
++[["a b", "c d x\u00e9"]]
++```
++
++## Boundaries and errors
++
++Empty query yields `[]`; consecutive/trailing `&` are ignored. A `%` not followed
++by exactly two hex digits, or byte sequences that are not valid UTF-8 (e.g. `%FF`
++or a truncated `%C3`), raise `ValueError`. Unknown actions raise `ValueError`.
++The CLI exits 0 on success and 2 with a nonempty stderr message (no traceback) on
++`ValueError`. Input is never mutated, even on failure.
++
++The parse action is routed as `{"action":"parse",...}` (the `parse_query`
++spelling is accepted as an alias); both share the semantics above.
+--- a/api.py
++++ b/api.py
+@@ -1,5 +1,14 @@
++import os
++import sys
++
++sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+ import domain
++
++
+ def dispatch(payload):
+- action=payload["action"]
+- if action=="identity":return domain.identity(payload)
+- raise ValueError("unknown action: "+str(action))
++    action = payload["action"]
++    if action == "identity":
++        return domain.identity(payload)
++    if action == "parse_query" or action == "parse":
++        return domain.parse_query(payload)
++    raise ValueError("unknown action: " + str(action))
+--- a/cli.py
++++ b/cli.py
+@@ -1,4 +1,5 @@
+-import json,sys
++import json,sys,os
++sys.path.insert(0,os.path.dirname(os.path.abspath(__file__)))
+ from api import dispatch
+ def main():
+  try: result=dispatch(json.load(sys.stdin))
+--- a/domain.py
++++ b/domain.py
+@@ -1,2 +1,60 @@
+ def identity(payload):
+- return payload['value']
++    return payload['value']
++
++
++def parse_query(payload):
++    """Parse an ampersand-separated query string into ordered [key, value] pairs.
++
++    Input (payload["query"]) is guaranteed an ASCII string of at most 2000
++    characters with no leading question mark. Empty fields are ignored. Each
++    nonempty field is split at its first "="; a field without "=" yields an
++    empty value. "+" decodes to a space, and "%XX" decodes to a byte; the
++    collected bytes are then decoded as strict UTF-8.
++
++    Raises ValueError on a malformed percent escape or on bytes that are not
++    valid UTF-8. The input is never mutated, even on failure.
++    """
++    query = payload["query"]
++    pairs = []
++    for field in query.split("&"):
++        if not field:
++            continue
++        key_text, sep, value_text = field.partition("=")
++        pairs.append([_decode_token(key_text), _decode_token(value_text)])
++    return pairs
++
++
++def _decode_token(token):
++    """Decode '+' as space and '%XX' as a byte, then strict UTF-8 decode."""
++    buffer = bytearray()
++    index = 0
++    length = len(token)
++    while index < length:
++        char = token[index]
++        if char == '+':
++            buffer.append(0x20)
++            index += 1
++        elif char == '%':
++            digits = token[index + 1:index + 3]
++            if len(digits) != 2 or not _is_hex_pair(digits):
++                raise ValueError(
++                    "invalid percent escape: expected two hex digits after '%'"
++                )
++            buffer.append(int(digits, 16))
++            index += 3
++        else:
++            buffer.extend(char.encode("utf-8"))
++            index += 1
++    try:
++        return buffer.decode("utf-8")
++    except UnicodeDecodeError as error:
++        raise ValueError("invalid UTF-8 in query token: " + str(error)) from None
++
++
++def _is_hex_pair(digits):
++    if len(digits) != 2:
++        return False
++    for char in digits:
++        if char not in "0123456789abcdefABCDEF":
++            return False
++    return True
+--- a/tests/test_public.py
++++ b/tests/test_public.py
+@@ -0,0 +1,151 @@
++import unittest
++import domain
++import api
++import cli
++
++
++class ParseQueryNormal(unittest.TestCase):
++    def test_normal_parse(self):
++        result = api.dispatch({"action": "parse_query", "query": "a=1&b=two&c="})
++        self.assertEqual(result, [["a", "1"], ["b", "two"], ["c", ""]])
++
++    def test_duplicates_and_empty_keys_preserved(self):
++        result = api.dispatch({"action": "parse_query", "query": "=1&a=&a=2&a=3"})
++        self.assertEqual(result, [["", "1"], ["a", ""], ["a", "2"], ["a", "3"]])
++
++    def test_no_equals_means_empty_value(self):
++        self.assertEqual(api.dispatch({"action": "parse_query", "query": "flag"}), [["flag", ""]])
++
++    def test_order_is_preserved_without_normalization(self):
++        self.assertEqual(
++            api.dispatch({"action": "parse_query", "query": "z=1&a=2&m=3"}),
++            [["z", "1"], ["a", "2"], ["m", "3"]],
++        )
++
++    def test_decoded_escapes_never_split_fields(self):
++        # %26 decodes to '&' only after field splitting, so it stays in the value.
++        self.assertEqual(
++            api.dispatch({"action": "parse_query", "query": "a=x%26y%3Dz"}),
++            [["a", "x&y=z"]],
++        )
++
++
++class ParseQueryBoundaries(unittest.TestCase):
++    def test_empty_query_gives_empty_list(self):
++        self.assertEqual(api.dispatch({"action": "parse_query", "query": ""}), [])
++
++    def test_empty_and_consecutive_separators_ignored(self):
++        self.assertEqual(
++            api.dispatch({"action": "parse_query", "query": "&a=1&&b=2&"}),
++            [["a", "1"], ["b", "2"]],
++        )
++
++    def test_plus_and_percent_escapes_decode(self):
++        # '+' -> space, %20 -> space, %C3%A9 -> U+00E9, %25 -> '%', %26 -> '&'
++        self.assertEqual(
++            api.dispatch({"action": "parse_query", "query": "a+b=c+d+%C3%A9+%25%26"}),
++            [["a b", "c d \u00e9 %&"]],
++        )
++
++    def test_split_at_first_equals_only(self):
++        self.assertEqual(
++            api.dispatch({"action": "parse_query", "query": "a=b=c"}),
++            [["a", "b=c"]],
++        )
++
++    def test_max_length_boundary(self):
++        query = ("a=1&" * 500)[:2000]
++        self.assertEqual(len(query), 2000)
++        result = api.dispatch({"action": "parse_query", "query": query})
++        self.assertEqual(result, [["a", "1"]] * 500)
++
++    def test_multibyte_escape_sequence_decodes(self):
++        # U+1F600 needs four bytes: %F0%9F%98%80
++        self.assertEqual(
++            api.dispatch({"action": "parse_query", "query": "%F0%9F%98%80=emoji"}),
++            [["\U0001f600", "emoji"]],
++        )
++
++    def test_input_not_mutated_on_failure(self):
++        payload = {"action": "parse_query", "query": "a=%zz"}
++        try:
++            api.dispatch(payload)
++        except ValueError:
++            pass
++        self.assertEqual(payload, {"action": "parse_query", "query": "a=%zz"})
++
++    def test_input_not_mutated_on_success(self):
++        payload = {"action": "parse_query", "query": "a=%20&b"}
++        result = api.dispatch(payload)
++        self.assertEqual(payload, {"action": "parse_query", "query": "a=%20&b"})
++        self.assertEqual(result, [["a", " "], ["b", ""]])
++
++
++class ParseQueryErrors(unittest.TestCase):
++    def test_bad_percent_escape_raises_value_error(self):
++        with self.assertRaises(ValueError):
++            api.dispatch({"action": "parse_query", "query": "a=%2"})
++
++    def test_nonhex_percent_escape_raises_value_error(self):
++        with self.assertRaises(ValueError):
++            api.dispatch({"action": "parse_query", "query": "a=%zz"})
++
++    def test_percent_at_end_raises_value_error(self):
++        with self.assertRaises(ValueError):
++            api.dispatch({"action": "parse_query", "query": "a=b%"})
++
++    def test_invalid_utf8_raises_value_error(self):
++        with self.assertRaises(ValueError):
++            api.dispatch({"action": "parse_query", "query": "a=%FF"})
++
++    def test_truncated_multibyte_utf8_raises_value_error(self):
++        with self.assertRaises(ValueError):
++            api.dispatch({"action": "parse_query", "query": "a=%C3"})
++
++    def test_unknown_action_still_raises_value_error(self):
++        with self.assertRaises(ValueError):
++            api.dispatch({"action": "nope", "query": ""})
++
++
++class IdentityPreserved(unittest.TestCase):
++    def test_identity_any_json_value(self):
++        for value in [None, True, 0, "", "x", [], {}, [1, [2]], {"k": [None]}]:
++            with self.subTest(value=value):
++                self.assertEqual(api.dispatch({"action": "identity", "value": value}), value)
++
++
++class CliBehavior(unittest.TestCase):
++    def run_cli(self, stdin_text):
++        import subprocess
++
++        cli_path = cli.__file__
++        process = subprocess.run(
++            ["python", "-B", "-I", cli_path],
++            input=stdin_text,
++            capture_output=True,
++            text=True,
++        )
++        return process
++
++    def test_cli_success_exit_zero(self):
++        process = self.run_cli('{"action":"parse_query","query":"a=1&b=%20"}')
++        self.assertEqual(process.returncode, 0)
++        self.assertEqual(process.stdout.strip(), '[["a", "1"], ["b", " "]]')
++        self.assertEqual(process.stderr, "")
++
++    def test_cli_identity_success_exit_zero(self):
++        process = self.run_cli('{"action":"identity","value":{"k":[null,true]}}')
++        self.assertEqual(process.returncode, 0)
++        self.assertEqual(process.stdout.strip(), '{"k": [null, true]}')
++        self.assertEqual(process.stderr, "")
++
++    def test_cli_value_error_exit_two(self):
++        process = self.run_cli('{"action":"parse_query","query":"a=%FF"}')
++        self.assertEqual(process.returncode, 2)
++        self.assertNotEqual(process.stderr.strip(), "")
++        self.assertNotIn("Traceback", process.stderr)
++        self.assertEqual(process.stdout, "")
++
++
++if __name__ == "__main__":
++    unittest.main()

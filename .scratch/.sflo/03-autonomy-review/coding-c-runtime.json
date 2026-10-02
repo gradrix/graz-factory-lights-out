@@ -1,0 +1,24 @@
+{
+  "runtime_source_commit": "c17821c31af4a711862a399a3bff650fd1691ddb",
+  "source_hashes": {
+    "gflo/__init__.py": "6cbddf667328e01dd8f766ea554f7e0c10e19d6618b1eaa688e3e6548b8f275e",
+    "gflo/__main__.py": "273b9ce8ef89f754b739a01e2ec4b7b028058d34fe08e111b740924347417474",
+    "gflo/guard.py": "d0e26343a074f68c0c0870b8690c45462010f7c2a3d6a9987f77022903a1923c",
+    "gflo/observe.py": "1da028618287521b5cbd901acccf8b9adf4e56ba64a542026ba8c88febf843a5",
+    "gflo/review.py": "66c78cb1d196dd8e40561bc9589c380543c44762a1e6fa5079964903d3168a0e",
+    "gflo/runner.py": "f14df846d472b98b3abca5645d34049eda09ef93330926c979618eff409603dc",
+    "gflo/sandbox.py": "9138e47403f3aa881375e6e74dd3f438a36126bd3d677d5a51f0375e278b7eb1",
+    "gflo/web.py": "05dcae9983bc9584f82209f21f3190f0250ba8ff1f6a7cf9a8af78530c785acd",
+    "gflo/worker.py": "5301424e14e1d3fd3ee091601b3fa4702319087d8fdc249382c0950b9784aa62"
+  },
+  "doctor": {
+    "ready": true,
+    "endpoint": "http://127.0.0.1:18000",
+    "model": "flash-next-coder",
+    "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578",
+    "context": 131072
+  },
+  "executed_python": "Python 3.11.15",
+  "fixture_manifest": "560c3e5645ed2d9ea91404e05aa4ddb2f4c9b1eb01f8629a98ec6e6ae738938b",
+  "qualification": "target mismatch: objectives specify Python3.12+; record original execution unchanged"
+}

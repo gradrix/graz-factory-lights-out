@@ -1,0 +1,160 @@
+--- a/README.md
++++ b/README.md
+@@ -1,3 +1,25 @@
+ # JSON utility
+ 
+-Run `python cli.py` with JSON on stdin. The identity action returns its value unchanged.
++Run `python cli.py` with one JSON object on stdin; one JSON result is printed on stdout.
++
++## Actions
++
++- `identity`: `{"action":"identity","value":<any JSON value>}` returns the value unchanged.
++- `pack`: `{"action":"pack","fields":[{"width":W,"value":V},...]}` concatenates unsigned field values, most significant field first. Returns `{"value":packed,"bits":total}`. Each `width` is 1..16; each `value` must satisfy `0 <= value < 2**width`, otherwise `ValueError`. Empty `fields` returns `{"value":0,"bits":0}`.
++- `unpack`: `{"action":"unpack","widths":[W,...],"value":V}` splits `V` into field values in order (first width is the most significant field). Returns a list of integers. Each `width` is 1..16 and total width is at most 128. `ValueError` if `V` is negative or does not fit the total width (for empty `widths`, only `V == 0` is accepted).
++
++## CLI example
++
++```sh
++echo '{"action":"pack","fields":[{"width":4,"value":1},{"width":8,"value":255}]}' | python cli.py
++# -> {"value": 511, "bits": 12}
++
++echo '{"action":"unpack","widths":[4,8],"value":511}' | python cli.py
++# -> [1, 255]
++```
++
++## Boundary and error semantics
++
++- Boundaries: width 1..16, value exactly `2**width - 1` accepted, `2**width` rejected; empty inputs yield `{"value":0,"bits":0}` / `[]` (unpack with empty widths rejects any nonzero value).
++- On `ValueError` (including unknown action), the CLI exits with code 2, prints the error message to stderr (nonempty, no traceback), and prints nothing to stdout.
++- Operations never mutate their input, even when they fail; they are atomic from the caller's perspective.
+--- a/api.py
++++ b/api.py
+@@ -1,5 +1,11 @@
+ import domain
++
+ def dispatch(payload):
+- action=payload["action"]
+- if action=="identity":return domain.identity(payload)
+- raise ValueError("unknown action: "+str(action))
++    action = payload["action"]
++    if action == "identity":
++        return domain.identity(payload)
++    if action == "pack":
++        return domain.pack(payload)
++    if action == "unpack":
++        return domain.unpack(payload)
++    raise ValueError("unknown action: " + str(action))
+--- a/domain.py
++++ b/domain.py
+@@ -1,2 +1,30 @@
+ def identity(payload):
+- return payload['value']
++    return payload['value']
++
++def pack(payload):
++    fields = payload['fields']
++    value = 0
++    bits = 0
++    for field in fields:
++        width = field['width']
++        v = field['value']
++        if v < 0 or v >= 2 ** width:
++            raise ValueError("value out of range for width: %d" % width)
++        value = (value << width) | v
++        bits += width
++    return {'value': value, 'bits': bits}
++
++def unpack(payload):
++    widths = payload['widths']
++    value = payload['value']
++    total = 0
++    for width in widths:
++        total += width
++    if value < 0 or value >= 2 ** total:
++        raise ValueError("value out of range for total width: %d" % total)
++    values = []
++    for width in reversed(widths):
++        values.append(value & ((1 << width) - 1))
++        value >>= width
++    values.reverse()
++    return values
+--- a/tests/test_domain.py
++++ b/tests/test_domain.py
+@@ -0,0 +1,77 @@
++import unittest
++import json
++import subprocess
++import sys
++import pathlib
++
++ROOT = pathlib.Path(__file__).resolve().parent.parent
++
++
++class PackUnpackTests(unittest.TestCase):
++    def test_pack_normal_and_empty(self):
++        from api import dispatch
++        # Normal: most significant field first.
++        result = dispatch({"action": "pack", "fields": [
++            {"width": 4, "value": 1},
++            {"width": 8, "value": 255},
++        ]})
++        self.assertEqual(result, {"value": 0x1FF, "bits": 12})
++        # Empty fields boundary.
++        self.assertEqual(dispatch({"action": "pack", "fields": []}),
++                         {"value": 0, "bits": 0})
++        # Boundary: max value for width 16.
++        self.assertEqual(dispatch({"action": "pack", "fields": [
++            {"width": 16, "value": 65535}]}), {"value": 65535, "bits": 16})
++        # Rejected: value >= 2**width or negative.
++        with self.assertRaises(ValueError):
++            dispatch({"action": "pack", "fields": [{"width": 4, "value": 16}]})
++        with self.assertRaises(ValueError):
++            dispatch({"action": "pack", "fields": [{"width": 4, "value": -1}]})
++
++    def test_unpack_normal_and_errors(self):
++        from api import dispatch
++        # Normal round trip.
++        values = dispatch({"action": "unpack", "widths": [4, 8], "value": 0x1FF})
++        self.assertEqual(values, [1, 255])
++        # Boundary: empty widths accept only zero.
++        self.assertEqual(dispatch({"action": "unpack", "widths": [], "value": 0}), [])
++        # Boundary: max value for total width.
++        self.assertEqual(dispatch({"action": "unpack", "widths": [16], "value": 65535}),
++                         [65535])
++        # Rejected: value too large, negative, or nonzero for empty widths.
++        with self.assertRaises(ValueError):
++            dispatch({"action": "unpack", "widths": [4], "value": 16})
++        with self.assertRaises(ValueError):
++            dispatch({"action": "unpack", "widths": [4], "value": -1})
++        with self.assertRaises(ValueError):
++            dispatch({"action": "unpack", "widths": [], "value": 1})
++
++    def test_identity_and_cli_errors(self):
++        from api import dispatch
++        # Identity preserved for any JSON value, including falsy ones.
++        for value in [None, False, 0, "", [], {"x": 1}]:
++            self.assertEqual(dispatch({"action": "identity", "value": value}), value)
++        # Unknown action raises ValueError.
++        with self.assertRaises(ValueError):
++            dispatch({"action": "nope"})
++        # CLI: ValueError -> exit 2, nonempty stderr, no traceback.
++        proc = subprocess.run([sys.executable, "cli.py"],
++                              input=json.dumps({"action": "pack",
++                                               "fields": [{"width": 4, "value": 99}]}),
++                              capture_output=True, text=True, cwd=ROOT)
++        self.assertEqual(proc.returncode, 2)
++        self.assertNotEqual(proc.stderr.strip(), "")
++        self.assertNotIn("Traceback", proc.stderr)
++        self.assertEqual(proc.stdout, "")
++        # CLI success: JSON in, JSON out, exit 0.
++        proc = subprocess.run([sys.executable, "cli.py"],
++                              input=json.dumps({"action": "unpack",
++                                               "widths": [4, 8], "value": 511}),
++                              capture_output=True, text=True, cwd=ROOT)
++        self.assertEqual(proc.returncode, 0)
++        self.assertEqual(json.loads(proc.stdout), [1, 255])
++        self.assertEqual(proc.stderr, "")
++
++
++if __name__ == "__main__":
++    unittest.main()

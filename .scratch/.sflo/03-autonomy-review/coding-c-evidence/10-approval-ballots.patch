@@ -1,0 +1,146 @@
+--- a/README.md
++++ b/README.md
+@@ -1,3 +1,35 @@
+ # JSON utility
+ 
+-Run `python cli.py` with JSON on stdin. The identity action returns its value unchanged.
++Run `python cli.py` with one JSON object on stdin; one JSON result is written to
++stdout. Unknown actions and invalid payloads exit with status 2 and a nonempty
++message on stderr (no traceback). Input is never mutated, so a failed action
++leaves the caller's data untouched.
++
++## Actions
++
++- `identity`: `{"action":"identity","value":<any json>}` returns `value` unchanged.
++- `tally`: `{"action":"tally","candidates":[...],"ballots":[[...],...]}` counts
++  approvals. `candidates` is a list of unique nonempty names; each ballot
++  approves each named candidate once even if a name repeats inside that ballot.
++  Unknown names anywhere raise `ValueError`. Candidates with zero votes are
++  included. Results are ordered by descending vote count, then by original
++  candidate order. Bounds: at most 100 candidates and 1000 ballots; empty
++  inputs are allowed.
++
++## Executable CLI example
++
++```console
++$ echo '{"action":"tally","candidates":["a","b","c"],"ballots":[["c","a"],["a","a","b"]]}' | python cli.py
++[{"candidate": "a", "votes": 2}, {"candidate": "c", "votes": 1}, {"candidate": "b", "votes": 1}]
++```
++
++Error semantics:
++
++```console
++$ echo '{"action":"tally","candidates":["a"],"ballots":[["zzz"]]}' | python cli.py
++unknown candidate: zzz
++$ echo $?
++2
++```
++
++Run tests with `python -m unittest discover`.
+--- a/api.py
++++ b/api.py
+@@ -2,4 +2,5 @@
+ def dispatch(payload):
+  action=payload["action"]
+  if action=="identity":return domain.identity(payload)
++ if action=="tally":return domain.tally(payload)
+  raise ValueError("unknown action: "+str(action))
+--- a/domain.py
++++ b/domain.py
+@@ -1,2 +1,24 @@
+ def identity(payload):
+- return payload['value']
++    return payload['value']
++
++def tally(payload):
++    candidates = payload['candidates']
++    ballots = payload['ballots']
++
++    order = {}
++    for index, name in enumerate(candidates):
++        order[name] = index
++
++    votes = {name: 0 for name in candidates}
++
++    for ballot in ballots:
++        approved = set()
++        for name in ballot:
++            if name not in order:
++                raise ValueError("unknown candidate: " + str(name))
++            approved.add(name)
++        for name in approved:
++            votes[name] += 1
++
++    ranked = sorted(candidates, key=lambda name: (-votes[name], order[name]))
++    return [{"candidate": name, "votes": votes[name]} for name in ranked]
+--- a/tests/test_domain.py
++++ b/tests/test_domain.py
+@@ -0,0 +1,68 @@
++import unittest
++
++from api import dispatch
++
++
++class TallyTests(unittest.TestCase):
++    def test_normal_tally_orders_by_votes_then_candidate_order(self):
++        payload = {
++            "action": "tally",
++            "candidates": ["alice", "bob", "carol"],
++            "ballots": [["carol", "alice"], ["bob"], ["alice", "alice", "carol"]],
++        }
++        original = [list(ballot) for ballot in payload["ballots"]]
++        self.assertEqual(
++            dispatch(payload),
++            [
++                {"candidate": "alice", "votes": 2},
++                {"candidate": "carol", "votes": 2},
++                {"candidate": "bob", "votes": 1},
++            ],
++        )
++        # repeated names inside one ballot count once
++        self.assertEqual(payload["ballots"], original)
++        self.assertEqual(payload["candidates"], ["alice", "bob", "carol"])
++
++    def test_boundary_empty_and_zero_vote_candidates(self):
++        self.assertEqual(
++            dispatch({"action": "tally", "candidates": [], "ballots": []}), []
++        )
++        self.assertEqual(
++            dispatch(
++                {
++                    "action": "tally",
++                    "candidates": ["a", "b", "c"],
++                    "ballots": [[]],
++                }
++            ),
++            [
++                {"candidate": "a", "votes": 0},
++                {"candidate": "b", "votes": 0},
++                {"candidate": "c", "votes": 0},
++            ],
++        )
++        self.assertEqual(
++            dispatch({"action": "tally", "candidates": ["solo"], "ballots": []}),
++            [{"candidate": "solo", "votes": 0}],
++        )
++
++    def test_rejected_unknown_candidate_raises_valueerror(self):
++        payload = {
++            "action": "tally",
++            "candidates": ["alice"],
++            "ballots": [["alice", "mallory"]],
++        }
++        with self.assertRaises(ValueError):
++            dispatch(payload)
++        self.assertEqual(payload["ballots"], [["alice", "mallory"]])
++
++    def test_identity_and_unknown_action_are_preserved(self):
++        for value in [None, True, 0, "", {"k": [1, 2]}, "x"]:
++            payload = {"action": "identity", "value": value}
++            self.assertEqual(dispatch(payload), value)
++        with self.assertRaises(ValueError):
++            dispatch({"action": "nope", "value": 1})
++
++
++if __name__ == "__main__":
++    unittest.main()

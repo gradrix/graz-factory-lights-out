@@ -1,0 +1,98 @@
+--- a/README.md
++++ b/README.md
+@@ -9,27 +9,32 @@
+ 
+ - `identity`: `{"action":"identity","value":<any JSON value>}` returns the value
+   unchanged.
+-- `check`: `{"action":"check","number":"4992 781-2"}` returns `true` when the
++- `check`: `{"action":"check","number":"4992 781-7"}` returns `true` when the
+   Luhn checksum of the number is divisible by ten. The number may contain up to
+   100 ASCII decimal digits, spaces and hyphens; spaces and hyphens are removed.
+   If no digit remains, it returns `false`.
+ - `append`: `{"action":"append","number":"4992 781"}` returns the normalized
+-  digits plus the unique Luhn check digit, e.g. `"49927816"`. Leading zeroes are
++  digits plus the unique Luhn check digit, e.g. `"49927817"`. Leading zeroes are
+   preserved. It raises `ValueError` (CLI exit 2, message on stderr) when no digit
+   remains after removing spaces and hyphens.
++
++Luhn semantics: the rightmost digit is the check digit; moving left, every
++second digit is doubled and reduced by nine when the doubling exceeds nine.
+ 
+ Example:
+ 
+ ```console
+ $ echo '{"action":"append","number":"4992 781"}' | python cli.py
+-"49927816"
+-$ echo '{"action":"check","number":"4992 781-6"}' | python cli.py
++"49927817"
++$ echo '{"action":"check","number":"4992 781-7"}' | python cli.py
+ true
+ $ echo '{"action":"append","number":"- -"}' | python cli.py
+ at least one digit is required
+-$ echo ...; echo $?   # 2
++$ echo '{"action":"append","number":"- -"}' | python cli.py; echo $?
++at least one digit is required
++2
+ ```
+ 
+ Boundary semantics: an empty or separator-only `number` gives `check` false and
+-`append` a `ValueError`; a single digit is valid for both. Unknown actions raise
+-`ValueError`.
++`append` a `ValueError`; a single digit is valid for both, and 100 digits is the
++upper bound (leading zeroes count as digits). Unknown actions raise `ValueError`.
+--- a/tests/test_public.py
++++ b/tests/test_public.py
+@@ -3,23 +3,28 @@
+ 
+ class CheckAction(unittest.TestCase):
+     def test_check_normal_and_boundary(self):
+-        # Canonical Luhn example: valid; separators ignored; empty/all-separator
+-        # inputs are the boundary and return False.
+-        self.assertIs(dispatch({"action": "check", "number": "7992 781-2"}), True)
++        # Canonical Luhn: rightmost digit is the check digit, every second
++        # digit from the right is doubled (subtract 9 when the doubling
++        # exceeds 9). Separators are ignored; empty/separator-only inputs
++        # are the boundary and return False.
++        self.assertIs(dispatch({"action": "check", "number": "7992 781-0"}), True)
++        self.assertIs(dispatch({"action": "check", "number": "4242424242424242"}), True)
+         self.assertIs(dispatch({"action": "check", "number": "0000"}), True)
+         self.assertIs(dispatch({"action": "check", "number": "18"}), True)
+         self.assertIs(dispatch({"action": "check", "number": "0"}), True)
+         self.assertIs(dispatch({"action": "check", "number": "1"}), False)
++        self.assertIs(dispatch({"action": "check", "number": "7992 781-2"}), False)
+         self.assertIs(dispatch({"action": "check", "number": ""}), False)
+         self.assertIs(dispatch({"action": "check", "number": " -  - "}), False)
+ 
+     def test_append_normal_and_leading_zero(self):
+-        # Check digit is unique and leading zeroes survive normalization.
+-        self.assertEqual(dispatch({"action": "append", "number": "7992 781"}), "79927812")
++        # The check digit is unique and leading zeroes survive normalization.
++        self.assertEqual(dispatch({"action": "append", "number": "7992 781"}), "79927810")
++        self.assertEqual(dispatch({"action": "append", "number": "4992 781"}), "49927817")
+         self.assertEqual(dispatch({"action": "append", "number": "001234567890123"}), "0012345678901237")
+         self.assertEqual(dispatch({"action": "append", "number": "-0-0-0-"}), "0000")
+         self.assertEqual(dispatch({"action": "append", "number": "1"}), "18")
+-        # Appended result always passes check.
++        # Appended result always passes check, including the 100-digit bound.
+         for number in ("7992 781", "001234567890123", "9" * 100):
+             result = dispatch({"action": "append", "number": number})
+             self.assertIs(dispatch({"action": "check", "number": result}), True)
+@@ -34,5 +39,18 @@
+         value = {"nested": [1, None, True, "x"]}
+         self.assertEqual(dispatch({"action": "identity", "value": value}), value)
+ 
++    def test_atomicity_and_100_digit_boundary(self):
++        # Operations never mutate the input payload, even when they fail.
++        payload = {"action": "append", "number": "7992 781"}
++        self.assertEqual(dispatch(payload), "79927810")
++        self.assertEqual(payload, {"action": "append", "number": "7992 781"})
++        failing = {"action": "append", "number": " - "}
++        with self.assertRaises(ValueError):
++            dispatch(failing)
++        self.assertEqual(failing, {"action": "append", "number": " - "})
++        # 100 digits is the upper bound and is valid for both actions.
++        self.assertEqual(dispatch({"action": "append", "number": "8" * 100}), "8" * 100 + "0")
++        self.assertIs(dispatch({"action": "check", "number": "8" * 100 + "0"}), True)
++
+ if __name__ == "__main__":
+     unittest.main()

@@ -1,0 +1,35 @@
+{
+  "passed": false,
+  "checks": [
+    {
+      "command": [
+        "python",
+        "-B",
+        "-I",
+        "/acceptance/check.py"
+      ],
+      "exit_code": 1,
+      "timed_out": false,
+      "output": "FF.\n======================================================================\nFAIL: test_append_normal_and_leading_zero (tests.test_public.CheckAction.test_append_normal_and_leading_zero)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/tests/test_public.py\", line 18, in test_append_normal_and_leading_zero\n    self.assertEqual(dispatch({\"action\": \"append\", \"number\": \"7992 781\"}), \"79927812\")\nAssertionError: '79927810' != '79927812'\n- 79927810\n?        ^\n+ 79927812\n?        ^\n\n\n======================================================================\nFAIL: test_check_normal_and_boundary (tests.test_public.CheckAction.test_check_normal_and_boundary)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/tests/test_public.py\", line 8, in test_check_normal_and_boundary\n    self.assertIs(dispatch({\"action\": \"check\", \"number\": \"7992 781-2\"}), True)\nAssertionError: False is not True\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nFAILED (failures=2)\nTraceback (most recent call last):\n  File \"/acceptance/check.py\", line 33, in <module>\n    assert result.wasSuccessful(),'generated tests failed'\n           ^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: generated tests failed\n",
+      "elapsed_s": 0.9192219939723145,
+      "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578"
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests"
+      ],
+      "exit_code": 1,
+      "timed_out": false,
+      "output": "FF.\n======================================================================\nFAIL: test_append_normal_and_leading_zero (test_public.CheckAction.test_append_normal_and_leading_zero)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/tests/test_public.py\", line 18, in test_append_normal_and_leading_zero\n    self.assertEqual(dispatch({\"action\": \"append\", \"number\": \"7992 781\"}), \"79927812\")\nAssertionError: '79927810' != '79927812'\n- 79927810\n?        ^\n+ 79927812\n?        ^\n\n\n======================================================================\nFAIL: test_check_normal_and_boundary (test_public.CheckAction.test_check_normal_and_boundary)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/tests/test_public.py\", line 8, in test_check_normal_and_boundary\n    self.assertIs(dispatch({\"action\": \"check\", \"number\": \"7992 781-2\"}), True)\nAssertionError: False is not True\n\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nFAILED (failures=2)\n",
+      "elapsed_s": 0.4172484549926594,
+      "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578"
+    }
+  ],
+  "candidate": "cc6a178e8d61d2a51c8754fab3c6269649bb977301515aecb07cca25b3a3ff89"
+}

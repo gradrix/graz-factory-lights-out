@@ -1,0 +1,178 @@
+[
+  {
+    "task": "01-seat-allocation",
+    "run": "cc965a7d716d",
+    "workspace_sha256": "19b21ae889035d9cc0fcb963e9c30cb41dc1362f069db96e3c8e6dbb45270fe3",
+    "contract_hash": "93fb10d9ca3da3e86b5a19e816318e86a5ec2ca0d1622bbaba420a13d7f7fc00",
+    "files": {
+      "workspace/domain.py": "caf765568e7715006ed8765676e68177f5748fb026b994d302b2b8118f39bba3",
+      "workspace/cli.py": "7b7892e1a2bda5caf8d09ef44fb75e8a24398546b69052fb9cb5b3d44f4d9384",
+      "workspace/api.py": "3cf2cf463d9b0a12b6f873fa67e61f554a3f93a38a1ce61816938cc8da476200",
+      "workspace/tests/test_actions.py": "ba74e34898b25a384eb2d533bbfb5572ef99ba560d032e4a5ad2d811671a7909",
+      "workspace/tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "workspace/README.md": "ab27d051ffafb928ceabe3fc10da2ff3380b701d8b5662cb8662df6e0f415389"
+    }
+  },
+  {
+    "task": "02-grid-distance",
+    "run": "2914f77232b0",
+    "workspace_sha256": "9a9b1dbaad961722c4f03f9adf684349a84034f3b512e129cfe85b11b5b48ae5",
+    "contract_hash": "634916d4f6aaa3bfac20726db954647e384fda05b3300bdb8e419de253ae7a5e",
+    "files": {
+      "workspace/domain.py": "a154a8abe0d462406a34fbb50519f7c84ed0b1aa36f7c95ec957fee60f5309cd",
+      "workspace/cli.py": "7b7892e1a2bda5caf8d09ef44fb75e8a24398546b69052fb9cb5b3d44f4d9384",
+      "workspace/api.py": "ddcfe3fac2e0f66608d6ee798d6dd5b16c684075a36c2e518236d78732ac209f",
+      "workspace/tests/test_actions.py": "6346507738e5dff050fd65f5c4695ad7aa137ae9825b845a4b6ec6e3ae8250c9",
+      "workspace/tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "workspace/README.md": "fc3693f09a2c1d2daa77447fc5dc57b1f7b24ab4c3c9036a8d82e7f13ced96e2"
+    }
+  },
+  {
+    "task": "03-bit-fields",
+    "run": "43b7647311b0",
+    "workspace_sha256": "0494f0a15a5b6c9683e456c3ee7b4aa9a88147293f5eb0cb155730e18fa14944",
+    "contract_hash": "ff8bf5bf04c9a9a5c8ff3a1daa14c0b1d3705ce4156308d5d48698fb702b9c8c",
+    "files": {
+      "workspace/domain.py": "046876362d6c270b58b934b0bb60cdb884adafe68ebd8cc4c222fa5965b7452a",
+      "workspace/cli.py": "7b7892e1a2bda5caf8d09ef44fb75e8a24398546b69052fb9cb5b3d44f4d9384",
+      "workspace/api.py": "2fe7a4684a649f7860530589783f08442c8f0649f47953f3a46ff0336c1d82e5",
+      "workspace/tests/test_domain.py": "c2c4ffca7c25555a8d86a632e7f3cfe67beb9ee4fb2e81d5ab73e0a6fcdb2bb1",
+      "workspace/README.md": "7870f3500a52d5d764530b276d68398af763573ff1104e6818da28765309fe4f"
+    }
+  },
+  {
+    "task": "04-polynomial",
+    "run": "7e948830a4a9",
+    "workspace_sha256": "6e71942ebdabbd347ebdd549d67c6666de6c413e224c7288779711e734c42029",
+    "contract_hash": "899fb8035fcc1f13d8bc95ccb49f58fd632e7394142020abd58d8a251966a861",
+    "files": {
+      "workspace/test_domain.py": "a72fcae1919b594c7920eb30d1a02f89dba22983d4c70d081938be005121d08b",
+      "workspace/domain.py": "1f2f13ac99cdfce8c0c5ab5b875c9e193c05df93bc2d8fdedae566bd33220289",
+      "workspace/cli.py": "7b7892e1a2bda5caf8d09ef44fb75e8a24398546b69052fb9cb5b3d44f4d9384",
+      "workspace/api.py": "2a3bc2feb03acc42a12d2686ef269b6dabc9d6de67d788e72b8894f363b47625",
+      "workspace/README.md": "1b385c77a2167fb2c0c6783683eb6635809fa8089d7d545412e71900f3581429"
+    }
+  },
+  {
+    "task": "05-paragraph-wrap",
+    "run": "df444f4008b1",
+    "workspace_sha256": "dbd7e683bb828a05e88bae42e8111adf99a45ee7c9f032d2c9de4b84142e7ab9",
+    "contract_hash": "d0c6a16c2ed52afd9b8f127b08efea11f71c846225ac5f040a89b1b9b6d0ba29",
+    "files": {
+      "workspace/domain.py": "7cbc61ec3594a61ba9219db4c46a01238b079d9da00c48ffbcf5de925819eb2f",
+      "workspace/cli.py": "7b7892e1a2bda5caf8d09ef44fb75e8a24398546b69052fb9cb5b3d44f4d9384",
+      "workspace/api.py": "21e546af885c0bf02f3022aeb3828d0a738f84cc4359893a831b48ab74470d0d",
+      "workspace/tests/test_public.py": "680bd31fd555fff3c20d1f67c10e06b8a407bdba04e5e4637c0b956bca3181b9",
+      "workspace/tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "workspace/README.md": "78abd611bbc69b143a63380f9b5d31a1e562d7611f0922c5aa70edfc1e639cf4"
+    }
+  },
+  {
+    "task": "06-luhn-check",
+    "run": "fbb865b3744f",
+    "workspace_sha256": "b75ab36d065294f08cc793bf9bba582d05b21de5e71ca38d93453f9e104442e3",
+    "contract_hash": "5d18569354a0a7cf1208cb56d37ad53c64d4be801710db9ccd67dc4e66d378c9",
+    "files": {
+      "workspace/domain.py": "8642f05d2eb1136a9bcfd39ddd84c8ae95d23e55cf4933048ca279ede0d467e1",
+      "workspace/cli.py": "7b7892e1a2bda5caf8d09ef44fb75e8a24398546b69052fb9cb5b3d44f4d9384",
+      "workspace/api.py": "9a6acea6f2683b534d88496c227a6669d5e6ffb7493c6ed8a42e15092ced0fb3",
+      "workspace/tests/test_public.py": "8dc9306caf9f643a4336417ff718157b32bb61387bc7e56fa98435398d8953fb",
+      "workspace/tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "workspace/README.md": "1dfe7a770ad343c8fb836b49160e6c17053fd5f31de3bce3f7f15aed1a4ae995"
+    }
+  },
+  {
+    "task": "07-monthly-calendar",
+    "run": "8e64a711a6ca",
+    "workspace_sha256": "764b7cbdfd3852ec007c05747748ffdf2526fd16c1eabe3e583b1fe0dbe5a21d",
+    "contract_hash": "8d00cf34f8d6074bb6adfe6b887d83da88f2f142929da7089931230feb9d12f7",
+    "files": {
+      "workspace/domain.py": "5becd26c5772cf21bb3f8014c758bc78e239820e629a4a27cacd7bca4d20c372",
+      "workspace/cli.py": "7b7892e1a2bda5caf8d09ef44fb75e8a24398546b69052fb9cb5b3d44f4d9384",
+      "workspace/api.py": "46333f65999b892c00b35343a6c75374a917d454964c9e8e05c2a8b12ca4e9de",
+      "workspace/tests/test_domain.py": "7b60396bd3d391ab809f7d65a9f703cb16e9f9137cc8217c9c0c24ee07f82ef1",
+      "workspace/tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "workspace/README.md": "5180cb948890906f1afc12533224a1566ee3ce6173d91a6a7a7986773fdc6d5e"
+    }
+  },
+  {
+    "task": "08-resource-matching",
+    "run": "353c1b95e636",
+    "workspace_sha256": "c3233629279669a315af8b87d1e0593edfc502d20cbaebbae6cf53959d6c7d3c",
+    "contract_hash": "1fbea4449878bf50a4e83665ad0cfb8ed1acf7169080b05393c757adccf775a7",
+    "files": {
+      "workspace/domain.py": "f4bdde6cf3d216bff0c7d8341aa8d4957a0669b375dc2a0c57ce36010759495c",
+      "workspace/cli.py": "7b7892e1a2bda5caf8d09ef44fb75e8a24398546b69052fb9cb5b3d44f4d9384",
+      "workspace/api.py": "8fb9a51a1a8b7e51a578221994365d1f3e5a7213ba7c8fe961f2c42fbc558e2f",
+      "workspace/README.md": "8f3e7ef168456cadd0da21dac99b27fdce0334b58505176052a8edb1cf8c98ae"
+    }
+  },
+  {
+    "task": "09-duration-language",
+    "run": "dbc86949d658",
+    "workspace_sha256": "276136ec08145cb2316a4d7b96df2c62a6f06fb7e0db3f4d1a00e1b2287e98cf",
+    "contract_hash": "8c5268d9a4613546296310b84e4fac906a6288174e5a6f4acd74f1335c238abb",
+    "files": {
+      "workspace/domain.py": "42316969b2c7b09da525b0eddba78094755a18a23fe14ddc3ce9061c8538c9fb",
+      "workspace/cli.py": "7b7892e1a2bda5caf8d09ef44fb75e8a24398546b69052fb9cb5b3d44f4d9384",
+      "workspace/api.py": "df277ed1d272b5deb14b529b83508fdff7672c2e362b5e495c3064b17a7b1431",
+      "workspace/tests/test_actions.py": "80153ebed8854b047dd00e037c2002d4b700612ad37364f4737fb291705c1f92",
+      "workspace/tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "workspace/README.md": "1e695c76d13d09717f936e1d824eedca7fa5d62b3977de442c4b633ec1b30b5a"
+    }
+  },
+  {
+    "task": "10-approval-ballots",
+    "run": "7a6dd457c3fb",
+    "workspace_sha256": "413322f4bae0dfb4b720a364ebb3194b6d68db605cd54f7f19db14af1bb4c31d",
+    "contract_hash": "b2c7b40400d02c2882249b0fe76e573dc6acc704d20012290726594fd003c675",
+    "files": {
+      "workspace/domain.py": "56417f9fa1d4541c76f36a04d15d7ee1dea55359414f17618d4c491f7d61c4f6",
+      "workspace/cli.py": "7b7892e1a2bda5caf8d09ef44fb75e8a24398546b69052fb9cb5b3d44f4d9384",
+      "workspace/api.py": "49c8384922bad3e0a6a897304fa54faa608a351c0375c9382b63f402910223ee",
+      "workspace/tests/test_domain.py": "fa7b36894650ff23f07b4610188aedf4efd31aa9a13307052c5f62a721bbac35",
+      "workspace/tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "workspace/README.md": "a1cb142a223630835d302a9cfdc7eefa55332081eba9136bd0af8a626c49cf9e"
+    }
+  },
+  {
+    "task": "11-run-length-codec",
+    "run": "9785dca7d431",
+    "workspace_sha256": "775cc9310c107076e2d203e3f2616c2f7325ddcc76959ee48521011def92b236",
+    "contract_hash": "ed81bde205e4a1dde5d842e1056b9e99d060a54f1689d52b8a72ad3a0dce06f2",
+    "files": {
+      "workspace/domain.py": "0b11e0a288e5c620f3a6a92adc40e5821a7252ce07c482208ee040eadfddbd8f",
+      "workspace/cli.py": "7b7892e1a2bda5caf8d09ef44fb75e8a24398546b69052fb9cb5b3d44f4d9384",
+      "workspace/api.py": "1d25247d8f698ed68a7aa4ac832fd4fe587484cae32aabf729158678c9780a46",
+      "workspace/tests/test_domain.py": "cf787b2ad21427aec65bf986ee04ec4a9e4d1666a7d8bddfd40be24efb10604a",
+      "workspace/tests/__init__.py": "5707f3f7f280c1884fde734b9ce29dd17196a13d2955615079567af9f2987a9e",
+      "workspace/README.md": "9ef2921b956328cd565ca4a954b9c867c8ae6cdf0232792682bd65e740578401"
+    }
+  },
+  {
+    "task": "12-form-query",
+    "run": "4f1f0bb04c57",
+    "workspace_sha256": "d4bbd5da78c313d272b30fbcf06221d060ef689d3efc1aac51b9bae3bbbb77f0",
+    "contract_hash": "5d41aef2518a0e5503f71f98c5a084b3dc2e2c3899c12fbca27c5e7e5c7927d0",
+    "files": {
+      "workspace/domain.py": "dd129b207f1c23b470190a5db0e8376b93cbfad1dfb36e7cdd4b9ab05e0c99d1",
+      "workspace/cli.py": "143c00a9706778b792ba90a806d346b54484b52faa12cfce87ce5c794519e067",
+      "workspace/api.py": "29d3dcea649aded03d41f6a8cd651c76b3d80d26b328edc6c14239eec4b16fc1",
+      "workspace/tests/test_public.py": "2d48a3379f514100ef37141eb5986b269a241ebfcfcf00cc9649774273921460",
+      "workspace/tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "workspace/README.md": "d3ae308fbf31f8b0910826421c9b82ad11f149770f3b4dd53c6abb421d7bcc3c"
+    }
+  },
+  {
+    "task": "ambiguous",
+    "run": "da2fc7d2e36b",
+    "workspace_sha256": "318f010d2f75b221a22bc0513c75a9df4f578139d8198d34b222e2e1b185bce7",
+    "contract_hash": "d6c9831e60ed4436c1464a6a45df7b7a2e098e27924ce49ce207944a4e30e150",
+    "files": {
+      "workspace/domain.py": "5744856c0d233b8a30b98a66f6cf58f2bc3a574f9553c992145f56f56ad42d04",
+      "workspace/cli.py": "7b7892e1a2bda5caf8d09ef44fb75e8a24398546b69052fb9cb5b3d44f4d9384",
+      "workspace/api.py": "8fb9a51a1a8b7e51a578221994365d1f3e5a7213ba7c8fe961f2c42fbc558e2f",
+      "workspace/README.md": "b5fe25bd22ebd3bed6ceb483cdf13ae30355c5cde2f643c9ce60ba28723654ae"
+    }
+  }
+]

@@ -1,0 +1,19 @@
+{
+  "run": "353c1b95e636",
+  "status": "interrupted",
+  "attempts": 3,
+  "contract": "1fbea4449878bf50a4e83665ad0cfb8ed1acf7169080b05393c757adccf775a7",
+  "hashes": {
+    "task.json": "1fbea4449878bf50a4e83665ad0cfb8ed1acf7169080b05393c757adccf775a7",
+    "workspace/domain.py": "f4bdde6cf3d216bff0c7d8341aa8d4957a0669b375dc2a0c57ce36010759495c",
+    "workspace/cli.py": "7b7892e1a2bda5caf8d09ef44fb75e8a24398546b69052fb9cb5b3d44f4d9384",
+    "workspace/api.py": "8fb9a51a1a8b7e51a578221994365d1f3e5a7213ba7c8fe961f2c42fbc558e2f",
+    "workspace/README.md": "8f3e7ef168456cadd0da21dac99b27fdce0334b58505176052a8edb1cf8c98ae",
+    "acceptance/check.py": "c74d3b1d5b96d3f066d8273ea9a7e04ed9770755129d0c8ef1ea7a983b5f0b84",
+    "attempts/2/verification.json": "4e37124723717af6ef60d83012d1a6f63b87ea3866ab0d86534e8cae2a11de4b",
+    "attempts/1/verification.json": "c327c2a2a8f989a43e26381f0be96a6cee4be0c735595b0db2c902c5a309e91a"
+  },
+  "task": "08-resource-matching",
+  "checks": [],
+  "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc"
+}

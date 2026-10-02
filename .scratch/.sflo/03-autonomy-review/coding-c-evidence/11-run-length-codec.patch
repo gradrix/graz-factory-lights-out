@@ -1,0 +1,211 @@
+--- a/README.md
++++ b/README.md
+@@ -1,3 +1,41 @@
+ # JSON utility
+ 
+-Run `python cli.py` with JSON on stdin. The identity action returns its value unchanged.
++Run `python cli.py` with one JSON object on stdin; one JSON result is written to stdout.
++Every request carries an `"action"` key: `identity`, `encode`, or `decode`. Unknown actions
++raise `ValueError`, which the CLI reports on stderr with exit code 2 (no traceback on stdout).
++
++## Actions
++
++- `identity`: returns `payload["value"]` unchanged; any JSON value is accepted.
++- `encode`: `values` is a list of integers (length <= 10000). Returns `[value, count]` pairs
++  for each maximal run of adjacent equal values. `[]` returns `[]`.
++- `decode`: `runs` is a list of `[value, count]` pairs. Each `count` must be positive and the
++  total decoded length must be <= 10000, otherwise `ValueError`. Adjacent runs with the same
++  value are permitted and are kept as separate runs. `[]` returns `[]`.
++
++Inputs are never mutated, including when a `ValueError` is raised: each operation is atomic
++from the caller's perspective.
++
++## Executable CLI examples
++
++```console
++$ echo '{"action":"encode","values":[1,1,2,2,2,1]}' | python cli.py
++[[1, 2], [2, 3], [1, 1]]
++$ echo '{"action":"decode","runs":[[4,2],[4,3]]}' | python cli.py
++[4, 4, 4, 4, 4]
++$ echo '{"action":"identity","value":{"a":[1,null]}}' | python cli.py
++{"a": [1, null]}
++$ echo '{"action":"decode","runs":[[1,0]]}' | python cli.py
++count must be positive: 0
++$ echo $?
++2
++```
++
++## Boundary and error semantics
++
++- Encode accepts up to 10000 values; empty input yields `[]`.
++- Decode accepts runs whose total decoded length is at most 10000 (exactly 10000 is valid);
++  a count of 0 or a negative count, or a total above the limit, raises `ValueError`.
++- CLI errors exit 2 with a non-empty stderr message and empty stdout.
++
++Tests live in `tests/` and run with `python -m unittest discover`.
+--- a/api.py
++++ b/api.py
+@@ -1,5 +1,12 @@
+ import domain
++
++
+ def dispatch(payload):
+- action=payload["action"]
+- if action=="identity":return domain.identity(payload)
+- raise ValueError("unknown action: "+str(action))
++    action = payload["action"]
++    if action == "identity":
++        return domain.identity(payload)
++    if action == "encode":
++        return domain.encode(payload)
++    if action == "decode":
++        return domain.decode(payload)
++    raise ValueError("unknown action: " + str(action))
+--- a/domain.py
++++ b/domain.py
+@@ -1,2 +1,28 @@
++MAX_DECODED_LENGTH = 10000
++
++
+ def identity(payload):
+- return payload['value']
++    return payload['value']
++
++
++def encode(payload):
++    values = payload['values']
++    runs = []
++    for value in values:
++        if runs and runs[-1][0] == value:
++            runs[-1][1] += 1
++        else:
++            runs.append([value, 1])
++    return runs
++
++
++def decode(payload):
++    values = []
++    for run in payload['runs']:
++        count = run[1]
++        if count <= 0:
++            raise ValueError("count must be positive: %r" % (count,))
++        if len(values) + count > MAX_DECODED_LENGTH:
++            raise ValueError("decoded length exceeds %d" % (MAX_DECODED_LENGTH,))
++        values.extend([run[0]] * count)
++    return values
+--- a/tests/__init__.py
++++ b/tests/__init__.py
+@@ -0,0 +1 @@
++"""Regression tests for the JSON utility (run with `python -m unittest discover`)."""
+--- a/tests/test_domain.py
++++ b/tests/test_domain.py
+@@ -0,0 +1,109 @@
++import json
++import subprocess
++import unittest
++import os
++import sys
++
++
++def cli(payload):
++    """Run the public CLI and return (returncode, stdout, stderr)."""
++    process = subprocess.run(
++        [sys.executable, os.path.join(os.path.dirname(os.path.dirname(__file__)), "cli.py")],
++        input=json.dumps(payload),
++        capture_output=True,
++        text=True,
++    )
++    return process.returncode, process.stdout, process.stderr
++
++
++class EncodeDecodeTestCase(unittest.TestCase):
++    def test_encode_normal_and_boundary(self):
++        from api import dispatch
++        self.assertEqual(
++            dispatch({"action": "encode", "values": [1, 1, 2, 2, 2, 1]}),
++            [[1, 2], [2, 3], [1, 1]],
++        )
++        # boundary: empty input encodes to an empty list
++        self.assertEqual(dispatch({"action": "encode", "values": []}), [])
++        # boundary: single element
++        self.assertEqual(dispatch({"action": "encode", "values": [7]}), [[7, 1]])
++        # adjacent runs never merge across differing values
++        self.assertEqual(
++            dispatch({"action": "encode", "values": [1, 2, 1]}),
++            [[1, 1], [2, 1], [1, 1]],
++        )
++        # boundary: maximum supported input length (10000)
++        self.assertEqual(
++            dispatch({"action": "encode", "values": [5] * 10000}), [[5, 10000]]
++        )
++
++    def test_decode_normal_and_boundary(self):
++        from api import dispatch
++        self.assertEqual(
++            dispatch({"action": "decode", "runs": [[1, 2], [2, 3], [1, 1]]}),
++            [1, 1, 2, 2, 2, 1],
++        )
++        # adjacent same-valued runs are permitted and stay separate
++        self.assertEqual(
++            dispatch({"action": "decode", "runs": [[4, 2], [4, 3]]}), [4] * 5
++        )
++        # boundary: empty runs decode to an empty list
++        self.assertEqual(dispatch({"action": "decode", "runs": []}), [])
++        # boundary: exactly the maximum decoded length (10000) is accepted
++        self.assertEqual(
++            len(dispatch({"action": "decode", "runs": [[0, 10000]]})), 10000
++        )
++        self.assertEqual(
++            len(dispatch({"action": "decode", "runs": [[0, 9999], [1, 1]]})),
++            10000,
++        )
++
++    def test_decode_rejected_inputs(self):
++        from api import dispatch
++        # non-positive counts are rejected
++        with self.assertRaises(ValueError):
++            dispatch({"action": "decode", "runs": [[1, 0]]})
++        with self.assertRaises(ValueError):
++            dispatch({"action": "decode", "runs": [[1, -3]]})
++        # decoded length beyond the limit is rejected
++        with self.assertRaises(ValueError):
++            dispatch({"action": "decode", "runs": [[1, 10001]]})
++        with self.assertRaises(ValueError):
++            dispatch({"action": "decode", "runs": [[1, 6000], [2, 6000]]})
++        # unknown actions are rejected
++        with self.assertRaises(ValueError):
++            dispatch({"action": "transpose", "values": [1]})
++
++    def test_no_mutation_and_atomicity(self):
++        from api import dispatch
++        runs = [[1, 2], [1, 3]]
++        self.assertEqual(dispatch({"action": "decode", "runs": runs}), [1] * 5)
++        self.assertEqual(runs, [[1, 2], [1, 3]])
++        values = [1, 1, 2]
++        self.assertEqual(dispatch({"action": "encode", "values": values}), [[1, 2], [2, 1]])
++        self.assertEqual(values, [1, 1, 2])
++        # a rejected decode leaves the caller's runs list untouched
++        bad = [[1, 5], [2, 0]]
++        with self.assertRaises(ValueError):
++            dispatch({"action": "decode", "runs": bad})
++        self.assertEqual(bad, [[1, 5], [2, 0]])
++
++    def test_cli_success_and_error_paths(self):
++        code, out, err = cli({"action": "encode", "values": [1, 1, 2]})
++        self.assertEqual((code, json.loads(out), err), (0, [[1, 2], [2, 1]], ""))
++        code, out, err = cli({"action": "decode", "runs": [[-1, 2]]})
++        self.assertEqual((code, json.loads(out), err), (0, [-1, -1], ""))
++        code, out, err = cli({"action": "identity", "value": {"a": [1, None]}})
++        self.assertEqual((code, json.loads(out), err), (0, {"a": [1, None]}, ""))
++        # ValueError: exit 2, nonempty stderr, no traceback, empty stdout
++        code, out, err = cli({"action": "decode", "runs": [[1, 0]]})
++        self.assertEqual((code, out), (2, ""))
++        self.assertTrue(err.strip())
++        self.assertNotIn("Traceback", err)
++        code, out, err = cli({"action": "nope"})
++        self.assertEqual((code, out), (2, ""))
++        self.assertTrue(err.strip())
++
++
++if __name__ == "__main__":
++    unittest.main()

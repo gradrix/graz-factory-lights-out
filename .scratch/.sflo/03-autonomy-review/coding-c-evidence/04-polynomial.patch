@@ -1,0 +1,89 @@
+--- a/README.md
++++ b/README.md
+@@ -1,3 +1,27 @@
+ # JSON utility
+ 
+-Run `python cli.py` with JSON on stdin. The identity action returns its value unchanged.
++Run `python cli.py` with one JSON object on stdin; one JSON result is printed on stdout.
++
++## Actions
++
++- `identity`: `{"action": "identity", "value": <any JSON value>}` returns `value` unchanged.
++- `evaluate`: `{"action": "evaluate", "coefficients": [c0, c1, ...], "x": <int>}` returns
++  `{"value": p(x), "derivative": p'(x)}` where `p(t) = c0 + c1*t + c2*t^2 + ...` with
++  coefficients in ascending power order. An empty `coefficients` list is the zero
++  polynomial (value 0, derivative 0). All arithmetic is exact Python integers, so
++  large results (up to 30 coefficients and |x| = 100) are never rounded.
++
++## CLI example
++
++```
++$ echo '{"action": "evaluate", "coefficients": [1, 2, 3], "x": 10}' | python cli.py
++{"value": 321, "derivative": 62}
++```
++
++## Boundary and error semantics
++
++- Boundaries: empty coefficients, single-coefficient constants (derivative 0), and
++  30 coefficients with values and `x` in -100..100 are all handled exactly.
++- Unknown actions raise `ValueError`; the CLI prints the error message on stderr,
++  prints nothing on stdout, and exits with status 2 (no traceback).
++- Input payloads are never mutated, even on failure; operations are atomic.
+--- a/api.py
++++ b/api.py
+@@ -2,4 +2,5 @@
+ def dispatch(payload):
+  action=payload["action"]
+  if action=="identity":return domain.identity(payload)
++ if action=="evaluate":return domain.evaluate(payload)
+  raise ValueError("unknown action: "+str(action))
+--- a/domain.py
++++ b/domain.py
+@@ -1,2 +1,13 @@
+ def identity(payload):
+- return payload['value']
++    return payload['value']
++
++def evaluate(payload):
++    coefficients = payload['coefficients']
++    x = payload['x']
++    value = 0
++    derivative = 0
++    for power in range(len(coefficients) - 1, -1, -1):
++        value = value * x + coefficients[power]
++    for power in range(1, len(coefficients)):
++        derivative += power * coefficients[power] * x ** (power - 1)
++    return {'value': value, 'derivative': derivative}
+--- a/test_domain.py
++++ b/test_domain.py
+@@ -0,0 +1,30 @@
++import unittest
++from api import dispatch
++
++class EvaluateTests(unittest.TestCase):
++    def test_normal_polynomial(self):
++        # 1 + 2x + 3x^2 at x=10 -> value 321, derivative 2 + 6*10 = 62
++        result = dispatch({"action": "evaluate", "coefficients": [1, 2, 3], "x": 10})
++        self.assertEqual(result, {"value": 321, "derivative": 62})
++
++    def test_empty_and_constant_boundaries(self):
++        # Empty polynomial is zero; constant has zero derivative.
++        self.assertEqual(dispatch({"action": "evaluate", "coefficients": [], "x": 7}),
++                         {"value": 0, "derivative": 0})
++        self.assertEqual(dispatch({"action": "evaluate", "coefficients": [-5], "x": -100}),
++                         {"value": -5, "derivative": 0})
++        # Boundary magnitude: 30 coefficients of 100 at x=100 (exact integers).
++        big = dispatch({"action": "evaluate", "coefficients": [100] * 30, "x": 100})
++        self.assertEqual(big["value"], sum(100 * 100 ** k for k in range(30)))
++        self.assertEqual(big["derivative"], sum(k * 100 * 100 ** (k - 1) for k in range(1, 30)))
++
++    def test_unknown_action_rejected(self):
++        with self.assertRaises(ValueError) as rejected:
++            dispatch({"action": "nope", "value": 1})
++        self.assertEqual(str(rejected.exception), "unknown action: nope")
++        # identity still works for any JSON value
++        self.assertEqual(dispatch({"action": "identity", "value": {"a": [1, None]}}),
++                         {"a": [1, None]})
++
++if __name__ == "__main__":
++    unittest.main()

@@ -8,8 +8,8 @@ Contract: sha256:dc3142601c442941057ce3167b9b9c7e8228fab75db914449c53d4645be5543
 
 Status: active — resumed qualification
 Owner: /root
-Candidate: c17821c (runtime); deployed trial copy matches source hashes
-Next: complete frozen cohort C-v2 qualification on c17821c. Fresh controller and remaining semantic QA now passed; no stage3 mutation before acceptance.
+Candidate: 4346ba5; rig trial source hashes verified in coding-d-runtime.json
+Next: complete frozen cohort D with medium coder reasoning and Python 3.12.13; independent semantic QA monitors terminal outputs. No stage3 mutation before acceptance.
 
 ## Checks and repairs
 
@@ -50,3 +50,13 @@ Fixture manifest 560c3e5645ed2d9ea91404e05aa4ddb2f4c9b1eb01f8629a98ec6e6ae738938
 Readback confirms actual current sandbox a8a3e0 is Python3.11.15, not3.12. C objectives target3.12+. Preserve this batch and raw reference validation as executed; no target-matched qualification claim. Independent terminal-output checks use alternate official3.12.13 fb1118f... and must be labeled separately. The latter base was pulled by immutable registry digest on the rig and verified as3.12.13; config and running cohort were not changed. Stage2 stays active. Tasks03/06 failed without repair progress despite intact feedback; a disposable matched-budget reasoning comparison is being prepared, no model calls until current batch finishes.
 
 C-v2 cannot meet the frozen numeric gate: tasks03/06 exhausted unchanged failed candidates and task08 hit900.41s with an actual augmenting-path loop, missing API routing/tests/docs. Preserve all12 results and separate ambiguity once complete. New unused cohort D is conditional on a corrected profile, manifest da7a8d364c326a61bb8c22f0873188c0498d98213a676c23107c1d730a143d0b, actual3.12.13 image bound in environment.image/version; independent fixture QA is in progress. Disposable paired repair script2724185d54596ab2af3d4e36cf3fc0c8d37799f3b83f1cc4fed579728e04616b passed preflight QA after fixing missing-verification receipt handling and top-level reasoning-budget placement. It has not called the model yet.
+
+## Current frontier: bounded coder profile and target-matched D
+
+C-v2 finished at 9/12 accepted, below the gate; ambiguity correctly stopped. Independent QA covered all outputs and found a noncritical accepted README defect in task10 plus unnecessary validation in task09. All nine accepted outputs passed separate Python3.12.13 checks. Original3.11 execution and scores remain unchanged. See qa-coding-c.md and coding-c.json. Durable events give384 coder responses,34266 maximum prompt tokens and2207.68s task wall time. Forty-four original trajectory lines are malformed because post-serialization redaction consumed escaped quotes; preserve raw evidence and label timing samples383/384.
+
+Known-case paired repair under actual Python3.12.13: none failed both; medium with requested top-level1024 thinking budget inside4096 total repaired both. Bit fields64.525s/6requests; Luhn319.129s/21requests. Independent semantic checks and negative controls passed. This does not establish unseen reliability or measured reasoning-token consumption. See qa-repair-reasoning-results.md.
+
+Candidate4346ba5 adds the bounded coder budget, structure-preserving redaction, complete quoted-value redaction and corrected dead-owner reporting during resume startup. Qualification preflight from4a552b6 records executed runtime, rejects bound-target mismatch before inference, and refuses reused result directories. Independent QA initially found remaining quoted-value leakage in49559e9;4346ba5 closes it. Final whole suite57tests,88%coverage; affected independent checks passed. Rig module/qualifier hashes match.
+
+Unused D started on4346ba5 with dedicated private config (medium, approvedfb1118 image); serving remains Flash131072. Manifestda7a8d364c326a61bb8c22f0873188c0498d98213a676c23107c1d730a143d0b. Actual runtime preflight passed before first model request. Rig state .gflo/stage2-coding-d; ops runner process observed through exec session74430. Three attempts,24turns,900seconds per task. All12 plus ambiguity and independent semantic evaluation remain required. No product/prompt edits during this batch. Default user config remains unchanged pending qualification.

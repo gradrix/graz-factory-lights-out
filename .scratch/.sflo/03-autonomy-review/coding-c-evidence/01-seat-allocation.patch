@@ -1,0 +1,145 @@
+--- a/README.md
++++ b/README.md
+@@ -1,3 +1,32 @@
+ # JSON utility
+ 
+-Run `python cli.py` with JSON on stdin. The identity action returns its value unchanged.
++Run `python cli.py` with one JSON object on stdin; one JSON result is printed on stdout.
++
++## Actions
++
++- `identity`: `{"action": "identity", "value": <any JSON value>}` returns the value unchanged.
++- `allocate`: `{"action": "allocate", "weights": [nonnegative integers], "seats": integer 0..1000}`
++  allocates seats proportionally by the largest-remainders (Hamilton) method: each exact quota
++  `seats * weight / total_weight` is floored, then the remaining seats go to the entries with the
++  largest fractional remainders, ties broken by lower index. Exact arithmetic is used, so results
++  are deterministic.
++
++## CLI examples
++
++```
++$ echo '{"action":"allocate","weights":[5,3,2],"seats":7}' | python cli.py
++[4, 2, 1]
++$ echo '{"action":"identity","value":{"a":[1,null]}}' | python cli.py
++{"a": [1, null]}
++```
++
++## Boundary and error semantics
++
++- `seats = 0` always returns one zero per weight (e.g. `[1,2,3]` -> `[0,0,0]`).
++- Empty `weights` returns `[]` only when `seats = 0`.
++- Positive `seats` with total weight `0` raises `ValueError`; the CLI prints the message to stderr,
++  prints nothing on stdout, and exits with code 2 (no traceback).
++- Unknown actions raise `ValueError` (same CLI behavior: exit 2, nonempty stderr).
++- Operations never mutate the input payload, even on failure.
++
++Tests: `python -m unittest discover -s tests`
+--- a/api.py
++++ b/api.py
+@@ -1,5 +1,8 @@
+ import domain
+ def dispatch(payload):
+- action=payload["action"]
+- if action=="identity":return domain.identity(payload)
+- raise ValueError("unknown action: "+str(action))
++    action = payload["action"]
++    if action == "identity":
++        return domain.identity(payload)
++    if action == "allocate":
++        return domain.allocate(payload)
++    raise ValueError("unknown action: " + str(action))
+--- a/domain.py
++++ b/domain.py
+@@ -1,2 +1,20 @@
++from fractions import Fraction
++
+ def identity(payload):
+- return payload['value']
++    return payload['value']
++
++def allocate(payload):
++    weights = list(payload['weights'])
++    seats = payload['seats']
++    total = sum(weights)
++    if total == 0:
++        if seats != 0:
++            raise ValueError("cannot allocate positive seats with zero total weight")
++        return [0] * len(weights)
++    quotas = [Fraction(seats * w, total) for w in weights]
++    result = [q.numerator // q.denominator for q in quotas]
++    remaining = seats - sum(result)
++    order = sorted(range(len(weights)), key=lambda i: (quotas[i] - result[i], -i), reverse=True)
++    for i in order[:remaining]:
++        result[i] += 1
++    return result
+--- a/tests/test_actions.py
++++ b/tests/test_actions.py
+@@ -0,0 +1,68 @@
++import unittest
++import json
++import subprocess
++
++from api import dispatch
++from domain import allocate
++
++
++class AllocateTests(unittest.TestCase):
++    def test_allocate_normal_largest_remainders(self):
++        # Exact quotas 10/3 = 3.333...; floors 3,3,3; equal remainders -> lower index wins.
++        self.assertEqual(dispatch({"action": "allocate", "weights": [1, 1, 1], "seats": 10}), [4, 3, 3])
++        # Quotas 3.75 and 1.25 -> floor 3,1; the remainder seat goes to the larger fraction.
++        self.assertEqual(dispatch({"action": "allocate", "weights": [3, 1], "seats": 5}), [4, 1])
++        # Tie on fractional remainder: quotas 1.5, 1.5 -> lower index gets the extra seat.
++        self.assertEqual(dispatch({"action": "allocate", "weights": [5, 5], "seats": 3}), [2, 1])
++
++    def test_allocate_boundaries(self):
++        # Zero seats always returns one zero per weight.
++        self.assertEqual(dispatch({"action": "allocate", "weights": [1, 2, 3], "seats": 0}), [0, 0, 0])
++        # Empty weights with seats=0 returns [].
++        self.assertEqual(dispatch({"action": "allocate", "weights": [], "seats": 0}), [])
++        # All-zero weights with seats=0 returns one zero per weight.
++        self.assertEqual(dispatch({"action": "allocate", "weights": [0, 0], "seats": 0}), [0, 0])
++        # Maximum seats bound.
++        self.assertEqual(dispatch({"action": "allocate", "weights": [1], "seats": 1000}), [1000])
++
++    def test_allocate_rejected_inputs(self):
++        # Positive seats with zero total weight raises ValueError.
++        with self.assertRaises(ValueError):
++            dispatch({"action": "allocate", "weights": [0, 0], "seats": 2})
++        # Unknown action raises ValueError.
++        with self.assertRaises(ValueError):
++            dispatch({"action": "nope", "value": 1})
++
++    def test_no_mutation_of_input(self):
++        payload = {"action": "allocate", "weights": [3, 1], "seats": 5}
++        result = dispatch(payload)
++        self.assertEqual(payload["weights"], [3, 1])
++        self.assertEqual(sum(result), 5)
++        # Identity preserves any JSON value and does not mutate it.
++        value = {"nested": [1, {"x": None}]}
++        self.assertEqual(dispatch({"action": "identity", "value": value}), value)
++
++    def test_cli_success_and_error(self):
++        proc = subprocess.run(
++            ["python", "cli.py"],
++            input=json.dumps({"action": "allocate", "weights": [2, 1], "seats": 4}),
++            capture_output=True,
++            text=True,
++        )
++        self.assertEqual(proc.returncode, 0)
++        self.assertEqual(json.loads(proc.stdout), [3, 1])
++        self.assertEqual(proc.stderr, "")
++        proc = subprocess.run(
++            ["python", "cli.py"],
++            input=json.dumps({"action": "allocate", "weights": [0], "seats": 3}),
++            capture_output=True,
++            text=True,
++        )
++        self.assertEqual(proc.returncode, 2)
++        self.assertNotEqual(proc.stderr.strip(), "")
++        self.assertNotIn("Traceback", proc.stderr)
++        self.assertEqual(proc.stdout, "")
++
++
++if __name__ == "__main__":
++    unittest.main()

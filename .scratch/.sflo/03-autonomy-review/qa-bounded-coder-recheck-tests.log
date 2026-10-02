@@ -1,0 +1,16 @@
+test_cancel_during_startup_is_terminal_and_resumable (test_observation.ObservationTests) ... ok
+test_dead_resume_owner_is_interrupted_even_before_old_cancelled_state_changes (test_observation.ObservationTests) ... ok
+test_durable_events_and_budget_survive_reopen (test_observation.ObservationTests) ... ok
+test_event_and_live_detail_preserve_json_and_redact_nested_secrets (test_observation.ObservationTests) ... ok
+test_http_view_is_readonly_and_reconnects_with_durable_cursor (test_observation.ObservationTests) ... ok
+test_observer_can_start_before_first_task (test_observation.ObservationTests) ... ok
+test_public_artifacts_reject_traversal_symlinks_and_secrets (test_observation.ObservationTests) ... ok
+test_public_json_artifact_redaction_is_valid_json (test_observation.ObservationTests) ... ok
+test_real_process_cancel_and_kill_have_honest_state (test_observation.ObservationTests) ... ok
+test_redaction_consumes_whole_quoted_and_unterminated_values (test_observation.ObservationTests) ... ok
+test_stalled_model_has_live_heartbeat_without_fake_progress (test_observation.ObservationTests) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 2.892s
+
+OK

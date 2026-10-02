@@ -1,0 +1,35 @@
+{
+  "passed": false,
+  "checks": [
+    {
+      "command": [
+        "python",
+        "-B",
+        "-I",
+        "/acceptance/check.py"
+      ],
+      "exit_code": 1,
+      "timed_out": false,
+      "output": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 15, in <module>\n    assert json_equal(dispatch(p),expected),(p,'wrong result')\n                      ^^^^^^^^^^^\n  File \"/workspace/api.py\", line 6, in dispatch\n    raise ValueError(\"unknown action: \"+str(action))\nValueError: unknown action: parse\n",
+      "elapsed_s": 0.4172421920229681,
+      "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578"
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests"
+      ],
+      "exit_code": 1,
+      "timed_out": false,
+      "output": "......F..........\n======================================================================\nFAIL: test_max_length_boundary (test_public.ParseQueryBoundaries.test_max_length_boundary)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/tests/test_public.py\", line 51, in test_max_length_boundary\n    self.assertEqual(len(query), 2000)\nAssertionError: 1600 != 2000\n\n----------------------------------------------------------------------\nRan 17 tests in 0.077s\n\nFAILED (failures=1)\n",
+      "elapsed_s": 0.5195635299896821,
+      "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578"
+    }
+  ],
+  "candidate": "0f7f6aad12ed654126b9614894c3643c1e36bb11ca1f5ef042ed2315897793ad"
+}

@@ -1,0 +1,35 @@
+{
+  "passed": false,
+  "checks": [
+    {
+      "command": [
+        "python",
+        "-B",
+        "-I",
+        "/acceptance/check.py"
+      ],
+      "exit_code": 1,
+      "timed_out": false,
+      "output": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 31, in <module>\n    assert suite.countTestCases()>=3,'need three discoverable regression tests'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: need three discoverable regression tests\n",
+      "elapsed_s": 0.9222826019977219,
+      "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc"
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "output": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.078s\n\nOK\n",
+      "elapsed_s": 0.5219863230013289,
+      "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc"
+    }
+  ],
+  "candidate": "61a64aac1c8683332b631d829e9b1b1a2911e9d9c4869ba486a58f1b121279df"
+}

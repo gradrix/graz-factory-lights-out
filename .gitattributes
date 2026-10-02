@@ -1,3 +1,4 @@
 # Blank context lines in saved unified patches require their leading space.
 .scratch/.sflo/03-autonomy-review/coding-b-evidence/*/source.patch -whitespace
-.scratch/.sflo/03-autonomy-review/coding-c-evidence/*/source.patch -whitespace
+.scratch/.sflo/03-autonomy-review/coding-c-evidence/*.patch -whitespace
+.scratch/.sflo/03-autonomy-review/repair-reasoning-evidence/*.patch -whitespace

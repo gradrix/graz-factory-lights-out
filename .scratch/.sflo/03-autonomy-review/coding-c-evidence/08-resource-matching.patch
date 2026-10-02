@@ -1,0 +1,81 @@
+--- a/domain.py
++++ b/domain.py
+@@ -1,2 +1,77 @@
+ def identity(payload):
+- return payload['value']
++    return payload['value']
++
++
++def maximum_matching(payload):
++    """Maximum number of jobs that can each receive one of their listed resources.
++
++    ``payload["choices"]`` is a list of jobs; each job lists the resources it
++    accepts (nonempty strings). A resource may be assigned to at most one job.
++    The returned count is the size of a maximum matching, so duplicate resource
++    names inside a job and duplicate job entries never change the result. The
++    input payload is never mutated.
++    """
++    return _maximum_matching(_normalized_adjacency(payload['choices']))
++
++
++def _normalized_adjacency(choices):
++    """Per-job resource order with duplicates removed (input left untouched)."""
++    adjacency = []
++    for job in choices:
++        seen = set()
++        resources = []
++        for resource in job:
++            if resource not in seen:
++                seen.add(resource)
++                resources.append(resource)
++        adjacency.append(resources)
++    return adjacency
++
++
++def _maximum_matching(adjacency):
++    """Size of a maximum matching: job index -> accepted resource names.
++
++    Iterative Kuhn augmenting-path search; with at most 30 jobs and 30
++    resources this is trivially fast and needs no recursion limit handling.
++    """
++    resource_to_job = {}
++    job_to_resource = {}
++
++    def augment(start):
++        """Try to grow the matching by one using a path from free job ``start``.
++
++        ``parent[resource]`` records the job that reached ``resource``, so the
++        edges of the found alternating path can be flipped backwards.
++        """
++        parent = {}
++        stack = [(start, iter(adjacency[start]))]
++        while stack:
++            job, resources = stack[-1]
++            extended = False
++            for resource in resources:
++                if resource in parent:
++                    continue
++                parent[resource] = job
++                owner = resource_to_job.get(resource)
++                if owner is None:
++                    # Free resource found: flip every edge along the path.
++                    while True:
++                        previous = parent[resource]
++                        resource_to_job[resource] = previous
++                        job_to_resource[previous] = resource
++                        if previous == start:
++                            return True
++                        resource = job_to_resource[previous]
++                else:
++                    stack.append((owner, iter(adjacency[owner])))
++                    extended = True
++                    break
++            if not extended:
++                stack.pop()
++        return False
++
++    matched = 0
++    for job, resources in enumerate(adjacency):
++        if resources and augment(job):
++            matched += 1
++    return matched

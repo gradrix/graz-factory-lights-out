@@ -1,0 +1,167 @@
+--- a/README.md
++++ b/README.md
+@@ -1,3 +1,32 @@
+ # JSON utility
+ 
+-Run `python cli.py` with JSON on stdin. The identity action returns its value unchanged.
++Run `python cli.py` with one JSON payload on stdin; one JSON result is printed on stdout.
++
++## Actions
++
++- `identity`: `{"action": "identity", "value": <any JSON value>}` returns `value` unchanged.
++- `wrap`: `{"action": "wrap", "text": <string up to 2000 code points>, "width": <int 1..80>}`
++  returns a list of lines. Text is split into paragraphs on literal `\n` (empty
++  paragraphs preserved). Within a paragraph, words are split on whitespace and
++  separators collapsed to one ASCII space; words are greedily placed on lines of
++  at most `width` characters (Python `len`, i.e. Unicode code points). A word
++  longer than `width` occupies its own line intact. Each empty or whitespace-only
++  paragraph contributes one empty string. Input is never mutated; operations are
++  atomic from the caller's perspective.
++
++## Executable CLI example
++
++```
++echo '{"action": "wrap", "text": "the quick brown fox\n\njumps", "width": 9}' | python cli.py
++# -> ["the quick", "brown fox", "", "jumps"]
++```
++
++## Boundary and error semantics
++
++- Boundaries: `width` 1 puts every word on its own line; a word exactly equal to
++  `width` fits on one line; an over-long word stays intact on its own line; empty
++  or whitespace-only paragraphs yield `""` lines.
++- Errors: an unknown action raises `ValueError`; the CLI exits with code 2, prints
++  the error message to nonempty stderr, and prints nothing to stdout (no traceback).
++  Malformed JSON input is handled the same way. No other validation is performed;
++  types/shapes/bounds are otherwise guaranteed.
+--- a/api.py
++++ b/api.py
+@@ -2,4 +2,5 @@
+ def dispatch(payload):
+  action=payload["action"]
+  if action=="identity":return domain.identity(payload)
++ if action=="wrap":return domain.wrap(payload)
+  raise ValueError("unknown action: "+str(action))
+--- a/domain.py
++++ b/domain.py
+@@ -1,2 +1,31 @@
+ def identity(payload):
+- return payload['value']
++    return payload['value']
++
++
++def wrap(payload):
++    """Greedy word wrap.
++
++    Split text on literal newlines into paragraphs (empty paragraphs preserved).
++    Within a paragraph split on whitespace, collapse separators to one ASCII
++    space, greedily place words on lines of at most `width` code points
++    (Python len). A word longer than width occupies its own line intact.
++    Each empty/whitespace-only paragraph contributes one empty line.
++    """
++    text = payload['text']
++    width = payload['width']
++    lines = []
++    for paragraph in text.split('\n'):
++        words = paragraph.split()
++        if not words:
++            lines.append('')
++            continue
++        current = words[0]
++        for word in words[1:]:
++            candidate = current + ' ' + word
++            if len(candidate) <= width:
++                current = candidate
++            else:
++                lines.append(current)
++                current = word
++        lines.append(current)
++    return lines
+--- a/tests/test_public.py
++++ b/tests/test_public.py
+@@ -0,0 +1,85 @@
++import unittest
++import json
++import subprocess
++import sys
++import pathlib
++
++ROOT = pathlib.Path(__file__).resolve().parent.parent
++
++
++class WrapNormal(unittest.TestCase):
++    def test_wrap_normal(self):
++        from api import dispatch
++        payload = {"action": "wrap", "text": "the quick brown fox jumps", "width": 10}
++        self.assertEqual(
++            dispatch(payload),
++            ["the quick", "brown fox", "jumps"],
++        )
++        # separators collapsed, tabs/newline paragraphs handled
++        payload = {"action": "wrap", "text": "a\t\tb   c\nd", "width": 5}
++        self.assertEqual(dispatch(payload), ["a b c", "d"])
++
++
++class WrapBoundaries(unittest.TestCase):
++    def test_wrap_boundaries(self):
++        from api import dispatch
++        # empty text -> one empty paragraph/line
++        self.assertEqual(dispatch({"action": "wrap", "text": "", "width": 1}), [""])
++        # whitespace-only and empty paragraphs each yield one empty line
++        self.assertEqual(
++            dispatch({"action": "wrap", "text": "  \n\nx", "width": 5}),
++            ["", "", "x"],
++        )
++        # width 1: every word on its own line; over-long word intact
++        self.assertEqual(
++            dispatch({"action": "wrap", "text": "hi there", "width": 1}),
++            ["hi", "there"],
++        )
++        # exact fit boundary: word fits exactly at width
++        self.assertEqual(
++            dispatch({"action": "wrap", "text": "ab cd", "width": 5}),
++            ["ab cd"],
++        )
++        # one code point over width forces a break (Unicode measured by len)
++        self.assertEqual(
++            dispatch({"action": "wrap", "text": "ab cdé", "width": 5}),
++            ["ab", "cdé"],
++        )
++
++    def test_unknown_action_rejected(self):
++        from api import dispatch
++        with self.assertRaises(ValueError) as cm:
++            dispatch({"action": "nope", "value": 1})
++        self.assertEqual(str(cm.exception), "unknown action: nope")
++
++
++class CliBehavior(unittest.TestCase):
++    def _run_cli(self, stdin_text):
++        result = subprocess.run(
++            [sys.executable, "cli.py"],
++            input=stdin_text,
++            text=True,
++            capture_output=True,
++            cwd=str(ROOT),
++        )
++        return result
++
++    def test_cli_identity_and_wrap_success(self):
++        r = self._run_cli('{"action": "identity", "value": {"k": [1, null]}}')
++        self.assertEqual(r.returncode, 0)
++        self.assertEqual(r.stderr, "")
++        self.assertEqual(json.loads(r.stdout), {"k": [1, None]})
++        r = self._run_cli('{"action": "wrap", "text": "a b\\n\\nc", "width": 3}')
++        self.assertEqual(r.returncode, 0)
++        self.assertEqual(json.loads(r.stdout), ["a b", "", "c"])
++
++    def test_cli_value_error_exit_2(self):
++        r = self._run_cli('{"action": "nope"}')
++        self.assertEqual(r.returncode, 2)
++        self.assertNotEqual(r.stderr, "")
++        self.assertEqual(r.stdout, "")
++        self.assertNotIn("Traceback", r.stderr)
++
++
++if __name__ == "__main__":
++    unittest.main()

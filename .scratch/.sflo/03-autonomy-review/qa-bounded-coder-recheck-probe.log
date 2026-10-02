@@ -1,0 +1,35 @@
+[
+  {
+    "case": "structured-control",
+    "json_valid": true,
+    "secret_suffix_exposed": false
+  },
+  {
+    "case": "quoted-space",
+    "json_valid": true,
+    "secret_suffix_exposed": false
+  },
+  {
+    "case": "quoted-escape",
+    "json_valid": true,
+    "secret_suffix_exposed": false
+  },
+  {
+    "case": "quoted-newline",
+    "json_valid": true,
+    "secret_suffix_exposed": false
+  },
+  {
+    "case": "unterminated",
+    "json_valid": true,
+    "secret_suffix_exposed": false
+  },
+  {
+    "case": "malformed",
+    "http_status": 404
+  },
+  {
+    "case": "oversized",
+    "http_status": 404
+  }
+]
