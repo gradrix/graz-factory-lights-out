@@ -171,7 +171,9 @@ class DocumentsTests(unittest.TestCase):
             return original(*args,**kwargs)
         self.store.executor=failure
         with self.assertRaisesRegex(ValueError,'extract failed'):self.store.acquire(APPROVAL)
-        self.assertEqual([p.name for p in self.store.root.iterdir()],['.lock'])
+        self.assertEqual({p.name for p in self.store.root.iterdir()},{'.lock','.cleanup-required'})
+        with patch('gflo.documents.subprocess.run') as run:
+            run.return_value.stdout='';self.store.cleanup()
         self.store.executor=lambda *a,**kw:(_ for _ in ()).throw(RuntimeError('cleanup failed'))
         with self.assertRaises(RuntimeError):self.store.acquire(APPROVAL)
         self.assertTrue((self.store.root/'.cleanup-required').exists())
@@ -190,3 +192,63 @@ class DocumentsTests(unittest.TestCase):
             with patch('gflo.documents.subprocess.run') as run:
                 run.return_value.stdout=''
                 self.assertEqual(main(['documents','cleanup']),0)
+
+    def test_uncertain_executor_outcomes_fence_reuse(self):
+        import subprocess
+        for outcome in [subprocess.TimeoutExpired('docker rm',30),{'exit_code':124,'output':'cleanup failed'}, {'exit_code':130,'output':'cleanup failed'}]:
+            with self.subTest(outcome=outcome):
+                def uncertain(*a,**kw):
+                    if isinstance(outcome,Exception):raise outcome
+                    return outcome
+                self.store.executor=uncertain
+                with self.assertRaises((ValueError,subprocess.TimeoutExpired)):self.store.acquire(APPROVAL)
+                self.store.executor=self.executor
+                with self.assertRaisesRegex(ValueError,'cleanup'):self.store.acquire(APPROVAL)
+                with patch('gflo.documents.subprocess.run') as run:
+                    run.return_value.stdout='';self.store.cleanup()
+
+    def test_commit_is_final_filesystem_operation(self):
+        original_exists=Path.exists
+        def no_stage_exists(path):
+            if path.name.startswith('.stage-'):raise OSError('stage stat unavailable')
+            return original_exists(path)
+        with patch.object(Path,'exists',no_stage_exists):
+            record=self.store.acquire(APPROVAL)
+        self.assertEqual(self.store.resolve(record['id'])['id'],record['id'])
+
+    def test_staging_sync_or_commit_rename_failure_never_publishes(self):
+        from gflo import documents
+        prior=self.store.acquire(APPROVAL)
+        old_ids={p.name for p in self.store.root.iterdir() if len(p.name)==64}
+        original_sync=documents.sync_directory
+        def fail_final_staging_sync(path):
+            if path.name.startswith('.stage-') and not (path/'pending').exists():
+                raise OSError('staging durability failure')
+            return original_sync(path)
+        with patch('gflo.documents.sync_directory',side_effect=fail_final_staging_sync),self.assertRaises(OSError):
+            self.store.acquire(APPROVAL)
+        original_rename=Path.rename
+        def fail_commit(path,target):
+            if path.name.startswith('.stage-') and len(target.name)==64:
+                raise OSError('atomic commit unavailable')
+            return original_rename(path,target)
+        with patch.object(Path,'rename',fail_commit),self.assertRaises(OSError):
+            self.store.acquire(APPROVAL)
+        self.assertEqual({p.name for p in self.store.root.iterdir() if len(p.name)==64},old_ids)
+        self.assertEqual(self.store.resolve(prior['id'])['id'],prior['id'])
+
+    def test_answer_commit_does_not_read_evidence_after_publication(self):
+        prior=self.store.acquire(APPROVAL)
+        client=type('Client',(),{'config':{'model':'local'},'endpoint':'http://127.0.0.1:18000'})()
+        response={'choices':[{'message':{'content':json.dumps({'status':'insufficient_evidence','claims':[],'reason':'No future date.'})}}]}
+        original_rename=Path.rename;original_resolve=self.store._resolve;committed=[False]
+        def commit(path,target):
+            result=original_rename(path,target)
+            if path.name.startswith('.stage-'):committed[0]=True
+            return result
+        def read(*a,**kw):
+            if committed[0]:raise OSError('postcommit evidence read forbidden')
+            return original_resolve(*a,**kw)
+        with patch('gflo.documents.bounded_answer',return_value=response),patch.object(Path,'rename',commit),patch.object(self.store,'_resolve',side_effect=read):
+            saved=self.store.answer(prior['id'],client)
+        self.assertEqual(self.store.replay(saved['id'])['answer'],saved['answer'])

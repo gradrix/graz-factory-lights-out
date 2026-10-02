@@ -225,15 +225,16 @@ class DocumentStore:
         command += [DEFAULT_IMAGE, 'python', '-B', '/helpers/' + helper, phase]
         capture = io.BytesIO()
         deadline = time.monotonic() + (15 if phase == 'fetch' else 5) + CLEANUP_GRACE
-        try:
-            result = self.executor(command, name, 15 if phase == 'fetch' else 5, output=capture,
+        # Fence before handing work to an external process. Exceptions, owner death,
+        # and nonzero guardian statuses cannot establish successful cleanup.
+        marker = self.root / '.cleanup-required'
+        fd = os.open(marker, os.O_CREAT | os.O_EXCL | os.O_WRONLY | os.O_NOFOLLOW, 0o600)
+        os.close(fd)
+        result = self.executor(command, name, 15 if phase == 'fetch' else 5, output=capture,
                                max_output_bytes=document.BODY_LIMIT + document.HEADER_LIMIT + 1 if phase == 'fetch' else 1024 * 1024,
                                cancelled=cancelled, inspect_path=work / (phase + '-inspect.json'))
-        except RuntimeError:
-            (self.root / '.cleanup-required').touch(mode=0o600)
-            raise
-        if result['exit_code'] == 125:
-            (self.root / '.cleanup-required').touch(mode=0o600)
+        if result['exit_code'] == 0:
+            marker.unlink()
         active(cancelled, deadline)
         if result['exit_code']:
             raise ValueError(f'Document {phase} failed ({result["exit_code"]}): ' + result['output'][-4096:])
@@ -270,11 +271,13 @@ class DocumentStore:
                                'executors': {'fetch': fetch_facts, 'extract': extract_facts}}
                 finally:
                     shutil.rmtree(work)  # Outer scratch cleanup precedes publication.
+                historical = self._historical({'receipt': receipt})
                 published = self._publish(stage, receipt, cancelled, deadline)
-                published.update(self._historical(published))
+                stage = None
+                published.update(historical)
                 return published
             finally:
-                if stage.exists():
+                if stage is not None:
                     shutil.rmtree(stage)
 
     @staticmethod
@@ -294,23 +297,19 @@ class DocumentStore:
         destination = self.root / identifier
         if os.path.lexists(destination):
             raise ValueError('Document receipt already exists')
-        published = False
-        try:
-            stage.rename(destination); published = True; sync_directory(self.root)
-            result = self._resolve(identifier, allow_pending=True)
-            active(cancelled, deadline)
-            (destination / 'pending').unlink()
-            sync_directory(destination)
-            return result
-        except BaseException:
-            if published:
-                destination.rename(stage)
-            raise
+        # Validate and finish every fallible preparation step in private staging.
+        # Atomic rename is the publication point; no filesystem work follows it.
+        result = self._resolve(identifier, allow_pending=True, staging=stage)
+        (stage / 'pending').unlink()
+        sync_directory(stage)
+        active(cancelled, deadline)
+        stage.rename(destination)
+        return result
 
-    def _resolve(self, identifier, *, allow_pending=False):
+    def _resolve(self, identifier, *, allow_pending=False, staging=None):
         if not isinstance(identifier, str) or not HEX.fullmatch(identifier):
             raise ValueError('Document ID must be a SHA256, never a path')
-        root = self.root / identifier
+        root = self.root / identifier if staging is None else staging
         info = root.lstat()
         if not stat.S_ISDIR(info.st_mode) or info.st_uid != os.getuid() or stat.S_IMODE(info.st_mode) != 0o700:
             raise ValueError('Document record ownership/type/mode changed')
@@ -380,13 +379,15 @@ class DocumentStore:
                        'model': client.config['model'], 'config': {'endpoint': client.endpoint, 'model': client.config['model']},
                        'request_sha256': digest(encoded(request)), 'response_sha256': digest(encoded(response)),
                        'response': response, 'answer': value, 'verdict': 'citation_provenance_valid_not_semantic_entailment'}
+            rendered = self._replay({'id': digest(encoded(receipt)), 'receipt': receipt})
             stage = Path(tempfile.mkdtemp(prefix='.stage-', dir=self.root))
             try:
-                saved = self._publish(stage, receipt, cancelled)
+                self._publish(stage, receipt, cancelled)
+                stage = None
             finally:
-                if stage.exists():
+                if stage is not None:
                     shutil.rmtree(stage)
-            return self._replay(saved)
+            return rendered
 
     def _replay(self, saved):
         receipt = saved['receipt']
