@@ -18,7 +18,8 @@ def prepare(source, destination):
         if not path.resolve().is_relative_to(source) or hashlib.sha256(path.read_bytes()).hexdigest() != expected:
             raise ValueError('Fixture manifest mismatch: ' + name)
     shutil.copytree(source, destination, ignore=shutil.ignore_patterns('.git', '__pycache__', '*.pyc'))
-    repos = sorted((destination / 'coding').glob('*/source')) + [destination / 'ambiguous/source']
+    task_dir = destination / ('coding' if (destination / 'coding').is_dir() else 'tasks')
+    repos = sorted(task_dir.glob('*/source')) + [destination / 'ambiguous/source']
     for repo in repos:
         for args in (['init','-q'], ['add','.'], ['-c','user.name=GFLO qualification','-c','user.email=qualification@local','commit','-qm','Frozen qualification input']):
             subprocess.run(['git','-C',str(repo),*args], check=True)

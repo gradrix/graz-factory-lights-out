@@ -35,7 +35,11 @@ def main():
     factory = Factory(args.state, None, None, reviewer=Reviewer(ModelWorker(config, sandbox)))
     receipt = {'manifest_sha256': hashlib.sha256((args.fixtures / 'manifest.json').read_bytes()).hexdigest(),
                'wall_budget_s_per_task': 900, 'results': []}
-    paths = sorted((args.fixtures / 'coding').glob('*/task.json')) + [args.fixtures / 'ambiguous/task.json']
+    task_dir = args.fixtures / ('coding' if (args.fixtures / 'coding').is_dir() else 'tasks')
+    coding_paths = sorted(task_dir.glob('*/task.json'))
+    if len(coding_paths) != 12:
+        raise ValueError('Qualification requires exactly twelve frozen coding tasks')
+    paths = coding_paths + [args.fixtures / 'ambiguous/task.json']
     for path in paths:
         run = factory.create(path)
         root = factory.state / run
