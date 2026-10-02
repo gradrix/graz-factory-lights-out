@@ -1,6 +1,6 @@
 # Stage 4 research and browser route
 
-Verified 2026-10-02. **Discovery only:** Stage 3 remains the sole active implementation unit. This report neither qualifies a browser sandbox nor accepts Stage 4. Scope follows [the roadmap](../roadmap.md); no packages, images, services, or local SearXNG settings were changed or tested.
+Verified 2026-10-02. **Initial discovery:** Stage 3 was the sole active implementation unit when this report was written. This report neither qualifies a browser sandbox nor accepts Stage 4. Scope follows [the roadmap](../roadmap.md); no packages, images, services, or local SearXNG settings were changed or tested.
 
 ## Recommendation: start with one known document
 
@@ -61,3 +61,9 @@ For offline search, a small local index over accepted receipts is the simplest i
 4. Qualify public-page browsing separately, including redirect/DNS/private-address controls, downloads/CAPTCHA, hostile page instructions, cancellation and cleanup. Preserve the roadmap's full ten-answer/five-journey acceptance gate.
 
 Decisions still needed: first documentation corpus and exact versions; retention/cache policy and extractor format; Python versus Node browser driver; image digest/architecture; enforceable host-network denial; measured resource budgets; and whether public browsing needs a separate service/isolation layer. None were resolved by running infrastructure in this discovery task.
+
+## Later same-day local-app prototype
+
+The supported-environment stage is now accepted; approved-document evidence is the sole active implementation slice. A separate [disposable browser prototype](../../.scratch/autonomy/browser-boundary-prototype.md) verified architecture-specific image/package pins on the rig. Sharing an owned network-none app namespace allowed loopback application access while gateway/LAN/Internet probes failed with no route. The official seccomp profile failed with all outer capabilities dropped; an independently reviewed change to only the conditional chroot rule enabled sandboxed Chromium. Reporter readback observed separate renderer namespaces and an additional seccomp filter.
+
+This answers local-app feasibility, not the complete browser gate. Shared-memory behavior under realistic load, cancellation/owner death, bounded artifacts, downloads and five application journeys remain unqualified. Public Internet browsing remains separate; no egress boundary for hostile arbitrary sites was established. Exact pins, failed attempts, security implications and measured process facts are retained in the prototype report.

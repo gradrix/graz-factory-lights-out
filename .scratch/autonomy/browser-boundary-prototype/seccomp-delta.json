@@ -1,0 +1,29 @@
+[
+  {
+    "syscalls_index": 18,
+    "before": {
+      "names": [
+        "chroot"
+      ],
+      "action": "SCMP_ACT_ALLOW",
+      "args": [],
+      "comment": "",
+      "includes": {
+        "caps": [
+          "CAP_SYS_CHROOT"
+        ]
+      },
+      "excludes": {}
+    },
+    "after": {
+      "names": [
+        "chroot"
+      ],
+      "action": "SCMP_ACT_ALLOW",
+      "args": [],
+      "comment": "",
+      "includes": {},
+      "excludes": {}
+    }
+  }
+]

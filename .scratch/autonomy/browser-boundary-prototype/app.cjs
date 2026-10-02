@@ -1,0 +1,1 @@
+require('http').createServer((req,res)=>{res.setHeader('Content-Type','text/html');res.end('<!doctype html><title>Owned boundary app</title><button id="increment" onclick="document.querySelector(\'#count\').textContent=Number(document.querySelector(\'#count\').textContent)+1">Add</button><output id="count">0</output>');}).listen(3210,'127.0.0.1');
