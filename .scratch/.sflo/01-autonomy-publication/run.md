@@ -6,11 +6,13 @@ Contract: sha256:0e4b648b72c60a22decf8adcc113e26a20ef1c7d8c99effc228e8f5ad238e48
 
 ## Execution
 
-Status: active
+Status: accepted
 Owner: /root
-Candidate: not yet produced
-Next: clean superseded artifacts; research feasibility; stage and publish the new tree against current origin/main.
+Candidate: b9d3765
+Next: visibility stage remains planned and unclaimed.
 
 ## Checks and repairs
 
-Fetched origin/main at 56255790dcdd7306b6b904ef3a71a0ff2dd4f2fd: later September work belongs to the superseded factory. Publication will remove its old paths while retaining normal commit ancestry.
+Fetched origin/main at 56255790dcdd7306b6b904ef3a71a0ff2dd4f2fd: later September work belongs to the superseded factory. Publication removed its old paths while retaining normal commit ancestry.
+
+Verification: 23 tests pass; 90% coverage; documentation links and whitespace checks pass. Published tree matches tested working files. Normal push and remote refs/heads/main readback confirmed b9d3765. The old reset archive is deleted; runtime secrets and raw traces are excluded.

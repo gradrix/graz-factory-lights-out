@@ -2,7 +2,7 @@
 
 ## Current turn
 
-- [Clean and publish baseline plus autonomy plan](delivery/01-publish-plan.md) — active; owner /root.
+- [Clean and publish baseline plus autonomy plan](delivery/01-publish-plan.md) — accepted; published as b9d3765.
 
 ## Next implementation frontier
 
