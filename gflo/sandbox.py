@@ -1,13 +1,11 @@
 """Offline command execution and independent acceptance checks."""
 import hashlib
-import json
-import sys
 import os
 from pathlib import Path
 import subprocess
-import threading
-import time
 import uuid
+
+from .guard import run as guarded_run
 
 DEFAULT_IMAGE = 'sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc'
 
@@ -32,7 +30,8 @@ class Sandbox:
         name = 'gflo-job-' + uuid.uuid4().hex[:16]
         label = hashlib.sha256(str(workspace).encode()).hexdigest()
         args = ['docker', 'run', '--rm', '--pull', 'never', '--name', name,
-                '--label', 'gflo.workspace=' + label, '--network', 'none',
+                '--label', 'gflo.workspace=' + label, '--network', 'none', '--runtime', 'runc',
+                '--shm-size', '16m',
                 '--read-only', '--cap-drop', 'ALL', '--security-opt', 'no-new-privileges',
                 '--memory', '1g', '--memory-swap', '1g', '--cpus', '2', '--pids-limit', '128',
                 '--user', f'{os.getuid()}:{os.getgid()}', '--init',
@@ -43,49 +42,15 @@ class Sandbox:
         if acceptance:
             args += ['--mount', f'type=bind,src={Path(acceptance).resolve()},dst=/acceptance,readonly']
         args += [self.image, *command]
-        started = time.monotonic()
         self.observe('container_running', name=name, timeout_s=timeout, readonly=bool(acceptance))
-        process = subprocess.Popen([sys.executable, '-m', 'gflo.guard'], stdin=subprocess.PIPE,
-                                   stdout=subprocess.PIPE, stderr=subprocess.STDOUT, start_new_session=True)
-        process.stdin.write((json.dumps({'args': args, 'name': name, 'timeout': timeout}) + '\n').encode())
-        process.stdin.flush()
-        tail = bytearray()
-        count = [0]
-
-        def drain():
-            while True:
-                chunk = process.stdout.read(4096)
-                if not chunk:
-                    return
-                count[0] += len(chunk)
-                tail.extend(chunk)
-                if len(tail) > 16384:
-                    del tail[:-16384]
-
-        reader = threading.Thread(target=drain, daemon=True)
-        reader.start()
+        result = None
         try:
-            process.wait(timeout=timeout + 45)
+            result = guarded_run(args, name, timeout)
         finally:
-            process.stdin.close()  # EOF tells the guardian to stop even during cancellation.
-            try:
-                process.wait(timeout=45)
-            except subprocess.TimeoutExpired:
-                # Fail closed: do not continue verification after a stuck cleanup.
-                self.cleanup(workspace)
-                process.kill()
-                process.wait(timeout=10)
-                raise RuntimeError('Container guardian did not stop')
-            reader.join(timeout=10)
-            process.stdout.close()
-            self.observe('container_finished', name=name, exit_code=process.returncode)
-        timed_out = process.returncode == 124
-        output = tail.decode(errors='replace')
-        if count[0] > 16384:
-            output = f'[truncated {count[0] - 16384} bytes]\n' + output
-        return {'command': command, 'exit_code': 124 if timed_out else process.returncode,
-                'timed_out': timed_out, 'output': output, 'elapsed_s': time.monotonic() - started,
-                'image': self.image}
+            self.observe('container_finished', name=name,
+                         exit_code=None if result is None else result['exit_code'])
+        return {'command': command, 'image': self.image,
+                **{key: result[key] for key in ('exit_code', 'timed_out', 'output', 'elapsed_s')}}
 
     def verify(self, workspace, task, acceptance):
         self.cleanup(workspace)
