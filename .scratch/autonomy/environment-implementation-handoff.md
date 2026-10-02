@@ -1,6 +1,6 @@
 # Stage 3 implementation handoff
 
-Prepared 2026-10-02 while Stage 2 cohort C is running. Planning only; Stage 2 acceptance remains the gate for maintained changes. Follow [ADR 004](../../docs/decisions/architecture/004-environment-snapshots.md) and the [security review](../../docs/research/environment-security-boundary.md). The private helper is evidence, not implementation to copy.
+Prepared 2026-10-02; updated while Stage 2 cohort D is running. Planning only; Stage 2 acceptance remains the gate for maintained changes. Follow [ADR 004](../../docs/decisions/architecture/004-environment-snapshots.md) and the [security review](../../docs/research/environment-security-boundary.md). The private helper is evidence, not implementation to copy.
 
 ## Smallest complete slice
 
@@ -90,4 +90,4 @@ The workspace controller currently runs Python 3.10, while the rig controller is
 
 The prepared API fixture uses exact fastapi/uvicorn versions and setuptools backend; the Node fixture uses exact TypeScript/@types versions and CommonJS. Initial inference can validate these approved requests without a general version solver. Do not silently ignore additional dependencies, local/VCS paths, alternate build backends or workspaces. A new recipe remains an explicit supported extension.
 
-The trusted fixed-artifact fetch route now has a small guarded-container proof in docs/research/environment-fetch-boundary.md. It pins validated public IPv4 TCP destinations while preserving TLS hostname verification, rejects redirects and verifies a fixed artifact hash. This is a client boundary, not a kernel egress firewall. No project/package code may run in that online phase. npm acquisition and integrated preparation still require qualification.
+The trusted fixed-artifact fetch route now has a small guarded-container proof in docs/research/environment-fetch-boundary.md. It pins validated public IPv4 TCP destinations while preserving TLS hostname verification, rejects redirects and verifies a fixed artifact hash. This is a client boundary, not a kernel egress firewall. No project/package code may run in that online phase. The follow-up also verified all three fixed npm SHA-512 artifacts and seeded an empty offline npm cache with documented `npm cache add`, followed by unchanged-lock `npm ci --offline --ignore-scripts` and TypeScript/Node-types smoke. Integrated preparation, hostile artifacts, lifecycle failures and two fresh profile checks still require qualification. Retain verified tarballs as durable inputs; npm cache is disposable.
