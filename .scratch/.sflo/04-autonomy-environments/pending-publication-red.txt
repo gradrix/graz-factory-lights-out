@@ -1,0 +1,13 @@
+..F...
+======================================================================
+FAIL: test_failed_retirement_leaves_a_non_runnable_pending_candidate (test_environment.EnvironmentStoreTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo/tests/test_environment.py", line 128, in test_failed_retirement_leaves_a_non_runnable_pending_candidate
+    with self.assertRaisesRegex(ValueError, 'pending'):
+AssertionError: ValueError not raised
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.099s
+
+FAILED (failures=1)

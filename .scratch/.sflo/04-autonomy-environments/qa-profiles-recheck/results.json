@@ -1,0 +1,65 @@
+{
+  "candidate": "25f75c3275739cc7cc2a4fc5a4e16580b81511d1",
+  "root": "/tmp/gflo-profiles-recheck-41sdc2bp",
+  "cleanup_empty": "rejected; published content unchanged",
+  "cleanup_prior_good": "rejected; published content unchanged",
+  "api_control": {
+    "passed": true,
+    "checks": [
+      {
+        "command": [
+          "python",
+          "/acceptance/check.py"
+        ],
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "exit_code": 0,
+        "timed_out": false,
+        "output": "independent acceptance control\n",
+        "elapsed_s": 0.35317480517551303
+      },
+      {
+        "command": [
+          "python",
+          "-B",
+          "-c",
+          "import os, pathlib, shutil, subprocess, sys, tempfile\nwith tempfile.TemporaryDirectory() as directory:\n    root = pathlib.Path(directory)\n    project, installed, wheels = root/'project', root/'installed', root/'wheels'\n    shutil.copytree('/workspace', project, ignore=shutil.ignore_patterns('__pycache__', '.git'))\n    subprocess.run([sys.executable, '-m', 'pip', 'wheel', str(project), '--no-index',\n                    '--no-deps', '--no-build-isolation', '--wheel-dir', str(wheels)], check=True, cwd=root)\n    built = list(wheels.glob('*.whl'))\n    if len(built) != 1: raise ValueError('Project must produce one wheel')\n    subprocess.run([sys.executable, '-m', 'pip', 'install', '--no-index', '--no-deps',\n                    '--target', str(installed), str(built[0])], check=True, cwd=root)\n    env = dict(os.environ, PYTHONPATH=str(installed)+os.pathsep+'/opt/deps')\n    subprocess.run([sys.executable, '-B', '-m', 'unittest', 'discover', '-s', str(project/'tests')],\n                   check=True, cwd=root, env=env)\n"
+        ],
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "exit_code": 0,
+        "timed_out": false,
+        "output": "Processing ./project\n  Preparing metadata (pyproject.toml): started\n  Preparing metadata (pyproject.toml): finished with status 'done'\nBuilding wheels for collected packages: gflo-reservation-preview\n  Building wheel for gflo-reservation-preview (pyproject.toml): started\n  Building wheel for gflo-reservation-preview (pyproject.toml): finished with status 'done'\n  Created wheel for gflo-reservation-preview: filename=gflo_reservation_preview-0.0.1-py3-none-any.whl size=2712 sha256=425f831c7cc6794bc4e2b8bcc3d36ca2d891dd26c210dada8e77392fb3c0c0d9\n  Stored in directory: /tmp/pip-ephem-wheel-cache-rzwr1ejf/wheels/4c/e0/2c/379b3b6ae235f4748a266f92f3ea5daf85b70ca0114cf100be\nSuccessfully built gflo-reservation-preview\nProcessing ./wheels/gflo_reservation_preview-0.0.1-py3-none-any.whl\nInstalling collected packages: gflo-reservation-preview\nSuccessfully installed gflo-reservation-preview-0.0.1\n.\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n",
+        "elapsed_s": 4.626573504880071
+      }
+    ]
+  },
+  "api_bad_generated_test": {
+    "passed": false,
+    "checks": [
+      {
+        "command": [
+          "python",
+          "/acceptance/check.py"
+        ],
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "exit_code": 0,
+        "timed_out": false,
+        "output": "independent acceptance control\n",
+        "elapsed_s": 0.3021971620619297
+      },
+      {
+        "command": [
+          "python",
+          "-B",
+          "-c",
+          "import os, pathlib, shutil, subprocess, sys, tempfile\nwith tempfile.TemporaryDirectory() as directory:\n    root = pathlib.Path(directory)\n    project, installed, wheels = root/'project', root/'installed', root/'wheels'\n    shutil.copytree('/workspace', project, ignore=shutil.ignore_patterns('__pycache__', '.git'))\n    subprocess.run([sys.executable, '-m', 'pip', 'wheel', str(project), '--no-index',\n                    '--no-deps', '--no-build-isolation', '--wheel-dir', str(wheels)], check=True, cwd=root)\n    built = list(wheels.glob('*.whl'))\n    if len(built) != 1: raise ValueError('Project must produce one wheel')\n    subprocess.run([sys.executable, '-m', 'pip', 'install', '--no-index', '--no-deps',\n                    '--target', str(installed), str(built[0])], check=True, cwd=root)\n    env = dict(os.environ, PYTHONPATH=str(installed)+os.pathsep+'/opt/deps')\n    subprocess.run([sys.executable, '-B', '-m', 'unittest', 'discover', '-s', str(project/'tests')],\n                   check=True, cwd=root, env=env)\n"
+        ],
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "exit_code": 1,
+        "timed_out": false,
+        "output": "Processing ./project\n  Preparing metadata (pyproject.toml): started\n  Preparing metadata (pyproject.toml): finished with status 'done'\nBuilding wheels for collected packages: gflo-reservation-preview\n  Building wheel for gflo-reservation-preview (pyproject.toml): started\n  Building wheel for gflo-reservation-preview (pyproject.toml): finished with status 'done'\n  Created wheel for gflo-reservation-preview: filename=gflo_reservation_preview-0.0.1-py3-none-any.whl size=2712 sha256=d547a323a5847c7ed0cda9bbe498b5aac8ea4361d0aa20845e96f84142526ea8\n  Stored in directory: /tmp/pip-ephem-wheel-cache-inzavkek/wheels/58/25/23/cb102f9d77d49fd3d453ca2776ffe473567f845d2a5c2f40aa\nSuccessfully built gflo-reservation-preview\nProcessing ./wheels/gflo_reservation_preview-0.0.1-py3-none-any.whl\nInstalling collected packages: gflo-reservation-preview\nSuccessfully installed gflo-reservation-preview-0.0.1\nF\n======================================================================\nFAIL: test_installed (test_installed.Installed.test_installed)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/tmp/tmpoe4rglkm/project/tests/test_installed.py\", line 5, in test_installed\n    self.assertEqual(preview({\"a\":2},[{\"sku\":\"a\",\"quantity\":1}])[\"remaining\"],{\"a\":999})\nAssertionError: {'a': 1} != {'a': 999}\n- {'a': 1}\n?       ^\n\n+ {'a': 999}\n?       ^^^\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.001s\n\nFAILED (failures=1)\nTraceback (most recent call last):\n  File \"<string>\", line 13, in <module>\n  File \"/usr/local/lib/python3.12/subprocess.py\", line 571, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command '['/usr/local/bin/python', '-B', '-m', 'unittest', 'discover', '-s', '/tmp/tmpoe4rglkm/project/tests']' returned non-zero exit status 1.\n",
+        "elapsed_s": 4.725878758821636
+      }
+    ]
+  },
+  "passed": true
+}

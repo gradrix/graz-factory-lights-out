@@ -1,0 +1,13 @@
+E
+======================================================================
+ERROR: test_profile_selection_uses_manifest_kind (test_prepare.PrepareTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo/tests/test_prepare.py", line 103, in test_profile_selection_uses_manifest_kind
+    from gflo.prepare import infer_profile
+ImportError: cannot import name 'infer_profile' from 'gflo.prepare' (/home/gradrix/repos/gflo/gflo/prepare.py)
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (errors=1)

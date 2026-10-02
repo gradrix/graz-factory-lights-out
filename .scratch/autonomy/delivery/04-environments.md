@@ -11,10 +11,10 @@ Acceptance: each profile starts with empty package caches and no profile depende
 
 Research: docs/research/environment-preparation.md.
 Preparatory fixtures: .gflo/environment-qualification; hash manifest and negative cases. Syntax/JSON/hash checks only; no environment qualification is claimed.
-Candidate: none
-Evidence: none
+Candidate: 25f75c3 (active, not accepted)
+Evidence: execution record below; independent functional checks and initial rig preparation passed. Later repair rechecks and model tasks pending.
 
-Next: implement the first complete preparation-to-offline-check path. Resource limits must constrain actual preparation work, including disk, not merely the Docker client. Preserve one active maintained-product mutation unit.
+Next: complete repair rechecks, remaining failure coverage and actual local-model tasks in all three prepared profiles. Resource limits must constrain actual preparation work, including disk, not merely the Docker client. Preserve one active maintained-product mutation unit.
 
 Architecture refinement: docs/decisions/architecture/004-environment-snapshots.md. Bounded ordinary containers plus read-only snapshots replace custom image builds for the initial profiles; base images remain immutable and the complete environment includes both identities.
 

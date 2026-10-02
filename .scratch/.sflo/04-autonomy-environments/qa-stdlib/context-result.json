@@ -1,0 +1,16 @@
+{
+  "observer_tampered_status": "accepted",
+  "actual": {
+    "python": "3.12.13",
+    "gpu": [],
+    "limits": {
+      "memory.max": "1073741824",
+      "memory.swap.max": "0",
+      "pids.max": "128",
+      "cpu.max": "200000 100000"
+    }
+  },
+  "worker_context": true,
+  "reviewer_context": true,
+  "legacy_context_explicit": true
+}

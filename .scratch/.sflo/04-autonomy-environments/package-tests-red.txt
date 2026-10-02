@@ -1,0 +1,13 @@
+F
+======================================================================
+FAIL: test_python_api_prepares_locked_wheels_and_imports_offline (test_prepare.PrepareTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo/tests/test_prepare.py", line 82, in test_python_api_prepares_locked_wheels_and_imports_offline
+    self.assertTrue(verdict['passed'], verdict)
+AssertionError: False is not true : {'passed': False, 'checks': [{'command': ['python', '/acceptance/check.py'], 'image': 'sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc', 'exit_code': 0, 'timed_out': False, 'output': '', 'elapsed_s': 0.3019182654097676}, {'command': ['python', '-B', '-m', 'unittest', 'discover', '-s', 'tests'], 'image': 'sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc', 'exit_code': 1, 'timed_out': False, 'output': 'E\n======================================================================\nERROR: test_package (unittest.loader._FailedTest.test_package)\n----------------------------------------------------------------------\nImportError: Failed to import test module: test_package\nTraceback (most recent call last):\n  File "/usr/local/lib/python3.12/unittest/loader.py", line 396, in _find_test_path\n    module = self._get_module_from_name(name)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File "/usr/local/lib/python3.12/unittest/loader.py", line 339, in _get_module_from_name\n    __import__(name)\n  File "/workspace/tests/test_package.py", line 2, in <module>\n    from reservation_preview.app import app\nModuleNotFoundError: No module named \'reservation_preview\'\n\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (errors=1)\n', 'elapsed_s': 0.5035421177744865}]}
+
+----------------------------------------------------------------------
+Ran 1 test in 12.278s
+
+FAILED (failures=1)

@@ -1,0 +1,43 @@
+..E..
+======================================================================
+ERROR: test_python_api_prepares_locked_wheels_and_imports_offline (test_prepare.PrepareTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo/tests/test_prepare.py", line 66, in test_python_api_prepares_locked_wheels_and_imports_offline
+    environment = prepare(EnvironmentStore(root / 'store'), 'python-api')
+  File "/home/gradrix/repos/gflo/gflo/prepare.py", line 170, in prepare
+    execute(image, command, work, helper=helper, approved=approved, artifacts=artifacts,
+  File "/home/gradrix/repos/gflo/gflo/prepare.py", line 81, in execute
+    raise ValueError(f"Environment container failed ({result['exit_code']}): {result['output']}")
+ValueError: Environment container failed (1): Looking in links: /artifacts
+Processing /artifacts/annotated_types-0.8.0-py3-none-any.whl (from -r /approved/requirements.lock (line 1))
+Processing /artifacts/anyio-4.15.1-py3-none-any.whl (from -r /approved/requirements.lock (line 2))
+Processing /artifacts/certifi-2026.7.22-py3-none-any.whl (from -r /approved/requirements.lock (line 3))
+Processing /artifacts/click-8.5.0-py3-none-any.whl (from -r /approved/requirements.lock (line 4))
+Processing /artifacts/fastapi-0.115.12-py3-none-any.whl (from -r /approved/requirements.lock (line 5))
+Processing /artifacts/h11-0.16.0-py3-none-any.whl (from -r /approved/requirements.lock (line 6))
+Processing /artifacts/httpcore-1.0.9-py3-none-any.whl (from -r /approved/requirements.lock (line 7))
+Processing /artifacts/httpx-0.28.1-py3-none-any.whl (from -r /approved/requirements.lock (line 8))
+Processing /artifacts/idna-3.20-py3-none-any.whl (from -r /approved/requirements.lock (line 9))
+Processing /artifacts/pydantic-2.13.5-py3-none-any.whl (from -r /approved/requirements.lock (line 10))
+Processing /artifacts/pydantic_core-2.46.5-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (from -r /approved/requirements.lock (line 11))
+Processing /artifacts/setuptools-78.1.0-py3-none-any.whl (from -r /approved/requirements.lock (line 12))
+Processing /artifacts/starlette-0.46.2-py3-none-any.whl (from -r /approved/requirements.lock (line 13))
+Processing /artifacts/typing_inspection-0.4.4-py3-none-any.whl (from -r /approved/requirements.lock (line 14))
+Processing /artifacts/typing_extensions-4.16.0-py3-none-any.whl (from -r /approved/requirements.lock (line 15))
+Processing /artifacts/uvicorn-0.34.2-py3-none-any.whl (from -r /approved/requirements.lock (line 16))
+Installing collected packages: uvicorn, typing-inspection, typing_extensions, starlette, setuptools, pydantic_core, pydantic, idna, httpx, httpcore, h11, fastapi, click, certifi, anyio, annotated-types
+ERROR: Could not install packages due to an OSError: [Errno 28] No space left on device
+
+Traceback (most recent call last):
+  File "/recipe", line 8, in <module>
+    subprocess.run([sys.executable, '-m', 'pip', 'install', '--no-index', '--no-cache-dir',
+  File "/usr/local/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/usr/local/bin/python', '-m', 'pip', 'install', '--no-index', '--no-cache-dir', '--no-compile', '--no-deps', '--require-hashes', '--only-binary=:all:', '--find-links', '/artifacts', '--target', '/work/deps', '-r', '/approved/requirements.lock']' returned non-zero exit status 1.
+
+
+----------------------------------------------------------------------
+Ran 5 tests in 11.995s
+
+FAILED (errors=1)

@@ -1,0 +1,233 @@
+{
+  "checks": {
+    "executor": {
+      "config": {
+        "Env": [
+          "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+          "HOME=/tmp",
+          "LANG=C.UTF-8",
+          "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+          "PIP_CONFIG_FILE=/dev/null",
+          "PIP_NO_INDEX=1",
+          "PYTHONDONTWRITEBYTECODE=1",
+          "PYTHONPATH=/opt/deps",
+          "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684",
+          "PYTHON_VERSION=3.12.13"
+        ],
+        "User": "1000:1000",
+        "WorkingDir": "/work"
+      },
+      "host": {
+        "CapDrop": [
+          "ALL"
+        ],
+        "DeviceRequests": null,
+        "Devices": [],
+        "Memory": 1073741824,
+        "MemorySwap": 1073741824,
+        "NanoCpus": 1000000000,
+        "NetworkMode": "none",
+        "PidsLimit": 128,
+        "ReadonlyRootfs": true,
+        "Runtime": "runc",
+        "SecurityOpt": [
+          "no-new-privileges"
+        ],
+        "ShmSize": 16777216,
+        "Tmpfs": {
+          "/tmp": "rw,nosuid,nodev,size=16m,mode=1777",
+          "/work": "rw,nosuid,nodev,size=480m,mode=1777"
+        }
+      },
+      "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+      "mounts": [
+        {
+          "Destination": "/opt/deps",
+          "RW": false,
+          "Type": "bind"
+        }
+      ]
+    },
+    "passed": true,
+    "preparation": {
+      "assembly_executor": {
+        "config": {
+          "Env": [
+            "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+            "HOME=/tmp",
+            "LANG=C.UTF-8",
+            "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "PIP_CONFIG_FILE=/dev/null",
+            "PIP_NO_INDEX=1",
+            "PYTHONDONTWRITEBYTECODE=1",
+            "PYTHONPATH=/opt/deps",
+            "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684",
+            "PYTHON_VERSION=3.12.13"
+          ],
+          "User": "1000:1000",
+          "WorkingDir": "/work"
+        },
+        "host": {
+          "CapDrop": [
+            "ALL"
+          ],
+          "DeviceRequests": null,
+          "Devices": [],
+          "Memory": 1073741824,
+          "MemorySwap": 1073741824,
+          "NanoCpus": 1000000000,
+          "NetworkMode": "none",
+          "PidsLimit": 128,
+          "ReadonlyRootfs": true,
+          "Runtime": "runc",
+          "SecurityOpt": [
+            "no-new-privileges"
+          ],
+          "ShmSize": 16777216,
+          "Tmpfs": {
+            "/tmp": "rw,nosuid,nodev,size=16m,mode=1777",
+            "/work": "rw,nosuid,nodev,size=480m,mode=1777"
+          }
+        },
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "mounts": [
+          {
+            "Destination": "/approved",
+            "RW": false,
+            "Type": "bind"
+          },
+          {
+            "Destination": "/artifacts",
+            "RW": false,
+            "Type": "bind"
+          },
+          {
+            "Destination": "/recipe",
+            "RW": false,
+            "Type": "bind"
+          }
+        ]
+      },
+      "bases_reused": [
+        "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc"
+      ],
+      "fetch_executor": {
+        "config": {
+          "Env": [
+            "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+            "HOME=/tmp",
+            "LANG=C.UTF-8",
+            "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "PIP_CONFIG_FILE=/dev/null",
+            "PIP_NO_INDEX=1",
+            "PYTHONDONTWRITEBYTECODE=1",
+            "PYTHONPATH=/opt/deps",
+            "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684",
+            "PYTHON_VERSION=3.12.13"
+          ],
+          "User": "1000:1000",
+          "WorkingDir": "/work"
+        },
+        "host": {
+          "CapDrop": [
+            "ALL"
+          ],
+          "DeviceRequests": null,
+          "Devices": [],
+          "Memory": 1073741824,
+          "MemorySwap": 1073741824,
+          "NanoCpus": 1000000000,
+          "NetworkMode": "bridge",
+          "PidsLimit": 128,
+          "ReadonlyRootfs": true,
+          "Runtime": "runc",
+          "SecurityOpt": [
+            "no-new-privileges"
+          ],
+          "ShmSize": 16777216,
+          "Tmpfs": {
+            "/tmp": "rw,nosuid,nodev,size=16m,mode=1777",
+            "/work": "rw,nosuid,nodev,size=480m,mode=1777"
+          }
+        },
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "mounts": [
+          {
+            "Destination": "/approved",
+            "RW": false,
+            "Type": "bind"
+          },
+          {
+            "Destination": "/recipe",
+            "RW": false,
+            "Type": "bind"
+          }
+        ]
+      },
+      "package_cache": "fresh disposable scratch"
+    },
+    "runtime": {
+      "capabilities": "0000000000000000",
+      "docker_socket": "absent",
+      "fastapi": "0.115.12",
+      "gpu_devices": "absent",
+      "httpx": "0.28.1",
+      "machine": "x86_64",
+      "platform": "linux",
+      "pydantic": "2.13.5",
+      "python": "3.12.13",
+      "setuptools": "78.1.0",
+      "uid": "1000",
+      "uvicorn": "0.34.2"
+    }
+  },
+  "format": 1,
+  "metadata": {
+    "artifacts": {
+      "annotated_types-0.8.0-py3-none-any.whl": "sha256:f072f4d804ea359e4eaf198b1af7a8b0943881a87f31bb764f8bf219bb9419e0",
+      "anyio-4.15.1-py3-none-any.whl": "sha256:6152fdbbf9a77fdec97731721bebf7c4c44f7c29b424b0065826173efc7ed101",
+      "certifi-2026.7.22-py3-none-any.whl": "sha256:62f22742b58a1a33014a2b6b706588a8d7e2a88ae7bd1a6ebe8c992928483775",
+      "click-8.5.0-py3-none-any.whl": "sha256:255bc9599cf7748b4b1a446ccc735421bd08a2ae529a8b88597d3de5664ee360",
+      "fastapi-0.115.12-py3-none-any.whl": "sha256:e94613d6c05e27be7ffebdd6ea5f388112e5e430c8f7d6494a9d1d88d43e814d",
+      "h11-0.16.0-py3-none-any.whl": "sha256:63cf8bbe7522de3bf65932fda1d9c2772064ffb3dae62d55932da54b31cb6c86",
+      "httpcore-1.0.9-py3-none-any.whl": "sha256:2d400746a40668fc9dec9810239072b40b4484b640a8c38fd654a024c7a1bf55",
+      "httpx-0.28.1-py3-none-any.whl": "sha256:d909fcccc110f8c7faf814ca82a9a4d816bc5a6dbfea25d6591d6985b8ba59ad",
+      "idna-3.20-py3-none-any.whl": "sha256:ab7ae7122974553370f0bdb919e1a960b2cd1bc1ef0276416d896db81c14582c",
+      "pydantic-2.13.5-py3-none-any.whl": "sha256:346a034f080da3755d8e9cb5e00e8b07de1d39e4f6e2c87d8ab7cafa0b269a73",
+      "pydantic_core-2.46.5-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl": "sha256:0fc5be0abd4a407e200d844b404e33639a554e7bd0d448e7b9ae181be4789ac2",
+      "setuptools-78.1.0-py3-none-any.whl": "sha256:3e386e96793c8702ae83d17b853fb93d3e09ef82ec62722e61da5cd22376dcd8",
+      "starlette-0.46.2-py3-none-any.whl": "sha256:595633ce89f8ffa71a015caed34a5b2dc1c0cdb3f0f1fbd1e69339cf2abeec35",
+      "typing_extensions-4.16.0-py3-none-any.whl": "sha256:481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8",
+      "typing_inspection-0.4.4-py3-none-any.whl": "sha256:65b8397ba37ccbce054456aaccddfc91e6e3083c92824df348d96ca832f3f147",
+      "uvicorn-0.34.2-py3-none-any.whl": "sha256:deb49af569084536d269fe0a6d67e3754f104cf03aba7c11c40f01aadf33c403"
+    },
+    "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+    "inputs": {
+      "artifacts.json": "743289784dd853254fcf8a36e10bc6a479f7bfc99b2202d99aeb57c766a72a31",
+      "assemble.py": "e7656414445a4c35b17e40e1130f9ab8a7857c94218aa055ec19e1276120310d",
+      "requirements.lock": "890507545cbd69bf015bc092965ab76de09918593cf68119728fa8dc3d73bc3f"
+    },
+    "locks": {
+      "artifacts.json": "743289784dd853254fcf8a36e10bc6a479f7bfc99b2202d99aeb57c766a72a31",
+      "requirements.lock": "890507545cbd69bf015bc092965ab76de09918593cf68119728fa8dc3d73bc3f"
+    },
+    "platform": "linux/amd64",
+    "profile": "python-api",
+    "recipe_sha256": "bd1e71b82ee6cd604427ed8ee9b69a1b3a4de98a340c72330f1a54b846560079",
+    "runtime": {
+      "capabilities": "0000000000000000",
+      "docker_socket": "absent",
+      "fastapi": "0.115.12",
+      "gpu_devices": "absent",
+      "httpx": "0.28.1",
+      "machine": "x86_64",
+      "platform": "linux",
+      "pydantic": "2.13.5",
+      "python": "3.12.13",
+      "setuptools": "78.1.0",
+      "uid": "1000",
+      "uvicorn": "0.34.2"
+    }
+  },
+  "tree_sha256": "faba0c02608b23399b9efed355517ad3518ce82992d79f0b038e92aea9d2f7dd"
+}

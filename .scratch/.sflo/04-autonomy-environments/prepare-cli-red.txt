@@ -1,0 +1,43 @@
+usage: python3 -m unittest [-h] [--state STATE] [--config CONFIG]
+                           {doctor,run,resume,status,cancel,watch,serve} ...
+python3 -m unittest: error: argument command: invalid choice: 'environment' (choose from 'doctor', 'run', 'resume', 'status', 'cancel', 'watch', 'serve')
+E..
+======================================================================
+ERROR: test_cli_prepares_inspects_and_checks_without_model_configuration (test_prepare.PrepareTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/argparse.py", line 1878, in parse_known_args
+    namespace, args = self._parse_known_args(args, namespace)
+  File "/usr/lib/python3.10/argparse.py", line 2073, in _parse_known_args
+    positionals_end_index = consume_positionals(start_index)
+  File "/usr/lib/python3.10/argparse.py", line 2050, in consume_positionals
+    take_action(action, args)
+  File "/usr/lib/python3.10/argparse.py", line 1939, in take_action
+    argument_values = self._get_values(action, argument_strings)
+  File "/usr/lib/python3.10/argparse.py", line 2484, in _get_values
+    self._check_value(action, value[0])
+  File "/usr/lib/python3.10/argparse.py", line 2531, in _check_value
+    raise ArgumentError(action, msg % args)
+argparse.ArgumentError: argument command: invalid choice: 'environment' (choose from 'doctor', 'run', 'resume', 'status', 'cancel', 'watch', 'serve')
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo/tests/test_prepare.py", line 35, in test_cli_prepares_inspects_and_checks_without_model_configuration
+    self.assertEqual(main(args + ['prepare', 'python-stdlib']), 0)
+  File "/home/gradrix/repos/gflo/gflo/__main__.py", line 38, in main
+    args = parser.parse_args(argv)
+  File "/usr/lib/python3.10/argparse.py", line 1845, in parse_args
+    args, argv = self.parse_known_args(args, namespace)
+  File "/usr/lib/python3.10/argparse.py", line 1881, in parse_known_args
+    self.error(str(err))
+  File "/usr/lib/python3.10/argparse.py", line 2606, in error
+    self.exit(2, _('%(prog)s: error: %(message)s\n') % args)
+  File "/usr/lib/python3.10/argparse.py", line 2593, in exit
+    _sys.exit(status)
+SystemExit: 2
+
+----------------------------------------------------------------------
+Ran 3 tests in 3.167s
+
+FAILED (errors=1)

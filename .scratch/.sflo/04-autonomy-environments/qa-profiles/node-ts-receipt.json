@@ -1,0 +1,223 @@
+{
+  "checks": {
+    "executor": {
+      "config": {
+        "Env": [
+          "HOME=/tmp",
+          "NODE_VERSION=22.23.3",
+          "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+          "PIP_CONFIG_FILE=/dev/null",
+          "PIP_NO_INDEX=1",
+          "PYTHONDONTWRITEBYTECODE=1",
+          "PYTHONPATH=/opt/deps",
+          "YARN_VERSION=1.22.22"
+        ],
+        "User": "1000:1000",
+        "WorkingDir": "/work"
+      },
+      "host": {
+        "CapDrop": [
+          "ALL"
+        ],
+        "DeviceRequests": null,
+        "Devices": [],
+        "Memory": 1073741824,
+        "MemorySwap": 1073741824,
+        "NanoCpus": 1000000000,
+        "NetworkMode": "none",
+        "PidsLimit": 128,
+        "ReadonlyRootfs": true,
+        "Runtime": "runc",
+        "SecurityOpt": [
+          "no-new-privileges"
+        ],
+        "ShmSize": 16777216,
+        "Tmpfs": {
+          "/tmp": "rw,nosuid,nodev,size=16m,mode=1777",
+          "/work": "rw,nosuid,nodev,size=480m,mode=1777"
+        }
+      },
+      "image": "sha256:88f8ba583a884279252779bbe221bf1ff2c61cf236cc973f8ca97676ae6d07f0",
+      "mounts": [
+        {
+          "Destination": "/node_modules",
+          "RW": false,
+          "Type": "bind"
+        },
+        {
+          "Destination": "/recipe",
+          "RW": false,
+          "Type": "bind"
+        }
+      ]
+    },
+    "passed": true,
+    "preparation": {
+      "assembly_executor": {
+        "config": {
+          "Env": [
+            "HOME=/tmp",
+            "NODE_VERSION=22.23.3",
+            "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "PIP_CONFIG_FILE=/dev/null",
+            "PIP_NO_INDEX=1",
+            "PYTHONDONTWRITEBYTECODE=1",
+            "PYTHONPATH=/opt/deps",
+            "YARN_VERSION=1.22.22"
+          ],
+          "User": "1000:1000",
+          "WorkingDir": "/work"
+        },
+        "host": {
+          "CapDrop": [
+            "ALL"
+          ],
+          "DeviceRequests": null,
+          "Devices": [],
+          "Memory": 1073741824,
+          "MemorySwap": 1073741824,
+          "NanoCpus": 1000000000,
+          "NetworkMode": "none",
+          "PidsLimit": 128,
+          "ReadonlyRootfs": true,
+          "Runtime": "runc",
+          "SecurityOpt": [
+            "no-new-privileges"
+          ],
+          "ShmSize": 16777216,
+          "Tmpfs": {
+            "/tmp": "rw,nosuid,nodev,size=16m,mode=1777",
+            "/work": "rw,nosuid,nodev,size=480m,mode=1777"
+          }
+        },
+        "image": "sha256:88f8ba583a884279252779bbe221bf1ff2c61cf236cc973f8ca97676ae6d07f0",
+        "mounts": [
+          {
+            "Destination": "/approved",
+            "RW": false,
+            "Type": "bind"
+          },
+          {
+            "Destination": "/artifacts",
+            "RW": false,
+            "Type": "bind"
+          },
+          {
+            "Destination": "/recipe",
+            "RW": false,
+            "Type": "bind"
+          }
+        ]
+      },
+      "bases_reused": [
+        "sha256:88f8ba583a884279252779bbe221bf1ff2c61cf236cc973f8ca97676ae6d07f0",
+        "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc"
+      ],
+      "fetch_executor": {
+        "config": {
+          "Env": [
+            "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+            "HOME=/tmp",
+            "LANG=C.UTF-8",
+            "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "PIP_CONFIG_FILE=/dev/null",
+            "PIP_NO_INDEX=1",
+            "PYTHONDONTWRITEBYTECODE=1",
+            "PYTHONPATH=/opt/deps",
+            "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684",
+            "PYTHON_VERSION=3.12.13"
+          ],
+          "User": "1000:1000",
+          "WorkingDir": "/work"
+        },
+        "host": {
+          "CapDrop": [
+            "ALL"
+          ],
+          "DeviceRequests": null,
+          "Devices": [],
+          "Memory": 1073741824,
+          "MemorySwap": 1073741824,
+          "NanoCpus": 1000000000,
+          "NetworkMode": "bridge",
+          "PidsLimit": 128,
+          "ReadonlyRootfs": true,
+          "Runtime": "runc",
+          "SecurityOpt": [
+            "no-new-privileges"
+          ],
+          "ShmSize": 16777216,
+          "Tmpfs": {
+            "/tmp": "rw,nosuid,nodev,size=16m,mode=1777",
+            "/work": "rw,nosuid,nodev,size=480m,mode=1777"
+          }
+        },
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "mounts": [
+          {
+            "Destination": "/approved",
+            "RW": false,
+            "Type": "bind"
+          },
+          {
+            "Destination": "/recipe",
+            "RW": false,
+            "Type": "bind"
+          }
+        ]
+      },
+      "package_cache": "fresh disposable scratch"
+    },
+    "runtime": {
+      "capabilities": "0000000000000000",
+      "docker_socket": "absent",
+      "gpu_devices": "absent",
+      "machine": "x64",
+      "node": "v22.23.3",
+      "node_types": "22.15.3",
+      "npm": "10.9.9",
+      "platform": "linux",
+      "typescript": "5.8.3",
+      "uid": "1000",
+      "undici_types": "6.21.0"
+    }
+  },
+  "format": 1,
+  "metadata": {
+    "artifacts": {
+      "0.tgz": "sha512:957ec71597877f8406fc9eed059aab0805f0cfd279443e7a63a3293f47899246bca7e2b4458ff20535bb098149e15182725c6a38b2a68863f98ee41ce8c2a073",
+      "1.tgz": "sha512:a757625ba4ea2fd2f4ee7371bd130cee130cc387395cea3fd626cbe1a0081a6480b7db254c4d57830e4a5aea1fdae4cebc283d058ed9462f86685fbbb1f80f79",
+      "2.tgz": "sha512:8b00d9aa0d10006ae0f516afe47e27d0ceb87379a4479f5c27ac10a7eec2e2723482c984c5a79d6982cd3b8e1e4f802d041c236d38863cc96dd8c7744fd1fd25"
+    },
+    "image": "sha256:88f8ba583a884279252779bbe221bf1ff2c61cf236cc973f8ca97676ae6d07f0",
+    "inputs": {
+      "artifacts.json": "4f85d5e7e3d8849b24ef4cf91d155d9bd3a3946d0fea63fe593a93fd128268bb",
+      "assemble.js": "d6f213e9ced120be92049e80557f6fbafe7b7b1955a502b15ff74bc3b1fdcdde",
+      "package-lock.json": "2bd0d5d024a8f29b79d28b062d54d9e2a2f34737a67fd38d08ee0b031230b20f",
+      "package.json": "152e1b3aa7d2f0fca2ab5da0c1b443e0b811cd699a15a19ed807a41588fa85ee",
+      "smoke.js": "472e67ec86cf78f4513de9d060758aed25b94368f2e0573c9cb95924923937f9"
+    },
+    "locks": {
+      "artifacts.json": "4f85d5e7e3d8849b24ef4cf91d155d9bd3a3946d0fea63fe593a93fd128268bb",
+      "package-lock.json": "2bd0d5d024a8f29b79d28b062d54d9e2a2f34737a67fd38d08ee0b031230b20f",
+      "package.json": "152e1b3aa7d2f0fca2ab5da0c1b443e0b811cd699a15a19ed807a41588fa85ee"
+    },
+    "platform": "linux/amd64",
+    "profile": "node-ts",
+    "recipe_sha256": "204d24c3caade2bc783c0aa03cb3c7c1b0f0eda8f660976faa27c7109fa0b707",
+    "runtime": {
+      "capabilities": "0000000000000000",
+      "docker_socket": "absent",
+      "gpu_devices": "absent",
+      "machine": "x64",
+      "node": "v22.23.3",
+      "node_types": "22.15.3",
+      "npm": "10.9.9",
+      "platform": "linux",
+      "typescript": "5.8.3",
+      "uid": "1000",
+      "undici_types": "6.21.0"
+    }
+  },
+  "tree_sha256": "5bb9dc8b1cefd6406583f18f7c14cf6c7bfa7907c9d8532ca39b8e18f0054d36"
+}

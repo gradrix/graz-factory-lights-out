@@ -1,0 +1,627 @@
+{
+  "candidate": "0c9c7c8fffdc6d16f316a3650cd28a78ab265095",
+  "python": "3.10.12",
+  "source_sha256": "53f94a54cdc948a752ab757c7f4bf943319073d71d82a601844a7d3825516b48",
+  "pass": 66,
+  "fail": 0,
+  "results": [
+    {
+      "probe": "corpus/00-valid-package",
+      "status": "pass",
+      "detail": {
+        "nodes": 4,
+        "files": {
+          "package/tool.py": {
+            "bytes": "7072696e742822746f6f6c22290a",
+            "mode": "0o555"
+          },
+          "package/data.json": {
+            "bytes": "7b227265616479223a747275652c22636f756e74223a327d0a",
+            "mode": "0o444"
+          },
+          "package/__init__.py": {
+            "bytes": "56455253494f4e203d2022312e30220a",
+            "mode": "0o444"
+          }
+        },
+        "bytes_read": 4608
+      }
+    },
+    {
+      "probe": "corpus/01-duplicate-name",
+      "status": "pass",
+      "detail": {
+        "error": "Duplicate environment archive path",
+        "bytes_read": 1536,
+        "read_calls": 4
+      }
+    },
+    {
+      "probe": "corpus/02-normalized-dot-duplicate",
+      "status": "pass",
+      "detail": {
+        "error": "Noncanonical environment archive path",
+        "bytes_read": 1536,
+        "read_calls": 4
+      }
+    },
+    {
+      "probe": "corpus/03-normalized-slash-duplicate",
+      "status": "pass",
+      "detail": {
+        "error": "Noncanonical environment archive path",
+        "bytes_read": 1536,
+        "read_calls": 4
+      }
+    },
+    {
+      "probe": "corpus/04-file-ancestor-first",
+      "status": "pass",
+      "detail": {
+        "error": "Environment archive file/ancestor conflict",
+        "bytes_read": 1536,
+        "read_calls": 4
+      }
+    },
+    {
+      "probe": "corpus/05-file-ancestor-last",
+      "status": "pass",
+      "detail": {
+        "error": "Environment archive file/ancestor conflict",
+        "bytes_read": 1536,
+        "read_calls": 4
+      }
+    },
+    {
+      "probe": "corpus/06-traversal-parent",
+      "status": "pass",
+      "detail": {
+        "error": "Noncanonical environment archive path",
+        "bytes_read": 512,
+        "read_calls": 1
+      }
+    },
+    {
+      "probe": "corpus/07-traversal-nested",
+      "status": "pass",
+      "detail": {
+        "error": "Noncanonical environment archive path",
+        "bytes_read": 512,
+        "read_calls": 1
+      }
+    },
+    {
+      "probe": "corpus/08-absolute",
+      "status": "pass",
+      "detail": {
+        "error": "Noncanonical environment archive path",
+        "bytes_read": 512,
+        "read_calls": 1
+      }
+    },
+    {
+      "probe": "corpus/09-symlink",
+      "status": "pass",
+      "detail": {
+        "error": "Environment archive links, extensions and special files are forbidden",
+        "bytes_read": 512,
+        "read_calls": 1
+      }
+    },
+    {
+      "probe": "corpus/10-hardlink",
+      "status": "pass",
+      "detail": {
+        "error": "Environment archive links, extensions and special files are forbidden",
+        "bytes_read": 1536,
+        "read_calls": 4
+      }
+    },
+    {
+      "probe": "corpus/11-arbitrary-bin-symlink",
+      "status": "pass",
+      "detail": {
+        "error": "Environment archive links, extensions and special files are forbidden",
+        "bytes_read": 512,
+        "read_calls": 1
+      }
+    },
+    {
+      "probe": "corpus/12-character-device",
+      "status": "pass",
+      "detail": {
+        "error": "Environment archive links, extensions and special files are forbidden",
+        "bytes_read": 512,
+        "read_calls": 1
+      }
+    },
+    {
+      "probe": "corpus/13-block-device",
+      "status": "pass",
+      "detail": {
+        "error": "Environment archive links, extensions and special files are forbidden",
+        "bytes_read": 512,
+        "read_calls": 1
+      }
+    },
+    {
+      "probe": "corpus/14-fifo",
+      "status": "pass",
+      "detail": {
+        "error": "Environment archive links, extensions and special files are forbidden",
+        "bytes_read": 512,
+        "read_calls": 1
+      }
+    },
+    {
+      "probe": "corpus/15-gnu-sparse-type",
+      "status": "pass",
+      "detail": {
+        "error": "Environment archive links, extensions and special files are forbidden",
+        "bytes_read": 512,
+        "read_calls": 1
+      }
+    },
+    {
+      "probe": "corpus/16-pax-sparse",
+      "status": "pass",
+      "detail": {
+        "error": "Environment archive links, extensions and special files are forbidden",
+        "bytes_read": 512,
+        "read_calls": 1
+      }
+    },
+    {
+      "probe": "corpus/17-pax-path-override",
+      "status": "pass",
+      "detail": {
+        "error": "Environment archive links, extensions and special files are forbidden",
+        "bytes_read": 512,
+        "read_calls": 1
+      }
+    },
+    {
+      "probe": "corpus/18-gnu-longname-override",
+      "status": "pass",
+      "detail": {
+        "error": "Environment archive links, extensions and special files are forbidden",
+        "bytes_read": 512,
+        "read_calls": 1
+      }
+    },
+    {
+      "probe": "corpus/19-over-entry-count",
+      "status": "pass",
+      "detail": {
+        "error": "Environment archive filesystem entry limit exceeded",
+        "bytes_read": 4096,
+        "read_calls": 8
+      }
+    },
+    {
+      "probe": "corpus/20-expanded-total",
+      "status": "pass",
+      "detail": {
+        "error": "Environment archive expanded-byte limit exceeded",
+        "bytes_read": 5632,
+        "read_calls": 5
+      }
+    },
+    {
+      "probe": "corpus/21-declared-huge",
+      "status": "pass",
+      "detail": {
+        "error": "Environment archive expanded-byte limit exceeded",
+        "bytes_read": 512,
+        "read_calls": 1
+      }
+    },
+    {
+      "probe": "corpus/22-transport-overlimit",
+      "status": "pass",
+      "detail": {
+        "error": "Environment archive transport limit exceeded",
+        "bytes_read": 2049,
+        "read_calls": 2
+      }
+    },
+    {
+      "probe": "corpus/23-truncated-header",
+      "status": "pass",
+      "detail": {
+        "error": "Truncated environment archive",
+        "bytes_read": 100,
+        "read_calls": 2
+      }
+    },
+    {
+      "probe": "corpus/24-truncated-payload",
+      "status": "pass",
+      "detail": {
+        "error": "Truncated environment archive",
+        "bytes_read": 520,
+        "read_calls": 3
+      }
+    },
+    {
+      "probe": "corpus/25-valid-limit-boundary",
+      "status": "pass",
+      "detail": {
+        "nodes": 2,
+        "files": {
+          "package/data": {
+            "bytes": "78787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878787878",
+            "mode": "0o444"
+          }
+        },
+        "bytes_read": 5632
+      }
+    },
+    {
+      "probe": "corpus/26-late-bad-entry",
+      "status": "pass",
+      "detail": {
+        "error": "Noncanonical environment archive path",
+        "bytes_read": 1536,
+        "read_calls": 4
+      }
+    },
+    {
+      "probe": "invalid-checksum",
+      "status": "pass",
+      "detail": {
+        "error": "Invalid environment archive header",
+        "bytes_read": 512,
+        "read_calls": 1
+      }
+    },
+    {
+      "probe": "invalid-utf8",
+      "status": "pass",
+      "detail": {
+        "error": "Invalid environment archive header",
+        "bytes_read": 512,
+        "read_calls": 1
+      }
+    },
+    {
+      "probe": "invalid-octal-size",
+      "status": "pass",
+      "detail": {
+        "error": "Invalid environment archive header",
+        "bytes_read": 512,
+        "read_calls": 1
+      }
+    },
+    {
+      "probe": "negative-base256-size",
+      "status": "pass",
+      "detail": {
+        "error": "Invalid environment archive entry size",
+        "bytes_read": 512,
+        "read_calls": 1
+      }
+    },
+    {
+      "probe": "huge-base256-size",
+      "status": "pass",
+      "detail": {
+        "error": "Environment archive expanded-byte limit exceeded",
+        "bytes_read": 512,
+        "read_calls": 1
+      }
+    },
+    {
+      "probe": "ustar-version",
+      "status": "pass",
+      "detail": {
+        "error": "Only ordinary USTAR environment archives are supported",
+        "bytes_read": 512,
+        "read_calls": 1
+      }
+    },
+    {
+      "probe": "pax-global",
+      "status": "pass",
+      "detail": {
+        "error": "Environment archive links, extensions and special files are forbidden",
+        "bytes_read": 512,
+        "read_calls": 1
+      }
+    },
+    {
+      "probe": "unknown-type",
+      "status": "pass",
+      "detail": {
+        "error": "Environment archive links, extensions and special files are forbidden",
+        "bytes_read": 512,
+        "read_calls": 1
+      }
+    },
+    {
+      "probe": "prefix-traversal",
+      "status": "pass",
+      "detail": {
+        "error": "Noncanonical environment archive path",
+        "bytes_read": 512,
+        "read_calls": 1
+      }
+    },
+    {
+      "probe": "prefix-absolute",
+      "status": "pass",
+      "detail": {
+        "error": "Noncanonical environment archive path",
+        "bytes_read": 512,
+        "read_calls": 1
+      }
+    },
+    {
+      "probe": "backslash-path",
+      "status": "pass",
+      "detail": {
+        "error": "Noncanonical environment archive path",
+        "bytes_read": 512,
+        "read_calls": 1
+      }
+    },
+    {
+      "probe": "noncanonical-dot",
+      "status": "pass",
+      "detail": {
+        "error": "Noncanonical environment archive path",
+        "bytes_read": 512,
+        "read_calls": 1
+      }
+    },
+    {
+      "probe": "directory-with-body",
+      "status": "pass",
+      "detail": {
+        "error": "Invalid environment archive entry size",
+        "bytes_read": 512,
+        "read_calls": 1
+      }
+    },
+    {
+      "probe": "nonzero-file-padding",
+      "status": "pass",
+      "detail": {
+        "error": "Nonzero environment archive entry padding",
+        "bytes_read": 1024,
+        "read_calls": 3
+      }
+    },
+    {
+      "probe": "single-zero-trailer",
+      "status": "pass",
+      "detail": {
+        "error": "Truncated environment archive",
+        "bytes_read": 1024,
+        "read_calls": 3
+      }
+    },
+    {
+      "probe": "nonzero-second-trailer",
+      "status": "pass",
+      "detail": {
+        "error": "Environment archive needs two zero trailer blocks",
+        "bytes_read": 1536,
+        "read_calls": 3
+      }
+    },
+    {
+      "probe": "trailing-data",
+      "status": "pass",
+      "detail": {
+        "error": "Data after environment archive trailer",
+        "bytes_read": 2052,
+        "read_calls": 7
+      }
+    },
+    {
+      "probe": "concatenated-archives",
+      "status": "pass",
+      "detail": {
+        "error": "Data after environment archive trailer",
+        "bytes_read": 4096,
+        "read_calls": 7
+      }
+    },
+    {
+      "probe": "truncated-final-trailer",
+      "status": "pass",
+      "detail": {
+        "error": "Truncated environment archive",
+        "bytes_read": 2047,
+        "read_calls": 6
+      }
+    },
+    {
+      "probe": "fragmented-one-byte-valid-control",
+      "status": "pass",
+      "detail": {
+        "nodes": 2,
+        "files": {
+          "bin/check": {
+            "bytes": "70617373",
+            "mode": "0o555"
+          }
+        },
+        "bytes_read": 2048
+      }
+    },
+    {
+      "probe": "mode-normalization",
+      "status": "pass",
+      "detail": {
+        "nodes": 1,
+        "files": {
+          "file": {
+            "bytes": "616263",
+            "mode": "0o444"
+          }
+        },
+        "bytes_read": 2048
+      }
+    },
+    {
+      "probe": "exact-all-caps-control",
+      "status": "pass",
+      "detail": {
+        "nodes": 1,
+        "files": {
+          "file": {
+            "bytes": "616263",
+            "mode": "0o444"
+          }
+        },
+        "bytes_read": 2048
+      }
+    },
+    {
+      "probe": "transport-one-byte-over",
+      "status": "pass",
+      "detail": {
+        "error": "Environment archive transport limit exceeded",
+        "bytes_read": 2049,
+        "read_calls": 6
+      }
+    },
+    {
+      "probe": "path-one-byte-over",
+      "status": "pass",
+      "detail": {
+        "error": "Noncanonical environment archive path",
+        "bytes_read": 512,
+        "read_calls": 1
+      }
+    },
+    {
+      "probe": "multibyte-path-over",
+      "status": "pass",
+      "detail": {
+        "error": "Noncanonical environment archive path",
+        "bytes_read": 512,
+        "read_calls": 1
+      }
+    },
+    {
+      "probe": "transport-cap-during-header",
+      "status": "pass",
+      "detail": {
+        "error": "Environment archive transport limit exceeded",
+        "bytes_read": 2,
+        "read_calls": 1
+      }
+    },
+    {
+      "probe": "instrumented-declared-size-no-body-read",
+      "status": "pass",
+      "detail": {
+        "read_calls": 1,
+        "error": "Environment archive expanded-byte limit exceeded"
+      }
+    },
+    {
+      "probe": "destination-file",
+      "status": "pass",
+      "detail": "Artifact destination must be new and have no link ancestors"
+    },
+    {
+      "probe": "destination-directory",
+      "status": "pass",
+      "detail": "Artifact destination must be new and have no link ancestors"
+    },
+    {
+      "probe": "destination-symlink",
+      "status": "pass",
+      "detail": "Artifact destination must be new and have no link ancestors"
+    },
+    {
+      "probe": "destination-dangling-symlink",
+      "status": "pass",
+      "detail": "Artifact destination must be new and have no link ancestors"
+    },
+    {
+      "probe": "destination-ancestor-symlink",
+      "status": "pass",
+      "detail": "Artifact destination must be new and have no link ancestors"
+    },
+    {
+      "probe": "failed-extraction-removes-staging",
+      "status": "pass",
+      "detail": "controlled fsync failure"
+    },
+    {
+      "probe": "filesystem-node-amplification",
+      "status": "pass",
+      "detail": {
+        "error": "Environment archive filesystem entry limit exceeded",
+        "bytes_read": 512,
+        "read_calls": 1,
+        "configured_entries": 1,
+        "path_bytes": 228,
+        "observation": "formerly accepted 112-node tree now rejected after header before extraction"
+      }
+    },
+    {
+      "probe": "shared-parent-late-explicit-directory-at-cap",
+      "status": "pass",
+      "detail": {
+        "nodes": 3,
+        "files": {
+          "a/y": {
+            "bytes": "79",
+            "mode": "0o444"
+          },
+          "a/x": {
+            "bytes": "78",
+            "mode": "0o444"
+          }
+        },
+        "bytes_read": 3584
+      }
+    },
+    {
+      "probe": "implicit-parent-exact-node-cap",
+      "status": "pass",
+      "detail": {
+        "nodes": 3,
+        "files": {
+          "a/b/c": {
+            "bytes": "78",
+            "mode": "0o444"
+          }
+        },
+        "bytes_read": 2048
+      }
+    },
+    {
+      "probe": "implicit-parent-one-node-over",
+      "status": "pass",
+      "detail": {
+        "error": "Environment archive filesystem entry limit exceeded",
+        "bytes_read": 512,
+        "read_calls": 1
+      }
+    },
+    {
+      "probe": "late-path-union-over-cap",
+      "status": "pass",
+      "detail": {
+        "error": "Environment archive filesystem entry limit exceeded",
+        "bytes_read": 1536,
+        "read_calls": 4
+      }
+    },
+    {
+      "probe": "node-limit-rejects-before-body-read",
+      "status": "pass",
+      "detail": {
+        "read_calls": 1,
+        "error": "Environment archive filesystem entry limit exceeded"
+      }
+    }
+  ]
+}

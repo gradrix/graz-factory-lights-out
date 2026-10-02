@@ -1,0 +1,41 @@
+..F.F
+======================================================================
+FAIL: test_post_rename_failure_retires_new_publication (test_environment.EnvironmentStoreTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo/tests/test_environment.py", line 98, in test_post_rename_failure_retires_new_publication
+    self.assertEqual([p.name for p in self.store.root.iterdir() if len(p.name) == 64], [good.id])
+AssertionError: Lists differ: ['7599b7ccd43e3aad4b730b8f3606ec03a3ded4d8c[88 chars]bf8'] != ['920f0efd21a5cb498a6ab843efdf658346eed5789[20 chars]bf8']
+
+First differing element 0:
+'7599b7ccd43e3aad4b730b8f3606ec03a3ded4d8c90c38bee48f0cc1c45c321d'
+'920f0efd21a5cb498a6ab843efdf658346eed578999990037f0519d1c294abf8'
+
+First list contains 1 additional elements.
+First extra element 1:
+'920f0efd21a5cb498a6ab843efdf658346eed578999990037f0519d1c294abf8'
+
+- ['7599b7ccd43e3aad4b730b8f3606ec03a3ded4d8c90c38bee48f0cc1c45c321d',
+-  '920f0efd21a5cb498a6ab843efdf658346eed578999990037f0519d1c294abf8']
+? ^
+
++ ['920f0efd21a5cb498a6ab843efdf658346eed578999990037f0519d1c294abf8']
+? ^
+
+
+======================================================================
+FAIL: test_resolver_cannot_observe_an_in_progress_publication (test_environment.EnvironmentStoreTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo/tests/test_environment.py", line 107, in test_resolver_cannot_observe_an_in_progress_publication
+    self.store.publish(archive(b'next'), self.metadata, check)
+  File "/home/gradrix/repos/gflo/gflo/environment.py", line 151, in publish
+    checks = verify(dependencies)
+  File "/home/gradrix/repos/gflo/tests/test_environment.py", line 104, in check
+    with self.assertRaisesRegex(ValueError, 'preparation'):
+AssertionError: ValueError not raised
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.085s
+
+FAILED (failures=2)

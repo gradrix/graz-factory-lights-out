@@ -1,0 +1,341 @@
+{
+  "candidate": "1506abf89cceb8e9adf1a446caf9d92ad53c29c2",
+  "python": "3.10.12",
+  "source_sha256": "6912a7850535ce614cced92c499cbd71e624b87cf9134bd02b456c5af89e38c4",
+  "pass": 60,
+  "fail": 0,
+  "results": [
+    {
+      "probe": "valid-idempotent-controller-path-control",
+      "status": "pass",
+      "detail": {
+        "id": "b25b0b30ab9acbf48023568d7ceeff9b60ad01ab1ecbabcea1f186b9e9649aa6",
+        "tree_sha256": "d1843f5211404b1528b8a278c69f245c704d8862c0bd1ae6402cacb090f3ab08",
+        "files": [
+          "package",
+          "package/tool.py",
+          "package/data.json",
+          "package/__init__.py"
+        ]
+      }
+    },
+    {
+      "probe": "tamper/bytes",
+      "status": "pass",
+      "detail": "Environment dependency tree changed"
+    },
+    {
+      "probe": "tamper/remove",
+      "status": "pass",
+      "detail": "Environment dependency tree changed"
+    },
+    {
+      "probe": "tamper/add",
+      "status": "pass",
+      "detail": "Environment dependency tree changed"
+    },
+    {
+      "probe": "tamper/rename",
+      "status": "pass",
+      "detail": "Environment dependency tree changed"
+    },
+    {
+      "probe": "tamper/executable-mode",
+      "status": "pass",
+      "detail": "Environment dependency tree changed"
+    },
+    {
+      "probe": "tamper/writable-mode",
+      "status": "pass",
+      "detail": "Environment tree mode, link or file type changed"
+    },
+    {
+      "probe": "tamper/directory-mode",
+      "status": "pass",
+      "detail": "Environment tree mode, link or file type changed"
+    },
+    {
+      "probe": "tamper/root-mode",
+      "status": "pass",
+      "detail": "Environment dependency root changed"
+    },
+    {
+      "probe": "tamper/file-symlink",
+      "status": "pass",
+      "detail": "Environment tree mode, link or file type changed"
+    },
+    {
+      "probe": "tamper/directory-symlink",
+      "status": "pass",
+      "detail": "Environment tree mode, link or file type changed"
+    },
+    {
+      "probe": "tamper/fifo",
+      "status": "pass",
+      "detail": "Environment tree mode, link or file type changed"
+    },
+    {
+      "probe": "tamper/receipt-image",
+      "status": "pass",
+      "detail": "Environment receipt hash changed"
+    },
+    {
+      "probe": "tamper/receipt-locks",
+      "status": "pass",
+      "detail": "Environment receipt hash changed"
+    },
+    {
+      "probe": "tamper/receipt-tree",
+      "status": "pass",
+      "detail": "Environment receipt hash changed"
+    },
+    {
+      "probe": "tamper/receipt-mode",
+      "status": "pass",
+      "detail": "Environment receipt size or mode changed"
+    },
+    {
+      "probe": "tamper/receipt-symlink",
+      "status": "pass",
+      "detail": "Environment receipt missing or replaced by a link"
+    },
+    {
+      "probe": "tamper/publication-mode",
+      "status": "pass",
+      "detail": "Environment publication directory ownership or mode changed"
+    },
+    {
+      "probe": "tamper/expected-hash",
+      "status": "pass",
+      "detail": "Environment receipt hash changed"
+    },
+    {
+      "probe": "id/'../outside'",
+      "status": "pass",
+      "detail": "Environment ID must be a receipt SHA-256, never a path"
+    },
+    {
+      "probe": "id/'/tmp/outside'",
+      "status": "pass",
+      "detail": "Environment ID must be a receipt SHA-256, never a path"
+    },
+    {
+      "probe": "id/'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'",
+      "status": "pass",
+      "detail": "Environment ID must be a receipt SHA-256, never a path"
+    },
+    {
+      "probe": "id/'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'",
+      "status": "pass",
+      "detail": "Environment ID must be a receipt SHA-256, never a path"
+    },
+    {
+      "probe": "id/'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/deps'",
+      "status": "pass",
+      "detail": "Environment ID must be a receipt SHA-256, never a path"
+    },
+    {
+      "probe": "id/None",
+      "status": "pass",
+      "detail": "Environment ID must be a receipt SHA-256, never a path"
+    },
+    {
+      "probe": "failed-archive/01-duplicate-name",
+      "status": "pass",
+      "detail": "Duplicate environment archive path"
+    },
+    {
+      "probe": "failed-archive/02-normalized-dot-duplicate",
+      "status": "pass",
+      "detail": "Noncanonical environment archive path"
+    },
+    {
+      "probe": "failed-archive/03-normalized-slash-duplicate",
+      "status": "pass",
+      "detail": "Noncanonical environment archive path"
+    },
+    {
+      "probe": "failed-archive/04-file-ancestor-first",
+      "status": "pass",
+      "detail": "Environment archive file/ancestor conflict"
+    },
+    {
+      "probe": "failed-archive/05-file-ancestor-last",
+      "status": "pass",
+      "detail": "Environment archive file/ancestor conflict"
+    },
+    {
+      "probe": "failed-archive/06-traversal-parent",
+      "status": "pass",
+      "detail": "Noncanonical environment archive path"
+    },
+    {
+      "probe": "failed-archive/07-traversal-nested",
+      "status": "pass",
+      "detail": "Noncanonical environment archive path"
+    },
+    {
+      "probe": "failed-archive/08-absolute",
+      "status": "pass",
+      "detail": "Noncanonical environment archive path"
+    },
+    {
+      "probe": "failed-archive/09-symlink",
+      "status": "pass",
+      "detail": "Environment archive links, extensions and special files are forbidden"
+    },
+    {
+      "probe": "failed-archive/10-hardlink",
+      "status": "pass",
+      "detail": "Environment archive links, extensions and special files are forbidden"
+    },
+    {
+      "probe": "failed-archive/11-arbitrary-bin-symlink",
+      "status": "pass",
+      "detail": "Environment archive links, extensions and special files are forbidden"
+    },
+    {
+      "probe": "failed-archive/12-character-device",
+      "status": "pass",
+      "detail": "Environment archive links, extensions and special files are forbidden"
+    },
+    {
+      "probe": "failed-archive/13-block-device",
+      "status": "pass",
+      "detail": "Environment archive links, extensions and special files are forbidden"
+    },
+    {
+      "probe": "failed-archive/14-fifo",
+      "status": "pass",
+      "detail": "Environment archive links, extensions and special files are forbidden"
+    },
+    {
+      "probe": "failed-archive/15-gnu-sparse-type",
+      "status": "pass",
+      "detail": "Environment archive links, extensions and special files are forbidden"
+    },
+    {
+      "probe": "failed-archive/16-pax-sparse",
+      "status": "pass",
+      "detail": "Environment archive links, extensions and special files are forbidden"
+    },
+    {
+      "probe": "failed-archive/17-pax-path-override",
+      "status": "pass",
+      "detail": "Environment archive links, extensions and special files are forbidden"
+    },
+    {
+      "probe": "failed-archive/18-gnu-longname-override",
+      "status": "pass",
+      "detail": "Environment archive links, extensions and special files are forbidden"
+    },
+    {
+      "probe": "failed-archive/21-declared-huge",
+      "status": "pass",
+      "detail": "Environment archive expanded-byte limit exceeded"
+    },
+    {
+      "probe": "failed-archive/23-truncated-header",
+      "status": "pass",
+      "detail": "Truncated environment archive"
+    },
+    {
+      "probe": "failed-archive/24-truncated-payload",
+      "status": "pass",
+      "detail": "Truncated environment archive"
+    },
+    {
+      "probe": "failed-archive/26-late-bad-entry",
+      "status": "pass",
+      "detail": "Noncanonical environment archive path"
+    },
+    {
+      "probe": "cancel/initial",
+      "status": "pass",
+      "detail": {
+        "error": "Environment preparation cancelled before publication",
+        "smoke_calls": 0
+      }
+    },
+    {
+      "probe": "cancel/after-transport",
+      "status": "pass",
+      "detail": {
+        "error": "Environment preparation cancelled before publication",
+        "smoke_calls": 0
+      }
+    },
+    {
+      "probe": "cancel/smoke",
+      "status": "pass",
+      "detail": {
+        "error": "Environment preparation cancelled before publication",
+        "smoke_calls": 1
+      }
+    },
+    {
+      "probe": "cancel/final-fence",
+      "status": "pass",
+      "detail": {
+        "error": "Environment preparation cancelled before publication",
+        "smoke_calls": 1
+      }
+    },
+    {
+      "probe": "failure/failed-smoke",
+      "status": "pass",
+      "detail": "Environment offline smoke checks failed"
+    },
+    {
+      "probe": "failure/smoke-exception",
+      "status": "pass",
+      "detail": "controlled smoke failure"
+    },
+    {
+      "probe": "failure/smoke-tree-mutation",
+      "status": "pass",
+      "detail": "Environment dependencies changed during smoke checks"
+    },
+    {
+      "probe": "failure/receipt-too-large",
+      "status": "pass",
+      "detail": "Environment receipt exceeds 64 KiB"
+    },
+    {
+      "probe": "failure/pre-rename-failure",
+      "status": "pass",
+      "detail": "controlled rename failure"
+    },
+    {
+      "probe": "cleanup-failure-blocks-retry-until-reconciled",
+      "status": "pass",
+      "detail": {
+        "error": "controlled cleanup failure",
+        "retry": "controlled cleanup failure",
+        "reconciled": true
+      }
+    },
+    {
+      "probe": "concurrent-preparation-refused",
+      "status": "pass",
+      "detail": "Another environment preparation owns this store"
+    },
+    {
+      "probe": "preexisting-final-destination-symlink-preserved",
+      "status": "pass",
+      "detail": "Environment receipt missing or replaced by a link"
+    },
+    {
+      "probe": "post-rename-fsync-failure-publishes-resolvable-candidate",
+      "status": "pass",
+      "detail": {
+        "publication_error": "controlled post-rename directory fsync failure",
+        "failed_candidate_id": "dc6b8de36947cc7349d4be481aac8e8513f7514186c3b87987eaa426ea171971",
+        "failed_candidate_resolvable": true,
+        "resolvable_while_publish_lock_held": true,
+        "baseline_unchanged": true,
+        "private_staging_left": 0
+      }
+    }
+  ]
+}

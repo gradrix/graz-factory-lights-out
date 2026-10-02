@@ -1,0 +1,13 @@
+.F.....
+======================================================================
+FAIL: test_cancellation_before_final_commit_keeps_candidate_unpublished (test_environment.EnvironmentStoreTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo/tests/test_environment.py", line 143, in test_cancellation_before_final_commit_keeps_candidate_unpublished
+    with self.assertRaisesRegex(ValueError, 'cancelled'):
+AssertionError: ValueError not raised
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.129s
+
+FAILED (failures=1)

@@ -1,0 +1,190 @@
+{
+  "candidate": "5295522d04df1e34d2826309e2617ac0a6bf46d7",
+  "python": "3.10.12",
+  "source_sha256": {
+    "guard.py": "8f623a2ff7f9958ef2e1d0a99686ab83f31ab2100fbf5124097bcf1ae88ace48",
+    "sandbox.py": "e018c4722e99895549a6141579e9553a5a302379122981f9ad6a9b5a0baab853"
+  },
+  "execution": "test-owned fake docker CLI and local child executors; no Docker daemon or containers",
+  "pass": 18,
+  "fail": 1,
+  "results": [
+    {
+      "probe": "binary-exact-cap-stderr-separation-inspection",
+      "status": "pass",
+      "detail": {
+        "bytes": 256,
+        "exit_code": 0,
+        "inspection_projection_exact": true,
+        "image": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      }
+    },
+    {
+      "probe": "binary-volume/255",
+      "status": "pass",
+      "detail": {
+        "written_bytes": 255,
+        "observed_bytes": 255,
+        "exit_code": 0,
+        "limited": false
+      }
+    },
+    {
+      "probe": "binary-volume/257",
+      "status": "pass",
+      "detail": {
+        "written_bytes": 256,
+        "observed_bytes": 257,
+        "exit_code": 125,
+        "limited": true
+      }
+    },
+    {
+      "probe": "binary-volume/65536",
+      "status": "pass",
+      "detail": {
+        "written_bytes": 256,
+        "observed_bytes": 65536,
+        "exit_code": 125,
+        "limited": true
+      }
+    },
+    {
+      "probe": "binary-volume/1048576",
+      "status": "pass",
+      "detail": {
+        "written_bytes": 256,
+        "observed_bytes": 1048576,
+        "exit_code": 125,
+        "limited": true
+      }
+    },
+    {
+      "probe": "stderr-million-bytes-retains-bounded-tail",
+      "status": "pass",
+      "detail": {
+        "diagnostic_retained_bytes": 16384,
+        "artifact_bytes": 2,
+        "exit_code": 0
+      }
+    },
+    {
+      "probe": "sandbox-text-output-retains-bounded-tail",
+      "status": "fail",
+      "error": "AssertionError()"
+    },
+    {
+      "probe": "interruption/timeout",
+      "status": "pass",
+      "detail": {
+        "exit_code": 124,
+        "removed": true,
+        "elapsed_under_seconds": 4
+      }
+    },
+    {
+      "probe": "interruption/cancel",
+      "status": "pass",
+      "detail": {
+        "exit_code": 130,
+        "removed": true,
+        "elapsed_under_seconds": 4
+      }
+    },
+    {
+      "probe": "interruption/cancel-exception",
+      "status": "pass",
+      "detail": {
+        "exit_code": "exception",
+        "removed": true,
+        "elapsed_under_seconds": 4
+      }
+    },
+    {
+      "probe": "failure/create-fails",
+      "status": "pass",
+      "detail": {
+        "exit_code": 17,
+        "output": "",
+        "executor_started": false
+      }
+    },
+    {
+      "probe": "failure/inspect-fails",
+      "status": "pass",
+      "detail": {
+        "exit_code": 1,
+        "output": " subprocess.run(['docker', 'inspect', spec['name']], capture_output=True,\n  File \"/usr/lib/python3.10/subprocess.py\", line 526, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command '['docker', 'inspect', 'security-job']' returned non-zero exit status 18.\n",
+        "executor_started": false
+      }
+    },
+    {
+      "probe": "failure/cleanup-fails",
+      "status": "pass",
+      "detail": {
+        "exit_code": 125,
+        "output": "Container cleanup failed; resume requires successful cleanup\n",
+        "executor_started": true
+      }
+    },
+    {
+      "probe": "binary-sink-write-error-cannot-qualify",
+      "status": "pass",
+      "detail": {
+        "exception": "Container output transport failed: controlled sink failure",
+        "removed": true
+      }
+    },
+    {
+      "probe": "existing-inspection-path-preserved-and-no-start",
+      "status": "pass",
+      "detail": {
+        "exit_code": 1,
+        "sentinel_preserved": true,
+        "executor_started": false
+      }
+    },
+    {
+      "probe": "actual-owner-sigkill-removes-running-test-executor",
+      "status": "pass",
+      "detail": {
+        "owner_signal": "SIGKILL",
+        "removed": true,
+        "executor_started": true,
+        "during_create": false
+      }
+    },
+    {
+      "probe": "actual-owner-sigkill-during-create-prevents-late-start",
+      "status": "pass",
+      "detail": {
+        "owner_signal": "SIGKILL",
+        "removed": true,
+        "executor_started": false,
+        "during_create": true
+      }
+    },
+    {
+      "probe": "sandbox-refactor-preserves-constraints-and-observation",
+      "status": "pass",
+      "detail": {
+        "command_flags_checked": true,
+        "readonly_mounts": 2,
+        "events": [
+          "container_running",
+          "container_finished"
+        ]
+      }
+    },
+    {
+      "probe": "cleanup-failure-during-timeout-cannot-qualify",
+      "status": "pass",
+      "detail": {
+        "exit_code": 124,
+        "timed_out": true,
+        "explicit_cleanup_diagnostic": true,
+        "fake_executor_cleanup_not_claimed": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+[
+  {
+    "profile": "python-stdlib",
+    "worker_reviewer_context": true
+  },
+  {
+    "profile": "python-api",
+    "manifest_tamper_rejected": true,
+    "worker_reviewer_context": true,
+    "malformed": "ds((root / 'pyproject.toml').read_text())\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/tomllib/_parser.py\", line 116, in loads\n    raise suffixed_err(src, pos, \"Invalid statement\")\ntomllib.TOMLDecodeError: Invalid statement (at line 1, column 1)\n",
+    "unsupported": "Environment container failed (1): Traceback (most recent call last):\n  File \"/recipe\", line 16, in <module>\n    raise ValueError('Supported dependencies: fastapi==0.115.12 and uvicorn==0.34.2 only')\nValueError: Supported dependencies: fastapi==0.115.12 and uvicorn==0.34.2 only\n",
+    "missing_rejected": true
+  },
+  {
+    "profile": "node-ts",
+    "manifest_tamper_rejected": true,
+    "worker_reviewer_context": true,
+    "malformed": "   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/json/decoder.py\", line 354, in raw_decode\n    obj, end = self.scan_once(s, idx)\n               ^^^^^^^^^^^^^^^^^^^^^^\njson.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)\n",
+    "unsupported": "Environment container failed (1): Traceback (most recent call last):\n  File \"/recipe\", line 31, in <module>\n    raise ValueError('Project package-lock.json differs from the approved complete dependency lock')\nValueError: Project package-lock.json differs from the approved complete dependency lock\n",
+    "missing_rejected": true
+  }
+]

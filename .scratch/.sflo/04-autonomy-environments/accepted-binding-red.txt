@@ -1,0 +1,16 @@
+.F.............
+======================================================================
+FAIL: test_accepted_environment_tampering_invalidates_status_and_resume (test_runner.RunnerTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo/tests/test_runner.py", line 202, in test_accepted_environment_tampering_invalidates_status_and_resume
+    self.assertEqual(factory.status(run_id)['status'], 'invalidated')
+AssertionError: 'accepted' != 'invalidated'
+- accepted
++ invalidated
+
+
+----------------------------------------------------------------------
+Ran 15 tests in 5.001s
+
+FAILED (failures=1)

@@ -1,0 +1,12 @@
+{
+  "candidate": "841dad8c7341f2212562771b2e9ece0e215a0b9c",
+  "root": "/tmp/gflo-stdlib-qa-6yso2jhi",
+  "environment": "b9ca5be28ee06735117b13ce9944c0276cca091a3a7be6c14c5b90b01c6a62b9",
+  "run": "a9e808edaddc",
+  "stable_prepare": true,
+  "check_twice": true,
+  "restart_frozen_image": true,
+  "dependency_write_rejected": true,
+  "tampered_accepted_status": "accepted",
+  "tampered_accepted_resume": "accepted"
+}

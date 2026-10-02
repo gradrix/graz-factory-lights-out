@@ -1,0 +1,156 @@
+{
+  "candidate": "51479e9663f810e33031774abceca067cd761a48",
+  "root": "/tmp/gflo-profiles-qa-w2f4yumr",
+  "results": [
+    {
+      "profile": "python-stdlib",
+      "prepare_exit": 0,
+      "prepare_output": "{\n  \"id\": \"7d282afb88bbdec38302c7d1403fe77f17dcc7dbfad87c1aba2e93525e440cfe\",\n  \"profile\": \"python-stdlib\",\n  \"runtime\": {\n    \"capabilities\": \"0000000000000000\",\n    \"docker_socket\": \"absent\",\n    \"gpu_devices\": \"absent\",\n    \"machine\": \"x86_64\",\n    \"platform\": \"linux\",\n    \"python\": \"3.12.13\",\n    \"uid\": \"1000\"\n  }\n}\n",
+      "id": "7d282afb88bbdec38302c7d1403fe77f17dcc7dbfad87c1aba2e93525e440cfe",
+      "runtime": {
+        "capabilities": "0000000000000000",
+        "docker_socket": "absent",
+        "gpu_devices": "absent",
+        "machine": "x86_64",
+        "platform": "linux",
+        "python": "3.12.13",
+        "uid": "1000"
+      },
+      "scenarios": [
+        {
+          "command": [
+            "python",
+            "-B",
+            "/acceptance/check.py",
+            "/workspace"
+          ],
+          "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+          "exit_code": 0,
+          "timed_out": false,
+          "output": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\nPASS\n",
+          "elapsed_s": 1.509305887389928
+        },
+        {
+          "command": [
+            "python",
+            "-B",
+            "/acceptance/check.py",
+            "/workspace"
+          ],
+          "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+          "exit_code": 0,
+          "timed_out": false,
+          "output": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\nPASS\n",
+          "elapsed_s": 1.5092326430603862
+        }
+      ],
+      "run": "1ff2369cac79",
+      "status": "accepted",
+      "restart_and_context": true,
+      "passed": true
+    },
+    {
+      "profile": "python-api",
+      "prepare_exit": 0,
+      "prepare_output": "{\n  \"id\": \"c242c94518e1baa22b5bedfcb9c7b3323b206e83d3aefa994f55963f96f27118\",\n  \"profile\": \"python-api\",\n  \"runtime\": {\n    \"capabilities\": \"0000000000000000\",\n    \"docker_socket\": \"absent\",\n    \"fastapi\": \"0.115.12\",\n    \"gpu_devices\": \"absent\",\n    \"httpx\": \"0.28.1\",\n    \"machine\": \"x86_64\",\n    \"platform\": \"linux\",\n    \"pydantic\": \"2.13.5\",\n    \"python\": \"3.12.13\",\n    \"setuptools\": \"78.1.0\",\n    \"uid\": \"1000\",\n    \"uvicorn\": \"0.34.2\"\n  }\n}\n",
+      "id": "c242c94518e1baa22b5bedfcb9c7b3323b206e83d3aefa994f55963f96f27118",
+      "runtime": {
+        "capabilities": "0000000000000000",
+        "docker_socket": "absent",
+        "fastapi": "0.115.12",
+        "gpu_devices": "absent",
+        "httpx": "0.28.1",
+        "machine": "x86_64",
+        "platform": "linux",
+        "pydantic": "2.13.5",
+        "python": "3.12.13",
+        "setuptools": "78.1.0",
+        "uid": "1000",
+        "uvicorn": "0.34.2"
+      },
+      "scenarios": [
+        {
+          "command": [
+            "python",
+            "-B",
+            "/acceptance/check.py",
+            "/workspace"
+          ],
+          "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+          "exit_code": 0,
+          "timed_out": false,
+          "output": "Processing ./project\n  Preparing metadata (pyproject.toml): started\n  Preparing metadata (pyproject.toml): finished with status 'done'\nBuilding wheels for collected packages: gflo-reservation-preview\n  Building wheel for gflo-reservation-preview (pyproject.toml): started\n  Building wheel for gflo-reservation-preview (pyproject.toml): finished with status 'done'\n  Created wheel for gflo-reservation-preview: filename=gflo_reservation_preview-0.0.1-py3-none-any.whl size=2712 sha256=738bc661580974b4756eea7f1438354631f94759a09e5a24f3e7091ff853b03e\n  Stored in directory: /tmp/pip-ephem-wheel-cache-psxtoxjr/wheels/46/5d/c6/53c68e850db52f9936d6adaa0c66a8eb6886c7591bb334ef54\nSuccessfully built gflo-reservation-preview\nProcessing ./wheels/gflo_reservation_preview-0.0.1-py3-none-any.whl\nInstalling collected packages: gflo-reservation-preview\nSuccessfully installed gflo-reservation-preview-0.0.1\n...\n----------------------------------------------------------------------\nRan 3 tests in 0.050s\n\nOK\nPASS\n",
+          "elapsed_s": 7.341371031943709
+        },
+        {
+          "command": [
+            "python",
+            "-B",
+            "/acceptance/check.py",
+            "/workspace"
+          ],
+          "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+          "exit_code": 0,
+          "timed_out": false,
+          "output": "Processing ./project\n  Preparing metadata (pyproject.toml): started\n  Preparing metadata (pyproject.toml): finished with status 'done'\nBuilding wheels for collected packages: gflo-reservation-preview\n  Building wheel for gflo-reservation-preview (pyproject.toml): started\n  Building wheel for gflo-reservation-preview (pyproject.toml): finished with status 'done'\n  Created wheel for gflo-reservation-preview: filename=gflo_reservation_preview-0.0.1-py3-none-any.whl size=2712 sha256=b0dd8dc66d9b308be0f02e7e06b21101f0cb9a8f3315128a608fc12b3d6ad163\n  Stored in directory: /tmp/pip-ephem-wheel-cache-fgif9s2b/wheels/72/8a/2b/73911893c6f878fc9fd4b5d495ef1e90adf7d69d40e6b9e276\nSuccessfully built gflo-reservation-preview\nProcessing ./wheels/gflo_reservation_preview-0.0.1-py3-none-any.whl\nInstalling collected packages: gflo-reservation-preview\nSuccessfully installed gflo-reservation-preview-0.0.1\n...\n----------------------------------------------------------------------\nRan 3 tests in 0.048s\n\nOK\nPASS\n",
+          "elapsed_s": 7.442102842964232
+        }
+      ],
+      "run": "2d0e79b68220",
+      "status": "accepted",
+      "restart_and_context": true,
+      "error": "TypeError(\"Sandbox.verify() missing 1 required positional argument: 'acceptance'\")",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/gradrix/repos/gflo/.scratch/.sflo/04-autonomy-environments/qa-profiles/probe.py\", line 39, in <module>\n    workspace=state/rid/'workspace';frozen=json.loads((state/rid/'task.json').read_text());name=next(iter(frozen['environment_inputs']));target=workspace/name;target.write_text(target.read_text()+'\\n');assert not sandbox.verify(workspace,frozen)['passed'];row['manifest_tamper_rejected']=True\nTypeError: Sandbox.verify() missing 1 required positional argument: 'acceptance'\n"
+    },
+    {
+      "profile": "node-ts",
+      "prepare_exit": 0,
+      "prepare_output": "{\n  \"id\": \"5f2420669358b8f184507285e3edadcc4d8a929116d8df916c4c62d0a8fd3107\",\n  \"profile\": \"node-ts\",\n  \"runtime\": {\n    \"capabilities\": \"0000000000000000\",\n    \"docker_socket\": \"absent\",\n    \"gpu_devices\": \"absent\",\n    \"machine\": \"x64\",\n    \"node\": \"v22.23.3\",\n    \"node_types\": \"22.15.3\",\n    \"npm\": \"10.9.9\",\n    \"platform\": \"linux\",\n    \"typescript\": \"5.8.3\",\n    \"uid\": \"1000\",\n    \"undici_types\": \"6.21.0\"\n  }\n}\n",
+      "id": "5f2420669358b8f184507285e3edadcc4d8a929116d8df916c4c62d0a8fd3107",
+      "runtime": {
+        "capabilities": "0000000000000000",
+        "docker_socket": "absent",
+        "gpu_devices": "absent",
+        "machine": "x64",
+        "node": "v22.23.3",
+        "node_types": "22.15.3",
+        "npm": "10.9.9",
+        "platform": "linux",
+        "typescript": "5.8.3",
+        "uid": "1000",
+        "undici_types": "6.21.0"
+      },
+      "scenarios": [
+        {
+          "command": [
+            "node",
+            "/acceptance/check.cjs",
+            "/workspace"
+          ],
+          "image": "sha256:88f8ba583a884279252779bbe221bf1ff2c61cf236cc973f8ca97676ae6d07f0",
+          "exit_code": 0,
+          "timed_out": false,
+          "output": "PASS\n",
+          "elapsed_s": 4.525401452090591
+        },
+        {
+          "command": [
+            "node",
+            "/acceptance/check.cjs",
+            "/workspace"
+          ],
+          "image": "sha256:88f8ba583a884279252779bbe221bf1ff2c61cf236cc973f8ca97676ae6d07f0",
+          "exit_code": 0,
+          "timed_out": false,
+          "output": "PASS\n",
+          "elapsed_s": 4.624334845226258
+        }
+      ],
+      "run": "253b9fc2e144",
+      "status": "accepted",
+      "restart_and_context": true,
+      "error": "TypeError(\"Sandbox.verify() missing 1 required positional argument: 'acceptance'\")",
+      "traceback": "Traceback (most recent call last):\n  File \"/home/gradrix/repos/gflo/.scratch/.sflo/04-autonomy-environments/qa-profiles/probe.py\", line 39, in <module>\n    workspace=state/rid/'workspace';frozen=json.loads((state/rid/'task.json').read_text());name=next(iter(frozen['environment_inputs']));target=workspace/name;target.write_text(target.read_text()+'\\n');assert not sandbox.verify(workspace,frozen,state/rid/'acceptance')['passed'];row['manifest_tamper_rejected']=True\nTypeError: Sandbox.verify() missing 1 required positional argument: 'acceptance'\n"
+    }
+  ]
+}

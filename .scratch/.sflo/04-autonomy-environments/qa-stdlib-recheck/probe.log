@@ -1,0 +1,13 @@
+Attempt 1: verifying candidate
+{
+  "candidate": "f5b5491",
+  "root": "/tmp/gflo-stdlib-qa-cwxz27p4",
+  "environment": "b9ca5be28ee06735117b13ce9944c0276cca091a3a7be6c14c5b90b01c6a62b9",
+  "run": "b52de84540fa",
+  "stable_prepare": true,
+  "check_twice": true,
+  "restart_frozen_image": true,
+  "dependency_write_rejected": true,
+  "tampered_accepted_status": "invalidated",
+  "tampered_accepted_resume": "rejected"
+}

@@ -1,0 +1,13 @@
+...E...
+======================================================================
+ERROR: test_project_manifests_must_match_supported_recipe (test_prepare.PrepareTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo/tests/test_prepare.py", line 86, in test_project_manifests_must_match_supported_recipe
+    from gflo.prepare import validate_project
+ImportError: cannot import name 'validate_project' from 'gflo.prepare' (/home/gradrix/repos/gflo/gflo/prepare.py)
+
+----------------------------------------------------------------------
+Ran 7 tests in 65.994s
+
+FAILED (errors=1)

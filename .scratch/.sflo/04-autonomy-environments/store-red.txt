@@ -1,0 +1,19 @@
+E
+======================================================================
+ERROR: test_environment (unittest.loader._FailedTest)
+----------------------------------------------------------------------
+ImportError: Failed to import test module: test_environment
+Traceback (most recent call last):
+  File "/usr/lib/python3.10/unittest/loader.py", line 436, in _find_test_path
+    module = self._get_module_from_name(name)
+  File "/usr/lib/python3.10/unittest/loader.py", line 377, in _get_module_from_name
+    __import__(name)
+  File "/home/gradrix/repos/gflo/tests/test_environment.py", line 8, in <module>
+    from gflo.environment import EnvironmentStore
+ModuleNotFoundError: No module named 'gflo.environment'
+
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+FAILED (errors=1)

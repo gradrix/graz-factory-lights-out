@@ -25,3 +25,17 @@ htmlcov/
 .scratch/.sflo/03-autonomy-review/qa-final-question-evidence/*/
 
 .scratch/.sflo/03-autonomy-review/qa-resumed-*/
+
+!.scratch/.sflo/04-autonomy-environments/
+.scratch/.sflo/04-autonomy-environments/*/
+!.scratch/.sflo/04-autonomy-environments/security-*/
+.scratch/.sflo/04-autonomy-environments/security-*/*
+!.scratch/.sflo/04-autonomy-environments/security-*/probe.py
+!.scratch/.sflo/04-autonomy-environments/security-*/results.json
+!.scratch/.sflo/04-autonomy-environments/security-transport/fake_docker.py
+!.scratch/.sflo/04-autonomy-environments/security-transport/harness-ordering-results.json
+!.scratch/.sflo/04-autonomy-environments/qa-*/
+.scratch/.sflo/04-autonomy-environments/qa-*/*
+!.scratch/.sflo/04-autonomy-environments/qa-*/*.py
+!.scratch/.sflo/04-autonomy-environments/qa-*/*.json
+!.scratch/.sflo/04-autonomy-environments/qa-*/*.log

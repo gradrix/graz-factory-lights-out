@@ -1,0 +1,9 @@
+test_bound_sandbox_uses_frozen_image_and_rejects_tampering (test_prepare.PrepareTests) ... ok
+test_cli_prepares_inspects_and_checks_without_model_configuration (test_prepare.PrepareTests) ... ok
+test_stdlib_preparation_records_actual_runtime_and_rechecks_offline (test_prepare.PrepareTests) ... ok
+test_unsupported_profile_fails_before_execution (test_prepare.PrepareTests) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 7.205s
+
+OK

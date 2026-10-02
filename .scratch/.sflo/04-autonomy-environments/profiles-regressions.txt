@@ -1,0 +1,57 @@
+...................Attempt 1: verifying candidate
+..Attempt 1: verifying candidate
+...Attempt 1: verifying candidate
+.Attempt 1: verifying candidate
+..Attempt 1: verifying candidate
+.Attempt 1: verifying candidate
+...............Qualification environment mismatch: version: expected '0.0.0', observed '3.12.13'
+.Attempt 1: verifying candidate
+Attempt 2: verifying candidate
+.Attempt 1: verifying candidate
+..Attempt 1: verifying candidate
+Attempt 2: verifying candidate
+.Attempt 1: verifying candidate
+Attempt 1: verifying candidate
+.Attempt 1, model turn 1/2
+....Attempt 1: verifying candidate
+...Attempt 1, model turn 1/2
+  question: done
+Attempt 1, model turn 2/2
+.Attempt 1, model turn 1/1
+..Attempt 1: verifying candidate
+.Attempt 1: verifying candidate
+.Attempt 1: verifying candidate
+.Attempt 1: verifying candidate
+.Attempt 1: verifying candidate
+....Attempt 1: verifying candidate
+Attempt 2: verifying candidate
+.Attempt 1: verifying candidate
+Attempt 2: verifying candidate
+.Attempt 2: verifying candidate
+.Attempt 1: verifying candidate
+.Attempt 1: verifying candidate
+.......Attempt 1, model turn 1/1
+Attempt 1, model turn 1/1
+..Attempt 1, model turn 1/8
+  unknown: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+Attempt 1, model turn 2/8
+  unknown: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+Attempt 1, model turn 3/8
+  unknown: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+Attempt 1, model turn 4/8
+  unknown: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+Attempt 1, model turn 5/8
+.Attempt 2, model turn 1/1
+.Attempt 1, model turn 1/1
+..Attempt 1, model turn 1/4
+  run: 0
+Attempt 1, model turn 2/4
+  check: False
+Attempt 1, model turn 3/4
+.Attempt 1, model turn 1/1
+  run: 0
+.
+----------------------------------------------------------------------
+Ran 86 tests in 89.291s
+
+OK

@@ -1,0 +1,13 @@
+E...
+======================================================================
+ERROR: test_bound_sandbox_uses_frozen_image_and_rejects_tampering (test_prepare.PrepareTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo/tests/test_prepare.py", line 53, in test_bound_sandbox_uses_frozen_image_and_rejects_tampering
+    sandbox.bind(environment)
+AttributeError: 'Sandbox' object has no attribute 'bind'
+
+----------------------------------------------------------------------
+Ran 4 tests in 6.816s
+
+FAILED (errors=1)

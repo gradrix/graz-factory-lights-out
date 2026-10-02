@@ -1,0 +1,128 @@
+{
+  "checks": {
+    "executor": {
+      "config": {
+        "Env": [
+          "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+          "HOME=/tmp",
+          "LANG=C.UTF-8",
+          "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+          "PIP_CONFIG_FILE=/dev/null",
+          "PIP_NO_INDEX=1",
+          "PYTHONDONTWRITEBYTECODE=1",
+          "PYTHONPATH=/opt/deps",
+          "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684",
+          "PYTHON_VERSION=3.12.13"
+        ],
+        "User": "1000:1000",
+        "WorkingDir": "/work"
+      },
+      "host": {
+        "CapDrop": [
+          "ALL"
+        ],
+        "DeviceRequests": null,
+        "Devices": [],
+        "Memory": 1073741824,
+        "MemorySwap": 1073741824,
+        "NanoCpus": 1000000000,
+        "NetworkMode": "none",
+        "PidsLimit": 128,
+        "ReadonlyRootfs": true,
+        "Runtime": "runc",
+        "SecurityOpt": [
+          "no-new-privileges"
+        ],
+        "ShmSize": 16777216,
+        "Tmpfs": {
+          "/tmp": "rw,nosuid,nodev,size=16m,mode=1777",
+          "/work": "rw,nosuid,nodev,size=480m,mode=1777"
+        }
+      },
+      "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+      "mounts": [
+        {
+          "Destination": "/opt/deps",
+          "RW": false,
+          "Type": "bind"
+        }
+      ]
+    },
+    "passed": true,
+    "preparation": {
+      "assembly_executor": {
+        "config": {
+          "Env": [
+            "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+            "HOME=/tmp",
+            "LANG=C.UTF-8",
+            "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "PIP_CONFIG_FILE=/dev/null",
+            "PIP_NO_INDEX=1",
+            "PYTHONDONTWRITEBYTECODE=1",
+            "PYTHONPATH=/opt/deps",
+            "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684",
+            "PYTHON_VERSION=3.12.13"
+          ],
+          "User": "1000:1000",
+          "WorkingDir": "/work"
+        },
+        "host": {
+          "CapDrop": [
+            "ALL"
+          ],
+          "DeviceRequests": null,
+          "Devices": [],
+          "Memory": 1073741824,
+          "MemorySwap": 1073741824,
+          "NanoCpus": 1000000000,
+          "NetworkMode": "none",
+          "PidsLimit": 128,
+          "ReadonlyRootfs": true,
+          "Runtime": "runc",
+          "SecurityOpt": [
+            "no-new-privileges"
+          ],
+          "ShmSize": 16777216,
+          "Tmpfs": {
+            "/tmp": "rw,nosuid,nodev,size=16m,mode=1777",
+            "/work": "rw,nosuid,nodev,size=480m,mode=1777"
+          }
+        },
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "mounts": []
+      },
+      "bases_reused": [
+        "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc"
+      ],
+      "package_cache": "fresh disposable scratch"
+    },
+    "runtime": {
+      "capabilities": "0000000000000000",
+      "docker_socket": "absent",
+      "gpu_devices": "absent",
+      "machine": "x86_64",
+      "platform": "linux",
+      "python": "3.12.13",
+      "uid": "1000"
+    }
+  },
+  "format": 1,
+  "metadata": {
+    "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+    "locks": {},
+    "platform": "linux/amd64",
+    "profile": "python-stdlib",
+    "recipe_sha256": "6fa1d24979df39e424e752fd2ec889e0538a4d38f7ddbb344a891feddb6711ee",
+    "runtime": {
+      "capabilities": "0000000000000000",
+      "docker_socket": "absent",
+      "gpu_devices": "absent",
+      "machine": "x86_64",
+      "platform": "linux",
+      "python": "3.12.13",
+      "uid": "1000"
+    }
+  },
+  "tree_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

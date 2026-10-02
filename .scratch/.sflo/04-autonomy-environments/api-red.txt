@@ -1,0 +1,15 @@
+..E..
+======================================================================
+ERROR: test_python_api_prepares_locked_wheels_and_imports_offline (test_prepare.PrepareTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo/tests/test_prepare.py", line 66, in test_python_api_prepares_locked_wheels_and_imports_offline
+    environment = prepare(EnvironmentStore(root / 'store'), 'python-api')
+  File "/home/gradrix/repos/gflo/gflo/prepare.py", line 107, in prepare
+    raise ValueError('Unsupported environment profile; currently implemented: python-stdlib')
+ValueError: Unsupported environment profile; currently implemented: python-stdlib
+
+----------------------------------------------------------------------
+Ran 5 tests in 7.207s
+
+FAILED (errors=1)
