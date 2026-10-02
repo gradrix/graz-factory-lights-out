@@ -11,6 +11,7 @@ from pathlib import Path
 import signal
 import subprocess
 import sys
+import tempfile
 import time
 
 from gflo.review import Reviewer
@@ -19,12 +20,46 @@ from gflo.sandbox import Sandbox
 from gflo.worker import ModelWorker
 
 
+def environment_check(sandbox, expected=None):
+    """Record the interpreter that executes checks, not the host or an image tag."""
+    if expected is not None and (not isinstance(expected, dict) or any(
+            not isinstance(expected.get(key), str) or not expected[key]
+            for key in ('image', 'version', 'implementation'))):
+        raise ValueError('Manifest environment needs image, version and implementation strings')
+    with tempfile.TemporaryDirectory(prefix='gflo-qualification-') as directory:
+        check = sandbox.execute(Path(directory), ['python', '-c',
+            'import json,platform,sys;print(json.dumps(dict(version=platform.python_version(),'
+            'implementation=platform.python_implementation(),sys_version=sys.version)))'])
+    observed = {'image': check['image']}
+    errors = []
+    if check['exit_code']:
+        errors.append('Sandbox interpreter probe failed; inspect check output')
+    else:
+        try:
+            runtime = json.loads(check['output'])
+            if not isinstance(runtime, dict) or any(
+                    not isinstance(runtime.get(key), str) or not runtime[key]
+                    for key in ('version', 'implementation', 'sys_version')):
+                raise ValueError('Incomplete interpreter result')
+            observed.update(runtime)
+        except (ValueError, TypeError):
+            errors.append('Sandbox interpreter probe returned invalid runtime facts')
+    if expected:
+        for key in ('image', 'version', 'implementation'):
+            if observed.get(key) != expected[key]:
+                errors.append(f'{key}: expected {expected[key]!r}, observed {observed.get(key)!r}')
+    return {'passed': not errors, 'expected': expected, 'observed': observed,
+            'error': '; '.join(errors), 'check': check}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('fixtures', type=Path)
     parser.add_argument('state', type=Path)
     parser.add_argument('--config', type=Path, default=Path('.gflo/config.json'))
     args = parser.parse_args()
+    if args.state.exists():
+        raise ValueError('Choose a new qualification state directory; existing evidence is never overwritten')
     config = json.loads(args.config.read_text())
     if config.get('api_key_file'):
         config['api_key_file'] = str((args.config.resolve().parent / config['api_key_file']).resolve())
@@ -32,9 +67,14 @@ def main():
     for name, expected in manifest['sha256'].items():
         assert hashlib.sha256((args.fixtures / name).read_bytes()).hexdigest() == expected, name
     sandbox = Sandbox(config.get('image', Sandbox().image))
+    environment = environment_check(sandbox, manifest.get('environment'))
+    save(args.state / 'environment.json', environment)
+    if not environment['passed']:
+        print('Qualification environment mismatch: ' + environment['error'], file=sys.stderr)
+        return 2
     factory = Factory(args.state, None, None, reviewer=Reviewer(ModelWorker(config, sandbox)))
     receipt = {'manifest_sha256': hashlib.sha256((args.fixtures / 'manifest.json').read_bytes()).hexdigest(),
-               'wall_budget_s_per_task': 900, 'results': []}
+               'environment': environment, 'wall_budget_s_per_task': 900, 'results': []}
     task_dir = args.fixtures / ('coding' if (args.fixtures / 'coding').is_dir() else 'tasks')
     coding_paths = sorted(task_dir.glob('*/task.json'))
     if len(coding_paths) != 12:
