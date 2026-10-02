@@ -112,7 +112,7 @@ class ReviewTests(unittest.TestCase):
         client.result = {'needed':False,'basis':'only valid integers','guidance':'Invalid strings are outside scope; implement valid integers.'}
         self.assertFalse(assess_question(client,'Inputs are only valid integers.','What about invalid strings?')['needed'])
         client.result['basis'] = 'invented requirement'
-        with self.assertRaises(ValueError): assess_question(client,'Inputs are only valid integers.','What about strings?')
+        with self.assertRaises(RuntimeError): assess_question(client,'Inputs are only valid integers.','What about strings?')
 
     def test_unnecessary_question_returns_guidance_and_worker_continues(self):
         from gflo.worker import ModelWorker
@@ -128,3 +128,15 @@ class ReviewTests(unittest.TestCase):
         self.assertNotIn('question', result)
         self.assertEqual(result['turns'], 2)
         self.assertIn('Strings are outside', (workspace.parent / 'attempts/1/trajectory.jsonl').read_text())
+
+    def test_invalid_question_assessment_stops_instead_of_inventing_policy(self):
+        from gflo.worker import ModelWorker
+        from test_worker import FakeSandbox
+        workspace = self.root / 'workspace'; workspace.mkdir()
+        worker = ModelWorker({'endpoint':'http://127.0.0.1:18000','model':'test'}, FakeSandbox())
+        responses = iter([
+            {'choices':[{'message':{'role':'assistant','tool_calls':[{'id':'q','function':{'name':'question','arguments':'{"question":"Which policy?"}'}}]}}]},
+            {'choices':[{'message':{'content':'not json'}}]}])
+        worker.request = lambda *a, **kw: next(responses)
+        with self.assertRaisesRegex(RuntimeError, 'Question assessment'):
+            worker(workspace, {'objective':'Undecided policy','checks':[],'max_turns':2}, None, 1)

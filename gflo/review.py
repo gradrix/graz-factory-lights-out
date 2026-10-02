@@ -82,11 +82,14 @@ def complete(client, system, payload, phase):
 
 
 def assess_question(client, objective, question):
-    result = complete(client, QUESTION_SYSTEM, json.dumps({'objective':objective,'question':question}), 'question_review_wait')
+    try:
+        result = complete(client, QUESTION_SYSTEM, json.dumps({'objective':objective,'question':question}), 'question_review_wait')
+    except (ValueError, TypeError, KeyError) as error:
+        raise RuntimeError('Question assessment unavailable or malformed') from error
     if (not isinstance(result, dict) or set(result) != {'needed','basis','guidance'} or
         type(result['needed']) is not bool or not isinstance(result['basis'], str) or
         len(result['basis'].strip()) < 8 or result['basis'] not in objective or
         not isinstance(result['guidance'], str) or not 1 <= len(result['guidance']) <= 4000):
-        raise ValueError('Question assessment needs a grounded decision')
+        raise RuntimeError('Question assessment needs a grounded decision')
     client.observe('question_review_result', needed=result['needed'])
     return result
