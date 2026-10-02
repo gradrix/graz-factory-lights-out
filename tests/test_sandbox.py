@@ -68,3 +68,22 @@ Sandbox().execute(sys.argv[1], ['sh','-c','while true; do echo x >> ticks; sleep
         with tempfile.TemporaryDirectory() as directory:
             result = Sandbox().execute(Path(directory), ['python', '-c', "import sys; assert sys.argv[1:] == ['--rm', '--keep']", '--rm', '--keep'])
             self.assertEqual(result['exit_code'], 0, result)
+
+    def test_generated_regression_failure_blocks_passing_acceptance(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            workspace = root / 'workspace'
+            (workspace / 'tests').mkdir(parents=True)
+            acceptance = root / 'acceptance'
+            acceptance.mkdir()
+            (acceptance / 'check.py').write_text('assert True\n')
+            test = workspace / 'tests/test_behavior.py'
+            test.write_text('import unittest\nclass Behavior(unittest.TestCase):\n def test_boundary(self): self.assertEqual(21, 20)\n')
+            task = {'checks': [['python', '-I', '/acceptance/check.py']]}
+            sandbox = Sandbox()
+            failed = sandbox.verify(workspace, task, acceptance)
+            self.assertFalse(failed['passed'], failed)
+            self.assertEqual(failed['checks'][0]['exit_code'], 0)
+            self.assertIn('21 != 20', failed['checks'][-1]['output'])
+            test.write_text(test.read_text().replace('21, 20', '21, 21'))
+            self.assertTrue(sandbox.verify(workspace, task, acceptance)['passed'])

@@ -89,6 +89,11 @@ class Sandbox:
 
     def verify(self, workspace, task, acceptance):
         self.cleanup(workspace)
+        commands = list(task['checks'])
+        # The current profile is Python stdlib. Generated regressions supplement
+        # the immutable external checks and must not be silently left unexecuted.
+        if (Path(workspace) / 'tests').is_dir():
+            commands.append(['python', '-B', '-m', 'unittest', 'discover', '-s', 'tests'])
         results = [self.execute(workspace, command, acceptance=acceptance, timeout=120)
-                   for command in task['checks']]
+                   for command in commands]
         return {'passed': bool(results) and all(r['exit_code'] == 0 for r in results), 'checks': results}

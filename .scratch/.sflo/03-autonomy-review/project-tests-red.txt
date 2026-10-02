@@ -1,0 +1,13 @@
+.F...
+======================================================================
+FAIL: test_generated_regression_failure_blocks_passing_acceptance (test_sandbox.SandboxTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo/tests/test_sandbox.py", line 85, in test_generated_regression_failure_blocks_passing_acceptance
+    self.assertFalse(failed['passed'], failed)
+AssertionError: True is not false : {'passed': True, 'checks': [{'command': ['python', '-I', '/acceptance/check.py'], 'exit_code': 0, 'timed_out': False, 'output': '', 'elapsed_s': 0.3155434112995863, 'image': 'sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578'}]}
+
+----------------------------------------------------------------------
+Ran 5 tests in 5.218s
+
+FAILED (failures=1)

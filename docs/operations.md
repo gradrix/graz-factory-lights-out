@@ -91,3 +91,7 @@ The reviewer receives the objective and the complete bounded candidate (up to 20
 The candidate review profile uses local reasoning with a 1,024-token thinking budget inside a 4,096-token output limit and a 120-second request timeout. This is being qualified against the installed llama.cpp profile; arbitrary OpenAI-compatible servers are not assumed to honor its budget extension. Coder tool turns keep their separately configured reasoning mode. See the delivery map for current qualification status and limitations.
 
 A worker can call `question` for a consequential missing product decision; a reviewer can also return `needs_input`. The run stops with its question and retained evidence. Repeated `resume` does not invent an answer or spend another attempt. Resolve the product choice in a new explicit task contract and create a new run; an in-place answer/revision API is not implemented yet.
+
+### Project regression checks
+
+The current Python stdlib sandbox runs `python -B -m unittest discover -s tests` whenever the candidate contains a `tests/` directory, in addition to the immutable external acceptance commands. Both run read-only and offline with bounded execution. A failing generated test blocks acceptance and returns its output to repair; a model's claim that its tests passed is not evidence. External acceptance and fresh review are still required. Other stack profiles must supply their own test execution when introduced.
