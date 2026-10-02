@@ -1,0 +1,96 @@
+{
+  "approved": {
+    "url": "https://docs.python.org/3.12/library/asyncio-task.html",
+    "source_version": "Python3.12 historical documentation snapshot; floating series URL",
+    "question": "Measure extraction event count only; no inference."
+  },
+  "http": {
+    "body_size": 156345,
+    "cache_control": "",
+    "charset": "utf-8",
+    "connected": "151.101.0.223",
+    "content_type": "text/html",
+    "http_headers": {
+      "accept-ranges": "bytes",
+      "age": "480",
+      "connection": "close",
+      "content-length": "156345",
+      "content-type": "text/html",
+      "date": "Fri, 02 Oct 2026 15:26:24 GMT",
+      "etag": "\"6abe7bb4-262b9\"",
+      "last-modified": "Thu, 01 Oct 2026 15:26:44 GMT",
+      "server": "nginx",
+      "strict-transport-security": "max-age=315360000; includeSubDomains; preload",
+      "vary": "Accept-Encoding",
+      "via": "1.1 varnish, 1.1 varnish",
+      "x-cache": "MISS, HIT",
+      "x-cache-hits": "0, 0",
+      "x-clacks-overhead": "GNU Terry Pratchett",
+      "x-served-by": "cache-lga-kjfk8660068-LGA, cache-bma-essb1270033-BMA",
+      "x-timer": "S1790954784.034639,VS0,VE1"
+    },
+    "status": 200,
+    "url": "https://docs.python.org/3.12/library/asyncio-task.html"
+  },
+  "body_sha256": "b395cf62082c34beeebfdc8b7a5a34f997411f6499fa14cf66425bcd20ff1381",
+  "elapsed_s": 0.7051016371697187,
+  "executor": {
+    "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+    "name": "gflo-document-f235d6770ba148d087468240df831840",
+    "host": {
+      "Runtime": "runc",
+      "NetworkMode": "bridge",
+      "ReadonlyRootfs": true,
+      "CapDrop": [
+        "ALL"
+      ],
+      "SecurityOpt": [
+        "no-new-privileges"
+      ],
+      "Memory": 268435456,
+      "MemorySwap": 268435456,
+      "NanoCpus": 1000000000,
+      "PidsLimit": 64,
+      "ShmSize": 8388608,
+      "Tmpfs": {
+        "/tmp": "rw,nosuid,nodev,size=16m,mode=1777"
+      },
+      "Devices": [],
+      "DeviceRequests": null
+    },
+    "config": {
+      "User": "1000:1000",
+      "Env": [
+        "HOME=/tmp",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "LANG=C.UTF-8",
+        "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+        "PYTHON_VERSION=3.12.13",
+        "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684"
+      ],
+      "WorkingDir": "/tmp"
+    },
+    "mounts": [
+      {
+        "Type": "bind",
+        "Source": "/home/gradrix/repos/gflo/.gflo/document-event-prototype/accepted/gflo/recipes/document.py",
+        "Destination": "/helpers/document.py",
+        "RW": false
+      },
+      {
+        "Type": "bind",
+        "Source": "/home/gradrix/repos/gflo/.gflo/document-event-prototype/accepted/gflo/recipes/fetch.py",
+        "Destination": "/helpers/fetch.py",
+        "RW": false
+      },
+      {
+        "Type": "bind",
+        "Source": "/home/gradrix/repos/gflo/.gflo/document-event-prototype/fetch-work/fetch-request",
+        "Destination": "/approved",
+        "RW": false
+      }
+    ]
+  },
+  "source_commit": "2049361"
+}

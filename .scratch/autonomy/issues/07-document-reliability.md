@@ -13,3 +13,7 @@ CSV row_shape fails exact provenance because the model copied a curly source apo
 The hooks question asks priority and input, but its frozen expected-facts list also asks for return/replacement behavior. That extra requirement was an agent-authored oracle overconstraint. Preserve the original comparison and report question satisfaction separately; no retroactive quiet score rewrite. Future contracts must ask every substantive expected fact explicitly.
 
 No production/runtime mutation follows from this diagnostic record. Browser unit06 remains the sole active maintained-product change. FullStage4 research acceptance remains pending.
+
+## Event-ceiling experiment result
+
+[Private prototype](../document-event-prototype.md) supports a40,000-event repair trial without other limit changes. Actual official page needs11,442 events and extracts37,712 bytes/440spans in0.046–0.048s at about23MiB peak Python RSS.16 fresh-container checks passed expected cap/+1/depth/text/block outcomes; source/runtime unchanged. Agent chooses40,000 for the next versioned implementation trial, not as an arbitrary-page guarantee. Quote-copy behavior remains a separate unresolved repair design.

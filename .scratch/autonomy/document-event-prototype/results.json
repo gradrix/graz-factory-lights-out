@@ -1,0 +1,1413 @@
+{
+  "accepted_commit": "2049361",
+  "extractor_sha256": "5201f7b93b1ff6d650d4a035873663f7451112e441e084d303b2e2d0147fdca3",
+  "measurement_helper_sha256": "24c06686294e50c1143f56070abae4e1056bb7cd5ca73681d0a3f87ff18c6491",
+  "body_limit": 2097152,
+  "text_limit": 131072,
+  "depth_limit": 64,
+  "block_limit": 2048,
+  "work_timeout_s": 5,
+  "memory_bytes": 268435456,
+  "results": [
+    {
+      "case": "asyncio-10000-repeat1",
+      "expected": "rejected",
+      "measurement": {
+        "event_limit": 10000,
+        "body_bytes": 156345,
+        "body_sha256": "b395cf62082c34beeebfdc8b7a5a34f997411f6499fa14cf66425bcd20ff1381",
+        "status": "rejected",
+        "error": {
+          "type": "ValueError",
+          "message": "HTML event limit"
+        },
+        "events": 10001,
+        "max_depth": 20,
+        "raw_visible_text_bytes": 35081,
+        "spans": null,
+        "partial_spans": 356,
+        "text_bytes": null,
+        "spans_sha256": null,
+        "extract_wall_s": 0.0425897347740829,
+        "extract_cpu_s": 0.042451443000000005,
+        "process_peak_rss_kib": 23332,
+        "python": "3.12.13"
+      },
+      "guardian_elapsed_s": 0.4033742151223123,
+      "guardian": {
+        "exit_code": 0,
+        "timed_out": false,
+        "limited": false,
+        "output": "",
+        "stdout_bytes": 489,
+        "elapsed_s": 0.4033552943728864
+      },
+      "executor": {
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "host": {
+          "Runtime": "runc",
+          "NetworkMode": "none",
+          "ReadonlyRootfs": true,
+          "CapDrop": [
+            "ALL"
+          ],
+          "SecurityOpt": [
+            "no-new-privileges"
+          ],
+          "Memory": 268435456,
+          "MemorySwap": 268435456,
+          "NanoCpus": 1000000000,
+          "PidsLimit": 64,
+          "ShmSize": 8388608,
+          "Tmpfs": {
+            "/tmp": "rw,nosuid,nodev,size=16m,mode=1777"
+          },
+          "Devices": [],
+          "DeviceRequests": null
+        },
+        "config": {
+          "User": "1000:1000",
+          "Env": [
+            "HOME=/tmp",
+            "PYTHONDONTWRITEBYTECODE=1",
+            "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "LANG=C.UTF-8",
+            "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+            "PYTHON_VERSION=3.12.13",
+            "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684"
+          ],
+          "WorkingDir": "/tmp"
+        },
+        "mounts": [
+          {
+            "Type": "bind",
+            "Destination": "/helpers/measure.py",
+            "RW": false
+          },
+          {
+            "Type": "bind",
+            "Destination": "/body",
+            "RW": false
+          },
+          {
+            "Type": "bind",
+            "Destination": "/helpers/document_extract.py",
+            "RW": false
+          }
+        ]
+      },
+      "container_absent": true
+    },
+    {
+      "case": "asyncio-10000-repeat2",
+      "expected": "rejected",
+      "measurement": {
+        "event_limit": 10000,
+        "body_bytes": 156345,
+        "body_sha256": "b395cf62082c34beeebfdc8b7a5a34f997411f6499fa14cf66425bcd20ff1381",
+        "status": "rejected",
+        "error": {
+          "type": "ValueError",
+          "message": "HTML event limit"
+        },
+        "events": 10001,
+        "max_depth": 20,
+        "raw_visible_text_bytes": 35081,
+        "spans": null,
+        "partial_spans": 356,
+        "text_bytes": null,
+        "spans_sha256": null,
+        "extract_wall_s": 0.041980298701673746,
+        "extract_cpu_s": 0.04196396499999999,
+        "process_peak_rss_kib": 23040,
+        "python": "3.12.13"
+      },
+      "guardian_elapsed_s": 0.40292426384985447,
+      "guardian": {
+        "exit_code": 0,
+        "timed_out": false,
+        "limited": false,
+        "output": "",
+        "stdout_bytes": 490,
+        "elapsed_s": 0.40290359128266573
+      },
+      "executor": {
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "host": {
+          "Runtime": "runc",
+          "NetworkMode": "none",
+          "ReadonlyRootfs": true,
+          "CapDrop": [
+            "ALL"
+          ],
+          "SecurityOpt": [
+            "no-new-privileges"
+          ],
+          "Memory": 268435456,
+          "MemorySwap": 268435456,
+          "NanoCpus": 1000000000,
+          "PidsLimit": 64,
+          "ShmSize": 8388608,
+          "Tmpfs": {
+            "/tmp": "rw,nosuid,nodev,size=16m,mode=1777"
+          },
+          "Devices": [],
+          "DeviceRequests": null
+        },
+        "config": {
+          "User": "1000:1000",
+          "Env": [
+            "HOME=/tmp",
+            "PYTHONDONTWRITEBYTECODE=1",
+            "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "LANG=C.UTF-8",
+            "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+            "PYTHON_VERSION=3.12.13",
+            "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684"
+          ],
+          "WorkingDir": "/tmp"
+        },
+        "mounts": [
+          {
+            "Type": "bind",
+            "Destination": "/body",
+            "RW": false
+          },
+          {
+            "Type": "bind",
+            "Destination": "/helpers/document_extract.py",
+            "RW": false
+          },
+          {
+            "Type": "bind",
+            "Destination": "/helpers/measure.py",
+            "RW": false
+          }
+        ]
+      },
+      "container_absent": true
+    },
+    {
+      "case": "asyncio-10000-repeat3",
+      "expected": "rejected",
+      "measurement": {
+        "event_limit": 10000,
+        "body_bytes": 156345,
+        "body_sha256": "b395cf62082c34beeebfdc8b7a5a34f997411f6499fa14cf66425bcd20ff1381",
+        "status": "rejected",
+        "error": {
+          "type": "ValueError",
+          "message": "HTML event limit"
+        },
+        "events": 10001,
+        "max_depth": 20,
+        "raw_visible_text_bytes": 35081,
+        "spans": null,
+        "partial_spans": 356,
+        "text_bytes": null,
+        "spans_sha256": null,
+        "extract_wall_s": 0.04014477273449302,
+        "extract_cpu_s": 0.040143633999999984,
+        "process_peak_rss_kib": 23088,
+        "python": "3.12.13"
+      },
+      "guardian_elapsed_s": 0.45286774076521397,
+      "guardian": {
+        "exit_code": 0,
+        "timed_out": false,
+        "limited": false,
+        "output": "",
+        "stdout_bytes": 490,
+        "elapsed_s": 0.45284731639549136
+      },
+      "executor": {
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "host": {
+          "Runtime": "runc",
+          "NetworkMode": "none",
+          "ReadonlyRootfs": true,
+          "CapDrop": [
+            "ALL"
+          ],
+          "SecurityOpt": [
+            "no-new-privileges"
+          ],
+          "Memory": 268435456,
+          "MemorySwap": 268435456,
+          "NanoCpus": 1000000000,
+          "PidsLimit": 64,
+          "ShmSize": 8388608,
+          "Tmpfs": {
+            "/tmp": "rw,nosuid,nodev,size=16m,mode=1777"
+          },
+          "Devices": [],
+          "DeviceRequests": null
+        },
+        "config": {
+          "User": "1000:1000",
+          "Env": [
+            "HOME=/tmp",
+            "PYTHONDONTWRITEBYTECODE=1",
+            "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "LANG=C.UTF-8",
+            "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+            "PYTHON_VERSION=3.12.13",
+            "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684"
+          ],
+          "WorkingDir": "/tmp"
+        },
+        "mounts": [
+          {
+            "Type": "bind",
+            "Destination": "/helpers/document_extract.py",
+            "RW": false
+          },
+          {
+            "Type": "bind",
+            "Destination": "/helpers/measure.py",
+            "RW": false
+          },
+          {
+            "Type": "bind",
+            "Destination": "/body",
+            "RW": false
+          }
+        ]
+      },
+      "container_absent": true
+    },
+    {
+      "case": "events-10000-actual10000",
+      "expected": "passed",
+      "measurement": {
+        "event_limit": 10000,
+        "body_bytes": 79984,
+        "body_sha256": "217c9bb5b55f9ae30842368536cee416ec2b54909aac5aa4489c01f4f02c4404",
+        "status": "passed",
+        "error": null,
+        "events": 10000,
+        "max_depth": 1,
+        "raw_visible_text_bytes": 1,
+        "spans": 1,
+        "partial_spans": 1,
+        "text_bytes": 1,
+        "spans_sha256": "cd65ea2c2ad99e94a85b1b6df72efef9cb2ed0ae933a60c32ce16317f7d7d6aa",
+        "extract_wall_s": 0.018126949202269316,
+        "extract_cpu_s": 0.01808459400000001,
+        "process_peak_rss_kib": 22996,
+        "python": "3.12.13"
+      },
+      "guardian_elapsed_s": 0.40272744931280613,
+      "guardian": {
+        "exit_code": 0,
+        "timed_out": false,
+        "limited": false,
+        "output": "",
+        "stdout_bytes": 487,
+        "elapsed_s": 0.40270857186987996
+      },
+      "executor": {
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "host": {
+          "Runtime": "runc",
+          "NetworkMode": "none",
+          "ReadonlyRootfs": true,
+          "CapDrop": [
+            "ALL"
+          ],
+          "SecurityOpt": [
+            "no-new-privileges"
+          ],
+          "Memory": 268435456,
+          "MemorySwap": 268435456,
+          "NanoCpus": 1000000000,
+          "PidsLimit": 64,
+          "ShmSize": 8388608,
+          "Tmpfs": {
+            "/tmp": "rw,nosuid,nodev,size=16m,mode=1777"
+          },
+          "Devices": [],
+          "DeviceRequests": null
+        },
+        "config": {
+          "User": "1000:1000",
+          "Env": [
+            "HOME=/tmp",
+            "PYTHONDONTWRITEBYTECODE=1",
+            "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "LANG=C.UTF-8",
+            "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+            "PYTHON_VERSION=3.12.13",
+            "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684"
+          ],
+          "WorkingDir": "/tmp"
+        },
+        "mounts": [
+          {
+            "Type": "bind",
+            "Destination": "/body",
+            "RW": false
+          },
+          {
+            "Type": "bind",
+            "Destination": "/helpers/document_extract.py",
+            "RW": false
+          },
+          {
+            "Type": "bind",
+            "Destination": "/helpers/measure.py",
+            "RW": false
+          }
+        ]
+      },
+      "container_absent": true
+    },
+    {
+      "case": "events-10000-actual10001",
+      "expected": "rejected",
+      "measurement": {
+        "event_limit": 10000,
+        "body_bytes": 79992,
+        "body_sha256": "71e5539bf6c9875aed7515ded4647ab918250248abe7181c25a379a591bb6954",
+        "status": "rejected",
+        "error": {
+          "type": "ValueError",
+          "message": "HTML event limit"
+        },
+        "events": 10001,
+        "max_depth": 1,
+        "raw_visible_text_bytes": 1,
+        "spans": null,
+        "partial_spans": 0,
+        "text_bytes": null,
+        "spans_sha256": null,
+        "extract_wall_s": 0.019701689947396517,
+        "extract_cpu_s": 0.019686321000000007,
+        "process_peak_rss_kib": 23124,
+        "python": "3.12.13"
+      },
+      "guardian_elapsed_s": 0.40277240611612797,
+      "guardian": {
+        "exit_code": 0,
+        "timed_out": false,
+        "limited": false,
+        "output": "",
+        "stdout_bytes": 483,
+        "elapsed_s": 0.4027499142102897
+      },
+      "executor": {
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "host": {
+          "Runtime": "runc",
+          "NetworkMode": "none",
+          "ReadonlyRootfs": true,
+          "CapDrop": [
+            "ALL"
+          ],
+          "SecurityOpt": [
+            "no-new-privileges"
+          ],
+          "Memory": 268435456,
+          "MemorySwap": 268435456,
+          "NanoCpus": 1000000000,
+          "PidsLimit": 64,
+          "ShmSize": 8388608,
+          "Tmpfs": {
+            "/tmp": "rw,nosuid,nodev,size=16m,mode=1777"
+          },
+          "Devices": [],
+          "DeviceRequests": null
+        },
+        "config": {
+          "User": "1000:1000",
+          "Env": [
+            "HOME=/tmp",
+            "PYTHONDONTWRITEBYTECODE=1",
+            "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "LANG=C.UTF-8",
+            "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+            "PYTHON_VERSION=3.12.13",
+            "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684"
+          ],
+          "WorkingDir": "/tmp"
+        },
+        "mounts": [
+          {
+            "Type": "bind",
+            "Destination": "/body",
+            "RW": false
+          },
+          {
+            "Type": "bind",
+            "Destination": "/helpers/document_extract.py",
+            "RW": false
+          },
+          {
+            "Type": "bind",
+            "Destination": "/helpers/measure.py",
+            "RW": false
+          }
+        ]
+      },
+      "container_absent": true
+    },
+    {
+      "case": "asyncio-40000-repeat1",
+      "expected": "passed",
+      "measurement": {
+        "event_limit": 40000,
+        "body_bytes": 156345,
+        "body_sha256": "b395cf62082c34beeebfdc8b7a5a34f997411f6499fa14cf66425bcd20ff1381",
+        "status": "passed",
+        "error": null,
+        "events": 11442,
+        "max_depth": 20,
+        "raw_visible_text_bytes": 41424,
+        "spans": 440,
+        "partial_spans": 440,
+        "text_bytes": 37712,
+        "spans_sha256": "14d4153f4ce19c76b10bf2f1acbcad5c284d655c0d5b7ebcae1dfefeb1f4177e",
+        "extract_wall_s": 0.04837819514796138,
+        "extract_cpu_s": 0.04832494500000001,
+        "process_peak_rss_kib": 23292,
+        "python": "3.12.13"
+      },
+      "guardian_elapsed_s": 0.5033454080112278,
+      "guardian": {
+        "exit_code": 0,
+        "timed_out": false,
+        "limited": false,
+        "output": "",
+        "stdout_bytes": 500,
+        "elapsed_s": 0.5033270311541855
+      },
+      "executor": {
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "host": {
+          "Runtime": "runc",
+          "NetworkMode": "none",
+          "ReadonlyRootfs": true,
+          "CapDrop": [
+            "ALL"
+          ],
+          "SecurityOpt": [
+            "no-new-privileges"
+          ],
+          "Memory": 268435456,
+          "MemorySwap": 268435456,
+          "NanoCpus": 1000000000,
+          "PidsLimit": 64,
+          "ShmSize": 8388608,
+          "Tmpfs": {
+            "/tmp": "rw,nosuid,nodev,size=16m,mode=1777"
+          },
+          "Devices": [],
+          "DeviceRequests": null
+        },
+        "config": {
+          "User": "1000:1000",
+          "Env": [
+            "PYTHONDONTWRITEBYTECODE=1",
+            "HOME=/tmp",
+            "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "LANG=C.UTF-8",
+            "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+            "PYTHON_VERSION=3.12.13",
+            "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684"
+          ],
+          "WorkingDir": "/tmp"
+        },
+        "mounts": [
+          {
+            "Type": "bind",
+            "Destination": "/body",
+            "RW": false
+          },
+          {
+            "Type": "bind",
+            "Destination": "/helpers/document_extract.py",
+            "RW": false
+          },
+          {
+            "Type": "bind",
+            "Destination": "/helpers/measure.py",
+            "RW": false
+          }
+        ]
+      },
+      "container_absent": true
+    },
+    {
+      "case": "asyncio-40000-repeat2",
+      "expected": "passed",
+      "measurement": {
+        "event_limit": 40000,
+        "body_bytes": 156345,
+        "body_sha256": "b395cf62082c34beeebfdc8b7a5a34f997411f6499fa14cf66425bcd20ff1381",
+        "status": "passed",
+        "error": null,
+        "events": 11442,
+        "max_depth": 20,
+        "raw_visible_text_bytes": 41424,
+        "spans": 440,
+        "partial_spans": 440,
+        "text_bytes": 37712,
+        "spans_sha256": "14d4153f4ce19c76b10bf2f1acbcad5c284d655c0d5b7ebcae1dfefeb1f4177e",
+        "extract_wall_s": 0.04732714593410492,
+        "extract_cpu_s": 0.047303221000000006,
+        "process_peak_rss_kib": 23376,
+        "python": "3.12.13"
+      },
+      "guardian_elapsed_s": 0.4029745180159807,
+      "guardian": {
+        "exit_code": 0,
+        "timed_out": false,
+        "limited": false,
+        "output": "",
+        "stdout_bytes": 501,
+        "elapsed_s": 0.40295652113854885
+      },
+      "executor": {
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "host": {
+          "Runtime": "runc",
+          "NetworkMode": "none",
+          "ReadonlyRootfs": true,
+          "CapDrop": [
+            "ALL"
+          ],
+          "SecurityOpt": [
+            "no-new-privileges"
+          ],
+          "Memory": 268435456,
+          "MemorySwap": 268435456,
+          "NanoCpus": 1000000000,
+          "PidsLimit": 64,
+          "ShmSize": 8388608,
+          "Tmpfs": {
+            "/tmp": "rw,nosuid,nodev,size=16m,mode=1777"
+          },
+          "Devices": [],
+          "DeviceRequests": null
+        },
+        "config": {
+          "User": "1000:1000",
+          "Env": [
+            "HOME=/tmp",
+            "PYTHONDONTWRITEBYTECODE=1",
+            "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "LANG=C.UTF-8",
+            "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+            "PYTHON_VERSION=3.12.13",
+            "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684"
+          ],
+          "WorkingDir": "/tmp"
+        },
+        "mounts": [
+          {
+            "Type": "bind",
+            "Destination": "/body",
+            "RW": false
+          },
+          {
+            "Type": "bind",
+            "Destination": "/helpers/document_extract.py",
+            "RW": false
+          },
+          {
+            "Type": "bind",
+            "Destination": "/helpers/measure.py",
+            "RW": false
+          }
+        ]
+      },
+      "container_absent": true
+    },
+    {
+      "case": "asyncio-40000-repeat3",
+      "expected": "passed",
+      "measurement": {
+        "event_limit": 40000,
+        "body_bytes": 156345,
+        "body_sha256": "b395cf62082c34beeebfdc8b7a5a34f997411f6499fa14cf66425bcd20ff1381",
+        "status": "passed",
+        "error": null,
+        "events": 11442,
+        "max_depth": 20,
+        "raw_visible_text_bytes": 41424,
+        "spans": 440,
+        "partial_spans": 440,
+        "text_bytes": 37712,
+        "spans_sha256": "14d4153f4ce19c76b10bf2f1acbcad5c284d655c0d5b7ebcae1dfefeb1f4177e",
+        "extract_wall_s": 0.045500000938773155,
+        "extract_cpu_s": 0.045498438,
+        "process_peak_rss_kib": 23292,
+        "python": "3.12.13"
+      },
+      "guardian_elapsed_s": 0.40335935773327947,
+      "guardian": {
+        "exit_code": 0,
+        "timed_out": false,
+        "limited": false,
+        "output": "",
+        "stdout_bytes": 493,
+        "elapsed_s": 0.40334136318415403
+      },
+      "executor": {
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "host": {
+          "Runtime": "runc",
+          "NetworkMode": "none",
+          "ReadonlyRootfs": true,
+          "CapDrop": [
+            "ALL"
+          ],
+          "SecurityOpt": [
+            "no-new-privileges"
+          ],
+          "Memory": 268435456,
+          "MemorySwap": 268435456,
+          "NanoCpus": 1000000000,
+          "PidsLimit": 64,
+          "ShmSize": 8388608,
+          "Tmpfs": {
+            "/tmp": "rw,nosuid,nodev,size=16m,mode=1777"
+          },
+          "Devices": [],
+          "DeviceRequests": null
+        },
+        "config": {
+          "User": "1000:1000",
+          "Env": [
+            "HOME=/tmp",
+            "PYTHONDONTWRITEBYTECODE=1",
+            "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "LANG=C.UTF-8",
+            "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+            "PYTHON_VERSION=3.12.13",
+            "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684"
+          ],
+          "WorkingDir": "/tmp"
+        },
+        "mounts": [
+          {
+            "Type": "bind",
+            "Destination": "/body",
+            "RW": false
+          },
+          {
+            "Type": "bind",
+            "Destination": "/helpers/document_extract.py",
+            "RW": false
+          },
+          {
+            "Type": "bind",
+            "Destination": "/helpers/measure.py",
+            "RW": false
+          }
+        ]
+      },
+      "container_absent": true
+    },
+    {
+      "case": "events-40000-actual40000",
+      "expected": "passed",
+      "measurement": {
+        "event_limit": 40000,
+        "body_bytes": 319984,
+        "body_sha256": "26a46f5f46d9b4597c79197a523e6cf07444188b51ba0cca422a3d2c2a2f06f1",
+        "status": "passed",
+        "error": null,
+        "events": 40000,
+        "max_depth": 1,
+        "raw_visible_text_bytes": 1,
+        "spans": 1,
+        "partial_spans": 1,
+        "text_bytes": 1,
+        "spans_sha256": "cd65ea2c2ad99e94a85b1b6df72efef9cb2ed0ae933a60c32ce16317f7d7d6aa",
+        "extract_wall_s": 0.0895816208794713,
+        "extract_cpu_s": 0.089577761,
+        "process_peak_rss_kib": 23288,
+        "python": "3.12.13"
+      },
+      "guardian_elapsed_s": 0.5029295082204044,
+      "guardian": {
+        "exit_code": 0,
+        "timed_out": false,
+        "limited": false,
+        "output": "",
+        "stdout_bytes": 478,
+        "elapsed_s": 0.5028966851532459
+      },
+      "executor": {
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "host": {
+          "Runtime": "runc",
+          "NetworkMode": "none",
+          "ReadonlyRootfs": true,
+          "CapDrop": [
+            "ALL"
+          ],
+          "SecurityOpt": [
+            "no-new-privileges"
+          ],
+          "Memory": 268435456,
+          "MemorySwap": 268435456,
+          "NanoCpus": 1000000000,
+          "PidsLimit": 64,
+          "ShmSize": 8388608,
+          "Tmpfs": {
+            "/tmp": "rw,nosuid,nodev,size=16m,mode=1777"
+          },
+          "Devices": [],
+          "DeviceRequests": null
+        },
+        "config": {
+          "User": "1000:1000",
+          "Env": [
+            "HOME=/tmp",
+            "PYTHONDONTWRITEBYTECODE=1",
+            "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "LANG=C.UTF-8",
+            "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+            "PYTHON_VERSION=3.12.13",
+            "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684"
+          ],
+          "WorkingDir": "/tmp"
+        },
+        "mounts": [
+          {
+            "Type": "bind",
+            "Destination": "/body",
+            "RW": false
+          },
+          {
+            "Type": "bind",
+            "Destination": "/helpers/document_extract.py",
+            "RW": false
+          },
+          {
+            "Type": "bind",
+            "Destination": "/helpers/measure.py",
+            "RW": false
+          }
+        ]
+      },
+      "container_absent": true
+    },
+    {
+      "case": "events-40000-actual40001",
+      "expected": "rejected",
+      "measurement": {
+        "event_limit": 40000,
+        "body_bytes": 319992,
+        "body_sha256": "a979262d7c1c67078ed21a93e522ba2baea860fcab37b465a223cbdd5678ca0b",
+        "status": "rejected",
+        "error": {
+          "type": "ValueError",
+          "message": "HTML event limit"
+        },
+        "events": 40001,
+        "max_depth": 1,
+        "raw_visible_text_bytes": 1,
+        "spans": null,
+        "partial_spans": 0,
+        "text_bytes": null,
+        "spans_sha256": null,
+        "extract_wall_s": 0.07954435329884291,
+        "extract_cpu_s": 0.07954410199999998,
+        "process_peak_rss_kib": 23216,
+        "python": "3.12.13"
+      },
+      "guardian_elapsed_s": 0.553476597648114,
+      "guardian": {
+        "exit_code": 0,
+        "timed_out": false,
+        "limited": false,
+        "output": "",
+        "stdout_bytes": 482,
+        "elapsed_s": 0.5534605011343956
+      },
+      "executor": {
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "host": {
+          "Runtime": "runc",
+          "NetworkMode": "none",
+          "ReadonlyRootfs": true,
+          "CapDrop": [
+            "ALL"
+          ],
+          "SecurityOpt": [
+            "no-new-privileges"
+          ],
+          "Memory": 268435456,
+          "MemorySwap": 268435456,
+          "NanoCpus": 1000000000,
+          "PidsLimit": 64,
+          "ShmSize": 8388608,
+          "Tmpfs": {
+            "/tmp": "rw,nosuid,nodev,size=16m,mode=1777"
+          },
+          "Devices": [],
+          "DeviceRequests": null
+        },
+        "config": {
+          "User": "1000:1000",
+          "Env": [
+            "HOME=/tmp",
+            "PYTHONDONTWRITEBYTECODE=1",
+            "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "LANG=C.UTF-8",
+            "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+            "PYTHON_VERSION=3.12.13",
+            "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684"
+          ],
+          "WorkingDir": "/tmp"
+        },
+        "mounts": [
+          {
+            "Type": "bind",
+            "Destination": "/body",
+            "RW": false
+          },
+          {
+            "Type": "bind",
+            "Destination": "/helpers/document_extract.py",
+            "RW": false
+          },
+          {
+            "Type": "bind",
+            "Destination": "/helpers/measure.py",
+            "RW": false
+          }
+        ]
+      },
+      "container_absent": true
+    },
+    {
+      "case": "depth64",
+      "expected": "passed",
+      "measurement": {
+        "event_limit": 40000,
+        "body_bytes": 705,
+        "body_sha256": "9a76c9daddae5094efbb4544cdb35e58acdd00051cdfcafdf2f10fe1a172921c",
+        "status": "passed",
+        "error": null,
+        "events": 129,
+        "max_depth": 64,
+        "raw_visible_text_bytes": 1,
+        "spans": 1,
+        "partial_spans": 1,
+        "text_bytes": 1,
+        "spans_sha256": "cd65ea2c2ad99e94a85b1b6df72efef9cb2ed0ae933a60c32ce16317f7d7d6aa",
+        "extract_wall_s": 0.0005264468491077423,
+        "extract_cpu_s": 0.0005206060000000068,
+        "process_peak_rss_kib": 23168,
+        "python": "3.12.13"
+      },
+      "guardian_elapsed_s": 0.45288593182340264,
+      "guardian": {
+        "exit_code": 0,
+        "timed_out": false,
+        "limited": false,
+        "output": "",
+        "stdout_bytes": 487,
+        "elapsed_s": 0.4528674352914095
+      },
+      "executor": {
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "host": {
+          "Runtime": "runc",
+          "NetworkMode": "none",
+          "ReadonlyRootfs": true,
+          "CapDrop": [
+            "ALL"
+          ],
+          "SecurityOpt": [
+            "no-new-privileges"
+          ],
+          "Memory": 268435456,
+          "MemorySwap": 268435456,
+          "NanoCpus": 1000000000,
+          "PidsLimit": 64,
+          "ShmSize": 8388608,
+          "Tmpfs": {
+            "/tmp": "rw,nosuid,nodev,size=16m,mode=1777"
+          },
+          "Devices": [],
+          "DeviceRequests": null
+        },
+        "config": {
+          "User": "1000:1000",
+          "Env": [
+            "HOME=/tmp",
+            "PYTHONDONTWRITEBYTECODE=1",
+            "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "LANG=C.UTF-8",
+            "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+            "PYTHON_VERSION=3.12.13",
+            "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684"
+          ],
+          "WorkingDir": "/tmp"
+        },
+        "mounts": [
+          {
+            "Type": "bind",
+            "Destination": "/body",
+            "RW": false
+          },
+          {
+            "Type": "bind",
+            "Destination": "/helpers/document_extract.py",
+            "RW": false
+          },
+          {
+            "Type": "bind",
+            "Destination": "/helpers/measure.py",
+            "RW": false
+          }
+        ]
+      },
+      "container_absent": true
+    },
+    {
+      "case": "depth65",
+      "expected": "rejected",
+      "measurement": {
+        "event_limit": 40000,
+        "body_bytes": 716,
+        "body_sha256": "66aa6ee867f1813b4406d3021e904aaf413000aa535c011076fdabbace7235f8",
+        "status": "rejected",
+        "error": {
+          "type": "ValueError",
+          "message": "HTML depth limit"
+        },
+        "events": 65,
+        "max_depth": 65,
+        "raw_visible_text_bytes": 0,
+        "spans": null,
+        "partial_spans": 0,
+        "text_bytes": null,
+        "spans_sha256": null,
+        "extract_wall_s": 0.00029610423371195793,
+        "extract_cpu_s": 0.0002884009999999937,
+        "process_peak_rss_kib": 22912,
+        "python": "3.12.13"
+      },
+      "guardian_elapsed_s": 0.4026548629626632,
+      "guardian": {
+        "exit_code": 0,
+        "timed_out": false,
+        "limited": false,
+        "output": "",
+        "stdout_bytes": 482,
+        "elapsed_s": 0.40263694431632757
+      },
+      "executor": {
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "host": {
+          "Runtime": "runc",
+          "NetworkMode": "none",
+          "ReadonlyRootfs": true,
+          "CapDrop": [
+            "ALL"
+          ],
+          "SecurityOpt": [
+            "no-new-privileges"
+          ],
+          "Memory": 268435456,
+          "MemorySwap": 268435456,
+          "NanoCpus": 1000000000,
+          "PidsLimit": 64,
+          "ShmSize": 8388608,
+          "Tmpfs": {
+            "/tmp": "rw,nosuid,nodev,size=16m,mode=1777"
+          },
+          "Devices": [],
+          "DeviceRequests": null
+        },
+        "config": {
+          "User": "1000:1000",
+          "Env": [
+            "HOME=/tmp",
+            "PYTHONDONTWRITEBYTECODE=1",
+            "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "LANG=C.UTF-8",
+            "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+            "PYTHON_VERSION=3.12.13",
+            "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684"
+          ],
+          "WorkingDir": "/tmp"
+        },
+        "mounts": [
+          {
+            "Type": "bind",
+            "Destination": "/helpers/measure.py",
+            "RW": false
+          },
+          {
+            "Type": "bind",
+            "Destination": "/body",
+            "RW": false
+          },
+          {
+            "Type": "bind",
+            "Destination": "/helpers/document_extract.py",
+            "RW": false
+          }
+        ]
+      },
+      "container_absent": true
+    },
+    {
+      "case": "text131072",
+      "expected": "passed",
+      "measurement": {
+        "event_limit": 40000,
+        "body_bytes": 131079,
+        "body_sha256": "700e117ae4fdcd8e353b825c4b763a73e943051b6aab3ee22c616c731186aca9",
+        "status": "passed",
+        "error": null,
+        "events": 3,
+        "max_depth": 1,
+        "raw_visible_text_bytes": 131072,
+        "spans": 1,
+        "partial_spans": 1,
+        "text_bytes": 131072,
+        "spans_sha256": "85cbcf12f125eb8c8c7b4a3f8181389e5f9826ce3e015a03c933c9fdd07e6b29",
+        "extract_wall_s": 0.0003569270484149456,
+        "extract_cpu_s": 0.00035049300000000727,
+        "process_peak_rss_kib": 23080,
+        "python": "3.12.13"
+      },
+      "guardian_elapsed_s": 0.40280746622011065,
+      "guardian": {
+        "exit_code": 0,
+        "timed_out": false,
+        "limited": false,
+        "output": "",
+        "stdout_bytes": 498,
+        "elapsed_s": 0.40278930962085724
+      },
+      "executor": {
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "host": {
+          "Runtime": "runc",
+          "NetworkMode": "none",
+          "ReadonlyRootfs": true,
+          "CapDrop": [
+            "ALL"
+          ],
+          "SecurityOpt": [
+            "no-new-privileges"
+          ],
+          "Memory": 268435456,
+          "MemorySwap": 268435456,
+          "NanoCpus": 1000000000,
+          "PidsLimit": 64,
+          "ShmSize": 8388608,
+          "Tmpfs": {
+            "/tmp": "rw,nosuid,nodev,size=16m,mode=1777"
+          },
+          "Devices": [],
+          "DeviceRequests": null
+        },
+        "config": {
+          "User": "1000:1000",
+          "Env": [
+            "HOME=/tmp",
+            "PYTHONDONTWRITEBYTECODE=1",
+            "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "LANG=C.UTF-8",
+            "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+            "PYTHON_VERSION=3.12.13",
+            "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684"
+          ],
+          "WorkingDir": "/tmp"
+        },
+        "mounts": [
+          {
+            "Type": "bind",
+            "Destination": "/body",
+            "RW": false
+          },
+          {
+            "Type": "bind",
+            "Destination": "/helpers/document_extract.py",
+            "RW": false
+          },
+          {
+            "Type": "bind",
+            "Destination": "/helpers/measure.py",
+            "RW": false
+          }
+        ]
+      },
+      "container_absent": true
+    },
+    {
+      "case": "text131073",
+      "expected": "rejected",
+      "measurement": {
+        "event_limit": 40000,
+        "body_bytes": 131080,
+        "body_sha256": "97eb5959ab4f961bf2fdc505158865aeb781f3e9ae96c981e623d033d120e49a",
+        "status": "rejected",
+        "error": {
+          "type": "ValueError",
+          "message": "Extracted text byte limit"
+        },
+        "events": 2,
+        "max_depth": 1,
+        "raw_visible_text_bytes": 131073,
+        "spans": null,
+        "partial_spans": 0,
+        "text_bytes": null,
+        "spans_sha256": null,
+        "extract_wall_s": 0.00016343407332897186,
+        "extract_cpu_s": 0.00015634600000000165,
+        "process_peak_rss_kib": 23144,
+        "python": "3.12.13"
+      },
+      "guardian_elapsed_s": 0.402774843852967,
+      "guardian": {
+        "exit_code": 0,
+        "timed_out": false,
+        "limited": false,
+        "output": "",
+        "stdout_bytes": 498,
+        "elapsed_s": 0.402757968287915
+      },
+      "executor": {
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "host": {
+          "Runtime": "runc",
+          "NetworkMode": "none",
+          "ReadonlyRootfs": true,
+          "CapDrop": [
+            "ALL"
+          ],
+          "SecurityOpt": [
+            "no-new-privileges"
+          ],
+          "Memory": 268435456,
+          "MemorySwap": 268435456,
+          "NanoCpus": 1000000000,
+          "PidsLimit": 64,
+          "ShmSize": 8388608,
+          "Tmpfs": {
+            "/tmp": "rw,nosuid,nodev,size=16m,mode=1777"
+          },
+          "Devices": [],
+          "DeviceRequests": null
+        },
+        "config": {
+          "User": "1000:1000",
+          "Env": [
+            "HOME=/tmp",
+            "PYTHONDONTWRITEBYTECODE=1",
+            "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "LANG=C.UTF-8",
+            "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+            "PYTHON_VERSION=3.12.13",
+            "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684"
+          ],
+          "WorkingDir": "/tmp"
+        },
+        "mounts": [
+          {
+            "Type": "bind",
+            "Destination": "/body",
+            "RW": false
+          },
+          {
+            "Type": "bind",
+            "Destination": "/helpers/document_extract.py",
+            "RW": false
+          },
+          {
+            "Type": "bind",
+            "Destination": "/helpers/measure.py",
+            "RW": false
+          }
+        ]
+      },
+      "container_absent": true
+    },
+    {
+      "case": "blocks2048",
+      "expected": "passed",
+      "measurement": {
+        "event_limit": 40000,
+        "body_bytes": 16384,
+        "body_sha256": "8686ece5142b7ae35d243d7ad6f1b380e2e9fc7c7521c728d0daea4340bec940",
+        "status": "passed",
+        "error": null,
+        "events": 6144,
+        "max_depth": 1,
+        "raw_visible_text_bytes": 2048,
+        "spans": 2048,
+        "partial_spans": 2048,
+        "text_bytes": 2048,
+        "spans_sha256": "d1321c9bad5c892787fde91e13b406852d14c51809314ea56cee4ec1d696e0ad",
+        "extract_wall_s": 0.01962078223004937,
+        "extract_cpu_s": 0.019547802999999975,
+        "process_peak_rss_kib": 23288,
+        "python": "3.12.13"
+      },
+      "guardian_elapsed_s": 0.4031860460527241,
+      "guardian": {
+        "exit_code": 0,
+        "timed_out": false,
+        "limited": false,
+        "output": "",
+        "stdout_bytes": 498,
+        "elapsed_s": 0.40316463401541114
+      },
+      "executor": {
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "host": {
+          "Runtime": "runc",
+          "NetworkMode": "none",
+          "ReadonlyRootfs": true,
+          "CapDrop": [
+            "ALL"
+          ],
+          "SecurityOpt": [
+            "no-new-privileges"
+          ],
+          "Memory": 268435456,
+          "MemorySwap": 268435456,
+          "NanoCpus": 1000000000,
+          "PidsLimit": 64,
+          "ShmSize": 8388608,
+          "Tmpfs": {
+            "/tmp": "rw,nosuid,nodev,size=16m,mode=1777"
+          },
+          "Devices": [],
+          "DeviceRequests": null
+        },
+        "config": {
+          "User": "1000:1000",
+          "Env": [
+            "PYTHONDONTWRITEBYTECODE=1",
+            "HOME=/tmp",
+            "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "LANG=C.UTF-8",
+            "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+            "PYTHON_VERSION=3.12.13",
+            "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684"
+          ],
+          "WorkingDir": "/tmp"
+        },
+        "mounts": [
+          {
+            "Type": "bind",
+            "Destination": "/body",
+            "RW": false
+          },
+          {
+            "Type": "bind",
+            "Destination": "/helpers/document_extract.py",
+            "RW": false
+          },
+          {
+            "Type": "bind",
+            "Destination": "/helpers/measure.py",
+            "RW": false
+          }
+        ]
+      },
+      "container_absent": true
+    },
+    {
+      "case": "blocks2049",
+      "expected": "rejected",
+      "measurement": {
+        "event_limit": 40000,
+        "body_bytes": 16392,
+        "body_sha256": "b0b83a5dd7edad5a4f0a82604493446bfae4992707ebcfe96d4fba1157cbc649",
+        "status": "rejected",
+        "error": {
+          "type": "ValueError",
+          "message": "Text block limit"
+        },
+        "events": 6147,
+        "max_depth": 1,
+        "raw_visible_text_bytes": 2049,
+        "spans": null,
+        "partial_spans": 2049,
+        "text_bytes": null,
+        "spans_sha256": null,
+        "extract_wall_s": 0.019266571383923292,
+        "extract_cpu_s": 0.019267907,
+        "process_peak_rss_kib": 23332,
+        "python": "3.12.13"
+      },
+      "guardian_elapsed_s": 0.4025474051013589,
+      "guardian": {
+        "exit_code": 0,
+        "timed_out": false,
+        "limited": false,
+        "output": "",
+        "stdout_bytes": 479,
+        "elapsed_s": 0.40252645406872034
+      },
+      "executor": {
+        "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+        "host": {
+          "Runtime": "runc",
+          "NetworkMode": "none",
+          "ReadonlyRootfs": true,
+          "CapDrop": [
+            "ALL"
+          ],
+          "SecurityOpt": [
+            "no-new-privileges"
+          ],
+          "Memory": 268435456,
+          "MemorySwap": 268435456,
+          "NanoCpus": 1000000000,
+          "PidsLimit": 64,
+          "ShmSize": 8388608,
+          "Tmpfs": {
+            "/tmp": "rw,nosuid,nodev,size=16m,mode=1777"
+          },
+          "Devices": [],
+          "DeviceRequests": null
+        },
+        "config": {
+          "User": "1000:1000",
+          "Env": [
+            "HOME=/tmp",
+            "PYTHONDONTWRITEBYTECODE=1",
+            "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "LANG=C.UTF-8",
+            "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+            "PYTHON_VERSION=3.12.13",
+            "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684"
+          ],
+          "WorkingDir": "/tmp"
+        },
+        "mounts": [
+          {
+            "Type": "bind",
+            "Destination": "/body",
+            "RW": false
+          },
+          {
+            "Type": "bind",
+            "Destination": "/helpers/document_extract.py",
+            "RW": false
+          },
+          {
+            "Type": "bind",
+            "Destination": "/helpers/measure.py",
+            "RW": false
+          }
+        ]
+      },
+      "container_absent": true
+    }
+  ]
+}
