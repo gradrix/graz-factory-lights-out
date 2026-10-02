@@ -44,7 +44,8 @@ class Reviewer:
         return result
 
     def __call__(self, workspace, task):
-        return self.review_files(task['objective'], load_files(workspace))
+        from .environment import runtime_context
+        return self.review_files(task['objective'] + '\n' + runtime_context(task), load_files(workspace))
 
 
 class CandidateContentError(ValueError):

@@ -7,6 +7,8 @@ import subprocess
 import sys
 import time
 
+from .environment import EnvironmentStore
+from .prepare import prepare, check as check_environment
 from .observe import Observer
 from .web import server
 
@@ -24,6 +26,8 @@ def main(argv=None):
     sub.add_parser('doctor', help='Check the local model and installed sandbox image')
     run = sub.add_parser('run', help='Snapshot and execute a task; never modify its source repository')
     run.add_argument('task')
+    run.add_argument('--environment', help='Previously prepared environment ID; defaults to prepared Python stdlib')
+    run.add_argument('--environment-store', default='.gflo/environments')
     resume = sub.add_parser('resume', help='Continue an interrupted run within its original attempt budget')
     resume.add_argument('id')
     status = sub.add_parser('status', help='Read run state without contacting the model')
@@ -35,9 +39,32 @@ def main(argv=None):
     watch.add_argument('--once', action='store_true')
     serve = sub.add_parser('serve', help='Read-only loopback progress page and API')
     serve.add_argument('--port', type=int, default=8787)
+    environment = sub.add_parser('environment', help='Prepare and inspect approved offline environments')
+    environment.add_argument('--store', default='.gflo/environments')
+    actions = environment.add_subparsers(dest='environment_action', required=True)
+    preparation = actions.add_parser('prepare')
+    preparation.add_argument('profile', choices=['python-stdlib'])
+    inspection = actions.add_parser('inspect')
+    inspection.add_argument('id')
+    checking = actions.add_parser('check')
+    checking.add_argument('id')
+    checking.add_argument('--repeat', type=int, choices=range(1, 4), default=1)
     args = parser.parse_args(argv)
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     try:
+        if args.command == 'environment':
+            store = EnvironmentStore(args.store)
+            if args.environment_action == 'prepare':
+                prepared = prepare(store, args.profile)
+                result = {'id': prepared.id, 'profile': prepared.profile, 'runtime': prepared.runtime}
+            else:
+                prepared = store.resolve(args.id)
+                if args.environment_action == 'inspect':
+                    result = json.loads((prepared.dependencies.parent / 'receipt.json').read_text())
+                else:
+                    result = {'id': prepared.id, 'checks': [check_environment(prepared) for _ in range(args.repeat)]}
+            print(json.dumps(result, indent=2))
+            return 0
         if args.command == 'serve':
             http = server(args.state, args.port)
             print(f'GFLO read-only observer: http://127.0.0.1:{http.server_port}', flush=True)
@@ -83,7 +110,12 @@ def main(argv=None):
                 result['context'] = 'not advertised'
             print(json.dumps(result, indent=2))
             return 0
-        factory = Factory(args.state, worker, sandbox.verify, cleanup=sandbox.cleanup, reviewer=Reviewer(worker))
+        environment = None
+        if args.command == 'run':
+            store = EnvironmentStore(args.environment_store)
+            environment = store.resolve(args.environment) if args.environment else prepare(store, 'python-stdlib')
+        factory = Factory(args.state, worker, sandbox.verify, cleanup=sandbox.cleanup, reviewer=Reviewer(worker),
+                          environment=environment, bind_environment=sandbox.bind)
         run_id = factory.create(args.task) if args.command == 'run' else args.id
         print('Run: ' + run_id, flush=True)
         print('Evidence: ' + str(factory.state / run_id), flush=True)

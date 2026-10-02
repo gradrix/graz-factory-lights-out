@@ -24,6 +24,9 @@ TOOLS = [
         'name': 'check', 'description': 'Run the operator-owned acceptance checks on the current files. Returns pass/fail and failure details. You cannot edit these checks.',
         'parameters': {'type': 'object', 'properties': {}, 'additionalProperties': False}}},
 ]
+from .environment import runtime_context
+
+
 SYSTEM = '''You are implementing one bounded software task in /workspace.
 Inspect the existing files before editing. Preserve unrelated behavior. Use run to read/edit files and test. The environment is Python standard library unless the task says otherwise. No network, credentials, package installation or host access is available. Shell commands have 60 seconds; output is bounded. Project files persist between calls; /tmp and processes do not.
 Implement working code, add meaningful regression tests, and update concise usage documentation when behavior changes. Avoid unnecessary frameworks, abstraction layers and unrelated cleanup. Prefer standard-library implementations of standard formats; inspect the installed interpreter with run rather than inventing a compatibility target. Put regression tests under tests/. Remove scratch files before finishing; use /tmp for experiments within a single command. Use check to request independent acceptance; fix actual failures. Do not change the task requirements or claim acceptance based on your own report. When finished, return a concise summary with changes, tests and remaining limitations. The controller will verify again.
@@ -71,7 +74,7 @@ class ModelWorker:
         trace = root / 'attempts' / str(attempt) / 'trajectory.jsonl'
         trace.parent.mkdir(parents=True, exist_ok=True)
         messages = [{'role': 'system', 'content': SYSTEM},
-                    {'role': 'user', 'content': task['objective'] + '\nAcceptance commands: ' + json.dumps(task['checks'])}]
+                    {'role': 'user', 'content': task['objective'] + '\n' + runtime_context(task) + '\nAcceptance commands: ' + json.dumps(task['checks'])}]
         if previous:
             messages.append({'role': 'user', 'content': 'Previous attempt evidence. Repair the retained files:\n' + json.dumps(previous)})
         started = time.monotonic()

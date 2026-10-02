@@ -14,6 +14,7 @@ import subprocess
 import tarfile
 import uuid
 
+from .environment import binding, resolve_binding
 from .observe import Execution, event, identity, redact, schema
 from .review import CandidateContentError, load_files, validate
 
@@ -76,13 +77,15 @@ def git(repo, *args, **kwargs):
 
 
 class Factory:
-    def __init__(self, state, worker, verifier, cleanup=None, reviewer=None):
+    def __init__(self, state, worker, verifier, cleanup=None, reviewer=None, environment=None, bind_environment=None):
         self.state = Path(state).resolve()
         self.state.mkdir(parents=True, exist_ok=True)
         self.worker = worker
         self.verifier = verifier
         self.reviewer = reviewer
         self.cleanup = cleanup
+        self.environment = environment
+        self.bind_environment = bind_environment
         self.db = sqlite3.connect(self.state / 'state.sqlite')
         self.report = lambda *a, **kw: None
         self.db.row_factory = sqlite3.Row
@@ -159,6 +162,7 @@ class Factory:
                 else:
                     raise ValueError('Only regular files and directories are supported')
         shutil.copytree(acceptance, root / 'acceptance')
+        task['environment'] = binding(self.environment) if self.environment is not None else None
         task.update(repo=str(repo), base_commit=commit,
                     acceptance_hash=fingerprint(root / 'acceptance'))
         save(root / 'task.json', task)
@@ -191,6 +195,8 @@ class Factory:
         root = self.state / run_id
         if result['status'] == 'accepted' and not accepted_intact(root, result['contract_hash'], result['attempts']):
             result.update(status='invalidated', message='Accepted artifacts changed or are missing; start a new run')
+        frozen = json.loads((root / 'task.json').read_text())
+        result['environment'] = frozen.get('environment') or 'legacy-unbound'
         result.update(directory=str(root), workspace=str(root / 'workspace'),
                       patch=str(root / 'change.patch'))
         return result
@@ -284,6 +290,11 @@ class Factory:
         if hashlib.sha256(task_path.read_bytes()).hexdigest() != row['contract_hash']:
             raise ValueError('Frozen task contract was modified')
         task = json.loads(task_path.read_text())
+        environment = resolve_binding(task.get('environment'))
+        if environment is not None and self.bind_environment is None:
+            raise ValueError('This run requires an environment-aware executor')
+        if self.bind_environment is not None:
+            self.bind_environment(environment)
         if task.get('review_required') and self.reviewer is None:
             raise ValueError('Frozen task requires an independent reviewer')
         if fingerprint(root / 'acceptance') != task['acceptance_hash']:

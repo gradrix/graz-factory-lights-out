@@ -232,3 +232,31 @@ class EnvironmentStore:
             raise ValueError('Environment receipt or tree is invalid') from error
         return Environment(identifier, digest, root / 'deps', metadata['image'],
                            metadata['profile'], metadata['runtime'], self.root)
+
+
+def binding(environment):
+    checked = EnvironmentStore(environment.store).resolve(environment.id, environment.receipt_hash)
+    return {'id': checked.id, 'receipt_sha256': checked.receipt_hash, 'store': str(checked.store),
+            'image': checked.image, 'profile': checked.profile, 'runtime': checked.runtime}
+
+
+def resolve_binding(value):
+    if value is None:
+        return None
+    if not isinstance(value, dict):
+        raise ValueError('Invalid frozen environment binding')
+    try:
+        environment = EnvironmentStore(value['store']).resolve(value['id'], value['receipt_sha256'])
+        if binding(environment) != value:
+            raise ValueError('Frozen environment facts do not match its receipt')
+        return environment
+    except (KeyError, TypeError) as error:
+        raise ValueError('Incomplete frozen environment binding') from error
+
+
+def runtime_context(task):
+    value = task.get('environment')
+    if value is None:
+        return 'Execution environment: legacy-unbound (runtime was not frozen).'
+    return 'Frozen execution environment: ' + json.dumps(
+        {key: value[key] for key in ('profile', 'image', 'runtime')}, sort_keys=True)

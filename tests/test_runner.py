@@ -168,3 +168,24 @@ class RunnerTests(unittest.TestCase):
             self.assertEqual(main(prefix + ['resume', run_id]), 0)
             self.assertEqual(main(prefix + ['status', run_id]), 0)
             self.assertEqual(worker.return_value.call_count, 1)
+
+    def test_environment_binding_survives_restart_and_rejects_changed_dependencies(self):
+        from gflo.environment import EnvironmentStore
+        from gflo.prepare import prepare
+        environment = prepare(EnvironmentStore(self.root / 'environments'), 'python-stdlib')
+        bound = []
+        factory = Factory(self.root / 'state', None, None, environment=environment)
+        run_id = factory.create(self.task)
+        task = json.loads((factory.state / run_id / 'task.json').read_text())
+        self.assertEqual(task['environment']['id'], environment.id)
+        self.assertEqual(task['environment']['runtime']['python'], '3.12.13')
+        def worker(*args):
+            self.assertEqual(bound[-1].id, environment.id)
+            raise KeyboardInterrupt()
+        reopened = Factory(self.root / 'state', worker, lambda *a: {'passed': True}, bind_environment=bound.append)
+        with self.assertRaises(KeyboardInterrupt):
+            reopened.resume(run_id)
+        environment.dependencies.chmod(0o755)
+        with self.assertRaisesRegex(ValueError, 'root changed'):
+            reopened.resume(run_id)
+        self.assertEqual(len(bound), 1)
