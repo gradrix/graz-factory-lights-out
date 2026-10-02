@@ -1,0 +1,27 @@
+{
+  "format": 1,
+  "fixture": "known-good-stock-reservations",
+  "contract_sha256": "ab3ba1d7aa4d11237de3914f2a1ed40d3dcb47a680ee181465ef8fba6b875f13",
+  "status": "frozen inputs; HTTP preflight passed; actual pinned Playwright qualification pending",
+  "cases": [
+    "create-reload",
+    "validation",
+    "edit-cancel",
+    "conflict",
+    "failed-save-retry"
+  ],
+  "files": {
+    "README.md": "560f16fa62b122dc4e9fdf3b81d1808618e3dbc10483b4dd4231da2242f20be1",
+    "app/server.cjs": "c563c502ba8bb746f6ba137031fb91642713e0a50520c0431c302fa5365fba38",
+    "journeys/conflict/journey.cjs": "292d374358f981e209e190add28fce48e0a9b24f897baa28ac201a06da37b0e1",
+    "journeys/conflict/seed.json": "a8d637da8b50c5809feeb5b7f7d3c30f835e9d94998a13a71abfa7b253e844fa",
+    "journeys/create-reload/journey.cjs": "6e19b79dee6b70d674b636a119a2db81921d9639c2f66090030e9178e8e452cc",
+    "journeys/create-reload/seed.json": "7fc54f80aec82d14b3dc01ad8ce3eeb77b4a5373fdb0ea35cc7d383feb1dd0fc",
+    "journeys/edit-cancel/journey.cjs": "706bfa609a73b2a1a4e2e4ce6ed170da0c911d3018a38cdd97f15e52a0245e48",
+    "journeys/edit-cancel/seed.json": "7fc54f80aec82d14b3dc01ad8ce3eeb77b4a5373fdb0ea35cc7d383feb1dd0fc",
+    "journeys/failed-save-retry/journey.cjs": "7525bacf877c6e3ef7087dea36a45a174c622c867ebd9d144f91ff56a7e822a1",
+    "journeys/failed-save-retry/seed.json": "acd967c9ca57adc4f1264aefb57aa3db587549ab65bd520e552f1cc03a614505",
+    "journeys/validation/journey.cjs": "afdd55f3d276da2c3ac6575bef34409c770c8c57a87da59510aa0c9796a0dc69",
+    "journeys/validation/seed.json": "7fc54f80aec82d14b3dc01ad8ce3eeb77b4a5373fdb0ea35cc7d383feb1dd0fc"
+  }
+}

@@ -76,3 +76,9 @@ htmlcov/
 .scratch/.sflo/05-autonomy-documents/research-cohort/*
 !.scratch/.sflo/05-autonomy-documents/research-cohort/*.json
 !.scratch/.sflo/05-autonomy-documents/research-cohort/*.md
+
+!.scratch/.sflo/06-autonomy-browser/fixture-preflight/
+.scratch/.sflo/06-autonomy-browser/fixture-preflight/*
+!.scratch/.sflo/06-autonomy-browser/fixture-preflight/*.py
+!.scratch/.sflo/06-autonomy-browser/fixture-preflight/*.json
+!.scratch/.sflo/06-autonomy-browser/fixture-preflight/*.log

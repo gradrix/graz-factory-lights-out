@@ -1,0 +1,7 @@
+const assert=require('node:assert/strict');
+async function state(request,baseURL){const r=await request.get(baseURL+'/api/state');assert.equal(r.status(),200);return r.json();}
+async function shown(page,stock,count){await page.waitForFunction(([stock,count])=>document.querySelector('#stock').textContent===String(stock)&&document.querySelectorAll('#reservations li').length===count,[stock,count]);}
+async function enter(page,reference,quantity){await page.getByLabel('Customer reference').fill(reference);await page.getByLabel('Quantity',{exact:true}).fill(String(quantity));}
+module.exports=async({page,context,request,baseURL,screenshot,newContext})=>{
+await page.goto(baseURL);await shown(page,5,0);for(const [reference,quantity,field] of [['',2,'reference'],['Order A',1.5,'quantity'],['Order A',0,'quantity'],['Order A',6,null]]){await enter(page,reference,quantity);await page.getByRole('button',{name:'Reserve',exact:true}).click();await page.waitForFunction(()=>document.querySelector('[role=alert]').textContent.trim().length>0);assert.deepEqual(await state(request,baseURL),{stock:5,reservations:[]});if(field){const input=page.locator('#'+field);assert.equal(await input.getAttribute('aria-describedby'),field+'-error');assert.ok((await page.locator('#'+field+'-error').innerText()).trim());}}await enter(page,'Valid',1);await page.getByRole('button',{name:'Reserve',exact:true}).click();await shown(page,4,1);assert.equal((await state(request,baseURL)).reservations[0].quantity,1);await screenshot();
+};

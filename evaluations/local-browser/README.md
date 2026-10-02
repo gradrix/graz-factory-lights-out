@@ -1,0 +1,9 @@
+# Known-good owned reservation fixture
+
+Independent acceptance input for the first supervised local-browser slice, not a model-built application or production inventory service. Node built-ins only; `node server.cjs` binds `127.0.0.1:3210`. Controller sets `GFLO_SEED_FILE` to the read-only case seed. State is ephemeral server memory, preserved across page reloads only; each journey requires a fresh server/browser/context.
+
+Requests: GET `/health`, GET `/api/state`; POST `/api/reservations` with `{reference,quantity}`; PATCH `/api/reservations/:id`; DELETE `/api/reservations/:id`. References must be nonblank and quantities positive integers. Stock conflict is409. Validation does not mutate state. Edits consume only quantity delta; cancellation restores quantity. The controller-owned `failSaveOnce` seed injects one503 before mutation; retry is explicit. No hidden reset/admin API exists.
+
+Each case directory contains `journey.cjs` and `seed.json`. Exported function accepts `{page,context,request,baseURL,screenshot,newContext}`; baseURL is fixed by trusted runtime. newContext applies identical restrictions. screenshot(page?) uses helper-owned finite filenames. Helper owns trace, timeouts, screenshots, evidence transport and teardown. Each journey requests one final viewport screenshot; helper must save complete trace too.
+
+Journeys check browser outcomes plus independent HTTP state, not screenshots or success-message word matching. Labels/control names identify actual controls; errors need accessible nonempty feedback without exact prose. Five cases: create/reload; invalid inputs without mutation then recovery; edit/cancel deltas; two stale sessions conflicting for stock; keyboard-driven503 retry retaining input. HTTP preflight cannot substitute for real Playwright execution.
