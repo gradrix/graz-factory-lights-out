@@ -63,3 +63,8 @@ Sandbox().execute(sys.argv[1], ['sh','-c','while true; do echo x >> ticks; sleep
             self.assertEqual(result.returncode, 130, result)
             self.assertFalse((Path(directory) / 'started').exists())
             self.assertNotEqual(subprocess.run(['docker', 'inspect', name], capture_output=True).returncode, 0)
+
+    def test_worker_arguments_are_not_rewritten_as_docker_flags(self):
+        with tempfile.TemporaryDirectory() as directory:
+            result = Sandbox().execute(Path(directory), ['python', '-c', "import sys; assert sys.argv[1:] == ['--rm', '--keep']", '--rm', '--keep'])
+            self.assertEqual(result['exit_code'], 0, result)

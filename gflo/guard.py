@@ -17,8 +17,9 @@ def main():
     try:
         # Complete creation before starting any writer. Removing a name while
         # an asynchronous `docker run` is still creating it can strand a late job.
-        create = [x for x in spec['args'] if x != '--rm']
-        create[1] = 'create'
+        if spec['args'][:3] != ['docker', 'run', '--rm']:
+            raise ValueError('Unexpected guardian command prefix')
+        create = ['docker', 'create', *spec['args'][3:]]
         created = subprocess.run(create, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE,
                                  stderr=subprocess.PIPE, timeout=30)
         if created.returncode:
