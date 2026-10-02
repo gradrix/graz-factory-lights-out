@@ -6,7 +6,7 @@ import json
 from pathlib import Path
 import time
 
-from gflo.review import Reviewer
+from gflo.review import Reviewer, SYSTEM
 from gflo.runner import save
 from gflo.sandbox import Sandbox
 from gflo.worker import ModelWorker
@@ -27,7 +27,11 @@ def main():
     client = ModelWorker(config, Sandbox())
     reviewer = Reviewer(client)
     results = []
-    for path in sorted((args.fixtures / 'review-inputs').glob('*.json')):
+    paths = [(p, False) for p in sorted((args.fixtures / 'review-inputs').glob('*.json'))]
+    supplemental = args.fixtures / 'supplemental/original-money-input.json'
+    if supplemental.exists():
+        paths.append((supplemental, True))
+    for path, extra in paths:
         case = json.loads(path.read_text())
         started = time.monotonic()
         try:
@@ -35,20 +39,23 @@ def main():
         except Exception as error:
             review = {'decision': 'error', 'error': str(error)}
         # Grader-only data loaded after response, never included in request.
-        oracle = json.loads((args.fixtures / 'private/review' / path.name).read_text())
-        row = {'id': case['id'], 'expected': oracle['expected_verdict'],
+        oracle_path = args.fixtures / 'private/supplemental-money-oracle.json' if extra else args.fixtures / 'private/review' / path.name
+        oracle = json.loads(oracle_path.read_text())
+        row = {'id': case['id'], 'supplemental': extra, 'expected': oracle['expected_verdict'],
                'critical': oracle['critical_seed'], 'review': review,
                'elapsed_s': round(time.monotonic()-started, 2)}
         results.append(row)
-        receipt = {'model': config['model'], 'manifest_sha256': hashlib.sha256((args.fixtures / 'manifest.json').read_bytes()).hexdigest(), 'request_budget_s': 120, 'max_output_tokens': 4096, 'results': results}
+        receipt = {'model': config['model'], 'review_prompt_sha256': hashlib.sha256(SYSTEM.encode()).hexdigest(), 'manifest_sha256': hashlib.sha256((args.fixtures / 'manifest.json').read_bytes()).hexdigest(), 'request_budget_s': 120, 'max_output_tokens': 4096, 'results': results}
         save(args.output, receipt)
         print(json.dumps({k:v for k,v in row.items() if k != 'review'} | {'decision': review['decision']}), flush=True)
+    primary = [r for r in results if not r['supplemental']]
     receipt['score'] = {
-        'defects_caught': sum(r['expected'] == 'block' and r['review']['decision'] == 'repair' for r in results),
-        'critical_missed': sum(r['critical'] and r['review']['decision'] != 'repair' for r in results),
-        'false_blocks': sum(r['expected'] == 'accept' and r['review']['decision'] != 'pass' for r in results),
-        'errors': sum(r['review']['decision'] == 'error' for r in results)}
-    receipt['gate_passed'] = receipt['score']['defects_caught'] >= 8 and receipt['score']['critical_missed'] == 0 and receipt['score']['false_blocks'] <= 2
+        'defects_caught': sum(r['expected'] == 'block' and r['review']['decision'] == 'repair' for r in primary),
+        'critical_missed': sum(r['critical'] and r['review']['decision'] != 'repair' for r in primary),
+        'false_blocks': sum(r['expected'] == 'accept' and r['review']['decision'] != 'pass' for r in primary),
+        'errors': sum(r['review']['decision'] == 'error' for r in primary)}
+    receipt['supplemental_passed'] = all(r['review']['decision'] == 'repair' for r in results if r['supplemental'])
+    receipt['gate_passed'] = receipt['supplemental_passed'] and receipt['score']['defects_caught'] >= 8 and receipt['score']['critical_missed'] == 0 and receipt['score']['false_blocks'] <= 2
     save(args.output, receipt)
     print(json.dumps(receipt['score']), flush=True)
     return 0 if receipt['gate_passed'] else 2
