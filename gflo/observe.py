@@ -24,6 +24,22 @@ def redact(text):
     return re.sub(r'(?i)((?:api[_-]?key|password|secret|token)["\s]*[:=]\s*["\']?)[^\s,"\'}]+', r'\1[redacted]', text)
 
 
+def redact_json(value):
+    """Redact before serialization so quotes and non-string secrets stay valid JSON."""
+    def scrub(item):
+        if isinstance(item, str):
+            return redact(item)
+        if isinstance(item, dict):
+            return {redact(key) if isinstance(key, str) else key:
+                    '[redacted]' if isinstance(key, str) and re.search(
+                        r'(?i)(?:api[_-]?key|password|secret|token)$', key) else scrub(child)
+                    for key, child in item.items()}
+        if isinstance(item, (list, tuple)):
+            return [scrub(child) for child in item]
+        return item
+    return json.dumps(scrub(value))
+
+
 def schema(db):
     db.executescript('''
         CREATE TABLE IF NOT EXISTS events (
@@ -38,11 +54,10 @@ def schema(db):
 
 
 def event(db, run, kind, **data):
-    data = json.dumps(data)
-    if len(data) > 4096:
+    if len(json.dumps(data)) > 4096:
         raise ValueError('Event metadata exceeds 4096 characters')
     db.execute('INSERT INTO events(run_id,time,version,kind,data) VALUES(?,?,1,?,?)',
-               (run, time.time(), kind, redact(data)))
+               (run, time.time(), kind, redact_json(data)))
 
 
 class Execution:
@@ -72,7 +87,7 @@ class Execution:
     def emit(self, phase, **data):
         with self.db:
             self.db.execute('UPDATE execution SET phase=?,action_at=?,detail=? WHERE run_id=?',
-                            (phase, time.time(), json.dumps(data), self.run))
+                            (phase, time.time(), redact_json(data), self.run))
             event(self.db, self.run, phase, **data)
 
     def __exit__(self, *args):
@@ -121,7 +136,8 @@ class Observer:
                           phase=execution['phase'], last_action_at=execution['action_at'],
                           action_age_s=round(time.time() - execution['action_at'], 1),
                           detail=json.loads(execution['detail']), cancel_requested=bool(execution['cancel_requested']))
-            if not alive and (result['status'] in ('running', 'repairing') or (result['status'] == 'pending' and execution['pid'])):
+            if not alive and (result['status'] in ('running', 'repairing') or
+                              (result['status'] in ('pending', 'cancelled', 'interrupted') and execution['pid'])):
                 result.update(status='cancelled' if execution['cancel_requested'] else 'interrupted', phase='interrupted', message='Runner process ended; resume to recover retained work')
             result['waiting_on_model'] = alive and result['phase'] in ('model_wait', 'review_wait', 'question_review_wait')
             # Elapsed silence is observable; it is not proof that inference is deadlocked.
@@ -157,4 +173,11 @@ class Observer:
         with path.open('rb') as stream:
             content = stream.read(1024 * 1024 + 1)
         truncated = len(content) > 1024 * 1024
+        if name.endswith('.json'):
+            if truncated:
+                raise ValueError('JSON artifact exceeds the 1 MiB display limit')
+            try:
+                return redact_json(json.loads(content))
+            except (ValueError, UnicodeError):
+                raise ValueError('JSON artifact is malformed; inspect the private original') from None
         return redact(content[:1024 * 1024].decode(errors='replace')) + ('\n[truncated at 1 MiB]' if truncated else '')

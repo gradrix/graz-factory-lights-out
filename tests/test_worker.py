@@ -15,6 +15,63 @@ class FakeSandbox:
 
 
 class WorkerTests(unittest.TestCase):
+    def test_enabled_reasoning_has_a_separate_budget_on_the_http_wire(self):
+        import http.server
+        import json
+        import threading
+        requests = []
+        class Handler(http.server.BaseHTTPRequestHandler):
+            def do_POST(self):
+                requests.append(json.loads(self.rfile.read(int(self.headers['Content-Length']))))
+                self.send_response(200)
+                self.end_headers()
+                self.wfile.write(json.dumps({'choices': [{'message': {
+                    'role': 'assistant', 'content': 'Done'}, 'finish_reason': 'stop'}]}).encode())
+            def log_message(self, *args):
+                pass
+        with http.server.HTTPServer(('127.0.0.1', 0), Handler) as server, tempfile.TemporaryDirectory() as directory:
+            thread = threading.Thread(target=server.serve_forever, daemon=True)
+            thread.start()
+            try:
+                for reasoning in ('none', 'medium'):
+                    workspace = Path(directory) / reasoning / 'workspace'
+                    workspace.mkdir(parents=True)
+                    worker = ModelWorker({'endpoint': f'http://127.0.0.1:{server.server_port}',
+                                          'model': 'test', 'reasoning': reasoning}, FakeSandbox())
+                    worker(workspace, {'objective': 'Fix', 'max_turns': 1, 'checks': []}, None, 1)
+                    wire = requests[-1]
+                    self.assertEqual(wire['max_tokens'], 4096)
+                    self.assertEqual(wire['chat_template_kwargs'], {'enable_thinking': reasoning != 'none'})
+                    if reasoning == 'medium':
+                        self.assertEqual(wire['thinking_budget_tokens'], 1024)
+                    else:
+                        self.assertNotIn('thinking_budget_tokens', wire)
+                    trace = [json.loads(line) for line in
+                             (workspace.parent / 'attempts/1/trajectory.jsonl').read_text().splitlines()]
+                    self.assertEqual(next(r['body'] for r in trace if r['event'] == 'request'), wire)
+            finally:
+                server.shutdown()
+                thread.join()
+
+    def test_redacted_trajectory_remains_json_without_mutating_model_content(self):
+        import json
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = Path(directory) / 'workspace'
+            workspace.mkdir()
+            worker = ModelWorker({'endpoint': 'http://127.0.0.1:18000', 'model': 'test',
+                                  'password': 123456789}, FakeSandbox())
+            content = 'token = "example-private-value"\nordinary text: \\"quoted\\"'
+            message = {'role': 'assistant', 'content': content}
+            worker.request = lambda *a, **kw: {'choices': [{'message': message, 'finish_reason': 'stop'}]}
+            result = worker(workspace, {'objective': 'Fix', 'max_turns': 1, 'checks': []}, None, 1)
+            trace = (workspace.parent / 'attempts/1/trajectory.jsonl').read_text()
+            records = [json.loads(line) for line in trace.splitlines()]
+            self.assertNotIn('example-private-value', trace)
+            self.assertNotIn('123456789', trace)
+            self.assertEqual(records[0]['config']['password'], '[redacted]')
+            self.assertEqual(result['summary'], content)
+            self.assertEqual(message['content'], content)
+
     def test_tools_and_completion_leave_a_replayable_trace(self):
         with tempfile.TemporaryDirectory() as directory:
             workspace = Path(directory) / 'workspace'

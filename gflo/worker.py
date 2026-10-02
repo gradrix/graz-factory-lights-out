@@ -8,7 +8,7 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
-from .observe import redact
+from .observe import redact_json
 from .review import assess_question
 
 TOOLS = [
@@ -80,7 +80,7 @@ class ModelWorker:
 
         def record(value):
             with trace.open('a') as stream:
-                line = redact(json.dumps(value))
+                line = redact_json(value)
                 if len(line) > 262144:
                     line = json.dumps({'event': value['event'], 'truncated': True, 'original_chars': len(line)})
                 if trace.stat().st_size < 64 * 1024 * 1024:
@@ -98,6 +98,9 @@ class ModelWorker:
                     'tool_choice': 'auto', 'temperature': 0, 'max_tokens': 4096,
                     'reasoning_effort': reasoning,
                     'chat_template_kwargs': {'enable_thinking': reasoning != 'none'}}
+            if reasoning != 'none':
+                # Keep room for a tool call or final answer inside the total cap.
+                body['thinking_budget_tokens'] = 1024
             # Never silently condense or discard instructions. Oversized requests fail visibly.
             record({'event': 'request', 'turn': turn, 'body': body})
             logging.info('Attempt %s, model turn %s/%s', attempt, turn, task['max_turns'])

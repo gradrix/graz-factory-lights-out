@@ -11,6 +11,25 @@ import test_runner
 
 class ObservationTests(unittest.TestCase):
     setUp = test_runner.RunnerTests.setUp
+    def test_event_and_live_detail_preserve_json_and_redact_nested_secrets(self):
+        from gflo.runner import Factory
+        from gflo.observe import Execution, Observer
+        factory = Factory(self.root / 'state', None, None)
+        run = factory.create(self.task)
+        data = {'text': 'token="example-private-value"\nnext line',
+                'nested': [{'access_token': 'hidden-value', 'count': 7}], 'flag': True}
+        with Execution(factory.state, run) as execution:
+            execution.emit('test_event', **data)
+            view = Observer(factory.state)
+            event = view.events(run)[-1]['data']
+            detail = view.status(run)['detail']
+            for record in (event, detail):
+                self.assertNotIn('example-private-value', json.dumps(record))
+                self.assertNotIn('hidden-value', json.dumps(record))
+                self.assertEqual(record['nested'][0]['count'], 7)
+                self.assertIs(record['flag'], True)
+        self.assertEqual(data['nested'][0]['access_token'], 'hidden-value')
+
     def test_durable_events_and_budget_survive_reopen(self):
         from gflo.runner import Factory
         from gflo.observe import Observer
@@ -60,6 +79,21 @@ f.resume(sys.argv[2])
             finally:
                 if process.poll() is None: process.kill(); process.wait()
 
+    def test_dead_resume_owner_is_interrupted_even_before_old_cancelled_state_changes(self):
+        from gflo.runner import Factory
+        from gflo.observe import Execution, Observer
+        factory = Factory(self.root / 'state', None, None)
+        run = factory.create(self.task)
+        factory.cancel(run)
+        with Execution(factory.state, run):
+            # A resumed owner can die between registering ownership and starting
+            # its next attempt. The prior run status is still cancelled here.
+            with factory.db:
+                factory.db.execute('UPDATE execution SET identity=? WHERE run_id=?', ('dead-owner', run))
+            report = Observer(factory.state).status(run)
+            self.assertFalse(report['owner_alive'])
+            self.assertEqual(report['status'], 'interrupted')
+
     def test_public_artifacts_reject_traversal_symlinks_and_secrets(self):
         from gflo.runner import Factory
         from gflo.observe import Observer
@@ -71,6 +105,26 @@ f.resume(sys.argv[2])
         target = f.state / run / 'attempts/1/worker.json'
         target.unlink(); target.symlink_to(self.task)
         with self.assertRaises(ValueError): view.artifact(run, 'attempts/1/worker.json')
+
+    def test_public_json_artifact_redaction_is_valid_json(self):
+        from gflo.runner import Factory
+        from gflo.observe import Observer
+        factory = Factory(self.root / 'state', lambda *a: {}, lambda *a: {'passed': True})
+        run = factory.create(self.task)
+        factory.resume(run)
+        artifact = factory.state / run / 'attempts/1/worker.json'
+        artifact.write_text(json.dumps({'summary': 'password="example-private-value"',
+                                        'nested': {'token': ['private-list-value']}, 'turns': 3}))
+        public = Observer(factory.state).artifact(run, 'attempts/1/worker.json')
+        self.assertEqual(json.loads(public)['turns'], 3)
+        self.assertNotIn('example-private-value', public)
+        self.assertNotIn('private-list-value', public)
+        artifact.write_text('{"password":"unterminated')
+        with self.assertRaisesRegex(ValueError, 'malformed'):
+            Observer(factory.state).artifact(run, 'attempts/1/worker.json')
+        artifact.write_text(json.dumps({'summary': 'x' * (1024 * 1024)}))
+        with self.assertRaisesRegex(ValueError, 'display limit'):
+            Observer(factory.state).artifact(run, 'attempts/1/worker.json')
 
     def test_http_view_is_readonly_and_reconnects_with_durable_cursor(self):
         import threading
