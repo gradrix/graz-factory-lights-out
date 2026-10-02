@@ -157,6 +157,17 @@ f.resume(sys.argv[2])
                     self.assertEqual(json.loads(public)['turns'], 2)
                     self.assertEqual(json.loads(artifact.read_text()), original)
 
+    def test_escaped_backslash_at_secret_end_preserves_following_evidence(self):
+        from gflo.observe import redact_json
+        for trailing in (0, 2, 4):
+            value = 'token="ALPHA' + '\\' * trailing + '" ordinary=KEEP'
+            for depth in range(5):
+                with self.subTest(trailing=trailing, depth=depth):
+                    public = redact_json({'summary': value})
+                    self.assertNotIn('ALPHA', public)
+                    self.assertIn('ordinary=KEEP', public)
+                value = json.dumps({'evidence': value})
+
     def test_http_view_is_readonly_and_reconnects_with_durable_cursor(self):
         import threading
         import urllib.request

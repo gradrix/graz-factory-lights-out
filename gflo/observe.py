@@ -33,8 +33,13 @@ def redact(text):
             continue
         end, opening = match.end(), match.group(2)
         if opening.endswith(('"', "'")) and not opening[:-1].strip('\\'):
-            delimiter = '\\' * (len(opening) - 1) + opening[-1]
-            closing = re.compile(r'(?<!\\)' + re.escape(delimiter)).search(text, end)
+            escaped = len(opening) - 1
+            # A JSON encoding doubles existing backslashes and adds one before
+            # quotes. Paired backslashes can therefore precede a real closing
+            # quote: 0/2/4 at raw depth, 1/5/9 after one JSON encoding, etc.
+            quotes = re.compile(r'\\*' + re.escape(opening[-1]))
+            closing = next((candidate for candidate in quotes.finditer(text, end)
+                            if (len(candidate.group()) - 1) % (2 * (escaped + 1)) == escaped), None)
             # An unfinished quoted value is private through the end of text.
             end = closing.end() if closing else len(text)
         parts.extend((text[position:match.start()], match.group(1), '[redacted]'))
