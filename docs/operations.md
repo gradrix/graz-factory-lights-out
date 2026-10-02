@@ -4,22 +4,22 @@
 
 `gflo-model` on MONSTER-GAMING-PC serves the tested **ISTA-DASLab Flash-Next GSQ-RCO Coder export**, using the downloaded two-part GGUF and llama.cpp b11284. This is a pruned Coder export, not the complete official Flash model.
 
-Current trial default: 98304 context, Q4 K/V cache, batch and microbatch 512, one slot. Model files and runtime are under `/home/gradrix/benchmark-5090/flash`. The CUDA image is pinned by image ID in `ops/model.py`. No downloads occur on startup (`--pull never`, model `--offline`). A configured context includes instructions, input, reasoning and output; reserve space for the response.
+Current default: 98304 context, Q4 K/V cache, batch and microbatch 512, one slot. Model files and runtime are under `/home/gradrix/benchmark-5090/flash`. The CUDA image is pinned by image ID in `ops/model.py`. No downloads occur on startup (`--pull never`, model `--offline`). A configured context includes instructions, input, reasoning and output; reserve space for the response.
 
 The endpoint is authenticated and bound only to `127.0.0.1:18000`. Its key lives at `/home/gradrix/.local/state/gflo-model/api-key` with mode 0600. Do not put the key in Git or command-line arguments. `unless-stopped` restarts the container when Docker restarts. The original `local-vllm` container is preserved, stopped, with automatic restart disabled to avoid GPU contention.
 
 From the rig:
 
 ```sh
-python3 /home/gradrix/gflo-stage3-25f75c3/ops/model.py status
-python3 /home/gradrix/gflo-stage3-25f75c3/ops/model.py up
+python3 /home/gradrix/gflo-runtime/ops/model.py status
+python3 /home/gradrix/gflo-runtime/ops/model.py up
 # Alternative measured profile; stops/replaces only GFLO's model container:
-python3 /home/gradrix/gflo-stage3-25f75c3/ops/model.py up --context 65536
+python3 /home/gradrix/gflo-runtime/ops/model.py up --context 65536
 # Restore the original container and its original restart policy:
-python3 /home/gradrix/gflo-stage3-25f75c3/ops/model.py rollback
+python3 /home/gradrix/gflo-runtime/ops/model.py rollback
 ```
 
-`up` defaults to 96K/Q4; 64K uses Q8 unless `--cache-type q4_0` is supplied. The 128K/Q4 profile remains available with `--context 131072`. At the current rig load, the fixed 16.9K prompt decoded at about 74 tokens/s on 96K versus 16.5 on 128K. Fresh coding qualification of the new default is in progress. Loading takes time and can evict host file cache. Replacing the model disrupts active requests, so change profiles only when runs are idle. Failed setup restores original vLLM automatically for caught failures; after abrupt process/host death, inspect status and run the explicit rollback if needed.
+`up` defaults to 96K/Q4; 64K uses Q8 unless `--cache-type q4_0` is supplied. The 128K/Q4 profile remains available with `--context 131072`. At the current rig load, the fixed 16.9K prompt decoded at about 74 tokens/s on 96K versus 16.5 on 128K. Fresh API and TypeScript trials passed with independent semantic review; larger-project reliability remains unqualified. Loading takes time and can evict host file cache. Replacing the model disrupts active requests, so change profiles only when runs are idle. Failed setup restores original vLLM automatically for caught failures; after abrupt process/host death, inspect status and run the explicit rollback if needed.
 
 The rollback was tested against original container/image/command/environment/mount/port identities and an authenticated generation. `up` never edits the separate `ai-playground` configuration or deletes original cache volumes.
 

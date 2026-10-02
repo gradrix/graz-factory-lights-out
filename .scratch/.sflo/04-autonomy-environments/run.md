@@ -67,3 +67,11 @@ Fresh API fixturev2 e4cdd35d290c86aa115ae1c7e76d87acfdc5be135e6779768e0f7a0c646f
 Fresh Node fixture2ec5da0ddb1c0e60996efa706360f397e3bc3433c45d05a70205ef48be4daf52 passed independent pre-exposure QA. Driver initial invocation rejected an incompatible manifest layout before task creation or inference; preserved rig-node-followup.log. Driver now accepts the explicit task location and either frozen manifest hash mapping. Run df7b986b2ae8 is active at96K/Q4. Attempt1 stopped after2turns without implementation; protected checks rejected unknownaction and attempt2 automatically began. Observer:localhost8790. Original1/3cohort remains unchanged; follow-ups are distinct fresh tasks, not rescored retries.
 
 Fresh API independent semantic QA passed:100 domaincases,15 realHTTPcases,validation boundaries,6generatedtests and documentedcommands. See qa-model-api-followup.md. No additional API repair required.
+
+## Closure
+
+Status: accepted for supported environments. Contract hash rechecked2f0f083ced4a23de3f97ad58f1ab970764041e65f39d63855f820878a1660ebb; unit/run binding verified. Runtimegflo source25f75c3 is unchanged at8fdde15. FreshNode178.41s/attempt2 passed independentsemanticQA. Final acceptance and boundaries:acceptance.md. Originalcohort1/3remainsfailed. Nextsafeimplementationfrontier is approved-document evidence; no Stage4 capability is accepted yet.
+
+## Installed runtime readback
+
+Promoted acceptedgflo source25f75c3 plusmanager8fdde15 into~/gflo-runtime after all9oldgflo files matched3bd8ae2 and no extra sourcefiles were present.22newfiles hash-verified;CLIhelp passed; state/config were not copied or rewritten. Initial trusted-tar path check rejected directory entries before any source change; corrected to allow the two expected directory names. Stopping the transient collected observer removed its unit, so it was recreated with the same command/workingdirectory/port. Final readback:13oldruns,12accepted and1needs_input. Local8787forward re-established. Temporary source swap and transfer archive were removed after readback. Modelservice was not restarted. Receipt:rig-runtime-promotion.json.

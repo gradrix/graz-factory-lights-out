@@ -1,6 +1,6 @@
 # Prepare supported execution environments
 
-Status: active
+Status: accepted, 2026-10-02
 Blocked by: none; Stage2 accepted3bd8ae2
 Owner: /root
 Contract source: docs/roadmap.md stage 3; environment-preparation research.
@@ -11,10 +11,10 @@ Acceptance: each profile starts with empty package caches and no profile depende
 
 Research: docs/research/environment-preparation.md.
 Preparatory fixtures: .gflo/environment-qualification; hash manifest and negative cases. Syntax/JSON/hash checks only; no environment qualification is claimed.
-Candidate: 25f75c3 (active, not accepted)
+Candidate: 25f75c3 runtime, unchanged at8fdde15; serving manager8fdde15
 Evidence: cold preparation and two offline checks per profile passed on the rig; independent functional, lifecycle, input-failure and security checks passed on candidate25f75c3. Stdlib model task accepted with independent semantic QA. Original API task interrupted at its900.03s deadline; TypeScript also interrupted at900.03s; original cohort gate failed1/3. Stage3 remains active.
 
-Next: diagnose both preserved timeouts, repair independently found fixture defects in new versions, independently validate fresh follow-ups, and compare fixed-input serving throughput before further model qualification. Resource limits must constrain actual preparation work, including disk, not merely the Docker client. Preserve one active maintained-product mutation unit.
+Acceptance: .scratch/.sflo/04-autonomy-environments/acceptance.md. Fresh API and Node independently passed at96K/Q4 after pre-exposure fixture QA. Original1/3cohort remains failed. Next frontier: bounded document evidence, then the remaining Stage4 research/browser capabilities. Resource limits must constrain actual preparation work, including disk, not merely the Docker client. Preserve one active maintained-product mutation unit.
 
 Architecture refinement: docs/decisions/architecture/004-environment-snapshots.md. Bounded ordinary containers plus read-only snapshots replace custom image builds for the initial profiles; base images remain immutable and the complete environment includes both identities.
 
@@ -24,3 +24,5 @@ Independent artifact acceptance inputs are frozen in evaluations/environment-art
 
 Execution run: .scratch/.sflo/04-autonomy-environments/run.md.
 Model-task fixtures: public evaluations/environment-coding manifestc479e671e6a4bdc06f8b58cfcf8a5f520c50f2859387ec7894f97039f43ab374; protectedv2 .gflo/environment-coding-qualification-v2 manifest858384ee7ca74724efe1ee4247c69cc039d88e8b53b344ef42c5f6c6d6e9989b. Independent pre-exposure QA passed after correcting two false-pass oracle gaps; originalv1 preserved. Original cohort model exposure is underway; its frozen budgets and oracle versions remain unchanged. API diagnosis found an unsupported README token check and a separate genuine broken launch command. See qa-model-api-failed.md in the execution directory.
+
+Final semantic gate: qa-model-node-followup.md passed; see acceptance.md for complete evidence and limits. This closes the supported-environment capability without rescoring failed trials.

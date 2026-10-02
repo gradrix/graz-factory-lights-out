@@ -12,4 +12,4 @@ Later acceptance-bearing stages are in [the roadmap](../../docs/roadmap.md). The
 
 - [Independent local review](delivery/03-local-review.md) — accepted at3bd8ae2; D12/12 plus ambiguity and independent QA, with documented quality limitations.
 
-- [Prepare supported environments](delivery/04-environments.md) — active; owner /root. Three profiles implemented; cold rig preparation and independent reference checks passed. Repair, input-failure, lifecycle and security checks passed. Original model cohort accepted1/3; fresh model qualification is active after fixture corrections and a measured96K/Q4 throughput improvement.
+- [Prepare supported environments](delivery/04-environments.md) — accepted; runtime25f75c3 and96K/Q4 manager8fdde15. Three profile paths passed executable/local-review/independent semantic checks; original failed cohort is preserved. See the [acceptance record](../.sflo/04-autonomy-environments/acceptance.md).

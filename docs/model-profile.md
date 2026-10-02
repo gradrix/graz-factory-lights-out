@@ -6,11 +6,11 @@ Measured on MONSTER-GAMING-PC, September 30–October 2, 2026. These are retaine
 
 Flash-Next GSQ-RCO Coder, the pruned ISTA-DASLab GGUF export, served by llama.cpp b11284:
 
-- Current trial: 98304 context, Q4 K/V cache; one slot; batch/microbatch 512. Fresh coding qualification is in progress.
+- Current default: 98304 context, Q4 K/V cache; one slot; batch/microbatch 512. Fresh bounded API and TypeScript trials passed with independent semantic review.
 - Historical short warmed generation: 95.35 tokens/s. Current fixed 16947-token probe: 73.95 tokens/s at 96K, 74.92 at 64K, and 16.52 at 128K after an identical restart. Only allocated context changed between these Q4 profiles.
 - Earlier near-limit retrieval: 130580 input tokens, correct values inside Markdown fences, 170.86 seconds. Strict bare-JSON grading failed the framing.
 - Current 96K retrieval: all three lookup values correct across 81441 input tokens, 96.72 seconds total. This does not qualify full-window coding reliability.
-- The original three-profile coding cohort at 128K accepted one task; API and TypeScript timed out. Those failures remain recorded while fresh tasks test the new profile.
+- The original three-profile coding cohort at 128K accepted one task; API and TypeScript timed out. Those failures remain recorded. Distinct fresh API and TypeScript tasks passed on96K/Q4 in285.71 and178.41seconds, respectively.
 - Uses host-mapped lookup data as well as the 5090; not a GPU-only footprint.
 
 Model revision: `5348543e0147355ac9cbcb031184a3546350988e`.

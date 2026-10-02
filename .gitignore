@@ -39,3 +39,4 @@ htmlcov/
 !.scratch/.sflo/04-autonomy-environments/qa-*/*.py
 !.scratch/.sflo/04-autonomy-environments/qa-*/*.json
 !.scratch/.sflo/04-autonomy-environments/qa-*/*.log
+!.scratch/.sflo/04-autonomy-environments/qa-*/*.cjs
