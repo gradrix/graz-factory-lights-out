@@ -1,7 +1,7 @@
 # What makes local review reliable enough to gate the next stage?
 
 Type: Prototype
-Status: active
+Status: resolved
 Blocked by: none
 
 Flash without thinking caught the ten seeded causes but accepted the independently discovered Decimal precision defect twice, even after a general counterexample prompt improvement. It also invented invalid-input requirements for the corrected money control. Dense Qwen without thinking lost a critical case to malformed output in the first set. Preserve all results; stage 2 is not accepted.
@@ -27,3 +27,7 @@ Final current receipts: B numeric gate passes11/12 plus ambiguity; full-objectiv
 Fresh independent controller and remaining B semantic QA completed successfully; account-limit blocker is cleared. Frozen C-v2 runs on c17821c with no runtime edits. Early tasks03/06 show complete feedback delivery but no-progress model repair: unchanged candidates after repeated diagnostics, default test discovery missing in03 and wrong generated Luhn expectations in06. qa-coding-c-repair-diagnosis.md preserves exact evidence. Prepare a disposable equal-budget known-case comparison of no-thinking coder against bounded1024-token reasoning, without task-specific hints. Do not treat it as an unseen rate.
 
 QA also confirmed the selected a8a3e0 image is Python3.11.15, while C objectives target3.12+. Some prior summaries incorrectly implied the target and rig interpreter matched; raw validation receipts record3.11.15. New official immutable image fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc has been installed and measured as3.12.13 on the rig. Current batch remains frozen. Target-matched verification and accurate labeling are required before graduation.
+
+## Resolution
+
+Stage2 accepted at3bd8ae2. Fresh target-matched D12/12 plus policy ambiguity passed independent semantic evaluation; final logging repairs passed independent checks. Keep the measured Flash medium coder/bounded reviewer profile and131072 serving context. Earlier failures and false positives remain evidence; this permits the next bounded environment experiment, not universal autonomy. See docs/evidence/autonomy-stages.md and the linked execution run.

@@ -1,0 +1,180 @@
+--- a/README.md
++++ b/README.md
+@@ -1,3 +1,16 @@
+ # Markdown heading catalog
+ 
+-Existing action line_count is exposed through api.dispatch and python cli.py, accepting one JSON object on stdin and writing one JSON result.
++Actions are dispatched through `api.dispatch(payload)` and `python cli.py`, which accepts one JSON object on stdin and writes one JSON result to stdout.
++
++Existing action `line_count` returns the number of `splitlines()` lines in `payload.markdown`.
++
++New action `headings` requires `markdown` to be a string of at most 10000 code points; a longer string raises `ValueError` (CLI exit 2, nonempty stderr, no traceback). It returns a list of objects `{level, text, line, anchor}` for ATX headings found outside fenced code blocks. Fence lines are any line whose stripped text starts with three backticks; each toggles fenced mode and is excluded, as are all lines inside fences. Outside fences, a heading is a line starting at column zero with 1..6 `#` followed by exactly one ASCII space; the text is the remainder stripped at both ends (trailing `#` are ordinary text). Anchors: lowercase, keep only ASCII a-z/0-9 and spaces/hyphens, collapse each run of spaces/hyphens to one hyphen, trim hyphens; an empty base becomes `section`. Duplicates get `-2`, `-3`, ... suffixes in document order.
++
++Example invocation:
++
++```bash
++echo '{"action":"headings","markdown":"# Title\n## Title"}' | python cli.py
++# -> [{"level": 1, "text": "Title", "line": 1, "anchor": "title"}, {"level": 2, "text": "Title", "line": 2, "anchor": "title-2"}]
++```
++
++Boundary semantics: exactly 10000 code points is accepted; 10001 is rejected with `ValueError`. Unknown actions raise `ValueError` ("unknown action: ..."), and the CLI exits 2 with the message on stderr and no traceback. Input objects are never mutated.
+--- a/api.py
++++ b/api.py
+@@ -1,5 +1,10 @@
+ import domain
++
+ def dispatch(payload):
+  action=payload["action"]
+  if action=='line_count':return domain.legacy(payload)
++ if action=='headings':
++  markdown=payload["markdown"]
++  if len(markdown)>10000:raise ValueError("markdown exceeds 10000 code points")
++  return domain.headings(markdown)
+  raise ValueError("unknown action: "+str(action))
+--- a/domain.py
++++ b/domain.py
+@@ -1 +1,39 @@
+-def legacy(p):return len(p['markdown'].splitlines())
++import re
++
++_FENCE = "```"
++_HEADING_RE = re.compile(r"#{1,6} ")
++_RUN_RE = re.compile(r"[ -]+")
++
++
++def legacy(p):
++    return len(p['markdown'].splitlines())
++
++
++def _anchor_base(text):
++    kept = [c for c in text.lower() if ("a" <= c <= "z") or ("0" <= c <= "9") or c == " " or c == "-"]
++    base = _RUN_RE.sub("-", "".join(kept)).strip("-")
++    return base or "section"
++
++
++def headings(markdown):
++    result = []
++    used = set()
++    fenced = False
++    for number, line in enumerate(markdown.splitlines(), 1):
++        if line.strip().startswith(_FENCE):
++            fenced = not fenced
++            continue
++        if fenced:
++            continue
++        match = _HEADING_RE.match(line)
++        if not match:
++            continue
++        anchor = _anchor_base(line[match.end():].strip())
++        if anchor in used:
++            suffix = 2
++            while f"{anchor}-{suffix}" in used:
++                suffix += 1
++            anchor = f"{anchor}-{suffix}"
++        used.add(anchor)
++        result.append({"level": match.end() - 1, "text": line[match.end():].strip(), "line": number, "anchor": anchor})
++    return result
+--- a/tests/test_behavior.py
++++ b/tests/test_behavior.py
+@@ -0,0 +1,62 @@
++import unittest
++import api
++
++
++class HeadingsTest(unittest.TestCase):
++    def test_normal_case_with_fences_and_anchor_collisions(self):
++        markdown = (
++            "# Title\n"
++            "```\n"
++            "# not a heading\n"
++            "```\n"
++            "## Title ##\n"
++            "##  H\u00e9llo, World!  \n"
++            "## h\u00e9llo world\n"
++            "## h\u00e9llo world\n"
++            "not-a-heading\n"
++            " ## indented\n"
++            "####### seven\n"
++            "#nospace\n"
++        )
++        self.assertEqual(
++            api.dispatch({"action": "headings", "markdown": markdown}),
++            [
++                {"level": 1, "text": "Title", "line": 1, "anchor": "title"},
++                {"level": 2, "text": "Title ##", "line": 5, "anchor": "title-2"},
++                {"level": 2, "text": "H\u00e9llo, World!", "line": 6, "anchor": "hllo-world"},
++                {"level": 2, "text": "h\u00e9llo world", "line": 7, "anchor": "hllo-world-2"},
++                {"level": 2, "text": "h\u00e9llo world", "line": 8, "anchor": "hllo-world-3"},
++            ],
++        )
++
++    def test_boundaries(self):
++        # 10000 code points is the maximum accepted length; 10001 is rejected.
++        with self.assertRaises(ValueError):
++            api.dispatch({"action": "headings", "markdown": "#" * 10001})
++        at_limit = ("#" * 6 + " x").ljust(10000, " ")
++        self.assertEqual(
++            api.dispatch({"action": "headings", "markdown": at_limit}),
++            [{"level": 6, "text": "x", "line": 1, "anchor": "x"}],
++        )
++        # Empty markdown yields no headings; an empty anchor base falls back to "section".
++        self.assertEqual(api.dispatch({"action": "headings", "markdown": ""}), [])
++        self.assertEqual(
++            api.dispatch({"action": "headings", "markdown": "### !!!\n### !!!"}),
++            [
++                {"level": 3, "text": "!!!", "line": 1, "anchor": "section"},
++                {"level": 3, "text": "!!!", "line": 2, "anchor": "section-2"},
++            ],
++        )
++
++    def test_unknown_action_is_rejected(self):
++        with self.assertRaises(ValueError):
++            api.dispatch({"action": "nope", "markdown": ""})
++
++
++class LegacyTest(unittest.TestCase):
++    def test_line_count_still_works(self):
++        self.assertEqual(api.dispatch({"action": "line_count", "markdown": "a\nb"}), 2)
++
++
++if __name__ == "__main__":
++    unittest.main()
+--- a/tests/test_cli.py
++++ b/tests/test_cli.py
+@@ -0,0 +1,36 @@
++import unittest
++import subprocess
++
++
++class CliTest(unittest.TestCase):
++    def test_cli_success(self):
++        proc = subprocess.run(
++            ["python", "cli.py"],
++            input='{"action": "headings", "markdown": "# A\\n```\\n# hidden\\n```\\n## A"}',
++            capture_output=True,
++            text=True,
++        )
++        self.assertEqual(proc.returncode, 0)
++        self.assertEqual(proc.stderr, "")
++        self.assertEqual(
++            eval(proc.stdout),
++            [
++                {"level": 1, "text": "A", "line": 1, "anchor": "a"},
++                {"level": 2, "text": "A", "line": 5, "anchor": "a-2"},
++            ],
++        )
++
++    def test_cli_value_error_exit_2(self):
++        proc = subprocess.run(
++            ["python", "cli.py"],
++            input='{"action": "nope", "markdown": ""}',
++            capture_output=True,
++            text=True,
++        )
++        self.assertEqual(proc.returncode, 2)
++        self.assertNotEqual(proc.stderr, "")
++        self.assertNotIn("Traceback", proc.stderr)
++
++
++if __name__ == "__main__":
++    unittest.main()

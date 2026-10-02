@@ -1,0 +1,7 @@
+{
+  "profile": "python-stdlib",
+  "objective": "Add action reconcile to the expense ledger domain/API/CLI. Payload has limits: object mapping nonempty category strings to integer budget cents 0..1000000; entries: list of at most 200 objects with exactly id,category,cents. Each id must be a unique nonempty string; category must name a limit; cents is integer -1000000..1000000 (refunds are negative). Reject violations with ValueError; bool is not an integer. Return one row for every limit in Python string order: {category,spent_cents:sum,remaining_cents:limit-sum,over_budget:boolean spent>limit}. Empty limits/entries yields []; unspent categories remain present. Validate the complete input, preserve it even on failure, and preserve action total, unknown-action errors and CLI exit 2/nonempty stderr/no traceback for invalid input. CLI reads one JSON object and prints one JSON result. Runtime Python 3.12.13; stdlib only. Add at least three meaningful regression tests covering normal, boundary and rejected inputs, and document new usage and error behavior in README.md (at least 40 words). Keep public interfaces and existing behavior. Standard profile dependencies only; do not fetch or change locks. Tests and documented commands must work when the project is at any filesystem location, not a fixed workspace mount. No input mutation. Exact JSON output types matter; booleans are not integers.",
+  "max_attempts": 3,
+  "max_turns": 24,
+  "wall_time_seconds": 900
+}

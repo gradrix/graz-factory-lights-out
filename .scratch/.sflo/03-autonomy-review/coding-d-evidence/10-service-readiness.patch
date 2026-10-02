@@ -1,0 +1,183 @@
+--- a/README.md
++++ b/README.md
+@@ -1,3 +1,41 @@
+ # Service readiness summary
+ 
+-Existing action check_names is exposed through api.dispatch and python cli.py, accepting one JSON object on stdin and writing one JSON result.
++Existing action `check_names` is exposed through `api.dispatch` and `python cli.py`, accepting one JSON object on stdin and writing one JSON result.
++
++## New action: `readiness`
++
++Payload shape:
++
++```json
++{
++  "action": "readiness",
++  "required": ["alpha", "beta"],
++  "checks": [
++    {"service": "alpha", "state": "up", "critical": false},
++    {"service": "beta", "state": "down", "critical": true}
++  ],
++  "quorum": 1
++}
++```
++
++- `required`: list of unique service names (at most 100).
++- `checks`: at most 200 entries, each `{service: string, state: "up"|"down"|"unknown", critical: boolean}`.
++- `quorum`: integer 0..100.
++
++Result: `{"ready": <bool>, "up": <int>, "blockers": [<service names>]}`.
++
++Semantics: for each service mentioned in `required` or `checks`, only its LAST check is used; earlier states and critical flags are ignored once replaced. A required service with no check counts as unknown and non-critical. `up` counts distinct services whose last state is `up`, including services not in `required`. `blockers` contains every required service whose last state is not `up` (or which is missing), plus every service whose last check is critical and not `up`; blockers are deduplicated and sorted by Python string order. `ready` is true exactly when `up >= quorum` and `blockers` is empty. Input objects are never mutated, even on failure.
++
++Boundary semantics: `ready` holds when `up` equals `quorum` exactly; an empty payload with `quorum: 0` yields `{"ready": true, "up": 0, "blockers": []}`. Booleans in output are real JSON booleans, never integers.
++
++Error semantics: an unknown `action` raises `ValueError` from `api.dispatch`; the CLI prints the message to stderr, prints nothing on stdout, and exits with code 2 (no traceback).
++
++Concrete CLI invocation:
++
++```bash
++echo '{"action":"readiness","required":["alpha"],"checks":[{"service":"alpha","state":"up","critical":false}],"quorum":1}' | python cli.py
++```
++
++Prints `{"ready": true, "up": 1, "blockers": []}` and exits 0.
++
++Tests: `python -m unittest discover` from the project root.
+--- a/api.py
++++ b/api.py
+@@ -1,5 +1,6 @@
+ import domain
+ def dispatch(payload):
+- action=payload["action"]
+- if action=='check_names':return domain.legacy(payload)
+- raise ValueError("unknown action: "+str(action))
++    action = payload["action"]
++    if action == 'check_names': return domain.legacy(payload)
++    if action == 'readiness': return domain.readiness(payload)
++    raise ValueError("unknown action: " + str(action))
+--- a/domain.py
++++ b/domain.py
+@@ -1 +1,18 @@
+ def legacy(p):return [c['service'] for c in p['checks']]
++
++def readiness(p):
++    last = {}
++    for c in p['checks']:
++        last[c['service']] = c
++    up = 0
++    blockers = set()
++    for svc, c in last.items():
++        if c['state'] == 'up':
++            up += 1
++        elif c['critical'] is True:
++            blockers.add(svc)
++    for svc in p['required']:
++        c = last.get(svc)
++        if c is None or c['state'] != 'up':
++            blockers.add(svc)
++    return {'ready': up >= p['quorum'] and not blockers, 'up': up, 'blockers': sorted(blockers)}
+--- a/tests/test_readiness.py
++++ b/tests/test_readiness.py
+@@ -0,0 +1,102 @@
++import json
++import subprocess
++import sys
++import unittest
++
++import api
++
++
++class ReadinessTests(unittest.TestCase):
++    def test_normal_case_last_check_wins(self):
++        payload = {
++            "action": "readiness",
++            "required": ["alpha", "beta"],
++            "checks": [
++                {"service": "alpha", "state": "down", "critical": True},
++                {"service": "alpha", "state": "up", "critical": False},
++                {"service": "beta", "state": "down", "critical": False},
++                {"service": "gamma", "state": "up", "critical": False},
++            ],
++            "quorum": 2,
++        }
++        result = api.dispatch(payload)
++        self.assertEqual(result, {"ready": False, "up": 2, "blockers": ["beta"]})
++        # alpha's earlier critical/down flag is replaced by its last up check.
++        self.assertIs(result["ready"], False)
++        self.assertIsInstance(result["up"], int)
++
++    def test_boundary_quorum_equal_and_empty_input(self):
++        payload = {
++            "action": "readiness",
++            "required": ["a", "b"],
++            "checks": [
++                {"service": "a", "state": "up", "critical": False},
++                {"service": "b", "state": "up", "critical": False},
++                {"service": "extra", "state": "up", "critical": False},
++            ],
++            "quorum": 3,
++        }
++        result = api.dispatch(payload)
++        self.assertEqual(result, {"ready": True, "up": 3, "blockers": []})
++        empty = {"action": "readiness", "required": [], "checks": [], "quorum": 0}
++        self.assertEqual(api.dispatch(empty), {"ready": True, "up": 0, "blockers": []})
++
++    def test_missing_required_and_critical_blockers_sorted(self):
++        payload = {
++            "action": "readiness",
++            "required": ["zulu", "missing"],
++            "checks": [
++                {"service": "zulu", "state": "unknown", "critical": False},
++                {"service": "missing", "state": "up", "critical": False},
++                {"service": "missing", "state": "down", "critical": True},
++                {"service": "aux", "state": "down", "critical": True},
++                {"service": "aux", "state": "up", "critical": True},
++            ],
++            "quorum": 1,
++        }
++        result = api.dispatch(payload)
++        # missing's last check is down+critical; aux's last check is up so its
++        # critical flag does not block. zulu is unknown -> blocker.
++        self.assertEqual(result, {"ready": False, "up": 1, "blockers": ["missing", "zulu"]})
++
++    def test_unknown_action_rejected(self):
++        with self.assertRaises(ValueError) as ctx:
++            api.dispatch({"action": "nope", "required": [], "checks": [], "quorum": 0})
++        self.assertEqual(str(ctx.exception), "unknown action: nope")
++
++    def test_input_never_mutated(self):
++        payload = {
++            "action": "readiness",
++            "required": ["a"],
++            "checks": [{"service": "a", "state": "up", "critical": False}],
++            "quorum": 1,
++        }
++        snapshot = json.dumps(payload, sort_keys=True)
++        api.dispatch(payload)
++        self.assertEqual(json.dumps(payload, sort_keys=True), snapshot)
++
++    def test_cli_json_success_and_valueerror_exit(self):
++        proc = subprocess.run(
++            [sys.executable, "cli.py"],
++            input=json.dumps({"action": "check_names", "checks": [{"service": "s"}]}),
++            capture_output=True,
++            text=True,
++            cwd=".",
++        )
++        self.assertEqual(proc.returncode, 0)
++        self.assertEqual(proc.stdout.strip(), '["s"]')
++        self.assertEqual(proc.stderr, "")
++        proc = subprocess.run(
++            [sys.executable, "cli.py"],
++            input=json.dumps({"action": "boom"}),
++            capture_output=True,
++            text=True,
++            cwd=".",
++        )
++        self.assertEqual(proc.returncode, 2)
++        self.assertEqual(proc.stderr, "unknown action: boom\n")
++        self.assertEqual(proc.stdout, "")
++
++
++if __name__ == "__main__":
++    unittest.main()

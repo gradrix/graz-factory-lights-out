@@ -1,0 +1,52 @@
+{
+  "cohort": "environment-coding",
+  "version": 1,
+  "profile_count": 3,
+  "status": "unused future Stage3 model tasks",
+  "budget": {
+    "max_attempts": 3,
+    "max_turns": 24,
+    "wall_time_seconds": 900
+  },
+  "actual_runtimes": {
+    "python-stdlib": {
+      "python": "3.12.13",
+      "devices": []
+    },
+    "python-api": {
+      "python": "3.12.13",
+      "devices": []
+    },
+    "node-ts": {
+      "node": "v22.23.3",
+      "npm": "10.9.9",
+      "typescript": "5.8.3",
+      "nodeTypes": "22.15.3",
+      "devices": []
+    }
+  },
+  "sha256": {
+    "README.md": "002db2e20b3eb506597d1039e901ea5facecca7adffa8bcfddc84e120ffbedd8",
+    "locks/python-api.requirements.lock": "890507545cbd69bf015bc092965ab76de09918593cf68119728fa8dc3d73bc3f",
+    "node-ts/source/README.md": "8b70ec9d7f75d01f815f9482f75a5d89dfc6e2da13e400814da561daee5f3fc2",
+    "node-ts/source/package-lock.json": "2bd0d5d024a8f29b79d28b062d54d9e2a2f34737a67fd38d08ee0b031230b20f",
+    "node-ts/source/package.json": "152e1b3aa7d2f0fca2ab5da0c1b443e0b811cd699a15a19ed807a41588fa85ee",
+    "node-ts/source/src/api.ts": "5f59b0daeb9c85c0d90170d55010c808c976ceb8e09b1915fd30ba83e3578788",
+    "node-ts/source/src/cli.ts": "80fcbb4b369b4d0a6f33caea573e890dd6f9a5cd43b605515312d30dcc69a39c",
+    "node-ts/source/src/domain.ts": "18aee62fd5e9cefc604e152254892e3060d1f5c7a9bb6a39360e2e92502d7cf1",
+    "node-ts/source/tsconfig.json": "866cc08bd1a7f8ad36995c7194f2d9c6dc493716d5033741822e927d193eec1e",
+    "node-ts/task.json": "b3e553117fa0b8fb1e350521044bc8c74c9f55c54a81eb0385ffcee1b7eb53d3",
+    "python-api/source/README.md": "b0f7a33034439216daa4065a507de2b47025f5259e393c283cb4b0059b0da05d",
+    "python-api/source/pyproject.toml": "45e729f41defabafc4e7312eb01bf7216aab2960947ce03b518715e4a9cf29c3",
+    "python-api/source/src/reservation_preview/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "python-api/source/src/reservation_preview/app.py": "1e45a96ae3337aaa00c14aaa08a2e672b853f42b654e9a782e431875b62975f4",
+    "python-api/source/src/reservation_preview/domain.py": "7153e120e5fa1e0ee0f5eb77f3225f07de545fd23ab4fc24fca44db29abc2c55",
+    "python-api/source/src/reservation_preview/schemas.py": "8d2bb4abb13e666afee411af5ba8249d19991c69dcb4a7fea00bdbd65e809200",
+    "python-api/task.json": "c8254e546a3fd1bd7511d543f96bea37c3cd3abac2a34ae7898be620fb2f282a",
+    "python-stdlib/source/README.md": "7f9aab35d3b8ba2fb66aca2adc77421d56198942339c3cc1b2888bea4a3d64b6",
+    "python-stdlib/source/api.py": "a06caac55417a1756a5ee98a9f0a93f484193b5495754655f3c3149edeba1dc1",
+    "python-stdlib/source/cli.py": "0f988d3ed7d2694df40cd99778b5a14931f63c65eec6c846093da056b7dc5557",
+    "python-stdlib/source/domain.py": "0ac71a8a2bfd4a2187b4b077045d2d0df7c5acde4f7c827c1e98494c5f48f45f",
+    "python-stdlib/task.json": "ce11baf1f3a21cd99bda7786176276fc4c487c0c240295663510c5f0ca59d4d0"
+  }
+}

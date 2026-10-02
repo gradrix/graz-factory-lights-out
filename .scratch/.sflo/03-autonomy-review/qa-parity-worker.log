@@ -1,0 +1,13 @@
+test_enabled_reasoning_has_a_separate_budget_on_the_http_wire (test_worker.WorkerTests) ... ok
+test_http_requests_use_key_file_and_report_errors (test_worker.WorkerTests) ... ok
+test_malformed_tools_and_repeated_calls_are_bounded (test_worker.WorkerTests) ... ok
+test_previous_review_is_private_in_trace_but_unchanged_for_model (test_worker.WorkerTests) ... ok
+test_redacted_trajectory_remains_json_without_mutating_model_content (test_worker.WorkerTests) ... ok
+test_remote_inference_and_redirects_are_not_implicitly_allowed (test_worker.WorkerTests) ... ok
+test_tools_and_completion_leave_a_replayable_trace (test_worker.WorkerTests) ... ok
+test_turn_budget_and_redirect_rejection (test_worker.WorkerTests) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.577s
+
+OK

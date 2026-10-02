@@ -1,0 +1,22 @@
+{
+  "command": [
+    "docker",
+    "run",
+    "--runtime=runc",
+    "--rm",
+    "--network=none",
+    "--read-only",
+    "--cap-drop=ALL",
+    "--security-opt=no-new-privileges",
+    "--memory=64m",
+    "--pids-limit=16",
+    "--user=65534:65534",
+    "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+    "python",
+    "-c",
+    "import json,sys;print(json.dumps({\"version\":sys.version,\"executable\":sys.executable}));assert sys.version_info[:3]==(3,12,13)"
+  ],
+  "exit": 0,
+  "stdout": "{\"version\": \"3.12.13 (main, Mar 16 2026, 23:06:54) [GCC 14.2.0]\", \"executable\": \"/usr/local/bin/python\"}\n",
+  "stderr": ""
+}

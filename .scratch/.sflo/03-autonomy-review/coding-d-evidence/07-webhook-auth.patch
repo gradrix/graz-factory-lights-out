@@ -1,0 +1,192 @@
+--- a/README.md
++++ b/README.md
+@@ -1,3 +1,30 @@
+ # Webhook authentication utility
+ 
+-Existing action body_bytes is exposed through api.dispatch and python cli.py, accepting one JSON object on stdin and writing one JSON result.
++Existing action `body_bytes` is exposed through `api.dispatch` and `python cli.py`, accepting one JSON object on stdin and writing one JSON result (the UTF-8 byte length of `body`).
++
++## Actions
++
++### body_bytes
++`{"action": "body_bytes", "body": "<string>"}` → integer byte length of `body` in UTF-8.
++
++### verify
++`{"action": "verify", "secret": "<string>", "body": "<string>", "timestamp": <int 0..2**40>, "now": <int 0..2**40>, "tolerance": <int 0..3600>, "signature": "<string>"}` → JSON boolean.
++
++The HMAC-SHA256 digest is computed with the UTF-8 `secret` as key over the UTF-8 bytes of the string `str(timestamp) + "." + body` (plain decimal timestamp, dot, body). The result is `true` only when `signature` is exactly `sha256=` followed by 64 lowercase hex characters equal to that digest AND `abs(now - timestamp) <= tolerance` (inclusive boundary). Any other signature — empty, malformed, uppercase hex, wrong digest — yields `false` without raising; the digest comparison is timing-safe for well-formed signatures. `secret` and `body` are at most 4000 Unicode code points and are never logged or returned. Input objects are never mutated.
++
++## CLI usage
++
++One JSON object on stdin, one JSON result on stdout:
++
++    echo '{"action":"verify","secret":"s3cret","body":"hi","timestamp":1000,"now":1005,"tolerance":60,"signature":"sha256=<64 lowercase hex>"}' | python cli.py
++
++Example (signature generated with the same HMAC rule):
++
++    python cli.py < payload.json
++    # prints true or false; exit 0
++
++Errors: an unknown `action` raises `ValueError`; the CLI catches it, prints the message to stderr (nonempty), prints nothing to stdout, and exits with code 2 — no traceback. Boundary semantics: `abs(now - timestamp) == tolerance` passes; `+1` fails; `timestamp`/`now` up to `2**40` and `tolerance` up to `3600` are valid.
++
++## Tests
++
++    python -m unittest discover
+--- a/api.py
++++ b/api.py
+@@ -1,5 +1,10 @@
+ import domain
++
++
+ def dispatch(payload):
+- action=payload["action"]
+- if action=='body_bytes':return domain.legacy(payload)
+- raise ValueError("unknown action: "+str(action))
++    action = payload["action"]
++    if action == 'body_bytes':
++        return domain.legacy(payload)
++    if action == 'verify':
++        return domain.verify(payload)
++    raise ValueError("unknown action: " + str(action))
+--- a/domain.py
++++ b/domain.py
+@@ -1 +1,37 @@
+-def legacy(p):return len(p['body'].encode('utf-8'))
++import hmac
++import hashlib
++
++
++def legacy(p):
++    return len(p['body'].encode('utf-8'))
++
++
++def verify(p):
++    """Return True iff the signature matches the HMAC and the timestamp is within tolerance.
++
++    Signed string: decimal timestamp + "." + body, HMAC-SHA256 keyed with UTF-8 secret.
++    Signature must be exactly "sha256=" + 64 lowercase hex characters.
++    """
++    secret = p['secret']
++    body = p['body']
++    timestamp = p['timestamp']
++    now = p['now']
++    tolerance = p['tolerance']
++    signature = p['signature']
++
++    digest = hmac.new(secret.encode('utf-8'),
++                      (str(timestamp) + '.' + body).encode('utf-8'),
++                      hashlib.sha256).hexdigest()
++
++    # Malformed (not well-formed) signatures are rejected without comparison.
++    if len(signature) != 71 or not signature.startswith('sha256='):
++        return False
++    hexpart = signature[7:]
++    if not all(c in '0123456789abcdef' for c in hexpart):
++        return False
++
++    # Timing-safe comparison for well-formed signatures.
++    if not hmac.compare_digest(hexpart, digest):
++        return False
++
++    return abs(now - timestamp) <= tolerance
+--- a/tests/test_public.py
++++ b/tests/test_public.py
+@@ -0,0 +1,98 @@
++import hmac
++import hashlib
++import unittest
++import api
++
++
++def _digest(secret, timestamp, body):
++    return hmac.new(secret.encode('utf-8'),
++                    (str(timestamp) + '.' + body).encode('utf-8'),
++                    hashlib.sha256).hexdigest()
++
++
++class VerifyNormal(unittest.TestCase):
++    def test_verify_valid_signature_within_tolerance(self):
++        payload = {"action": "verify",
++                   "secret": "s3cret",
++                   "body": "hello wörld",
++                   "timestamp": 1000,
++                   "now": 1005,
++                   "tolerance": 60,
++                   "signature": "sha256=" + _digest("s3cret", 1000, "hello wörld")}
++        result = api.dispatch(payload)
++        self.assertIs(result, True)
++        # input object must not be mutated
++        self.assertEqual(payload["signature"], "sha256=" + _digest("s3cret", 1000, "hello wörld"))
++
++    def test_verify_existing_action_preserved(self):
++        self.assertEqual(api.dispatch({"action": "body_bytes", "body": "héllo"}), 6)
++
++
++class VerifyBoundaries(unittest.TestCase):
++    def test_verify_tolerance_boundary_exact(self):
++        # abs(now - timestamp) == tolerance is accepted (inclusive boundary)
++        payload = {"action": "verify",
++                   "secret": "k",
++                   "body": "",
++                   "timestamp": 0,
++                   "now": 3600,
++                   "tolerance": 3600,
++                   "signature": "sha256=" + _digest("k", 0, "")}
++        self.assertIs(api.dispatch(payload), True)
++
++    def test_verify_max_timestamp_boundary(self):
++        # timestamp == 2**40 upper bound works with plain decimal digits
++        t = 2 ** 40
++        payload = {"action": "verify",
++                   "secret": "k",
++                   "body": "b",
++                   "timestamp": t,
++                   "now": t,
++                   "tolerance": 0,
++                   "signature": "sha256=" + _digest("k", t, "b")}
++        self.assertIs(api.dispatch(payload), True)
++
++    def test_verify_uppercase_hex_rejected(self):
++        # well-formed prefix but uppercase hex is not lowercase: rejected, no exception
++        payload = {"action": "verify",
++                   "secret": "k",
++                   "body": "b",
++                   "timestamp": 1,
++                   "now": 1,
++                   "tolerance": 0,
++                   "signature": ("sha256=" + _digest("k", 1, "b")).upper().replace("SHA256=", "sha256=")}
++        self.assertIs(api.dispatch(payload), False)
++
++
++class VerifyRejections(unittest.TestCase):
++    def test_verify_outside_tolerance_false(self):
++        payload = {"action": "verify",
++                   "secret": "k",
++                   "body": "b",
++                   "timestamp": 100,
++                   "now": 101,
++                   "tolerance": 0,
++                   "signature": "sha256=" + _digest("k", 100, "b")}
++        self.assertIs(api.dispatch(payload), False)
++
++    def test_verify_malformed_signature_no_exception(self):
++        for bad in ["", "sha256=", "sha256=" + "z" * 64, "sha256=" + _digest("k", 1, "b") + "é",
++                    "SHA256=" + _digest("k", 1, "b"), _digest("k", 1, "b")]:
++            payload = {"action": "verify", "secret": "k", "body": "b",
++                       "timestamp": 1, "now": 1, "tolerance": 0, "signature": bad}
++            self.assertIs(api.dispatch(payload), False)
++
++    def test_verify_wrong_secret_false(self):
++        payload = {"action": "verify", "secret": "k", "body": "b",
++                   "timestamp": 1, "now": 1, "tolerance": 0,
++                   "signature": "sha256=" + _digest("other", 1, "b")}
++        self.assertIs(api.dispatch(payload), False)
++
++    def test_unknown_action_raises_valueerror(self):
++        with self.assertRaises(ValueError) as cm:
++            api.dispatch({"action": "nope"})
++        self.assertEqual(str(cm.exception), "unknown action: nope")
++
++
++if __name__ == '__main__':
++    unittest.main()

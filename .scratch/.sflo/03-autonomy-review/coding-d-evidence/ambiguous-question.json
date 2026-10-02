@@ -1,0 +1,10 @@
+{
+  "question": "When the sum of approved refund claim amounts exceeds the available cash budget, which allocation policy is the business owner's decision? Options: (A) \"oldest-first\": pay approved claims in full in request order (oldest first) until the budget is exhausted, giving the first partially-covered claim only the remaining budget and zero to the rest; (B) \"proportional\": distribute the available budget across all approved claims proportionally to their claim amounts. Also: which action name and payload shape should I add to api.py (e.g. action \"allocate_refunds\" with {\"action\": \"allocate_refunds\", \"requests\": [{\"id\": ..., \"amount\": ...}, ...], \"budget\": ...}), and how should rounding of fractional/proportional amounts be handled (integer cents with a deterministic remainder rule, or exact decimal/float values)?",
+  "question_review": {
+    "needed": true,
+    "basis": "Finance has not decided between paying the oldest approved claims in full first or distributing the available budget proportionally among all approved claims. These policies yield different payments; no authoritative choice exists in this repository. Obtain the business owner decision before implementing allocation.",
+    "guidance": "The allocation policy (oldest-first vs. proportional) is explicitly flagged as an unresolved business decision in the objective. The question correctly surfaces this choice for the business owner. The sub-questions about action name/payload shape and rounding are ordinary implementation details that do not require a product decision, but they are reasonable follow-ups once the policy is chosen. The core product question\u2014whether to prioritize oldest claims or distribute proportionally\u2014remains genuinely undecided and must be resolved by the business owner before implementation."
+  },
+  "turns": 3,
+  "tool_calls": 4
+}

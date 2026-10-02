@@ -1,0 +1,1 @@
+{"candidate": "4346ba5289f24f228f83f6f45646f32e41cd48c1", "structured_control_redacts": true, "embedded_json_secret_retained": true, "http_artifact_same_embedded_string_leaks": true, "outer_json_valid": true, "synthetic_only": true}

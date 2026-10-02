@@ -1,0 +1,85 @@
+............
+======================================================================
+FAIL: test_escaped_backslash_at_secret_end_preserves_following_evidence (test_observation.ObservationTests) (trailing=2, depth=0)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo/tests/test_observation.py", line 168, in test_escaped_backslash_at_secret_end_preserves_following_evidence
+    self.assertIn('ordinary=KEEP', public)
+AssertionError: 'ordinary=KEEP' not found in '{"summary": "token=[redacted]"}'
+
+======================================================================
+FAIL: test_escaped_backslash_at_secret_end_preserves_following_evidence (test_observation.ObservationTests) (trailing=2, depth=1)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo/tests/test_observation.py", line 168, in test_escaped_backslash_at_secret_end_preserves_following_evidence
+    self.assertIn('ordinary=KEEP', public)
+AssertionError: 'ordinary=KEEP' not found in '{"summary": "{\\"evidence\\": \\"token=[redacted]"}'
+
+======================================================================
+FAIL: test_escaped_backslash_at_secret_end_preserves_following_evidence (test_observation.ObservationTests) (trailing=2, depth=2)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo/tests/test_observation.py", line 168, in test_escaped_backslash_at_secret_end_preserves_following_evidence
+    self.assertIn('ordinary=KEEP', public)
+AssertionError: 'ordinary=KEEP' not found in '{"summary": "{\\"evidence\\": \\"{\\\\\\"evidence\\\\\\": \\\\\\"token=[redacted]"}'
+
+======================================================================
+FAIL: test_escaped_backslash_at_secret_end_preserves_following_evidence (test_observation.ObservationTests) (trailing=2, depth=3)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo/tests/test_observation.py", line 168, in test_escaped_backslash_at_secret_end_preserves_following_evidence
+    self.assertIn('ordinary=KEEP', public)
+AssertionError: 'ordinary=KEEP' not found in '{"summary": "{\\"evidence\\": \\"{\\\\\\"evidence\\\\\\": \\\\\\"{\\\\\\\\\\\\\\"evidence\\\\\\\\\\\\\\": \\\\\\\\\\\\\\"token=[redacted]"}'
+
+======================================================================
+FAIL: test_escaped_backslash_at_secret_end_preserves_following_evidence (test_observation.ObservationTests) (trailing=2, depth=4)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo/tests/test_observation.py", line 168, in test_escaped_backslash_at_secret_end_preserves_following_evidence
+    self.assertIn('ordinary=KEEP', public)
+AssertionError: 'ordinary=KEEP' not found in '{"summary": "{\\"evidence\\": \\"{\\\\\\"evidence\\\\\\": \\\\\\"{\\\\\\\\\\\\\\"evidence\\\\\\\\\\\\\\": \\\\\\\\\\\\\\"{\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"evidence\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\": \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"token=[redacted]"}'
+
+======================================================================
+FAIL: test_escaped_backslash_at_secret_end_preserves_following_evidence (test_observation.ObservationTests) (trailing=4, depth=0)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo/tests/test_observation.py", line 168, in test_escaped_backslash_at_secret_end_preserves_following_evidence
+    self.assertIn('ordinary=KEEP', public)
+AssertionError: 'ordinary=KEEP' not found in '{"summary": "token=[redacted]"}'
+
+======================================================================
+FAIL: test_escaped_backslash_at_secret_end_preserves_following_evidence (test_observation.ObservationTests) (trailing=4, depth=1)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo/tests/test_observation.py", line 168, in test_escaped_backslash_at_secret_end_preserves_following_evidence
+    self.assertIn('ordinary=KEEP', public)
+AssertionError: 'ordinary=KEEP' not found in '{"summary": "{\\"evidence\\": \\"token=[redacted]"}'
+
+======================================================================
+FAIL: test_escaped_backslash_at_secret_end_preserves_following_evidence (test_observation.ObservationTests) (trailing=4, depth=2)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo/tests/test_observation.py", line 168, in test_escaped_backslash_at_secret_end_preserves_following_evidence
+    self.assertIn('ordinary=KEEP', public)
+AssertionError: 'ordinary=KEEP' not found in '{"summary": "{\\"evidence\\": \\"{\\\\\\"evidence\\\\\\": \\\\\\"token=[redacted]"}'
+
+======================================================================
+FAIL: test_escaped_backslash_at_secret_end_preserves_following_evidence (test_observation.ObservationTests) (trailing=4, depth=3)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo/tests/test_observation.py", line 168, in test_escaped_backslash_at_secret_end_preserves_following_evidence
+    self.assertIn('ordinary=KEEP', public)
+AssertionError: 'ordinary=KEEP' not found in '{"summary": "{\\"evidence\\": \\"{\\\\\\"evidence\\\\\\": \\\\\\"{\\\\\\\\\\\\\\"evidence\\\\\\\\\\\\\\": \\\\\\\\\\\\\\"token=[redacted]"}'
+
+======================================================================
+FAIL: test_escaped_backslash_at_secret_end_preserves_following_evidence (test_observation.ObservationTests) (trailing=4, depth=4)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo/tests/test_observation.py", line 168, in test_escaped_backslash_at_secret_end_preserves_following_evidence
+    self.assertIn('ordinary=KEEP', public)
+AssertionError: 'ordinary=KEEP' not found in '{"summary": "{\\"evidence\\": \\"{\\\\\\"evidence\\\\\\": \\\\\\"{\\\\\\\\\\\\\\"evidence\\\\\\\\\\\\\\": \\\\\\\\\\\\\\"{\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"evidence\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\": \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\"token=[redacted]"}'
+
+----------------------------------------------------------------------
+Ran 13 tests in 2.953s
+
+FAILED (failures=10)

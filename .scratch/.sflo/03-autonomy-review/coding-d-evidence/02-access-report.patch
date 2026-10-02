@@ -1,0 +1,232 @@
+--- a/README.md
++++ b/README.md
+@@ -1,3 +1,39 @@
+ # HTTP access report
+ 
+ Existing action routes is exposed through api.dispatch and python cli.py, accepting one JSON object on stdin and writing one JSON result.
++
++## Actions
++
++### routes (existing)
++
++`{"action": "routes", "entries": [...]}` returns the list of entry routes in input order.
++
++### report (new)
++
++`{"action": "report", "entries": [...], "min_requests": N}` summarizes access entries.
++
++- `entries`: at most 200 objects `{route, status, ms}` where `route` is a string of 1..100 code points, `status` is an integer 100..599, and `ms` is a nonnegative integer.
++- `min_requests`: integer 1..200.
++
++Entries are grouped by exact route. The result is a list sorted by route in Python string (code point) order; groups with fewer than `min_requests` entries are omitted. Each row is `{route, requests, errors, p95_ms}` where `errors` counts entries with `status >= 500`. `p95_ms` is the nearest-rank 95th percentile: sort the group's `ms` ascending and take the `ceil(0.95*n)`-th value counting from one; it is always an actual sample value, never a rounded or averaged interpolation. Empty `entries` yields `[]`.
++
++Example invocation:
++
++```
++echo '{"action":"report","min_requests":2,"entries":[{"route":"/a","status":500,"ms":10},{"route":"/a","status":200,"ms":20},{"route":"/b","status":200,"ms":5}]}' | python cli.py
++```
++
++Output:
++
++```
++[{"route": "/a", "requests": 2, "errors": 1, "p95_ms": 20}]
++```
++
++(`/b` is omitted because its single entry is below `min_requests`.)
++
++## Boundaries and error semantics
++
++- A group with exactly `min_requests` entries is included; one fewer is omitted.
++- For a group of size 1, `p95_ms` is that single `ms`; for size 2, it is the larger `ms`.
++- Unknown actions raise `ValueError`; the CLI prints the error message to stderr, writes nothing to stdout, and exits with code 2 (no traceback).
++- Input objects are never mutated, even when dispatch fails.
+--- a/api.py
++++ b/api.py
+@@ -2,4 +2,5 @@
+ def dispatch(payload):
+  action=payload["action"]
+  if action=='routes':return domain.legacy(payload)
++ if action=='report':return domain.report(payload)
+  raise ValueError("unknown action: "+str(action))
+--- a/cli.py
++++ b/cli.py
+@@ -1,4 +1,5 @@
+-import json,sys
++import json,sys,os
++sys.path.insert(0,os.path.dirname(os.path.abspath(__file__)))
+ from api import dispatch
+ def main():
+  try:result=dispatch(json.load(sys.stdin))
+--- a/domain.py
++++ b/domain.py
+@@ -1 +1,16 @@
+ def legacy(p):return [e['route'] for e in p['entries']]
++
++def report(p):
++    groups={}
++    for e in p['entries']:
++        groups.setdefault(e['route'],[]).append(e)
++    rows=[]
++    min_requests=p['min_requests']
++    for route in sorted(groups):
++        group=groups[route]
++        n=len(group)
++        if n<min_requests:continue
++        times=sorted(e['ms'] for e in group)
++        rank=(19*n+19)//20
++        rows.append({'route':route,'requests':n,'errors':sum(1 for e in group if e['status']>=500),'p95_ms':times[rank-1]})
++    return rows
+--- a/tests/test_report.py
++++ b/tests/test_report.py
+@@ -0,0 +1,151 @@
++import json
++import subprocess
++import sys
++import unittest
++import os
++
++ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
++
++from api import dispatch
++
++
++class ReportTests(unittest.TestCase):
++    def test_normal_report(self):
++        payload = {
++            "action": "report",
++            "min_requests": 2,
++            "entries": [
++                {"route": "/b", "status": 500, "ms": 30},
++                {"route": "/a", "status": 200, "ms": 10},
++                {"route": "/a", "status": 404, "ms": 20},
++                {"route": "/a", "status": 503, "ms": 90},
++                {"route": "/a", "status": 200, "ms": 80},
++                {"route": "/a", "status": 200, "ms": 70},
++                {"route": "/a", "status": 200, "ms": 60},
++                {"route": "/a", "status": 200, "ms": 50},
++                {"route": "/a", "status": 200, "ms": 40},
++                {"route": "/a", "status": 200, "ms": 30},
++                {"route": "/a", "status": 200, "ms": 25},
++                {"route": "/a", "status": 200, "ms": 24},
++                {"route": "/a", "status": 200, "ms": 23},
++                {"route": "/a", "status": 200, "ms": 22},
++                {"route": "/a", "status": 200, "ms": 21},
++                {"route": "/a", "status": 200, "ms": 19},
++                {"route": "/a", "status": 200, "ms": 18},
++                {"route": "/a", "status": 200, "ms": 17},
++                {"route": "/a", "status": 200, "ms": 16},
++                {"route": "/a", "status": 200, "ms": 15},
++                {"route": "/a", "status": 200, "ms": 14},
++            ],
++        }
++        result = dispatch(payload)
++        # /b has 1 entry < min_requests -> omitted; /a has 20 entries kept.
++        self.assertEqual(len(result), 1)
++        row = result[0]
++        self.assertEqual(row["route"], "/a")
++        self.assertEqual(row["requests"], 20)
++        self.assertEqual(row["errors"], 1)
++        # n=20 -> rank = ceil(0.95*20) = 19 -> 19th smallest ms
++        times = sorted(e["ms"] for e in payload["entries"] if e["route"] == "/a")
++        self.assertEqual(row["p95_ms"], times[18])
++        self.assertIsInstance(row["p95_ms"], int)
++        self.assertNotIsInstance(row["p95_ms"], bool)
++
++    def test_boundaries(self):
++        # min_requests boundary: group of exactly min_requests kept, one below omitted.
++        payload = {
++            "action": "report",
++            "min_requests": 3,
++            "entries": [
++                {"route": "/x", "status": 499, "ms": 5},
++                {"route": "/x", "status": 500, "ms": 1},
++                {"route": "/x", "status": 200, "ms": 3},
++                {"route": "/y", "status": 200, "ms": 7},
++                {"route": "/y", "status": 200, "ms": 8},
++            ],
++        }
++        result = dispatch(payload)
++        self.assertEqual(
++            result,
++            [{"route": "/x", "requests": 3, "errors": 1, "p95_ms": 5}],
++        )
++        # Empty entries yields [].
++        self.assertEqual(
++            dispatch({"action": "report", "min_requests": 1, "entries": []}), []
++        )
++        # n=1 -> rank ceil(0.95) = 1; p95 is an actual sample, never an average.
++        single = dispatch(
++            {
++                "action": "report",
++                "min_requests": 1,
++                "entries": [{"route": "/z", "status": 599, "ms": 42}],
++            }
++        )
++        self.assertEqual(single, [{"route": "/z", "requests": 1, "errors": 1, "p95_ms": 42}])
++        # n=2 -> rank ceil(1.9) = 2 -> larger value, not an interpolated mean.
++        pair = dispatch(
++            {
++                "action": "report",
++                "min_requests": 2,
++                "entries": [
++                    {"route": "/w", "status": 200, "ms": 1},
++                    {"route": "/w", "status": 200, "ms": 2},
++                ],
++            }
++        )
++        self.assertEqual(pair[0]["p95_ms"], 2)
++
++    def test_unknown_action_rejected(self):
++        with self.assertRaises(ValueError):
++            dispatch({"action": "nope", "entries": [], "min_requests": 1})
++
++    def test_input_not_mutated(self):
++        payload = {
++            "action": "report",
++            "min_requests": 1,
++            "entries": [{"route": "/a", "status": 500, "ms": 9}],
++        }
++        snapshot = json.dumps(payload, sort_keys=True)
++        result = dispatch(payload)
++        self.assertEqual(json.dumps(payload, sort_keys=True), snapshot)
++        # Output rows are fresh objects, not entry objects.
++        self.assertIsNot(result[0], payload["entries"][0])
++
++    def test_cli_value_error_exit_2(self):
++        proc = subprocess.run(
++            [sys.executable, "-B", "-I", "cli.py"],
++            input='{"action": "bogus"}',
++            capture_output=True,
++            text=True,
++            cwd=ROOT,
++        )
++        self.assertEqual(proc.returncode, 2)
++        self.assertNotEqual(proc.stderr, "")
++        self.assertNotIn("Traceback", proc.stderr)
++        self.assertEqual(proc.stdout, "")
++
++    def test_cli_report_json_roundtrip(self):
++        payload = {
++            "action": "report",
++            "min_requests": 1,
++            "entries": [{"route": "/b", "status": 200, "ms": 4}, {"route": "/a", "status": 500, "ms": 2}],
++        }
++        proc = subprocess.run(
++            [sys.executable, "-B", "-I", "cli.py"],
++            input=json.dumps(payload),
++            capture_output=True,
++            text=True,
++            cwd=ROOT,
++        )
++        self.assertEqual(proc.returncode, 0)
++        self.assertEqual(
++            json.loads(proc.stdout),
++            [
++                {"route": "/a", "requests": 1, "errors": 1, "p95_ms": 2},
++                {"route": "/b", "requests": 1, "errors": 0, "p95_ms": 4},
++            ],
++        )
++
++
++if __name__ == "__main__":
++    unittest.main()

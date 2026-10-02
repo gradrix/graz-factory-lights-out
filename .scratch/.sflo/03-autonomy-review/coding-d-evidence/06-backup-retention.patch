@@ -1,0 +1,180 @@
+--- a/README.md
++++ b/README.md
+@@ -1,3 +1,17 @@
+ # Daily backup retention plan
+ 
+-Existing action backup_ids is exposed through api.dispatch and python cli.py, accepting one JSON object on stdin and writing one JSON result.
++Existing action `backup_ids` is exposed through `api.dispatch` and `python cli.py`, accepting one JSON object on stdin and writing one JSON result.
++
++## Action `plan`
++
++Payload: `{"action":"plan","backups":[{"id":...,"service":...,"finished":"YYYY-MM-DDTHH:MM:SSZ"},...],"days":N}` where `N` is an integer 0..30. For each service independently, only the latest backup on each of its newest `N` distinct UTC calendar dates is kept; on one date the backup with the latest `finished` wins, and identical timestamps are resolved by the smallest `id` in Python string order. Result: `{"keep":[ids],"delete":[ids]}`, both lists in original backup input order. `days=0` deletes every backup; `days` larger than a service's distinct date count keeps one backup per date.
++
++Example invocation:
++
++```
++echo '{"action":"plan","days":1,"backups":[{"id":"a","service":"web","finished":"2024-01-05T10:00:00Z"},{"id":"b","service":"web","finished":"2024-01-04T10:00:00Z"}]}' | python cli.py
++```
++
++Prints `{"keep": ["a"], "delete": ["b"]}` on stdout with exit code 0.
++
++Boundary and error semantics: unknown actions raise `ValueError` from `api.dispatch`; the CLI then prints the error message to nonempty stderr, emits no traceback and no stdout, and exits with code 2. Input objects are never mutated, including on failure.
+--- a/api.py
++++ b/api.py
+@@ -2,4 +2,5 @@
+ def dispatch(payload):
+  action=payload["action"]
+  if action=='backup_ids':return domain.legacy(payload)
++ if action=='plan':return domain.plan(payload)
+  raise ValueError("unknown action: "+str(action))
+--- a/cli.py
++++ b/cli.py
+@@ -1,4 +1,5 @@
+-import json,sys
++import json,sys,os
++sys.path.insert(0,os.path.dirname(os.path.abspath(__file__)))
+ from api import dispatch
+ def main():
+  try:result=dispatch(json.load(sys.stdin))
+--- a/domain.py
++++ b/domain.py
+@@ -1 +1,19 @@
+ def legacy(p):return [b['id'] for b in p['backups']]
++
++def plan(p):
++    backups=p['backups']
++    days=p['days']
++    keep_ids=set()
++    by_service={}
++    for b in backups:
++        by_service.setdefault(b['service'],[]).append(b)
++    for items in by_service.values():
++        by_date={}
++        for b in items:
++            by_date.setdefault(b['finished'][:10],[]).append(b)
++        for date in sorted(by_date,reverse=True)[:days]:
++            candidates=by_date[date]
++            latest=max(b['finished'] for b in candidates)
++            best=min((b for b in candidates if b['finished']==latest),key=lambda b:b['id'])
++            keep_ids.add(best['id'])
++    return {'keep':[b['id'] for b in backups if b['id'] in keep_ids],'delete':[b['id'] for b in backups if b['id'] not in keep_ids]}
+--- a/tests/test_plan.py
++++ b/tests/test_plan.py
+@@ -0,0 +1,117 @@
++import json
++import subprocess
++import unittest
++
++from api import dispatch
++
++
++class PlanNormalCase(unittest.TestCase):
++    def test_normal_case_multiple_services(self):
++        payload = {
++            "action": "plan",
++            "days": 2,
++            "backups": [
++                {"id": "a1", "service": "web", "finished": "2024-01-05T10:00:00Z"},
++                {"id": "a2", "service": "web", "finished": "2024-01-04T10:00:00Z"},
++                {"id": "a3", "service": "web", "finished": "2024-01-03T10:00:00Z"},
++                {"id": "b1", "service": "db", "finished": "2024-01-02T08:00:00Z"},
++                {"id": "b2", "service": "db", "finished": "2024-01-05T09:00:00Z"},
++            ],
++        }
++        result = dispatch(payload)
++        # web keeps newest two dates (01-05, 01-04); db keeps its only two dates
++        self.assertEqual(result, {"keep": ["a1", "a2", "b1", "b2"], "delete": ["a3"]})
++        # both lists must follow original input order
++        ids_in_order = [b["id"] for b in payload["backups"]]
++        for key in ("keep", "delete"):
++            self.assertEqual(result[key], [i for i in ids_in_order if i in set(result[key])])
++
++
++class PlanBoundaries(unittest.TestCase):
++    def test_days_zero_deletes_all(self):
++        payload = {
++            "action": "plan",
++            "days": 0,
++            "backups": [
++                {"id": "x", "service": "web", "finished": "2024-01-05T10:00:00Z"},
++                {"id": "y", "service": "web", "finished": "2024-01-04T10:00:00Z"},
++            ],
++        }
++        result = dispatch(payload)
++        self.assertEqual(result, {"keep": [], "delete": ["x", "y"]})
++
++    def test_days_above_distinct_dates_keeps_one_per_date(self):
++        payload = {
++            "action": "plan",
++            "days": 30,
++            "backups": [
++                {"id": "p", "service": "web", "finished": "2024-01-05T10:00:00Z"},
++                {"id": "q", "service": "web", "finished": "2024-01-05T23:59:59Z"},
++                {"id": "r", "service": "web", "finished": "2000-01-01T00:00:00Z"},
++            ],
++        }
++        result = dispatch(payload)
++        # one kept per date: latest on 01-05 is q (23:59:59), r is only backup on 01-01
++        self.assertEqual(result, {"keep": ["q", "r"], "delete": ["p"]})
++
++    def test_identical_timestamps_keep_smallest_id(self):
++        payload = {
++            "action": "plan",
++            "days": 1,
++            "backups": [
++                {"id": "zz", "service": "web", "finished": "2024-01-05T10:00:00Z"},
++                {"id": "aa", "service": "web", "finished": "2024-01-05T10:00:00Z"},
++                {"id": "mm", "service": "web", "finished": "2024-01-05T10:00:00Z"},
++            ],
++        }
++        result = dispatch(payload)
++        self.assertEqual(result, {"keep": ["aa"], "delete": ["zz", "mm"]})
++
++    def test_input_not_mutated(self):
++        payload = {
++            "action": "plan",
++            "days": 1,
++            "backups": [{"id": "a", "service": "web", "finished": "2024-01-05T10:00:00Z"}],
++        }
++        snapshot = json.dumps(payload, sort_keys=True)
++        dispatch(payload)
++        self.assertEqual(json.dumps(payload, sort_keys=True), snapshot)
++
++
++class CliErrors(unittest.TestCase):
++    def test_unknown_action_raises_value_error(self):
++        with self.assertRaises(ValueError):
++            dispatch({"action": "nope", "backups": [], "days": 0})
++
++    def test_cli_exit_2_on_unknown_action(self):
++        proc = subprocess.run(
++            ["python", "-B", "-I", "cli.py"],
++            input=json.dumps({"action": "nope"}),
++            capture_output=True,
++            text=True,
++
++        )
++        self.assertEqual(proc.returncode, 2)
++        self.assertNotEqual(proc.stderr.strip(), "")
++        self.assertNotIn("Traceback", proc.stderr)
++        self.assertEqual(proc.stdout, "")
++
++    def test_cli_success_json_roundtrip(self):
++        payload = {
++            "action": "plan",
++            "days": 1,
++            "backups": [{"id": "a", "service": "web", "finished": "2024-01-05T10:00:00Z"}],
++        }
++        proc = subprocess.run(
++            ["python", "-B", "-I", "cli.py"],
++            input=json.dumps(payload),
++            capture_output=True,
++            text=True,
++
++        )
++        self.assertEqual(proc.returncode, 0)
++        self.assertEqual(json.loads(proc.stdout), {"keep": ["a"], "delete": []})
++
++
++if __name__ == "__main__":
++    unittest.main()

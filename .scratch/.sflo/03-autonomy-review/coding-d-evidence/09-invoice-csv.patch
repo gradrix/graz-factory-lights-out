@@ -1,0 +1,211 @@
+--- a/README.md
++++ b/README.md
+@@ -1,3 +1,22 @@
+ # Invoice CSV exporter
+ 
+-Existing action invoice_ids is exposed through api.dispatch and python cli.py, accepting one JSON object on stdin and writing one JSON result.
++Two actions are exposed through `api.dispatch` and `python cli.py`, accepting one JSON object on stdin and writing one result on stdout.
++
++## Actions
++
++- `invoice_ids`: returns a JSON list of the invoice ids (existing action, unchanged).
++- `export`: returns a CSV string with header `id,customer,total` and one row per invoice, in input order. `total` is the exact sum of `quantity * unit_cents` per invoice, printed in currency units with exactly two fractional digits and no thousands separator (an empty `items` list totals `0.00`). Standard CSV quoting applies: fields containing a comma, double quote, carriage return or newline are quoted, and embedded quotes are doubled. Every record, including the header and the final row, ends with CRLF. Empty `invoices` still returns the header. Text is emitted verbatim (no normalization).
++
++Input bounds: at most 100 invoices, at most 100 items each, `quantity` 0..1000, `unit_cents` 0..1000000, `id`/`customer` up to 200 code points. Input objects are never mutated, even on failure.
++
++## CLI usage
++
++```
++echo '{"action":"export","invoices":[{"id":"a1","customer":"Acme, Co","items":[{"quantity":2,"unit_cents":1550}]}]}' | python cli.py
++```
++
++Prints the result as a JSON string on stdout — `"id,customer,total\\r\\na1,\"Acme, Co\",31.00\\r\\n"` — and exits 0 (the CLI keeps JSON stdin/stdout routing: the CSV string is JSON-encoded).
++
++Errors: an unknown `action` raises `ValueError`; the CLI prints the message to stderr, writes nothing to stdout, and exits with code 2 (no traceback). Boundary semantics: empty `invoices` yields only the header row; maximum totals are exact (e.g. 100 items of 1000 x 1000000 cents render as `1000000000.00`).
++
++Tests: `python -m unittest discover`.
+--- a/api.py
++++ b/api.py
+@@ -1,5 +1,9 @@
+ import domain
++
+ def dispatch(payload):
+- action=payload["action"]
+- if action=='invoice_ids':return domain.legacy(payload)
+- raise ValueError("unknown action: "+str(action))
++    action = payload["action"]
++    if action == 'invoice_ids':
++        return domain.legacy(payload)
++    if action == 'export':
++        return domain.invoices_list(payload)
++    raise ValueError("unknown action: " + str(action))
+--- a/cli.py
++++ b/cli.py
+@@ -1,8 +1,18 @@
+-import json,sys
++import json
++import os
++import sys
++
++sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+ from api import dispatch
++
+ def main():
+- try:result=dispatch(json.load(sys.stdin))
+- except ValueError as error:
+-  print(str(error),file=sys.stderr);return 2
+- print(json.dumps(result,ensure_ascii=False));return 0
+-if __name__=='__main__':raise SystemExit(main())
++    try:
++        result = dispatch(json.load(sys.stdin))
++    except ValueError as error:
++        print(str(error), file=sys.stderr)
++        return 2
++    print(json.dumps(result, ensure_ascii=False))
++    return 0
++
++if __name__ == '__main__':
++    raise SystemExit(main())
+--- a/domain.py
++++ b/domain.py
+@@ -1 +1,42 @@
+-def legacy(p):return [x['id'] for x in p['invoices']]
++"""Domain actions for the invoice exporter."""
++
++def legacy(payload):
++    return [x['id'] for x in payload['invoices']]
++
++def _encode(value):
++    """Encode a str/bool/int/float exactly as parsed from JSON input."""
++    if value is True or value is False:
++        return 'true' if value else 'false'
++    if isinstance(value, str):
++        return value
++    if isinstance(value, int):
++        return repr(value)
++    if isinstance(value, float):
++        return _json_float(value)
++    return str(value)
++
++def _json_float(value):
++    import json
++    return json.dumps(value, ensure_ascii=False, allow_nan=False)
++
++def _quote(field):
++    if any(c in field for c in ',"\r\n'):
++        return '"' + field.replace('"', '""') + '"'
++    return field
++
++def invoices_list(payload):
++    """Render payload['invoices'] as a CSV string (header + one row per invoice).
++
++    total is the exact sum of quantity*unit_cents (cents), printed in currency
++    units with exactly two fractional digits. Text fields are emitted verbatim
++    (no normalization) with standard CSV quoting; every record ends with CRLF.
++    """
++    lines = ['id,customer,total\r\n']
++    for invoice in payload['invoices']:
++        cents = 0
++        for item in invoice['items']:
++            cents += item['quantity'] * item['unit_cents']
++        total = str(cents // 100) + '.' + str(cents % 100).zfill(2)
++        fields = (_encode(invoice['id']), _encode(invoice['customer']), total)
++        lines.append(','.join(_quote(f) for f in fields) + '\r\n')
++    return ''.join(lines)
+--- a/tests/test_domain.py
++++ b/tests/test_domain.py
+@@ -0,0 +1,94 @@
++import json
++import subprocess
++import unittest
++import copy
++
++import api
++import domain
++
++
++class ExportTests(unittest.TestCase):
++    def test_invoices_list_normal(self):
++        payload = {
++            "action": "export",
++            "invoices": [
++                {"id": "a1", "customer": "Acme, Co",
++                 "items": [{"quantity": 2, "unit_cents": 1550},
++                           {"quantity": 0, "unit_cents": 999}]},
++                {"id": 'q"1', "customer": "line\nbreak", "items": []},
++            ],
++        }
++        original = copy.deepcopy(payload)
++        csv = api.dispatch(payload)
++        self.assertEqual(payload, original)  # input never mutated
++        self.assertEqual(
++            csv,
++            'id,customer,total\r\n'
++            'a1,"Acme, Co",31.00\r\n'
++            '"q""1","line\nbreak",0.00\r\n')
++
++    def test_boundaries(self):
++        # Empty invoices still returns the header (with trailing CRLF).
++        empty = api.dispatch({"action": "export", "invoices": []})
++        self.assertEqual(empty, "id,customer,total\r\n")
++        # Max quantity/unit_cents: 100 items * 1000 * 1000000 cents = exact.
++        big = api.dispatch({
++            "action": "export",
++            "invoices": [{
++                "id": "x", "customer": "c",
++                "items": [{"quantity": 1000, "unit_cents": 1000000}] * 100,
++            }],
++        })
++        self.assertEqual(
++            big,
++            'id,customer,total\r\n'
++            'x,c,1000000000.00\r\n')
++        # 100 invoices boundary: every row present, input order preserved.
++        many = api.dispatch({
++            "action": "export",
++            "invoices": [{"id": str(i), "customer": "c", "items": []}
++                         for i in range(100)],
++        })
++        rows = many.split("\r\n")
++        self.assertEqual(rows[0], "id,customer,total")
++        self.assertEqual(len(rows), 102)  # header + 100 rows + trailing ''
++        self.assertEqual(rows[1], "0,c,0.00")
++        self.assertEqual(rows[100], "99,c,0.00")
++
++    def test_unknown_action_rejected(self):
++        for action in ("nope", "invoices:list "):
++            with self.assertRaises(ValueError) as raised:
++                api.dispatch({"action": action, "invoices": []})
++            self.assertEqual(str(raised.exception), "unknown action: " + action)
++
++    def test_cli_json_behavior(self):
++        payload = {"action": "export",
++                   "invoices": [{"id": "a,b", "customer": 'C"R',
++                                 "items": [{"quantity": 1, "unit_cents": 5}]}]}
++        proc = subprocess.run(
++            ["python", "-B", "-I", "cli.py"],
++            input=json.dumps(payload).encode(),
++            capture_output=True, cwd=".", timeout=30)
++        self.assertEqual(proc.returncode, 0)
++        expected_csv = 'id,customer,total\r\n"a,b","C""R",0.05\r\n'
++        self.assertEqual(proc.stdout,
++                         (json.dumps(expected_csv, ensure_ascii=False) + "\n").encode())
++        self.assertEqual(proc.stderr, b"")
++        bad = subprocess.run(
++            ["python", "-B", "-I", "cli.py"],
++            input=json.dumps({"action": "bogus"}).encode(),
++            capture_output=True, cwd=".", timeout=30)
++        self.assertEqual(bad.returncode, 2)
++        self.assertEqual(bad.stderr, b"unknown action: bogus\n")
++        self.assertEqual(bad.stdout, b"")
++
++    def test_legacy_action_preserved(self):
++        payload = {"action": "invoice_ids",
++                   "invoices": [{"id": "z"}, {"id": "y"}]}
++        original = copy.deepcopy(payload)
++        self.assertEqual(api.dispatch(payload), ["z", "y"])
++        self.assertEqual(payload, original)
++
++
++if __name__ == "__main__":
++    unittest.main()

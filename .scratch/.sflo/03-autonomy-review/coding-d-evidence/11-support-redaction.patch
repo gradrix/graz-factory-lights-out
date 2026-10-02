@@ -1,0 +1,194 @@
+--- a/README.md
++++ b/README.md
+@@ -1,3 +1,31 @@
+ # Support bundle redaction
+ 
+-Existing action root_kind is exposed through api.dispatch and python cli.py, accepting one JSON object on stdin and writing one JSON result.
++Actions are exposed through `api.dispatch` and `python cli.py`, accepting one JSON object on stdin and writing one JSON result to stdout.
++
++## Actions
++
++### root_kind
++
++Returns `"object"`, `"array"`, or `"scalar"` for `payload["document"]`.
++
++### redact
++
++Input fields:
++
++- `document`: any JSON value (null, booleans, integers, strings, arrays, string-keyed objects), nesting depth at most 10 and at most 500 values total; no floats.
++- `keys`: list of at most 50 strings.
++- `replacement`: a scalar JSON value (null, boolean, integer with magnitude at most 10**12, or string).
++
++Returns a deep copy of `document` in which every object member whose key matches a listed key case-insensitively (Python `str.casefold()`, no whitespace stripping) has its entire value replaced by `replacement`. Replacement happens at any depth; the replaced value is not traversed further. Arrays are traversed, scalars stay unchanged, object keys and array order are preserved, and untouched values keep exact types (booleans are not integers). Input objects are never mutated and no returned mutable container aliases an input container.
++
++Example invocation:
++
++```
++echo '{"action":"redact","document":{"Secret":{"a":[1,true]},"keep":{"secret":99}},"keys":["secret"],"replacement":null}' | python cli.py
++```
++
++prints `{"Secret": null, "keep": {"secret": null}}`.
++
++## Boundaries and errors
++
++Depth 10 and 500 values are the maximum accepted document shapes; empty `keys` yields an unchanged deep copy. An unknown `action` raises `ValueError` in `api.dispatch`; the CLI prints the error message to stderr, writes nothing to stdout, and exits with status 2 (no traceback).
+--- a/api.py
++++ b/api.py
+@@ -2,4 +2,5 @@
+ def dispatch(payload):
+  action=payload["action"]
+  if action=='root_kind':return domain.legacy(payload)
++ if action=='redact':return domain.redact(payload)
+  raise ValueError("unknown action: "+str(action))
+--- a/domain.py
++++ b/domain.py
+@@ -1,3 +1,17 @@
+ def legacy(p):
+  v=p['document']
+  return 'object' if isinstance(v,dict) else 'array' if isinstance(v,list) else 'scalar'
++
++def redact(p):
++ folded={k.casefold() for k in p['keys']}
++ return _redact_value(p['document'],folded,p['replacement'])
++
++def _redact_value(value,folded,replacement):
++ if isinstance(value,dict):
++  result={}
++  for key,child in value.items():
++   result[key]=replacement if key.casefold() in folded else _redact_value(child,folded,replacement)
++  return result
++ if isinstance(value,list):
++  return [_redact_value(child,folded,replacement) for child in value]
++ return value
+--- a/tests/test_redact.py
++++ b/tests/test_redact.py
+@@ -0,0 +1,128 @@
++import os
++import subprocess
++import sys
++import unittest
++
++from api import dispatch
++
++
++def count_values(value):
++    total = 1
++    if isinstance(value, dict):
++        for child in value.values():
++            total += count_values(child)
++    elif isinstance(value, list):
++        for child in value:
++            total += count_values(child)
++    return total
++
++
++def depth(value):
++    if isinstance(value, dict):
++        return 1 + max((depth(c) for c in value.values()), default=0)
++    if isinstance(value, list):
++        return 1 + max((depth(c) for c in value), default=0)
++    return 1
++
++
++class RedactTests(unittest.TestCase):
++    def test_redact_normal_case(self):
++        document = {
++            "Name": "top",
++            "secret": {"Inner": [1, True, None]},
++            "keep": {"SECRET": "x", "nested": [{"secret": [2], "other": "y"}]},
++        }
++        result = dispatch({
++            "action": "redact",
++            "document": document,
++            "keys": ["secret"],
++            "replacement": None,
++        })
++        self.assertEqual(
++            result,
++            {
++                "Name": "top",
++                "secret": None,
++                "keep": {"SECRET": None, "nested": [{"secret": None, "other": "y"}]},
++            },
++        )
++        # input is not mutated
++        self.assertEqual(document["secret"], {"Inner": [1, True, None]})
++        # returned containers are fresh copies, never aliased to input containers
++        self.assertIsNot(result, document)
++        self.assertIsNot(result["keep"], document["keep"])
++        self.assertIsNot(result["keep"]["nested"], document["keep"]["nested"])
++        # a matched member's whole value is replaced, not traversed further
++        deep = {"a": {"secret": {"secret": 1}}, "secret": {"b": [{"secret": 2}]}}
++        out = dispatch({"action": "redact", "document": deep, "keys": ["secret"], "replacement": "R"})
++        self.assertEqual(out, {"a": {"secret": "R"}, "secret": "R"})
++        # casefold matching without whitespace stripping; SS matches ss,
++        # " secret " does not match " secret", strasse does not match ss
++        out2 = dispatch({
++            "action": "redact",
++            "document": {"SS": 1, " secret ": 2, "STRASSE": 4},
++            "keys": ["ss", " secret"],
++            "replacement": 0,
++        })
++        self.assertEqual(out2, {"SS": 0, " secret ": 2, "STRASSE": 4})
++
++    def test_redact_boundaries(self):
++        # depth exactly 10: matching key at the deepest level is redacted
++        inner = {"Secret": "deep"}
++        for i in range(8, 0, -1):
++            inner = {"k%d" % i: inner}
++        self.assertEqual(depth(inner), 10)
++        out = dispatch({"action": "redact", "document": inner, "keys": ["secret"], "replacement": -10**12})
++        self.assertEqual(count_values(out), count_values(inner))
++        self.assertEqual(depth(out), 10)
++        probe = out
++        for i in range(1, 9):
++            probe = probe["k%d" % i]
++        self.assertEqual(probe, {"Secret": -10**12})
++        # exactly 500 values (document + 499 scalars) with 50 keys still works
++        big = {"k%d" % i: [i] * 9 for i in range(50)}
++        self.assertEqual(count_values(big), 50 + 50 * 9 + 1)
++        copy = dispatch({"action": "redact", "document": big, "keys": [], "replacement": True})
++        self.assertEqual(copy, big)
++        self.assertIsNot(copy, big)
++        # exact types of untouched values are preserved: booleans stay booleans
++        typed = {"t": True, "f": False, "one": 1, "s": "1", "n": None, "keep": {"t": True}}
++        out3 = dispatch({"action": "redact", "document": typed, "keys": ["missing"], "replacement": 0})
++        self.assertEqual(out3, typed)
++        self.assertIs(out3["t"], True)
++        self.assertIs(out3["f"], False)
++        self.assertNotEqual(type(out3["t"]), type(out3["one"]))
++
++    def test_unknown_action_rejected(self):
++        with self.assertRaises(ValueError) as ctx:
++            dispatch({"action": "nope", "document": 1})
++        self.assertEqual(str(ctx.exception), "unknown action: nope")
++        root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
++        proc = subprocess.run(
++            [sys.executable, "cli.py"],
++            cwd=root,
++            input='{"action": "nope"}',
++            capture_output=True,
++            text=True,
++            timeout=30,
++        )
++        self.assertEqual(proc.returncode, 2)
++        self.assertEqual(proc.stdout, "")
++        self.assertIn("unknown action: nope", proc.stderr)
++        self.assertNotIn("Traceback", proc.stderr)
++        # documented existing action still works through the CLI
++        proc2 = subprocess.run(
++            [sys.executable, "cli.py"],
++            cwd=root,
++            input='{"action": "root_kind", "document": [1, 2]}',
++            capture_output=True,
++            text=True,
++            timeout=30,
++        )
++        self.assertEqual(proc2.returncode, 0)
++        self.assertEqual(proc2.stdout.strip(), '"array"')
++        self.assertEqual(proc2.stderr, "")
++
++
++if __name__ == "__main__":
++    unittest.main()

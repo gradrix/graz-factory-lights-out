@@ -6,10 +6,10 @@ Contract: sha256:dc3142601c442941057ce3167b9b9c7e8228fab75db914449c53d4645be5543
 
 ## Execution
 
-Status: active — resumed qualification
+Status: accepted
 Owner: /root
-Candidate: 4346ba5; rig trial source hashes verified in coding-d-runtime.json
-Next: complete frozen cohort D with medium coder reasoning and Python 3.12.13; independent semantic QA monitors terminal outputs. No stage3 mutation before acceptance.
+Candidate: 3bd8ae2; completed model cohort remains bound to4346ba5 in coding-d-runtime.json
+Next: promote qualified rig configuration and start linked supported-environments unit.
 
 ## Checks and repairs
 
@@ -62,3 +62,17 @@ Candidate4346ba5 adds the bounded coder budget, structure-preserving redaction, 
 Unused D started on4346ba5 with dedicated private config (medium, approvedfb1118 image); serving remains Flash131072. Manifestda7a8d364c326a61bb8c22f0873188c0498d98213a676c23107c1d730a143d0b. Actual runtime preflight passed before first model request. Rig state .gflo/stage2-coding-d; ops runner process observed through exec session74430. Three attempts,24turns,900seconds per task. All12 plus ambiguity and independent semantic evaluation remain required. No product/prompt edits during this batch. Default user config remains unchanged pending qualification.
 
 Read-only D observer is live on rig127.0.0.1:8787 as transient user unit gflo-qualification-view.service. This checkout forwards local127.0.0.1:8787 through SSH control socket .gflo/qualification-observer-ssh. API readback showed accepted completed runs and live model_wait for the active task. No LAN/public listener was enabled. Stop only these task-owned observers if cleaning up: rig systemctl --user stop gflo-qualification-view; local ssh -S /home/gradrix/repos/gflo/.gflo/qualification-observer-ssh -O exit monster-gaming-pc.lan.
+
+Independent D semantic QA through task07 finds no critical accepted requirement miss. Task05 generated CLI tests assume /workspace (noncritical portability limitation). Task06 accepted after repair, but independent evidence proves the reviewer finding was false: Python max retains the first equal maximum, so the original sorted expression already met tie-breaking. Record an unnecessary repair and unsupported critical severity, not useful defect detection. Evidence: coding-d-evidence/06-backup-retention-review-false-positive.json. D continues unchanged.
+
+Observer continuation check: rig user unit remained active, but the original dedicated local SSH tunnel socket was gone. Restored the loopback forward through the existing SSH multiplex master with `ssh -N -L 127.0.0.1:8787:127.0.0.1:8787 -o BatchMode=yes -o ExitOnForwardFailure=yes monster-gaming-pc.lan`; local API readback passed. Remove only this forward with `ssh -O cancel -L 127.0.0.1:8787:127.0.0.1:8787 monster-gaming-pc.lan`, preserving the shared master.
+
+D09 accepted on attempt2 after606.65s: the original generated test expected raw CSV despite the JSON CLI contract; final code/tests pass independent runc checks. README double-escaped CRLF is a noncritical accepted documentation defect (coding-d-evidence/09-invoice-csv-readme.json). Independent loop continuity assessment qa-review-loop-continuity.md confirms unchanged reviewer/controller mechanisms and14 current regressions; older genuine B11 evidence remains explicitly labeled by its original profile. Separate synthetic nested-JSON redaction leak is reproduced in qa-nested-verdict-redaction.md; repair is required after D completes and before promotion, without changing model inputs.
+
+Frozen D4346 completed12/12 with repeated executable checks passing; refund-policy ambiguity stopped needs_input. Independent semantic QA is finalizing minor defects and question wording limits. Collected coding-d.json and coding-d-model-metrics.json:182coder responses,27628max prompt,65.757median generationtokens/s,2910.67taskseconds,565valid trajectorylines. Post-batch privacy repair in progress: nested escaped quoted values reproduced failing worker-trace regression; delimiter-depth scrub now passes20focused worker/observer checks while preserving original model input/private artifacts. Full regression gate and fresh independent privacy QA precede promotion. No model/prompt/runtime-execution changes in this repair.
+
+Privacy repair candidate89d66ea is frozen for independent qa_resume recheck. Builder gate:59tests passing in15.482s,88%coverage (coverage-nested-redaction.txt). Only observe.redact and two behavior regressions changed; model request construction and execution remain identical toD4346. Original synthetic failure and red/green evidence are preserved.
+
+## Accepted closure
+
+D12/12 and correct ambiguity stop passed independent semantic QA (qa-coding-d.md). Minor documentation, portability, unnecessary-validation and question-wording defects remain recorded; D06 is a false-positive review. Reviewer/controller continuity is independently established without relabeling old model trials. Final privacy candidateb0342cc closes both nested leakage and trailing-backslash over-redaction:30privacycases,15terminatorcontrols,5internal-quote discriminators and21regressions passed (qa-nested-verdict-parity-recheck.md). Promotion3bd8ae2 selects the already-tested3.12.13 image and medium example config;8 affected sandbox/runtime-guard checks pass. Acceptance scope is the frozen small qualification contract, not large-project autonomy. Stage3 may now start.

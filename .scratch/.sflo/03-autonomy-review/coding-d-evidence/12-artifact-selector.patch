@@ -1,0 +1,184 @@
+--- a/README.md
++++ b/README.md
+@@ -1,3 +1,19 @@
+ # Release artifact selector
+ 
+-Existing action artifact_ids is exposed through api.dispatch and python cli.py, accepting one JSON object on stdin and writing one JSON result.
++Actions are dispatched through `api.dispatch(payload)` and `python cli.py`, which accepts one JSON object on stdin and writes one JSON result to stdout.
++
++## Actions
++
++- `artifact_ids` (existing): returns the list of `id` values from `payload["artifacts"]`.
++- `select` (new): requires `artifacts` (a list of at most 200 objects, each with `id` — a unique nonempty string — `platform` string, `version` string, `yanked` boolean), `platform` string, and `major` integer 0..1000. An artifact is eligible when its platform matches exactly, its version's major component equals `major`, and `yanked` is `false`. Versions are exactly three unsigned ASCII decimal components `major.minor.patch` (each 0..1000, no leading zeros except a lone `0`), with no prerelease or build suffix. `select` returns `{"id": ..., "version": ...}` for the numerically greatest `(major, minor, patch)` — so `2.10.0` beats `2.9.9` — breaking equal-version ties by the smallest `id` in Python string order; input order never breaks ties. It returns `null` (JSON `null`) when no eligible artifact exists. The returned `version` preserves the input spelling, and input objects are never mutated, even on failure.
++
++## CLI usage
++
++    echo '{"action":"select","platform":"linux","major":2,"artifacts":[{"id":"b","platform":"linux","version":"2.10.3","yanked":false},{"id":"a","platform":"linux","version":"2.10.3","yanked":false}]}' | python cli.py
++
++Prints `{"id": "a", "version": "2.10.3"}` and exits 0.
++
++## Boundary and error semantics
++
++- Boundary values: `major` and each version component may be `0` or `1000`; empty `artifacts` yields `null`.
++- Unknown action: `api.dispatch` raises `ValueError`; the CLI prints the error message to stderr, prints nothing on stdout, and exits with code 2 (no traceback).
+--- a/api.py
++++ b/api.py
+@@ -2,4 +2,5 @@
+ def dispatch(payload):
+  action=payload["action"]
+  if action=='artifact_ids':return domain.legacy(payload)
++ if action=='select':return domain.select(payload)
+  raise ValueError("unknown action: "+str(action))
+--- a/domain.py
++++ b/domain.py
+@@ -1 +1,20 @@
+ def legacy(p):return [a['id'] for a in p['artifacts']]
++
++
++def _version_tuple(version):
++    major,minor,patch=version.split('.')
++    return (int(major),int(minor),int(patch))
++
++def select(p):
++    best=None
++    best_key=None
++    for a in p['artifacts']:
++        if a['platform']!=p['platform']:continue
++        if a['yanked'] is not False:continue
++        key=_version_tuple(a['version'])
++        if key[0]!=p['major']:continue
++        if best is None or key>best_key or (key==best_key and a['id']<best['id']):
++            best=a
++            best_key=key
++    if best is None:return None
++    return {'id':best['id'],'version':best['version']}
+--- a/tests/test_select.py
++++ b/tests/test_select.py
+@@ -0,0 +1,127 @@
++import json
++import subprocess
++import unittest
++from api import dispatch
++
++
++class SelectActionTests(unittest.TestCase):
++    def test_select_normal_case(self):
++        payload = {
++            "action": "select",
++            "platform": "linux",
++            "major": 2,
++            "artifacts": [
++                {"id": "b", "platform": "linux", "version": "2.10.3", "yanked": False},
++                {"id": "c", "platform": "linux", "version": "2.9.9", "yanked": False},
++                {"id": "d", "platform": "win", "version": "2.9.9", "yanked": False},
++                {"id": "e", "platform": "linux", "version": "3.0.0", "yanked": False},
++                {"id": "f", "platform": "linux", "version": "2.10.3", "yanked": True},
++            ],
++        }
++        original = json.loads(json.dumps(payload))
++        result = dispatch(payload)
++        self.assertEqual(result, {"id": "b", "version": "2.10.3"})
++        self.assertEqual(payload, original)
++
++    def test_select_boundary_versions_and_major_bounds(self):
++        payload = {
++            "action": "select",
++            "platform": "linux",
++            "major": 1000,
++            "artifacts": [
++                {"id": "hi", "platform": "linux", "version": "1000.1000.1000", "yanked": False},
++                {"id": "lo", "platform": "linux", "version": "0.0.0", "yanked": False},
++            ],
++        }
++        self.assertEqual(
++            dispatch(payload), {"id": "hi", "version": "1000.1000.1000"}
++        )
++        payload = {
++            "action": "select",
++            "platform": "linux",
++            "major": 0,
++            "artifacts": [
++                {"id": "hi", "platform": "linux", "version": "1000.1000.1000", "yanked": False},
++                {"id": "lo", "platform": "linux", "version": "0.0.0", "yanked": False},
++            ],
++        }
++        self.assertEqual(dispatch(payload), {"id": "lo", "version": "0.0.0"})
++
++    def test_select_numeric_minor_ordering(self):
++        payload = {
++            "action": "select",
++            "platform": "linux",
++            "major": 2,
++            "artifacts": [
++                {"id": "nine", "platform": "linux", "version": "2.9.9", "yanked": False},
++                {"id": "ten", "platform": "linux", "version": "2.10.0", "yanked": False},
++            ],
++        }
++        self.assertEqual(dispatch(payload), {"id": "ten", "version": "2.10.0"})
++
++    def test_select_tie_break_smallest_id_regardless_of_input_order(self):
++        a = {"id": "a", "platform": "linux", "version": "2.1.1", "yanked": False}
++        b = {"id": "B", "platform": "linux", "version": "2.1.1", "yanked": False}
++        c = {"id": "z9", "platform": "linux", "version": "2.1.1", "yanked": False}
++        base = {"action": "select", "platform": "linux", "major": 2}
++        for order in ([a, b, c], [c, b, a], [b, c, a]):
++            payload = dict(base, artifacts=order)
++            self.assertEqual(dispatch(payload), {"id": "B", "version": "2.1.1"})
++
++    def test_select_returns_null_when_no_eligible_artifact(self):
++        payload = {
++            "action": "select",
++            "platform": "linux",
++            "major": 2,
++            "artifacts": [
++                {"id": "d", "platform": "win", "version": "2.9.9", "yanked": False},
++                {"id": "e", "platform": "linux", "version": "3.0.0", "yanked": False},
++                {"id": "f", "platform": "linux", "version": "2.10.3", "yanked": True},
++            ],
++        }
++        self.assertIsNone(dispatch(payload))
++        self.assertIsNone(dispatch({"action": "select", "platform": "linux", "major": 0, "artifacts": []}))
++
++    def test_existing_action_artifact_ids_preserved(self):
++        payload = {"action": "artifact_ids", "artifacts": [{"id": "x"}, {"id": "y"}]}
++        self.assertEqual(dispatch(payload), ["x", "y"])
++
++    def test_unknown_action_raises_value_error(self):
++        with self.assertRaises(ValueError):
++            dispatch({"action": "nope"})
++
++    def test_cli_success_json_stdout_exit_zero(self):
++        payload = {
++            "action": "select",
++            "platform": "linux",
++            "major": 2,
++            "artifacts": [
++                {"id": "b", "platform": "linux", "version": "2.10.3", "yanked": False},
++                {"id": "a", "platform": "linux", "version": "2.10.3", "yanked": False},
++            ],
++        }
++        proc = subprocess.run(
++            ["python", "cli.py"],
++            input=json.dumps(payload),
++            capture_output=True,
++            text=True,
++        )
++        self.assertEqual(proc.returncode, 0)
++        self.assertEqual(proc.stderr, "")
++        self.assertEqual(json.loads(proc.stdout), {"id": "a", "version": "2.10.3"})
++
++    def test_cli_value_error_exit_two_nonempty_stderr_no_traceback(self):
++        proc = subprocess.run(
++            ["python", "cli.py"],
++            input=json.dumps({"action": "nope"}),
++            capture_output=True,
++            text=True,
++        )
++        self.assertEqual(proc.returncode, 2)
++        self.assertTrue(proc.stderr)
++        self.assertNotIn("Traceback", proc.stderr)
++        self.assertEqual(proc.stdout, "")
++
++
++if __name__ == "__main__":
++    unittest.main()

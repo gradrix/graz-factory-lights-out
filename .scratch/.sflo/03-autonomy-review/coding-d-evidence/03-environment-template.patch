@@ -1,0 +1,157 @@
+--- a/README.md
++++ b/README.md
+@@ -1,3 +1,21 @@
+ # Environment template renderer
+ 
+-Existing action variable_names is exposed through api.dispatch and python cli.py, accepting one JSON object on stdin and writing one JSON result.
++Existing action `variable_names` is exposed through `api.dispatch` and `python cli.py`, accepting one JSON object on stdin and writing one JSON result.
++
++## Action `render`
++
++Payload: `{"action": "render", "template": <string>, "variables": <object of string to string>}`.
++
++Limits: template at most 4000 code points; at most 100 variable names; each value at most 1000 code points. Names match ASCII `[A-Za-z_][A-Za-z0-9_]*`.
++
++Scanning the template left to right: `$$` emits one literal `$`; `${NAME}` substitutes the variable's value; text outside substitutions is preserved exactly, including newlines. Any other dollar, a malformed name, a missing closing brace, or an undefined variable raises `ValueError`. Substitution is single-pass: dollar text inside a variable value is literal and never expanded. An empty template is valid and renders to the empty string. Because an escaped dollar consumes two characters, `$${X}` yields the literal text `${X}`.
++
++Example invocation:
++
++```
++echo '{"action":"render","template":"hi ${NAME}! cost=$$5","variables":{"NAME":"world"}}' | python cli.py
++```
++
++Prints `hi world! cost=$5` on stdout with exit code 0. On a `ValueError` (including unknown actions) `cli.py` prints the error message to nonempty stderr, prints nothing on stdout, and exits with code 2 without a traceback. Input objects are never mutated, even when rendering fails.
++
++Boundary and error semantics: a 4000-code-point template is accepted, 4001 is rejected; 100 variable names are accepted, 101 rejected; a 1000-code-point value is accepted, 1001 rejected.
+--- a/api.py
++++ b/api.py
+@@ -1,5 +1,9 @@
+ import domain
++
+ def dispatch(payload):
+- action=payload["action"]
+- if action=='variable_names':return domain.legacy(payload)
+- raise ValueError("unknown action: "+str(action))
++    action = payload["action"]
++    if action == 'variable_names':
++        return domain.legacy(payload)
++    if action == 'render':
++        return domain.render(payload)
++    raise ValueError("unknown action: " + str(action))
+--- a/domain.py
++++ b/domain.py
+@@ -1 +1,47 @@
+-def legacy(p):return sorted(p['variables'])
++import re
++
++_NAME_RE = re.compile(r'[A-Za-z_][A-Za-z0-9_]*')
++
++def legacy(p):
++    return sorted(p['variables'])
++
++def render(p):
++    template = p['template']
++    variables = p['variables']
++    if len(template) > 4000:
++        raise ValueError('template exceeds 4000 code points')
++    if len(variables) > 100:
++        raise ValueError('variables exceed 100 names')
++    for name, value in variables.items():
++        if len(value) > 1000:
++            raise ValueError('variable value exceeds 1000 code points')
++    out = []
++    i = 0
++    n = len(template)
++    while i < n:
++        c = template[i]
++        if c != '$':
++            out.append(c)
++            i += 1
++            continue
++        if i + 1 >= n:
++            raise ValueError('dollar sign not followed by dollar or opening brace')
++        nxt = template[i + 1]
++        if nxt == '$':
++            out.append('$')
++            i += 2
++            continue
++        if nxt != '{':
++            raise ValueError('dollar sign not followed by dollar or opening brace')
++        m = _NAME_RE.match(template, i + 2)
++        if not m:
++            raise ValueError('malformed variable name')
++        j = m.end()
++        if j >= n or template[j] != '}':
++            raise ValueError('missing closing brace')
++        name = m.group(0)
++        if name not in variables:
++            raise ValueError('undefined variable: ' + name)
++        out.append(variables[name])
++        i = j + 1
++    return ''.join(out)
+--- a/tests/test_render.py
++++ b/tests/test_render.py
+@@ -0,0 +1,63 @@
++import unittest
++from api import dispatch
++
++
++class RenderTests(unittest.TestCase):
++    def test_normal_render_with_escape_and_single_pass(self):
++        # Normal case: substitution, escaped dollar, single-pass semantics.
++        payload = {
++            "action": "render",
++            "template": "a ${X} b $$ c ${Y}\nend",
++            "variables": {"X": "${Y}", "Y": "$"},
++        }
++        result = dispatch(payload)
++        # Value text is never re-expanded; $$ emits one literal dollar.
++        self.assertEqual(result, "a ${Y} b $ c $\nend")
++
++    def test_boundaries(self):
++        # Boundary: empty template is valid; 4000-codepoint template renders.
++        self.assertEqual(
++            dispatch({"action": "render", "template": "", "variables": {}}),
++            "",
++        )
++        big = "x" * 4000
++        self.assertEqual(
++            dispatch({"action": "render", "template": big, "variables": {}}),
++            big,
++        )
++        # $${X} yields literal ${X} (escaped dollar consumes two characters).
++        self.assertEqual(
++            dispatch({"action": "render", "template": "$${X}", "variables": {"X": "v"}}),
++            "${X}",
++        )
++
++    def test_specified_rejections(self):
++        # Specified rejections raise ValueError.
++        for template in ("$", "hello $", "${X", "${1X}", "${X", "no $ here? $!"):
++            with self.assertRaises(ValueError):
++                dispatch({"action": "render", "template": template, "variables": {"X": "v"}})
++        with self.assertRaises(ValueError):
++            dispatch({"action": "render", "template": "${MISSING}", "variables": {}})
++
++    def test_existing_variable_names_preserved(self):
++        self.assertEqual(
++            dispatch({"action": "variable_names", "variables": {"b": "1", "a": "2"}}),
++            ["a", "b"],
++        )
++
++    def test_unknown_action_rejected(self):
++        with self.assertRaises(ValueError):
++            dispatch({"action": "nope", "variables": {}})
++
++    def test_input_not_mutated_on_failure(self):
++        payload = {"action": "render", "template": "${X} $", "variables": {"X": "keep"}}
++        try:
++            dispatch(payload)
++        except ValueError:
++            pass
++        self.assertEqual(payload["variables"], {"X": "keep"})
++        self.assertEqual(payload["template"], "${X} $")
++
++
++if __name__ == "__main__":
++    unittest.main()

@@ -1,0 +1,17 @@
+{
+  "run": "ad145000d3e7",
+  "status": "needs_input",
+  "attempts": 1,
+  "contract": "61bb9e42aa4e87ef32d0adac3e087fd25bffdc1ceaf1fb00d450a405d0e186fc",
+  "hashes": {
+    "task.json": "61bb9e42aa4e87ef32d0adac3e087fd25bffdc1ceaf1fb00d450a405d0e186fc",
+    "workspace/domain.py": "265e9b74eb75808c7ca945db779c14a5821665a7d85e162bc6773b1c284167f3",
+    "workspace/cli.py": "e063d48cbf2d5ccf964c3cfbd5b5aacac89e464293cd9e59a9a5cff6f08aae35",
+    "workspace/api.py": "714d2c6cb28ed1955cbf9d61c10ddaf00c3bf363f095c875299e3488c7d96e90",
+    "workspace/README.md": "51f2964a46671a7039daf774b16f87f809bd79e886c4c466b0fd8715d3b50a4a",
+    "acceptance/check.py": "3eded382fb8846d1c723b0b86fe590997c2b7cdd09c69addc34fdb07f56f2be0"
+  },
+  "task": "ambiguous",
+  "checks": [],
+  "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc"
+}

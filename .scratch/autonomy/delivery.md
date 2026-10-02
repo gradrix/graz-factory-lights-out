@@ -10,6 +10,6 @@
 
 Later acceptance-bearing stages are in [the roadmap](../../docs/roadmap.md). They remain progressively specified plans, not a pile of preclaimed implementation tickets. No automatic production deployment or external-account action is authorized here.
 
-- [Independent local review](delivery/03-local-review.md) — active; owner /root. Fresh QA passed after limits cleared; C-v2 failed9/12; corrected profile and target-matched cohort D running.
+- [Independent local review](delivery/03-local-review.md) — accepted at3bd8ae2; D12/12 plus ambiguity and independent QA, with documented quality limitations.
 
-- [Prepare supported environments](delivery/04-environments.md) — pending; blocked by independent local review acceptance. Research and independent scenario inputs are prepared.
+- [Prepare supported environments](delivery/04-environments.md) — active; owner /root. Research and independently checked scenarios prepared; implementation begins after Stage2 acceptance.

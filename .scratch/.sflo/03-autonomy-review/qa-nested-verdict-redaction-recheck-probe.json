@@ -1,0 +1,187 @@
+{
+  "candidate": "89d66ea4f925e64459a6674f92de034476deb931",
+  "privacy_cases_passed": 30,
+  "rows": [
+    {
+      "depth": 0,
+      "trace_private": true,
+      "http_private": true,
+      "inputs_unchanged": true
+    },
+    {
+      "depth": 1,
+      "trace_private": true,
+      "http_private": true,
+      "inputs_unchanged": true
+    },
+    {
+      "depth": 2,
+      "trace_private": true,
+      "http_private": true,
+      "inputs_unchanged": true
+    },
+    {
+      "depth": 3,
+      "trace_private": true,
+      "http_private": true,
+      "inputs_unchanged": true
+    },
+    {
+      "depth": 4,
+      "trace_private": true,
+      "http_private": true,
+      "inputs_unchanged": true
+    },
+    {
+      "depth": 0,
+      "trace_private": true,
+      "http_private": true,
+      "inputs_unchanged": true
+    },
+    {
+      "depth": 1,
+      "trace_private": true,
+      "http_private": true,
+      "inputs_unchanged": true
+    },
+    {
+      "depth": 2,
+      "trace_private": true,
+      "http_private": true,
+      "inputs_unchanged": true
+    },
+    {
+      "depth": 3,
+      "trace_private": true,
+      "http_private": true,
+      "inputs_unchanged": true
+    },
+    {
+      "depth": 4,
+      "trace_private": true,
+      "http_private": true,
+      "inputs_unchanged": true
+    },
+    {
+      "depth": 0,
+      "trace_private": true,
+      "http_private": true,
+      "inputs_unchanged": true
+    },
+    {
+      "depth": 1,
+      "trace_private": true,
+      "http_private": true,
+      "inputs_unchanged": true
+    },
+    {
+      "depth": 2,
+      "trace_private": true,
+      "http_private": true,
+      "inputs_unchanged": true
+    },
+    {
+      "depth": 3,
+      "trace_private": true,
+      "http_private": true,
+      "inputs_unchanged": true
+    },
+    {
+      "depth": 4,
+      "trace_private": true,
+      "http_private": true,
+      "inputs_unchanged": true
+    },
+    {
+      "depth": 0,
+      "trace_private": true,
+      "http_private": true,
+      "inputs_unchanged": true
+    },
+    {
+      "depth": 1,
+      "trace_private": true,
+      "http_private": true,
+      "inputs_unchanged": true
+    },
+    {
+      "depth": 2,
+      "trace_private": true,
+      "http_private": true,
+      "inputs_unchanged": true
+    },
+    {
+      "depth": 3,
+      "trace_private": true,
+      "http_private": true,
+      "inputs_unchanged": true
+    },
+    {
+      "depth": 4,
+      "trace_private": true,
+      "http_private": true,
+      "inputs_unchanged": true
+    },
+    {
+      "depth": 0,
+      "trace_private": true,
+      "http_private": true,
+      "inputs_unchanged": true
+    },
+    {
+      "depth": 1,
+      "trace_private": true,
+      "http_private": true,
+      "inputs_unchanged": true
+    },
+    {
+      "depth": 2,
+      "trace_private": true,
+      "http_private": true,
+      "inputs_unchanged": true
+    },
+    {
+      "depth": 3,
+      "trace_private": true,
+      "http_private": true,
+      "inputs_unchanged": true
+    },
+    {
+      "depth": 4,
+      "trace_private": true,
+      "http_private": true,
+      "inputs_unchanged": true
+    },
+    {
+      "depth": 0,
+      "trace_private": true,
+      "http_private": true,
+      "inputs_unchanged": true
+    },
+    {
+      "depth": 1,
+      "trace_private": true,
+      "http_private": true,
+      "inputs_unchanged": true
+    },
+    {
+      "depth": 2,
+      "trace_private": true,
+      "http_private": true,
+      "inputs_unchanged": true
+    },
+    {
+      "depth": 3,
+      "trace_private": true,
+      "http_private": true,
+      "inputs_unchanged": true
+    },
+    {
+      "depth": 4,
+      "trace_private": true,
+      "http_private": true,
+      "inputs_unchanged": true
+    }
+  ],
+  "boundary": "even-backslash closing delimiter over-redacts following same-string ordinary text"
+}

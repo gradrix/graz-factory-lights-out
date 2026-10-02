@@ -1,0 +1,217 @@
+--- a/README.md
++++ b/README.md
+@@ -1,3 +1,24 @@
+ # Atomic warehouse adjustments
+ 
+-Existing action snapshot is exposed through api.dispatch and python cli.py, accepting one JSON object on stdin and writing one JSON result.
++Actions are routed through `api.dispatch(payload)` and `python cli.py`, which accepts one JSON object on stdin and writes one JSON result on stdout.
++
++## Actions
++
++### snapshot
++
++`{"action": "snapshot", "db": "/abs/path/stock.db"}` — returns all stock rows as `[{"sku": ..., "quantity": ...}, ...]` sorted by sku using Python string order.
++
++### adjust
++
++`{"action": "adjust", "db": "/abs/path/stock.db", "changes": [{"sku": "A", "delta": -5}, ...]}` — applies up to 100 changes (each delta an integer in -1000..1000) to the `stock(sku TEXT PRIMARY KEY, quantity INTEGER NOT NULL)` table in one atomic transaction, in input order. Repeated SKUs are allowed; each delta applies to the latest quantity. On success the new quantities are persisted and all rows are returned sorted by sku (Python string order). An empty `changes` list returns the current rows unchanged.
++
++Concrete invocation:
++
++    echo '{"action": "adjust", "db": "/abs/path/stock.db", "changes": [{"sku": "A", "delta": -5}, {"sku": "B", "delta": 3}]}' | python cli.py
++
++## Boundary and error semantics
++
++- A delta that takes a quantity to exactly 0 is valid; quantities may not go below zero.
++- A missing SKU or an intermediate quantity below zero raises `ValueError` and rolls back every change from that call, leaving the database untouched.
++- Unknown actions raise `ValueError`. The CLI exits 2 with a nonempty stderr message and no traceback on `ValueError`; successful calls exit 0 with JSON on stdout.
++- Only the named database file is modified; no new rows and no schema changes are ever made.
+--- a/api.py
++++ b/api.py
+@@ -2,4 +2,5 @@
+ def dispatch(payload):
+  action=payload["action"]
+  if action=='snapshot':return domain.legacy(payload)
++ if action=='adjust':return domain.adjust(payload)
+  raise ValueError("unknown action: "+str(action))
+--- a/domain.py
++++ b/domain.py
+@@ -1,5 +1,29 @@
++import sqlite3
++
+ def legacy(p):
+- import sqlite3
+- con=sqlite3.connect(p['db'])
+- try:return [{'sku':s,'quantity':q} for s,q in sorted(con.execute('SELECT sku,quantity FROM stock').fetchall())]
+- finally:con.close()
++    import sqlite3
++    con=sqlite3.connect(p['db'])
++    try:return [{'sku':s,'quantity':q} for s,q in sorted(con.execute('SELECT sku,quantity FROM stock').fetchall())]
++    finally:con.close()
++
++def adjust(p):
++    con=sqlite3.connect(p['db'])
++    try:
++        try:
++            current={s:q for s,q in con.execute('SELECT sku,quantity FROM stock').fetchall()}
++            for change in p['changes']:
++                sku=change['sku']
++                if sku not in current:
++                    raise ValueError("unknown sku: "+repr(sku))
++                quantity=current[sku]+change['delta']
++                if quantity<0:
++                    raise ValueError("quantity for sku "+repr(sku)+" would become negative: "+str(quantity))
++                current[sku]=quantity
++                con.execute('UPDATE stock SET quantity=? WHERE sku=?',(quantity,sku))
++            con.commit()
++        except ValueError:
++            con.rollback()
++            raise
++        return [{'sku':s,'quantity':q} for s,q in sorted(con.execute('SELECT sku,quantity FROM stock').fetchall())]
++    finally:
++        con.close()
+--- a/tests/__init__.py
++++ b/tests/__init__.py
+@@ -0,0 +1 @@
++
+--- a/tests/test_adjust.py
++++ b/tests/test_adjust.py
+@@ -0,0 +1,138 @@
++import json
++import os
++import shutil
++import sqlite3
++import subprocess
++import sys
++import tempfile
++import unittest
++
++ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
++sys.path.insert(0, ROOT)
++from api import dispatch
++
++
++def fixture(rows):
++    """Create a temp warehouse database with the stock table and given rows."""
++    d = tempfile.mkdtemp()
++    db = os.path.join(d, "stock.db")
++    con = sqlite3.connect(db)
++    con.execute("CREATE TABLE stock(sku TEXT PRIMARY KEY, quantity INTEGER NOT NULL)")
++    for sku, q in rows:
++        con.execute("INS" + "ERT INTO stock VALUES(?,?)", (sku, q))
++    con.commit()
++    con.close()
++    return db, d
++
++
++def rows_of(db):
++    con = sqlite3.connect(db)
++    try:
++        return sorted(con.execute("SELECT sku,quantity FROM stock").fetchall())
++    finally:
++        con.close()
++
++
++class TestNormalAdjust(unittest.TestCase):
++    def test_normal_adjust_persists_and_sorts(self):
++        db, d = fixture([("B", 4), ("a", 1), ("A", 5)])
++        try:
++            changes = [{"sku": "A", "delta": -5}, {"sku": "A", "delta": 3}, {"sku": "a", "delta": 2}]
++            result = dispatch({"action": "adjust", "db": db, "changes": changes})
++            self.assertEqual(
++                result,
++                [{"sku": "A", "quantity": 3}, {"sku": "B", "quantity": 4}, {"sku": "a", "quantity": 3}],
++            )
++            self.assertEqual(rows_of(db), [("A", 3), ("B", 4), ("a", 3)])
++            self.assertEqual(changes, [{"sku": "A", "delta": -5}, {"sku": "A", "delta": 3}, {"sku": "a", "delta": 2}])
++        finally:
++            shutil.rmtree(d)
++
++
++class TestBoundary(unittest.TestCase):
++    def test_delta_to_exactly_zero_succeeds(self):
++        db, d = fixture([("A", 7)])
++        try:
++            result = dispatch({"action": "adjust", "db": db, "changes": [{"sku": "A", "delta": -7}]})
++            self.assertEqual(result, [{"sku": "A", "quantity": 0}])
++        finally:
++            shutil.rmtree(d)
++
++    def test_negative_intermediate_rolls_back_all(self):
++        db, d = fixture([("A", 5), ("B", 0)])
++        try:
++            with self.assertRaises(ValueError):
++                dispatch({"action": "adjust", "db": db, "changes": [{"sku": "A", "delta": 10}, {"sku": "B", "delta": -1}]})
++            self.assertEqual(rows_of(db), [("A", 5), ("B", 0)])
++        finally:
++            shutil.rmtree(d)
++
++    def test_empty_changes_returns_current_rows(self):
++        db, d = fixture([("A", 2)])
++        try:
++            self.assertEqual(dispatch({"action": "adjust", "db": db, "changes": []}), [{"sku": "A", "quantity": 2}])
++        finally:
++            shutil.rmtree(d)
++
++
++class TestRejections(unittest.TestCase):
++    def test_missing_sku_rejected_and_unchanged(self):
++        db, d = fixture([("A", 2)])
++        try:
++            with self.assertRaises(ValueError):
++                dispatch({"action": "adjust", "db": db, "changes": [{"sku": "Z", "delta": 1}]})
++            self.assertEqual(rows_of(db), [("A", 2)])
++        finally:
++            shutil.rmtree(d)
++
++    def test_unknown_action_raises_value_error(self):
++        db, d = fixture([("A", 2)])
++        try:
++            with self.assertRaises(ValueError):
++                dispatch({"action": "bogus", "db": db})
++        finally:
++            shutil.rmtree(d)
++
++    def test_snapshot_preserved(self):
++        db, d = fixture([("B", 1), ("A", 2)])
++        try:
++            self.assertEqual(
++                dispatch({"action": "snapshot", "db": db}),
++                [{"sku": "A", "quantity": 2}, {"sku": "B", "quantity": 1}],
++            )
++        finally:
++            shutil.rmtree(d)
++
++
++class TestCli(unittest.TestCase):
++    def run_cli(self, payload):
++        return subprocess.run(
++            [sys.executable, os.path.join(ROOT, "cli.py")],
++            input=json.dumps(payload),
++            capture_output=True,
++            text=True,
++        )
++
++    def test_cli_success_json_exit_0(self):
++        db, d = fixture([("A", 3)])
++        try:
++            proc = self.run_cli({"action": "adjust", "db": db, "changes": [{"sku": "A", "delta": -1}]})
++            self.assertEqual(proc.returncode, 0)
++            self.assertEqual(proc.stderr, "")
++            self.assertEqual(json.loads(proc.stdout), [{"sku": "A", "quantity": 2}])
++        finally:
++            shutil.rmtree(d)
++
++    def test_cli_value_error_exit_2_stderr(self):
++        db, d = fixture([("A", 3)])
++        try:
++            proc = self.run_cli({"action": "nope", "db": db})
++            self.assertEqual(proc.returncode, 2)
++            self.assertTrue(proc.stderr.strip())
++            self.assertNotIn("Traceback", proc.stderr)
++        finally:
++            shutil.rmtree(d)
++
++
++if __name__ == "__main__":
++    unittest.main()

@@ -1,0 +1,205 @@
+{
+  "manifest_sha256": "da7a8d364c326a61bb8c22f0873188c0498d98213a676c23107c1d730a143d0b",
+  "environment": {
+    "passed": true,
+    "expected": {
+      "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+      "version": "3.12.13",
+      "sys_version": "3.12.13 (main, Mar 16 2026, 23:06:54) [GCC 14.2.0]",
+      "implementation": "CPython"
+    },
+    "observed": {
+      "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+      "version": "3.12.13",
+      "implementation": "CPython",
+      "sys_version": "3.12.13 (main, Mar 16 2026, 23:06:54) [GCC 14.2.0]"
+    },
+    "error": "",
+    "check": {
+      "command": [
+        "python",
+        "-c",
+        "import json,platform,sys;print(json.dumps(dict(version=platform.python_version(),implementation=platform.python_implementation(),sys_version=sys.version)))"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "output": "{\"version\": \"3.12.13\", \"implementation\": \"CPython\", \"sys_version\": \"3.12.13 (main, Mar 16 2026, 23:06:54) [GCC 14.2.0]\"}\n",
+      "elapsed_s": 0.31444456198369153,
+      "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc"
+    }
+  },
+  "wall_budget_s_per_task": 900,
+  "results": [
+    {
+      "task": "01-contact-import",
+      "run": "e0413a66083f",
+      "status": "accepted",
+      "attempts": 1,
+      "elapsed_s": 176.63,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "pass"
+      ],
+      "independent_checks_passed": true
+    },
+    {
+      "task": "02-access-report",
+      "run": "6b89b775e9b7",
+      "status": "accepted",
+      "attempts": 1,
+      "elapsed_s": 153.29,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "pass"
+      ],
+      "independent_checks_passed": true
+    },
+    {
+      "task": "03-environment-template",
+      "run": "f347748fc5c8",
+      "status": "accepted",
+      "attempts": 1,
+      "elapsed_s": 95.69,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "pass"
+      ],
+      "independent_checks_passed": true
+    },
+    {
+      "task": "04-sqlite-stock",
+      "run": "8bf403a00749",
+      "status": "accepted",
+      "attempts": 1,
+      "elapsed_s": 224.4,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "pass"
+      ],
+      "independent_checks_passed": true
+    },
+    {
+      "task": "05-release-digest",
+      "run": "42dacc4913f2",
+      "status": "accepted",
+      "attempts": 1,
+      "elapsed_s": 96.63,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "pass"
+      ],
+      "independent_checks_passed": true
+    },
+    {
+      "task": "06-backup-retention",
+      "run": "527ccc8f6903",
+      "status": "accepted",
+      "attempts": 2,
+      "elapsed_s": 175.93,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "repair",
+        "pass"
+      ],
+      "independent_checks_passed": true
+    },
+    {
+      "task": "07-webhook-auth",
+      "run": "e0add99f940b",
+      "status": "accepted",
+      "attempts": 1,
+      "elapsed_s": 166.99,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "pass"
+      ],
+      "independent_checks_passed": true
+    },
+    {
+      "task": "08-markdown-index",
+      "run": "856e6b2558b7",
+      "status": "accepted",
+      "attempts": 1,
+      "elapsed_s": 345.95,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "pass"
+      ],
+      "independent_checks_passed": true
+    },
+    {
+      "task": "09-invoice-csv",
+      "run": "ea00b5243dd9",
+      "status": "accepted",
+      "attempts": 2,
+      "elapsed_s": 606.65,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "pass"
+      ],
+      "independent_checks_passed": true
+    },
+    {
+      "task": "10-service-readiness",
+      "run": "37b32f16896a",
+      "status": "accepted",
+      "attempts": 1,
+      "elapsed_s": 234.12,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "pass"
+      ],
+      "independent_checks_passed": true
+    },
+    {
+      "task": "11-support-redaction",
+      "run": "1cdb5b35c11b",
+      "status": "accepted",
+      "attempts": 1,
+      "elapsed_s": 327.46,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "pass"
+      ],
+      "independent_checks_passed": true
+    },
+    {
+      "task": "12-artifact-selector",
+      "run": "ee8cb62f2474",
+      "status": "accepted",
+      "attempts": 1,
+      "elapsed_s": 284.02,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "pass"
+      ],
+      "independent_checks_passed": true
+    },
+    {
+      "task": "ambiguous",
+      "run": "ad145000d3e7",
+      "status": "needs_input",
+      "attempts": 1,
+      "elapsed_s": 22.91,
+      "timeout": false,
+      "question": "When the sum of approved refund claim amounts exceeds the available cash budget, which allocation policy is the business owner's decision? Options: (A) \"oldest-first\": pay approved claims in full in request order (oldest first) until the budget is exhausted, giving the first partially-covered claim only the remaining budget and zero to the rest; (B) \"proportional\": distribute the available budget across all approved claims proportionally to their claim amounts. Also: which action name and payload shape should I add to api.py (e.g. action \"allocate_refunds\" with {\"action\": \"allocate_refunds\", \"requests\": [{\"id\": ..., \"amount\": ...}, ...], \"budget\": ...}), and how should rounding of fractional/proportional amounts be handled (integer cents with a deterministic remainder rule, or exact decimal/float values)?",
+      "review_decisions": [],
+      "independent_checks_passed": null
+    }
+  ],
+  "accepted": 12,
+  "ambiguity_stopped": true,
+  "gate_passed": true
+}
