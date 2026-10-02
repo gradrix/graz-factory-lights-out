@@ -1,0 +1,19 @@
+{
+  "baseline": "972f767",
+  "contract_sha256": "ab3ba1d7aa4d11237de3914f2a1ed40d3dcb47a680ee181465ef8fba6b875f13",
+  "files": {
+    "docs/local-browser.md": "85665f65a219bbd3a0bf901f0e0100ac3d511d6552868699d3834eee72fdcb49",
+    "gflo/__main__.py": "8f06ecff1622303bde7466ddf83de3a9dc1b6a0f65ac6a126c43989fa3749737",
+    "gflo/browser.py": "e26e47d0d95683fd90d05b035a1c7a9dcb7ab9d24c37d455ca08291e0809e5a1",
+    "gflo/browser_pair.py": "b75ae9f168a62c5c3907f604ee83c39aef39d384444f9e45d65054774a083924",
+    "gflo/recipes/browser/journey.cjs": "51fe954cfae48b19ed618f3c82ae7d52c6997772aaad2c6dbe13b5be39fd000b",
+    "gflo/recipes/browser/seccomp.json": "322b86b4f7f5b597ed6a9c2cfd6193a4b249a51c8bc9cfba8ff1a485070b24e8",
+    "tests/test_browser.py": "d121436776a797f5ec6ff9e0be2c441a7146b5d058d336415c77f3f756da73e4",
+    "tests/test_browser_live.py": "d5cd486fba964523feee8371127d19284232ad76cbd6ed431349312a0b614cc8"
+  },
+  "lineage": {
+    "correction": "all contexts traced in one opaque <=16MiB outer ZIP; four context cap; frozen-input and installed-image checks",
+    "previous_manifest_sha256": "0d419a0f71c81a9f51ba7d8989284d1d6bbb8d7a0b93cce5ce59f4a20e9d4c95",
+    "previous_status": "unaccepted: primary-context-only trace"
+  }
+}

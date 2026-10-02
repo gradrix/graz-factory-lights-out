@@ -7,6 +7,7 @@ import subprocess
 import sys
 import time
 
+from .browser import BrowserStore
 from .documents import DocumentStore, decode
 from .environment import EnvironmentStore
 from .prepare import prepare, validate_project, infer_profile, check as check_environment
@@ -61,9 +62,33 @@ def main(argv=None):
         if action == 'answer':
             action_parser.add_argument('--question', help='New controller question for this cached evidence (at most 2048 UTF-8 bytes)')
     document_actions.add_parser('cleanup', help="Explicit cleanup of this store's interrupted work")
+    browser = sub.add_parser('browser', help='Supervised owned-local-application journeys')
+    browser.add_argument('--store', default='.gflo/browser')
+    browser_actions = browser.add_subparsers(dest='browser_action', required=True)
+    browser_actions.add_parser('prepare').add_argument('archives', help='Approved offline Playwright/core archives directory')
+    browser_actions.add_parser('check').add_argument('approval', help='Approved app/checks/seed/case/support JSON')
+    browser_actions.add_parser('inspect').add_argument('id')
+    browser_actions.add_parser('cleanup')
     args = parser.parse_args(argv)
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     try:
+        if args.command == 'browser':
+            browser_store = BrowserStore(args.store)
+            if args.browser_action == 'prepare':
+                result = browser_store.prepare(args.archives)
+            elif args.browser_action == 'inspect':
+                result = browser_store.inspect(args.id)
+            elif args.browser_action == 'check':
+                with Path(args.approval).open('rb') as stream:
+                    raw = stream.read(8193)
+                if len(raw) > 8192:
+                    raise ValueError('Browser approval exceeds 8 KiB')
+                result = browser_store.check(decode(raw))
+            else:
+                browser_store.cleanup()
+                result = {'cleaned': True}
+            print(json.dumps(result, indent=2))
+            return 1 if result.get('receipt', {}).get('outcome', {}).get('status') == 'failed' else 0
         if args.command == 'documents':
             document_store = DocumentStore(args.store)
             if args.document_action != 'answer':

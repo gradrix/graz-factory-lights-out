@@ -1,0 +1,14 @@
+{
+  "baseline": "972f767",
+  "contract_sha256": "ab3ba1d7aa4d11237de3914f2a1ed40d3dcb47a680ee181465ef8fba6b875f13",
+  "files": {
+    "docs/local-browser.md": "f009234f2a3b1dc801111cd7a3a3359d54226780defcb6d6f39281eb66debbb1",
+    "gflo/__main__.py": "8f06ecff1622303bde7466ddf83de3a9dc1b6a0f65ac6a126c43989fa3749737",
+    "gflo/browser.py": "74d7444e5ea2069047c2ab56723a40836015a2b2b0c7a760098aa71974484709",
+    "gflo/browser_pair.py": "b75ae9f168a62c5c3907f604ee83c39aef39d384444f9e45d65054774a083924",
+    "gflo/recipes/browser/journey.cjs": "09c04e754f05603aa6c80376be28354c2e2d7e0c66408c6b979571894df036c6",
+    "gflo/recipes/browser/seccomp.json": "322b86b4f7f5b597ed6a9c2cfd6193a4b249a51c8bc9cfba8ff1a485070b24e8",
+    "tests/test_browser.py": "bdd7e2faa2ffd662296d83382c818794d62d11a69508effde2dd48d1f96f3acb",
+    "tests/test_browser_live.py": "0b1f14bad30912dffa3e9bf801491d9148128671234d39c0a1c1d6092dd35adc"
+  }
+}
