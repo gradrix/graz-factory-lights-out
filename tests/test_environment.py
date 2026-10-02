@@ -128,3 +128,19 @@ class EnvironmentStoreTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'pending'):
             self.store.resolve(failed[0].name)
         self.assertEqual(self.store.resolve(good.id).id, good.id)
+
+    def test_cancellation_before_final_commit_keeps_candidate_unpublished(self):
+        import os
+        import stat
+        from unittest.mock import patch
+        good = self.publish()
+        original_fsync, cancelled = os.fsync, [False]
+        def cancel_after_sync(descriptor):
+            original_fsync(descriptor)
+            if stat.S_ISDIR(os.fstat(descriptor).st_mode) and os.readlink(f'/proc/self/fd/{descriptor}') == str(self.store.root):
+                cancelled[0] = True
+        with patch('gflo.environment.os.fsync', side_effect=cancel_after_sync):
+            with self.assertRaisesRegex(ValueError, 'cancelled'):
+                self.store.publish(archive(b'late cancellation'), self.metadata,
+                                   lambda path: {'passed': True}, cancelled=lambda: cancelled[0])
+        self.assertEqual([p.name for p in self.store.root.iterdir() if len(p.name) == 64], [good.id])

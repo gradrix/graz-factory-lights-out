@@ -140,7 +140,7 @@ class EnvironmentStore:
             active()
             self._remove_private_staging()
             stage = Path(tempfile.mkdtemp(prefix='.prepare-', dir=self.root))
-            published = None
+            published, committed = None, False
             try:
                 dependencies = unpack_archive(stream, stage / 'deps')
                 for path in dependencies.rglob('*'):
@@ -177,7 +177,9 @@ class EnvironmentStore:
                 with self._directory_fd() as directory:
                     os.fsync(directory)
                 result = self._resolve(identifier, identifier, allow_pending=True)
-                (destination / 'pending').unlink()  # Final commit; no fallible work follows.
+                active()
+                (destination / 'pending').unlink()  # Final publication commit.
+                committed = True
                 published = None  # Commit is durable and verified before releasing readers.
                 return result
             except BaseException:
@@ -187,7 +189,7 @@ class EnvironmentStore:
                     published.rename(stage)
                 raise
             finally:
-                if stage.exists():
+                if not committed and stage.exists():
                     discard(stage)
 
     @contextmanager
