@@ -68,3 +68,6 @@ htmlcov/
 !.scratch/.sflo/05-autonomy-documents/qa-rig-documents/*.py
 !.scratch/.sflo/05-autonomy-documents/qa-rig-documents/*.json
 !.scratch/.sflo/05-autonomy-documents/qa-rig-documents/*.log
+
+!.scratch/.sflo/06-autonomy-browser/
+.scratch/.sflo/06-autonomy-browser/*/
