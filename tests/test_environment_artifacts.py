@@ -68,3 +68,14 @@ class ArchiveTests(unittest.TestCase):
             result = unpack_archive(io.BytesIO(data.getvalue()), Path(directory) / 'snapshot')
             self.assertEqual((result / 'bin/check').read_bytes(), b'pass')
             self.assertEqual((result / 'bin/check').stat().st_mode & 0o777, 0o555)
+
+    def test_implicit_directories_cannot_bypass_filesystem_entry_limit(self):
+        import tarfile
+        stream = io.BytesIO()
+        with tarfile.open(fileobj=stream, mode='w', format=tarfile.USTAR_FORMAT) as tar:
+            tar.addfile(tarfile.TarInfo('a/b/c/file'))
+        with tempfile.TemporaryDirectory() as directory:
+            destination = Path(directory) / 'snapshot'
+            with self.assertRaisesRegex(ValueError, 'entry limit'):
+                unpack_archive(io.BytesIO(stream.getvalue()), destination, ArchiveLimits(entries=1))
+            self.assertFalse(destination.exists())

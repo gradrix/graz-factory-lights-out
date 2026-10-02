@@ -34,7 +34,7 @@ def unpack_archive(stream, destination, limits=ArchiveLimits()):
     if os.path.lexists(destination) or any(p.is_symlink() for p in destination.parents):
         raise ValueError('Artifact destination must be new and have no link ancestors')
     destination.parent.mkdir(parents=True, exist_ok=True)
-    seen, ancestors, records = {}, set(), []
+    seen, ancestors, records, nodes = {}, set(), [], set()
     transported = expanded = 0
     with tempfile.TemporaryFile(dir=destination.parent) as spool:
         def read(size, *, eof=False):
@@ -86,6 +86,9 @@ def unpack_archive(stream, destination, limits=ArchiveLimits()):
             if name in seen:
                 raise ValueError('Duplicate environment archive path')
             parents = [str(parent) for parent in path.parents if str(parent) != '.']
+            nodes.update([name, *parents])
+            if len(nodes) > limits.entries:
+                raise ValueError('Environment archive filesystem entry limit exceeded')
             if any(seen.get(parent) == 'file' for parent in parents) or (not directory and name in ancestors):
                 raise ValueError('Environment archive file/ancestor conflict')
             if member.size < 0 or (directory and member.size):
