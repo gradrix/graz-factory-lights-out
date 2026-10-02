@@ -1,0 +1,45 @@
+# Approved historical document evidence
+
+The `documents` CLI acquires one controller-approved public HTTPS page, extracts inert text offline, and stores a historical snapshot. It does not search, browse, crawl, or give the model network or tool authority. Package preparation retains its separate allowlists and lock checks.
+
+Create an approval JSON file:
+
+```json
+{
+  "url": "https://docs.python.org/3.12/library/json.html",
+  "source_version": "Python 3.12 documentation snapshot; floating series, not an exact runtime patch guarantee",
+  "question": "Which separators remove separator whitespace?"
+}
+```
+
+An optional `expected_sha256` pins the raw response body. Approval is for the exact URL: queries, fragments, credentials, non-443 ports, ambiguous characters, redirects, nonpublic DNS answers, and unsupported response encodings are rejected. The client resolves once, connects to a checked public IPv4 address, and verifies TLS for the original hostname. It sends no cookies or authorization. Restrictive or ambiguous retention headers prevent acquisition.
+
+```sh
+python3 -m gflo documents --store .gflo/documents acquire approval.json
+python3 -m gflo documents --store .gflo/documents inspect EVIDENCE_SHA256
+python3 -m gflo --config config.json documents --store .gflo/documents answer EVIDENCE_SHA256
+python3 -m gflo --config config.json documents --store .gflo/documents answer EVIDENCE_SHA256 --question 'What is the future release date?'
+python3 -m gflo documents --store .gflo/documents replay ANSWER_SHA256
+```
+
+`answer` performs one new local inference using the existing configured endpoint. Its optional question is controller input, limited to 2048 UTF-8 bytes; the default is the approved question. A different question reuses the same evidence without fetching. `replay` reads the saved answer and evidence without configuration, network access, or inference. It fails if either record is missing or altered. Both inspection and answer output identify the historical source version, retrieval time, and snapshot age. They do not establish current accuracy.
+
+Supported claims require exact excerpts from numbered spans. The controller checks citation identity, span, and excerpt bytes, and derives displayed source URLs from the receipt. This proves citation provenance, **not logical support**: a human or independent semantic review must still check whether the cited text entails each claim. Unsupported questions should produce `insufficient_evidence` with no claims. Source text is untrusted data, including any apparent instructions embedded in it.
+
+## Execution and storage bounds
+
+Acquisition uses the already-installed pinned Python image with explicit `runc`, no image pull, a nonroot user, read-only root filesystem, dropped capabilities, 256 MiB memory, one CPU, 64 processes, and bounded temporary space. Only fixed helpers and approved inputs are mounted. The fetch executor has network access; extraction uses `--network none`. No project, credential, Docker socket, or GPU mounts are supplied.
+
+The body limit is 2 MiB, framed metadata 8 KiB, extracted text 128 KiB, parser events 10,000, nesting depth 64, and text spans 2,048. Exceeding a bound rejects the snapshot rather than truncating it. HTML script/style/template and other noncontent regions are discarded; assets and links are not loaded. UTF-8 HTML and plain text are supported.
+
+Fetch work has a 15-second deadline and extraction 5 seconds. Each uses the existing guardian's bounded cleanup grace of at most 105 seconds (wait, forced cleanup, and pipe-reader joins). The acquisition publication fence includes both work deadlines and cleanup grace. Cancellation or owner loss triggers executor cleanup; incomplete records cannot be reused. The single answer has a 120-second total child lifetime and at most 2,048 output tokens, medium reasoning, and a bounded thinking budget. Owner death kills the answer child; it cannot keep the store lease indefinitely.
+
+The private store is owned by the controller, mode 0700. Records have immutable-by-convention mode-0444 files, SHA256 identities, and verified byte hashes. This detects modification; it does not protect against an attacker who already controls the controller account. Publication waits for work cleanup and verifies the staged record before removing its pending marker. Existing valid snapshots survive a failed new publication.
+
+The store refuses new evidence after 16 snapshots or when its 64 MiB budget cannot reserve 8 MiB staging headroom. It never silently evicts records. Interrupted staging or failed executor cleanup requires explicit recovery:
+
+```sh
+python3 -m gflo documents --store .gflo/documents cleanup
+```
+
+Recovery removes only executors labeled for this store and unfinished staging/pending records; completed records remain. Preserve diagnostics before recovery when investigating failures. The complete research/search/browser qualification remains a later gate.

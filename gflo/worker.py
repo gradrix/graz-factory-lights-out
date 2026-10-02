@@ -54,7 +54,7 @@ class ModelWorker:
         self.observe = observer
         self.sandbox.observe = observer
 
-    def request(self, path, body=None, timeout=300):
+    def request(self, path, body=None, timeout=300, *, max_response_bytes=None):
         headers = {'Content-Type': 'application/json'}
         if self.config.get('api_key_file'):
             key = Path(self.config['api_key_file']).expanduser().read_text().strip()
@@ -63,6 +63,11 @@ class ModelWorker:
         request = urllib.request.Request(self.endpoint + path, data=data, headers=headers)
         try:
             with self.opener.open(request, timeout=timeout) as response:
+                if max_response_bytes is not None:
+                    raw = response.read(max_response_bytes + 1)
+                    if len(raw) > max_response_bytes:
+                        raise ValueError("Local model response byte limit")
+                    return json.loads(raw)
                 return json.load(response)
         except urllib.error.HTTPError as error:
             detail = error.read(4096).decode(errors='replace')

@@ -7,6 +7,7 @@ import subprocess
 import sys
 import time
 
+from .documents import DocumentStore, decode
 from .environment import EnvironmentStore
 from .prepare import prepare, validate_project, infer_profile, check as check_environment
 from .observe import Observer
@@ -50,9 +51,37 @@ def main(argv=None):
     checking = actions.add_parser('check')
     checking.add_argument('id')
     checking.add_argument('--repeat', type=int, choices=range(1, 4), default=1)
+    documents = sub.add_parser('documents', help='Approved historical document evidence and saved local answers')
+    documents.add_argument('--store', default='.gflo/documents')
+    document_actions = documents.add_subparsers(dest='document_action', required=True)
+    document_actions.add_parser('acquire').add_argument('approval', help='Controller-approved exact URL/version/question JSON')
+    for action in ('inspect', 'answer', 'replay'):
+        action_parser = document_actions.add_parser(action)
+        action_parser.add_argument('id')
+        if action == 'answer':
+            action_parser.add_argument('--question', help='New controller question for this cached evidence (at most 2048 UTF-8 bytes)')
+    document_actions.add_parser('cleanup', help="Explicit cleanup of this store's interrupted work")
     args = parser.parse_args(argv)
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     try:
+        if args.command == 'documents':
+            document_store = DocumentStore(args.store)
+            if args.document_action != 'answer':
+                if args.document_action == 'acquire':
+                    with Path(args.approval).open('rb') as stream:
+                        raw = stream.read(8193)
+                    if len(raw) > 8192:
+                        raise ValueError('Approval file exceeds 8 KiB')
+                    result = document_store.acquire(decode(raw))
+                elif args.document_action == 'inspect':
+                    result = document_store.resolve(args.id)
+                elif args.document_action == 'replay':
+                    result = document_store.replay(args.id)
+                else:
+                    document_store.cleanup()
+                    result = {'cleaned': True}
+                print(json.dumps(result, indent=2))
+                return 0
         if args.command == 'environment':
             store = EnvironmentStore(args.store)
             if args.environment_action == 'prepare':
@@ -97,6 +126,9 @@ def main(argv=None):
             config['api_key_file'] = str((config_path.parent / config['api_key_file']).resolve())
         sandbox = Sandbox(config.get('image', DEFAULT_IMAGE))
         worker = ModelWorker(config, sandbox)
+        if args.command == 'documents':
+            print(json.dumps(document_store.answer(args.id, worker, question=args.question), indent=2))
+            return 0
         if args.command == 'doctor':
             installed = subprocess.run(['docker', 'image', 'inspect', sandbox.image, '--format', '{{.Id}}'],
                                        capture_output=True, text=True, timeout=20)
