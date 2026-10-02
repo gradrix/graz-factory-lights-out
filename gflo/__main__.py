@@ -8,7 +8,7 @@ import sys
 import time
 
 from .environment import EnvironmentStore
-from .prepare import prepare, check as check_environment
+from .prepare import prepare, validate_project, infer_profile, check as check_environment
 from .observe import Observer
 from .web import server
 
@@ -26,7 +26,7 @@ def main(argv=None):
     sub.add_parser('doctor', help='Check the local model and installed sandbox image')
     run = sub.add_parser('run', help='Snapshot and execute a task; never modify its source repository')
     run.add_argument('task')
-    run.add_argument('--environment', help='Previously prepared environment ID; defaults to prepared Python stdlib')
+    run.add_argument('--environment', help='Previously prepared environment ID; otherwise infer and validate a supported profile')
     run.add_argument('--environment-store', default='.gflo/environments')
     resume = sub.add_parser('resume', help='Continue an interrupted run within its original attempt budget')
     resume.add_argument('id')
@@ -43,7 +43,8 @@ def main(argv=None):
     environment.add_argument('--store', default='.gflo/environments')
     actions = environment.add_subparsers(dest='environment_action', required=True)
     preparation = actions.add_parser('prepare')
-    preparation.add_argument('profile', choices=['python-stdlib'])
+    preparation.add_argument('profile', choices=['python-stdlib', 'python-api', 'node-ts'])
+    preparation.add_argument('--project', help='Validate repository package declarations before acquiring dependencies')
     inspection = actions.add_parser('inspect')
     inspection.add_argument('id')
     checking = actions.add_parser('check')
@@ -55,6 +56,8 @@ def main(argv=None):
         if args.command == 'environment':
             store = EnvironmentStore(args.store)
             if args.environment_action == 'prepare':
+                if args.project:
+                    validate_project(store, args.profile, args.project)
                 prepared = prepare(store, args.profile)
                 result = {'id': prepared.id, 'profile': prepared.profile, 'runtime': prepared.runtime}
             else:
@@ -113,7 +116,15 @@ def main(argv=None):
         environment = None
         if args.command == 'run':
             store = EnvironmentStore(args.environment_store)
-            environment = store.resolve(args.environment) if args.environment else prepare(store, 'python-stdlib')
+            requested = json.loads(Path(args.task).read_text())
+            project = Path(args.task).resolve().parent / requested['repo']
+            profile = requested.get('profile') or infer_profile(project)
+            if args.environment:
+                environment = store.resolve(args.environment)
+                profile = environment.profile
+            validate_project(store, profile, project)
+            if environment is None:
+                environment = prepare(store, profile)
         factory = Factory(args.state, worker, sandbox.verify, cleanup=sandbox.cleanup, reviewer=Reviewer(worker),
                           environment=environment, bind_environment=sandbox.bind)
         run_id = factory.create(args.task) if args.command == 'run' else args.id

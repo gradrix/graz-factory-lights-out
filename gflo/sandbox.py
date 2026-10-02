@@ -70,6 +70,11 @@ class Sandbox:
 
     def verify(self, workspace, task, acceptance):
         self.cleanup(workspace)
+        if self.environment is not None:
+            for name, digest in task.get('environment_inputs', {}).items():
+                path = Path(workspace) / name
+                if path.is_symlink() or not path.is_file() or path.stat().st_size > 65536 or hashlib.sha256(path.read_bytes()).hexdigest() != digest:
+                    return {'passed': False, 'checks': [{'exit_code': 1, 'output': 'Frozen environment manifest changed: ' + name}]}
         commands = list(task['checks'])
         # The current profile is Python stdlib. Generated regressions supplement
         # the immutable external checks and must not be silently left unexecuted.

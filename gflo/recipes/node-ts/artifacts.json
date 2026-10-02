@@ -1,0 +1,23 @@
+[
+  {
+    "filename": "0.tgz",
+    "url": "https://registry.npmjs.org/@types/node/-/node-22.15.3.tgz",
+    "algorithm": "sha512",
+    "digest": "957ec71597877f8406fc9eed059aab0805f0cfd279443e7a63a3293f47899246bca7e2b4458ff20535bb098149e15182725c6a38b2a68863f98ee41ce8c2a073",
+    "max_bytes": 16777216
+  },
+  {
+    "filename": "1.tgz",
+    "url": "https://registry.npmjs.org/typescript/-/typescript-5.8.3.tgz",
+    "algorithm": "sha512",
+    "digest": "a757625ba4ea2fd2f4ee7371bd130cee130cc387395cea3fd626cbe1a0081a6480b7db254c4d57830e4a5aea1fdae4cebc283d058ed9462f86685fbbb1f80f79",
+    "max_bytes": 16777216
+  },
+  {
+    "filename": "2.tgz",
+    "url": "https://registry.npmjs.org/undici-types/-/undici-types-6.21.0.tgz",
+    "algorithm": "sha512",
+    "digest": "8b00d9aa0d10006ae0f516afe47e27d0ceb87379a4479f5c27ac10a7eec2e2723482c984c5a79d6982cd3b8e1e4f802d041c236d38863cc96dd8c7744fd1fd25",
+    "max_bytes": 16777216
+  }
+]

@@ -164,6 +164,10 @@ class Factory:
                     raise ValueError('Only regular files and directories are supported')
         shutil.copytree(acceptance, root / 'acceptance')
         task['environment'] = binding(self.environment) if self.environment is not None else None
+        if self.environment is not None:
+            from .prepare import validate_project
+            from .environment import EnvironmentStore
+            task['environment_inputs'] = validate_project(EnvironmentStore(self.environment.store), self.environment.profile, workspace)
         task.update(repo=str(repo), base_commit=commit,
                     acceptance_hash=fingerprint(root / 'acceptance'))
         save(root / 'task.json', task)

@@ -58,3 +58,48 @@ class PrepareTests(unittest.TestCase):
             environment.dependencies.chmod(0o755)
             with self.assertRaisesRegex(ValueError, 'root changed'):
                 sandbox.execute(workspace, ['true'])
+
+    def test_python_api_prepares_locked_wheels_and_imports_offline(self):
+        from gflo.sandbox import Sandbox
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            environment = prepare(EnvironmentStore(root / 'store'), 'python-api')
+            self.assertEqual(environment.runtime['fastapi'], '0.115.12')
+            receipt = json.loads((environment.dependencies.parent / 'receipt.json').read_text())
+            self.assertEqual(len(receipt['metadata']['artifacts']), 16)
+            sandbox = Sandbox(); sandbox.bind(environment)
+            workspace = root / 'workspace'; workspace.mkdir()
+            result = sandbox.execute(workspace, ['python', '-c',
+                'from fastapi import FastAPI; from fastapi.testclient import TestClient; a=FastAPI(); a.get("/")(lambda: {"ok":True}); assert TestClient(a).get("/").json()=={"ok":True}'])
+            self.assertEqual(result['exit_code'], 0, result)
+
+    def test_node_typescript_prepares_locked_packages_and_compiles_offline(self):
+        with tempfile.TemporaryDirectory() as directory:
+            environment = prepare(EnvironmentStore(Path(directory) / 'store'), 'node-ts')
+            self.assertEqual(environment.runtime['node'], 'v22.23.3')
+            self.assertEqual(environment.runtime['typescript'], '5.8.3')
+            self.assertTrue(check(environment)['passed'])
+            receipt = json.loads((environment.dependencies.parent / 'receipt.json').read_text())
+            self.assertEqual(len(receipt['metadata']['artifacts']), 3)
+
+    def test_project_manifests_must_match_supported_recipe(self):
+        from gflo.prepare import validate_project
+        import shutil
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            project = root / 'project'
+            shutil.copytree('evaluations/environment-coding/python-api/source', project)
+            store = EnvironmentStore(root / 'store')
+            facts = validate_project(store, 'python-api', project)
+            self.assertIn('pyproject.toml', facts)
+            path = project / 'pyproject.toml'
+            path.write_text(path.read_text().replace('fastapi==0.115.12', 'fastapi==999'))
+            with self.assertRaisesRegex(ValueError, 'Supported dependencies'):
+                validate_project(store, 'python-api', project)
+            with self.assertRaisesRegex(ValueError, 'stdlib'):
+                validate_project(store, 'python-stdlib', project)
+
+    def test_profile_selection_uses_manifest_kind(self):
+        from gflo.prepare import infer_profile
+        for profile in ('python-stdlib', 'python-api', 'node-ts'):
+            self.assertEqual(infer_profile(Path('evaluations/environment-coding') / profile / 'source'), profile)
