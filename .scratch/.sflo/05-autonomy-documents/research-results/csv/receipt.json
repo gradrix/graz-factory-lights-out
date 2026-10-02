@@ -1,0 +1,74 @@
+{
+  "status": "failed",
+  "candidate_manifest": "9c01da103e9f145bfc426e4a4c3f02780b85a845594a4716d1437d36c413cb3c",
+  "contract_sha256": "18a040508ddc4d07d82fb11e7a56458f3bc4986e351af2e206f2523a51b53b4c",
+  "questions": [
+    {
+      "name": "newlines",
+      "expected_status": "supported",
+      "attempts": 1,
+      "answer_id": "bf354fdec1b1c6e86af4e653f8a490270565ffdbad895f594b79136009819896",
+      "status": "supported",
+      "expected_status_matches": true,
+      "response_evidence": [
+        "newlines-response.json"
+      ],
+      "request_evidence": "newlines-request.json",
+      "elapsed_s": 22.74184298099135
+    },
+    {
+      "name": "row_shape",
+      "expected_status": "supported",
+      "attempts": 1,
+      "error": "Citation does not match frozen evidence",
+      "response_evidence": [
+        "row_shape-response.json"
+      ],
+      "request_evidence": "row_shape-request.json",
+      "elapsed_s": 28.154541235999204
+    }
+  ],
+  "model_calls_authorized": 2,
+  "semantic_verdict": "independent review required",
+  "serving_before": {
+    "id": "2cac4229053dac00fdbcadb1952db80f0a9da3fd07b8f40bce1ba8cd3114f6e0",
+    "image": "sha256:249ed60fdd67b96db472e16f945af5aaba565b20159d192ba378035b6d136a1c",
+    "model_file": "/model/Qwen3.8-Flash-Next-GSQ-RCO-IQ1_M-00001-of-00002.gguf",
+    "alias": "flash-next-coder",
+    "context": 98304,
+    "cache_k": "q4_0",
+    "cache_v": "q4_0",
+    "parallel": 1,
+    "command_sha256": "813f7a321901e40d49381807889edc2b0554ee5e38c7f7de82c3713993d309c0"
+  },
+  "endpoint_model_before": {
+    "alias": "flash-next-coder",
+    "context": 98304
+  },
+  "evidence_id": "070c0e420dcec838aa77a74f108fac7668e9fe959b3880d4a0083520d0cebcb1",
+  "offline_replay": {
+    "passed": true,
+    "answers": 1,
+    "record_hashes": {
+      "070c0e420dcec838aa77a74f108fac7668e9fe959b3880d4a0083520d0cebcb1/body": "f56ff04a9bac6327b4eb086c854e4842b0b235d6e6135b737d1fc7723186f8c0",
+      "070c0e420dcec838aa77a74f108fac7668e9fe959b3880d4a0083520d0cebcb1/receipt.json": "070c0e420dcec838aa77a74f108fac7668e9fe959b3880d4a0083520d0cebcb1",
+      "070c0e420dcec838aa77a74f108fac7668e9fe959b3880d4a0083520d0cebcb1/text": "7ddc76bb45617d0bdb12c392aceeaf4126239435bdedb22b1da596347d5c3979",
+      "bf354fdec1b1c6e86af4e653f8a490270565ffdbad895f594b79136009819896/receipt.json": "bf354fdec1b1c6e86af4e653f8a490270565ffdbad895f594b79136009819896"
+    },
+    "network": "none",
+    "config_or_key_mounts": false
+  },
+  "serving_after": {
+    "id": "2cac4229053dac00fdbcadb1952db80f0a9da3fd07b8f40bce1ba8cd3114f6e0",
+    "image": "sha256:249ed60fdd67b96db472e16f945af5aaba565b20159d192ba378035b6d136a1c",
+    "model_file": "/model/Qwen3.8-Flash-Next-GSQ-RCO-IQ1_M-00001-of-00002.gguf",
+    "alias": "flash-next-coder",
+    "context": 98304,
+    "cache_k": "q4_0",
+    "cache_v": "q4_0",
+    "parallel": 1,
+    "command_sha256": "813f7a321901e40d49381807889edc2b0554ee5e38c7f7de82c3713993d309c0"
+  },
+  "candidate_after_matches": true,
+  "elapsed_s": 52.81314415397355
+}

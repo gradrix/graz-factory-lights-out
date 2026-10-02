@@ -82,3 +82,15 @@ htmlcov/
 !.scratch/.sflo/06-autonomy-browser/fixture-preflight/*.py
 !.scratch/.sflo/06-autonomy-browser/fixture-preflight/*.json
 !.scratch/.sflo/06-autonomy-browser/fixture-preflight/*.log
+
+!.scratch/.sflo/05-autonomy-documents/research-results/
+!.scratch/.sflo/05-autonomy-documents/research-results/**/
+.scratch/.sflo/05-autonomy-documents/research-results/**
+!.scratch/.sflo/05-autonomy-documents/research-results/**/
+!.scratch/.sflo/05-autonomy-documents/research-results/**/*.json
+
+!.scratch/.sflo/05-autonomy-documents/qa-research-cohort/
+.scratch/.sflo/05-autonomy-documents/qa-research-cohort/*
+!.scratch/.sflo/05-autonomy-documents/qa-research-cohort/*.py
+!.scratch/.sflo/05-autonomy-documents/qa-research-cohort/*.json
+!.scratch/.sflo/05-autonomy-documents/qa-research-cohort/*.log

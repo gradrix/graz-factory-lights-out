@@ -1,0 +1,77 @@
+{
+  "status": "structural_pass_semantic_pending",
+  "candidate_manifest": "9c01da103e9f145bfc426e4a4c3f02780b85a845594a4716d1437d36c413cb3c",
+  "contract_sha256": "6442f3e5ca00a563d6c55ea631a9c879a773cceb0c93d78623b08998a6aac7e5",
+  "questions": [
+    {
+      "name": "nonfinite",
+      "expected_status": "supported",
+      "attempts": 1,
+      "answer_id": "668a610ca3a215f603973c416728825e2b958e02aee36b235a51e9a5b6ff3e86",
+      "status": "supported",
+      "expected_status_matches": true,
+      "response_evidence": [
+        "nonfinite-response.json"
+      ],
+      "request_evidence": "nonfinite-request.json",
+      "elapsed_s": 26.575459765997948
+    },
+    {
+      "name": "hooks",
+      "expected_status": "supported",
+      "attempts": 1,
+      "answer_id": "5ac8501869d4c2c45674bca84bd77d34e8837ba155623a263475b0755a501028",
+      "status": "supported",
+      "expected_status_matches": true,
+      "response_evidence": [
+        "hooks-response.json"
+      ],
+      "request_evidence": "hooks-request.json",
+      "elapsed_s": 19.760021191992564
+    }
+  ],
+  "model_calls_authorized": 2,
+  "semantic_verdict": "independent review required",
+  "serving_before": {
+    "id": "2cac4229053dac00fdbcadb1952db80f0a9da3fd07b8f40bce1ba8cd3114f6e0",
+    "image": "sha256:249ed60fdd67b96db472e16f945af5aaba565b20159d192ba378035b6d136a1c",
+    "model_file": "/model/Qwen3.8-Flash-Next-GSQ-RCO-IQ1_M-00001-of-00002.gguf",
+    "alias": "flash-next-coder",
+    "context": 98304,
+    "cache_k": "q4_0",
+    "cache_v": "q4_0",
+    "parallel": 1,
+    "command_sha256": "813f7a321901e40d49381807889edc2b0554ee5e38c7f7de82c3713993d309c0"
+  },
+  "endpoint_model_before": {
+    "alias": "flash-next-coder",
+    "context": 98304
+  },
+  "evidence_id": "dbc3e94ea45cabb423f01f987f491a4c8592f62bcd69418a7c49b78eb7dde967",
+  "offline_replay": {
+    "passed": true,
+    "answers": 2,
+    "record_hashes": {
+      "5ac8501869d4c2c45674bca84bd77d34e8837ba155623a263475b0755a501028/receipt.json": "5ac8501869d4c2c45674bca84bd77d34e8837ba155623a263475b0755a501028",
+      "668a610ca3a215f603973c416728825e2b958e02aee36b235a51e9a5b6ff3e86/receipt.json": "668a610ca3a215f603973c416728825e2b958e02aee36b235a51e9a5b6ff3e86",
+      "dbc3e94ea45cabb423f01f987f491a4c8592f62bcd69418a7c49b78eb7dde967/body": "1a5e4ba18342b32f5f174d129f9c226a21a9445a89384f13a3f33ec327c2b68f",
+      "dbc3e94ea45cabb423f01f987f491a4c8592f62bcd69418a7c49b78eb7dde967/receipt.json": "dbc3e94ea45cabb423f01f987f491a4c8592f62bcd69418a7c49b78eb7dde967",
+      "dbc3e94ea45cabb423f01f987f491a4c8592f62bcd69418a7c49b78eb7dde967/text": "b26d8280fabff440a600b3a79d548f777f31cbd57d281f4bd054354857c9356f"
+    },
+    "network": "none",
+    "config_or_key_mounts": false
+  },
+  "serving_after": {
+    "id": "2cac4229053dac00fdbcadb1952db80f0a9da3fd07b8f40bce1ba8cd3114f6e0",
+    "image": "sha256:249ed60fdd67b96db472e16f945af5aaba565b20159d192ba378035b6d136a1c",
+    "model_file": "/model/Qwen3.8-Flash-Next-GSQ-RCO-IQ1_M-00001-of-00002.gguf",
+    "alias": "flash-next-coder",
+    "context": 98304,
+    "cache_k": "q4_0",
+    "cache_v": "q4_0",
+    "parallel": 1,
+    "command_sha256": "813f7a321901e40d49381807889edc2b0554ee5e38c7f7de82c3713993d309c0"
+  },
+  "candidate_after_matches": true,
+  "elapsed_s": 48.47320658899844
+}

@@ -1,0 +1,132 @@
+{
+  "python": "3.12.13",
+  "answers": [
+    {
+      "id": "668a610ca3a215f603973c416728825e2b958e02aee36b235a51e9a5b6ff3e86",
+      "evidence_id": "dbc3e94ea45cabb423f01f987f491a4c8592f62bcd69418a7c49b78eb7dde967",
+      "answer": {
+        "claims": [
+          {
+            "citations": [
+              {
+                "evidence_id": "dbc3e94ea45cabb423f01f987f491a4c8592f62bcd69418a7c49b78eb7dde967",
+                "excerpt": "If False, serialization of out-of-range float values (nan, inf, -inf) will result in a ValueError, in strict compliance with the JSON specification.",
+                "span": 70
+              }
+            ],
+            "text": "When allow_nan=False, serialization of out-of-range float values (nan, inf, -inf) will result in a ValueError, in strict compliance with the JSON specification."
+          },
+          {
+            "citations": [
+              {
+                "evidence_id": "dbc3e94ea45cabb423f01f987f491a4c8592f62bcd69418a7c49b78eb7dde967",
+                "excerpt": "If True (the default), their JavaScript equivalents (NaN, Infinity, -Infinity) are used.",
+                "span": 70
+              },
+              {
+                "evidence_id": "dbc3e94ea45cabb423f01f987f491a4c8592f62bcd69418a7c49b78eb7dde967",
+                "excerpt": "If allow_nan is true (the default), then NaN, Infinity, and -Infinity will be encoded as such.",
+                "span": 169
+              }
+            ],
+            "text": "By default (allow_nan=True), NaN, Infinity, and -Infinity are encoded as their JavaScript equivalents (NaN, Infinity, -Infinity)."
+          },
+          {
+            "citations": [
+              {
+                "evidence_id": "dbc3e94ea45cabb423f01f987f491a4c8592f62bcd69418a7c49b78eb7dde967",
+                "excerpt": "This behavior is not JSON specification compliant, but is consistent with most JavaScript based encoders and decoders.",
+                "span": 169
+              }
+            ],
+            "text": "This default behavior (encoding NaN/Infinity) is not JSON specification compliant, but is consistent with most JavaScript based encoders and decoders."
+          },
+          {
+            "citations": [
+              {
+                "evidence_id": "dbc3e94ea45cabb423f01f987f491a4c8592f62bcd69418a7c49b78eb7dde967",
+                "excerpt": "# Neither of these calls raises an exception, but the results are not valid JSON >>> json.dumps(float('-inf')) '-Infinity' >>> json.dumps(float('nan')) 'NaN'",
+                "span": 215
+              }
+            ],
+            "text": "By default, json.dumps(float('-inf')) produces '-Infinity' and json.dumps(float('nan')) produces 'NaN', without raising an exception, though the results are not valid JSON."
+          },
+          {
+            "citations": [
+              {
+                "evidence_id": "dbc3e94ea45cabb423f01f987f491a4c8592f62bcd69418a7c49b78eb7dde967",
+                "excerpt": "The RFC does not permit the representation of infinite or NaN number values. Despite that, by default, this module accepts and outputs Infinity, -Infinity, and NaN as if they were valid JSON number literal values:",
+                "span": 214
+              }
+            ],
+            "text": "The RFC does not permit the representation of infinite or NaN number values, but by default this module accepts and outputs Infinity, -Infinity, and NaN as if they were valid JSON number literal values."
+          },
+          {
+            "citations": [
+              {
+                "evidence_id": "dbc3e94ea45cabb423f01f987f491a4c8592f62bcd69418a7c49b78eb7dde967",
+                "excerpt": "In the serializer, the allow_nan parameter can be used to alter this behavior.",
+                "span": 216
+              }
+            ],
+            "text": "In the serializer, the allow_nan parameter can be used to alter the default behavior regarding NaN and Infinity values."
+          }
+        ],
+        "reason": "",
+        "status": "supported"
+      },
+      "source_url": "https://docs.python.org/3.12/library/json.html",
+      "source_version": "Python3.12 historical documentation snapshot; floating series URL, not exact runtime patch",
+      "retrieved_utc": "2026-10-02T15:16:44.107307+00:00",
+      "age_seconds": 46,
+      "freshness": "historical snapshot; current accuracy is not established",
+      "verdict": "citation_provenance_valid_not_semantic_entailment"
+    },
+    {
+      "id": "5ac8501869d4c2c45674bca84bd77d34e8837ba155623a263475b0755a501028",
+      "evidence_id": "dbc3e94ea45cabb423f01f987f491a4c8592f62bcd69418a7c49b78eb7dde967",
+      "answer": {
+        "claims": [
+          {
+            "citations": [
+              {
+                "evidence_id": "dbc3e94ea45cabb423f01f987f491a4c8592f62bcd69418a7c49b78eb7dde967",
+                "excerpt": "If object_hook is also set, object_pairs_hook takes priority.",
+                "span": 89
+              },
+              {
+                "evidence_id": "dbc3e94ea45cabb423f01f987f491a4c8592f62bcd69418a7c49b78eb7dde967",
+                "excerpt": "If object_hook is also defined, the object_pairs_hook takes priority.",
+                "span": 131
+              }
+            ],
+            "text": "If both object_hook and object_pairs_hook are supplied when decoding JSON, object_pairs_hook takes priority."
+          },
+          {
+            "citations": [
+              {
+                "evidence_id": "dbc3e94ea45cabb423f01f987f491a4c8592f62bcd69418a7c49b78eb7dde967",
+                "excerpt": "a function that is called with the result of any object literal decoded with an ordered list of pairs",
+                "span": 89
+              },
+              {
+                "evidence_id": "dbc3e94ea45cabb423f01f987f491a4c8592f62bcd69418a7c49b78eb7dde967",
+                "excerpt": "an optional function that will be called with the result of every JSON object decoded with an ordered list of pairs",
+                "span": 131
+              }
+            ],
+            "text": "object_pairs_hook receives the result of any object literal decoded with an ordered list of pairs."
+          }
+        ],
+        "reason": "",
+        "status": "supported"
+      },
+      "source_url": "https://docs.python.org/3.12/library/json.html",
+      "source_version": "Python3.12 historical documentation snapshot; floating series URL, not exact runtime patch",
+      "retrieved_utc": "2026-10-02T15:16:44.107307+00:00",
+      "age_seconds": 46,
+      "freshness": "historical snapshot; current accuracy is not established",
+      "verdict": "citation_provenance_valid_not_semantic_entailment"
+    }
+  ]
+}

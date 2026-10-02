@@ -1,0 +1,82 @@
+[
+  {
+    "contract": "json.json",
+    "exit": 0,
+    "status": "structural_pass_semantic_pending",
+    "questions": [
+      {
+        "name": "nonfinite",
+        "expected_status": "supported",
+        "attempts": 1,
+        "answer_id": "668a610ca3a215f603973c416728825e2b958e02aee36b235a51e9a5b6ff3e86",
+        "status": "supported",
+        "expected_status_matches": true,
+        "response_evidence": [
+          "nonfinite-response.json"
+        ],
+        "request_evidence": "nonfinite-request.json",
+        "elapsed_s": 26.575459765997948
+      },
+      {
+        "name": "hooks",
+        "expected_status": "supported",
+        "attempts": 1,
+        "answer_id": "5ac8501869d4c2c45674bca84bd77d34e8837ba155623a263475b0755a501028",
+        "status": "supported",
+        "expected_status_matches": true,
+        "response_evidence": [
+          "hooks-response.json"
+        ],
+        "request_evidence": "hooks-request.json",
+        "elapsed_s": 19.760021191992564
+      }
+    ],
+    "elapsed_s": 48.47320658899844
+  },
+  {
+    "contract": "csv.json",
+    "exit": 1,
+    "status": "failed",
+    "questions": [
+      {
+        "name": "newlines",
+        "expected_status": "supported",
+        "attempts": 1,
+        "answer_id": "bf354fdec1b1c6e86af4e653f8a490270565ffdbad895f594b79136009819896",
+        "status": "supported",
+        "expected_status_matches": true,
+        "response_evidence": [
+          "newlines-response.json"
+        ],
+        "request_evidence": "newlines-request.json",
+        "elapsed_s": 22.74184298099135
+      },
+      {
+        "name": "row_shape",
+        "expected_status": "supported",
+        "attempts": 1,
+        "error": "Citation does not match frozen evidence",
+        "response_evidence": [
+          "row_shape-response.json"
+        ],
+        "request_evidence": "row_shape-request.json",
+        "elapsed_s": 28.154541235999204
+      }
+    ],
+    "elapsed_s": 52.81314415397355
+  },
+  {
+    "contract": "asyncio_groups.json",
+    "exit": 1,
+    "status": "failed",
+    "questions": [],
+    "elapsed_s": 1.5554463180014864
+  },
+  {
+    "contract": "asyncio_timeouts.json",
+    "exit": 1,
+    "status": "failed",
+    "questions": [],
+    "elapsed_s": 1.3051051960210316
+  }
+]

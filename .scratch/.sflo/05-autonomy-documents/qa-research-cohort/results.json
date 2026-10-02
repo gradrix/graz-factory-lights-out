@@ -1,0 +1,154 @@
+[
+  {
+    "group": "json",
+    "name": "nonfinite",
+    "saved": true,
+    "elapsed_s": 26.575459765997948,
+    "citations": [
+      {
+        "claim": 1,
+        "span": 70,
+        "exact": true
+      },
+      {
+        "claim": 2,
+        "span": 70,
+        "exact": true
+      },
+      {
+        "claim": 2,
+        "span": 169,
+        "exact": true
+      },
+      {
+        "claim": 3,
+        "span": 169,
+        "exact": true
+      },
+      {
+        "claim": 4,
+        "span": 215,
+        "exact": true
+      },
+      {
+        "claim": 5,
+        "span": 214,
+        "exact": true
+      },
+      {
+        "claim": 6,
+        "span": 216,
+        "exact": true
+      }
+    ]
+  },
+  {
+    "group": "json",
+    "name": "hooks",
+    "saved": true,
+    "elapsed_s": 19.760021191992564,
+    "citations": [
+      {
+        "claim": 1,
+        "span": 89,
+        "exact": true
+      },
+      {
+        "claim": 1,
+        "span": 131,
+        "exact": true
+      },
+      {
+        "claim": 2,
+        "span": 89,
+        "exact": true
+      },
+      {
+        "claim": 2,
+        "span": 131,
+        "exact": true
+      }
+    ]
+  },
+  {
+    "group": "csv",
+    "name": "newlines",
+    "saved": true,
+    "elapsed_s": 22.74184298099135,
+    "citations": [
+      {
+        "claim": 1,
+        "span": 192,
+        "exact": true
+      },
+      {
+        "claim": 2,
+        "span": 192,
+        "exact": true
+      },
+      {
+        "claim": 3,
+        "span": 39,
+        "exact": true
+      },
+      {
+        "claim": 3,
+        "span": 44,
+        "exact": true
+      }
+    ]
+  },
+  {
+    "group": "csv",
+    "name": "row_shape",
+    "saved": false,
+    "elapsed_s": 28.154541235999204,
+    "citations": [
+      {
+        "claim": 1,
+        "span": 61,
+        "exact": true
+      },
+      {
+        "claim": 2,
+        "span": 44,
+        "exact": false
+      },
+      {
+        "claim": 3,
+        "span": 111,
+        "exact": true
+      },
+      {
+        "claim": 3,
+        "span": 112,
+        "exact": true
+      },
+      {
+        "claim": 4,
+        "span": 115,
+        "exact": true
+      },
+      {
+        "claim": 4,
+        "span": 116,
+        "exact": true
+      },
+      {
+        "claim": 5,
+        "span": 119,
+        "exact": true
+      }
+    ]
+  },
+  {
+    "group": "asyncio_groups",
+    "questions_attempted": 0,
+    "recorded_failure": "Operation failed; inspect bounded per-operation evidence."
+  },
+  {
+    "group": "asyncio_timeouts",
+    "questions_attempted": 0,
+    "recorded_failure": "Operation failed; inspect bounded per-operation evidence."
+  }
+]

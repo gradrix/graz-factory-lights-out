@@ -1,0 +1,46 @@
+{
+  "id": "5ac8501869d4c2c45674bca84bd77d34e8837ba155623a263475b0755a501028",
+  "evidence_id": "dbc3e94ea45cabb423f01f987f491a4c8592f62bcd69418a7c49b78eb7dde967",
+  "answer": {
+    "status": "supported",
+    "claims": [
+      {
+        "text": "If both object_hook and object_pairs_hook are supplied when decoding JSON, object_pairs_hook takes priority.",
+        "citations": [
+          {
+            "evidence_id": "dbc3e94ea45cabb423f01f987f491a4c8592f62bcd69418a7c49b78eb7dde967",
+            "span": 89,
+            "excerpt": "If object_hook is also set, object_pairs_hook takes priority."
+          },
+          {
+            "evidence_id": "dbc3e94ea45cabb423f01f987f491a4c8592f62bcd69418a7c49b78eb7dde967",
+            "span": 131,
+            "excerpt": "If object_hook is also defined, the object_pairs_hook takes priority."
+          }
+        ]
+      },
+      {
+        "text": "object_pairs_hook receives the result of any object literal decoded with an ordered list of pairs.",
+        "citations": [
+          {
+            "evidence_id": "dbc3e94ea45cabb423f01f987f491a4c8592f62bcd69418a7c49b78eb7dde967",
+            "span": 89,
+            "excerpt": "a function that is called with the result of any object literal decoded with an ordered list of pairs"
+          },
+          {
+            "evidence_id": "dbc3e94ea45cabb423f01f987f491a4c8592f62bcd69418a7c49b78eb7dde967",
+            "span": 131,
+            "excerpt": "an optional function that will be called with the result of every JSON object decoded with an ordered list of pairs"
+          }
+        ]
+      }
+    ],
+    "reason": ""
+  },
+  "source_url": "https://docs.python.org/3.12/library/json.html",
+  "source_version": "Python3.12 historical documentation snapshot; floating series URL, not exact runtime patch",
+  "retrieved_utc": "2026-10-02T15:16:44.107307+00:00",
+  "age_seconds": 46,
+  "freshness": "historical snapshot; current accuracy is not established",
+  "verdict": "citation_provenance_valid_not_semantic_entailment"
+}

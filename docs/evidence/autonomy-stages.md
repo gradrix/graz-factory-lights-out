@@ -81,3 +81,9 @@ On the5090 at96K/Q4, the first frozen question received complete, source-support
 This is two questions against one historical official page, not general research reliability. Citation matching proves provenance; semantic support needs separate assessment. The full Stage4 ten-question/five-browser-journey gate remains pending.
 
 [Usage](../document-evidence.md), [semantic QA](../../.scratch/.sflo/05-autonomy-documents/qa-rig-documents.md), [security recheck](../../.scratch/.sflo/05-autonomy-documents/security-documents-recheck.md), [raw trial](../../.scratch/.sflo/05-autonomy-documents/rig-trial/receipt.json).
+
+### Broader documentation extension — incomplete
+
+Eight additional questions were frozen before further inference. Three answers were saved, one was rejected for changing a quoted curly apostrophe to ASCII, and four asyncio questions never reached inference after source acquisition failed. A separate actual diagnostic reproduced the extractor's10,000-event ceiling on the ordinary official asyncio page.
+
+Independent QA found all three saved answers address their actual questions. One frozen expected-facts list also demanded an unasked return-value fact; this oracle overconstraint is preserved separately from model quality. The original two accepted answers remain unchanged. The larger research gate is unaccepted; [full assessment](../../.scratch/.sflo/05-autonomy-documents/qa-research-cohort.md) and [next reliability work](../../.scratch/autonomy/issues/07-document-reliability.md) retain failures and proposed experiments.
