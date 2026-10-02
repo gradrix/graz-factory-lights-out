@@ -1,0 +1,15 @@
+const fs=require('fs'),cp=require('child_process'),assert=require('assert/strict');
+const results=[];function run(name,args,cwd='/tmp'){let p=cp.spawnSync('node',args,{cwd,encoding:'utf8',timeout:60000});results.push({name,args,status:p.status,stdout:p.stdout,stderr:p.stderr});console.log(JSON.stringify(results));return p;}
+assert.notEqual(run('frozen-oracle',['/acceptance/check.cjs','/source']).status,0);
+fs.cpSync('/source','/tmp/project with spaces',{recursive:true});const root='/tmp/project with spaces';
+assert.equal(run('strict-compile',['/node_modules/typescript/bin/tsc','-p',root+'/tsconfig.json']).status,0);
+assert.equal(run('generated-tests',['--test'],root).status,0);
+const {dispatch}=require(root+'/dist/api.js');
+let seed=918;function rand(n){seed=(seed*1664525+1013904223)>>>0;return seed%n;}
+for(let i=0;i<200;i++){let events=Array.from({length:rand(100)},()=>({service:['__proto__','constructor','A','z',' ','\0','~'][rand(7)],durationMs:rand(1000000001),outcome:rand(2)?'success':'failure'}));let minAttempts=rand(10)+1;let before=JSON.stringify(events);let want=[...new Set(events.map(e=>e.service))].sort().map(service=>{let es=events.filter(e=>e.service===service),totalMs=es.reduce((s,e)=>s+e.durationMs,0),successes=es.filter(e=>e.outcome==='success').length;return {service,attempts:es.length,successes,failures:es.length-successes,totalMs,averageMs:Math.ceil(totalMs/es.length)}}).filter(r=>r.attempts>=minAttempts);assert.deepEqual(dispatch({action:'report',events,minAttempts}),want);assert.equal(JSON.stringify(events),before);}
+results.push({name:'200-seeded-independent-reports',status:0});
+fs.writeFileSync(root+'/README.md',`# Deployment report\nRun commands from the project directory at any filesystem location. Compile offline with \`node /node_modules/typescript/bin/tsc -p tsconfig.json\`, then run \`node --test\`. Send JSON on stdin to \`node dist/cli.js\`. For example: \`echo '{"action":"report","events":[],"minAttempts":1}' | node dist/cli.js\` returns an empty array. Reports aggregate attempts, successes, failures, total milliseconds and ceiling averages, sorted by ASCII service name. Invalid shapes, ranges, non-ASCII names and unknown actions produce exit 2 and a message on stderr without a stack trace. The total action remains available.\n`);
+assert.notEqual(run('disposable-readme-only-original-oracle',['/acceptance/check.cjs',root]).status,0);
+let checker=fs.readFileSync('/acceptance/check.cjs','utf8').replace("!result.stderr.includes(' at ')","!/^\\s+at\\s/m.test(result.stderr)");fs.writeFileSync('/tmp/check.cjs',checker);assert.equal(run('diagnostic-stack-frame-predicate-with-readme-repair',['/tmp/check.cjs',root]).status,0);
+let domain=root+'/src/domain.ts';fs.writeFileSync(domain,fs.readFileSync(domain,'utf8').replace('array of at most 1000 events','array containing no more than 1000 events'));assert.equal(run('disposable-readme-and-message-workaround-original-oracle',['/acceptance/check.cjs',root]).status,0);
+console.log(JSON.stringify(results));

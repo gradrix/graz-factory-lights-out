@@ -40,3 +40,6 @@ htmlcov/
 !.scratch/.sflo/04-autonomy-environments/qa-*/*.json
 !.scratch/.sflo/04-autonomy-environments/qa-*/*.log
 !.scratch/.sflo/04-autonomy-environments/qa-*/*.cjs
+
+!.scratch/.sflo/05-autonomy-documents/
+.scratch/.sflo/05-autonomy-documents/*/
