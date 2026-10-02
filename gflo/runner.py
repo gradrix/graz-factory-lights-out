@@ -15,6 +15,7 @@ import tarfile
 import uuid
 
 from .observe import Execution, event, identity, redact, schema
+from .review import load_files, validate
 
 
 def save(path, value):
@@ -46,6 +47,27 @@ def fingerprint(root):
         elif not path.is_dir():
             raise ValueError('Unsupported workspace file: ' + relative)
     return digest.hexdigest()
+
+
+def accepted_intact(root, contract_hash, attempts):
+    """Bind success to candidate, contract and the evidence that established it."""
+    try:
+        receipt = json.loads((root / 'accepted.json').read_text())
+        task = json.loads((root / 'task.json').read_text())
+        if (fingerprint(root / 'workspace') != receipt['candidate'] or
+            hashlib.sha256((root / 'change.patch').read_bytes()).hexdigest() != receipt['patch_sha256'] or
+            hashlib.sha256((root / 'task.json').read_bytes()).hexdigest() != contract_hash):
+            return False
+        artifacts = receipt.get('artifacts', {})
+        # Legacy runs retain their original acceptance scope. Review-bearing runs
+        # always require both receipts, including after a controller restart.
+        if task.get('review_required'):
+            required = {f'attempts/{attempts}/verification.json', f'attempts/{attempts}/review.json'}
+            if not required.issubset(artifacts):
+                return False
+        return all(hashlib.sha256((root / name).read_bytes()).hexdigest() == digest for name, digest in artifacts.items())
+    except (OSError, ValueError, KeyError, TypeError):
+        return False
 
 
 def git(repo, *args, **kwargs):
@@ -167,16 +189,8 @@ class Factory:
             raise ValueError('Unknown run: ' + run_id)
         result = dict(row)
         root = self.state / run_id
-        if result['status'] == 'accepted':
-            try:
-                receipt = json.loads((root / 'accepted.json').read_text())
-                current = fingerprint(root / 'workspace')
-                patch = hashlib.sha256((root / 'change.patch').read_bytes()).hexdigest()
-                task_hash = hashlib.sha256((root / 'task.json').read_bytes()).hexdigest()
-                if current != receipt['candidate'] or patch != receipt['patch_sha256'] or task_hash != result['contract_hash']:
-                    raise ValueError('Accepted artifacts changed')
-            except (OSError, ValueError, KeyError):
-                result.update(status='invalidated', message='Accepted artifacts changed or are missing; start a new run')
+        if result['status'] == 'accepted' and not accepted_intact(root, result['contract_hash'], result['attempts']):
+            result.update(status='invalidated', message='Accepted artifacts changed or are missing; start a new run')
         result.update(directory=str(root), workspace=str(root / 'workspace'),
                       patch=str(root / 'change.patch'))
         return result
@@ -193,8 +207,12 @@ class Factory:
         (root / 'change.patch').write_bytes(patch)
         passed = verdict.get('passed') is True
         if passed:
+            artifacts = [f'attempts/{number}/verification.json']
+            if 'review' in verdict:
+                artifacts.append(f'attempts/{number}/review.json')
             save(root / 'accepted.json', {'candidate': verdict['candidate'],
-                                         'patch_sha256': hashlib.sha256(patch).hexdigest()})
+                                         'patch_sha256': hashlib.sha256(patch).hexdigest(),
+                                         'artifacts': {name: hashlib.sha256((root / name).read_bytes()).hexdigest() for name in artifacts}})
         with self.db:
             self.db.execute('UPDATE runs SET message=message WHERE id=?', (run_id,))
             control = self.db.execute('SELECT cancel_requested FROM execution WHERE run_id=?', (run_id,)).fetchone()
@@ -301,6 +319,8 @@ class Factory:
                 result = self.worker(workspace, task, previous, number)
                 save(attempt / 'worker.json', result)
                 if result.get('question'):
+                    with self.db:
+                        self.db.execute("UPDATE attempts SET status='needs_input' WHERE run_id=? AND number=?", (run_id, number))
                     self._state(run_id, 'needs_input', result['question'])
                     return self.status(run_id)
                 logging.info("Attempt %s: verifying candidate", number)
@@ -309,8 +329,7 @@ class Factory:
                 if verdict.get('passed') is True and task.get('review_required'):
                     self.report('reviewing', attempt=number)
                     review = self.reviewer(workspace, task)
-                    if review.get('decision') not in ('pass', 'repair', 'needs_input'):
-                        raise ValueError('Invalid independent review decision')
+                    validate(review, load_files(workspace))
                     save(attempt / 'review.json', review)
                     verdict['review'] = review
                     verdict['passed'] = review['decision'] == 'pass'

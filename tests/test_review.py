@@ -53,3 +53,18 @@ class ReviewTests(unittest.TestCase):
             Reviewer(client).review_files('Fix value', {'app.py': 'value=1\n'})
         self.assertEqual(len(client.bodies[-1]['messages']), 2)
         self.assertNotIn('tools', client.bodies[-1])
+
+    def test_incomplete_or_contradictory_review_never_accepts(self):
+        for index, review in enumerate([{'decision': 'pass'}, {'decision':'pass','findings':[],'question':'Which policy?'}]):
+            f = Factory(self.root / f'state-{index}', lambda *a: {}, lambda *a: {'passed': True}, reviewer=lambda *a: review)
+            run = f.create(self.task)
+            with self.assertRaises(ValueError): f.resume(run)
+            self.assertNotEqual(f.status(run)['status'], 'accepted')
+
+    def test_deleted_review_evidence_invalidates_acceptance(self):
+        from gflo.observe import Observer
+        f = Factory(self.root / 'state', lambda *a: {}, lambda *a: {'passed':True}, reviewer=lambda *a: {'decision':'pass','findings':[],'question':''})
+        run = f.create(self.task); f.resume(run)
+        (f.state / run / 'attempts/1/review.json').unlink()
+        self.assertEqual(f.status(run)['status'], 'invalidated')
+        self.assertEqual(Observer(f.state).status(run)['status'], 'invalidated')

@@ -25,7 +25,7 @@ def validate(result, files):
         if any(not isinstance(finding[k], str) or not finding[k].strip() or len(finding[k]) > 4000 for k in ('evidence', 'repair')):
             raise ValueError('Review finding needs bounded evidence and repair')
     blocking = any(f['severity'] in ('critical', 'major') for f in findings)
-    if (decision == 'pass' and blocking) or (decision == 'repair' and not blocking) or (decision == 'needs_input' and not question.strip()) or len(question) > 4000:
+    if (decision == 'pass' and blocking) or (decision == 'repair' and not blocking) or (decision == 'needs_input' and not question.strip()) or (decision != 'needs_input' and question.strip()) or len(question) > 4000:
         raise ValueError('Inconsistent review decision')
     return result
 
@@ -50,16 +50,21 @@ class Reviewer:
         return result
 
     def __call__(self, workspace, task):
-        files = {}
-        total = 0
-        for path in sorted(Path(workspace).rglob('*')):
-            if path.is_symlink():
-                raise ValueError('Independent review does not follow symlinks')
-            if not path.is_file():
-                continue
-            size = path.stat().st_size
-            total += size
-            if total > 200000 or len(files) >= 1000:
-                raise ValueError('Independent review input too large; split task explicitly')
-            files[str(path.relative_to(workspace))] = path.read_text()
-        return self.review_files(task['objective'], files)
+        return self.review_files(task['objective'], load_files(workspace))
+
+
+def load_files(workspace):
+    files = {}
+    total = 0
+    for path in sorted(Path(workspace).rglob('*')):
+        if path.is_symlink():
+            raise ValueError('Independent review does not follow symlinks')
+        if not path.is_file():
+            continue
+        total += path.stat().st_size
+        if total > 200000 or len(files) >= 1000:
+            raise ValueError('Independent review input too large; split task explicitly')
+        files[str(path.relative_to(workspace))] = path.read_text()
+    if not files:
+        raise ValueError('Independent review needs source files')
+    return files

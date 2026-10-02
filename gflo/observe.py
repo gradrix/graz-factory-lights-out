@@ -99,7 +99,7 @@ class Observer:
             db.close()
 
     def status(self, run=None):
-        from .runner import fingerprint
+        from .runner import accepted_intact
         if run is None and not (self.state / 'state.sqlite').exists():
             return []
         with self.connect() as db:
@@ -125,18 +125,11 @@ class Observer:
                           detail=json.loads(execution['detail']), cancel_requested=bool(execution['cancel_requested']))
             if not alive and (result['status'] in ('running', 'repairing') or (result['status'] == 'pending' and execution['pid'])):
                 result.update(status='cancelled' if execution['cancel_requested'] else 'interrupted', phase='interrupted', message='Runner process ended; resume to recover retained work')
-            result['waiting_on_model'] = alive and result['phase'] == 'model_wait'
+            result['waiting_on_model'] = alive and result['phase'] in ('model_wait', 'review_wait')
             # Elapsed silence is observable; it is not proof that inference is deadlocked.
             result['model_slow'] = result['waiting_on_model'] and result['action_age_s'] >= 30
-        if result['status'] == 'accepted':
-            try:
-                receipt = json.loads((root / 'accepted.json').read_text())
-                if (fingerprint(root / 'workspace') != receipt['candidate'] or
-                    hashlib.sha256((root / 'change.patch').read_bytes()).hexdigest() != receipt['patch_sha256'] or
-                    hashlib.sha256((root / 'task.json').read_bytes()).hexdigest() != result['contract_hash']):
-                    raise ValueError('Changed accepted artifacts')
-            except (OSError, ValueError, KeyError):
-                result.update(status='invalidated', phase='invalidated', message='Accepted artifacts changed or are missing')
+        if result['status'] == 'accepted' and not accepted_intact(root, result['contract_hash'], result['attempts']):
+            result.update(status='invalidated', phase='invalidated', message='Accepted artifacts changed or are missing')
         if result['status'] in ('accepted', 'exhausted', 'cancelled', 'interrupted', 'invalidated', 'needs_input'):
             result['phase'] = result['status']
         result['message'] = redact(result['message'])
