@@ -1,5 +1,7 @@
 """Offline command execution and independent acceptance checks."""
 import hashlib
+import json
+import sys
 import os
 from pathlib import Path
 import subprocess
@@ -15,6 +17,7 @@ class Sandbox:
         if not (image.startswith('sha256:') or '@sha256:' in image):
             raise ValueError('Sandbox image must be pinned by digest or local image ID')
         self.image = image
+        self.observe = lambda *a, **kw: None
 
     def cleanup(self, workspace):
         label = hashlib.sha256(str(Path(workspace).resolve()).encode()).hexdigest()
@@ -41,7 +44,11 @@ class Sandbox:
             args += ['--mount', f'type=bind,src={Path(acceptance).resolve()},dst=/acceptance,readonly']
         args += [self.image, *command]
         started = time.monotonic()
-        process = subprocess.Popen(args, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+        self.observe('container_running', name=name, timeout_s=timeout, readonly=bool(acceptance))
+        process = subprocess.Popen([sys.executable, '-m', 'gflo.guard'], stdin=subprocess.PIPE,
+                                   stdout=subprocess.PIPE, stderr=subprocess.STDOUT, start_new_session=True)
+        process.stdin.write((json.dumps({'args': args, 'name': name, 'timeout': timeout}) + '\n').encode())
+        process.stdin.flush()
         tail = bytearray()
         count = [0]
 
@@ -57,19 +64,22 @@ class Sandbox:
 
         reader = threading.Thread(target=drain, daemon=True)
         reader.start()
-        timed_out = False
         try:
-            try:
-                process.wait(timeout=timeout)
-            except subprocess.TimeoutExpired:
-                timed_out = True
+            process.wait(timeout=timeout + 45)
         finally:
-            subprocess.run(['docker', 'rm', '-f', name], capture_output=True, timeout=30)
-            if process.poll() is None:
+            process.stdin.close()  # EOF tells the guardian to stop even during cancellation.
+            try:
+                process.wait(timeout=45)
+            except subprocess.TimeoutExpired:
+                # Fail closed: do not continue verification after a stuck cleanup.
+                self.cleanup(workspace)
                 process.kill()
-            process.wait(timeout=10)
+                process.wait(timeout=10)
+                raise RuntimeError('Container guardian did not stop')
             reader.join(timeout=10)
             process.stdout.close()
+            self.observe('container_finished', name=name, exit_code=process.returncode)
+        timed_out = process.returncode == 124
         output = tail.decode(errors='replace')
         if count[0] > 16384:
             output = f'[truncated {count[0] - 16384} bytes]\n' + output

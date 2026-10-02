@@ -6,7 +6,7 @@ Plan an eventually autonomous local software factory: accepted product intent to
 
 ## Notes
 
-User direction, 2026-10-02: push the first version, delete previous implementation/docs instead of archiving, and plan local end-to-end autonomy with small reasoning tasks, environment setup, process visibility, logs, search and a headless browser. This turn authorizes cleanup/publication and planning, not implementing all future capabilities or deploying generated products. Current source: this checkout; running copy: MONSTER-GAMING-PC ~/gflo-runtime. Tracker: version-controlled local Markdown, consistent with repository practice. Research uses primary sources. No paid/cloud inference fallback.
+User direction, 2026-10-02: push the first version, delete previous implementation/docs instead of archiving, and plan local end-to-end autonomy with small reasoning tasks, environment setup, process visibility, logs, search and a headless browser. Superseded by user direction on 2026-10-02: proceed with incremental implementation toward self-sufficiency, with testing stages, actual 5090 trials and progressively more complex acceptance. Generated production deployments still need a preauthorized target. Current source: this checkout; running copy: MONSTER-GAMING-PC ~/gflo-runtime. Tracker: version-controlled local Markdown, consistent with repository practice. Research uses primary sources. No paid/cloud inference fallback.
 
 ## Decisions so far
 
@@ -21,6 +21,6 @@ Model reliability across unfamiliar larger projects; useful task/context sizes; 
 
 ## Out of scope
 
-Implementing the entire roadmap this turn, cloud LLM dependence, rewriting Git history, production/external-account writes without a preauthorized target, and claiming universal large-project autonomy.
+Cloud LLM dependence, rewriting Git history, production/external-account writes without a preauthorized target, and claiming universal large-project autonomy.
 
 [Delivery map](delivery.md)

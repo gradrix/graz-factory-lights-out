@@ -61,3 +61,23 @@ The configured local image ID works after that transfer. Use a newly pinned prep
 Run `status` first, then `resume RUN_ID`. Pending model requests are not replayed as trusted results. An interrupted attempt consumes its allowance, leftover workspace containers are stopped, and a new attempt receives the retained files and interruption evidence. A completed saved verdict is reconciled only when candidate identity matches.
 
 Keep `.gflo/runs` together: SQLite, acceptance snapshots, private Git snapshots and artifacts form one recoverable set. Do not edit an active run. To change the requirement or exhausted budget, create a new task/run. No automatic cleanup removes old evidence; archive old run directories and their database together when desired.
+
+## Observe and control a run
+
+```sh
+python3 -m gflo watch RUN_ID
+python3 -m gflo watch RUN_ID --once
+python3 -m gflo serve --port 8787
+python3 -m gflo cancel RUN_ID
+python3 -m gflo resume RUN_ID
+```
+
+Open `http://127.0.0.1:8787`. For the rig, forward its loopback port with
+`ssh -N -L 8787:127.0.0.1:8787 monster-gaming-pc.lan` after starting the observer there.
+The page and API are read-only; cancellation/resume are CLI operations. No model configuration is needed to observe. The API lists the newest 100 runs; a specific run remains addressable. Events have a version and increasing cursor: `/api/runs/ID/events?after=SEQ` returns at most 500 records. Reconnect using the last received sequence.
+
+The page shows attempts and their limits, current operation, heartbeat and elapsed time since meaningful progress. A model response taking over 30 seconds is marked slow, not declared deadlocked. There is no estimated completion percentage. An abruptly killed runner is displayed as interrupted by checking Linux process identity, rather than trusting its last SQLite status. Resume retains the workspace and consumes the original remaining attempt budget. Accepted runs remain terminal and their artifacts are checked for changes.
+
+Cancellation sends SIGINT only to the recorded Linux process identity via a pidfd; it does not kill unrelated runs. Each container has a separate guardian that removes it when the runner's ownership pipe closes, including SIGKILL. Docker daemon availability is required for cleanup; resume requires cleanup before inspecting/accepting retained work. Linux `/proc` and pidfds are required by these controls.
+
+Public evidence is limited to patches, worker summaries, verification and interruption receipts. Downloads are capped at 1 MiB and marked when truncated. Raw model trajectories and task/config files are not served. Common bearer/password/key/token patterns are redacted; this is defense in depth, not a general secret detector. Keep source and tasks free of credentials. Trajectory records are capped at 256 KiB each and approximately 64 MiB per attempt; oversized records are replaced by explicit truncation receipts. Durable events contain bounded operation metadata, not prompts or command output. No automatic deletion of run history occurs.

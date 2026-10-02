@@ -5,6 +5,10 @@ import logging
 from pathlib import Path
 import subprocess
 import sys
+import time
+
+from .observe import Observer
+from .web import server
 
 from .runner import Factory
 from .sandbox import DEFAULT_IMAGE, Sandbox
@@ -23,12 +27,36 @@ def main(argv=None):
     resume.add_argument('id')
     status = sub.add_parser('status', help='Read run state without contacting the model')
     status.add_argument('id', nargs='?')
+    cancel = sub.add_parser('cancel', help='Request cancellation of exactly one run')
+    cancel.add_argument('id')
+    watch = sub.add_parser('watch', help='Poll durable state without contacting the model')
+    watch.add_argument('id', nargs='?')
+    watch.add_argument('--once', action='store_true')
+    serve = sub.add_parser('serve', help='Read-only loopback progress page and API')
+    serve.add_argument('--port', type=int, default=8787)
     args = parser.parse_args(argv)
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     try:
+        if args.command == 'serve':
+            http = server(args.state, args.port)
+            print(f'GFLO read-only observer: http://127.0.0.1:{http.server_port}', flush=True)
+            try:
+                http.serve_forever()
+            finally:
+                http.server_close()
+            return 0
+        if args.command == 'watch':
+            while True:
+                print(json.dumps(Observer(args.state).status(args.id), indent=2), flush=True)
+                if args.once:
+                    return 0
+                time.sleep(2)
+        if args.command == 'cancel':
+            print(json.dumps(Factory(args.state, None, None).cancel(args.id), indent=2))
+            return 0
         if args.command == 'status':
             factory = Factory(args.state, None, None)
-            print(json.dumps(factory.status(args.id), indent=2))
+            print(json.dumps(Observer(args.state).status(args.id), indent=2))
             return 0
         config_path = Path(args.config).resolve()
         if not config_path.exists():

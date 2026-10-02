@@ -8,10 +8,13 @@ import logging
 import os
 from pathlib import Path
 import shutil
+import signal
 import sqlite3
 import subprocess
 import tarfile
 import uuid
+
+from .observe import Execution, event, identity, redact, schema
 
 
 def save(path, value):
@@ -58,6 +61,7 @@ class Factory:
         self.verifier = verifier
         self.cleanup = cleanup
         self.db = sqlite3.connect(self.state / 'state.sqlite')
+        self.report = lambda *a, **kw: None
         self.db.row_factory = sqlite3.Row
         self.db.executescript('''
             PRAGMA journal_mode=WAL;
@@ -68,6 +72,8 @@ class Factory:
                 run_id TEXT NOT NULL, number INTEGER NOT NULL, status TEXT NOT NULL,
                 PRIMARY KEY (run_id, number));
         ''')
+
+        schema(self.db)
 
     @contextmanager
     def locked(self):
@@ -139,6 +145,7 @@ class Factory:
         with self.db:
             self.db.execute('INSERT INTO runs VALUES (?, ?, 0, ?, ?)',
                             (run_id, 'pending', contract_hash, ''))
+            event(self.db, run_id, 'created')
         return run_id
 
     def _snapshot_git(self, root, *args):
@@ -172,7 +179,8 @@ class Factory:
 
     def _state(self, run_id, status, message=''):
         with self.db:
-            self.db.execute('UPDATE runs SET status=?, message=? WHERE id=?', (status, message, run_id))
+            self.db.execute('UPDATE runs SET status=?, message=? WHERE id=?', (status, redact(message), run_id))
+            event(self.db, run_id, status)
 
     def _finish(self, root, run_id, number, verdict):
         self._index(root, root / 'workspace')
@@ -184,66 +192,115 @@ class Factory:
             save(root / 'accepted.json', {'candidate': verdict['candidate'],
                                          'patch_sha256': hashlib.sha256(patch).hexdigest()})
         with self.db:
+            self.db.execute('UPDATE runs SET message=message WHERE id=?', (run_id,))
+            control = self.db.execute('SELECT cancel_requested FROM execution WHERE run_id=?', (run_id,)).fetchone()
+            if control and control[0]:
+                raise KeyboardInterrupt('Cancellation requested')
+            event(self.db, run_id, 'accepted' if passed else 'check_failed', attempt=number)
             self.db.execute('UPDATE attempts SET status=? WHERE run_id=? AND number=?',
                             ('passed' if passed else 'failed', run_id, number))
             self.db.execute('UPDATE runs SET status=?, message=? WHERE id=?',
                             ('accepted' if passed else 'repairing', '' if passed else 'Acceptance failed', run_id))
         return passed
 
+    def cancel(self, run_id):
+        self.status(run_id)
+        with self.db:
+            self.db.execute('UPDATE runs SET message=message WHERE id=?', (run_id,))
+            row = self.db.execute('SELECT status FROM runs WHERE id=?', (run_id,)).fetchone()
+            if row['status'] in ('accepted', 'exhausted'):
+                return self.status(run_id)
+            control = self.db.execute('SELECT * FROM execution WHERE run_id=?', (run_id,)).fetchone()
+            self.db.execute('UPDATE execution SET cancel_requested=1 WHERE run_id=?', (run_id,))
+            event(self.db, run_id, 'cancel_requested')
+            alive = control and control['pid'] and identity(control['pid']) == control['identity']
+            if not alive:
+                self.db.execute("UPDATE runs SET status='cancelled' WHERE id=?", (run_id,))
+        if alive:
+            try:
+                fd = os.pidfd_open(control['pid'])
+                try:
+                    if identity(control['pid']) == control['identity']:
+                        signal.pidfd_send_signal(fd, signal.SIGINT)
+                finally:
+                    os.close(fd)
+            except ProcessLookupError:
+                pass
+        return self.status(run_id)
+
     def resume(self, run_id):
         with self.locked():
-            self.status(run_id)  # Validate the id before resolving any workspace path.
-            root = self.state / run_id
-            if self.cleanup:
-                self.cleanup(root / 'workspace')
             row = self.status(run_id)
-            if row['status'] == 'invalidated':
-                raise ValueError(row['message'])
-            task_path = root / 'task.json'
-            if hashlib.sha256(task_path.read_bytes()).hexdigest() != row['contract_hash']:
-                raise ValueError('Frozen task contract was modified')
-            task = json.loads(task_path.read_text())
-            if fingerprint(root / 'acceptance') != task['acceptance_hash']:
-                raise ValueError('Frozen acceptance files were modified')
             if row['status'] in ('accepted', 'exhausted'):
                 return row
-            workspace = root / 'workspace'
-            previous = None
-            if row['attempts']:
-                last = root / 'attempts' / str(row['attempts'])
-                record = last / 'verification.json'
-                if record.exists():
-                    previous = json.loads(record.read_text())
-                    if previous.get('candidate') != fingerprint(workspace):
-                        raise ValueError('Workspace changed after verification; start a new run')
-                    if self._finish(root, run_id, row['attempts'], previous):
-                        return self.status(run_id)
-                else:
-                    previous = {'passed': False, 'error': 'Previous attempt interrupted before verification. Inspect retained workspace and finish the task.'}
-                    with self.db:
-                        self.db.execute('UPDATE attempts SET status=? WHERE run_id=? AND number=?',
-                                        ('interrupted', run_id, row['attempts']))
-            for number in range(row['attempts'] + 1, task['max_attempts'] + 1):
-                attempt = root / 'attempts' / str(number)
-                attempt.mkdir(parents=True, exist_ok=True)
-                save(attempt / 'input.json', {'previous': previous, 'candidate': fingerprint(workspace)})
-                with self.db:
-                    self.db.execute('INSERT INTO attempts VALUES (?, ?, ?)', (run_id, number, 'running'))
-                    self.db.execute('UPDATE runs SET status=?, attempts=?, message=? WHERE id=?',
-                                    ('running', number, '', run_id))
+            with Execution(self.state, run_id) as execution:
+                self.report = execution.emit
+                setter = getattr(self.worker, 'set_observer', None)
+                if setter:
+                    setter(execution.emit)
                 try:
-                    result = self.worker(workspace, task, previous, number)
-                    save(attempt / 'worker.json', result)
-                    logging.info("Attempt %s: verifying candidate", number)
-                    verdict = self.verifier(workspace, task, root / 'acceptance')
-                    verdict['candidate'] = fingerprint(workspace)
-                    save(attempt / 'verification.json', verdict)
-                    if self._finish(root, run_id, number, verdict):
-                        return self.status(run_id)
-                    previous = verdict
-                except (Exception, KeyboardInterrupt) as error:
-                    save(attempt / 'interruption.json', {'error': str(error), 'type': type(error).__name__})
-                    self._state(run_id, 'interrupted', str(error) or 'Interrupted')
-                    raise
-            self._state(run_id, 'exhausted', 'Acceptance failed or work interrupted within the attempt budget')
-            return self.status(run_id)
+                    return self._resume(run_id)
+                finally:
+                    self.report = lambda *a, **kw: None
+                    if setter:
+                        setter(self.report)
+
+    def _resume(self, run_id):
+        self.status(run_id)  # Validate the id before resolving any workspace path.
+        root = self.state / run_id
+        if self.cleanup:
+            self.cleanup(root / 'workspace')
+        row = self.status(run_id)
+        if row['status'] == 'invalidated':
+            raise ValueError(row['message'])
+        task_path = root / 'task.json'
+        if hashlib.sha256(task_path.read_bytes()).hexdigest() != row['contract_hash']:
+            raise ValueError('Frozen task contract was modified')
+        task = json.loads(task_path.read_text())
+        if fingerprint(root / 'acceptance') != task['acceptance_hash']:
+            raise ValueError('Frozen acceptance files were modified')
+        if row['status'] in ('accepted', 'exhausted'):
+            return row
+        workspace = root / 'workspace'
+        previous = None
+        if row['attempts']:
+            last = root / 'attempts' / str(row['attempts'])
+            record = last / 'verification.json'
+            if record.exists():
+                previous = json.loads(record.read_text())
+                if previous.get('candidate') != fingerprint(workspace):
+                    raise ValueError('Workspace changed after verification; start a new run')
+                if self._finish(root, run_id, row['attempts'], previous):
+                    return self.status(run_id)
+            else:
+                previous = {'passed': False, 'error': 'Previous attempt interrupted before verification. Inspect retained workspace and finish the task.'}
+                with self.db:
+                    self.db.execute('UPDATE attempts SET status=? WHERE run_id=? AND number=?',
+                                    ('interrupted', run_id, row['attempts']))
+        for number in range(row['attempts'] + 1, task['max_attempts'] + 1):
+            attempt = root / 'attempts' / str(number)
+            attempt.mkdir(parents=True, exist_ok=True)
+            save(attempt / 'input.json', {'previous': previous, 'candidate': fingerprint(workspace)})
+            with self.db:
+                self.db.execute('INSERT INTO attempts VALUES (?, ?, ?)', (run_id, number, 'running'))
+                self.db.execute('UPDATE runs SET status=?, attempts=?, message=? WHERE id=?',
+                                ('running', number, '', run_id))
+            try:
+                self.report('working', attempt=number, max_attempts=task['max_attempts'])
+                result = self.worker(workspace, task, previous, number)
+                save(attempt / 'worker.json', result)
+                logging.info("Attempt %s: verifying candidate", number)
+                self.report('verifying', attempt=number)
+                verdict = self.verifier(workspace, task, root / 'acceptance')
+                verdict['candidate'] = fingerprint(workspace)
+                save(attempt / 'verification.json', verdict)
+                if self._finish(root, run_id, number, verdict):
+                    return self.status(run_id)
+                previous = verdict
+            except (Exception, KeyboardInterrupt) as error:
+                save(attempt / 'interruption.json', {'error': str(error), 'type': type(error).__name__})
+                control = self.db.execute('SELECT cancel_requested FROM execution WHERE run_id=?', (run_id,)).fetchone()
+                self._state(run_id, 'cancelled' if control and control[0] else 'interrupted', str(error) or 'Interrupted')
+                raise
+        self._state(run_id, 'exhausted', 'Acceptance failed or work interrupted within the attempt budget')
+        return self.status(run_id)

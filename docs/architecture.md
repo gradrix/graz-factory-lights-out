@@ -40,3 +40,7 @@ The filesystem is not quota-managed. Keep task inputs and generated output bound
 These callables also enable deterministic fault injection in tests. Production uses one implementation of each. Further stacks can supply a pinned local image and acceptance commands; shell tooling and the prompt currently assume a Python project. Symlink-containing input repositories and Git submodules are rejected explicitly.
 
 Automatic planning/delegation is a later stage. First accumulate real-task completion, repair, interruption and regression evidence. SFLO inspired explicit acceptance/repair stages; Gas City inspired work state that survives disposable sessions. Neither is a runtime dependency. The new [roadmap](roadmap.md) describes the staged autonomy work; the [feasibility research](research/autonomy-feasibility.md) supplies current primary sources.
+
+## Execution observation
+
+`observe.py` owns versioned SQLite events, per-run process identity/heartbeat and read-only projections. State transitions and their lifecycle events share a transaction. A heartbeat means the controller process is alive; last-action time separately describes progress. `web.py` serves the loopback read-only page and bounded artifact endpoints. `guard.py` is a disposable per-command supervisor that removes its exact Docker container on timeout or controller pipe EOF. Worker and sandbox callbacks emit operation metadata; they do not own acceptance.

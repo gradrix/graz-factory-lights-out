@@ -12,3 +12,4 @@ htmlcov/
 !.scratch/.sflo/
 .scratch/.sflo/*
 !.scratch/.sflo/01-autonomy-publication/
+!.scratch/.sflo/02-autonomy-visibility/

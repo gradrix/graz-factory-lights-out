@@ -8,6 +8,8 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
+from .observe import redact
+
 TOOLS = [
     {'type': 'function', 'function': {
         'name': 'run', 'description': 'Run a shell command inside the isolated project. Read, edit files and run project tests. No network or package downloads. Each call gets a fresh container; only project files persist.',
@@ -30,6 +32,7 @@ class NoRedirect(urllib.request.HTTPRedirectHandler):
 
 class ModelWorker:
     def __init__(self, config, sandbox):
+        self.observe = lambda *a, **kw: None
         self.config = dict(config)
         self.sandbox = sandbox
         parsed = urllib.parse.urlparse(config['endpoint'])
@@ -37,6 +40,10 @@ class ModelWorker:
             raise ValueError('Inference endpoint must be an HTTP loopback address; use an SSH tunnel for the rig')
         self.endpoint = config['endpoint'].rstrip('/')
         self.opener = urllib.request.build_opener(urllib.request.ProxyHandler({}), NoRedirect())
+
+    def set_observer(self, observer):
+        self.observe = observer
+        self.sandbox.observe = observer
 
     def request(self, path, body=None, timeout=300):
         headers = {'Content-Type': 'application/json'}
@@ -67,7 +74,11 @@ class ModelWorker:
 
         def record(value):
             with trace.open('a') as stream:
-                stream.write(json.dumps(value) + '\n')
+                line = redact(json.dumps(value))
+                if len(line) > 262144:
+                    line = json.dumps({'event': value['event'], 'truncated': True, 'original_chars': len(line)})
+                if trace.stat().st_size < 64 * 1024 * 1024:
+                    stream.write(line + '\n')
                 stream.flush()
                 os.fsync(stream.fileno())
 
@@ -84,7 +95,9 @@ class ModelWorker:
             # Never silently condense or discard instructions. Oversized requests fail visibly.
             record({'event': 'request', 'turn': turn, 'body': body})
             logging.info('Attempt %s, model turn %s/%s', attempt, turn, task['max_turns'])
+            self.observe('model_wait', attempt=attempt, turn=turn, max_turns=task['max_turns'], timeout_s=min(300, remaining), model=self.config['model'])
             response = self.request('/v1/chat/completions', body, timeout=min(300, remaining))
+            self.observe('model_response', attempt=attempt, turn=turn, usage=response.get('usage', {}))
             record({'event': 'response', 'turn': turn, 'body': response})
             choice = response['choices'][0]
             message = choice['message']

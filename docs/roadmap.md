@@ -118,4 +118,4 @@ No automatic self-modification of the factory, GPU fleet orchestration, paid/clo
 
 ## Ownership and next action
 
-The user chose the autonomy destination, local inference, deletion/publication and requested capabilities. The agent proposes the stage order, initial stack profiles and numeric trial gates. The [decision map](../.scratch/autonomy/map.md) records unresolved questions; the [delivery map](../.scratch/autonomy/delivery.md) tracks the next executable unit. This turn publishes the baseline and plan; future implementation starts with stage 1.
+The user chose the autonomy destination, local inference, deletion/publication and requested capabilities. The agent proposes the stage order, initial stack profiles and numeric trial gates. The [decision map](../.scratch/autonomy/map.md) records unresolved questions; the [delivery map](../.scratch/autonomy/delivery.md) tracks the next executable unit. User authorized incremental implementation on 2026-10-02, with acceptance between stages and real 5090 trials. Current execution starts with stage 1; progress and evidence live in the delivery map.
