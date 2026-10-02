@@ -15,7 +15,7 @@ import tarfile
 import uuid
 
 from .observe import Execution, event, identity, redact, schema
-from .review import load_files, validate
+from .review import CandidateContentError, load_files, validate
 
 
 def save(path, value):
@@ -328,11 +328,16 @@ class Factory:
                 verdict = self.verifier(workspace, task, root / 'acceptance')
                 if verdict.get('passed') is True and task.get('review_required'):
                     self.report('reviewing', attempt=number)
-                    review = self.reviewer(workspace, task)
-                    validate(review, load_files(workspace))
-                    save(attempt / 'review.json', review)
-                    verdict['review'] = review
-                    verdict['passed'] = review['decision'] == 'pass'
+                    try:
+                        files = load_files(workspace)
+                    except CandidateContentError as error:
+                        verdict.update(passed=False, reviewability={'passed':False, 'error':str(error)})
+                    else:
+                        review = self.reviewer(workspace, task)
+                        validate(review, files)
+                        save(attempt / 'review.json', review)
+                        verdict['review'] = review
+                        verdict['passed'] = review['decision'] == 'pass'
                 verdict['candidate'] = fingerprint(workspace)
                 save(attempt / 'verification.json', verdict)
                 if self._finish(root, run_id, number, verdict):

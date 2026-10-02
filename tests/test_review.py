@@ -138,7 +138,7 @@ class ReviewTests(unittest.TestCase):
             {'choices':[{'message':{'role':'assistant','tool_calls':[{'id':'q','function':{'name':'question','arguments':'{"question":"Which policy?"}'}}]}}]},
             {'choices':[{'message':{'content':'not json'}}]}])
         worker.request = lambda *a, **kw: next(responses)
-        with self.assertRaisesRegex(RuntimeError, 'Question assessment'):
+        with self.assertRaisesRegex(RuntimeError, 'assessment'):
             worker(workspace, {'objective':'Undecided policy','checks':[],'max_turns':2}, None, 1)
 
     def test_empty_assessment_response_has_a_useful_failure(self):
@@ -149,3 +149,18 @@ class ReviewTests(unittest.TestCase):
             def request(self, *a, **kw): return {'choices': []}
         with self.assertRaisesRegex(RuntimeError, 'malformed JSON verdict'):
             assess_question(Client(), 'The product policy is undecided.', 'Which policy?')
+
+    def test_generated_binary_gets_actionable_repair_instead_of_crashing_review(self):
+        seen=[]
+        def worker(workspace, task, previous, attempt):
+            seen.append(previous)
+            cache=workspace/'app.pyc'
+            if attempt==1: cache.write_bytes(b'\xa7\r\r\n\x00')
+            else:
+                self.assertIn('app.pyc', json.dumps(previous))
+                cache.unlink()
+            return {}
+        f=Factory(self.root/'state', worker, lambda *a:{'passed':True}, reviewer=lambda *a:{'decision':'pass','findings':[],'question':''})
+        run=f.create(self.task)
+        self.assertEqual(f.resume(run)['status'],'accepted')
+        self.assertEqual(len(seen),2)
