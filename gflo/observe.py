@@ -123,7 +123,7 @@ class Observer:
                           detail=json.loads(execution['detail']), cancel_requested=bool(execution['cancel_requested']))
             if not alive and (result['status'] in ('running', 'repairing') or (result['status'] == 'pending' and execution['pid'])):
                 result.update(status='cancelled' if execution['cancel_requested'] else 'interrupted', phase='interrupted', message='Runner process ended; resume to recover retained work')
-            result['waiting_on_model'] = alive and result['phase'] in ('model_wait', 'review_wait')
+            result['waiting_on_model'] = alive and result['phase'] in ('model_wait', 'review_wait', 'question_review_wait')
             # Elapsed silence is observable; it is not proof that inference is deadlocked.
             result['model_slow'] = result['waiting_on_model'] and result['action_age_s'] >= 30
         if result['status'] == 'accepted' and not accepted_intact(root, result['contract_hash'], result['attempts']):

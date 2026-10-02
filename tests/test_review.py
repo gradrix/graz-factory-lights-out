@@ -80,7 +80,8 @@ class ReviewTests(unittest.TestCase):
         from test_worker import FakeSandbox
         workspace = self.root / 'workspace'; workspace.mkdir()
         worker = ModelWorker({'endpoint':'http://127.0.0.1:18000','model':'test'}, FakeSandbox())
-        worker.request = lambda *a, **kw: {'choices':[{'message':{'role':'assistant','tool_calls':[{'id':'q','function':{'name':'question','arguments':'{"question":"Flat fee or percentage?"}'}}]}}]}
+        responses = iter([{'choices':[{'message':{'role':'assistant','tool_calls':[{'id':'q','function':{'name':'question','arguments':'{"question":"Flat fee or percentage?"}'}}]}}]}, {'choices':[{'message':{'content':'{"needed":true,"basis":"Undecided policy","guidance":"Ask which fee model."}'}}]}])
+        worker.request = lambda *a, **kw: next(responses)
         result = worker(workspace, {'objective':'Undecided policy','checks':[],'max_turns':1}, None, 1)
         self.assertEqual(result['question'], 'Flat fee or percentage?')
 
@@ -97,3 +98,33 @@ class ReviewTests(unittest.TestCase):
                 self.assertNotIn('tools', body)
                 return {'choices':[{'message':{'content':'{"decision":"pass","findings":[],"question":""}'}}]}
         self.assertEqual(Reviewer(Client()).review_files('Keep value', {'app.py':'value=1\n'})['decision'], 'pass')
+
+    def test_question_assessment_requires_grounding_and_preserves_product_choice(self):
+        from gflo.review import assess_question
+        class Client:
+            config = {'model':'local'}
+            observe = staticmethod(lambda *a, **kw: None)
+            result = {'needed':True,'basis':'rate is undecided','guidance':'Ask which rate.'}
+            def request(inner, *args, **kwargs):
+                return {'choices':[{'message':{'content':json.dumps(inner.result)}}]}
+        client = Client()
+        self.assertTrue(assess_question(client,'The rate is undecided.','Which rate?')['needed'])
+        client.result = {'needed':False,'basis':'only valid integers','guidance':'Invalid strings are outside scope; implement valid integers.'}
+        self.assertFalse(assess_question(client,'Inputs are only valid integers.','What about invalid strings?')['needed'])
+        client.result['basis'] = 'invented requirement'
+        with self.assertRaises(ValueError): assess_question(client,'Inputs are only valid integers.','What about strings?')
+
+    def test_unnecessary_question_returns_guidance_and_worker_continues(self):
+        from gflo.worker import ModelWorker
+        from test_worker import FakeSandbox
+        workspace = self.root / 'workspace'; workspace.mkdir()
+        worker = ModelWorker({'endpoint':'http://127.0.0.1:18000','model':'test'}, FakeSandbox())
+        responses = iter([
+            {'choices':[{'message':{'role':'assistant','tool_calls':[{'id':'q','function':{'name':'question','arguments':'{"question":"What about strings?"}'}}]}}]},
+            {'choices':[{'message':{'content':'{"needed":false,"basis":"valid integers only","guidance":"Strings are outside the input contract."}'}}]},
+            {'choices':[{'message':{'role':'assistant','content':'Implemented integer behavior'},'finish_reason':'stop'}]}])
+        worker.request = lambda *a, **kw: next(responses)
+        result = worker(workspace, {'objective':'Inputs are valid integers only.','checks':[],'max_turns':2}, None, 1)
+        self.assertNotIn('question', result)
+        self.assertEqual(result['turns'], 2)
+        self.assertIn('Strings are outside', (workspace.parent / 'attempts/1/trajectory.jsonl').read_text())
