@@ -1,0 +1,41 @@
+{
+  "generation": "Generate disposable boundary bodies only after candidate interface is frozen; no large frozen corpus.",
+  "pairs": [
+    [
+      "body bytes",
+      2097152,
+      2097153
+    ],
+    [
+      "metadata bytes",
+      8192,
+      8193
+    ],
+    [
+      "extracted UTF8 bytes",
+      131072,
+      131073
+    ],
+    [
+      "parser events",
+      10000,
+      10001
+    ],
+    [
+      "depth",
+      64,
+      65
+    ],
+    [
+      "blocks",
+      2048,
+      2049
+    ],
+    [
+      "records",
+      16,
+      17
+    ]
+  ],
+  "notes": "Count using documented candidate event/block definitions; conforming lower/control before rejection. No reinterpretation of counted units to force failure. Test 64MiB store cap with staging headroom per frozen implementation policy."
+}

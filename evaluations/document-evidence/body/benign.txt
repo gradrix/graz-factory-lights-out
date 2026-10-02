@@ -1,0 +1,5 @@
+Separator guide
+When indent is None, default separators are (', ', ': ').
+When indent is non-None, default separators are (',', ': ').
+Use (',', ':') to remove separator whitespace.
+Unicode: café & 猫.

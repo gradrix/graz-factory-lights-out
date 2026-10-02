@@ -14,3 +14,5 @@ Next: behavior-first approved-document acquisition through saved local answer/re
 ## Checks and repairs
 
 Stage3 accepted; no Stage4 capability is claimed. First official source existence and current3.12.15 documentation label verified through official page on2026-10-02. Source content/version is fetched and bound again by the implementation trial.
+
+Independent compact acceptance corpus prepared before candidate qualification: evaluations/document-evidence, manifestb64057c86cc893f1ab9cc665e4f8daa2f7a06231d1cffa07eeaa0ab13d6bb4b3. Synthetic parser/citation/replay controls, not substitute evidence for the live official page. Plan:qa-plan.md.

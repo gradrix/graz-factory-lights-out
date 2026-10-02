@@ -1,0 +1,16 @@
+{
+  "valid": [
+    "save one validated answer and its evidence/question/request/model bindings",
+    "restart controller; make fetch/model clients raise if invoked; replay saved answer without invoking either",
+    "preserve answer/citations/source-version/retrievedUTC; display historical snapshot and current age",
+    "re-answer is explicit new inference, not a replay"
+  ],
+  "negative": [
+    "missing evidence -> explicit error",
+    "tampered body/text/receipt/answer -> explicit error, not successful replay",
+    "pending publication/invented ID -> explicit error",
+    "failed acquisition -> no reusable partial evidence",
+    "failed inference may retain valid evidence but no successful answer receipt"
+  ],
+  "age": "Current age may change; saved answer content may not silently change. No required exact display wording."
+}

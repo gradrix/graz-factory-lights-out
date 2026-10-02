@@ -1,0 +1,17 @@
+{
+  "format": 1,
+  "contract_sha256": "89cafb32d3ea7e51898941e9607e115c6ed4ec282bf6927f4c5eceb518d347d7",
+  "files": {
+    "README.md": "68b4c809fb33bbce00d4b77f32c01b31514e3ee1e7be260fc64aa18c4dfd783a",
+    "answer-controls.json": "a429b586c5f15b315e1dc90966b5a2943cd5ebe02b4115474ffa11acdc4b46fb",
+    "body/benign.html": "38a61aebeababc2ead162cc809b2f90c06983a1005ea0eec95f5807fa3e88033",
+    "body/benign.txt": "63086291ed82dabfccc5d4e717ff469005ac07357a7fd7907c48481359df5339",
+    "body/empty.html": "de0aaf9ac7c6f9e61df742317b7d866f044a39b745fb657404a3f99bf96d9b39",
+    "body/hostile.html": "7904614af5360db5852238b28d6b8d570e481010070cfefe6bce2e010a7c5852",
+    "body/invalid-utf8.txt": "94333ee17c8f7c78549737c3e4098339ef31824119928c664549862a13ee1db5",
+    "body/unsupported.json": "69ab071717af3865567e43f21925eba9a1bc08dd09dc239488a143f043fcd459",
+    "cases.json": "e214e14d1a33944da127773bb25301183560c3d0b08bad70dd653021f0efd751",
+    "limits-plan.json": "6027e5fef5201d873f029f344203c5dd6790fcd78c91c1e17a10d097083ab26f",
+    "replay-controls.json": "8f7e4910b13fd1beb050827c074f8a4cf737be6a78d707c0f2e8b4b9f384a7e9"
+  }
+}
