@@ -137,7 +137,7 @@ class Observer:
                     raise ValueError('Changed accepted artifacts')
             except (OSError, ValueError, KeyError):
                 result.update(status='invalidated', phase='invalidated', message='Accepted artifacts changed or are missing')
-        if result['status'] in ('accepted', 'exhausted', 'cancelled', 'interrupted', 'invalidated'):
+        if result['status'] in ('accepted', 'exhausted', 'cancelled', 'interrupted', 'invalidated', 'needs_input'):
             result['phase'] = result['status']
         result['message'] = redact(result['message'])
         result['artifacts'] = [str(p.relative_to(root)) for p in sorted(root.rglob('*'))
@@ -153,7 +153,7 @@ class Observer:
 
     @staticmethod
     def allowed(name):
-        return bool(re.fullmatch(r'(change\.patch|accepted\.json|attempts/[1-9][0-9]*/(verification|worker|interruption)\.json)', name))
+        return bool(re.fullmatch(r'(change\.patch|accepted\.json|attempts/[1-9][0-9]*/(verification|worker|interruption|review)\.json)', name))
 
     def artifact(self, run, name):
         with self.connect() as db:

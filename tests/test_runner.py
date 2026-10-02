@@ -159,7 +159,8 @@ class RunnerTests(unittest.TestCase):
         config = self.root / 'config.json'
         config.write_text(json.dumps({'endpoint': 'http://127.0.0.1:18000', 'model': 'example'}))
         prefix = ['--state', str(self.root / 'cli-state'), '--config', str(config)]
-        with patch('gflo.__main__.ModelWorker') as worker, patch('gflo.__main__.Sandbox') as sandbox, redirect_stdout(io.StringIO()) as output:
+        with patch('gflo.__main__.Reviewer') as reviewer, patch('gflo.__main__.ModelWorker') as worker, patch('gflo.__main__.Sandbox') as sandbox, redirect_stdout(io.StringIO()) as output:
+            reviewer.return_value.return_value = {'decision': 'pass', 'findings': [], 'question': ''}
             worker.return_value.return_value = {'summary': 'done'}
             sandbox.return_value.verify.return_value = {'passed': True}
             self.assertEqual(main(prefix + ['run', str(self.task)]), 0)

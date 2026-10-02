@@ -54,11 +54,12 @@ def git(repo, *args, **kwargs):
 
 
 class Factory:
-    def __init__(self, state, worker, verifier, cleanup=None):
+    def __init__(self, state, worker, verifier, cleanup=None, reviewer=None):
         self.state = Path(state).resolve()
         self.state.mkdir(parents=True, exist_ok=True)
         self.worker = worker
         self.verifier = verifier
+        self.reviewer = reviewer
         self.cleanup = cleanup
         self.db = sqlite3.connect(self.state / 'state.sqlite')
         self.report = lambda *a, **kw: None
@@ -102,6 +103,9 @@ class Factory:
             task.setdefault(key, default)
             if type(task[key]) is not int or not 1 <= task[key] <= upper:
                 raise ValueError(f'{key} must be between 1 and {upper}')
+        task.setdefault('review_required', self.reviewer is not None)
+        if type(task['review_required']) is not bool:
+            raise ValueError('review_required must be boolean')
         repo = (task_file.parent / task['repo']).resolve()
         acceptance = (task_file.parent / task['acceptance']).resolve()
         if not acceptance.is_dir() or not any(acceptance.iterdir()):
@@ -208,7 +212,7 @@ class Factory:
         with self.db:
             self.db.execute('UPDATE runs SET message=message WHERE id=?', (run_id,))
             row = self.db.execute('SELECT status FROM runs WHERE id=?', (run_id,)).fetchone()
-            if row['status'] in ('accepted', 'exhausted'):
+            if row['status'] in ('accepted', 'exhausted', 'needs_input'):
                 return self.status(run_id)
             control = self.db.execute('SELECT * FROM execution WHERE run_id=?', (run_id,)).fetchone()
             self.db.execute('UPDATE execution SET cancel_requested=1 WHERE run_id=?', (run_id,))
@@ -231,7 +235,7 @@ class Factory:
     def resume(self, run_id):
         with self.locked():
             row = self.status(run_id)
-            if row['status'] in ('accepted', 'exhausted'):
+            if row['status'] in ('accepted', 'exhausted', 'needs_input'):
                 return row
             with Execution(self.state, run_id) as execution:
                 self.report = execution.emit
@@ -262,9 +266,11 @@ class Factory:
         if hashlib.sha256(task_path.read_bytes()).hexdigest() != row['contract_hash']:
             raise ValueError('Frozen task contract was modified')
         task = json.loads(task_path.read_text())
+        if task.get('review_required') and self.reviewer is None:
+            raise ValueError('Frozen task requires an independent reviewer')
         if fingerprint(root / 'acceptance') != task['acceptance_hash']:
             raise ValueError('Frozen acceptance files were modified')
-        if row['status'] in ('accepted', 'exhausted'):
+        if row['status'] in ('accepted', 'exhausted', 'needs_input'):
             return row
         workspace = root / 'workspace'
         previous = None
@@ -294,12 +300,26 @@ class Factory:
                 self.report('working', attempt=number, max_attempts=task['max_attempts'])
                 result = self.worker(workspace, task, previous, number)
                 save(attempt / 'worker.json', result)
+                if result.get('question'):
+                    self._state(run_id, 'needs_input', result['question'])
+                    return self.status(run_id)
                 logging.info("Attempt %s: verifying candidate", number)
                 self.report('verifying', attempt=number)
                 verdict = self.verifier(workspace, task, root / 'acceptance')
+                if verdict.get('passed') is True and task.get('review_required'):
+                    self.report('reviewing', attempt=number)
+                    review = self.reviewer(workspace, task)
+                    if review.get('decision') not in ('pass', 'repair', 'needs_input'):
+                        raise ValueError('Invalid independent review decision')
+                    save(attempt / 'review.json', review)
+                    verdict['review'] = review
+                    verdict['passed'] = review['decision'] == 'pass'
                 verdict['candidate'] = fingerprint(workspace)
                 save(attempt / 'verification.json', verdict)
                 if self._finish(root, run_id, number, verdict):
+                    return self.status(run_id)
+                if verdict.get('review', {}).get('decision') == 'needs_input':
+                    self._state(run_id, 'needs_input', verdict['review']['question'])
                     return self.status(run_id)
                 previous = verdict
             except (Exception, KeyboardInterrupt) as error:

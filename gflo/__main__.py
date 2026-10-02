@@ -13,6 +13,7 @@ from .web import server
 from .runner import Factory
 from .sandbox import DEFAULT_IMAGE, Sandbox
 from .worker import ModelWorker
+from .review import Reviewer
 
 
 def main(argv=None):
@@ -82,7 +83,7 @@ def main(argv=None):
                 result['context'] = 'not advertised'
             print(json.dumps(result, indent=2))
             return 0
-        factory = Factory(args.state, worker, sandbox.verify, cleanup=sandbox.cleanup)
+        factory = Factory(args.state, worker, sandbox.verify, cleanup=sandbox.cleanup, reviewer=Reviewer(worker))
         run_id = factory.create(args.task) if args.command == 'run' else args.id
         print('Run: ' + run_id, flush=True)
         print('Evidence: ' + str(factory.state / run_id), flush=True)
