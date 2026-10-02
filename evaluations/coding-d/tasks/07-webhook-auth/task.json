@@ -1,0 +1,16 @@
+{
+  "repo": "source",
+  "objective": "Add action verify with secret:string, body:string, timestamp:nonnegative integer <=2**40, now:nonnegative integer <=2**40, tolerance:integer 0..3600, signature:string. Strings secret/body are <=4000 Unicode code points. Compute HMAC-SHA256 using UTF-8 secret over UTF-8 bytes of decimal timestamp + \".\" + body. Return a JSON boolean true only when signature is exactly \"sha256=\" followed by 64 lowercase hex characters equal to that digest AND abs(now-timestamp)<=tolerance. Otherwise return false. Signature is untrusted and may contain any Unicode characters, including empty input. No exceptions for malformed signature. Use a timing-safe digest comparison for well-formed signatures. Never log or return secrets or body. Implement domain.py, api.dispatch(payload), and existing python cli.py JSON stdin/stdout routing. Preserve documented existing action, successful CLI JSON behavior, unknown-action ValueError, and CLI exit 2 with nonempty stderr/no traceback for ValueError. Preserve all specified JSON types exactly (booleans are not integers). Never mutate input objects, even on failure. Python 3.12+, standard library, UTF-8; input shapes and types follow the contract except explicitly described errors. Do not invent validation or business policy. Add at least three meaningful public-behavior unittest test methods discoverable with python -m unittest discover; cover a normal case, a boundary, and a specified rejection (or another boundary when no rejection is specified). Tests must pass. Update README.md with new action usage, a concrete python cli.py JSON invocation, and boundary/error semantics, at least 40 words in complete README. You may add modules/helpers; preserve public interfaces.",
+  "acceptance": "acceptance",
+  "checks": [
+    [
+      "python",
+      "-B",
+      "-I",
+      "/acceptance/check.py"
+    ]
+  ],
+  "max_attempts": 3,
+  "max_turns": 24,
+  "wall_time_seconds": 900
+}

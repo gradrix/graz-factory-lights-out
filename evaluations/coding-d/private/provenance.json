@@ -1,0 +1,10 @@
+{
+  "conditional_future_candidate_only": true,
+  "prior_cohorts_unchanged": ["coding-qualification-c", "coding-qualification-c-v2"],
+  "prior_scores_preserved": true,
+  "target_model_calls": 0,
+  "gpu_calls": 0,
+  "product_changes": 0,
+  "environment_correction": "Approved image fb1118 reports actual CPython 3.12.13; no reliance on prior image version labels",
+  "prepared_before_target_model_exposure": true
+}

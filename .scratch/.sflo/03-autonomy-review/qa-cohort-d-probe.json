@@ -1,0 +1,84 @@
+{
+  "manifest": "da7a8d364c326a61bb8c22f0873188c0498d98213a676c23107c1d730a143d0b",
+  "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+  "version": "3.12.13",
+  "results": [
+    {
+      "task": "04-sqlite-stock",
+      "label": "reference",
+      "exit": 0,
+      "stdout": "PASS\n",
+      "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.003s\n\nOK\n"
+    },
+    {
+      "task": "07-webhook-auth",
+      "label": "reference",
+      "exit": 0,
+      "stdout": "PASS\n",
+      "stderr": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "task": "09-invoice-csv",
+      "label": "reference",
+      "exit": 0,
+      "stdout": "PASS\n",
+      "stderr": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "task": "11-support-redaction",
+      "label": "reference",
+      "exit": 0,
+      "stdout": "PASS\n",
+      "stderr": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "task": "04-sqlite-stock",
+      "label": "commit-every-update",
+      "exit": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 53, in <module>\n    for p in errors:check(p,None,True)\n                    ^^^^^^^^^^^^^^^^^^\n  File \"/acceptance/check.py\", line 45, in check\n    if database:assert json_equal(rows(given),old_expected if error else want),'persistence/atomicity'\n                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: persistence/atomicity\n"
+    },
+    {
+      "task": "04-sqlite-stock",
+      "label": "commit-every-update-cli-only",
+      "exit": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 53, in <module>\n    for p in errors:check(p,None,True)\n                    ^^^^^^^^^^^^^^^^^^\n  File \"/acceptance/check.py\", line 50, in check\n    if database:assert json_equal(rows(cp),old_expected if error else want),'CLI persistence/atomicity'\n                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: CLI persistence/atomicity\n"
+    },
+    {
+      "task": "07-webhook-auth",
+      "label": "integer-boolean-cli-only",
+      "exit": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 52, in <module>\n    for p,want in cases:check(p,want)\n                        ^^^^^^^^^^^^^\n  File \"/acceptance/check.py\", line 49, in check\n    else:assert proc.returncode==0 and json_equal(json.loads(proc.stdout),want),(p,'CLI wrong result/type',proc.stdout,proc.stderr)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: ({'action': 'verify', 'secret': 'key', 'body': '{}', 'timestamp': 100, 'now': 105, 'tolerance': 5, 'signature': 'sha256=b6ae95232f7a6f10ed56c0c2931bda6344efb9e66d09bf79943ca1df746bbddf'}, 'CLI wrong result/type', '1\\n', '')\n"
+    },
+    {
+      "task": "09-invoice-csv",
+      "label": "lf-records",
+      "exit": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 52, in <module>\n    for p,want in cases:check(p,want)\n                        ^^^^^^^^^^^^^\n  File \"/acceptance/check.py\", line 37, in check\n    assert json_equal(actual,want),(p,'API wrong result/type',actual,want)\n           ^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: ({'action': 'export', 'invoices': [{'id': 'a', 'customer': 'Ada', 'items': [{'quantity': 3, 'unit_cents': 105}, {'quantity': 0, 'unit_cents': 1}]}]}, 'API wrong result/type', 'id,customer,total\\na,Ada,3.15\\n', 'id,customer,total\\r\\na,Ada,3.15\\r\\n')\n"
+    },
+    {
+      "task": "11-support-redaction",
+      "label": "unchanged-list-alias",
+      "exit": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 52, in <module>\n    for p,want in cases:check(p,want)\n                        ^^^^^^^^^^^^^\n  File \"/acceptance/check.py\", line 43, in check\n    assert not mutable_ids(actual)&mutable_ids(given['document']),'aliased input containers'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: aliased input containers\n"
+    },
+    {
+      "task": "07-webhook-auth",
+      "label": "missing-docs",
+      "exit": 1,
+      "stdout": "",
+      "stderr": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\nTraceback (most recent call last):\n  File \"/acceptance/check.py\", line 60, in <module>\n    assert len(readme.split())>=40 and 'cli.py' in readme and new_action in readme,'document new CLI usage'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: document new CLI usage\n"
+    },
+    {
+      "task": "07-webhook-auth",
+      "label": "failing-tests",
+      "exit": 1,
+      "stdout": "",
+      "stderr": "F...\n======================================================================\nFAIL: test_broken (test_added_failure.Broken.test_broken)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/test_added_failure.py\", line 3, in test_broken\n    def test_broken(self):self.fail(\"QA expected rejection\")\n                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: QA expected rejection\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nFAILED (failures=1)\nTraceback (most recent call last):\n  File \"/acceptance/check.py\", line 58, in <module>\n    assert result.wasSuccessful(),'generated tests failed'\n           ^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: generated tests failed\n"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+  "outcomes": [
+    {
+      "task": "07-webhook-auth",
+      "mutation": "integer_boolean",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 52, in <module>\n    for p,want in cases:check(p,want)\n                        ^^^^^^^^^^^^^\n  File \"/acceptance/check.py\", line 37, in check\n    assert json_equal(actual,want),(p,'API wrong result/type',actual,want)\n           ^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: ({'action': 'verify', 'secret': 'key', 'body': '{}', 'timestamp': 100, 'now': 105, 'tolerance': 5, 'signature': 'sha256=b6ae95232f7a6f10ed56c0c2931bda6344efb9e66d09bf79943ca1df746bbddf'}, 'API wrong result/type', 1, True)\n"
+    },
+    {
+      "task": "04-sqlite-stock",
+      "mutation": "autocommit_breaks_rollback",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 53, in <module>\n    for p in errors:check(p,None,True)\n                    ^^^^^^^^^^^^^^^^^^\n  File \"/acceptance/check.py\", line 45, in check\n    if database:assert json_equal(rows(given),old_expected if error else want),'persistence/atomicity'\n                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: persistence/atomicity\n"
+    },
+    {
+      "task": "11-support-redaction",
+      "mutation": "alias_unredacted_containers",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 52, in <module>\n    for p,want in cases:check(p,want)\n                        ^^^^^^^^^^^^^\n  File \"/acceptance/check.py\", line 43, in check\n    assert not mutable_ids(actual)&mutable_ids(given['document']),'aliased input containers'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: aliased input containers\n"
+    }
+  ]
+}

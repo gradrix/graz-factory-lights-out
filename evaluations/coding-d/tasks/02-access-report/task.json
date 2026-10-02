@@ -1,0 +1,16 @@
+{
+  "repo": "source",
+  "objective": "Add action report with entries: list of {route:string,status:integer 100..599,ms:nonnegative integer}, and min_requests: integer 1..200. At most 200 entries, route strings 1..100 code points. Group by exact route. Return a list sorted by route in Python string order; omit groups with fewer than min_requests entries. Each row is {route,requests,errors,p95_ms}. Errors count status >=500. The p95 is nearest rank: sort milliseconds ascending and choose the ceil(0.95*n)-th value counting from one. Never round an averaged percentile. Empty entries yields []. Implement domain.py, api.dispatch(payload), and existing python cli.py JSON stdin/stdout routing. Preserve documented existing action, successful CLI JSON behavior, unknown-action ValueError, and CLI exit 2 with nonempty stderr/no traceback for ValueError. Preserve all specified JSON types exactly (booleans are not integers). Never mutate input objects, even on failure. Python 3.12+, standard library, UTF-8; input shapes and types follow the contract except explicitly described errors. Do not invent validation or business policy. Add at least three meaningful public-behavior unittest test methods discoverable with python -m unittest discover; cover a normal case, a boundary, and a specified rejection (or another boundary when no rejection is specified). Tests must pass. Update README.md with new action usage, a concrete python cli.py JSON invocation, and boundary/error semantics, at least 40 words in complete README. You may add modules/helpers; preserve public interfaces.",
+  "acceptance": "acceptance",
+  "checks": [
+    [
+      "python",
+      "-B",
+      "-I",
+      "/acceptance/check.py"
+    ]
+  ],
+  "max_attempts": 3,
+  "max_turns": 24,
+  "wall_time_seconds": 900
+}

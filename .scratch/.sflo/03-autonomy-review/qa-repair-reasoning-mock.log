@@ -1,0 +1,2 @@
+PASS: both wire profiles, effective receipts/hash, source-body immutability, non-tool passthrough, exception receipt, missing-verification and current-review controls. No network/GPU.
+script_sha256=2724185d54596ab2af3d4e36cf3fc0c8d37799f3b83f1cc4fed579728e04616b

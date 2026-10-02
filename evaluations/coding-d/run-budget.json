@@ -1,0 +1,5 @@
+{
+  "max_attempts": 3,
+  "max_turns": 24,
+  "wall_time_seconds_per_task": 900
+}

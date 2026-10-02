@@ -1,0 +1,8 @@
+{
+  "expected_status": "needs_input",
+  "question_must_distinguish": [
+    "oldest claims paid in full",
+    "proportional payments"
+  ],
+  "outside_coding_denominator": true
+}

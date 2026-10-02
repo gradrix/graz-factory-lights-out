@@ -1,0 +1,13 @@
+manifest99/runtime confirmed
+04 reference 0
+07 reference 0
+09 reference 0
+11 reference 0
+04 commit-every-update 1
+04 commit-every-update-cli-only 1
+07 integer-boolean-cli-only 1
+09 lf-records 1
+11 unchanged-list-alias 1
+07 missing-docs 1
+07 failing-tests 1
+PASS controls/mutants; frozen files unchanged

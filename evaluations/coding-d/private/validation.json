@@ -1,0 +1,490 @@
+{
+  "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+  "environment": {
+    "version": "3.12.13",
+    "sys_version": "3.12.13 (main, Mar 16 2026, 23:06:54) [GCC 14.2.0]",
+    "implementation": "CPython"
+  },
+  "outcomes": [
+    {
+      "task": "01-contact-import",
+      "kind": "baseline",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 52, in <module>\n    for p,want in cases:check(p,want)\n                        ^^^^^^^^^^^^^\n  File \"/acceptance/check.py\", line 36, in check\n    actual=dispatch(given)\n           ^^^^^^^^^^^^^^^\n  File \"/workspace/api.py\", line 5, in dispatch\n    raise ValueError(\"unknown action: \"+str(action))\nValueError: unknown action: import_contacts\n"
+    },
+    {
+      "task": "01-contact-import",
+      "kind": "reference",
+      "exit_code": 0,
+      "expected_outcome_confirmed": true,
+      "stdout": "PASS\n",
+      "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "task": "01-contact-import",
+      "kind": "missing_tests",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 56, in <module>\n    assert suite.countTestCases()>=3,'need three discoverable tests'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: need three discoverable tests\n"
+    },
+    {
+      "task": "01-contact-import",
+      "kind": "failing_tests",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "....F\n======================================================================\nFAIL: test_failure (test_behavior.BrokenRegression.test_failure)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/test_behavior.py\", line 19, in test_failure\n    def test_failure(self):self.fail(\"deliberately broken generated test\")\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: deliberately broken generated test\n\n----------------------------------------------------------------------\nRan 5 tests in 0.001s\n\nFAILED (failures=1)\nTraceback (most recent call last):\n  File \"/acceptance/check.py\", line 58, in <module>\n    assert result.wasSuccessful(),'generated tests failed'\n           ^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: generated tests failed\n"
+    },
+    {
+      "task": "01-contact-import",
+      "kind": "unchanged_docs",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\nTraceback (most recent call last):\n  File \"/acceptance/check.py\", line 60, in <module>\n    assert len(readme.split())>=40 and 'cli.py' in readme and new_action in readme,'document new CLI usage'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: document new CLI usage\n"
+    },
+    {
+      "task": "02-access-report",
+      "kind": "baseline",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 52, in <module>\n    for p,want in cases:check(p,want)\n                        ^^^^^^^^^^^^^\n  File \"/acceptance/check.py\", line 36, in check\n    actual=dispatch(given)\n           ^^^^^^^^^^^^^^^\n  File \"/workspace/api.py\", line 5, in dispatch\n    raise ValueError(\"unknown action: \"+str(action))\nValueError: unknown action: report\n"
+    },
+    {
+      "task": "02-access-report",
+      "kind": "reference",
+      "exit_code": 0,
+      "expected_outcome_confirmed": true,
+      "stdout": "PASS\n",
+      "stderr": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "task": "02-access-report",
+      "kind": "missing_tests",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 56, in <module>\n    assert suite.countTestCases()>=3,'need three discoverable tests'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: need three discoverable tests\n"
+    },
+    {
+      "task": "02-access-report",
+      "kind": "failing_tests",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "...F\n======================================================================\nFAIL: test_failure (test_behavior.BrokenRegression.test_failure)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/test_behavior.py\", line 17, in test_failure\n    def test_failure(self):self.fail(\"deliberately broken generated test\")\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: deliberately broken generated test\n\n----------------------------------------------------------------------\nRan 4 tests in 0.001s\n\nFAILED (failures=1)\nTraceback (most recent call last):\n  File \"/acceptance/check.py\", line 58, in <module>\n    assert result.wasSuccessful(),'generated tests failed'\n           ^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: generated tests failed\n"
+    },
+    {
+      "task": "02-access-report",
+      "kind": "unchanged_docs",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\nTraceback (most recent call last):\n  File \"/acceptance/check.py\", line 60, in <module>\n    assert len(readme.split())>=40 and 'cli.py' in readme and new_action in readme,'document new CLI usage'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: document new CLI usage\n"
+    },
+    {
+      "task": "03-environment-template",
+      "kind": "baseline",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 52, in <module>\n    for p,want in cases:check(p,want)\n                        ^^^^^^^^^^^^^\n  File \"/acceptance/check.py\", line 36, in check\n    actual=dispatch(given)\n           ^^^^^^^^^^^^^^^\n  File \"/workspace/api.py\", line 5, in dispatch\n    raise ValueError(\"unknown action: \"+str(action))\nValueError: unknown action: render\n"
+    },
+    {
+      "task": "03-environment-template",
+      "kind": "reference",
+      "exit_code": 0,
+      "expected_outcome_confirmed": true,
+      "stdout": "PASS\n",
+      "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "task": "03-environment-template",
+      "kind": "missing_tests",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 56, in <module>\n    assert suite.countTestCases()>=3,'need three discoverable tests'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: need three discoverable tests\n"
+    },
+    {
+      "task": "03-environment-template",
+      "kind": "failing_tests",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "....F\n======================================================================\nFAIL: test_failure (test_behavior.BrokenRegression.test_failure)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/test_behavior.py\", line 19, in test_failure\n    def test_failure(self):self.fail(\"deliberately broken generated test\")\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: deliberately broken generated test\n\n----------------------------------------------------------------------\nRan 5 tests in 0.001s\n\nFAILED (failures=1)\nTraceback (most recent call last):\n  File \"/acceptance/check.py\", line 58, in <module>\n    assert result.wasSuccessful(),'generated tests failed'\n           ^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: generated tests failed\n"
+    },
+    {
+      "task": "03-environment-template",
+      "kind": "unchanged_docs",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nOK\nTraceback (most recent call last):\n  File \"/acceptance/check.py\", line 60, in <module>\n    assert len(readme.split())>=40 and 'cli.py' in readme and new_action in readme,'document new CLI usage'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: document new CLI usage\n"
+    },
+    {
+      "task": "04-sqlite-stock",
+      "kind": "baseline",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 52, in <module>\n    for p,want in cases:check(p,want)\n                        ^^^^^^^^^^^^^\n  File \"/acceptance/check.py\", line 36, in check\n    actual=dispatch(given)\n           ^^^^^^^^^^^^^^^\n  File \"/workspace/api.py\", line 5, in dispatch\n    raise ValueError(\"unknown action: \"+str(action))\nValueError: unknown action: adjust\n"
+    },
+    {
+      "task": "04-sqlite-stock",
+      "kind": "reference",
+      "exit_code": 0,
+      "expected_outcome_confirmed": true,
+      "stdout": "PASS\n",
+      "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.003s\n\nOK\n"
+    },
+    {
+      "task": "04-sqlite-stock",
+      "kind": "missing_tests",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 56, in <module>\n    assert suite.countTestCases()>=3,'need three discoverable tests'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: need three discoverable tests\n"
+    },
+    {
+      "task": "04-sqlite-stock",
+      "kind": "failing_tests",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "....F\n======================================================================\nFAIL: test_failure (test_behavior.BrokenRegression.test_failure)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/test_behavior.py\", line 27, in test_failure\n    def test_failure(self):self.fail(\"deliberately broken generated test\")\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: deliberately broken generated test\n\n----------------------------------------------------------------------\nRan 5 tests in 0.003s\n\nFAILED (failures=1)\nTraceback (most recent call last):\n  File \"/acceptance/check.py\", line 58, in <module>\n    assert result.wasSuccessful(),'generated tests failed'\n           ^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: generated tests failed\n"
+    },
+    {
+      "task": "04-sqlite-stock",
+      "kind": "unchanged_docs",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "....\n----------------------------------------------------------------------\nRan 4 tests in 0.003s\n\nOK\nTraceback (most recent call last):\n  File \"/acceptance/check.py\", line 60, in <module>\n    assert len(readme.split())>=40 and 'cli.py' in readme and new_action in readme,'document new CLI usage'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: document new CLI usage\n"
+    },
+    {
+      "task": "05-release-digest",
+      "kind": "baseline",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 52, in <module>\n    for p,want in cases:check(p,want)\n                        ^^^^^^^^^^^^^\n  File \"/acceptance/check.py\", line 36, in check\n    actual=dispatch(given)\n           ^^^^^^^^^^^^^^^\n  File \"/workspace/api.py\", line 5, in dispatch\n    raise ValueError(\"unknown action: \"+str(action))\nValueError: unknown action: digest\n"
+    },
+    {
+      "task": "05-release-digest",
+      "kind": "reference",
+      "exit_code": 0,
+      "expected_outcome_confirmed": true,
+      "stdout": "PASS\n",
+      "stderr": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "task": "05-release-digest",
+      "kind": "missing_tests",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 56, in <module>\n    assert suite.countTestCases()>=3,'need three discoverable tests'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: need three discoverable tests\n"
+    },
+    {
+      "task": "05-release-digest",
+      "kind": "failing_tests",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "...F\n======================================================================\nFAIL: test_failure (test_behavior.BrokenRegression.test_failure)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/test_behavior.py\", line 17, in test_failure\n    def test_failure(self):self.fail(\"deliberately broken generated test\")\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: deliberately broken generated test\n\n----------------------------------------------------------------------\nRan 4 tests in 0.001s\n\nFAILED (failures=1)\nTraceback (most recent call last):\n  File \"/acceptance/check.py\", line 58, in <module>\n    assert result.wasSuccessful(),'generated tests failed'\n           ^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: generated tests failed\n"
+    },
+    {
+      "task": "05-release-digest",
+      "kind": "unchanged_docs",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\nTraceback (most recent call last):\n  File \"/acceptance/check.py\", line 60, in <module>\n    assert len(readme.split())>=40 and 'cli.py' in readme and new_action in readme,'document new CLI usage'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: document new CLI usage\n"
+    },
+    {
+      "task": "06-backup-retention",
+      "kind": "baseline",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 52, in <module>\n    for p,want in cases:check(p,want)\n                        ^^^^^^^^^^^^^\n  File \"/acceptance/check.py\", line 36, in check\n    actual=dispatch(given)\n           ^^^^^^^^^^^^^^^\n  File \"/workspace/api.py\", line 5, in dispatch\n    raise ValueError(\"unknown action: \"+str(action))\nValueError: unknown action: plan\n"
+    },
+    {
+      "task": "06-backup-retention",
+      "kind": "reference",
+      "exit_code": 0,
+      "expected_outcome_confirmed": true,
+      "stdout": "PASS\n",
+      "stderr": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "task": "06-backup-retention",
+      "kind": "missing_tests",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 56, in <module>\n    assert suite.countTestCases()>=3,'need three discoverable tests'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: need three discoverable tests\n"
+    },
+    {
+      "task": "06-backup-retention",
+      "kind": "failing_tests",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "...F\n======================================================================\nFAIL: test_failure (test_behavior.BrokenRegression.test_failure)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/test_behavior.py\", line 17, in test_failure\n    def test_failure(self):self.fail(\"deliberately broken generated test\")\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: deliberately broken generated test\n\n----------------------------------------------------------------------\nRan 4 tests in 0.001s\n\nFAILED (failures=1)\nTraceback (most recent call last):\n  File \"/acceptance/check.py\", line 58, in <module>\n    assert result.wasSuccessful(),'generated tests failed'\n           ^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: generated tests failed\n"
+    },
+    {
+      "task": "06-backup-retention",
+      "kind": "unchanged_docs",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\nTraceback (most recent call last):\n  File \"/acceptance/check.py\", line 60, in <module>\n    assert len(readme.split())>=40 and 'cli.py' in readme and new_action in readme,'document new CLI usage'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: document new CLI usage\n"
+    },
+    {
+      "task": "07-webhook-auth",
+      "kind": "baseline",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 52, in <module>\n    for p,want in cases:check(p,want)\n                        ^^^^^^^^^^^^^\n  File \"/acceptance/check.py\", line 36, in check\n    actual=dispatch(given)\n           ^^^^^^^^^^^^^^^\n  File \"/workspace/api.py\", line 5, in dispatch\n    raise ValueError(\"unknown action: \"+str(action))\nValueError: unknown action: verify\n"
+    },
+    {
+      "task": "07-webhook-auth",
+      "kind": "reference",
+      "exit_code": 0,
+      "expected_outcome_confirmed": true,
+      "stdout": "PASS\n",
+      "stderr": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "task": "07-webhook-auth",
+      "kind": "missing_tests",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 56, in <module>\n    assert suite.countTestCases()>=3,'need three discoverable tests'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: need three discoverable tests\n"
+    },
+    {
+      "task": "07-webhook-auth",
+      "kind": "failing_tests",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "...F\n======================================================================\nFAIL: test_failure (test_behavior.BrokenRegression.test_failure)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/test_behavior.py\", line 17, in test_failure\n    def test_failure(self):self.fail(\"deliberately broken generated test\")\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: deliberately broken generated test\n\n----------------------------------------------------------------------\nRan 4 tests in 0.001s\n\nFAILED (failures=1)\nTraceback (most recent call last):\n  File \"/acceptance/check.py\", line 58, in <module>\n    assert result.wasSuccessful(),'generated tests failed'\n           ^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: generated tests failed\n"
+    },
+    {
+      "task": "07-webhook-auth",
+      "kind": "unchanged_docs",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\nTraceback (most recent call last):\n  File \"/acceptance/check.py\", line 60, in <module>\n    assert len(readme.split())>=40 and 'cli.py' in readme and new_action in readme,'document new CLI usage'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: document new CLI usage\n"
+    },
+    {
+      "task": "08-markdown-index",
+      "kind": "baseline",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 52, in <module>\n    for p,want in cases:check(p,want)\n                        ^^^^^^^^^^^^^\n  File \"/acceptance/check.py\", line 36, in check\n    actual=dispatch(given)\n           ^^^^^^^^^^^^^^^\n  File \"/workspace/api.py\", line 5, in dispatch\n    raise ValueError(\"unknown action: \"+str(action))\nValueError: unknown action: headings\n"
+    },
+    {
+      "task": "08-markdown-index",
+      "kind": "reference",
+      "exit_code": 0,
+      "expected_outcome_confirmed": true,
+      "stdout": "PASS\n",
+      "stderr": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "task": "08-markdown-index",
+      "kind": "missing_tests",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 56, in <module>\n    assert suite.countTestCases()>=3,'need three discoverable tests'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: need three discoverable tests\n"
+    },
+    {
+      "task": "08-markdown-index",
+      "kind": "failing_tests",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "...F\n======================================================================\nFAIL: test_failure (test_behavior.BrokenRegression.test_failure)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/test_behavior.py\", line 17, in test_failure\n    def test_failure(self):self.fail(\"deliberately broken generated test\")\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: deliberately broken generated test\n\n----------------------------------------------------------------------\nRan 4 tests in 0.001s\n\nFAILED (failures=1)\nTraceback (most recent call last):\n  File \"/acceptance/check.py\", line 58, in <module>\n    assert result.wasSuccessful(),'generated tests failed'\n           ^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: generated tests failed\n"
+    },
+    {
+      "task": "08-markdown-index",
+      "kind": "unchanged_docs",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\nTraceback (most recent call last):\n  File \"/acceptance/check.py\", line 60, in <module>\n    assert len(readme.split())>=40 and 'cli.py' in readme and new_action in readme,'document new CLI usage'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: document new CLI usage\n"
+    },
+    {
+      "task": "09-invoice-csv",
+      "kind": "baseline",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 52, in <module>\n    for p,want in cases:check(p,want)\n                        ^^^^^^^^^^^^^\n  File \"/acceptance/check.py\", line 36, in check\n    actual=dispatch(given)\n           ^^^^^^^^^^^^^^^\n  File \"/workspace/api.py\", line 5, in dispatch\n    raise ValueError(\"unknown action: \"+str(action))\nValueError: unknown action: export\n"
+    },
+    {
+      "task": "09-invoice-csv",
+      "kind": "reference",
+      "exit_code": 0,
+      "expected_outcome_confirmed": true,
+      "stdout": "PASS\n",
+      "stderr": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "task": "09-invoice-csv",
+      "kind": "missing_tests",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 56, in <module>\n    assert suite.countTestCases()>=3,'need three discoverable tests'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: need three discoverable tests\n"
+    },
+    {
+      "task": "09-invoice-csv",
+      "kind": "failing_tests",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "...F\n======================================================================\nFAIL: test_failure (test_behavior.BrokenRegression.test_failure)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/test_behavior.py\", line 17, in test_failure\n    def test_failure(self):self.fail(\"deliberately broken generated test\")\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: deliberately broken generated test\n\n----------------------------------------------------------------------\nRan 4 tests in 0.001s\n\nFAILED (failures=1)\nTraceback (most recent call last):\n  File \"/acceptance/check.py\", line 58, in <module>\n    assert result.wasSuccessful(),'generated tests failed'\n           ^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: generated tests failed\n"
+    },
+    {
+      "task": "09-invoice-csv",
+      "kind": "unchanged_docs",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\nTraceback (most recent call last):\n  File \"/acceptance/check.py\", line 60, in <module>\n    assert len(readme.split())>=40 and 'cli.py' in readme and new_action in readme,'document new CLI usage'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: document new CLI usage\n"
+    },
+    {
+      "task": "10-service-readiness",
+      "kind": "baseline",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 52, in <module>\n    for p,want in cases:check(p,want)\n                        ^^^^^^^^^^^^^\n  File \"/acceptance/check.py\", line 36, in check\n    actual=dispatch(given)\n           ^^^^^^^^^^^^^^^\n  File \"/workspace/api.py\", line 5, in dispatch\n    raise ValueError(\"unknown action: \"+str(action))\nValueError: unknown action: readiness\n"
+    },
+    {
+      "task": "10-service-readiness",
+      "kind": "reference",
+      "exit_code": 0,
+      "expected_outcome_confirmed": true,
+      "stdout": "PASS\n",
+      "stderr": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "task": "10-service-readiness",
+      "kind": "missing_tests",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 56, in <module>\n    assert suite.countTestCases()>=3,'need three discoverable tests'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: need three discoverable tests\n"
+    },
+    {
+      "task": "10-service-readiness",
+      "kind": "failing_tests",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "...F\n======================================================================\nFAIL: test_failure (test_behavior.BrokenRegression.test_failure)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/test_behavior.py\", line 17, in test_failure\n    def test_failure(self):self.fail(\"deliberately broken generated test\")\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: deliberately broken generated test\n\n----------------------------------------------------------------------\nRan 4 tests in 0.000s\n\nFAILED (failures=1)\nTraceback (most recent call last):\n  File \"/acceptance/check.py\", line 58, in <module>\n    assert result.wasSuccessful(),'generated tests failed'\n           ^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: generated tests failed\n"
+    },
+    {
+      "task": "10-service-readiness",
+      "kind": "unchanged_docs",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\nTraceback (most recent call last):\n  File \"/acceptance/check.py\", line 60, in <module>\n    assert len(readme.split())>=40 and 'cli.py' in readme and new_action in readme,'document new CLI usage'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: document new CLI usage\n"
+    },
+    {
+      "task": "11-support-redaction",
+      "kind": "baseline",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 52, in <module>\n    for p,want in cases:check(p,want)\n                        ^^^^^^^^^^^^^\n  File \"/acceptance/check.py\", line 36, in check\n    actual=dispatch(given)\n           ^^^^^^^^^^^^^^^\n  File \"/workspace/api.py\", line 5, in dispatch\n    raise ValueError(\"unknown action: \"+str(action))\nValueError: unknown action: redact\n"
+    },
+    {
+      "task": "11-support-redaction",
+      "kind": "reference",
+      "exit_code": 0,
+      "expected_outcome_confirmed": true,
+      "stdout": "PASS\n",
+      "stderr": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "task": "11-support-redaction",
+      "kind": "missing_tests",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 56, in <module>\n    assert suite.countTestCases()>=3,'need three discoverable tests'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: need three discoverable tests\n"
+    },
+    {
+      "task": "11-support-redaction",
+      "kind": "failing_tests",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "...F\n======================================================================\nFAIL: test_failure (test_behavior.BrokenRegression.test_failure)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/test_behavior.py\", line 17, in test_failure\n    def test_failure(self):self.fail(\"deliberately broken generated test\")\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: deliberately broken generated test\n\n----------------------------------------------------------------------\nRan 4 tests in 0.001s\n\nFAILED (failures=1)\nTraceback (most recent call last):\n  File \"/acceptance/check.py\", line 58, in <module>\n    assert result.wasSuccessful(),'generated tests failed'\n           ^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: generated tests failed\n"
+    },
+    {
+      "task": "11-support-redaction",
+      "kind": "unchanged_docs",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\nTraceback (most recent call last):\n  File \"/acceptance/check.py\", line 60, in <module>\n    assert len(readme.split())>=40 and 'cli.py' in readme and new_action in readme,'document new CLI usage'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: document new CLI usage\n"
+    },
+    {
+      "task": "12-artifact-selector",
+      "kind": "baseline",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 52, in <module>\n    for p,want in cases:check(p,want)\n                        ^^^^^^^^^^^^^\n  File \"/acceptance/check.py\", line 36, in check\n    actual=dispatch(given)\n           ^^^^^^^^^^^^^^^\n  File \"/workspace/api.py\", line 5, in dispatch\n    raise ValueError(\"unknown action: \"+str(action))\nValueError: unknown action: select\n"
+    },
+    {
+      "task": "12-artifact-selector",
+      "kind": "reference",
+      "exit_code": 0,
+      "expected_outcome_confirmed": true,
+      "stdout": "PASS\n",
+      "stderr": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n"
+    },
+    {
+      "task": "12-artifact-selector",
+      "kind": "missing_tests",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 56, in <module>\n    assert suite.countTestCases()>=3,'need three discoverable tests'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: need three discoverable tests\n"
+    },
+    {
+      "task": "12-artifact-selector",
+      "kind": "failing_tests",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "...F\n======================================================================\nFAIL: test_failure (test_behavior.BrokenRegression.test_failure)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/test_behavior.py\", line 17, in test_failure\n    def test_failure(self):self.fail(\"deliberately broken generated test\")\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: deliberately broken generated test\n\n----------------------------------------------------------------------\nRan 4 tests in 0.001s\n\nFAILED (failures=1)\nTraceback (most recent call last):\n  File \"/acceptance/check.py\", line 58, in <module>\n    assert result.wasSuccessful(),'generated tests failed'\n           ^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: generated tests failed\n"
+    },
+    {
+      "task": "12-artifact-selector",
+      "kind": "unchanged_docs",
+      "exit_code": 1,
+      "expected_outcome_confirmed": true,
+      "stdout": "",
+      "stderr": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\nTraceback (most recent call last):\n  File \"/acceptance/check.py\", line 60, in <module>\n    assert len(readme.split())>=40 and 'cli.py' in readme and new_action in readme,'document new CLI usage'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: document new CLI usage\n"
+    }
+  ]
+}
