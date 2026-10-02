@@ -189,3 +189,16 @@ class RunnerTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'root changed'):
             reopened.resume(run_id)
         self.assertEqual(len(bound), 1)
+
+    def test_accepted_environment_tampering_invalidates_status_and_resume(self):
+        from gflo.environment import EnvironmentStore
+        from gflo.prepare import prepare
+        environment = prepare(EnvironmentStore(self.root / 'environments'), 'python-stdlib')
+        factory = Factory(self.root / 'state', lambda *a: {'summary': 'done'},
+                          lambda *a: {'passed': True}, environment=environment, bind_environment=lambda e: None)
+        run_id = factory.create(self.task)
+        self.assertEqual(factory.resume(run_id)['status'], 'accepted')
+        environment.dependencies.chmod(0o755)
+        self.assertEqual(factory.status(run_id)['status'], 'invalidated')
+        with self.assertRaises(ValueError):
+            factory.resume(run_id)

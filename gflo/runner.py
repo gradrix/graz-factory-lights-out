@@ -59,6 +59,7 @@ def accepted_intact(root, contract_hash, attempts):
             hashlib.sha256((root / 'change.patch').read_bytes()).hexdigest() != receipt['patch_sha256'] or
             hashlib.sha256((root / 'task.json').read_bytes()).hexdigest() != contract_hash):
             return False
+        resolve_binding(task.get('environment'))
         artifacts = receipt.get('artifacts', {})
         # Legacy runs retain their original acceptance scope. Review-bearing runs
         # always require both receipts, including after a controller restart.
