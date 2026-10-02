@@ -1,0 +1,20 @@
+{
+  "decision": "repair",
+  "findings": [
+    {
+      "severity": "critical",
+      "path": "domain.py",
+      "line": 18,
+      "evidence": "The canonical JSON helper converts every int/float to float: `return float(value)`. This can incorrectly treat distinct large JSON integers as equal. For example, events with `data: 10**20` and `data: 10**20 + 1` at the same source/seq are JSON-equal? No, they are numerically distinct, but both canonicalize to the same float, so the second event is accepted as a duplicate instead of raising `ValueError` for conflicting data. This violates the stated JSON equality requirement for valid JSON numeric data.",
+      "repair": "Do not normalize all numbers by converting to `float`. Preserve exact numeric equality while still treating JSON numeric forms like `1` and `1.0` as equal. For example, canonicalize numbers as a type/value pair such as `(\"int\", value)` for integers and `(\"float\", value)` for floats, or compare decoded JSON values using a JSON-equality helper that treats numeric values equal by numeric value without lossy float conversion. Also ensure bools are not conflated with numeric values."
+    },
+    {
+      "severity": "major",
+      "path": "domain.py",
+      "line": 57,
+      "evidence": "The contiguity check uses `for s in range(start + 1, seq):` for every grouped event. If a source has a valid but very large sequence number, e.g. `watermarks={\"a\":0}` and one event `{\"source\":\"a\",\"seq\":10**9,\"data\":...}`, the code iterates over roughly one billion missing sequence numbers and can time out or exhaust time/memory. The objective only requires correct semantics for valid types/ranges, not bounded sequence ranges, so this is a practical correctness/performance failure.",
+      "repair": "Compute contiguous runs per source without iterating over every missing sequence number. For each source, sort its grouped sequence numbers and advance from `starting watermark + 1` while the next expected sequence exists; stop at the first gap. All later grouped events for that source become pending."
+    }
+  ],
+  "question": ""
+}

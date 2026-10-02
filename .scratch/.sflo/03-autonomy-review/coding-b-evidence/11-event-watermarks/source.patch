@@ -1,0 +1,501 @@
+--- a/README.md
++++ b/README.md
+@@ -1,3 +1,23 @@
+ # Existing JSON utility
+ 
+-Use `python cli.py` with one JSON object on stdin. Existing action: sources. Domain functions accept the payload object; api.dispatch routes it. CLI reports ValueError/KeyError with stderr and exit 2.
++Use `python cli.py` with one JSON object on stdin. Domain functions accept the payload object; api.dispatch routes it. CLI reports ValueError/KeyError with stderr and exit 2.
++
++## Actions
++
++- `sources`: returns sorted unique event sources.
++- `ingest`: action ingest with watermarks.
++
++  Payload: `{"action":"ingest","watermarks":{source: nonneg int},"events":[{"source":str,"seq":pos int,"data":JSON}]}`.
++
++  Semantics: missing sources start at watermark 0. Events with `seq <= starting watermark` are ignored (conflicts among them do not matter). Events grouped by `(source,seq)`: repeated identical data (JSON equality) is accepted as a duplicate; conflicting data at the same source/seq raises `ValueError`. Per source, only the contiguous run beginning at `starting watermark + 1` is released; events after a gap remain pending. No persistent dedup memory beyond input watermarks.
++
++  JSON equality: object key order is irrelevant, and JSON numbers compare by exact numeric value (`1` and `1.0` are equal; `10**20` and `10**20 + 1` are not - no lossy float conversion). Booleans are never equal to numbers.
++
++  Returns `{"watermarks": {...original sources retained, every new input source added, at least 0...}, "released": [...], "pending": [...]}`, both lists sorted by (source lexicographic, seq numeric), one object `{source,seq,data}` per unique source/seq. Input payload is never mutated.
++
++  Example:
++
++  ```
++  echo '{"action":"ingest","watermarks":{"a":1},"events":[{"source":"a","seq":2,"data":{"x":1}},{"source":"a","seq":2,"data":{"x":1}},{"source":"a","seq":4,"data":null},{"source":"b","seq":1,"data":[1,2]}]}' | python cli.py
++  # {"watermarks": {"a": 2, "b": 1}, "released": [{"source": "a", "seq": 2, "data": {"x": 1}}, {"source": "b", "seq": 1, "data": [1, 2]}], "pending": [{"source": "a", "seq": 4, "data": null}]}
++  ```
+--- a/api.py
++++ b/api.py
+@@ -1,7 +1,7 @@
+ import domain
+ 
+ def dispatch(payload):
+-    actions={'sources':domain.sources}
++    actions={'sources':domain.sources,'ingest':domain.ingest}
+     action=payload["action"]
+     if action not in actions:raise ValueError("unknown action: "+str(action))
+     return actions[action](payload)
+--- a/domain.py
++++ b/domain.py
+@@ -1,2 +1,114 @@
++from fractions import Fraction
++
++
+ def sources(payload):
+     return sorted({event['source'] for event in payload['events']})
++
++
++def _json_equal(left, right):
++    """Exact JSON value equality: object key order is irrelevant and JSON
++    numbers compare by numeric value (so 1 and 1.0 are the same JSON number)
++    with no lossy float conversion. Booleans are never conflated with
++    numbers."""
++    if isinstance(left, bool) or isinstance(right, bool):
++        return isinstance(left, bool) and isinstance(right, bool) and left == right
++    if isinstance(left, (int, float)) and isinstance(right, (int, float)):
++        # Fraction keeps float values exact, so 10**20 and 10**20 + 1 stay
++        # distinct even when one arrives in float form.
++        return Fraction(left) == Fraction(right)
++    if isinstance(left, list) and isinstance(right, list):
++        return len(left) == len(right) and all(
++            _json_equal(a, b) for a, b in zip(left, right)
++        )
++    if isinstance(left, dict) and isinstance(right, dict):
++        return left.keys() == right.keys() and all(
++            _json_equal(left[key], right[key]) for key in left
++        )
++    return type(left) is type(right) and left == right
++
++
++def _canonical_json(value):
++    """Normalize a decoded JSON value into a hashable canonical form.
++
++    Values that are JSON-equal canonicalize alike (object key order
++    normalized; 1 and 1.0 canonicalize alike). Distinct JSON numbers always
++    canonicalize differently: ints keep full precision, floats are rendered
++    exactly with repr.
++    """
++    if isinstance(value, bool):
++        return ('bool', value)
++    if isinstance(value, int):
++        return ('int', value)
++    if isinstance(value, float):
++        return ('float', repr(value))
++    if isinstance(value, list):
++        return ('list', tuple(_canonical_json(item) for item in value))
++    if isinstance(value, dict):
++        return ('dict', tuple(sorted(
++            (_canonical_json(key), _canonical_json(item))
++            for key, item in value.items()
++        )))
++    return ('other', value)
++
++
++def ingest(payload):
++    """Ingest events with per-source watermarks.
++
++    payload keys: watermarks (source -> nonnegative int), events
++    (list of {source: str, seq: positive int, data: JSON}).
++    Returns {watermarks, released, pending}; released/pending are sorted by
++    (source lexicographic, seq numeric), one object {source, seq, data} per
++    unique source/seq. The input payload is never mutated.
++    """
++    starting = dict(payload['watermarks'])
++    # Missing sources start at watermark 0; every input source is retained.
++    for event in payload['events']:
++        starting.setdefault(event['source'], 0)
++
++    # Group events by (source, seq): repeated identical data (JSON equality)
++    # is a duplicate; conflicting data at the same source/seq raises
++    # ValueError. Events at/below the starting watermark are ignored first,
++    # so conflicts among those old events do not matter.
++    grouped = {}  # (source, seq) -> [data, canonical_form]
++    for event in payload['events']:
++        source, seq = event['source'], event['seq']
++        if seq <= starting[source]:
++            continue  # ignored old event
++        key = (source, seq)
++        form = _canonical_json(event['data'])
++        existing = grouped.get(key)
++        if existing is None:
++            grouped[key] = [event['data'], form]
++        elif not _json_equal(existing[0], event['data']):
++            raise ValueError(
++                "conflicting data for source %r at seq %d" % (source, seq)
++            )
++
++    # Release only the contiguous run beginning at starting watermark + 1
++    # per source; events past the first gap stay pending. Sequence numbers
++    # are walked in sorted order, so huge seq values cost no extra work.
++    seqs_by_source = {}
++    for source, seq in grouped:
++        seqs_by_source.setdefault(source, []).append(seq)
++    watermarks = dict(starting)
++    released = []
++    pending = []
++    for source, seqs in seqs_by_source.items():
++        seqs.sort()
++        expected = starting[source] + 1
++        for i, seq in enumerate(seqs):
++            if seq == expected:
++                data, _form = grouped[(source, seq)]
++                released.append({"source": source, "seq": seq, "data": data})
++                watermarks[source] = seq
++                expected += 1
++            else:
++                for pending_seq in seqs[i:]:
++                    data, _form = grouped[(source, pending_seq)]
++                    pending.append(
++                        {"source": source, "seq": pending_seq, "data": data}
++                    )
++                break
++    released.sort(key=lambda item: (item['source'], item['seq']))
++    pending.sort(key=lambda item: (item['source'], item['seq']))
++    return {"watermarks": watermarks, "released": released, "pending": pending}
+--- /dev/null
++++ b/tests/test_ingest.py
+@@ -0,0 +1,343 @@
++import copy
++import unittest
++from pathlib import Path
++import sys
++
++sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
++
++import domain
++from api import dispatch
++
++
++class IngestTests(unittest.TestCase):
++    def test_basic_release(self):
++        payload = {
++            "action": "ingest",
++            "watermarks": {"a": 1},
++            "events": [
++                {"source": "a", "seq": 2, "data": {"x": 1}},
++                {"source": "a", "seq": 4, "data": None},
++                {"source": "b", "seq": 1, "data": [1, 2]},
++            ],
++        }
++        result = dispatch(payload)
++        self.assertEqual(
++            result,
++            {
++                "watermarks": {"a": 2, "b": 1},
++                "released": [
++                    {"source": "a", "seq": 2, "data": {"x": 1}},
++                    {"source": "b", "seq": 1, "data": [1, 2]},
++                ],
++                "pending": [{"source": "a", "seq": 4, "data": None}],
++            },
++        )
++
++    def test_missing_source_starts_at_zero(self):
++        payload = {
++            "action": "ingest",
++            "watermarks": {},
++            "events": [{"source": "z", "seq": 1, "data": "hi"}],
++        }
++        self.assertEqual(
++            dispatch(payload),
++            {
++                "watermarks": {"z": 1},
++                "released": [{"source": "z", "seq": 1, "data": "hi"}],
++                "pending": [],
++            },
++        )
++
++    def test_gap_retains_later_events(self):
++        payload = {
++            "action": "ingest",
++            "watermarks": {},
++            "events": [
++                {"source": "a", "seq": 2, "data": 1},
++                {"source": "a", "seq": 3, "data": 2},
++            ],
++        }
++        self.assertEqual(
++            dispatch(payload),
++            {
++                "watermarks": {"a": 0},
++                "released": [],
++                "pending": [
++                    {"source": "a", "seq": 2, "data": 1},
++                    {"source": "a", "seq": 3, "data": 2},
++                ],
++            },
++        )
++
++    def test_duplicate_identical_data_accepted(self):
++        payload = {
++            "action": "ingest",
++            "watermarks": {},
++            "events": [
++                {"source": "a", "seq": 1, "data": {"x": 1, "y": [1, {"z": 2}]}},
++                {"source": "a", "seq": 1, "data": {"y": [1, {"z": 2}], "x": 1}},
++            ],
++        }
++        result = dispatch(payload)
++        self.assertEqual(
++            result,
++            {
++                "watermarks": {"a": 1},
++                "released": [{"source": "a", "seq": 1, "data": {"x": 1, "y": [1, {"z": 2}]}}],
++                "pending": [],
++            },
++        )
++
++    def test_numeric_json_equality_duplicate(self):
++        payload = {
++            "action": "ingest",
++            "watermarks": {},
++            "events": [
++                {"source": "a", "seq": 1, "data": 1},
++                {"source": "a", "seq": 1, "data": 1.0},
++            ],
++        }
++        result = dispatch(payload)
++        self.assertEqual(
++            result,
++            {
++                "watermarks": {"a": 1},
++                "released": [{"source": "a", "seq": 1, "data": 1}],
++                "pending": [],
++            },
++        )
++
++    def test_numeric_equality_nested(self):
++        payload = {
++            "action": "ingest",
++            "watermarks": {},
++            "events": [
++                {"source": "a", "seq": 1, "data": {"n": [1, {"m": 2}]}},
++                {"source": "a", "seq": 1, "data": {"n": [1.0, {"m": 2.0}]}},
++            ],
++        }
++        result = dispatch(payload)
++        self.assertEqual(
++            result,
++            {
++                "watermarks": {"a": 1},
++                "released": [{"source": "a", "seq": 1, "data": {"n": [1, {"m": 2}]}}],
++                "pending": [],
++            },
++        )
++
++    def test_conflicting_data_raises(self):
++        payload = {
++            "action": "ingest",
++            "watermarks": {},
++            "events": [
++                {"source": "a", "seq": 1, "data": {"x": 1}},
++                {"source": "a", "seq": 1, "data": {"x": 2}},
++            ],
++        }
++        with self.assertRaises(ValueError):
++            dispatch(payload)
++
++    def test_conflicts_among_ignored_events_do_not_matter(self):
++        payload = {
++            "action": "ingest",
++            "watermarks": {"a": 5},
++            "events": [
++                {"source": "a", "seq": 3, "data": {"x": 1}},
++                {"source": "a", "seq": 3, "data": {"x": 2}},
++                {"source": "a", "seq": 5, "data": "old"},
++                {"source": "a", "seq": 5, "data": "other"},
++                {"source": "a", "seq": 6, "data": "new"},
++            ],
++        }
++        result = dispatch(payload)
++        self.assertEqual(
++            result,
++            {
++                "watermarks": {"a": 6},
++                "released": [{"source": "a", "seq": 6, "data": "new"}],
++                "pending": [],
++            },
++        )
++
++    def test_sorting_by_source_then_seq(self):
++        payload = {
++            "action": "ingest",
++            "watermarks": {},
++            "events": [
++                {"source": "b", "seq": 10, "data": None},
++                {"source": "b", "seq": 2, "data": None},
++                {"source": "a", "seq": 2, "data": None},
++                {"source": "a", "seq": 1, "data": None},
++                {"source": "a", "seq": 10, "data": None},
++            ],
++        }
++        result = dispatch(payload)
++        self.assertEqual(
++            [(e["source"], e["seq"]) for e in result["released"]],
++            [("a", 1), ("a", 2)],
++        )
++        self.assertEqual(
++            [(e["source"], e["seq"]) for e in result["pending"]],
++            [("a", 10), ("b", 2), ("b", 10)],
++        )
++        self.assertEqual(result["watermarks"], {"a": 2, "b": 0})
++
++    def test_input_not_mutated(self):
++        payload = {
++            "action": "ingest",
++            "watermarks": {"a": 1},
++            "events": [{"source": "a", "seq": 2, "data": {"k": [1]}}],
++        }
++        snapshot = copy.deepcopy(payload)
++        result = dispatch(payload)
++        self.assertEqual(payload, snapshot)
++        self.assertEqual(result["watermarks"], {"a": 2})
++        # Returned data must not alias the input either way is required, but
++        # input object must be untouched.
++        self.assertEqual(payload["events"][0]["data"], {"k": [1]})
++
++    def test_watermarks_retain_original_sources(self):
++        payload = {
++            "action": "ingest",
++            "watermarks": {"a": 3, "b": 0},
++            "events": [],
++        }
++        self.assertEqual(
++            dispatch(payload),
++            {"watermarks": {"a": 3, "b": 0}, "released": [], "pending": []},
++        )
++
++
++    def test_large_ints_are_distinct_not_duplicates(self):
++        payload = {
++            "action": "ingest",
++            "watermarks": {},
++            "events": [
++                {"source": "a", "seq": 1, "data": 10**20},
++                {"source": "a", "seq": 1, "data": 10**20 + 1},
++            ],
++        }
++        with self.assertRaises(ValueError):
++            dispatch(payload)
++
++    def test_large_int_nested_conflict(self):
++        payload = {
++            "action": "ingest",
++            "watermarks": {},
++            "events": [
++                {"source": "a", "seq": 3, "data": {"n": [2**64]}},
++                {"source": "a", "seq": 3, "data": {"n": [2**64 + 1]}},
++            ],
++        }
++        with self.assertRaises(ValueError):
++            dispatch(payload)
++
++    def test_bool_not_conflated_with_number(self):
++        payload = {
++            "action": "ingest",
++            "watermarks": {},
++            "events": [
++                {"source": "a", "seq": 1, "data": True},
++                {"source": "a", "seq": 1, "data": 1},
++            ],
++        }
++        with self.assertRaises(ValueError):
++            dispatch(payload)
++
++    def test_huge_seq_no_gap_iteration_blowup(self):
++        payload = {
++            "action": "ingest",
++            "watermarks": {"a": 0},
++            "events": [{"source": "a", "seq": 10**9, "data": "far"}],
++        }
++        snapshot = copy.deepcopy(payload)
++        self.assertEqual(
++            dispatch(payload),
++            {
++                "watermarks": {"a": 0},
++                "released": [],
++                "pending": [{"source": "a", "seq": 10**9, "data": "far"}],
++            },
++        )
++        self.assertEqual(payload, snapshot)
++
++    def test_huge_seq_contiguous_run_released(self):
++        payload = {
++            "action": "ingest",
++            "watermarks": {"a": 10**12},
++            "events": [
++                {"source": "a", "seq": 10**12 + 2, "data": 2},
++                {"source": "a", "seq": 10**12 + 1, "data": 1},
++            ],
++        }
++        self.assertEqual(
++            dispatch(payload),
++            {
++                "watermarks": {"a": 10**12 + 2},
++                "released": [
++                    {"source": "a", "seq": 10**12 + 1, "data": 1},
++                    {"source": "a", "seq": 10**12 + 2, "data": 2},
++                ],
++                "pending": [],
++            },
++        )
++
++    def test_unknown_action_raises(self):
++        with self.assertRaises(ValueError):
++            dispatch({"action": "nope", "events": [], "watermarks": {}})
++
++    def test_existing_sources_action_preserved(self):
++        payload = {"action": "sources", "events": [
++            {"source": "b", "seq": 1, "data": None},
++            {"source": "a", "seq": 1, "data": None},
++        ]}
++        self.assertEqual(dispatch(payload), ["a", "b"])
++
++    def test_cli_success(self):
++        import subprocess
++        payload = {
++            "action": "ingest",
++            "watermarks": {"a": 1},
++            "events": [{"source": "a", "seq": 2, "data": {"x": 1}}],
++        }
++        proc = subprocess.run(
++            ["python", "cli.py"],
++            input=__import__("json").dumps(payload),
++            capture_output=True,
++            text=True,
++        )
++        self.assertEqual(proc.returncode, 0)
++        self.assertEqual(
++            __import__("json").loads(proc.stdout),
++            {"watermarks": {"a": 2},
++             "released": [{"source": "a", "seq": 2, "data": {"x": 1}}],
++             "pending": []},
++        )
++        self.assertEqual(proc.stderr, "")
++
++    def test_cli_valueerror_exit_2(self):
++        import subprocess
++        import json
++        payload = {
++            "action": "ingest",
++            "watermarks": {},
++            "events": [
++                {"source": "a", "seq": 1, "data": 1},
++                {"source": "a", "seq": 1, "data": 2},
++            ],
++        }
++        proc = subprocess.run(
++            ["python", "cli.py"],
++            input=json.dumps(payload),
++            capture_output=True,
++            text=True,
++        )
++        self.assertEqual(proc.returncode, 2)
++        self.assertNotEqual(proc.stderr, "")
++        self.assertEqual(proc.stdout, "")
++        self.assertNotIn("Traceback", proc.stderr)
++
++
++if __name__ == "__main__":
++    unittest.main()

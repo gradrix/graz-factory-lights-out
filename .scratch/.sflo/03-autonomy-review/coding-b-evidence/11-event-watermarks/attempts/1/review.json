@@ -1,0 +1,13 @@
+{
+  "decision": "repair",
+  "findings": [
+    {
+      "severity": "major",
+      "path": "domain.py",
+      "line": 12,
+      "evidence": "The helper `_json_key` uses `json.dumps(data, sort_keys=True, ensure_ascii=False)`, which treats JSON numeric values `1` and `1.0` as different because it emits `\"1\"` and `\"1.0\"`. The objective says JSON equality defines data equality, and the code comment itself claims numbers follow JSON semantics, e.g. `1 == 1.0`. For payload `{\"action\":\"ingest\",\"watermarks\":{},\"events\":[{\"source\":\"a\",\"seq\":1,\"data\":1},{\"source\":\"a\",\"seq\":1,\"data\":1.0}]}`, the current code raises `ValueError` instead of accepting the duplicate.",
+      "repair": "Normalize JSON numeric values before canonicalization, e.g. recursively convert `int`/`float` values to a common JSON numeric representation such as `float(value)` (or otherwise canonicalize `1` and `1.0` as equal) before calling `json.dumps`."
+    }
+  ],
+  "question": ""
+}

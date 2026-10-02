@@ -1,0 +1,206 @@
+{
+  "run": "171a71b31de6",
+  "task": {
+    "repo": "/home/gradrix/gflo-runtime/.gflo/project-test-repair/source",
+    "objective": "Add action admit with history (list of integer accepted-request timestamps), now (integer), window (positive integer) and limit (nonnegative integer). history must be nondecreasing with no timestamp greater than now; violations and invalid window/limit raise ValueError. The active window is (now-window, now], excluding the left boundary. Expire old entries, admit this request iff active count < limit, append now only when admitted. Return {allowed: bool, history: new active list, retry_at: null when admitted, otherwise the earliest timestamp at which one slot becomes free (oldest active timestamp + window); for limit=0 retry_at is null}. Multiple requests at the same timestamp count separately. If active count already exceeds limit, retry_at is the timestamp when enough oldest entries expire to make count strictly less than limit. Preserve action count. No persistent clock or sleeping. Implement the new action(s) in domain.py, route them through existing api.dispatch(payload), and support them through existing `python cli.py` reading one JSON object from stdin and printing one JSON result. Preserve existing actions, unknown-action ValueError, CLI exit 2 with nonempty stderr/no traceback on ValueError and successful CLI JSON behavior. Never mutate input payloads, including rejected inputs. Assume Python 3.12+ and UTF-8 runtime. Standard library only; all data shapes/types follow the stated contract except explicitly required validation cases. Do not invent additional validation or product policy. Add regression tests and document new usage. Implementation may add helpers/modules but must preserve these public interfaces.",
+    "acceptance": "/home/gradrix/gflo-runtime/.gflo/stage2-coding-b/0c3f4f76b509/acceptance",
+    "checks": [
+      [
+        "python",
+        "-B",
+        "-I",
+        "/acceptance/check.py"
+      ]
+    ],
+    "max_attempts": 3,
+    "max_turns": 24,
+    "wall_time_seconds": 900,
+    "review_required": true,
+    "base_commit": "32d9ad6f829a7be9ef9306e2f56b17461d8234fd",
+    "acceptance_hash": "3644b58150c04d3b291131214646282eb9353aaec4767cc877869f7db0a412e8"
+  },
+  "accepted": {
+    "candidate": "17a02aa7c48c52b3c4d19ed7974a615c7d48dc82e3501b8e5aaa30fadb0dd52c",
+    "patch_sha256": "663f899a2a8474a6e683a45bcd2394612d454b7d97b2e28382a2c3017776fca5",
+    "artifacts": {
+      "attempts/3/verification.json": "34495dc8b71368c5fe6c51cb6c5895394f33b3305debc629cf5cef70b53d64c0",
+      "attempts/3/review.json": "7929beebaf45b89055b587364ba7f368db75c6de355aa888eed7536a02eccd45"
+    }
+  },
+  "attempts": {
+    "1": {
+      "verification.json": {
+        "passed": false,
+        "checks": [
+          {
+            "command": [
+              "python",
+              "-B",
+              "-I",
+              "/acceptance/check.py"
+            ],
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "",
+            "elapsed_s": 0.5210969039762858,
+            "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578"
+          },
+          {
+            "command": [
+              "python",
+              "-B",
+              "-m",
+              "unittest",
+              "discover",
+              "-s",
+              "tests"
+            ],
+            "exit_code": 1,
+            "timed_out": false,
+            "output": "...................F......\n======================================================================\nFAIL: test_retry_when_count_exceeds_limit (test_admit.AdmitTests.test_retry_when_count_exceeds_limit)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/tests/test_admit.py\", line 58, in test_retry_when_count_exceeds_limit\n    self.assertEqual(result, {\"allowed\": False, \"history\": [10, 11, 12],\nAssertionError: {'allowed': False, 'history': [10, 11, 12], 'retry_at': 21} != {'allowed': False, 'history': [10, 11, 12], 'retry_at': 20}\n- {'allowed': False, 'history': [10, 11, 12], 'retry_at': 21}\n?                                                          ^\n\n+ {'allowed': False, 'history': [10, 11, 12], 'retry_at': 20}\n?                                                          ^\n\n\n----------------------------------------------------------------------\nRan 26 tests in 0.151s\n\nFAILED (failures=1)\n",
+            "elapsed_s": 0.622277441987535,
+            "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578"
+          }
+        ],
+        "candidate": "de3582d15482effb9fcc66b86073664e644ce82820894cd219555842a8f3609f"
+      },
+      "worker.json": {
+        "summary": "Model turn budget exhausted",
+        "turns": 24,
+        "limited": true
+      }
+    },
+    "2": {
+      "review.json": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "major",
+            "path": "domain.py",
+            "line": 10,
+            "evidence": "The objective requires `window` to be a positive integer and `limit` to be a nonnegative integer, with invalid values raising `ValueError`. The current code only checks `window <= 0` and `limit < 0`. For example, `dispatch({\"action\": \"admit\", \"history\": [], \"now\": 1, \"window\": 1.5, \"limit\": 1})` does not raise `ValueError`; it proceeds with a non-integer window and can produce non-integer `retry_at` values. Similarly, `limit = 1.5` is accepted. This violates the stated integer contract and the required `ValueError` behavior for invalid `window`/`limit`.",
+            "repair": "Validate `window` and `limit` as integers before numeric range checks, e.g. `if not isinstance(window, int) or window <= 0: raise ValueError(...)` and `if not isinstance(limit, int) or limit < 0: raise ValueError(...)`. Keep the existing behavior for valid integer inputs."
+          }
+        ],
+        "question": ""
+      },
+      "verification.json": {
+        "passed": false,
+        "checks": [
+          {
+            "command": [
+              "python",
+              "-B",
+              "-I",
+              "/acceptance/check.py"
+            ],
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "",
+            "elapsed_s": 0.5185573880153242,
+            "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578"
+          },
+          {
+            "command": [
+              "python",
+              "-B",
+              "-m",
+              "unittest",
+              "discover",
+              "-s",
+              "tests"
+            ],
+            "exit_code": 0,
+            "timed_out": false,
+            "output": ".................................\n----------------------------------------------------------------------\nRan 33 tests in 0.153s\n\nOK\n",
+            "elapsed_s": 0.6176137190195732,
+            "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578"
+          }
+        ],
+        "review": {
+          "decision": "repair",
+          "findings": [
+            {
+              "severity": "major",
+              "path": "domain.py",
+              "line": 10,
+              "evidence": "The objective requires `window` to be a positive integer and `limit` to be a nonnegative integer, with invalid values raising `ValueError`. The current code only checks `window <= 0` and `limit < 0`. For example, `dispatch({\"action\": \"admit\", \"history\": [], \"now\": 1, \"window\": 1.5, \"limit\": 1})` does not raise `ValueError`; it proceeds with a non-integer window and can produce non-integer `retry_at` values. Similarly, `limit = 1.5` is accepted. This violates the stated integer contract and the required `ValueError` behavior for invalid `window`/`limit`.",
+              "repair": "Validate `window` and `limit` as integers before numeric range checks, e.g. `if not isinstance(window, int) or window <= 0: raise ValueError(...)` and `if not isinstance(limit, int) or limit < 0: raise ValueError(...)`. Keep the existing behavior for valid integer inputs."
+            }
+          ],
+          "question": ""
+        },
+        "candidate": "8529be8d2c4ecf6485af761b098ac673edd7094cdac3decc51a51492e369c2b1"
+      },
+      "worker.json": {
+        "summary": "**Summary**\n\nThe retained implementation was correct except for the `retry_at` overflow case, and one retained test encoded a contradictory expectation.\n\n**Change**\n- `domain.py::_retry_at` \u2014 replaced the special-case branch (which returned `active[0] + window` when expiring the oldest timestamp alone left the count at or above `limit`) with the single general rule from the spec: with `drop = len(active) - limit + 1` entries needing to expire, `retry_at = active[drop - 1] + window`. This reduces to `oldest + window` in the normal `len(active) == limit` case and correctly handles ties and overflow (e.g. `history=[10,11,12], now=15, window=10, limit=2` \u2192 `21`, since at `t=20` the count is still 2, not `< limit`).\n- `tests/test_admit.py` \u2014 corrected that expectation from `20` to `21` (with a comment explaining why 20 fails the \"strictly less than limit\" rule), and added 7 new regression tests: normal `oldest+window` retry, many-excess-entries retry, ties at the drop boundary, admitted nondecreasing duplicate timestamps, empty-history admission, and `window=1` left-boundary admit/deny pair.\n- `README.md` \u2014 documented the `admit` action: payload fields, validation rules, `(now-window, now]` window semantics, admission rule, and the `retry_at` formula including `limit=0 \u2192 null`; added verified CLI examples.\n\n`api.py` and `cli.py` are untouched \u2014 `admit` was already routed through `api.dispatch`, and the CLI still exits 2 with nonempty stderr and no traceback on `ValueError`/`KeyError`. Input payloads are never mutated (validation reads only; `active` is a fresh list).\n\n**Tests**: 33 tests pass (`python -B -m unittest discover -s tests`), including the CLI subprocess tests. Independent acceptance (`python -B -I /acceptance/check.py`) passes.\n\n**Note on the conflict**: the spec's parenthetical `(oldest active timestamp + window)` and its explicit overflow clause disagree for `len(active) > limit`; the explicit clause governs, and the acceptance check agrees with `21` for the example above.\n\n**Limitations**: none beyond that resolved spec ambiguity; no extra validation was added (e.g. non-integer types are not checked, per \"do not invent additional validation\").",
+        "turns": 22,
+        "tool_calls": 22,
+        "elapsed_s": 114.85732718597865,
+        "finish_reason": "stop"
+      }
+    },
+    "3": {
+      "review.json": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "verification.json": {
+        "passed": true,
+        "checks": [
+          {
+            "command": [
+              "python",
+              "-B",
+              "-I",
+              "/acceptance/check.py"
+            ],
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "",
+            "elapsed_s": 0.5183917760150507,
+            "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578"
+          },
+          {
+            "command": [
+              "python",
+              "-B",
+              "-m",
+              "unittest",
+              "discover",
+              "-s",
+              "tests"
+            ],
+            "exit_code": 0,
+            "timed_out": false,
+            "output": "...................................\n----------------------------------------------------------------------\nRan 35 tests in 0.144s\n\nOK\n",
+            "elapsed_s": 0.6192089449905325,
+            "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578"
+          }
+        ],
+        "review": {
+          "decision": "pass",
+          "findings": [],
+          "question": ""
+        },
+        "candidate": "17a02aa7c48c52b3c4d19ed7974a615c7d48dc82e3501b8e5aaa30fadb0dd52c"
+      },
+      "worker.json": {
+        "summary": "Everything works. Summary:\n\n**Repair applied** (from review finding): `domain.py` previously only checked `window <= 0` / `limit < 0`, so non-integer values like `1.5` or `\"3\"` passed validation and could yield non-integer `retry_at`. Fixed by adding strict integer type checks:\n\n- `if not isinstance(window, int) or window <= 0: raise ValueError(...)`\n- `if not isinstance(limit, int) or limit < 0: raise ValueError(...)`\n\n**Changes:**\n- `domain.py`: integer type validation for `window`/`limit` in `admit()`; all other admit logic (window `(now-window, now]`, expiry, retry_at computation, limit=0 \u2192 null) unchanged.\n- `tests/test_admit.py`: added `test_non_integer_window_raises` and `test_non_integer_limit_raises` covering float and string values (35 tests total, all passing).\n- `README.md`: documented that non-integer `window`/`limit` also raise `ValueError`.\n\n**Verification:** acceptance check passes; `unittest discover` runs 35 tests, all OK; CLI still exits 2 with nonempty stderr/no traceback on `ValueError` (including the new non-integer cases), and successful JSON output for `admit` and `count` is preserved. No input mutation; no persistent clock.",
+        "turns": 8,
+        "tool_calls": 9,
+        "elapsed_s": 31.46254207898164,
+        "finish_reason": "stop"
+      }
+    }
+  },
+  "workspace_sha256": {
+    "domain.py": "780908f1d0587fe6bb2de98638440ffb4f5db581d3e56b8dd91cda0d17d85827",
+    "cli.py": "35467a9ac35421c30d77e0f4885453a683ea53a4f5c5aac600d16bc29c9bdb08",
+    "README.md": "7af099f5b81693d5ee43d868c4e98d2458bfaeb13a07b2c77ed41c010b674354",
+    "api.py": "3c19d13f36611bb02ee147a66b84c61476958cf5f488f961bcb07efad7bc5dea",
+    "tests/test_admit.py": "5f40305f5d71e64b76a70233608540bed5bf6cca67b0851f2fe9816d1e801c9e"
+  },
+  "patch": "diff --git a/README.md b/README.md\nindex 171cdaf..134b7c5 100644\n--- a/README.md\n+++ b/README.md\n@@ -1,3 +1,34 @@\n # Existing JSON utility\n \n Use `python cli.py` with one JSON object on stdin. Existing action: count. Domain functions accept the payload object; api.dispatch routes it. CLI reports ValueError/KeyError with stderr and exit 2.\n+\n+## Actions\n+\n+### count\n+\n+Payload: `{\"action\": \"count\", \"events\": [...]}`. Result: `len(events)`.\n+\n+### admit\n+\n+Payload: `{\"action\": \"admit\", \"history\": [...], \"now\": int, \"window\": int, \"limit\": int}`.\n+\n+- `history` must be nondecreasing and contain no timestamp greater than `now`; otherwise `ValueError`.\n+- `window` must be a positive **integer** and `limit` a nonnegative **integer** (non-integer values such as `1.5` or `\"3\"` also raise `ValueError`); otherwise `ValueError`.\n+- The active window is `(now - window, now]` \u2014 the left boundary is excluded, so an entry with timestamp `x` is active iff `x > now - window`. Expired entries are dropped from the returned `history`.\n+- The request is admitted iff the active count is strictly less than `limit`. Multiple requests sharing a timestamp count separately. When admitted, `now` is appended to the returned history and `retry_at` is `null`.\n+- When denied, `retry_at` is the earliest timestamp at which enough of the oldest active entries expire for the active count to become strictly less than `limit`. An entry with timestamp `x` expires at `t = x + window`, so with `drop = len(active) - limit + 1` entries needing to expire, `retry_at = active[drop - 1] + window`. For `limit = 0` a slot never frees and `retry_at` is `null`.\n+\n+Result: `{\"allowed\": bool, \"history\": new active list, \"retry_at\": int|null}`.\n+\n+Input payloads are never mutated, including when validation fails. There is no persistent clock or sleeping; every call is a pure function of its payload.\n+\n+Examples:\n+\n+```console\n+$ echo '{\"action\":\"admit\",\"history\":[10,12],\"now\":15,\"window\":10,\"limit\":2}' | python cli.py\n+{\"allowed\": false, \"history\": [10, 12], \"retry_at\": 20}\n+$ echo '{\"action\":\"admit\",\"history\":[10,11,12],\"now\":15,\"window\":10,\"limit\":2}' | python cli.py\n+{\"allowed\": false, \"history\": [10, 11, 12], \"retry_at\": 21}\n+$ echo '{\"action\":\"admit\",\"history\":[1,5,6],\"now\":10,\"window\":5,\"limit\":5}' | python cli.py\n+{\"allowed\": true, \"history\": [6, 10], \"retry_at\": null}\n+```\ndiff --git a/domain.py b/domain.py\nindex bec2c45..aea4a16 100644\n--- a/domain.py\n+++ b/domain.py\n@@ -7,15 +7,16 @@ def admit(payload):\n     now = payload['now']\n     window = payload['window']\n     limit = payload['limit']\n-    if window <= 0:\n+    if not isinstance(window, int) or window <= 0:\n         raise ValueError(\"window must be a positive integer\")\n-    if limit < 0:\n+    if not isinstance(limit, int) or limit < 0:\n         raise ValueError(\"limit must be a nonnegative integer\")\n     for index, timestamp in enumerate(history):\n         if index and timestamp < history[index - 1]:\n             raise ValueError(\"history must be nondecreasing\")\n     if history and history[-1] > now:\n         raise ValueError(\"history timestamps must not exceed now\")\n+    # Active window is (now - window, now]: the left boundary is excluded.\n     active = [timestamp for timestamp in history if timestamp > now - window]\n     retry_at = None\n     allowed = False\n@@ -28,11 +29,14 @@ def admit(payload):\n \n \n def _retry_at(active, limit, window):\n-    # Earliest timestamp t >= now at which the active count drops strictly below\n-    # limit, i.e. enough of the oldest entries have expired. active is\n-    # nondecreasing and its count is >= limit here.\n-    n = len(active)\n-    drop = n - limit + 1\n-    if drop > n:\n-        drop = n\n+    # Earliest timestamp at which the active count drops strictly below\n+    # limit, so one new request fits. An entry with timestamp x is outside\n+    # the window (t - window, t] once t = x + window (x then equals the\n+    # excluded left boundary), so an entry expires at t = x + window.\n+    # Entries expire in nondecreasing timestamp order, so the earliest\n+    # time at which `drop = len(active) - limit + 1` entries have expired\n+    # is the expiry of the drop-th oldest entry.\n+    drop = len(active) - limit + 1\n+    if drop > len(active):\n+        drop = len(active)\n     return active[drop - 1] + window\ndiff --git a/tests/test_admit.py b/tests/test_admit.py\nindex 9914bb0..590cbb8 100644\n--- a/tests/test_admit.py\n+++ b/tests/test_admit.py\n@@ -53,10 +53,13 @@ class AdmitTests(unittest.TestCase):\n                                    \"retry_at\": 15})\n \n     def test_retry_when_count_exceeds_limit(self):\n+        # 3 active entries, limit 2: expiring the oldest (10) at t=20 leaves\n+        # count 2, which is not strictly below limit, so the earliest time a\n+        # slot is free is the expiry of the 2nd oldest entry: 11 + 10 = 21.\n         result = dispatch({\"action\": \"admit\", \"history\": [10, 11, 12], \"now\": 15,\n                            \"window\": 10, \"limit\": 2})\n         self.assertEqual(result, {\"allowed\": False, \"history\": [10, 11, 12],\n-                                   \"retry_at\": 20})\n+                                   \"retry_at\": 21})\n \n     def test_retry_when_all_active_share_timestamp(self):\n         result = dispatch({\"action\": \"admit\", \"history\": [10, 10, 10], \"now\": 12,\n@@ -95,6 +98,22 @@ class AdmitTests(unittest.TestCase):\n             dispatch({\"action\": \"admit\", \"history\": [], \"now\": 1,\n                       \"window\": 2, \"limit\": -1})\n \n+    def test_non_integer_window_raises(self):\n+        with self.assertRaises(ValueError):\n+            dispatch({\"action\": \"admit\", \"history\": [], \"now\": 1,\n+                      \"window\": 1.5, \"limit\": 1})\n+        with self.assertRaises(ValueError):\n+            dispatch({\"action\": \"admit\", \"history\": [], \"now\": 1,\n+                      \"window\": \"3\", \"limit\": 1})\n+\n+    def test_non_integer_limit_raises(self):\n+        with self.assertRaises(ValueError):\n+            dispatch({\"action\": \"admit\", \"history\": [], \"now\": 1,\n+                      \"window\": 2, \"limit\": 1.5})\n+        with self.assertRaises(ValueError):\n+            dispatch({\"action\": \"admit\", \"history\": [], \"now\": 1,\n+                      \"window\": 2, \"limit\": \"1\"})\n+\n     def test_unsorted_history_raises(self):\n         with self.assertRaises(ValueError):\n             dispatch({\"action\": \"admit\", \"history\": [5, 3], \"now\": 10,\n@@ -127,6 +146,54 @@ class AdmitTests(unittest.TestCase):\n         self.assertEqual(payload, {\"action\": \"admit\", \"history\": [5, 3],\n                                    \"now\": 10, \"window\": 4, \"limit\": 1})\n \n+    def test_retry_normal_case_oldest_plus_window(self):\n+        # len(active) == limit: exactly one slot must free, so retry_at is\n+        # the oldest active entry's expiry.\n+        result = dispatch({\"action\": \"admit\", \"history\": [4, 10, 12], \"now\": 15,\n+                           \"window\": 10, \"limit\": 2})\n+        self.assertEqual(result, {\"allowed\": False, \"history\": [10, 12],\n+                                   \"retry_at\": 20})\n+\n+    def test_retry_with_many_excess_entries(self):\n+        # 5 active, limit 1: 5 entries must expire before count < 1.\n+        result = dispatch({\"action\": \"admit\", \"history\": [10, 11, 12, 13, 14],\n+                           \"now\": 15, \"window\": 3, \"limit\": 1})\n+        self.assertEqual(result, {\"allowed\": False, \"history\": [13, 14],\n+                                   \"retry_at\": 17})\n+\n+    def test_retry_ties_at_drop_boundary(self):\n+        # 4 active, limit 2: drop = 3 entries; the 3rd oldest is 11 (tied),\n+        # so retry_at = 11 + 5 = 16.\n+        result = dispatch({\"action\": \"admit\", \"history\": [10, 11, 11, 12],\n+                           \"now\": 12, \"window\": 5, \"limit\": 2})\n+        self.assertEqual(result, {\"allowed\": False, \"history\": [10, 11, 11, 12],\n+                                   \"retry_at\": 16})\n+\n+    def test_admitted_history_remains_nondecreasing(self):\n+        result = dispatch({\"action\": \"admit\", \"history\": [10, 12], \"now\": 12,\n+                           \"window\": 4, \"limit\": 5})\n+        self.assertEqual(result, {\"allowed\": True, \"history\": [10, 12, 12],\n+                                   \"retry_at\": None})\n+\n+    def test_empty_history_admitted(self):\n+        result = dispatch({\"action\": \"admit\", \"history\": [], \"now\": 0,\n+                           \"window\": 1, \"limit\": 1})\n+        self.assertEqual(result, {\"allowed\": True, \"history\": [0],\n+                                   \"retry_at\": None})\n+\n+    def test_window_one_boundary(self):\n+        # window=1: entry 4 is at the excluded left boundary and expires.\n+        result = dispatch({\"action\": \"admit\", \"history\": [4, 5], \"now\": 5,\n+                           \"window\": 1, \"limit\": 2})\n+        self.assertEqual(result, {\"allowed\": True, \"history\": [5, 5],\n+                                   \"retry_at\": None})\n+\n+    def test_window_one_boundary_denied(self):\n+        result = dispatch({\"action\": \"admit\", \"history\": [4, 5], \"now\": 5,\n+                           \"window\": 1, \"limit\": 1})\n+        self.assertEqual(result, {\"allowed\": False, \"history\": [5],\n+                                   \"retry_at\": 6})\n+\n     def test_existing_count_action_preserved(self):\n         self.assertEqual(dispatch({\"action\": \"count\", \"events\": [1, 2, 3]}), 3)\n \n"
+}

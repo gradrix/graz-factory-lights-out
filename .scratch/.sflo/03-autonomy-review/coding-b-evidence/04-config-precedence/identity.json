@@ -1,0 +1,15 @@
+{
+  "run": "6358245a8c27",
+  "runtime": "04c7ef6",
+  "task": "04-config-precedence",
+  "frozen_cohort_manifest_sha256": "a4fa7ffef4dc63642356e402c02174947896f9d12863ac2f2eeb828e3aa46d60",
+  "source_sha256": {
+    "README.md": "e85675331452e56f3ef15c8167fd45752683747d923e757f5b6dee361416e1a0",
+    "api.py": "b85bd9a4c337dd58be90411ee2a5752004ae94a003a60fc1d5ff88e3b77af423",
+    "cli.py": "35467a9ac35421c30d77e0f4885453a683ea53a4f5c5aac600d16bc29c9bdb08",
+    "domain.py": "a13b9385102c20645aa24a1630c875b53c24849d878380bf5c07b3a2de8d7dd1",
+    "tests/test_domain.py": "7fd7a8ea7c335678322f466b75ac10c917508983115b317d1093b440256bdce4"
+  },
+  "task_sha256": "2ea5046212a58c56af5f937a9cdf959fd3e86a654bf14abd1133061293cdffcd",
+  "private_snapshot_manifest_sha256": "27a8f4e002115f07b91c11e6160063107f7bb0ce9e5391533de8eb46a76121e2"
+}

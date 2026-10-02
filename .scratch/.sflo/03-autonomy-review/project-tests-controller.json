@@ -1,0 +1,84 @@
+{
+  "candidate": "c17821c",
+  "verification": "coordinator; no local model or fresh QA agent",
+  "source": "frozen cohort-B task02 patch",
+  "accepted_attempt": 2,
+  "review_calls": 1,
+  "attempts": [
+    {
+      "passed": false,
+      "checks": [
+        {
+          "command": [
+            "python",
+            "-B",
+            "-I",
+            "/acceptance/check.py"
+          ],
+          "exit_code": 0,
+          "timed_out": false,
+          "output": "",
+          "elapsed_s": 0.6175232250243425,
+          "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578"
+        },
+        {
+          "command": [
+            "python",
+            "-B",
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "tests"
+          ],
+          "exit_code": 1,
+          "timed_out": false,
+          "output": "...................F......\n======================================================================\nFAIL: test_retry_when_count_exceeds_limit (test_admit.AdmitTests.test_retry_when_count_exceeds_limit)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/tests/test_admit.py\", line 58, in test_retry_when_count_exceeds_limit\n    self.assertEqual(result, {\"allowed\": False, \"history\": [10, 11, 12],\nAssertionError: {'allowed': False, 'history': [10, 11, 12], 'retry_at': 21} != {'allowed': False, 'history': [10, 11, 12], 'retry_at': 20}\n- {'allowed': False, 'history': [10, 11, 12], 'retry_at': 21}\n?                                                          ^\n\n+ {'allowed': False, 'history': [10, 11, 12], 'retry_at': 20}\n?                                                          ^\n\n\n----------------------------------------------------------------------\nRan 26 tests in 0.246s\n\nFAILED (failures=1)\n",
+          "elapsed_s": 0.7181305708363652,
+          "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578"
+        }
+      ],
+      "candidate": "952d4b7b8bcd5afe6c7ee09419ee386ff98cec06e80a9ad2691a32f54ec6d00e"
+    },
+    {
+      "passed": true,
+      "checks": [
+        {
+          "command": [
+            "python",
+            "-B",
+            "-I",
+            "/acceptance/check.py"
+          ],
+          "exit_code": 0,
+          "timed_out": false,
+          "output": "",
+          "elapsed_s": 0.6175481742247939,
+          "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578"
+        },
+        {
+          "command": [
+            "python",
+            "-B",
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "tests"
+          ],
+          "exit_code": 0,
+          "timed_out": false,
+          "output": "..........................\n----------------------------------------------------------------------\nRan 26 tests in 0.242s\n\nOK\n",
+          "elapsed_s": 0.7178712650202215,
+          "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578"
+        }
+      ],
+      "review": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "candidate": "f411991458abc69399c5f36b0308cd911d7b0641c3bc1f974dfd729d38b44579"
+    }
+  ]
+}

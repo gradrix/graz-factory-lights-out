@@ -1,0 +1,30 @@
+{
+  "prepared_reference": {
+    "command": [
+      "python",
+      "-B",
+      "-c",
+      "import json\nfrom api import dispatch\n\ndef event(data, seq=1): return dict(source='a', seq=seq, data=data)\ndef check(name, events, conflict=False):\n    try:\n        result=dispatch(dict(action='ingest',watermarks={},events=events))\n        ok=not conflict\n        return dict(case=name,passed=ok,result=result)\n    except ValueError as error:\n        return dict(case=name,passed=conflict,error=str(error))\nresults=[check('equal-numeric-forms',[event(1),event(1.0)]),\n         check('bool-distinct-from-number',[event(True),event(1)],True),\n         check('large-distinct-integers',[event(10**20),event(10**20+1)],True),\n         check('sparse-sequence',[event(None,10**9)])]\nassert len(results[0].get('result',{}).get('released',[]))==1 or not results[0]['passed']\nassert results[-1]['result']['pending']==[event(None,10**9)]\nprint(json.dumps(results))\n"
+    ],
+    "exit_code": 0,
+    "timed_out": false,
+    "output": "[{\"case\": \"equal-numeric-forms\", \"passed\": true, \"result\": {\"watermarks\": {\"a\": 1}, \"released\": [{\"source\": \"a\", \"seq\": 1, \"data\": 1.0}], \"pending\": []}}, {\"case\": \"bool-distinct-from-number\", \"passed\": false, \"result\": {\"watermarks\": {\"a\": 1}, \"released\": [{\"source\": \"a\", \"seq\": 1, \"data\": 1}], \"pending\": []}}, {\"case\": \"large-distinct-integers\", \"passed\": true, \"error\": \"conflicting event\"}, {\"case\": \"sparse-sequence\", \"passed\": true, \"result\": {\"watermarks\": {\"a\": 0}, \"released\": [], \"pending\": [{\"source\": \"a\", \"seq\": 1000000000, \"data\": null}]}}]\n",
+    "elapsed_s": 0.3158670370467007,
+    "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578"
+  },
+  "frozen_candidate": {
+    "command": [
+      "python",
+      "-B",
+      "-c",
+      "import json\nfrom api import dispatch\n\ndef event(data, seq=1): return dict(source='a', seq=seq, data=data)\ndef check(name, events, conflict=False):\n    try:\n        result=dispatch(dict(action='ingest',watermarks={},events=events))\n        ok=not conflict\n        return dict(case=name,passed=ok,result=result)\n    except ValueError as error:\n        return dict(case=name,passed=conflict,error=str(error))\nresults=[check('equal-numeric-forms',[event(1),event(1.0)]),\n         check('bool-distinct-from-number',[event(True),event(1)],True),\n         check('large-distinct-integers',[event(10**20),event(10**20+1)],True),\n         check('sparse-sequence',[event(None,10**9)])]\nassert len(results[0].get('result',{}).get('released',[]))==1 or not results[0]['passed']\nassert results[-1]['result']['pending']==[event(None,10**9)]\nprint(json.dumps(results))\n"
+    ],
+    "exit_code": 0,
+    "timed_out": false,
+    "output": "[{\"case\": \"equal-numeric-forms\", \"passed\": true, \"result\": {\"watermarks\": {\"a\": 1}, \"released\": [{\"source\": \"a\", \"seq\": 1, \"data\": 1}], \"pending\": []}}, {\"case\": \"bool-distinct-from-number\", \"passed\": true, \"error\": \"conflicting data for source 'a' at seq 1\"}, {\"case\": \"large-distinct-integers\", \"passed\": true, \"error\": \"conflicting data for source 'a' at seq 1\"}, {\"case\": \"sparse-sequence\", \"passed\": true, \"result\": {\"watermarks\": {\"a\": 0}, \"released\": [], \"pending\": [{\"source\": \"a\", \"seq\": 1000000000, \"data\": null}]}}]\n",
+    "elapsed_s": 0.3157600685954094,
+    "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578"
+  },
+  "interpretation": "RFC6902 section4.6 JSON equality: same JSON type; numbers compared numerically. Supplemental interpretation probes; not frozen score changes.",
+  "source": "https://www.rfc-editor.org/rfc/rfc6902.txt"
+}

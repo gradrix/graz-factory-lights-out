@@ -1,0 +1,27 @@
+{
+  "exit": 0,
+  "stdout": "",
+  "stderr": "test_cli_success (test_domain.EncodeDecode.test_cli_success) ... ok\ntest_cli_value_error (test_domain.EncodeDecode.test_cli_value_error) ... ok\ntest_decode_basic (test_domain.EncodeDecode.test_decode_basic) ... ok\ntest_decode_duplicate_key (test_domain.EncodeDecode.test_decode_duplicate_key) ... ok\ntest_decode_empty_line (test_domain.EncodeDecode.test_decode_empty_line) ... ok\ntest_decode_empty_value (test_domain.EncodeDecode.test_decode_empty_value) ... ok\ntest_decode_first_equals_only (test_domain.EncodeDecode.test_decode_first_equals_only) ... ok\ntest_decode_invalid_key (test_domain.EncodeDecode.test_decode_invalid_key) ... ok\ntest_decode_no_equals (test_domain.EncodeDecode.test_decode_no_equals) ... ok\ntest_decode_trailing_escape (test_domain.EncodeDecode.test_decode_trailing_escape) ... ok\ntest_decode_trailing_tab (test_domain.EncodeDecode.test_decode_trailing_tab) ... ok\ntest_decode_unescapes (test_domain.EncodeDecode.test_decode_unescapes) ... ok\ntest_decode_unknown_escape (test_domain.EncodeDecode.test_decode_unknown_escape) ... ok\ntest_dispatch_routing (test_domain.EncodeDecode.test_dispatch_routing) ... ok\ntest_encode_does_not_escape_equals_or_unicode (test_domain.EncodeDecode.test_encode_does_not_escape_equals_or_unicode) ... ok\ntest_encode_empty_fields (test_domain.EncodeDecode.test_encode_empty_fields) ... ok\ntest_encode_escapes (test_domain.EncodeDecode.test_encode_escapes) ... ok\ntest_encode_invalid_key (test_domain.EncodeDecode.test_encode_invalid_key) ... ok\ntest_encode_sorted_keys (test_domain.EncodeDecode.test_encode_sorted_keys) ... ok\ntest_no_input_mutation (test_domain.EncodeDecode.test_no_input_mutation) ... ok\ntest_roundtrip (test_domain.EncodeDecode.test_roundtrip) ... ok\ntest_unknown_action (test_domain.EncodeDecode.test_unknown_action) ... ok\n\n----------------------------------------------------------------------\nRan 22 tests in 0.079s\n\nOK\n",
+  "run": "3a580376311a",
+  "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578",
+  "source_hashes": {
+    "domain.py": "a1e8c50362aee7d10e0bf2fa3a973ecdc35d2448a1e15b7dddaaf65e3565774f",
+    "cli.py": "2d7a5223f2bb9d7e07433caaee9c6982156d142f1fa485dba8c8c0e9ae038b1e",
+    "README.md": "b8ede5fc1d52e6e25d878611055748818c5b42a099f48ac9ec22d9bacc9777a9",
+    "api.py": "6595f0ba2d0bc1149e98a71abc39a3829a00c322354e7357bc447c024705ae09",
+    "tests/test_domain.py": "584383276a416e92d42b9b4391d30c6566a30d824bff09e827f81c97e687f96a"
+  },
+  "command": [
+    "python",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-v"
+  ],
+  "mount": "read-only /workspace",
+  "network": "none",
+  "gpu": "none"
+}

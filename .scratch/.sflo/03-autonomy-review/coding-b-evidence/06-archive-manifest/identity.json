@@ -1,0 +1,15 @@
+{
+  "run": "df03c8b4fc28",
+  "runtime": "04c7ef6",
+  "task": "06-archive-manifest",
+  "frozen_cohort_manifest_sha256": "a4fa7ffef4dc63642356e402c02174947896f9d12863ac2f2eeb828e3aa46d60",
+  "source_sha256": {
+    "README.md": "e2fdf40ad405c156ff6f609ccdc118b1f259f818b352de7db1b86ba7d97db3af",
+    "api.py": "9a05e986f7af322acb6e79d287f7a25c46ec24c7f86d0599349cc862e4b51a0d",
+    "cli.py": "35467a9ac35421c30d77e0f4885453a683ea53a4f5c5aac600d16bc29c9bdb08",
+    "domain.py": "0811c93d8f9a232bdab68acd980e5029da203f96669d9abcdeb42b42a4e98e53",
+    "tests/test_validate.py": "9e170fab8a525e1c464fb1c1b18042a35fa783c672bd2b4c91b4459125e1f03d"
+  },
+  "task_sha256": "356fbe94e52845a251b350915a7e63a0810f74cc61131bd48716b6808f4d3b5b",
+  "private_snapshot_manifest_sha256": "e253e5bada1295b6e02ae8b94da3a694bb23939a4a79ca55fb4aa0034470e710"
+}

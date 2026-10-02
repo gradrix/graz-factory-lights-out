@@ -1,0 +1,15 @@
+{
+  "run": "aefc008cb097",
+  "runtime": "04c7ef6",
+  "task": "12-unicode-index",
+  "frozen_cohort_manifest_sha256": "a4fa7ffef4dc63642356e402c02174947896f9d12863ac2f2eeb828e3aa46d60",
+  "source_sha256": {
+    "README.md": "f5495e4bb0a021a9ae32af9476ea2082f91d3020be40f34792b36a5e6370f102",
+    "api.py": "a04605e3ef77b836e6ded5f4c59162b6b05c826cc7a88ccf61d83fb4e026d947",
+    "cli.py": "35467a9ac35421c30d77e0f4885453a683ea53a4f5c5aac600d16bc29c9bdb08",
+    "domain.py": "ced1caaed74c2d6c4498c8e622af07baad9991f9ea8bc7d0c33f75751c5b3c87",
+    "tests/test_domain.py": "344377b2c559c35843f55937f895213e0ea9c4d29c7068e601b27cd5fa7c93f2"
+  },
+  "task_sha256": "3fcb920d77df290276679d4716355d35ce89753d1101f1954522c6c66cf43520",
+  "private_snapshot_manifest_sha256": "36048e75ef73b8e9a8856db75055cf1f5046dc265ed39dfd3555386c928187ef"
+}

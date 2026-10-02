@@ -1,0 +1,16 @@
+{
+  "run": "c38088d51d73",
+  "runtime": "04c7ef6",
+  "task": "11-event-watermarks",
+  "frozen_cohort_manifest_sha256": "a4fa7ffef4dc63642356e402c02174947896f9d12863ac2f2eeb828e3aa46d60",
+  "source_sha256": {
+    "README.md": "6da4adeb10ed8ef6277477446c196b3962f1652784c5d88f894cd283c5c526e6",
+    "api.py": "911bdbedf2a625dd220fb4ff86b66d8f2f015ad0495080208e7fa67a4d427205",
+    "cli.py": "35467a9ac35421c30d77e0f4885453a683ea53a4f5c5aac600d16bc29c9bdb08",
+    "domain.py": "c3810ccce6c986aa1bc9d25f42ca0c2c2265530b60a4494c2d3556ca94f503ec",
+    "tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests/test_ingest.py": "3d8720de5d4293e2d7c7810a04809ed94835b504fbf5160b816b38255c23e384"
+  },
+  "task_sha256": "d4dc7ea94efc1123bb58b5b082c68c14a75947a9777e5e0e2e67b3ce7e6fb3e5",
+  "private_snapshot_manifest_sha256": "523068d29e15337f816bca509d08d4ff5548fb0c596ed6000a1c1661fff43402"
+}

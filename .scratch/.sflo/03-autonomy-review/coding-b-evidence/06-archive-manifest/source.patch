@@ -1,0 +1,248 @@
+--- a/README.md
++++ b/README.md
+@@ -1,3 +1,40 @@
+-# Existing JSON utility
++# Existing JSON Utility
+ 
+-Use `python cli.py` with one JSON object on stdin. Existing action: sizes. Domain functions accept the payload object; api.dispatch routes it. CLI reports ValueError/KeyError with stderr and exit 2.
++Use `python cli.py` with one JSON object on stdin; one JSON result is printed on
++stdout. Domain functions accept the payload object; `api.dispatch` routes it.
++The CLI reports `ValueError`/`KeyError` messages on stderr with exit code 2
++(no traceback); success prints JSON and exits 0. Input payloads are never
++mutated, including rejected ones.
++
++## Actions
++
++- `sizes` — payload `{action, entries}`; returns the sum of entry sizes.
++- `validate` — payload `{action, entries, max_total}` where `entries` is a list
++  of `{path: string, size: integer}` and `max_total` is a nonnegative integer.
++  Validates an archive manifest without touching the filesystem.
++
++### validate rules
++
++Paths use POSIX `/` separators. A path is rejected when it is empty, starts
++with `/`, contains a backslash, a NUL, a colon anywhere, or an `..` segment.
++`.` and empty segments are dropped while normalizing; at least one real
++segment must remain. Duplicate normalized paths are rejected, as are
++file/directory conflicts: no normalized path may be a whole-segment ancestor
++of another (all entries describe files; `ab` under `a` is fine, `a/b` is not).
++Negative `size` or negative `max_total` are rejected, as is a total size
++greater than `max_total` (equality is allowed).
++
++On success returns `{files: [{path: normalized, size: original size}] sorted
++lexicographically by normalized path, total: sum}`.
++
++### Examples
++
++    echo '{"action":"validate","entries":[{"path":"a//./b/","size":1},{"path":"c","size":2}],"max_total":3}' | python cli.py
++    # {"files": [{"path": "a/b", "size": 1}, {"path": "c", "size": 2}], "total": 3}
++
++    echo '{"action":"validate","entries":[{"path":"a","size":1},{"path":"a/b","size":2}],"max_total":3}' | python cli.py
++    # exit 2, stderr: file/directory conflict: a is an ancestor of a/b
++
++Regression tests live in `tests/test_validate.py`
++(`python -m unittest tests/test_validate.py` from the project root, or run the
++file directly).
+--- a/api.py
++++ b/api.py
+@@ -1,7 +1,7 @@
+ import domain
+ 
+ def dispatch(payload):
+-    actions={'sizes':domain.sizes}
++    actions={'sizes':domain.sizes,'validate':domain.validate}
+     action=payload["action"]
+     if action not in actions:raise ValueError("unknown action: "+str(action))
+     return actions[action](payload)
+--- a/domain.py
++++ b/domain.py
+@@ -1,2 +1,48 @@
++import json
++
+ def sizes(payload):
+     return sum(entry['size'] for entry in payload['entries'])
++
++def _normalize_path(path):
++    """Normalize a POSIX-style manifest path.
++
++    Returns the normalized path (segments joined with '/'), or None when the
++    path is invalid: empty, leading '/', backslash, NUL, an '..' segment, or
++    a colon anywhere. '.' and empty segments are ignored while normalizing;
++    at least one real segment must remain.
++    """
++    if not path or path[0] == '/' or '\\' in path or '\x00' in path or ':' in path:
++        return None
++    segments = [segment for segment in path.split('/') if segment and segment != '.']
++    if not segments or any(segment == '..' for segment in segments):
++        return None
++    return '/'.join(segments)
++
++def validate(payload):
++    entries = payload['entries']
++    max_total = payload['max_total']
++    if max_total < 0:
++        raise ValueError("max_total must be nonnegative")
++    normalized_sizes = {}
++    total = 0
++    for entry in entries:
++        path = entry['path']
++        size = entry['size']
++        if size < 0:
++            raise ValueError("size must be nonnegative")
++        normalized = _normalize_path(path)
++        if normalized is None:
++            raise ValueError("invalid path: " + repr(path))
++        if normalized in normalized_sizes:
++            raise ValueError("duplicate path: " + normalized)
++        normalized_sizes[normalized] = size
++        total += size
++    for normalized in normalized_sizes:
++        prefix = normalized + '/'
++        for other in normalized_sizes:
++            if other != normalized and other.startswith(prefix):
++                raise ValueError("file/directory conflict: " + normalized + " is an ancestor of " + other)
++    if total > max_total:
++        raise ValueError("total size " + str(total) + " exceeds max_total " + str(max_total))
++    files = [{'path': path, 'size': normalized_sizes[path]} for path in sorted(normalized_sizes)]
++    return {'files': files, 'total': total}
+--- /dev/null
++++ b/tests/test_validate.py
+@@ -0,0 +1,138 @@
++import json
++import os
++import unittest
++
++import os
++import sys
++
++sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
++
++import api
++
++
++def dispatch(payload):
++    return api.dispatch(payload)
++
++
++class ValidateTests(unittest.TestCase):
++
++    def test_success_sorted_and_normalized(self):
++        payload = {'action': 'validate',
++                   'entries': [{'path': 'c', 'size': 2},
++                               {'path': 'a//./b/', 'size': 1},
++                               {'path': 'a/b2', 'size': 3}],
++                   'max_total': 6}
++        result = dispatch(payload)
++        self.assertEqual(result, {'files': [{'path': 'a/b', 'size': 1},
++                                            {'path': 'a/b2', 'size': 3},
++                                            {'path': 'c', 'size': 2}],
++                                  'total': 6})
++
++    def test_equality_allowed(self):
++        payload = {'action': 'validate',
++                   'entries': [{'path': 'a/b', 'size': 1}],
++                   'max_total': 1}
++        self.assertEqual(dispatch(payload), {'files': [{'path': 'a/b', 'size': 1}], 'total': 1})
++
++    def test_total_exceeds_max_total(self):
++        with self.assertRaises(ValueError):
++            dispatch({'action': 'validate',
++                      'entries': [{'path': 'a/b', 'size': 1}],
++                      'max_total': 0})
++
++    def test_negative_size(self):
++        with self.assertRaises(ValueError):
++            dispatch({'action': 'validate',
++                      'entries': [{'path': 'a', 'size': -1}],
++                      'max_total': 0})
++
++    def test_negative_max_total(self):
++        with self.assertRaises(ValueError):
++            dispatch({'action': 'validate', 'entries': [], 'max_total': -1})
++
++    def test_empty_entries(self):
++        self.assertEqual(dispatch({'action': 'validate', 'entries': [], 'max_total': 0}),
++                         {'files': [], 'total': 0})
++
++    def test_invalid_paths(self):
++        for path in ['', '/', '/a', 'a\\b', 'a:b', 'a\x00b', '..', 'a/../b',
++                     './', '//', 'a/..', 'x/..y/..']:
++            with self.assertRaises(ValueError):
++                dispatch({'action': 'validate',
++                          'entries': [{'path': path, 'size': 1}],
++                          'max_total': 1})
++
++    def test_dot_segments_ignored(self):
++        self.assertEqual(dispatch({'action': 'validate',
++                                    'entries': [{'path': './a/./b/', 'size': 1}],
++                                    'max_total': 1}),
++                         {'files': [{'path': 'a/b', 'size': 1}], 'total': 1})
++
++    def test_duplicate_normalized_paths(self):
++        with self.assertRaises(ValueError):
++            dispatch({'action': 'validate',
++                      'entries': [{'path': 'a/b', 'size': 1},
++                                  {'path': './a//b', 'size': 2}],
++                      'max_total': 3})
++
++    def test_ancestor_conflict(self):
++        with self.assertRaises(ValueError):
++            dispatch({'action': 'validate',
++                      'entries': [{'path': 'a/b', 'size': 1},
++                                  {'path': 'a', 'size': 2}],
++                      'max_total': 3})
++
++    def test_ancestor_conflict_either_order(self):
++        with self.assertRaises(ValueError):
++            dispatch({'action': 'validate',
++                      'entries': [{'path': 'a', 'size': 1},
++                                  {'path': 'a/b', 'size': 2}],
++                      'max_total': 3})
++
++    def test_prefix_but_not_whole_segment_ok(self):
++        result = dispatch({'action': 'validate',
++                           'entries': [{'path': 'a', 'size': 1},
++                                       {'path': 'ab', 'size': 2}],
++                           'max_total': 3})
++        self.assertEqual(result, {'files': [{'path': 'a', 'size': 1},
++                                            {'path': 'ab', 'size': 2}],
++                                  'total': 3})
++
++    def test_sizes_preserved(self):
++        payload = {'action': 'validate',
++                   'entries': [{'path': 'a', 'size': 123456789012345}],
++                   'max_total': 123456789012345}
++        self.assertEqual(dispatch(payload),
++                         {'files': [{'path': 'a', 'size': 123456789012345}],
++                          'total': 123456789012345})
++
++    def test_input_not_mutated(self):
++        payload = {'action': 'validate',
++                   'entries': [{'path': 'a/b', 'size': 1}],
++                   'max_total': 3}
++        snapshot = json.dumps(payload, sort_keys=True)
++        dispatch(payload)
++        self.assertEqual(json.dumps(payload, sort_keys=True), snapshot)
++
++    def test_rejected_input_not_mutated(self):
++        payload = {'action': 'validate',
++                   'entries': [{'path': 'a', 'size': 1},
++                               {'path': 'a', 'size': 2}],
++                   'max_total': 3}
++        snapshot = json.dumps(payload, sort_keys=True)
++        with self.assertRaises(ValueError):
++            dispatch(payload)
++        self.assertEqual(json.dumps(payload, sort_keys=True), snapshot)
++
++    def test_existing_sizes_action(self):
++        self.assertEqual(dispatch({'action': 'sizes',
++                                    'entries': [{'path': 'x', 'size': 5},
++                                                {'path': 'y', 'size': 2}]}), 7)
++
++    def test_unknown_action(self):
++        with self.assertRaises(ValueError):
++            dispatch({'action': 'bogus', 'entries': [], 'max_total': 0})
++
++
++if __name__ == '__main__':
++    unittest.main()

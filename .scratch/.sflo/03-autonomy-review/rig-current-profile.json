@@ -1,0 +1,7 @@
+{
+  "ready": true,
+  "endpoint": "http://127.0.0.1:18000",
+  "model": "flash-next-coder",
+  "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578",
+  "context": 131072
+}

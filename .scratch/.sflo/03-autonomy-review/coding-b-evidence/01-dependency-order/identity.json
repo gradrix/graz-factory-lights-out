@@ -1,0 +1,15 @@
+{
+  "run": "541053c47a7a",
+  "runtime": "04c7ef6",
+  "task": "01-dependency-order",
+  "frozen_cohort_manifest_sha256": "a4fa7ffef4dc63642356e402c02174947896f9d12863ac2f2eeb828e3aa46d60",
+  "source_sha256": {
+    "README.md": "fe65534e28e52d69782b556bd2074893b00fd38678031e27e97cc5c8c1a5f67c",
+    "api.py": "60be931ed730ee7022743110f54fa98e53a9fe8b1531d791a465f12d0bbc5de4",
+    "cli.py": "35467a9ac35421c30d77e0f4885453a683ea53a4f5c5aac600d16bc29c9bdb08",
+    "domain.py": "9ad290866f420705ceba39604d999f3634d832013ada4269c9c72e7d79812b47",
+    "tests/test_domain.py": "c6e416e1f6053877511ef51e5ac1781ede815a4c0c4f1bbea9df7d9e5759aa76"
+  },
+  "task_sha256": "1766b6017956255234e8b740b699578b33e0f61c8205cb11eba066c57cf25dcf",
+  "private_snapshot_manifest_sha256": "ba829da2a9184283c25d12cd7cc3dd39e4b6a8920f68305443783551966fd770"
+}

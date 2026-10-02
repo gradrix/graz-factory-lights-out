@@ -1,0 +1,299 @@
+--- a/README.md
++++ b/README.md
+@@ -1,3 +1,24 @@
+ # Existing JSON utility
+ 
+-Use `python cli.py` with one JSON object on stdin. Existing action: keys. Domain functions accept the payload object; api.dispatch routes it. CLI reports ValueError/KeyError with stderr and exit 2.
++Use `python cli.py` with one JSON object on stdin. Domain functions accept the payload object; api.dispatch routes it. CLI reports ValueError/KeyError with stderr and exit 2.
++
++## Actions
++
++### keys
++Payload: `{"action": "keys", "config": {...}}` — returns sorted keys of `config`.
++
++### resolve
++Payload: `{"action": "resolve", "defaults": {...}, "layers": [{...}, ...], "required": ["k", ...]}`
++
++- Start with `defaults` and merge each layer in order; later values win.
++- When old and new values are both objects, merge recursively; arrays and scalars replace entirely.
++- A `null` value in a layer deletes that key if present (at any depth); deleting an absent key is a no-op. Nulls already present in `defaults` survive unless a layer overrides or deletes them. An object introduced where no old object exists is merged against an empty object, so its nested nulls only delete.
++- Returns the resolved object. Raises `ValueError` if any `required` top-level key is absent afterwards; a present `null` counts as present.
++- Inputs are never mutated.
++
++Example:
++
++```
++$ echo '{"action":"resolve","defaults":{"cfg":{"x":1,"y":2}},"layers":[{"cfg":{"y":20,"drop":null}}],"required":["cfg"]}' | python cli.py
++{"cfg": {"x": 1, "y": 20}}
++```
+--- a/api.py
++++ b/api.py
+@@ -1,7 +1,7 @@
+ import domain
+ 
+ def dispatch(payload):
+-    actions={'keys':domain.keys}
++    actions={'keys':domain.keys,'resolve':domain.resolve}
+     action=payload["action"]
+     if action not in actions:raise ValueError("unknown action: "+str(action))
+     return actions[action](payload)
+--- a/domain.py
++++ b/domain.py
+@@ -1,2 +1,44 @@
++import copy
++
+ def keys(payload):
+     return sorted(payload['config'])
++
++
++def _merge(old, new):
++    """Recursively merge layer `new` into base `old`, returning a new object.
++
++    Objects merge recursively; arrays and scalars replace entirely. A null
++    in a layer deletes the key if present (at any depth); deleting an absent
++    key is a no-op. Nulls already present in the base survive unless a layer
++    overrides or deletes them. Objects introduced where no old object exists
++    are built against an empty object, so their nested nulls only delete.
++    Inputs are never mutated.
++    """
++    if not isinstance(new, dict):
++        return copy.deepcopy(new)
++    base = old if isinstance(old, dict) else {}
++    result = {}
++    for key, value in base.items():
++        if key in new:
++            layer_value = new[key]
++            if layer_value is None:
++                continue  # null in layer deletes the key
++            result[key] = _merge(value, layer_value)
++        else:
++            result[key] = value
++    for key, value in new.items():
++        if key not in base:
++            if value is None:
++                continue  # deleting an absent key is a no-op
++            result[key] = _merge({}, value) if isinstance(value, dict) else copy.deepcopy(value)
++    return result
++
++
++def resolve(payload):
++    result = copy.deepcopy(payload['defaults'])
++    for layer in payload['layers']:
++        result = _merge(result, layer)
++    for key in payload['required']:
++        if key not in result:
++            raise ValueError("missing required key: " + str(key))
++    return result
+--- /dev/null
++++ b/tests/test_domain.py
+@@ -0,0 +1,210 @@
++import json
++import os
++import subprocess
++import sys
++import unittest
++
++ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
++sys.path.insert(0, ROOT)
++import api
++import domain
++
++class TestResolve(unittest.TestCase):
++    def test_later_layers_win(self):
++        payload = {
++            "action": "resolve",
++            "defaults": {"a": 1, "b": 2},
++            "layers": [{"b": 3}, {"a": 10}],
++            "required": ["a", "b"],
++        }
++        self.assertEqual(domain.resolve(payload), {"a": 10, "b": 3})
++
++    def test_recursive_object_merge(self):
++        payload = {
++            "action": "resolve",
++            "defaults": {"cfg": {"x": 1, "y": 2}},
++            "layers": [{"cfg": {"y": 20, "z": 3}}],
++            "required": ["cfg"],
++        }
++        self.assertEqual(
++            domain.resolve(payload),
++            {"cfg": {"x": 1, "y": 20, "z": 3}},
++        )
++
++    def test_arrays_and_scalars_replace_entirely(self):
++        payload = {
++            "action": "resolve",
++            "defaults": {"list": [1, 2, 3], "deep": {"a": {"b": 1}}},
++            "layers": [{"list": [9], "deep": {"a": [7]}}],
++            "required": [],
++        }
++        self.assertEqual(
++            domain.resolve(payload),
++            {"list": [9], "deep": {"a": [7]}},
++        )
++
++    def test_null_deletes_present_key(self):
++        payload = {
++            "action": "resolve",
++            "defaults": {"a": 1, "b": 2},
++            "layers": [{"a": None}],
++            "required": ["b"],
++        }
++        self.assertEqual(domain.resolve(payload), {"b": 2})
++
++    def test_null_deletion_at_nested_depth(self):
++        payload = {
++            "action": "resolve",
++            "defaults": {"cfg": {"x": 1, "y": {"m": 1, "n": 2}}},
++            "layers": [{"cfg": {"y": {"m": None}}}],
++            "required": ["cfg"],
++        }
++        self.assertEqual(
++            domain.resolve(payload),
++            {"cfg": {"x": 1, "y": {"n": 2}}},
++        )
++
++    def test_deleting_absent_key_is_noop(self):
++        payload = {
++            "action": "resolve",
++            "defaults": {},
++            "layers": [{"missing": None}, {"a": {"b": None}}],
++            "required": [],
++        }
++        # "missing" deletion is a no-op; "a" is introduced as an object
++        # merged against an empty object, so its nested null deletes
++        # nothing and leaves an empty object behind.
++        self.assertEqual(domain.resolve(payload), {"a": {}})
++
++    def test_nested_nulls_apply_against_empty_object(self):
++        payload = {
++            "action": "resolve",
++            "defaults": {},
++            "layers": [{"cfg": {"keep": 1, "drop": None}}],
++            "required": ["cfg"],
++        }
++        self.assertEqual(domain.resolve(payload), {"cfg": {"keep": 1}})
++
++    def test_nulls_in_defaults_survive(self):
++        payload = {
++            "action": "resolve",
++            "defaults": {"a": None, "cfg": {"x": None}},
++            "layers": [{"cfg": {"y": 1}}],
++            "required": ["a", "cfg"],
++        }
++        self.assertEqual(
++            domain.resolve(payload),
++            {"a": None, "cfg": {"x": None, "y": 1}},
++        )
++
++    def test_null_override_then_replacement(self):
++        payload = {
++            "action": "resolve",
++            "defaults": {"a": 1},
++            "layers": [{"a": None}, {"a": 5}],
++            "required": ["a"],
++        }
++        self.assertEqual(domain.resolve(payload), {"a": 5})
++
++    def test_required_present_null_counts(self):
++        payload = {
++            "action": "resolve",
++            "defaults": {"a": None},
++            "layers": [],
++            "required": ["a"],
++        }
++        self.assertEqual(domain.resolve(payload), {"a": None})
++
++    def test_required_absent_raises(self):
++        payload = {
++            "action": "resolve",
++            "defaults": {"a": 1},
++            "layers": [{"a": None}],
++            "required": ["a"],
++        }
++        with self.assertRaises(ValueError):
++            domain.resolve(payload)
++
++    def test_input_not_mutated(self):
++        defaults = {"cfg": {"x": 1}}
++        layer = {"cfg": {"y": 2, "drop": None}, "gone": None}
++        payload = {
++            "action": "resolve",
++            "defaults": defaults,
++            "layers": [layer],
++            "required": ["cfg"],
++        }
++        result = domain.resolve(payload)
++        self.assertEqual(result, {"cfg": {"x": 1, "y": 2}})
++        self.assertEqual(defaults, {"cfg": {"x": 1}})
++        self.assertEqual(layer, {"cfg": {"y": 2, "drop": None}, "gone": None})
++        bad = {
++            "action": "resolve",
++            "defaults": {"a": 1},
++            "layers": [{"a": None}],
++            "required": ["a"],
++        }
++        try:
++            domain.resolve(bad)
++        except ValueError:
++            pass
++        self.assertEqual(bad["defaults"], {"a": 1})
++        self.assertEqual(bad["layers"], [{"a": None}])
++
++    def test_dispatch_routing(self):
++        payload = {
++            "action": "resolve",
++            "defaults": {"a": 1},
++            "layers": [{"b": 2}],
++            "required": ["a", "b"],
++        }
++        self.assertEqual(api.dispatch(payload), {"a": 1, "b": 2})
++
++    def test_unknown_action_still_raises(self):
++        with self.assertRaises(ValueError):
++            api.dispatch({"action": "nope"})
++
++    def test_existing_keys_action_preserved(self):
++        self.assertEqual(
++            api.dispatch({"action": "keys", "config": {"b": 1, "a": 2}}),
++            ["a", "b"],
++        )
++
++    def test_cli_success(self):
++        payload = {
++            "action": "resolve",
++            "defaults": {"cfg": {"x": 1}},
++            "layers": [{"cfg": {"x": 2, "drop": None}}],
++            "required": ["cfg"],
++        }
++        proc = subprocess.run(
++            [sys.executable, "-B", os.path.join(ROOT, "cli.py")],
++            input=json.dumps(payload),
++            capture_output=True,
++            text=True,
++        )
++        self.assertEqual(proc.returncode, 0)
++        self.assertEqual(proc.stderr, "")
++        self.assertEqual(json.loads(proc.stdout), {"cfg": {"x": 2}})
++
++    def test_cli_value_error_exit_2(self):
++        payload = {
++            "action": "resolve",
++            "defaults": {},
++            "layers": [],
++            "required": ["missing"],
++        }
++        proc = subprocess.run(
++            [sys.executable, "-B", os.path.join(ROOT, "cli.py")],
++            input=json.dumps(payload),
++            capture_output=True,
++            text=True,
++        )
++        self.assertEqual(proc.returncode, 2)
++        self.assertNotEqual(proc.stderr.strip(), "")
++        self.assertNotIn("Traceback", proc.stderr)
++        self.assertEqual(proc.stdout, "")
++
++
++if __name__ == "__main__":
++    unittest.main()

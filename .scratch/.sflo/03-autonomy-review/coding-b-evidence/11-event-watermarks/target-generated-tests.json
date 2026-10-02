@@ -1,0 +1,28 @@
+{
+  "exit": 0,
+  "stdout": "",
+  "stderr": "test_basic_release (test_ingest.IngestTests.test_basic_release) ... ok\ntest_bool_not_conflated_with_number (test_ingest.IngestTests.test_bool_not_conflated_with_number) ... ok\ntest_cli_success (test_ingest.IngestTests.test_cli_success) ... ok\ntest_cli_valueerror_exit_2 (test_ingest.IngestTests.test_cli_valueerror_exit_2) ... ok\ntest_conflicting_data_raises (test_ingest.IngestTests.test_conflicting_data_raises) ... ok\ntest_conflicts_among_ignored_events_do_not_matter (test_ingest.IngestTests.test_conflicts_among_ignored_events_do_not_matter) ... ok\ntest_duplicate_identical_data_accepted (test_ingest.IngestTests.test_duplicate_identical_data_accepted) ... ok\ntest_existing_sources_action_preserved (test_ingest.IngestTests.test_existing_sources_action_preserved) ... ok\ntest_gap_retains_later_events (test_ingest.IngestTests.test_gap_retains_later_events) ... ok\ntest_huge_seq_contiguous_run_released (test_ingest.IngestTests.test_huge_seq_contiguous_run_released) ... ok\ntest_huge_seq_no_gap_iteration_blowup (test_ingest.IngestTests.test_huge_seq_no_gap_iteration_blowup) ... ok\ntest_input_not_mutated (test_ingest.IngestTests.test_input_not_mutated) ... ok\ntest_large_int_nested_conflict (test_ingest.IngestTests.test_large_int_nested_conflict) ... ok\ntest_large_ints_are_distinct_not_duplicates (test_ingest.IngestTests.test_large_ints_are_distinct_not_duplicates) ... ok\ntest_missing_source_starts_at_zero (test_ingest.IngestTests.test_missing_source_starts_at_zero) ... ok\ntest_numeric_equality_nested (test_ingest.IngestTests.test_numeric_equality_nested) ... ok\ntest_numeric_json_equality_duplicate (test_ingest.IngestTests.test_numeric_json_equality_duplicate) ... ok\ntest_sorting_by_source_then_seq (test_ingest.IngestTests.test_sorting_by_source_then_seq) ... ok\ntest_unknown_action_raises (test_ingest.IngestTests.test_unknown_action_raises) ... ok\ntest_watermarks_retain_original_sources (test_ingest.IngestTests.test_watermarks_retain_original_sources) ... ok\n\n----------------------------------------------------------------------\nRan 20 tests in 0.091s\n\nOK\n",
+  "run": "c38088d51d73",
+  "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578",
+  "source_hashes": {
+    "domain.py": "c3810ccce6c986aa1bc9d25f42ca0c2c2265530b60a4494c2d3556ca94f503ec",
+    "cli.py": "35467a9ac35421c30d77e0f4885453a683ea53a4f5c5aac600d16bc29c9bdb08",
+    "README.md": "6da4adeb10ed8ef6277477446c196b3962f1652784c5d88f894cd283c5c526e6",
+    "api.py": "911bdbedf2a625dd220fb4ff86b66d8f2f015ad0495080208e7fa67a4d427205",
+    "tests/test_ingest.py": "3d8720de5d4293e2d7c7810a04809ed94835b504fbf5160b816b38255c23e384",
+    "tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "command": [
+    "python",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-v"
+  ],
+  "mount": "read-only /workspace",
+  "network": "none",
+  "gpu": "none"
+}

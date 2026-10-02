@@ -1,0 +1,27 @@
+{
+  "exit": 0,
+  "stdout": "",
+  "stderr": "test_cli_error_exit_2_with_stderr_and_no_traceback (test_domain.OrderTest.test_cli_error_exit_2_with_stderr_and_no_traceback) ... ok\ntest_cli_success (test_domain.OrderTest.test_cli_success) ... ok\ntest_cli_utf8_labels (test_domain.OrderTest.test_cli_utf8_labels) ... ok\ntest_cycle_beside_ready_nodes_raises (test_domain.OrderTest.test_cycle_beside_ready_nodes_raises) ... ok\ntest_cycle_raises (test_domain.OrderTest.test_cycle_raises) ... ok\ntest_dependencies_placed_before_dependents (test_domain.OrderTest.test_dependencies_placed_before_dependents) ... ok\ntest_dispatch_routes_order (test_domain.OrderTest.test_dispatch_routes_order) ... ok\ntest_duplicate_id_raises (test_domain.OrderTest.test_duplicate_id_raises) ... ok\ntest_eligible_ties_follow_input_order (test_domain.OrderTest.test_eligible_ties_follow_input_order) ... ok\ntest_empty_nodes_returns_empty_list (test_domain.OrderTest.test_empty_nodes_returns_empty_list) ... ok\ntest_labels_still_ignores_deps_and_errors (test_domain.OrderTest.test_labels_still_ignores_deps_and_errors) ... ok\ntest_labels_unchanged (test_domain.OrderTest.test_labels_unchanged) ... ok\ntest_never_mutates_accepted_input (test_domain.OrderTest.test_never_mutates_accepted_input) ... ok\ntest_never_mutates_rejected_duplicate_input (test_domain.OrderTest.test_never_mutates_rejected_duplicate_input) ... ok\ntest_never_mutates_rejected_input (test_domain.OrderTest.test_never_mutates_rejected_input) ... ok\ntest_never_mutates_rejected_unknown_input (test_domain.OrderTest.test_never_mutates_rejected_unknown_input) ... ok\ntest_newly_eligible_earlier_node_outranks_later_eligible (test_domain.OrderTest.test_newly_eligible_earlier_node_outranks_later_eligible) ... ok\ntest_repeated_dependency_counts_as_one_edge (test_domain.OrderTest.test_repeated_dependency_counts_as_one_edge) ... ok\ntest_repeated_dependency_does_not_hide_cycle (test_domain.OrderTest.test_repeated_dependency_does_not_hide_cycle) ... ok\ntest_result_is_a_fresh_list (test_domain.OrderTest.test_result_is_a_fresh_list) ... ok\ntest_self_dependency_is_cycle (test_domain.OrderTest.test_self_dependency_is_cycle) ... ok\ntest_single_node (test_domain.OrderTest.test_single_node) ... ok\ntest_two_independent_chains (test_domain.OrderTest.test_two_independent_chains) ... ok\ntest_unknown_action_still_raises (test_domain.OrderTest.test_unknown_action_still_raises) ... ok\ntest_unknown_dependency_raises (test_domain.OrderTest.test_unknown_dependency_raises) ... ok\ntest_unknown_dependency_raises_even_when_cycle_present (test_domain.OrderTest.test_unknown_dependency_raises_even_when_cycle_present) ... ok\n\n----------------------------------------------------------------------\nRan 26 tests in 0.109s\n\nOK\n",
+  "run": "541053c47a7a",
+  "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578",
+  "source_hashes": {
+    "domain.py": "9ad290866f420705ceba39604d999f3634d832013ada4269c9c72e7d79812b47",
+    "cli.py": "35467a9ac35421c30d77e0f4885453a683ea53a4f5c5aac600d16bc29c9bdb08",
+    "README.md": "fe65534e28e52d69782b556bd2074893b00fd38678031e27e97cc5c8c1a5f67c",
+    "api.py": "60be931ed730ee7022743110f54fa98e53a9fe8b1531d791a465f12d0bbc5de4",
+    "tests/test_domain.py": "c6e416e1f6053877511ef51e5ac1781ede815a4c0c4f1bbea9df7d9e5759aa76"
+  },
+  "command": [
+    "python",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-v"
+  ],
+  "mount": "read-only /workspace",
+  "network": "none",
+  "gpu": "none"
+}

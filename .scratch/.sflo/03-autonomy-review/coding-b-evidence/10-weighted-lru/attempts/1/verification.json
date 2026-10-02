@@ -1,0 +1,19 @@
+{
+  "passed": false,
+  "checks": [
+    {
+      "command": [
+        "python",
+        "-B",
+        "-I",
+        "/acceptance/check.py"
+      ],
+      "exit_code": 1,
+      "timed_out": false,
+      "output": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 37, in <module>\n    r=call('cache',capacity=5,operations=[put('a',2,1),put('b',2,2),get('a'),put('c',3,3),get('b')])\n      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/acceptance/check.py\", line 8, in call\n    result=dispatch(p)\n           ^^^^^^^^^^^\n  File \"/workspace/api.py\", line 6, in dispatch\n    if action not in actions:raise ValueError(\"unknown action: \"+str(action))\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: unknown action: cache\n",
+      "elapsed_s": 0.5175864119955804,
+      "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578"
+    }
+  ],
+  "candidate": "998ee7b017f139ce349444abb5befea119d95d0b6abbe45c5d09f933414a7f37"
+}

@@ -1,0 +1,27 @@
+{
+  "exit": 0,
+  "stdout": "",
+  "stderr": "test_arrays_and_scalars_replace_entirely (test_domain.TestResolve.test_arrays_and_scalars_replace_entirely) ... ok\ntest_cli_success (test_domain.TestResolve.test_cli_success) ... ok\ntest_cli_value_error_exit_2 (test_domain.TestResolve.test_cli_value_error_exit_2) ... ok\ntest_deleting_absent_key_is_noop (test_domain.TestResolve.test_deleting_absent_key_is_noop) ... ok\ntest_dispatch_routing (test_domain.TestResolve.test_dispatch_routing) ... ok\ntest_existing_keys_action_preserved (test_domain.TestResolve.test_existing_keys_action_preserved) ... ok\ntest_input_not_mutated (test_domain.TestResolve.test_input_not_mutated) ... ok\ntest_later_layers_win (test_domain.TestResolve.test_later_layers_win) ... ok\ntest_nested_nulls_apply_against_empty_object (test_domain.TestResolve.test_nested_nulls_apply_against_empty_object) ... ok\ntest_null_deletes_present_key (test_domain.TestResolve.test_null_deletes_present_key) ... ok\ntest_null_deletion_at_nested_depth (test_domain.TestResolve.test_null_deletion_at_nested_depth) ... ok\ntest_null_override_then_replacement (test_domain.TestResolve.test_null_override_then_replacement) ... ok\ntest_nulls_in_defaults_survive (test_domain.TestResolve.test_nulls_in_defaults_survive) ... ok\ntest_recursive_object_merge (test_domain.TestResolve.test_recursive_object_merge) ... ok\ntest_required_absent_raises (test_domain.TestResolve.test_required_absent_raises) ... ok\ntest_required_present_null_counts (test_domain.TestResolve.test_required_present_null_counts) ... ok\ntest_unknown_action_still_raises (test_domain.TestResolve.test_unknown_action_still_raises) ... ok\n\n----------------------------------------------------------------------\nRan 17 tests in 0.084s\n\nOK\n",
+  "run": "6358245a8c27",
+  "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578",
+  "source_hashes": {
+    "domain.py": "a13b9385102c20645aa24a1630c875b53c24849d878380bf5c07b3a2de8d7dd1",
+    "cli.py": "35467a9ac35421c30d77e0f4885453a683ea53a4f5c5aac600d16bc29c9bdb08",
+    "README.md": "e85675331452e56f3ef15c8167fd45752683747d923e757f5b6dee361416e1a0",
+    "api.py": "b85bd9a4c337dd58be90411ee2a5752004ae94a003a60fc1d5ff88e3b77af423",
+    "tests/test_domain.py": "7fd7a8ea7c335678322f466b75ac10c917508983115b317d1093b440256bdce4"
+  },
+  "command": [
+    "python",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-v"
+  ],
+  "mount": "read-only /workspace",
+  "network": "none",
+  "gpu": "none"
+}

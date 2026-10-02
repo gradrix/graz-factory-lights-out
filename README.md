@@ -49,11 +49,11 @@ python3 -m gflo resume RUN_ID
 
 An interrupted attempt consumes its attempt allowance; resume keeps its files and passes interruption evidence to the next attempt. A saved completed verdict can be reconciled without repeating the worker. Exhausted runs stop; revise the task deliberately and start a new run. Modified accepted artifacts are reported as invalidated.
 
-Exit codes: `0` accepted/read-only command success, `2` exhausted, `1` configuration/runtime failure, `130` interruption. Run ID and evidence directory print before execution; status works without the model.
+Exit codes: `0` accepted/read-only command success, `2` not accepted (including exhausted or needs-input), `1` configuration/runtime failure, `130` interruption. Run ID and evidence directory print before execution; status works without the model.
 
 ## Inspect the result
 
-`.gflo/runs/RUN_ID/` contains the frozen task, acceptance files, candidate workspace, per-attempt conversation and verification results, and `change.patch`. Acceptance means the configured checks passed for that candidate; it does not certify requirements the checks never exercised.
+`.gflo/runs/RUN_ID/` contains the frozen task, acceptance files, candidate workspace, per-attempt conversation and verification results, and `change.patch`. New CLI runs require the configured checks, discovered Python regression tests and a fresh local review to pass. Acceptance remains limited by the quality of those checks and review; inspect the qualification evidence before relying on unattended results.
 
 Review the patch before applying it to the source repository at the recorded base commit:
 

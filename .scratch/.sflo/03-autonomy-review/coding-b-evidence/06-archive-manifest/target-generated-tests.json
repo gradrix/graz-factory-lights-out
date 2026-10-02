@@ -1,0 +1,27 @@
+{
+  "exit": 0,
+  "stdout": "",
+  "stderr": "test_ancestor_conflict (test_validate.ValidateTests.test_ancestor_conflict) ... ok\ntest_ancestor_conflict_either_order (test_validate.ValidateTests.test_ancestor_conflict_either_order) ... ok\ntest_dot_segments_ignored (test_validate.ValidateTests.test_dot_segments_ignored) ... ok\ntest_duplicate_normalized_paths (test_validate.ValidateTests.test_duplicate_normalized_paths) ... ok\ntest_empty_entries (test_validate.ValidateTests.test_empty_entries) ... ok\ntest_equality_allowed (test_validate.ValidateTests.test_equality_allowed) ... ok\ntest_existing_sizes_action (test_validate.ValidateTests.test_existing_sizes_action) ... ok\ntest_input_not_mutated (test_validate.ValidateTests.test_input_not_mutated) ... ok\ntest_invalid_paths (test_validate.ValidateTests.test_invalid_paths) ... ok\ntest_negative_max_total (test_validate.ValidateTests.test_negative_max_total) ... ok\ntest_negative_size (test_validate.ValidateTests.test_negative_size) ... ok\ntest_prefix_but_not_whole_segment_ok (test_validate.ValidateTests.test_prefix_but_not_whole_segment_ok) ... ok\ntest_rejected_input_not_mutated (test_validate.ValidateTests.test_rejected_input_not_mutated) ... ok\ntest_sizes_preserved (test_validate.ValidateTests.test_sizes_preserved) ... ok\ntest_success_sorted_and_normalized (test_validate.ValidateTests.test_success_sorted_and_normalized) ... ok\ntest_total_exceeds_max_total (test_validate.ValidateTests.test_total_exceeds_max_total) ... ok\ntest_unknown_action (test_validate.ValidateTests.test_unknown_action) ... ok\n\n----------------------------------------------------------------------\nRan 17 tests in 0.001s\n\nOK\n",
+  "run": "df03c8b4fc28",
+  "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578",
+  "source_hashes": {
+    "domain.py": "0811c93d8f9a232bdab68acd980e5029da203f96669d9abcdeb42b42a4e98e53",
+    "cli.py": "35467a9ac35421c30d77e0f4885453a683ea53a4f5c5aac600d16bc29c9bdb08",
+    "README.md": "e2fdf40ad405c156ff6f609ccdc118b1f259f818b352de7db1b86ba7d97db3af",
+    "api.py": "9a05e986f7af322acb6e79d287f7a25c46ec24c7f86d0599349cc862e4b51a0d",
+    "tests/test_validate.py": "9e170fab8a525e1c464fb1c1b18042a35fa783c672bd2b4c91b4459125e1f03d"
+  },
+  "command": [
+    "python",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-v"
+  ],
+  "mount": "read-only /workspace",
+  "network": "none",
+  "gpu": "none"
+}

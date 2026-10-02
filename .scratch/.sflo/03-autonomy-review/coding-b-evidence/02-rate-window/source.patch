@@ -1,0 +1,230 @@
+--- a/api.py
++++ b/api.py
+@@ -1,7 +1,7 @@
+ import domain
+ 
+ def dispatch(payload):
+-    actions={'count':domain.count}
++    actions={'count':domain.count,'admit':domain.admit}
+     action=payload["action"]
+     if action not in actions:raise ValueError("unknown action: "+str(action))
+     return actions[action](payload)
+--- a/domain.py
++++ b/domain.py
+@@ -1,2 +1,38 @@
+ def count(payload):
+     return len(payload['events'])
++
++
++def admit(payload):
++    history = payload['history']
++    now = payload['now']
++    window = payload['window']
++    limit = payload['limit']
++    if window <= 0:
++        raise ValueError("window must be a positive integer")
++    if limit < 0:
++        raise ValueError("limit must be a nonnegative integer")
++    for index, timestamp in enumerate(history):
++        if index and timestamp < history[index - 1]:
++            raise ValueError("history must be nondecreasing")
++    if history and history[-1] > now:
++        raise ValueError("history timestamps must not exceed now")
++    active = [timestamp for timestamp in history if timestamp > now - window]
++    retry_at = None
++    allowed = False
++    if len(active) < limit:
++        allowed = True
++        active.append(now)
++    elif limit > 0:
++        retry_at = _retry_at(active, limit, window)
++    return {"allowed": allowed, "history": active, "retry_at": retry_at}
++
++
++def _retry_at(active, limit, window):
++    # Earliest timestamp t >= now at which the active count drops strictly below
++    # limit, i.e. enough of the oldest entries have expired. active is
++    # nondecreasing and its count is >= limit here.
++    n = len(active)
++    drop = n - limit + 1
++    if drop > n:
++        drop = n
++    return active[drop - 1] + window
+--- /dev/null
++++ b/tests/test_admit.py
+@@ -0,0 +1,175 @@
++import json
++import unittest
++from api import dispatch
++
++
++class AdmitTests(unittest.TestCase):
++    def test_admitted_appends_now(self):
++        result = dispatch({"action": "admit", "history": [10, 12], "now": 15,
++                           "window": 10, "limit": 3})
++        self.assertEqual(result, {"allowed": True, "history": [10, 12, 15],
++                                   "retry_at": None})
++
++    def test_expired_entries_dropped(self):
++        result = dispatch({"action": "admit", "history": [1, 5, 6], "now": 10,
++                           "window": 5, "limit": 5})
++        self.assertEqual(result, {"allowed": True, "history": [6, 10],
++                                   "retry_at": None})
++
++    def test_left_boundary_excluded(self):
++        result = dispatch({"action": "admit", "history": [5], "now": 10,
++                           "window": 5, "limit": 1})
++        self.assertEqual(result, {"allowed": True, "history": [10],
++                                   "retry_at": None})
++
++    def test_full_window_denied_with_retry(self):
++        result = dispatch({"action": "admit", "history": [10, 12], "now": 15,
++                           "window": 10, "limit": 2})
++        self.assertEqual(result, {"allowed": False, "history": [10, 12],
++                                   "retry_at": 20})
++
++    def test_denied_history_is_active_only(self):
++        result = dispatch({"action": "admit", "history": [1, 10, 12], "now": 15,
++                           "window": 10, "limit": 2})
++        self.assertEqual(result, {"allowed": False, "history": [10, 12],
++                                   "retry_at": 20})
++
++    def test_limit_zero_denies_with_null_retry(self):
++        result = dispatch({"action": "admit", "history": [], "now": 3,
++                           "window": 4, "limit": 0})
++        self.assertEqual(result, {"allowed": False, "history": [],
++                                   "retry_at": None})
++
++    def test_limit_zero_ignores_history(self):
++        result = dispatch({"action": "admit", "history": [1, 2, 3], "now": 3,
++                           "window": 4, "limit": 0})
++        self.assertEqual(result, {"allowed": False, "history": [1, 2, 3],
++                                   "retry_at": None})
++
++    def test_multiple_requests_same_timestamp(self):
++        result = dispatch({"action": "admit", "history": [10, 10, 10], "now": 12,
++                           "window": 5, "limit": 3})
++        self.assertEqual(result, {"allowed": False, "history": [10, 10, 10],
++                                   "retry_at": 15})
++
++    def test_retry_when_count_exceeds_limit(self):
++        result = dispatch({"action": "admit", "history": [10, 11, 12], "now": 15,
++                           "window": 10, "limit": 2})
++        self.assertEqual(result, {"allowed": False, "history": [10, 11, 12],
++                                   "retry_at": 20})
++
++    def test_retry_when_all_active_share_timestamp(self):
++        result = dispatch({"action": "admit", "history": [10, 10, 10], "now": 12,
++                           "window": 5, "limit": 1})
++        self.assertEqual(result, {"allowed": False, "history": [10, 10, 10],
++                                   "retry_at": 15})
++
++    def test_retry_when_all_expire_together(self):
++        result = dispatch({"action": "admit", "history": [10, 10], "now": 10,
++                           "window": 5, "limit": 1})
++        self.assertEqual(result, {"allowed": False, "history": [10, 10],
++                                   "retry_at": 15})
++
++    def test_negative_timestamps(self):
++        result = dispatch({"action": "admit", "history": [-12, -8], "now": -5,
++                           "window": 5, "limit": 1})
++        self.assertEqual(result, {"allowed": False, "history": [-8],
++                                   "retry_at": -3})
++
++    def test_now_equal_to_oldest(self):
++        result = dispatch({"action": "admit", "history": [7], "now": 7,
++                           "window": 3, "limit": 5})
++        self.assertEqual(result, {"allowed": True, "history": [7, 7],
++                                   "retry_at": None})
++
++    def test_invalid_window_raises(self):
++        with self.assertRaises(ValueError):
++            dispatch({"action": "admit", "history": [], "now": 1,
++                      "window": 0, "limit": 1})
++        with self.assertRaises(ValueError):
++            dispatch({"action": "admit", "history": [], "now": 1,
++                      "window": -3, "limit": 1})
++
++    def test_invalid_limit_raises(self):
++        with self.assertRaises(ValueError):
++            dispatch({"action": "admit", "history": [], "now": 1,
++                      "window": 2, "limit": -1})
++
++    def test_unsorted_history_raises(self):
++        with self.assertRaises(ValueError):
++            dispatch({"action": "admit", "history": [5, 3], "now": 10,
++                      "window": 4, "limit": 1})
++
++    def test_future_timestamp_raises(self):
++        with self.assertRaises(ValueError):
++            dispatch({"action": "admit", "history": [5, 11], "now": 10,
++                      "window": 4, "limit": 1})
++
++    def test_input_payload_not_mutated(self):
++        payload = {"action": "admit", "history": [10, 12], "now": 15,
++                   "window": 10, "limit": 2}
++        result = dispatch(payload)
++        self.assertEqual(payload["history"], [10, 12])
++        self.assertEqual(result["history"], [10, 12])
++
++    def test_input_payload_not_mutated_when_admitted(self):
++        payload = {"action": "admit", "history": [10, 12], "now": 15,
++                   "window": 10, "limit": 3}
++        result = dispatch(payload)
++        self.assertEqual(payload["history"], [10, 12])
++        self.assertEqual(result["history"], [10, 12, 15])
++
++    def test_rejected_input_payload_untouched(self):
++        payload = {"action": "admit", "history": [5, 3], "now": 10,
++                   "window": 4, "limit": 1}
++        with self.assertRaises(ValueError):
++            dispatch(payload)
++        self.assertEqual(payload, {"action": "admit", "history": [5, 3],
++                                   "now": 10, "window": 4, "limit": 1})
++
++    def test_existing_count_action_preserved(self):
++        self.assertEqual(dispatch({"action": "count", "events": [1, 2, 3]}), 3)
++
++    def test_unknown_action_raises(self):
++        with self.assertRaises(ValueError):
++            dispatch({"action": "nope", "events": []})
++
++
++class CliTests(unittest.TestCase):
++    def cli(self, payload):
++        import subprocess
++        process = subprocess.run(
++            ["python", "-B", "cli.py"], input=json.dumps(payload),
++            capture_output=True, text=True, cwd="/workspace")
++        return process.returncode, process.stdout, process.stderr
++
++    def test_cli_success(self):
++        code, out, err = self.cli({"action": "admit", "history": [10, 12],
++                                   "now": 15, "window": 10, "limit": 2})
++        self.assertEqual(code, 0)
++        self.assertEqual(err, "")
++        self.assertEqual(json.loads(out), {"allowed": False, "history": [10, 12],
++                                           "retry_at": 20})
++
++    def test_cli_value_error_exit_2(self):
++        code, out, err = self.cli({"action": "admit", "history": [5, 3],
++                                   "now": 10, "window": 4, "limit": 1})
++        self.assertEqual(code, 2)
++        self.assertEqual(out, "")
++        self.assertNotEqual(err, "")
++        self.assertNotIn("Traceback", err)
++
++    def test_cli_unknown_action_exit_2(self):
++        code, out, err = self.cli({"action": "nope"})
++        self.assertEqual(code, 2)
++        self.assertEqual(out, "")
++        self.assertNotEqual(err, "")
++
++    def test_cli_count_still_works(self):
++        code, out, err = self.cli({"action": "count", "events": [1, 2]})
++        self.assertEqual(code, 0)
++        self.assertEqual(json.loads(out), 2)
++
++
++if __name__ == "__main__":
++    unittest.main()

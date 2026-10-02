@@ -1,0 +1,15 @@
+{
+  "run": "751bc03d4c4b",
+  "runtime": "04c7ef6",
+  "task": "08-batch-grouping",
+  "frozen_cohort_manifest_sha256": "a4fa7ffef4dc63642356e402c02174947896f9d12863ac2f2eeb828e3aa46d60",
+  "source_sha256": {
+    "README.md": "a8ac8e255c1ef314544f7b6ebf1512921be786a3d74af32573abfa1e8160cec8",
+    "api.py": "086baf3f44fb734eee4226b1e73f58a8a27f34e69a89b569d348f53db9c94e8d",
+    "cli.py": "35467a9ac35421c30d77e0f4885453a683ea53a4f5c5aac600d16bc29c9bdb08",
+    "domain.py": "1d2f401b81a090b8ec6ae48da927d561c02124476aad2934ad22a7a2ce4fe6ef",
+    "tests/test_group.py": "6837fb16f962927fb25b6f949d420cfbc3709bfb3fa828b989811824b6bf2ec7"
+  },
+  "task_sha256": "158dc3bfb884a200c322bbfc9998868b78ba34ed2240e2493d3a91b5e09c1731",
+  "private_snapshot_manifest_sha256": "476e0295c0b4da0fb68ababcbbe091f2a3c9c405882ba73153b3cefc2f01fb3b"
+}

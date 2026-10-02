@@ -1,0 +1,173 @@
+--- a/README.md
++++ b/README.md
+@@ -1,3 +1,19 @@
+-# Existing JSON utility
++# JSON utility
+ 
+-Use `python cli.py` with one JSON object on stdin. Existing action: read. Domain functions accept the payload object; api.dispatch routes it. CLI reports ValueError/KeyError with stderr and exit 2.
++Use `python cli.py` with one JSON object on stdin; one JSON result is printed on stdout.
++ValueError/KeyError are reported on stderr with exit code 2 (no traceback).
++
++Actions (routed through `api.dispatch(payload)`):
++
++- `read`: keys `action`, `records`, `id`. Returns a deep copy of the record
++  (`{version, data}`) or `null` when the id is missing.
++- `update`: keys `action`, `records`, `id`, `expected` (null or nonnegative int),
++  `patch` (JSON object). One compare-and-set transaction:
++  - `expected` null: create-only. If `id` is absent, creates `{version: 1, data: patch}`;
++    if present, rejected (never an unconditional overwrite).
++  - `expected` equals the record's current version: shallow-merges `patch` keys into
++    `data` (null patch values are stored, not deleted) and increments `version` by 1.
++  - otherwise rejected.
++  Returns `{applied: bool, records: <new independent object>, record: <independent record or null>}`.
++  Inputs are never mutated; all returned nested containers are independent of the input
++  and `record` is independent of the returned `records`.
+--- a/api.py
++++ b/api.py
+@@ -1,7 +1,7 @@
+ import domain
+ 
+ def dispatch(payload):
+-    actions={'read':domain.read}
++    actions={'read':domain.read,'update':domain.update}
+     action=payload["action"]
+     if action not in actions:raise ValueError("unknown action: "+str(action))
+     return actions[action](payload)
+--- a/domain.py
++++ b/domain.py
+@@ -2,3 +2,26 @@
+ 
+ def read(payload):
+     return deepcopy(payload['records'].get(payload['id']))
++
++def update(payload):
++    records = deepcopy(payload['records'])
++    record_id = payload['id']
++    expected = payload['expected']
++    existing = records.get(record_id)
++    if expected is None:
++        # create-only: succeeds only when the id is absent
++        if record_id not in records:
++            records[record_id] = {'version': 1, 'data': deepcopy(payload['patch'])}
++            return {'applied': True, 'records': records,
++                    'record': deepcopy(records[record_id])}
++        return {'applied': False, 'records': records,
++                'record': deepcopy(existing) if existing is not None else None}
++    # compare-and-set: expected must equal the current version
++    if existing is not None and type(existing['version']) is int and expected == existing['version']:
++        data = deepcopy(existing['data'])
++        data.update(deepcopy(payload['patch']))
++        records[record_id] = {'version': existing['version'] + 1, 'data': data}
++        return {'applied': True, 'records': records,
++                'record': deepcopy(records[record_id])}
++    return {'applied': False, 'records': records,
++            'record': deepcopy(existing) if existing is not None else None}
+--- /dev/null
++++ b/tests/test_domain.py
+@@ -0,0 +1,106 @@
++import json
++import sys
++import unittest
++
++sys.path.insert(0, '..')
++from domain import read, update
++from api import dispatch
++
++
++class UpdateTests(unittest.TestCase):
++    def test_create_when_absent(self):
++        p = {'action': 'update', 'records': {}, 'id': 'a', 'expected': None,
++             'patch': {'x': 1}}
++        self.assertEqual(dispatch(p), {
++            'applied': True,
++            'records': {'a': {'version': 1, 'data': {'x': 1}}},
++            'record': {'version': 1, 'data': {'x': 1}}})
++
++    def test_create_only_rejected_when_present(self):
++        p = {'action': 'update', 'records': {'a': {'version': 3, 'data': {'x': 1}}},
++             'id': 'a', 'expected': None, 'patch': {'y': 2}}
++        r = dispatch(p)
++        self.assertEqual(r, {'applied': False,
++                             'records': {'a': {'version': 3, 'data': {'x': 1}}},
++                             'record': {'version': 3, 'data': {'x': 1}}})
++
++    def test_match_merges_and_increments(self):
++        p = {'action': 'update', 'records': {'a': {'version': 2, 'data': {'x': 1, 'z': 9}}},
++             'id': 'a', 'expected': 2, 'patch': {'x': 5, 'y': None}}
++        r = dispatch(p)
++        self.assertEqual(r, {'applied': True,
++                             'records': {'a': {'version': 3, 'data': {'x': 5, 'z': 9, 'y': None}}},
++                             'record': {'version': 3, 'data': {'x': 5, 'z': 9, 'y': None}}})
++        # patch null values are stored, not deleted; shallow merge keeps other keys
++
++    def test_mismatch_rejected(self):
++        p = {'action': 'update', 'records': {'a': {'version': 2, 'data': {'x': 1}}},
++             'id': 'a', 'expected': 1, 'patch': {'x': 5}}
++        r = dispatch(p)
++        self.assertEqual(r, {'applied': False,
++                             'records': {'a': {'version': 2, 'data': {'x': 1}}},
++                             'record': {'version': 2, 'data': {'x': 1}}})
++
++    def test_expected_on_missing_id_rejected(self):
++        p = {'action': 'update', 'records': {}, 'id': 'a', 'expected': 0,
++             'patch': {'x': 1}}
++        r = dispatch(p)
++        self.assertEqual(r, {'applied': False, 'records': {}, 'record': None})
++
++    def test_input_payload_never_mutated(self):
++        inner = {'x': [1, 2]}
++        records = {'a': {'version': 1, 'data': inner}}
++        p = {'action': 'update', 'records': records, 'id': 'a', 'expected': 1,
++             'patch': inner}
++        r = dispatch(p)
++        self.assertEqual(records, {'a': {'version': 1, 'data': {'x': [1, 2]}}})
++        self.assertEqual(inner, {'x': [1, 2]})
++        self.assertEqual(p['patch'], {'x': [1, 2]})
++        # returned nested containers independent of input
++        self.assertIsNot(r['records']['a']['data']['x'], inner['x'])
++        # record independent of returned records
++        self.assertIsNot(r['record'], r['records']['a'])
++        self.assertIsNot(r['record']['data'], r['records']['a']['data'])
++
++    def test_read_missing_id_returns_null(self):
++        p = {'action': 'read', 'records': {}, 'id': 'a'}
++        self.assertEqual(dispatch(p), None)
++
++    def test_read_returns_independent_data(self):
++        data = {'x': [1]}
++        records = {'a': {'version': 1, 'data': data}}
++        p = {'action': 'read', 'records': records, 'id': 'a'}
++        r = dispatch(p)
++        self.assertEqual(r, {'version': 1, 'data': {'x': [1]}})
++        self.assertIsNot(r['data'], data)
++        self.assertIsNot(r['data']['x'], data['x'])
++
++    def test_unknown_action_raises_valueerror(self):
++        with self.assertRaises(ValueError):
++            dispatch({'action': 'delete', 'records': {}, 'id': 'a'})
++
++    def test_cli_update_success(self):
++        payload = {'action': 'update', 'records': {}, 'id': 'a', 'expected': None,
++                   'patch': {'x': 1}}
++        import subprocess
++        proc = subprocess.run([sys.executable, '-B', 'cli.py'],
++                              input=json.dumps(payload), capture_output=True, text=True)
++        self.assertEqual(proc.returncode, 0)
++        self.assertEqual(json.loads(proc.stdout), {
++            'applied': True,
++            'records': {'a': {'version': 1, 'data': {'x': 1}}},
++            'record': {'version': 1, 'data': {'x': 1}}})
++        self.assertEqual(proc.stderr, '')
++
++    def test_cli_unknown_action_exit_2(self):
++        import subprocess
++        proc = subprocess.run([sys.executable, '-B', 'cli.py'],
++                              input=json.dumps({'action': 'nope'}),
++                              capture_output=True, text=True)
++        self.assertEqual(proc.returncode, 2)
++        self.assertNotEqual(proc.stderr, '')
++        self.assertNotIn('Traceback', proc.stderr)
++
++
++if __name__ == '__main__':
++    unittest.main()

@@ -1,0 +1,27 @@
+{
+  "exit": 1,
+  "stdout": "",
+  "stderr": "test_admitted_appends_now (test_admit.AdmitTests.test_admitted_appends_now) ... ok\ntest_denied_history_is_active_only (test_admit.AdmitTests.test_denied_history_is_active_only) ... ok\ntest_existing_count_action_preserved (test_admit.AdmitTests.test_existing_count_action_preserved) ... ok\ntest_expired_entries_dropped (test_admit.AdmitTests.test_expired_entries_dropped) ... ok\ntest_full_window_denied_with_retry (test_admit.AdmitTests.test_full_window_denied_with_retry) ... ok\ntest_future_timestamp_raises (test_admit.AdmitTests.test_future_timestamp_raises) ... ok\ntest_input_payload_not_mutated (test_admit.AdmitTests.test_input_payload_not_mutated) ... ok\ntest_input_payload_not_mutated_when_admitted (test_admit.AdmitTests.test_input_payload_not_mutated_when_admitted) ... ok\ntest_invalid_limit_raises (test_admit.AdmitTests.test_invalid_limit_raises) ... ok\ntest_invalid_window_raises (test_admit.AdmitTests.test_invalid_window_raises) ... ok\ntest_left_boundary_excluded (test_admit.AdmitTests.test_left_boundary_excluded) ... ok\ntest_limit_zero_denies_with_null_retry (test_admit.AdmitTests.test_limit_zero_denies_with_null_retry) ... ok\ntest_limit_zero_ignores_history (test_admit.AdmitTests.test_limit_zero_ignores_history) ... ok\ntest_multiple_requests_same_timestamp (test_admit.AdmitTests.test_multiple_requests_same_timestamp) ... ok\ntest_negative_timestamps (test_admit.AdmitTests.test_negative_timestamps) ... ok\ntest_now_equal_to_oldest (test_admit.AdmitTests.test_now_equal_to_oldest) ... ok\ntest_rejected_input_payload_untouched (test_admit.AdmitTests.test_rejected_input_payload_untouched) ... ok\ntest_retry_when_all_active_share_timestamp (test_admit.AdmitTests.test_retry_when_all_active_share_timestamp) ... ok\ntest_retry_when_all_expire_together (test_admit.AdmitTests.test_retry_when_all_expire_together) ... ok\ntest_retry_when_count_exceeds_limit (test_admit.AdmitTests.test_retry_when_count_exceeds_limit) ... FAIL\ntest_unknown_action_raises (test_admit.AdmitTests.test_unknown_action_raises) ... ok\ntest_unsorted_history_raises (test_admit.AdmitTests.test_unsorted_history_raises) ... ok\ntest_cli_count_still_works (test_admit.CliTests.test_cli_count_still_works) ... ok\ntest_cli_success (test_admit.CliTests.test_cli_success) ... ok\ntest_cli_unknown_action_exit_2 (test_admit.CliTests.test_cli_unknown_action_exit_2) ... ok\ntest_cli_value_error_exit_2 (test_admit.CliTests.test_cli_value_error_exit_2) ... ok\n\n======================================================================\nFAIL: test_retry_when_count_exceeds_limit (test_admit.AdmitTests.test_retry_when_count_exceeds_limit)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/tests/test_admit.py\", line 58, in test_retry_when_count_exceeds_limit\n    self.assertEqual(result, {\"allowed\": False, \"history\": [10, 11, 12],\nAssertionError: {'allowed': False, 'history': [10, 11, 12], 'retry_at': 21} != {'allowed': False, 'history': [10, 11, 12], 'retry_at': 20}\n- {'allowed': False, 'history': [10, 11, 12], 'retry_at': 21}\n?                                                          ^\n\n+ {'allowed': False, 'history': [10, 11, 12], 'retry_at': 20}\n?                                                          ^\n\n\n----------------------------------------------------------------------\nRan 26 tests in 0.163s\n\nFAILED (failures=1)\n",
+  "run": "0c3f4f76b509",
+  "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578",
+  "source_hashes": {
+    "domain.py": "21181564a553d75121134fb399cc5831c40846f9d1006553969ddc4c8b1aa6db",
+    "cli.py": "35467a9ac35421c30d77e0f4885453a683ea53a4f5c5aac600d16bc29c9bdb08",
+    "README.md": "72786f4ba7b392e7bf43e0daca8c4b49b69496bd525c56e37f18ebb2047fe86a",
+    "api.py": "3c19d13f36611bb02ee147a66b84c61476958cf5f488f961bcb07efad7bc5dea",
+    "tests/test_admit.py": "2c60f8c6560239ec50bdc6ad965f7c9fa2c62ccbedb5726ad38c53f360980ff9"
+  },
+  "command": [
+    "python",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-v"
+  ],
+  "mount": "read-only /workspace",
+  "network": "none",
+  "gpu": "none"
+}

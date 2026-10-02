@@ -1,0 +1,27 @@
+{
+  "exit": 0,
+  "stdout": "",
+  "stderr": "test_acceptance_example (test_cache.CacheTests.test_acceptance_example) ... ok\ntest_capacity_zero (test_cache.CacheTests.test_capacity_zero) ... ok\ntest_empty_operations (test_cache.CacheTests.test_empty_operations) ... ok\ntest_get_promotes_and_miss_keeps_order (test_cache.CacheTests.test_get_promotes_and_miss_keeps_order) ... ok\ntest_input_not_mutated (test_cache.CacheTests.test_input_not_mutated) ... ok\ntest_invalid_capacity_raises (test_cache.CacheTests.test_invalid_capacity_raises) ... ok\ntest_invalid_weight_raises (test_cache.CacheTests.test_invalid_weight_raises) ... ok\ntest_json_values_preserved (test_cache.CacheTests.test_json_values_preserved) ... ok\ntest_multi_eviction_order (test_cache.CacheTests.test_multi_eviction_order) ... ok\ntest_replacement_evicts_only_others (test_cache.CacheTests.test_replacement_evicts_only_others) ... ok\ntest_too_heavy_put_leaves_cache_untouched (test_cache.CacheTests.test_too_heavy_put_leaves_cache_untouched) ... ok\ntest_unknown_action_still_raises (test_cache.CacheTests.test_unknown_action_still_raises) ... ok\ntest_unknown_operation_raises (test_cache.CacheTests.test_unknown_operation_raises) ... ok\ntest_weight_action_preserved (test_cache.CacheTests.test_weight_action_preserved) ... ok\n\n----------------------------------------------------------------------\nRan 14 tests in 0.001s\n\nOK\n",
+  "run": "ef27abbc21eb",
+  "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578",
+  "source_hashes": {
+    "domain.py": "0daf998d2102a6caa9de6e8a022bca4a0378d1f1a23123d17b55cb85243a86e5",
+    "cli.py": "35467a9ac35421c30d77e0f4885453a683ea53a4f5c5aac600d16bc29c9bdb08",
+    "README.md": "03645202a78fe16f0145b426ca0dd0aae37a76ad016d43fd66dba1166239382c",
+    "api.py": "c24bd7dd47ca294d864e8cb9835d7a8703b9bb6705815cfdd4b96adf354cef9c",
+    "tests/test_cache.py": "b3a596f5df7188203e5e4927ea20b228a8ee92ee7be81c48b1ef5ecb344ec3a7"
+  },
+  "command": [
+    "python",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-v"
+  ],
+  "mount": "read-only /workspace",
+  "network": "none",
+  "gpu": "none"
+}

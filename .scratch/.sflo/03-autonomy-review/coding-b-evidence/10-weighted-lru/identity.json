@@ -1,0 +1,15 @@
+{
+  "run": "ef27abbc21eb",
+  "runtime": "04c7ef6",
+  "task": "10-weighted-lru",
+  "frozen_cohort_manifest_sha256": "a4fa7ffef4dc63642356e402c02174947896f9d12863ac2f2eeb828e3aa46d60",
+  "source_sha256": {
+    "README.md": "03645202a78fe16f0145b426ca0dd0aae37a76ad016d43fd66dba1166239382c",
+    "api.py": "c24bd7dd47ca294d864e8cb9835d7a8703b9bb6705815cfdd4b96adf354cef9c",
+    "cli.py": "35467a9ac35421c30d77e0f4885453a683ea53a4f5c5aac600d16bc29c9bdb08",
+    "domain.py": "0daf998d2102a6caa9de6e8a022bca4a0378d1f1a23123d17b55cb85243a86e5",
+    "tests/test_cache.py": "b3a596f5df7188203e5e4927ea20b228a8ee92ee7be81c48b1ef5ecb344ec3a7"
+  },
+  "task_sha256": "9e3766699790745e3992f0ba8201651c724f6bfb2bc2e5f6cb4cfabe2d315581",
+  "private_snapshot_manifest_sha256": "493189fe329f8df7e7f2f7f51915ebbeeb2c8865c43618d89ae2bfd46a64d429"
+}

@@ -1,0 +1,27 @@
+{
+  "exit": 0,
+  "stdout": "",
+  "stderr": "test_cli_unknown_action_exit_2 (test_domain.UpdateTests.test_cli_unknown_action_exit_2) ... ok\ntest_cli_update_success (test_domain.UpdateTests.test_cli_update_success) ... ok\ntest_create_only_rejected_when_present (test_domain.UpdateTests.test_create_only_rejected_when_present) ... ok\ntest_create_when_absent (test_domain.UpdateTests.test_create_when_absent) ... ok\ntest_expected_on_missing_id_rejected (test_domain.UpdateTests.test_expected_on_missing_id_rejected) ... ok\ntest_input_payload_never_mutated (test_domain.UpdateTests.test_input_payload_never_mutated) ... ok\ntest_match_merges_and_increments (test_domain.UpdateTests.test_match_merges_and_increments) ... ok\ntest_mismatch_rejected (test_domain.UpdateTests.test_mismatch_rejected) ... ok\ntest_read_missing_id_returns_null (test_domain.UpdateTests.test_read_missing_id_returns_null) ... ok\ntest_read_returns_independent_data (test_domain.UpdateTests.test_read_returns_independent_data) ... ok\ntest_unknown_action_raises_valueerror (test_domain.UpdateTests.test_unknown_action_raises_valueerror) ... ok\n\n----------------------------------------------------------------------\nRan 11 tests in 0.091s\n\nOK\n",
+  "run": "fb1fb7b64726",
+  "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578",
+  "source_hashes": {
+    "domain.py": "7f49f71a3a0059e09bd67fcece26e25ce8edabff4fd110dc718c61e7cb4923fe",
+    "cli.py": "35467a9ac35421c30d77e0f4885453a683ea53a4f5c5aac600d16bc29c9bdb08",
+    "README.md": "679b0bb27c9f8047f00c44517091616ce56dc26fe34d6191c4e4349101568a17",
+    "api.py": "0f7caaa84f2d495bf5b694ddd15819dc7d93c78bdb6231de34abee5bbe034b39",
+    "tests/test_domain.py": "be44a597eb3211af9a3180ac9f041b2fcd868ee7368b77c625476b710d707094"
+  },
+  "command": [
+    "python",
+    "-B",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-v"
+  ],
+  "mount": "read-only /workspace",
+  "network": "none",
+  "gpu": "none"
+}

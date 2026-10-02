@@ -1,0 +1,233 @@
+--- a/README.md
++++ b/README.md
+@@ -1,3 +1,21 @@
+ # Existing JSON utility
+ 
+-Use `python cli.py` with one JSON object on stdin. Existing action: field_names. Domain functions accept the payload object; api.dispatch routes it. CLI reports ValueError/KeyError with stderr and exit 2.
++Use `python cli.py` with one JSON object on stdin. Actions:
++
++- `field_names`: payload `{"action":"field_names","fields":{...}}` → sorted list of keys.
++- `encode`: payload `{"action":"encode","fields":{"k":"v",...}}` → log line string.
++  Keys must match ASCII `[A-Za-z_][A-Za-z0-9_]*` (invalid keys raise `ValueError`).
++  Fields are emitted in sorted key order, tab-separated as `key=value`.
++  In values: `\` → `\\`, TAB → `\t`, LF → `\n`, CR → `\r`; all other characters
++  (including `=` and Unicode) are left as-is. Empty fields encode to `""`.
++- `decode`: payload `{"action":"decode","line":"..."}` → object mapping keys to string values.
++  Splits on literal TAB, then on the FIRST `=` only. Unescapes exactly `\\`, `\t`,
++  `\n`, `\r`; unknown or trailing backslash escapes raise `ValueError`.
++  Empty line decodes to `{}`. Invalid keys, duplicate keys, empty fields
++  (including a trailing TAB), or fields without `=` raise `ValueError`.
++
++Domain functions accept the payload object; `api.dispatch` routes it. CLI reports
++`ValueError`/`KeyError` on stderr with exit code 2 (no traceback) and prints the
++JSON result on success. Inputs are never mutated, including rejected ones.
++
++Regression tests: `python -B -m unittest tests/test_domain.py`.
+--- a/api.py
++++ b/api.py
+@@ -1,7 +1,9 @@
+ import domain
+ 
+ def dispatch(payload):
+-    actions={'field_names':domain.field_names}
++    actions={'field_names':domain.field_names,
++             'encode':domain.encode,
++             'decode':domain.decode}
+     action=payload["action"]
+     if action not in actions:raise ValueError("unknown action: "+str(action))
+     return actions[action](payload)
+--- a/cli.py
++++ b/cli.py
+@@ -1,4 +1,5 @@
+-import json,sys
++import json,sys,os
++sys.path.insert(0,os.path.dirname(os.path.abspath(__file__)))
+ from api import dispatch
+ 
+ def main():
+--- a/domain.py
++++ b/domain.py
+@@ -1,2 +1,62 @@
++import re
++
++_KEY_RE = re.compile(r'[A-Za-z_][A-Za-z0-9_]*\Z')
++
+ def field_names(payload):
+     return sorted(payload['fields'])
++
++def encode(payload):
++    fields = payload['fields']
++    parts = []
++    for key in sorted(fields):
++        if not _KEY_RE.match(key):
++            raise ValueError('invalid key: ' + repr(key))
++        value = fields[key]
++        escaped = (value.replace('\\', '\\\\')
++                   .replace('\t', '\\t')
++                   .replace('\n', '\\n')
++                   .replace('\r', '\\r'))
++        parts.append(key + '=' + escaped)
++    return '\t'.join(parts)
++
++def decode(payload):
++    line = payload['line']
++    if line == '':
++        return {}
++    fields = {}
++    for part in line.split('\t'):
++        if '=' not in part:
++            raise ValueError('field without equals: ' + repr(part))
++        key, sep, value = part.partition('=')
++        if not _KEY_RE.match(key):
++            raise ValueError('invalid key: ' + repr(key))
++        if key in fields:
++            raise ValueError('duplicate key: ' + repr(key))
++        fields[key] = _unescape(value)
++    return fields
++
++def _unescape(value):
++    out = []
++    i = 0
++    while i < len(value):
++        ch = value[i]
++        if ch != '\\':
++            out.append(ch)
++            i += 1
++            continue
++        i += 1
++        if i >= len(value):
++            raise ValueError('trailing backslash in value: ' + repr(value))
++        nxt = value[i]
++        if nxt == '\\':
++            out.append('\\')
++        elif nxt == 't':
++            out.append('\t')
++        elif nxt == 'n':
++            out.append('\n')
++        elif nxt == 'r':
++            out.append('\r')
++        else:
++            raise ValueError('unknown escape: ' + repr(value[i - 1:i + 1]))
++        i += 1
++    return ''.join(out)
+--- /dev/null
++++ b/tests/test_domain.py
+@@ -0,0 +1,118 @@
++import json
++import subprocess
++import unittest
++
++from domain import field_names, encode, decode
++from api import dispatch
++
++
++class EncodeDecode(unittest.TestCase):
++
++    def test_encode_sorted_keys(self):
++        self.assertEqual(encode({'action': 'encode', 'fields': {'b': '2', 'a': '1'}}),
++                         'a=1\tb=2')
++
++    def test_encode_empty_fields(self):
++        self.assertEqual(encode({'action': 'encode', 'fields': {}}), '')
++
++    def test_encode_escapes(self):
++        self.assertEqual(encode({'action': 'encode', 'fields': {'k': 'a\\b\tc\nd\re'}}),
++                         'k=a\\\\b\\tc\\nd\\re')
++
++    def test_encode_does_not_escape_equals_or_unicode(self):
++        self.assertEqual(encode({'action': 'encode', 'fields': {'k': 'a=b=é'}}),
++                         'k=a=b=é')
++
++    def test_encode_invalid_key(self):
++        with self.assertRaises(ValueError):
++            encode({'action': 'encode', 'fields': {'9bad': 'x'}})
++        with self.assertRaises(ValueError):
++            encode({'action': 'encode', 'fields': {'': 'x'}})
++        with self.assertRaises(ValueError):
++            encode({'action': 'encode', 'fields': {'a b': 'x'}})
++
++    def test_decode_empty_line(self):
++        self.assertEqual(decode({'action': 'decode', 'line': ''}), {})
++
++    def test_decode_basic(self):
++        self.assertEqual(decode({'action': 'decode', 'line': 'a=1\tb=2'}),
++                         {'a': '1', 'b': '2'})
++
++    def test_decode_first_equals_only(self):
++        self.assertEqual(decode({'action': 'decode', 'line': 'k=a=b'}), {'k': 'a=b'})
++
++    def test_decode_empty_value(self):
++        self.assertEqual(decode({'action': 'decode', 'line': 'k='}), {'k': ''})
++
++    def test_decode_unescapes(self):
++        self.assertEqual(decode({'action': 'decode', 'line': 'k=a\\\\b\\tc\\nd\\re'}),
++                         {'k': 'a\\b\tc\nd\re'})
++
++    def test_decode_unknown_escape(self):
++        with self.assertRaises(ValueError):
++            decode({'action': 'decode', 'line': 'k=\\q'})
++
++    def test_decode_trailing_escape(self):
++        with self.assertRaises(ValueError):
++            decode({'action': 'decode', 'line': 'k=x\\'})
++
++    def test_decode_trailing_tab(self):
++        with self.assertRaises(ValueError):
++            decode({'action': 'decode', 'line': 'k=1\t'})
++
++    def test_decode_no_equals(self):
++        with self.assertRaises(ValueError):
++            decode({'action': 'decode', 'line': 'k=1\tnope'})
++
++    def test_decode_duplicate_key(self):
++        with self.assertRaises(ValueError):
++            decode({'action': 'decode', 'line': 'k=1\tk=2'})
++
++    def test_decode_invalid_key(self):
++        with self.assertRaises(ValueError):
++            decode({'action': 'decode', 'line': '9k=1'})
++
++    def test_roundtrip(self):
++        fields = {'a': 'x\\y\tz\nw\rq=e', 'b_2': 'ünï✓'}
++        line = encode({'action': 'encode', 'fields': fields})
++        self.assertEqual(decode({'action': 'decode', 'line': line}), fields)
++
++    def test_dispatch_routing(self):
++        self.assertEqual(dispatch({'action': 'encode', 'fields': {'a': '1'}}), 'a=1')
++        self.assertEqual(dispatch({'action': 'decode', 'line': 'a=1'}), {'a': '1'})
++        self.assertEqual(dispatch({'action': 'field_names', 'fields': {'b': '', 'a': ''}}),
++                         ['a', 'b'])
++
++    def test_unknown_action(self):
++        with self.assertRaises(ValueError):
++            dispatch({'action': 'nope'})
++
++    def test_no_input_mutation(self):
++        payload = {'action': 'encode', 'fields': {'b': '2', 'a': '1'}}
++        encode(payload)
++        self.assertEqual(payload, {'action': 'encode', 'fields': {'b': '2', 'a': '1'}})
++        payload = {'action': 'decode', 'line': 'k=1\tk=2'}
++        with self.assertRaises(ValueError):
++            decode(payload)
++        self.assertEqual(payload, {'action': 'decode', 'line': 'k=1\tk=2'})
++
++    def test_cli_success(self):
++        proc = subprocess.run(['python', '-B', '-I', 'cli.py'],
++                              input=json.dumps({'action': 'encode', 'fields': {'a': 'x\ty'}}),
++                              capture_output=True, text=True)
++        self.assertEqual(proc.returncode, 0)
++        self.assertEqual(json.loads(proc.stdout), 'a=x\\ty')
++        self.assertEqual(proc.stderr, '')
++
++    def test_cli_value_error(self):
++        proc = subprocess.run(['python', '-B', '-I', 'cli.py'],
++                              input=json.dumps({'action': 'decode', 'line': 'nope'}),
++                              capture_output=True, text=True)
++        self.assertEqual(proc.returncode, 2)
++        self.assertNotEqual(proc.stderr, '')
++        self.assertEqual(proc.stdout, '')
++        self.assertNotIn('Traceback', proc.stderr)
++
++
++if __name__ == '__main__':
++    unittest.main()

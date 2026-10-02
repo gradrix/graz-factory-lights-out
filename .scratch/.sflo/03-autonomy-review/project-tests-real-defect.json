@@ -1,0 +1,34 @@
+{
+  "passed": false,
+  "checks": [
+    {
+      "command": [
+        "python",
+        "-B",
+        "-I",
+        "/acceptance/check.py"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "output": "",
+      "elapsed_s": 0.617804538924247,
+      "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578"
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests"
+      ],
+      "exit_code": 1,
+      "timed_out": false,
+      "output": "...................F......\n======================================================================\nFAIL: test_retry_when_count_exceeds_limit (test_admit.AdmitTests.test_retry_when_count_exceeds_limit)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/tests/test_admit.py\", line 58, in test_retry_when_count_exceeds_limit\n    self.assertEqual(result, {\"allowed\": False, \"history\": [10, 11, 12],\nAssertionError: {'allowed': False, 'history': [10, 11, 12], 'retry_at': 21} != {'allowed': False, 'history': [10, 11, 12], 'retry_at': 20}\n- {'allowed': False, 'history': [10, 11, 12], 'retry_at': 21}\n?                                                          ^\n\n+ {'allowed': False, 'history': [10, 11, 12], 'retry_at': 20}\n?                                                          ^\n\n\n----------------------------------------------------------------------\nRan 26 tests in 0.250s\n\nFAILED (failures=1)\n",
+      "elapsed_s": 0.7185587920248508,
+      "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578"
+    }
+  ]
+}

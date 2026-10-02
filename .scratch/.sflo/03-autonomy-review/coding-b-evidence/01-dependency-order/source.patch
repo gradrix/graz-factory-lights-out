@@ -1,0 +1,274 @@
+--- a/README.md
++++ b/README.md
+@@ -1,3 +1,29 @@
+ # Existing JSON utility
+ 
+-Use `python cli.py` with one JSON object on stdin. Existing action: labels. Domain functions accept the payload object; api.dispatch routes it. CLI reports ValueError/KeyError with stderr and exit 2.
++Use `python cli.py` with one JSON object on stdin. It prints one JSON result on stdout and exits 0.
++Domain functions accept the payload object; `api.dispatch` routes it by `payload["action"]`.
++CLI reports `ValueError`/`KeyError` on stderr and exits 2 (no traceback on stdout).
++
++Actions:
++
++- `labels` — payload `{"action": "labels", "nodes": [{"id": ...}, ...]}`; returns the list of `id` values in input order.
++- `order` — payload `{"action": "order", "nodes": [{"id": "nonempty string", "deps": ["id", ...]}, ...]}`;
++  returns a list of all node IDs in topological order (each node appears after all of its dependencies).
++
++`order` details:
++
++- IDs must be unique; a duplicate ID raises `ValueError`.
++- Every dependency must name an input node; an unknown dependency raises `ValueError`.
++- Repeated entries in `deps` count as one edge.
++- Selection: at each step, among the nodes whose dependencies are all already placed, the one earliest in the original `nodes` list is emitted. Eligibility is re-evaluated every step, so a node that just became eligible competes on its original index against nodes that were already eligible.
++  Example: `[{"id":"x","deps":[]},{"id":"y","deps":["x"]},{"id":"z","deps":[]}]` → `["x","y","z"]`.
++- A cycle (including a self-dependency) raises `ValueError`.
++- Empty `nodes` returns `[]`.
++- Input payloads are never mutated, including for rejected inputs.
++
++Example:
++
++    echo '{"action":"order","nodes":[{"id":"b","deps":["a"]},{"id":"a","deps":[]}]}' | python cli.py
++    # ["a", "b"]
++
++Tests: `python tests/test_domain.py` (from the project root).
+--- a/api.py
++++ b/api.py
+@@ -1,7 +1,7 @@
+ import domain
+ 
+ def dispatch(payload):
+-    actions={'labels':domain.labels}
++    actions={'labels':domain.labels,'order':domain.order}
+     action=payload["action"]
+     if action not in actions:raise ValueError("unknown action: "+str(action))
+     return actions[action](payload)
+--- a/domain.py
++++ b/domain.py
+@@ -1,2 +1,38 @@
+ def labels(payload):
+     return [node['id'] for node in payload['nodes']]
++
++
++def order(payload):
++    """Topologically order payload['nodes'].
++
++    Each node is {'id': nonempty string, 'deps': list of node ids}.
++    Duplicate ids or a dependency naming an unknown id raise ValueError.
++    Repeated dependency entries count as one edge.
++    At each step the eligible node with the smallest index in the original
++    nodes list is emitted; a cycle (including a self-dependency) raises
++    ValueError. The payload is never mutated.
++    """
++    nodes = payload['nodes']
++    ids = []
++    deps = {}
++    for node in nodes:
++        node_id = node['id']
++        if node_id in deps:
++            raise ValueError("duplicate node id: " + str(node_id))
++        deps[node_id] = set(node['deps'])
++        ids.append(node_id)
++    id_set = set(ids)
++    for node_id in ids:
++        unknown = sorted(dep for dep in deps[node_id] if dep not in id_set)
++        if unknown:
++            raise ValueError("unknown dependency: " + str(unknown[0]))
++    remaining = set(ids)
++    result = []
++    while remaining:
++        eligible = [nid for nid in ids if nid in remaining and not (deps[nid] & remaining)]
++        if not eligible:
++            raise ValueError("cycle detected among node ids: " + ", ".join(sorted(remaining)))
++        chosen = eligible[0]
++        remaining.discard(chosen)
++        result.append(chosen)
++    return result
+--- /dev/null
++++ b/tests/test_domain.py
+@@ -0,0 +1,186 @@
++"""Regression tests for the domain actions, api.dispatch routing and the CLI.
++
++Run from the project root:  python tests/test_domain.py
++"""
++import json
++import os
++import subprocess
++import sys
++import unittest
++
++_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
++sys.path.insert(0, _ROOT)
++
++from api import dispatch
++from domain import labels, order
++
++
++class OrderTest(unittest.TestCase):
++    def test_empty_nodes_returns_empty_list(self):
++        self.assertEqual(order({"action": "order", "nodes": []}), [])
++
++    def test_single_node(self):
++        self.assertEqual(order({"action": "order", "nodes": [{"id": "a", "deps": []}]}), ["a"])
++
++    def test_dependencies_placed_before_dependents(self):
++        payload = {"action": "order", "nodes": [{"id": "b", "deps": ["a"]}, {"id": "a", "deps": []}]}
++        self.assertEqual(order(payload), ["a", "b"])
++
++    def test_newly_eligible_earlier_node_outranks_later_eligible(self):
++        # After x is emitted, y (input index 1) becomes eligible and beats z (input index 2).
++        payload = {"action": "order", "nodes": [
++            {"id": "x", "deps": []},
++            {"id": "y", "deps": ["x"]},
++            {"id": "z", "deps": []},
++        ]}
++        self.assertEqual(order(payload), ["x", "y", "z"])
++
++    def test_eligible_ties_follow_input_order(self):
++        payload = {"action": "order", "nodes": [
++            {"id": "a", "deps": []},
++            {"id": "b", "deps": ["a"]},
++            {"id": "c", "deps": ["a"]},
++            {"id": "d", "deps": ["b", "c"]},
++        ]}
++        self.assertEqual(order(payload), ["a", "b", "c", "d"])
++
++    def test_two_independent_chains(self):
++        payload = {"action": "order", "nodes": [
++            {"id": "a", "deps": ["b"]},
++            {"id": "b", "deps": []},
++            {"id": "c", "deps": ["d"]},
++            {"id": "d", "deps": []},
++        ]}
++        self.assertEqual(order(payload), ["b", "a", "d", "c"])
++
++    def test_repeated_dependency_counts_as_one_edge(self):
++        payload = {"action": "order", "nodes": [
++            {"id": "a", "deps": ["b", "b", "b"]},
++            {"id": "b", "deps": []},
++        ]}
++        self.assertEqual(order(payload), ["b", "a"])
++
++    def test_repeated_dependency_does_not_hide_cycle(self):
++        payload = {"action": "order", "nodes": [
++            {"id": "a", "deps": ["b"]},
++            {"id": "b", "deps": ["a", "b"]},
++        ]}
++        with self.assertRaises(ValueError):
++            order(payload)
++
++    def test_self_dependency_is_cycle(self):
++        with self.assertRaises(ValueError):
++            order({"action": "order", "nodes": [{"id": "a", "deps": ["a"]}]})
++
++    def test_cycle_raises(self):
++        payload = {"action": "order", "nodes": [{"id": "a", "deps": ["b"]}, {"id": "b", "deps": ["a"]}]}
++        with self.assertRaises(ValueError):
++            order(payload)
++
++    def test_cycle_beside_ready_nodes_raises(self):
++        payload = {"action": "order", "nodes": [
++            {"id": "a", "deps": []},
++            {"id": "b", "deps": ["c"]},
++            {"id": "c", "deps": ["b"]},
++        ]}
++        with self.assertRaises(ValueError):
++            order(payload)
++
++    def test_unknown_dependency_raises(self):
++        payload = {"action": "order", "nodes": [{"id": "a", "deps": ["nope"]}]}
++        with self.assertRaises(ValueError):
++            order(payload)
++
++    def test_unknown_dependency_raises_even_when_cycle_present(self):
++        payload = {"action": "order", "nodes": [{"id": "a", "deps": ["b", "ghost"]}, {"id": "b", "deps": ["a"]}]}
++        with self.assertRaises(ValueError):
++            order(payload)
++
++    def test_duplicate_id_raises(self):
++        payload = {"action": "order", "nodes": [{"id": "a", "deps": []}, {"id": "a", "deps": []}]}
++        with self.assertRaises(ValueError):
++            order(payload)
++
++    def test_never_mutates_accepted_input(self):
++        payload = {"action": "order", "nodes": [{"id": "a", "deps": ["b", "b"]}, {"id": "b", "deps": []}]}
++        snapshot = json.loads(json.dumps(payload))
++        order(payload)
++        self.assertEqual(payload, snapshot)
++
++    def test_never_mutates_rejected_input(self):
++        payload = {"action": "order", "nodes": [{"id": "a", "deps": ["a"]}]}
++        snapshot = json.loads(json.dumps(payload))
++        with self.assertRaises(ValueError):
++            order(payload)
++        self.assertEqual(payload, snapshot)
++
++    def test_never_mutates_rejected_unknown_input(self):
++        payload = {"action": "order", "nodes": [{"id": "a", "deps": ["ghost"]}]}
++        snapshot = json.loads(json.dumps(payload))
++        with self.assertRaises(ValueError):
++            order(payload)
++        self.assertEqual(payload, snapshot)
++
++    def test_never_mutates_rejected_duplicate_input(self):
++        payload = {"action": "order", "nodes": [{"id": "a", "deps": []}, {"id": "a", "deps": []}]}
++        snapshot = json.loads(json.dumps(payload))
++        with self.assertRaises(ValueError):
++            order(payload)
++        self.assertEqual(payload, snapshot)
++
++    def test_result_is_a_fresh_list(self):
++        payload = {"action": "order", "nodes": [{"id": "a", "deps": []}]}
++        first = order(payload)
++        second = order(payload)
++        self.assertEqual(first, second)
++        self.assertIsNot(first, second)
++
++    def test_dispatch_routes_order(self):
++        payload = {"action": "order", "nodes": [{"id": "a", "deps": []}]}
++        self.assertEqual(dispatch(payload), ["a"])
++
++    def test_labels_unchanged(self):
++        payload = {"action": "labels", "nodes": [{"id": "q", "deps": ["ignored"]}]}
++        self.assertEqual(labels(payload), ["q"])
++        self.assertEqual(dispatch(payload), ["q"])
++
++    def test_labels_still_ignores_deps_and_errors(self):
++        payload = {"action": "labels", "nodes": [{"id": "a", "deps": ["a"]}, {"id": "a", "deps": []}]}
++        self.assertEqual(dispatch(payload), ["a", "a"])
++
++    def test_unknown_action_still_raises(self):
++        with self.assertRaises(ValueError):
++            dispatch({"action": "nope", "nodes": []})
++
++    def test_cli_success(self):
++        payload = {"action": "order", "nodes": [
++            {"id": "x", "deps": []},
++            {"id": "y", "deps": ["x"]},
++            {"id": "z", "deps": []},
++        ]}
++        proc = subprocess.run(["python", os.path.join(_ROOT, "cli.py")],
++                              input=json.dumps(payload), capture_output=True, text=True)
++        self.assertEqual(proc.returncode, 0)
++        self.assertEqual(proc.stderr, "")
++        self.assertEqual(json.loads(proc.stdout), ["x", "y", "z"])
++
++    def test_cli_error_exit_2_with_stderr_and_no_traceback(self):
++        payload = {"action": "order", "nodes": [{"id": "a", "deps": ["a"]}]}
++        proc = subprocess.run(["python", os.path.join(_ROOT, "cli.py")],
++                              input=json.dumps(payload), capture_output=True, text=True)
++        self.assertEqual(proc.returncode, 2)
++        self.assertEqual(proc.stdout, "")
++        self.assertNotEqual(proc.stderr, "")
++        self.assertNotIn("Traceback", proc.stderr)
++
++    def test_cli_utf8_labels(self):
++        payload = {"action": "order", "nodes": [{"id": "α", "deps": []}, {"id": "β", "deps": ["α"]}]}
++        proc = subprocess.run(["python", os.path.join(_ROOT, "cli.py")],
++                              input=json.dumps(payload, ensure_ascii=False),
++                              capture_output=True, text=True, encoding="utf-8")
++        self.assertEqual(proc.returncode, 0)
++        self.assertEqual(json.loads(proc.stdout), ["α", "β"])
++
++
++if __name__ == "__main__":
++    unittest.main()

@@ -6,10 +6,10 @@ Contract: sha256:dc3142601c442941057ce3167b9b9c7e8228fab75db914449c53d4645be5543
 
 ## Execution
 
-Status: active
+Status: blocked on final qualification
 Owner: /root
-Candidate: 04c7ef6 (runtime); qualification harness supports both frozen cohort layouts
-Next: cohort B running on the 5090; independent semantic inspection is required before graduation.
+Candidate: c17821c (runtime); deployed trial copy matches source hashes
+Next: fresh s-qa verification of c17821c, strengthen semantic qualification from recorded misses, then qualify the revised candidate on unused tasks. No stage3 mutation before acceptance.
 
 ## Checks and repairs
 
@@ -24,3 +24,15 @@ Dense bounded comparison failed: 7/10 seeded, a critical miss, four format error
 Repairs: fresh grounded local question triage allows already-specified/ordinary implementation work to continue but preserves unresolved business policy. Malformed/unavailable assessment stops safely. Binary, symlink, oversized or empty candidates return actionable evidence to bounded repair. Independent QA passed 04c7ef6 (qa-final-repairs.md), following question-gate QA.
 
 Unused three-module cohort B frozen before model exposure: manifest a4fa7ffef4dc63642356e402c02174947896f9d12863ac2f2eeb828e3aa46d60. Twelve tasks plus separate ambiguous customer-fair queue policy; 24 baseline/reference validations on Python 3.12.12. Rig source .gflo/coding-qualification-b; state .gflo/stage2-coding-b. Frozen runtime 04c7ef6; 3 attempts,24 turns,900 seconds each. No runtime edits during batch.
+
+Cohort B revealed a real acceptance gap: task02 functional checks/review passed, but generated suite has a wrong assertion and README omitted new usage. Task03 has an astronomic integer exponent resource limitation. Preserve raw accepted status separately from full-contract compliance. Candidate c17821c adds automatic Python regression discovery under tests/ alongside external checks; red/green real-Docker evidence and actual frozen task02 reproduction show it blocks the bad assertion. This candidate is local only during the frozen rig batch. Independent agents reached account usage limit; final fresh-agent QA on this latest change and remaining B semantics is pending. Coordinator continues collection/direct checks. Do not graduate stage2 prematurely.
+
+Direct coordinator verification of c17821c reproduced the actual task02 wrong assertion under the pinned sandbox and proved controller fail → repair → recheck → review → accepted attempt2 (project-tests-controller.json). Full suite:48 tests,87%coverage. Fresh-agent verification remains unavailable due account usage limit. Task09 of B stopped safely on an ungrounded question assessment; preserve as interruption, not accepted. B still running through final tasks on unchanged04c7ef6.
+
+## Current durable outcome
+
+Cohort B completed:11/12 raw accepted, ambiguity correctly needs_input, nine deliveries without identified requirement gaps under mixed inspection. Original task02 test/docs defect, task03 extreme-valid-input limit and task09 interruption remain in the frozen record. Task11 proves two review repairs followed by acceptance. Completed batch metrics:1706s total,27522 maximum coder prompt tokens; service still131072 context.
+
+Repeated real-model regression from frozen bad task02 output under c17821c completed on attempt3 in350.61s. First attempt was blocked by the new project-test gate, second by local review, third accepted; docs and failing assertion corrected. Source hashes and both check suites passed readback. This is known-case repair evidence, not an unseen score. See project-test-repair-rig/. All qualification processes have completed.
+
+Publication includes compact accepted patches/verification/review identities; raw trajectories, private state databases and credentials remain private. Fresh independent final QA is unavailable: both s-qa/review agents returned the account usage-limit error. Coordinator tests and semantic inspection are explicitly labeled. Stage2 remains unaccepted. Next maintained-product stage is blocked on this acceptance; three environment profile fixtures/research are prepared but unimplemented.

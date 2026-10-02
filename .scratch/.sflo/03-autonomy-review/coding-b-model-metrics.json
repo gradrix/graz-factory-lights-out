@@ -1,0 +1,13 @@
+{
+  "runtime": "04c7ef6",
+  "model": "flash-next-coder",
+  "configured_context": 131072,
+  "scope": "coder response metadata only; reviewer/question-assessment requests excluded",
+  "coder_requests": 257,
+  "max_prompt_tokens": 27522,
+  "median_prompt_tokens": 9599,
+  "total_completion_tokens": 81090,
+  "median_generation_tokens_per_s": 78.33238032811272,
+  "summed_task_wall_s": 1706.21,
+  "max_task_wall_s": 379.33
+}

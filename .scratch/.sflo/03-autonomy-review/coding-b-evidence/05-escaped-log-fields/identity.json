@@ -1,0 +1,15 @@
+{
+  "run": "3a580376311a",
+  "runtime": "04c7ef6",
+  "task": "05-escaped-log-fields",
+  "frozen_cohort_manifest_sha256": "a4fa7ffef4dc63642356e402c02174947896f9d12863ac2f2eeb828e3aa46d60",
+  "source_sha256": {
+    "README.md": "b8ede5fc1d52e6e25d878611055748818c5b42a099f48ac9ec22d9bacc9777a9",
+    "api.py": "6595f0ba2d0bc1149e98a71abc39a3829a00c322354e7357bc447c024705ae09",
+    "cli.py": "2d7a5223f2bb9d7e07433caaee9c6982156d142f1fa485dba8c8c0e9ae038b1e",
+    "domain.py": "a1e8c50362aee7d10e0bf2fa3a973ecdc35d2448a1e15b7dddaaf65e3565774f",
+    "tests/test_domain.py": "584383276a416e92d42b9b4391d30c6566a30d824bff09e827f81c97e687f96a"
+  },
+  "task_sha256": "4222b66a4d9f5e3f9a345a18fd9288c998cd3c14764f6f13f667240e2daa4b27",
+  "private_snapshot_manifest_sha256": "c0f5b8151a558bf7dc307eec8e13026d0a09cfc76970f3898736a976262d099a"
+}

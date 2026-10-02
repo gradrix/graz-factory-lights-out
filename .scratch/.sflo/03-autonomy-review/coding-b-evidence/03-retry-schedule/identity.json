@@ -1,0 +1,15 @@
+{
+  "run": "3c48308dd1cc",
+  "runtime": "04c7ef6",
+  "task": "03-retry-schedule",
+  "frozen_cohort_manifest_sha256": "a4fa7ffef4dc63642356e402c02174947896f9d12863ac2f2eeb828e3aa46d60",
+  "source_sha256": {
+    "README.md": "c3f5412fa7b8506643d578452a795251a60972de2c3cc8f1e1578451e510da51",
+    "api.py": "3d62cef20a149d24722b49756f195aa57087002e7d438304d197df163669d94a",
+    "cli.py": "35467a9ac35421c30d77e0f4885453a683ea53a4f5c5aac600d16bc29c9bdb08",
+    "domain.py": "d06e918234f56e7285ae2cacd756ecc6f8ca8fadab2226192682189544cfa56b",
+    "tests/test_schedule.py": "05ecd24f25e167af3d053f04c37abc3a5734a3fc3299923a927960ef8eb44a09"
+  },
+  "task_sha256": "642b6fd0a89e8b1a29fc73bde0921774491da66d10a7858362c2df5985bbe0f0",
+  "private_snapshot_manifest_sha256": "25e0647a56acd19a1959b3067a059685fb32fef923943e2eb31c0e492d584e21"
+}

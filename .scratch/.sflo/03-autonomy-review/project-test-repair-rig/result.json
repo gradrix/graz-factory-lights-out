@@ -1,0 +1,7 @@
+{
+  "runtime": "c17821c",
+  "scenario": "repeated frozen task02 output; generated-test gate enabled",
+  "exit_code": 0,
+  "timeout": false,
+  "elapsed_s": 350.61
+}

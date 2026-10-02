@@ -1,0 +1,19 @@
+{
+  "passed": false,
+  "checks": [
+    {
+      "command": [
+        "python",
+        "-B",
+        "-I",
+        "/acceptance/check.py"
+      ],
+      "exit_code": 1,
+      "timed_out": false,
+      "output": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 35, in <module>\n    assert call('update',records={},id='a',expected=None,patch={'x':1})=={'applied':True,'records':{'a':{'version':1,'data':{'x':1}}},'record':{'version':1,'data':{'x':1}}}\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/acceptance/check.py\", line 8, in call\n    result=dispatch(p)\n           ^^^^^^^^^^^\n  File \"/workspace/api.py\", line 6, in dispatch\n    if action not in actions:raise ValueError(\"unknown action: \"+str(action))\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: unknown action: update\n",
+      "elapsed_s": 0.41835108000668697,
+      "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578"
+    }
+  ],
+  "candidate": "62681e8b6a73bf7f80d715d2d0ad4fdcbb57721b6cd6278f3c24d34b0205f0b0"
+}

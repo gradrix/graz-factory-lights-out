@@ -2,7 +2,7 @@
 
 ## One task through three responsibilities
 
-The CLI snapshots a clean Git commit and operator-owned acceptance files. The runner records a task in SQLite, then invokes the worker. The worker gets two tools: a shell in an offline container and a request to run acceptance checks. A final verification runs independently of the worker's completion message.
+The CLI snapshots a clean Git commit and operator-owned acceptance files. The runner records a task in SQLite, then invokes the worker. The worker gets a shell in an offline container, an acceptance-check request and a question tool for unresolved product choices. Fresh local assessment checks whether a question actually requires a person. Final executable verification and read-only local review run independently of the worker's completion message. Present Python unittest suites under tests/ run alongside the immutable external acceptance checks.
 
 ```text
 pending → running → verification → accepted

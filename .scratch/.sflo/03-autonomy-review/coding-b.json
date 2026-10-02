@@ -1,0 +1,176 @@
+{
+  "manifest_sha256": "a4fa7ffef4dc63642356e402c02174947896f9d12863ac2f2eeb828e3aa46d60",
+  "wall_budget_s_per_task": 900,
+  "results": [
+    {
+      "task": "01-dependency-order",
+      "run": "541053c47a7a",
+      "status": "accepted",
+      "attempts": 1,
+      "elapsed_s": 217.13,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "pass"
+      ],
+      "independent_checks_passed": true
+    },
+    {
+      "task": "02-rate-window",
+      "run": "0c3f4f76b509",
+      "status": "accepted",
+      "attempts": 1,
+      "elapsed_s": 166.31,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "pass"
+      ],
+      "independent_checks_passed": true
+    },
+    {
+      "task": "03-retry-schedule",
+      "run": "3c48308dd1cc",
+      "status": "accepted",
+      "attempts": 1,
+      "elapsed_s": 89.71,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "pass"
+      ],
+      "independent_checks_passed": true
+    },
+    {
+      "task": "04-config-precedence",
+      "run": "6358245a8c27",
+      "status": "accepted",
+      "attempts": 1,
+      "elapsed_s": 137.24,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "pass"
+      ],
+      "independent_checks_passed": true
+    },
+    {
+      "task": "05-escaped-log-fields",
+      "run": "3a580376311a",
+      "status": "accepted",
+      "attempts": 1,
+      "elapsed_s": 101.22,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "pass"
+      ],
+      "independent_checks_passed": true
+    },
+    {
+      "task": "06-archive-manifest",
+      "run": "df03c8b4fc28",
+      "status": "accepted",
+      "attempts": 1,
+      "elapsed_s": 96.74,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "pass"
+      ],
+      "independent_checks_passed": true
+    },
+    {
+      "task": "07-optimistic-version",
+      "run": "fb1fb7b64726",
+      "status": "accepted",
+      "attempts": 2,
+      "elapsed_s": 105.0,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "pass"
+      ],
+      "independent_checks_passed": true
+    },
+    {
+      "task": "08-batch-grouping",
+      "run": "751bc03d4c4b",
+      "status": "accepted",
+      "attempts": 1,
+      "elapsed_s": 79.81,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "pass"
+      ],
+      "independent_checks_passed": true
+    },
+    {
+      "task": "09-revision-migration",
+      "run": "fa94c69430ad",
+      "status": "interrupted",
+      "attempts": 1,
+      "elapsed_s": 85.53,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [],
+      "independent_checks_passed": null
+    },
+    {
+      "task": "10-weighted-lru",
+      "run": "ef27abbc21eb",
+      "status": "accepted",
+      "attempts": 2,
+      "elapsed_s": 113.85,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "pass"
+      ],
+      "independent_checks_passed": true
+    },
+    {
+      "task": "11-event-watermarks",
+      "run": "c38088d51d73",
+      "status": "accepted",
+      "attempts": 3,
+      "elapsed_s": 379.33,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "repair",
+        "repair",
+        "pass"
+      ],
+      "independent_checks_passed": true
+    },
+    {
+      "task": "12-unicode-index",
+      "run": "aefc008cb097",
+      "status": "accepted",
+      "attempts": 1,
+      "elapsed_s": 123.59,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "pass"
+      ],
+      "independent_checks_passed": true
+    },
+    {
+      "task": "ambiguous",
+      "run": "3e2cd228ff6e",
+      "status": "needs_input",
+      "attempts": 1,
+      "elapsed_s": 10.75,
+      "timeout": false,
+      "question": "Which fairness policy should the new scheduler implement, and how should it interact with priority? Specifically: (a) choose one of: strict round-robin among customers, weighted shares per customer, or a maximum waiting-time rule; and (b) specify how priority interacts with fairness \u2014 e.g., priority tiers are served highest-first and fairness (round-robin/etc.) orders jobs within the same priority tier, or fairness dominates and priority is only a tie-break, or a max-waiting rule can promote a job above priority. Please give the exact chosen policy and its ordering rules (including tie-breaks on equal keys, e.g. by arrival then id).",
+      "review_decisions": [],
+      "independent_checks_passed": null
+    }
+  ],
+  "accepted": 11,
+  "ambiguity_stopped": true,
+  "gate_passed": true
+}

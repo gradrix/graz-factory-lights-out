@@ -1,0 +1,126 @@
+Run: 171a71b31de6
+Evidence: /home/gradrix/gflo-runtime/.gflo/project-test-repair/state/171a71b31de6
+Attempt 1, model turn 1/24
+  run: 0
+  run: 2
+Attempt 1, model turn 2/24
+  run: 0
+Attempt 1, model turn 3/24
+  check: False
+  run: 0
+Attempt 1, model turn 4/24
+  run: 0
+Attempt 1, model turn 5/24
+  run: 0
+Attempt 1, model turn 6/24
+  run: 0
+Attempt 1, model turn 7/24
+  run: 0
+Attempt 1, model turn 8/24
+  run: 0
+Attempt 1, model turn 9/24
+  run: 0
+Attempt 1, model turn 10/24
+  run: 0
+Attempt 1, model turn 11/24
+  run: 0
+Attempt 1, model turn 12/24
+  run: 0
+Attempt 1, model turn 13/24
+  run: 0
+Attempt 1, model turn 14/24
+  run: 0
+Attempt 1, model turn 15/24
+  run: 0
+Attempt 1, model turn 16/24
+  run: 0
+Attempt 1, model turn 17/24
+  run: 0
+Attempt 1, model turn 18/24
+  run: 0
+Attempt 1, model turn 19/24
+  run: 0
+Attempt 1, model turn 20/24
+  run: 0
+Attempt 1, model turn 21/24
+  run: 0
+Attempt 1, model turn 22/24
+  run: 0
+Attempt 1, model turn 23/24
+  run: 0
+Attempt 1, model turn 24/24
+  run: 0
+Attempt 1: verifying candidate
+Attempt 2, model turn 1/24
+  run: 0
+  run: 0
+Attempt 2, model turn 2/24
+  run: 0
+Attempt 2, model turn 3/24
+  run: 0
+Attempt 2, model turn 4/24
+  run: 0
+Attempt 2, model turn 5/24
+  run: 0
+Attempt 2, model turn 6/24
+  run: 0
+Attempt 2, model turn 7/24
+  run: 0
+Attempt 2, model turn 8/24
+  check: False
+Attempt 2, model turn 9/24
+  run: 0
+Attempt 2, model turn 10/24
+  check: False
+Attempt 2, model turn 11/24
+  run: 1
+Attempt 2, model turn 12/24
+  run: 0
+Attempt 2, model turn 13/24
+  run: 0
+Attempt 2, model turn 14/24
+  question: done
+Attempt 2, model turn 15/24
+  run: 0
+Attempt 2, model turn 16/24
+  run: 0
+Attempt 2, model turn 17/24
+  run: 0
+Attempt 2, model turn 18/24
+  run: 0
+Attempt 2, model turn 19/24
+  run: 0
+Attempt 2, model turn 20/24
+  check: True
+Attempt 2, model turn 21/24
+  run: 0
+Attempt 2, model turn 22/24
+Attempt 2: verifying candidate
+Attempt 3, model turn 1/24
+  run: 0
+  run: 2
+Attempt 3, model turn 2/24
+  run: 0
+Attempt 3, model turn 3/24
+  run: 0
+Attempt 3, model turn 4/24
+  run: 0
+Attempt 3, model turn 5/24
+  run: 0
+  check: True
+Attempt 3, model turn 6/24
+  run: 0
+Attempt 3, model turn 7/24
+  run: 0
+Attempt 3, model turn 8/24
+Attempt 3: verifying candidate
+{
+  "id": "171a71b31de6",
+  "status": "accepted",
+  "attempts": 3,
+  "contract_hash": "baed07393b1aaec04fba7f4b71b2a83c435e60b2403e350009bc6863fd6708a4",
+  "message": "",
+  "directory": "/home/gradrix/gflo-runtime/.gflo/project-test-repair/state/171a71b31de6",
+  "workspace": "/home/gradrix/gflo-runtime/.gflo/project-test-repair/state/171a71b31de6/workspace",
+  "patch": "/home/gradrix/gflo-runtime/.gflo/project-test-repair/state/171a71b31de6/change.patch"
+}

@@ -1,0 +1,254 @@
+--- a/README.md
++++ b/README.md
+@@ -1,3 +1,9 @@
+ # Existing JSON utility
+ 
+ Use `python cli.py` with one JSON object on stdin. Existing action: attempts. Domain functions accept the payload object; api.dispatch routes it. CLI reports ValueError/KeyError with stderr and exit 2.
++
++## Action: schedule
++
++Payload: `{"action": "schedule", "now": <int seconds>, "attempt": <int >= 1>, "base": <positive int>, "cap": <positive int>, "max_attempts": <int >= 1>, "outcome": "success"|"permanent"|"transient", "retry_after": null | <nonnegative int> (optional)}`.
++
++Returns `{"retry": bool, "at": int|null, "delay": int|null}`. Only `transient` outcomes with `attempt < max_attempts` retry. Delay = `max(min(cap, base * 2**(attempt-1)), retry_after or 0)` using exact integer arithmetic; `retry_after` may exceed `cap` and is relative to `now`, so `at = now + delay`. Other outcomes return `false/null/null`. All numeric bounds and `outcome` are validated even when no retry would occur; invalid values raise `ValueError` (CLI: exit 2, message on stderr, no traceback). Input payloads are never mutated.
+--- a/api.py
++++ b/api.py
+@@ -1,7 +1,7 @@
+ import domain
+ 
+ def dispatch(payload):
+-    actions={'attempts':domain.attempts}
++    actions={'attempts':domain.attempts,'schedule':domain.schedule}
+     action=payload["action"]
+     if action not in actions:raise ValueError("unknown action: "+str(action))
+     return actions[action](payload)
+--- a/domain.py
++++ b/domain.py
+@@ -1,2 +1,36 @@
+ def attempts(payload):
+     return len(payload['outcomes'])
++
++
++def schedule(payload):
++    now = payload['now']
++    attempt = payload['attempt']
++    base = payload['base']
++    cap = payload['cap']
++    max_attempts = payload['max_attempts']
++    outcome = payload['outcome']
++    retry_after = payload.get('retry_after')
++
++    def is_int(value):
++        return isinstance(value, int) and not isinstance(value, bool)
++
++    if not is_int(now):
++        raise ValueError('now must be an integer')
++    if not is_int(attempt) or attempt < 1:
++        raise ValueError('attempt must be an integer >= 1')
++    if not is_int(base) or base < 1:
++        raise ValueError('base must be a positive integer')
++    if not is_int(cap) or cap < 1:
++        raise ValueError('cap must be a positive integer')
++    if not is_int(max_attempts) or max_attempts < 1:
++        raise ValueError('max_attempts must be an integer >= 1')
++    if outcome not in ('success', 'permanent', 'transient'):
++        raise ValueError("outcome must be 'success', 'permanent', or 'transient'")
++    if retry_after is not None:
++        if not is_int(retry_after) or retry_after < 0:
++            raise ValueError('retry_after must be null or a nonnegative integer')
++
++    if outcome == 'transient' and attempt < max_attempts:
++        delay = max(min(cap, base * 2 ** (attempt - 1)), retry_after or 0)
++        return {'retry': True, 'at': now + delay, 'delay': delay}
++    return {'retry': False, 'at': None, 'delay': None}
+--- /dev/null
++++ b/tests/test_schedule.py
+@@ -0,0 +1,189 @@
++import unittest
++import json
++import subprocess
++import sys
++
++sys.path.insert(0, '/workspace')
++
++from api import dispatch
++from domain import schedule, attempts
++
++
++class ScheduleTests(unittest.TestCase):
++    def test_transient_retry_within_cap(self):
++        payload = {'action': 'schedule', 'now': 100, 'attempt': 1, 'base': 10,
++                   'cap': 3600, 'max_attempts': 5, 'outcome': 'transient'}
++        result = dispatch(payload)
++        self.assertEqual(result, {'retry': True, 'at': 110, 'delay': 10})
++
++    def test_transient_exponential_backoff(self):
++        payload = {'action': 'schedule', 'now': 0, 'attempt': 4, 'base': 3,
++                   'cap': 1000, 'max_attempts': 10, 'outcome': 'transient'}
++        result = dispatch(payload)
++        self.assertEqual(result, {'retry': True, 'at': 24, 'delay': 24})
++
++    def test_transient_capped(self):
++        payload = {'action': 'schedule', 'now': 50, 'attempt': 8, 'base': 10,
++                   'cap': 60, 'max_attempts': 20, 'outcome': 'transient'}
++        result = dispatch(payload)
++        self.assertEqual(result, {'retry': True, 'at': 110, 'delay': 60})
++
++    def test_retry_after_below_backoff(self):
++        payload = {'action': 'schedule', 'now': 0, 'attempt': 3, 'base': 10,
++                   'cap': 1000, 'max_attempts': 5, 'outcome': 'transient',
++                   'retry_after': 5}
++        self.assertEqual(dispatch(payload), {'retry': True, 'at': 40, 'delay': 40})
++
++    def test_retry_after_above_backoff(self):
++        payload = {'action': 'schedule', 'now': 0, 'attempt': 1, 'base': 10,
++                   'cap': 100, 'max_attempts': 5, 'outcome': 'transient',
++                   'retry_after': 30}
++        self.assertEqual(dispatch(payload), {'retry': True, 'at': 30, 'delay': 30})
++
++    def test_retry_after_exceeds_cap(self):
++        payload = {'action': 'schedule', 'now': 7, 'attempt': 1, 'base': 10,
++                   'cap': 100, 'max_attempts': 5, 'outcome': 'transient',
++                   'retry_after': 500}
++        self.assertEqual(dispatch(payload), {'retry': True, 'at': 507, 'delay': 500})
++
++    def test_retry_after_zero(self):
++        payload = {'action': 'schedule', 'now': 0, 'attempt': 1, 'base': 5,
++                   'cap': 50, 'max_attempts': 2, 'outcome': 'transient',
++                   'retry_after': 0}
++        self.assertEqual(dispatch(payload), {'retry': True, 'at': 5, 'delay': 5})
++
++    def test_retry_after_null(self):
++        payload = {'action': 'schedule', 'now': 0, 'attempt': 1, 'base': 5,
++                   'cap': 50, 'max_attempts': 2, 'outcome': 'transient',
++                   'retry_after': None}
++        self.assertEqual(dispatch(payload), {'retry': True, 'at': 5, 'delay': 5})
++
++    def test_transient_last_attempt_no_retry(self):
++        payload = {'action': 'schedule', 'now': 10, 'attempt': 3, 'base': 10,
++                   'cap': 100, 'max_attempts': 3, 'outcome': 'transient'}
++        self.assertEqual(dispatch(payload), {'retry': False, 'at': None, 'delay': None})
++
++    def test_success_no_retry(self):
++        payload = {'action': 'schedule', 'now': 10, 'attempt': 1, 'base': 10,
++                   'cap': 100, 'max_attempts': 3, 'outcome': 'success'}
++        self.assertEqual(dispatch(payload), {'retry': False, 'at': None, 'delay': None})
++
++    def test_permanent_no_retry(self):
++        payload = {'action': 'schedule', 'now': 10, 'attempt': 1, 'base': 10,
++                   'cap': 100, 'max_attempts': 3, 'outcome': 'permanent'}
++        self.assertEqual(dispatch(payload), {'retry': False, 'at': None, 'delay': None})
++
++    def test_invalid_outcome_even_without_retry(self):
++        payload = {'action': 'schedule', 'now': 10, 'attempt': 1, 'base': 10,
++                   'cap': 100, 'max_attempts': 1, 'outcome': 'bogus'}
++        with self.assertRaises(ValueError):
++            dispatch(payload)
++
++    def test_invalid_attempt(self):
++        payload = {'action': 'schedule', 'now': 0, 'attempt': 0, 'base': 1,
++                   'cap': 1, 'max_attempts': 1, 'outcome': 'success'}
++        with self.assertRaises(ValueError):
++            dispatch(payload)
++
++    def test_invalid_base(self):
++        payload = {'action': 'schedule', 'now': 0, 'attempt': 1, 'base': 0,
++                   'cap': 1, 'max_attempts': 1, 'outcome': 'success'}
++        with self.assertRaises(ValueError):
++            dispatch(payload)
++
++    def test_invalid_cap(self):
++        payload = {'action': 'schedule', 'now': 0, 'attempt': 1, 'base': 1,
++                   'cap': -5, 'max_attempts': 1, 'outcome': 'success'}
++        with self.assertRaises(ValueError):
++            dispatch(payload)
++
++    def test_invalid_max_attempts(self):
++        payload = {'action': 'schedule', 'now': 0, 'attempt': 1, 'base': 1,
++                   'cap': 1, 'max_attempts': 0, 'outcome': 'success'}
++        with self.assertRaises(ValueError):
++            dispatch(payload)
++
++    def test_invalid_retry_after(self):
++        payload = {'action': 'schedule', 'now': 0, 'attempt': 1, 'base': 1,
++                   'cap': 1, 'max_attempts': 1, 'outcome': 'success',
++                   'retry_after': -1}
++        with self.assertRaises(ValueError):
++            dispatch(payload)
++
++    def test_invalid_now(self):
++        payload = {'action': 'schedule', 'now': 'x', 'attempt': 1, 'base': 1,
++                   'cap': 1, 'max_attempts': 1, 'outcome': 'success'}
++        with self.assertRaises(ValueError):
++            dispatch(payload)
++
++    def test_unknown_action(self):
++        payload = {'action': 'nope', 'now': 0}
++        with self.assertRaises(ValueError):
++            dispatch(payload)
++
++    def test_existing_attempts_action(self):
++        payload = {'action': 'attempts', 'outcomes': ['success', 'transient']}
++        self.assertEqual(dispatch(payload), 2)
++
++    def test_input_not_mutated(self):
++        payload = {'action': 'schedule', 'now': 1, 'attempt': 2, 'base': 4,
++                   'cap': 9, 'max_attempts': 4, 'outcome': 'transient'}
++        before = json.dumps(payload, sort_keys=True)
++        dispatch(payload)
++        self.assertEqual(json.dumps(payload, sort_keys=True), before)
++
++    def test_rejected_input_not_mutated(self):
++        payload = {'action': 'schedule', 'now': 1, 'attempt': 0, 'base': 4,
++                   'cap': 9, 'max_attempts': 4, 'outcome': 'transient'}
++        before = json.dumps(payload, sort_keys=True)
++        with self.assertRaises(ValueError):
++            dispatch(payload)
++        self.assertEqual(json.dumps(payload, sort_keys=True), before)
++
++    def test_large_exponent_exact_arithmetic(self):
++        payload = {'action': 'schedule', 'now': 0, 'attempt': 64, 'base': 3,
++                   'cap': 10**6, 'max_attempts': 100, 'outcome': 'transient'}
++        result = dispatch(payload)
++        self.assertEqual(result, {'retry': True, 'at': 10**6, 'delay': 10**6})
++
++
++class CliTests(unittest.TestCase):
++    def run_cli(self, stdin_text):
++        proc = subprocess.run(
++            [sys.executable, 'cli.py'],
++            input=stdin_text, capture_output=True, text=True, cwd='/workspace')
++        return proc
++
++    def test_cli_success(self):
++        payload = {'action': 'schedule', 'now': 100, 'attempt': 2, 'base': 10,
++                   'cap': 3600, 'max_attempts': 5, 'outcome': 'transient'}
++        proc = self.run_cli(json.dumps(payload))
++        self.assertEqual(proc.returncode, 0)
++        self.assertEqual(proc.stderr, '')
++        self.assertEqual(json.loads(proc.stdout),
++                         {'retry': True, 'at': 120, 'delay': 20})
++
++    def test_cli_attempts_success(self):
++        proc = self.run_cli(json.dumps({'action': 'attempts',
++                                        'outcomes': ['a', 'b', 'c']}))
++        self.assertEqual(proc.returncode, 0)
++        self.assertEqual(json.loads(proc.stdout), 3)
++
++    def test_cli_value_error_exit_2(self):
++        proc = self.run_cli(json.dumps({'action': 'nope'}))
++        self.assertEqual(proc.returncode, 2)
++        self.assertNotEqual(proc.stderr, '')
++        self.assertNotIn('Traceback', proc.stderr)
++        self.assertEqual(proc.stdout, '')
++
++    def test_cli_invalid_schedule_exit_2(self):
++        proc = self.run_cli(json.dumps({'action': 'schedule', 'now': 0,
++                                        'attempt': 1, 'base': 1, 'cap': 1,
++                                        'max_attempts': 1, 'outcome': 'bad'}))
++        self.assertEqual(proc.returncode, 2)
++        self.assertNotEqual(proc.stderr, '')
++        self.assertNotIn('Traceback', proc.stderr)
++
++
++if __name__ == '__main__':
++    unittest.main()
