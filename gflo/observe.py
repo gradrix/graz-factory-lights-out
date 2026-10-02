@@ -21,13 +21,25 @@ def identity(pid):
 
 def redact(text):
     text = re.sub(r'(?i)(bearer\s+)[\w.\-]+', r'\1[redacted]', text)
-    # Consume quoted values as a whole, including escaped quotes and whitespace.
-    # An unterminated quoted value is conservatively hidden through end of text.
-    return re.sub(r'''(?ix)
-        ((?:api[_-]?key|password|secret|token)["\s]*[:=]\s*)
-        (?: "(?:\\.|[^"\\])*(?:"|\\?$)
-          | '(?:\\.|[^'\\])*(?:'|\\?$)
-          | [^\s,"'}]+ )''', r'\1[redacted]', text, flags=re.DOTALL)
+    # JSON embedded in a message escapes both assignment keys and value quotes.
+    # Match the same escape depth at the closing delimiter; an escaped quote
+    # inside that value has a different depth. Never alter the original input.
+    assignments = re.compile(r'''(?ix)
+        ((?:api[_-]?key|password|secret|token)["'\\\s]*[:=]\s*)
+        (\\*["']|[^\s,"'}]+)''')
+    parts, position = [], 0
+    for match in assignments.finditer(text):
+        if match.start() < position:
+            continue
+        end, opening = match.end(), match.group(2)
+        if opening.endswith(('"', "'")) and not opening[:-1].strip('\\'):
+            delimiter = '\\' * (len(opening) - 1) + opening[-1]
+            closing = re.compile(r'(?<!\\)' + re.escape(delimiter)).search(text, end)
+            # An unfinished quoted value is private through the end of text.
+            end = closing.end() if closing else len(text)
+        parts.extend((text[position:match.start()], match.group(1), '[redacted]'))
+        position = end
+    return ''.join(parts) + text[position:]
 
 
 def redact_json(value):

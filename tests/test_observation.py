@@ -137,6 +137,26 @@ f.resume(sys.argv[2])
                 self.assertNotIn('beta', public)
                 self.assertEqual(json.loads(public)['ordinary'], 'retained')
 
+    def test_nested_encoded_credentials_are_hidden_in_public_artifacts(self):
+        from gflo.runner import Factory
+        from gflo.observe import Observer
+        factory = Factory(self.root / 'state', lambda *a: {}, lambda *a: {'passed': True})
+        run = factory.create(self.task)
+        factory.resume(run)
+        artifact = factory.state / run / 'attempts/1/worker.json'
+        for value in ('token="ALPHA BETA"', 'secret="ALPHA\\"BETA"',
+                      "password='ALPHA BETA'", 'token="ALPHA BETA'):
+            for depth in range(5):
+                value = json.dumps({'evidence': value})
+                with self.subTest(depth=depth, value=value):
+                    original = {'summary': 'Previous evidence:\n' + value, 'turns': 2}
+                    artifact.write_text(json.dumps(original))
+                    public = Observer(factory.state).artifact(run, 'attempts/1/worker.json')
+                    self.assertNotIn('ALPHA', public)
+                    self.assertNotIn('BETA', public)
+                    self.assertEqual(json.loads(public)['turns'], 2)
+                    self.assertEqual(json.loads(artifact.read_text()), original)
+
     def test_http_view_is_readonly_and_reconnects_with_durable_cursor(self):
         import threading
         import urllib.request

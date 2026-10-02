@@ -72,6 +72,29 @@ class WorkerTests(unittest.TestCase):
             self.assertEqual(result['summary'], content)
             self.assertEqual(message['content'], content)
 
+    def test_previous_review_is_private_in_trace_but_unchanged_for_model(self):
+        import copy
+        import json
+        previous = {'passed': False, 'review': {'evidence': 'token="ALPHA BETA"'}}
+        original = copy.deepcopy(previous)
+        requests = []
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = Path(directory) / 'workspace'
+            workspace.mkdir()
+            worker = ModelWorker({'endpoint': 'http://127.0.0.1:1', 'model': 'test'}, FakeSandbox())
+            def response(path, body, **kwargs):
+                requests.append(copy.deepcopy(body))
+                return {'choices': [{'message': {'role': 'assistant', 'content': 'Done'}}]}
+            worker.request = response
+            worker(workspace, {'objective': 'Fix', 'max_turns': 1, 'checks': []}, previous, 2)
+            sent = requests[0]['messages'][-1]['content'].split('\n', 1)[1]
+            self.assertEqual(json.loads(sent), original)
+            self.assertEqual(previous, original)
+            trace = (workspace.parent / 'attempts/2/trajectory.jsonl').read_text()
+            self.assertTrue(all(isinstance(json.loads(line), dict) for line in trace.splitlines()))
+            self.assertNotIn('ALPHA', trace)
+            self.assertNotIn('BETA', trace)
+
     def test_tools_and_completion_leave_a_replayable_trace(self):
         with tempfile.TemporaryDirectory() as directory:
             workspace = Path(directory) / 'workspace'
