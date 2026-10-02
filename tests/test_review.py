@@ -83,3 +83,17 @@ class ReviewTests(unittest.TestCase):
         worker.request = lambda *a, **kw: {'choices':[{'message':{'role':'assistant','tool_calls':[{'id':'q','function':{'name':'question','arguments':'{"question":"Flat fee or percentage?"}'}}]}}]}
         result = worker(workspace, {'objective':'Undecided policy','checks':[],'max_turns':1}, None, 1)
         self.assertEqual(result['question'], 'Flat fee or percentage?')
+
+    def test_review_profile_reserves_output_after_bounded_thinking(self):
+        from gflo.review import Reviewer
+        class Client:
+            observe = staticmethod(lambda *a, **kw: None)
+            config = {'model':'local'}
+            def request(inner, path, body, timeout):
+                self.assertEqual(body['thinking_budget_tokens'], 1024)
+                self.assertEqual(body['max_tokens'], 4096)
+                self.assertTrue(body['chat_template_kwargs']['enable_thinking'])
+                self.assertEqual(timeout, 120)
+                self.assertNotIn('tools', body)
+                return {'choices':[{'message':{'content':'{"decision":"pass","findings":[],"question":""}'}}]}
+        self.assertEqual(Reviewer(Client()).review_files('Keep value', {'app.py':'value=1\n'})['decision'], 'pass')

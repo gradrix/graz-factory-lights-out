@@ -15,3 +15,7 @@ htmlcov/
 !.scratch/.sflo/01-autonomy-publication/
 !.scratch/.sflo/02-autonomy-visibility/
 !.scratch/.sflo/03-autonomy-review/
+.scratch/.sflo/03-autonomy-review/qa-candidate/
+.scratch/.sflo/03-autonomy-review/qa-recheck-candidate/
+.scratch/.sflo/03-autonomy-review/qa-evidence/*/
+.scratch/.sflo/03-autonomy-review/qa-recheck-evidence/*/

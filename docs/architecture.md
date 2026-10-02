@@ -44,3 +44,5 @@ Automatic planning/delegation is a later stage. First accumulate real-task compl
 ## Execution observation
 
 `observe.py` owns versioned SQLite events, per-run process identity/heartbeat and read-only projections. State transitions and their lifecycle events share a transaction. A heartbeat means the controller process is alive; last-action time separately describes progress. `web.py` serves the loopback read-only page and bounded artifact endpoints. `guard.py` is a disposable per-command supervisor that removes its exact Docker container on timeout or controller pipe EOF. Worker and sandbox callbacks emit operation metadata; they do not own acceptance.
+
+`review.py` is a fresh, read-only assignment. It validates decision shape and source locations. The runner validates the same result independently before publication, combines it with executable verification, and binds both evidence files into the accepted receipt. `needs_input` is terminal for that frozen contract; it is not an implementation failure to retry blindly. Review capability qualification and model-profile selection are separate from controller correctness.

@@ -4,7 +4,7 @@ A small local software factory: give it a repository, a task and executable acce
 
 **Works today:** bounded Python tasks using prepared dependencies.
 
-**Destination:** end-to-end autonomous local delivery, introduced through measured stages: visibility, independent review, environment preparation, research/browser tools, planning and integration. See the [roadmap](docs/roadmap.md) and [feasibility research](docs/research/autonomy-feasibility.md). Those capabilities are planned; automatic decomposition, semantic review and merging are not implemented yet.
+**Destination:** end-to-end autonomous local delivery, introduced through measured stages: visibility, independent review, environment preparation, research/browser tools, planning and integration. See the [roadmap](docs/roadmap.md) and [feasibility research](docs/research/autonomy-feasibility.md). Visibility and controlled recovery are implemented and qualified on the rig. Independent local review is implemented but still under qualification; automatic environment preparation, research/browser tools, decomposition and merging remain planned.
 
 ## Run on MONSTER-GAMING-PC
 
