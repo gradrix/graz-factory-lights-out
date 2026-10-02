@@ -1,0 +1,35 @@
+{
+  "url": "https://docs.python.org/3.12/library/csv.html",
+  "source_version": "Python3.12 historical documentation snapshot; floating series URL, not exact runtime patch",
+  "questions": [
+    {
+      "name": "newlines",
+      "question": "Why should CSV files be opened with newline=\"\" when reading and writing?",
+      "expected_status": "supported",
+      "semantic_facts": [
+        "CSV handles newlines itself.",
+        "Without it embedded quoted newlines may be misread; CRLF-writing platforms can add an extra carriage return."
+      ],
+      "citation_requirement": "Every claim needs exact entailing frozen spans."
+    },
+    {
+      "name": "row_shape",
+      "question": "How does csv.DictReader handle extra or missing fields by default, and can csv.writer preserve a distinction between None and an empty string?",
+      "expected_status": "supported",
+      "semantic_facts": [
+        "Extra fields form a list under restkey, default None.",
+        "Missing fields use restval, default None.",
+        "writer writes None as empty string, losing that distinction."
+      ],
+      "citation_requirement": "Every claim needs exact entailing frozen spans."
+    }
+  ],
+  "profile": {
+    "model": "flash-next-coder",
+    "context": 98304,
+    "cache": "q4_0",
+    "reasoning": "medium",
+    "max_output_tokens": 2048,
+    "request_timeout_s": 120
+  }
+}

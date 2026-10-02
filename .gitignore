@@ -71,3 +71,8 @@ htmlcov/
 
 !.scratch/.sflo/06-autonomy-browser/
 .scratch/.sflo/06-autonomy-browser/*/
+
+!.scratch/.sflo/05-autonomy-documents/research-cohort/
+.scratch/.sflo/05-autonomy-documents/research-cohort/*
+!.scratch/.sflo/05-autonomy-documents/research-cohort/*.json
+!.scratch/.sflo/05-autonomy-documents/research-cohort/*.md

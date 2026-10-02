@@ -1,0 +1,11 @@
+{
+  "candidate": "2049361",
+  "candidate_manifest_sha256": "9c01da103e9f145bfc426e4a4c3f02780b85a845594a4716d1437d36c413cb3c",
+  "policy": "Eight additional questions frozen before inference; one attempt each; same2048/120s limits. Prior two questions stay separate. No fullStage4/search/browser acceptance. Source-backed facts independently checked from official pages before freeze.",
+  "contracts": {
+    "json.json": "6442f3e5ca00a563d6c55ea631a9c879a773cceb0c93d78623b08998a6aac7e5",
+    "csv.json": "18a040508ddc4d07d82fb11e7a56458f3bc4986e351af2e206f2523a51b53b4c",
+    "asyncio_groups.json": "85d5ee366c4dab16fcda475578516b8b6300094be8233a17ac74b1a027b1e903",
+    "asyncio_timeouts.json": "f40f50cc2f48d90aa651150151c7a95906e015a5904b3ef234990a69912ea45b"
+  }
+}

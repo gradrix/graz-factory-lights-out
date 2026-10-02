@@ -1,0 +1,34 @@
+{
+  "url": "https://docs.python.org/3.12/library/json.html",
+  "source_version": "Python3.12 historical documentation snapshot; floating series URL, not exact runtime patch",
+  "questions": [
+    {
+      "name": "nonfinite",
+      "question": "What does allow_nan=False do for NaN and infinities during JSON serialization, and what happens by default?",
+      "expected_status": "supported",
+      "semantic_facts": [
+        "False rejects nonfinite floats with ValueError.",
+        "Default True emits NaN, Infinity and -Infinity."
+      ],
+      "citation_requirement": "Every claim needs exact entailing frozen spans."
+    },
+    {
+      "name": "hooks",
+      "question": "If both object_hook and object_pairs_hook are supplied when decoding JSON, which takes priority and what does that hook receive?",
+      "expected_status": "supported",
+      "semantic_facts": [
+        "object_pairs_hook takes priority.",
+        "It receives an ordered list of pairs; its result replaces the dictionary."
+      ],
+      "citation_requirement": "Every claim needs exact entailing frozen spans."
+    }
+  ],
+  "profile": {
+    "model": "flash-next-coder",
+    "context": 98304,
+    "cache": "q4_0",
+    "reasoning": "medium",
+    "max_output_tokens": 2048,
+    "request_timeout_s": 120
+  }
+}

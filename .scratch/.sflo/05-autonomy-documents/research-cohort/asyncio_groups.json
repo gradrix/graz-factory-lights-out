@@ -1,0 +1,34 @@
+{
+  "url": "https://docs.python.org/3.12/library/asyncio-task.html",
+  "source_version": "Python3.12 historical documentation snapshot; floating series URL, not exact runtime patch",
+  "questions": [
+    {
+      "name": "taskgroup",
+      "question": "If a TaskGroup child raises ValueError, what happens to remaining tasks and how are failures reported when the group exits?",
+      "expected_status": "supported",
+      "semantic_facts": [
+        "Remaining tasks are cancelled and awaited.",
+        "Noncancellation failures are raised in an appropriate exception group."
+      ],
+      "citation_requirement": "Every claim needs exact entailing frozen spans."
+    },
+    {
+      "name": "gather",
+      "question": "With gather(return_exceptions=False), one awaitable raises ValueError. Is the exception propagated, and are the other awaitables automatically cancelled?",
+      "expected_status": "supported",
+      "semantic_facts": [
+        "First exception propagates immediately to awaiting task.",
+        "Other awaitables continue rather than being automatically cancelled."
+      ],
+      "citation_requirement": "Every claim needs exact entailing frozen spans."
+    }
+  ],
+  "profile": {
+    "model": "flash-next-coder",
+    "context": 98304,
+    "cache": "q4_0",
+    "reasoning": "medium",
+    "max_output_tokens": 2048,
+    "request_timeout_s": 120
+  }
+}
