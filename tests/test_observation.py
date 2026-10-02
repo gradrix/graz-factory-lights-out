@@ -126,6 +126,17 @@ f.resume(sys.argv[2])
         with self.assertRaisesRegex(ValueError, 'display limit'):
             Observer(factory.state).artifact(run, 'attempts/1/worker.json')
 
+    def test_redaction_consumes_whole_quoted_and_unterminated_values(self):
+        from gflo.observe import redact_json
+        for value in ('password="alpha beta"', 'token="alpha\\"beta"',
+                      "secret='alpha beta'", 'api_key="alpha\nbeta"',
+                      'token="alpha beta', 'token="alpha beta\\'):
+            with self.subTest(value=value):
+                public = redact_json({'summary': value, 'ordinary': 'retained'})
+                self.assertNotIn('alpha', public)
+                self.assertNotIn('beta', public)
+                self.assertEqual(json.loads(public)['ordinary'], 'retained')
+
     def test_http_view_is_readonly_and_reconnects_with_durable_cursor(self):
         import threading
         import urllib.request

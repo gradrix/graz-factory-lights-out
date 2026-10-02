@@ -21,7 +21,13 @@ def identity(pid):
 
 def redact(text):
     text = re.sub(r'(?i)(bearer\s+)[\w.\-]+', r'\1[redacted]', text)
-    return re.sub(r'(?i)((?:api[_-]?key|password|secret|token)["\s]*[:=]\s*["\']?)[^\s,"\'}]+', r'\1[redacted]', text)
+    # Consume quoted values as a whole, including escaped quotes and whitespace.
+    # An unterminated quoted value is conservatively hidden through end of text.
+    return re.sub(r'''(?ix)
+        ((?:api[_-]?key|password|secret|token)["\s]*[:=]\s*)
+        (?: "(?:\\.|[^"\\])*(?:"|\\?$)
+          | '(?:\\.|[^'\\])*(?:'|\\?$)
+          | [^\s,"'}]+ )''', r'\1[redacted]', text, flags=re.DOTALL)
 
 
 def redact_json(value):
