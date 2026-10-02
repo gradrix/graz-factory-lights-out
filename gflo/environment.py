@@ -114,10 +114,10 @@ class EnvironmentStore:
             raise ValueError('Environment store must be controller-owned with mode 0700')
 
     @contextmanager
-    def locked(self):
+    def locked(self, *, shared=False):
         with (self.root / '.lock').open('a') as lock:
             try:
-                fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                fcntl.flock(lock, (fcntl.LOCK_SH if shared else fcntl.LOCK_EX) | fcntl.LOCK_NB)
             except BlockingIOError:
                 raise ValueError('Another environment preparation owns this store') from None
             yield
@@ -140,6 +140,7 @@ class EnvironmentStore:
             active()
             self._remove_private_staging()
             stage = Path(tempfile.mkdtemp(prefix='.prepare-', dir=self.root))
+            published = None
             try:
                 dependencies = unpack_archive(stream, stage / 'deps')
                 for path in dependencies.rglob('*'):
@@ -164,11 +165,20 @@ class EnvironmentStore:
                 active()
                 destination = self.root / identifier
                 if os.path.lexists(destination):
-                    return self.resolve(identifier, identifier)
+                    return self._resolve(identifier, identifier)
                 stage.rename(destination)
+                published = destination
                 with self._directory_fd() as directory:
                     os.fsync(directory)
-                return self.resolve(identifier, identifier)
+                result = self._resolve(identifier, identifier)
+                published = None  # Commit is durable and verified before releasing readers.
+                return result
+            except BaseException:
+                if published is not None:
+                    # Retire first: even failed recursive cleanup leaves no
+                    # addressable receipt from this failed publication.
+                    published.rename(stage)
+                raise
             finally:
                 if stage.exists():
                     discard(stage)
@@ -182,6 +192,10 @@ class EnvironmentStore:
             os.close(descriptor)
 
     def resolve(self, identifier, expected_hash=None):
+        with self.locked(shared=True):
+            return self._resolve(identifier, expected_hash)
+
+    def _resolve(self, identifier, expected_hash=None):
         if not isinstance(identifier, str) or not HEX.fullmatch(identifier):
             raise ValueError('Environment ID must be a receipt SHA-256, never a path')
         root = self.root / identifier

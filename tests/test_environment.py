@@ -81,3 +81,27 @@ class EnvironmentStoreTests(unittest.TestCase):
         self.assertEqual((self.store.root / good.id / 'receipt.json').read_bytes(), original)
         self.assertEqual([p.name for p in self.store.root.iterdir() if len(p.name) == 64], [good.id])
         self.assertFalse(list(self.store.root.glob('.prepare-*')))
+
+    def test_post_rename_failure_retires_new_publication(self):
+        import os
+        import stat
+        from unittest.mock import patch
+        good = self.publish()
+        original_fsync = os.fsync
+        def fail_directory(descriptor):
+            if stat.S_ISDIR(os.fstat(descriptor).st_mode):
+                raise OSError('injected publication durability failure')
+            return original_fsync(descriptor)
+        with patch('gflo.environment.os.fsync', side_effect=fail_directory):
+            with self.assertRaisesRegex(OSError, 'durability'):
+                self.store.publish(archive(b'new'), self.metadata, lambda path: {'passed': True})
+        self.assertEqual([p.name for p in self.store.root.iterdir() if len(p.name) == 64], [good.id])
+        self.assertEqual(self.store.resolve(good.id).id, good.id)
+
+    def test_resolver_cannot_observe_an_in_progress_publication(self):
+        good = self.publish()
+        def check(path):
+            with self.assertRaisesRegex(ValueError, 'preparation'):
+                self.store.resolve(good.id)
+            return {'passed': True}
+        self.store.publish(archive(b'next'), self.metadata, check)
