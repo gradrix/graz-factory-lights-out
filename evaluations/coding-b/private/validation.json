@@ -1,0 +1,170 @@
+[
+  {
+    "task": "01-dependency-order",
+    "candidate": "baseline",
+    "expected_failure": true,
+    "exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmpzv6ut1h6/acceptance.py\", line 35, in <module>\n    assert call('order',nodes=[]) == []\n           ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/tmpzv6ut1h6/acceptance.py\", line 8, in call\n    result=dispatch(p)\n           ^^^^^^^^^^^\n  File \"/tmp/tmpzv6ut1h6/api.py\", line 6, in dispatch\n    if action not in actions:raise ValueError(\"unknown action: \"+str(action))\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: unknown action: order\n"
+  },
+  {
+    "task": "01-dependency-order",
+    "candidate": "reference",
+    "expected_failure": false,
+    "exit": 0,
+    "stderr": ""
+  },
+  {
+    "task": "02-rate-window",
+    "candidate": "baseline",
+    "expected_failure": true,
+    "exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmppr1czqfc/acceptance.py\", line 35, in <module>\n    assert call('admit',history=[0,5,5],now=10,window=10,limit=3)=={'allowed':True,'history':[5,5,10],'retry_at':None}\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/tmppr1czqfc/acceptance.py\", line 8, in call\n    result=dispatch(p)\n           ^^^^^^^^^^^\n  File \"/tmp/tmppr1czqfc/api.py\", line 6, in dispatch\n    if action not in actions:raise ValueError(\"unknown action: \"+str(action))\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: unknown action: admit\n"
+  },
+  {
+    "task": "02-rate-window",
+    "candidate": "reference",
+    "expected_failure": false,
+    "exit": 0,
+    "stderr": ""
+  },
+  {
+    "task": "03-retry-schedule",
+    "candidate": "baseline",
+    "expected_failure": true,
+    "exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmpzaaesevd/acceptance.py\", line 37, in <module>\n    assert s()=={'retry':True,'at':103,'delay':3}\n           ^^^\n  File \"/tmp/tmpzaaesevd/acceptance.py\", line 36, in s\n    p=dict(now=100,attempt=1,base=3,cap=10,max_attempts=8,outcome='transient');p.update(changes);return call('schedule',**p)\n                                                                                                        ^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/tmpzaaesevd/acceptance.py\", line 8, in call\n    result=dispatch(p)\n           ^^^^^^^^^^^\n  File \"/tmp/tmpzaaesevd/api.py\", line 6, in dispatch\n    if action not in actions:raise ValueError(\"unknown action: \"+str(action))\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: unknown action: schedule\n"
+  },
+  {
+    "task": "03-retry-schedule",
+    "candidate": "reference",
+    "expected_failure": false,
+    "exit": 0,
+    "stderr": ""
+  },
+  {
+    "task": "04-config-precedence",
+    "candidate": "baseline",
+    "expected_failure": true,
+    "exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmp64hdf368/acceptance.py\", line 35, in <module>\n    assert call('resolve',defaults={'a':1,'n':{'x':1,'y':2},'l':[1],'z':None},layers=[{'n':{'x':None,'q':3},'l':[2]},{'a':4,'n':{'y':5}}],required=['z'])=={'a':4,'n':{'y':5,'q':3},'l':[2],'z':None}\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/tmp64hdf368/acceptance.py\", line 8, in call\n    result=dispatch(p)\n           ^^^^^^^^^^^\n  File \"/tmp/tmp64hdf368/api.py\", line 6, in dispatch\n    if action not in actions:raise ValueError(\"unknown action: \"+str(action))\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: unknown action: resolve\n"
+  },
+  {
+    "task": "04-config-precedence",
+    "candidate": "reference",
+    "expected_failure": false,
+    "exit": 0,
+    "stderr": ""
+  },
+  {
+    "task": "05-escaped-log-fields",
+    "candidate": "baseline",
+    "expected_failure": true,
+    "exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmpkv6f8drn/acceptance.py\", line 35, in <module>\n    assert call('encode',fields={'b':'x=y','a':'one\\ntwo\\t\\\\\\r'})=='a=one\\\\ntwo\\\\t\\\\\\\\\\\\r\\tb=x=y'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/tmpkv6f8drn/acceptance.py\", line 8, in call\n    result=dispatch(p)\n           ^^^^^^^^^^^\n  File \"/tmp/tmpkv6f8drn/api.py\", line 6, in dispatch\n    if action not in actions:raise ValueError(\"unknown action: \"+str(action))\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: unknown action: encode\n"
+  },
+  {
+    "task": "05-escaped-log-fields",
+    "candidate": "reference",
+    "expected_failure": false,
+    "exit": 0,
+    "stderr": ""
+  },
+  {
+    "task": "06-archive-manifest",
+    "candidate": "baseline",
+    "expected_failure": true,
+    "exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmpj6xn625l/acceptance.py\", line 35, in <module>\n    assert call('validate',entries=[{'path':'./b//x','size':3},{'path':'a','size':2}],max_total=5)=={'files':[{'path':'a','size':2},{'path':'b/x','size':3}],'total':5}\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/tmpj6xn625l/acceptance.py\", line 8, in call\n    result=dispatch(p)\n           ^^^^^^^^^^^\n  File \"/tmp/tmpj6xn625l/api.py\", line 6, in dispatch\n    if action not in actions:raise ValueError(\"unknown action: \"+str(action))\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: unknown action: validate\n"
+  },
+  {
+    "task": "06-archive-manifest",
+    "candidate": "reference",
+    "expected_failure": false,
+    "exit": 0,
+    "stderr": ""
+  },
+  {
+    "task": "07-optimistic-version",
+    "candidate": "baseline",
+    "expected_failure": true,
+    "exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmp7c6qpxe2/acceptance.py\", line 35, in <module>\n    assert call('update',records={},id='a',expected=None,patch={'x':1})=={'applied':True,'records':{'a':{'version':1,'data':{'x':1}}},'record':{'version':1,'data':{'x':1}}}\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/tmp7c6qpxe2/acceptance.py\", line 8, in call\n    result=dispatch(p)\n           ^^^^^^^^^^^\n  File \"/tmp/tmp7c6qpxe2/api.py\", line 6, in dispatch\n    if action not in actions:raise ValueError(\"unknown action: \"+str(action))\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: unknown action: update\n"
+  },
+  {
+    "task": "07-optimistic-version",
+    "candidate": "reference",
+    "expected_failure": false,
+    "exit": 0,
+    "stderr": ""
+  },
+  {
+    "task": "08-batch-grouping",
+    "candidate": "baseline",
+    "expected_failure": true,
+    "exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmp3ckn3n10/acceptance.py\", line 35, in <module>\n    assert call('group',requested=['a','b','c','d'],responses=[{'id':'c','ok':False,'error':'bad'},{'id':'b','ok':True,'value':0},{'id':'a','ok':True,'value':None}])=={'successes':[{'id':'a','value':None},{'id':'b','value':0}],'failures':[{'id':'c','error':'bad'}],'missing':['d']}\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/tmp3ckn3n10/acceptance.py\", line 8, in call\n    result=dispatch(p)\n           ^^^^^^^^^^^\n  File \"/tmp/tmp3ckn3n10/api.py\", line 6, in dispatch\n    if action not in actions:raise ValueError(\"unknown action: \"+str(action))\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: unknown action: group\n"
+  },
+  {
+    "task": "08-batch-grouping",
+    "candidate": "reference",
+    "expected_failure": false,
+    "exit": 0,
+    "stderr": ""
+  },
+  {
+    "task": "09-revision-migration",
+    "candidate": "baseline",
+    "expected_failure": true,
+    "exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmplujcbjxz/acceptance.py\", line 36, in <module>\n    r=call('migrate',document=d)\n      ^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/tmplujcbjxz/acceptance.py\", line 8, in call\n    result=dispatch(p)\n           ^^^^^^^^^^^\n  File \"/tmp/tmplujcbjxz/api.py\", line 6, in dispatch\n    if action not in actions:raise ValueError(\"unknown action: \"+str(action))\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: unknown action: migrate\n"
+  },
+  {
+    "task": "09-revision-migration",
+    "candidate": "reference",
+    "expected_failure": false,
+    "exit": 0,
+    "stderr": ""
+  },
+  {
+    "task": "10-weighted-lru",
+    "candidate": "baseline",
+    "expected_failure": true,
+    "exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmp924jvjq5/acceptance.py\", line 37, in <module>\n    r=call('cache',capacity=5,operations=[put('a',2,1),put('b',2,2),get('a'),put('c',3,3),get('b')])\n      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/tmp924jvjq5/acceptance.py\", line 8, in call\n    result=dispatch(p)\n           ^^^^^^^^^^^\n  File \"/tmp/tmp924jvjq5/api.py\", line 6, in dispatch\n    if action not in actions:raise ValueError(\"unknown action: \"+str(action))\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: unknown action: cache\n"
+  },
+  {
+    "task": "10-weighted-lru",
+    "candidate": "reference",
+    "expected_failure": false,
+    "exit": 0,
+    "stderr": ""
+  },
+  {
+    "task": "11-event-watermarks",
+    "candidate": "baseline",
+    "expected_failure": true,
+    "exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmp_tmx6wc7/acceptance.py\", line 36, in <module>\n    r=call('ingest',watermarks={'a':1,'idle':9},events=[event('a',4),event('b',2),event('a',2),event('b',1),event('a',2)])\n      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/tmp_tmx6wc7/acceptance.py\", line 8, in call\n    result=dispatch(p)\n           ^^^^^^^^^^^\n  File \"/tmp/tmp_tmx6wc7/api.py\", line 6, in dispatch\n    if action not in actions:raise ValueError(\"unknown action: \"+str(action))\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: unknown action: ingest\n"
+  },
+  {
+    "task": "11-event-watermarks",
+    "candidate": "reference",
+    "expected_failure": false,
+    "exit": 0,
+    "stderr": ""
+  },
+  {
+    "task": "12-unicode-index",
+    "candidate": "baseline",
+    "expected_failure": true,
+    "exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmpbvy7gil9/acceptance.py\", line 35, in <module>\n    assert call('index',text='A😀é',byte_offsets=[8,0,1,5,6,1])=={'byte_length':8,'char_to_byte':[0,1,5,6,8],'byte_to_char':[4,0,1,2,3,1]}\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/tmpbvy7gil9/acceptance.py\", line 8, in call\n    result=dispatch(p)\n           ^^^^^^^^^^^\n  File \"/tmp/tmpbvy7gil9/api.py\", line 6, in dispatch\n    if action not in actions:raise ValueError(\"unknown action: \"+str(action))\n                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nValueError: unknown action: index\n"
+  },
+  {
+    "task": "12-unicode-index",
+    "candidate": "reference",
+    "expected_failure": false,
+    "exit": 0,
+    "stderr": ""
+  }
+]

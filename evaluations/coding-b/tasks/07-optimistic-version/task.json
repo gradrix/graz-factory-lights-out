@@ -1,0 +1,16 @@
+{
+  "repo": "source",
+  "objective": "Add action update with records (object of id -> {version: nonnegative integer,data:object}), id (string), expected (null or nonnegative integer) and patch (JSON object). Return {applied:bool, records:new independent object, record:current/new independent record-or-null}. If id is absent and expected is null, create version 1 and data equal to patch. If id exists and expected equals its version, shallow-merge patch keys into data and increment version by one. Otherwise return applied false and unchanged records/current record; expected=null means create-only, never unconditional overwrite. Patch null values are stored, not deleted. All returned nested containers must be independent of input and record must be independent of returned records too. Preserve read, including missing id -> null and independent returned data. No storage, concurrency primitives or retries are required: this models one compare-and-set transaction. Implement the new action(s) in domain.py, route them through existing api.dispatch(payload), and support them through existing `python cli.py` reading one JSON object from stdin and printing one JSON result. Preserve existing actions, unknown-action ValueError, CLI exit 2 with nonempty stderr/no traceback on ValueError and successful CLI JSON behavior. Never mutate input payloads, including rejected inputs. Assume Python 3.12+ and UTF-8 runtime. Standard library only; all data shapes/types follow the stated contract except explicitly required validation cases. Do not invent additional validation or product policy. Add regression tests and document new usage. Implementation may add helpers/modules but must preserve these public interfaces.",
+  "acceptance": "acceptance",
+  "checks": [
+    [
+      "python",
+      "-B",
+      "-I",
+      "/acceptance/check.py"
+    ]
+  ],
+  "max_attempts": 3,
+  "max_turns": 24,
+  "wall_time_seconds": 900
+}

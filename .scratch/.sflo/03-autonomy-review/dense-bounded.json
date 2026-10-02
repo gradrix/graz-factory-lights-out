@@ -1,0 +1,351 @@
+{
+  "model": "qwen-27b",
+  "review_prompt_sha256": "66a97b8ffdbe9322490b5eb11e329853cfb95c8412938b54cf16b40d106f44a7",
+  "manifest_sha256": "ee968dbee13632318264fb07a990e89ea0c98f3c1238dc8462bda64ec8abac7b",
+  "request_budget_s": 120,
+  "thinking_budget_tokens": 1024,
+  "max_output_tokens": 4096,
+  "results": [
+    {
+      "id": "0b8019437578",
+      "supplemental": false,
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "elapsed_s": 10.04
+    },
+    {
+      "id": "100d1baca5f4",
+      "supplemental": false,
+      "expected": "block",
+      "critical": false,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 3,
+            "evidence": "The code mutates job['status']=target BEFORE validating the transition. For example, with job={'status':'queued'} and target='done': line 3 sets job['status']='done', then line 4 raises ValueError because 'done' is not in {'running','cancelled'}. The job is left mutated to {'status':'done'} instead of the original {'status':'queued'}, violating the requirement that invalid transitions raise ValueError 'without changing job'.",
+            "repair": "Validate the transition before mutating. Reorder to: old=job['status']; if target not in allowed.get(old,set()): raise ValueError('transition'); job['status']=target; return target"
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 13.62
+    },
+    {
+      "id": "1a9a97b91a6b",
+      "supplemental": false,
+      "expected": "block",
+      "critical": false,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 2,
+            "evidence": "The implementation uses r.split(',') which does not handle CSV quoting. For input 'name,value\\n\"Smith, John\",42\\n', split(',') yields ['\"Smith', ' John\"', '42'], so r.split(',')[0] is '\"Smith' (wrong name) and int(r.split(',')[1]) raises ValueError on ' John\"'. The objective explicitly requires preserving CSV quoting.",
+            "repair": "Use the standard-library csv module to parse rows. Replace the body with: import csv, io at the top; then def parse(text): reader = csv.reader(io.StringIO(text)); next(reader); return [(row[0], int(row[1])) for row in reader]. This correctly handles quoted fields containing commas, escaped quotes, and quoted integer values."
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 16.61
+    },
+    {
+      "id": "30bc7cbedc30",
+      "supplemental": false,
+      "expected": "block",
+      "critical": false,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 3,
+            "evidence": "out=base.copy() is a shallow copy. When both base[k] and patch[k] are dicts, out[k].update(v) mutates the nested dict object that is still shared with base. Example: base={\"a\":{\"x\":1}}, patch={\"a\":{\"y\":2}}; after merge, base becomes {\"a\":{\"x\":1,\"y\":2}} \u2014 base is mutated, violating 'Neither input may be mutated'.",
+            "repair": "Replace the shallow copy and shallow update with a fully recursive implementation that deep-copies all nested containers. For example: def merge(base, patch): out = {k: _deep_copy(v) for k, v in base.items()}; for k, v in patch.items(): if isinstance(v, dict) and isinstance(out.get(k), dict): out[k] = merge(out[k], v); else: out[k] = _deep_copy(v); return out; where _deep_copy recursively copies dicts and lists."
+          },
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 5,
+            "evidence": "out[k].update(v) performs a shallow update, not a recursive merge. Example: base={\"a\":{\"y\":{\"p\":1}}}, patch={\"a\":{\"y\":{\"q\":2}}}; expected result {\"a\":{\"y\":{\"p\":1,\"q\":2}}} but actual is {\"a\":{\"y\":{\"q\":2}}} because the nested 'y' dict is replaced wholesale rather than merged recursively.",
+            "repair": "Replace out[k].update(v) with out[k] = merge(out[k], v) so that nested dictionaries are merged recursively."
+          },
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 6,
+            "evidence": "out[k]=v assigns the patch's value by reference. If v is a dict or list, the output shares that container with patch. Example: patch={\"b\":{\"x\":1}}; after merge, mutating result[\"b\"][\"x\"] also mutates patch[\"b\"][\"x\"], violating 'all nested containers in output must be independent of both inputs'.",
+            "repair": "Deep-copy the value before assigning: out[k] = _deep_copy(v) where _deep_copy recursively copies dicts and lists."
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 20.47
+    },
+    {
+      "id": "45264190f293",
+      "supplemental": false,
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "elapsed_s": 9.99
+    },
+    {
+      "id": "46c2846ea3ef",
+      "supplemental": false,
+      "expected": "block",
+      "critical": true,
+      "review": {
+        "decision": "error",
+        "error": "Review finding needs a valid source location"
+      },
+      "elapsed_s": 17.78
+    },
+    {
+      "id": "57eb7a68cf11",
+      "supplemental": false,
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "elapsed_s": 8.97
+    },
+    {
+      "id": "5bd05d6604f4",
+      "supplemental": false,
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "pass",
+        "findings": [
+          {
+            "severity": "minor",
+            "path": "core.py",
+            "line": 5,
+            "evidence": "target.read_text() uses the locale-default encoding rather than explicitly UTF-8. On systems where the locale is not UTF-8 (e.g. Windows with cp1252), reading a UTF-8 file could produce mojibake or a UnicodeDecodeError. The objective states the function returns 'UTF-8 file contents', implying the encoding should be explicit.",
+            "repair": "Change to target.read_text(encoding='utf-8') to guarantee UTF-8 decoding regardless of system locale."
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 15.54
+    },
+    {
+      "id": "5c093b674730",
+      "supplemental": false,
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "elapsed_s": 14.02
+    },
+    {
+      "id": "5f27651072dd",
+      "supplemental": false,
+      "expected": "block",
+      "critical": true,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "major",
+            "path": "core.py",
+            "line": 2,
+            "evidence": "state['seen'].get(key) is used as a truthiness check. If the first request stored amount=0 under key, then state['seen'][key] is 0 (falsy). A subsequent call with the same key and amount=0 will fail the `if state['seen'].get(key):` guard, fall through to the 'first request' branch, and re-execute `state['balance'] += amount; state['seen'][key]=amount`. While the numeric result happens to be identical for amount=0, the code does not actually take the replay path. More critically, if a key was previously stored with amount=0 and a later call uses the same key with a *different* amount (e.g. 5), the falsy check causes the code to treat it as a new request instead of raising ValueError, silently mutating balance and overwriting seen[key].",
+            "repair": "Replace the truthiness check with an explicit key-presence test: `if key in state['seen']:`. This correctly handles all stored values including 0, negative numbers, and any other falsy integer."
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 17.23
+    },
+    {
+      "id": "72b0e7efc8c4",
+      "supplemental": false,
+      "expected": "block",
+      "critical": true,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 3,
+            "evidence": "The loop validates and deducts per-item. If a later quantity is invalid, earlier deductions have already mutated stock. Example: stock={\"A\":10}, requests=[(\"A\",3),(\"B\",-1)] \u2192 stock[\"A\"] becomes 7 before ValueError is raised on the second item, violating 'Every failure leaves the input dictionary unchanged' and 'validate all quantities first'.",
+            "repair": "Split into two phases: (1) iterate all requests and validate every quantity, raising ValueError on the first invalid one without touching stock; (2) compute aggregate quantities per SKU, verify every SKU exists and aggregate \u2264 stock[sku], returning False on any failure; (3) only then deduct aggregates from stock and return True."
+          },
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 5,
+            "evidence": "Per-item stock check does not enforce 'insufficient aggregate stock'. Example: stock={\"A\":10}, requests=[(\"A\",7),(\"A\",7)] \u2192 first iteration deducts 7 (stock[\"A\"]\u21923), second iteration sees 3<7 and returns False, but stock is now {\"A\":3} instead of the original {\"A\":10}. The aggregate (14) exceeds stock (10) yet the dictionary was partially mutated.",
+            "repair": "Before any deduction, sum quantities per SKU into an aggregate dict. Check that every SKU in the aggregate exists in stock and stock[sku] >= aggregate[sku]. Only if all checks pass, deduct the aggregate values."
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 18.85
+    },
+    {
+      "id": "7b2c0f64aa20",
+      "supplemental": false,
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "elapsed_s": 14.26
+    },
+    {
+      "id": "868849946e78",
+      "supplemental": false,
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "elapsed_s": 9.59
+    },
+    {
+      "id": "8d23262bb9ac",
+      "supplemental": false,
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "error",
+        "error": "Extra data: line 1 column 38 (char 37)"
+      },
+      "elapsed_s": 21.59
+    },
+    {
+      "id": "9b911511abf3",
+      "supplemental": false,
+      "expected": "block",
+      "critical": true,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 3,
+            "evidence": "The objective requires rounding EACH row to cents with ROUND_HALF_UP before summing. The current code sums the raw Decimal values first, then quantizes the total. Counterexample: rows=['0.005','0.005'] \u2192 correct: round(0.005)=0.01, round(0.005)=0.01, sum=0.02 \u2192 '0.02'; actual: sum=0.010, quantize\u21920.01 \u2192 '0.01'. Another: rows=['1.004','1.004'] \u2192 correct: 1.00+1.00=2.00; actual: 2.008\u21922.01.",
+            "repair": "Change the generator to quantize each element before summing: `return format(sum((Decimal(x).quantize(Decimal('.01'), rounding=ROUND_HALF_UP) for x in rows), Decimal('0')), '.2f')`"
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 17.23
+    },
+    {
+      "id": "9db1122b48f8",
+      "supplemental": false,
+      "expected": "block",
+      "critical": false,
+      "review": {
+        "decision": "error",
+        "error": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "elapsed_s": 17.85
+    },
+    {
+      "id": "9de841f5d10f",
+      "supplemental": false,
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "elapsed_s": 14.39
+    },
+    {
+      "id": "b94e411585d2",
+      "supplemental": false,
+      "expected": "block",
+      "critical": false,
+      "review": {
+        "decision": "error",
+        "error": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "elapsed_s": 48.12
+    },
+    {
+      "id": "e8f7aaa4fc39",
+      "supplemental": false,
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "elapsed_s": 14.01
+    },
+    {
+      "id": "ee3e5ae15226",
+      "supplemental": false,
+      "expected": "block",
+      "critical": false,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 4,
+            "evidence": "The condition `if not page['items'] or cursor is None: return out` causes early termination when a page has an empty items list, even if `cursor` is not None. This violates the requirement that 'Empty items with a non-None next cursor do not end traversal.' Concrete failing input: fetch(None) \u2192 {'items': [], 'next': 'c1'}, fetch('c1') \u2192 {'items': [1,2], 'next': None}. Expected result [1,2], but the code returns [] after the first iteration because `not page['items']` is True.",
+            "repair": "Change the termination condition to only check the cursor: `if cursor is None: return out`. The full corrected function:\n\ndef collect(fetch):\n    out = []\n    cursor = None\n    while True:\n        page = fetch(cursor)\n        out.extend(page['items'])\n        cursor = page['next']\n        if cursor is None:\n            return out"
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 16.29
+    },
+    {
+      "id": "9de841f5d10f",
+      "supplemental": true,
+      "expected": "block",
+      "critical": true,
+      "review": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "elapsed_s": 14.23
+    }
+  ],
+  "score": {
+    "defects_caught": 7,
+    "critical_missed": 1,
+    "false_blocks": 1,
+    "errors": 4
+  },
+  "supplemental_passed": false,
+  "gate_passed": false
+}

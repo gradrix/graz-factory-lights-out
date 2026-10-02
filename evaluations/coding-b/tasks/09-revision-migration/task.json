@@ -1,0 +1,16 @@
+{
+  "repo": "source",
+  "objective": "Add action migrate with document. Supported revision-1 schema: {revision:1,users:[{id:string,name:string,active:bool}],...extras}; revision-2 schema: {revision:2,users:[{id:string,profile:{name:string},enabled:bool}],...extras}; revision-3 schema: {revision:3,accounts:{id:{profile:{name:string},enabled:bool}},order:[IDs],...extras}. Convert revisions 1 or 2 to revision 3, preserving user order, exact names, flags and all unrelated top-level keys. User IDs must be unique or raise ValueError. Existing revision 3 must return a deep independent unchanged copy. Other revision numbers raise ValueError. Revision 1/2 inputs do not already contain accounts/order keys; all listed field types are valid and user records contain exactly the listed fields. Empty users produce accounts={} and order=[]. Remove users from migrated output. Preserve action revision. Migration must be idempotent and must not mutate inputs or share nested output containers with them. Implement the new action(s) in domain.py, route them through existing api.dispatch(payload), and support them through existing `python cli.py` reading one JSON object from stdin and printing one JSON result. Preserve existing actions, unknown-action ValueError, CLI exit 2 with nonempty stderr/no traceback on ValueError and successful CLI JSON behavior. Never mutate input payloads, including rejected inputs. Assume Python 3.12+ and UTF-8 runtime. Standard library only; all data shapes/types follow the stated contract except explicitly required validation cases. Do not invent additional validation or product policy. Add regression tests and document new usage. Implementation may add helpers/modules but must preserve these public interfaces.",
+  "acceptance": "acceptance",
+  "checks": [
+    [
+      "python",
+      "-B",
+      "-I",
+      "/acceptance/check.py"
+    ]
+  ],
+  "max_attempts": 3,
+  "max_turns": 24,
+  "wall_time_seconds": 900
+}

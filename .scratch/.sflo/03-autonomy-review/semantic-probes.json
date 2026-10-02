@@ -1,0 +1,145 @@
+[
+  {
+    "id": "0b8019437578",
+    "expected": "accept",
+    "exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "100d1baca5f4",
+    "expected": "block",
+    "exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmpr_clikwe/check.py\", line 7, in <module>\n    assert j=={'status':'done'}\nAssertionError\n"
+  },
+  {
+    "id": "1a9a97b91a6b",
+    "expected": "block",
+    "exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmpbk_bslf0/check.py\", line 3, in <module>\n    assert parse('name,value\\n\"a,b\",3\\n')==[('a,b',3)]\n  File \"/tmp/tmpbk_bslf0/core.py\", line 2, in parse\n    return [(r.split(',')[0],int(r.split(',')[1])) for r in text.splitlines()[1:]]\n  File \"/tmp/tmpbk_bslf0/core.py\", line 2, in <listcomp>\n    return [(r.split(',')[0],int(r.split(',')[1])) for r in text.splitlines()[1:]]\nValueError: invalid literal for int() with base 10: 'b\"'\n"
+  },
+  {
+    "id": "30bc7cbedc30",
+    "expected": "block",
+    "exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmpmggxkhn7/check.py\", line 5, in <module>\n    assert a=={'x':{'a':1},'l':[1]}\nAssertionError\n"
+  },
+  {
+    "id": "45264190f293",
+    "expected": "accept",
+    "exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "46c2846ea3ef",
+    "expected": "block",
+    "exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmpqangvarz/check.py\", line 11, in <module>\n    else: raise AssertionError('outside file exposed')\nAssertionError: outside file exposed\n"
+  },
+  {
+    "id": "57eb7a68cf11",
+    "expected": "accept",
+    "exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "5bd05d6604f4",
+    "expected": "accept",
+    "exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "5c093b674730",
+    "expected": "accept",
+    "exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "5f27651072dd",
+    "expected": "block",
+    "exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmpha92fvjz/check.py\", line 7, in <module>\n    else: raise AssertionError('conflict accepted')\nAssertionError: conflict accepted\n"
+  },
+  {
+    "id": "72b0e7efc8c4",
+    "expected": "block",
+    "exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmp95w5_69p/check.py\", line 4, in <module>\n    assert reserve(s,[('a',2),('b',2)]) is False and s=={'a':5,'b':1}\nAssertionError\n"
+  },
+  {
+    "id": "7b2c0f64aa20",
+    "expected": "accept",
+    "exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "868849946e78",
+    "expected": "accept",
+    "exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "8d23262bb9ac",
+    "expected": "accept",
+    "exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "9b911511abf3",
+    "expected": "block",
+    "exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmpg_j584gu/check.py\", line 3, in <module>\n    assert total(['0.005','0.005'])=='0.02'\nAssertionError\n"
+  },
+  {
+    "id": "9db1122b48f8",
+    "expected": "block",
+    "exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmpqt_osnkr/check.py\", line 3, in <module>\n    assert due([{'id':'x','at':'2026-01-01T12:00:00+02:00'}],'2026-01-01T10:30:00+00:00')==['x']\nAssertionError\n"
+  },
+  {
+    "id": "9de841f5d10f",
+    "expected": "accept",
+    "exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "b94e411585d2",
+    "expected": "block",
+    "exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmpmlww6slc/check.py\", line 3, in <module>\n    assert lines(['ab','c\\r','\\n\\n','tail\\r'])==['abc','','tail\\r']\nAssertionError\n"
+  },
+  {
+    "id": "e8f7aaa4fc39",
+    "expected": "accept",
+    "exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "ee3e5ae15226",
+    "expected": "block",
+    "exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmp2_v5_tca/check.py\", line 4, in <module>\n    assert collect(pages.__getitem__)==[1,2]\nAssertionError\n"
+  },
+  {
+    "probe": "clean money finite 1e26",
+    "observed": "InvalidOperation: [<class 'decimal.InvalidOperation'>]",
+    "required": "100000000000000000000000000.00"
+  },
+  {
+    "probe": "streaming claimed example",
+    "observed": [
+      "a",
+      "",
+      "b"
+    ],
+    "claimed": [
+      "a",
+      "",
+      "",
+      "b"
+    ],
+    "required": [
+      "a",
+      "b"
+    ]
+  }
+]

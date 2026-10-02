@@ -1,0 +1,16 @@
+{
+  "repo": "source",
+  "objective": "Add action ingest with watermarks (object source->nonnegative integer last accepted sequence) and events (list of {source:string,seq:positive integer,data:JSON}). Missing sources start at watermark 0. For each source, disregard incoming events with seq<=its starting watermark; group later events by (source,seq), accepting identical repeated data as duplicates but raising ValueError for conflicting data at the same source/seq. Conflicts among ignored old events do not matter. JSON equality defines data equality. For each source release only the contiguous sequence beginning at starting watermark+1; gaps retain later events in pending. Return {watermarks:new object retaining original sources and adding every new input source at least with 0, released:list,pending:list}. Both lists are sorted by (source lexicographic, seq numeric), with one object per unique source/seq. No persistent dedup memory beyond input watermarks. Preserve sources. Types/ranges are valid; do not infer timestamps or reorder by input arrival. Implement the new action(s) in domain.py, route them through existing api.dispatch(payload), and support them through existing `python cli.py` reading one JSON object from stdin and printing one JSON result. Preserve existing actions, unknown-action ValueError, CLI exit 2 with nonempty stderr/no traceback on ValueError and successful CLI JSON behavior. Never mutate input payloads, including rejected inputs. Assume Python 3.12+ and UTF-8 runtime. Standard library only; all data shapes/types follow the stated contract except explicitly required validation cases. Do not invent additional validation or product policy. Add regression tests and document new usage. Implementation may add helpers/modules but must preserve these public interfaces.",
+  "acceptance": "acceptance",
+  "checks": [
+    [
+      "python",
+      "-B",
+      "-I",
+      "/acceptance/check.py"
+    ]
+  ],
+  "max_attempts": 3,
+  "max_turns": 24,
+  "wall_time_seconds": 900
+}

@@ -1,0 +1,1 @@
+{"repo": "/home/gradrix/repos/gflo/.scratch/.sflo/03-autonomy-review/qa-evidence/repo", "acceptance": "/home/gradrix/repos/gflo/.scratch/.sflo/03-autonomy-review/qa-evidence/acceptance", "objective": "Set value to 2", "checks": [["python", "-I", "/acceptance/check.py"]], "max_attempts": 2}

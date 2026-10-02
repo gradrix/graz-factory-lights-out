@@ -1,0 +1,70 @@
+{
+  "results": [
+    {
+      "input": ".gflo/review-qualification-v2/supplemental/original-money-input.json",
+      "review": {
+        "error": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "elapsed_s": 92.82419741997728
+    },
+    {
+      "input": ".gflo/review-qualification-v2/review-inputs/9de841f5d10f.json",
+      "review": {
+        "error": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "elapsed_s": 92.19424581900239
+    },
+    {
+      "input": ".gflo/review-qualification-v2/review-inputs/100d1baca5f4.json",
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 3,
+            "evidence": "job['status'] is mutated to target BEFORE the validity check. For example, transition({'status':'queued'}, 'done') sets job['status']='done' on line 3, then raises ValueError on line 4. The job is left in an invalid state ('done' instead of 'queued'), violating the requirement 'raises ValueError without changing job'. Same for any invalid transition from any status.",
+            "repair": "Move the mutation after the validity check: `old=job['status']` on line 3, then `if target not in allowed.get(old,set()): raise ValueError('transition')` on line 4, then `job['status']=target` on line 5, then `return target` on line 6."
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 8.877396516007138
+    }
+  ],
+  "traces": [
+    {
+      "finish_reason": "length",
+      "usage": {
+        "completion_tokens": 8192,
+        "prompt_tokens": 467,
+        "total_tokens": 8659,
+        "prompt_tokens_details": {
+          "cached_tokens": 465
+        }
+      }
+    },
+    {
+      "finish_reason": "length",
+      "usage": {
+        "completion_tokens": 8192,
+        "prompt_tokens": 604,
+        "total_tokens": 8796,
+        "prompt_tokens_details": {
+          "cached_tokens": 602
+        }
+      }
+    },
+    {
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 727,
+        "prompt_tokens": 476,
+        "total_tokens": 1203,
+        "prompt_tokens_details": {
+          "cached_tokens": 474
+        }
+      }
+    }
+  ]
+}

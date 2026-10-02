@@ -1,0 +1,83 @@
+[
+  {
+    "name": "proceed",
+    "expected": "accepted",
+    "actual": "accepted",
+    "attempts": 1,
+    "error": "",
+    "run": "a723d4fab464",
+    "requests": 4
+  },
+  {
+    "name": "needed",
+    "expected": "needs_input",
+    "actual": "needs_input",
+    "attempts": 1,
+    "error": "",
+    "run": "339e660991d6",
+    "requests": 2
+  },
+  {
+    "name": "malformed",
+    "expected": "interrupted",
+    "actual": "interrupted",
+    "attempts": 1,
+    "error": "RuntimeError: Question assessment needs a grounded decision",
+    "run": "dd30d0801b34",
+    "requests": 2
+  },
+  {
+    "name": "unavailable",
+    "expected": "interrupted",
+    "actual": "interrupted",
+    "attempts": 1,
+    "error": "RuntimeError: Local model HTTP 503: ",
+    "run": "bce0e7896b6f",
+    "requests": 2
+  },
+  {
+    "name": "ungrounded",
+    "expected": "interrupted",
+    "actual": "interrupted",
+    "attempts": 1,
+    "error": "RuntimeError: Question assessment needs a grounded decision",
+    "run": "2e1eac97cff8",
+    "requests": 2
+  },
+  {
+    "name": "wrong-type",
+    "expected": "interrupted",
+    "actual": "interrupted",
+    "attempts": 1,
+    "error": "RuntimeError: Question assessment needs a grounded decision",
+    "run": "7697b8ea33a1",
+    "requests": 2
+  },
+  {
+    "name": "invalid-json",
+    "expected": "interrupted",
+    "actual": "interrupted",
+    "attempts": 1,
+    "error": "RuntimeError: Question assessment unavailable or malformed",
+    "run": "72c7dc1293f9",
+    "requests": 2
+  },
+  {
+    "name": "empty-choices",
+    "expected": "interrupted",
+    "actual": "interrupted",
+    "attempts": 1,
+    "error": "IndexError: list index out of range",
+    "run": "250a2c55d385",
+    "requests": 2
+  },
+  {
+    "name": "repair-after-proceed",
+    "expected": "accepted",
+    "actual": "accepted",
+    "attempts": 2,
+    "error": "",
+    "run": "6cba33d47a34",
+    "requests": 6
+  }
+]

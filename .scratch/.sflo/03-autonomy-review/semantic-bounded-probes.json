@@ -1,0 +1,178 @@
+[
+  {
+    "id": "0b8019437578",
+    "supplemental": false,
+    "expected": "accept",
+    "exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "100d1baca5f4",
+    "supplemental": false,
+    "expected": "block",
+    "exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmppb3x81m_/check.py\", line 7, in <module>\n    assert j=={'status':'done'}\n           ^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+  },
+  {
+    "id": "1a9a97b91a6b",
+    "supplemental": false,
+    "expected": "block",
+    "exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmpdthzkrit/check.py\", line 3, in <module>\n    assert parse('name,value\\n\"a,b\",3\\n')==[('a,b',3)]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/tmpdthzkrit/core.py\", line 2, in parse\n    return [(r.split(',')[0],int(r.split(',')[1])) for r in text.splitlines()[1:]]\n                             ^^^^^^^^^^^^^^^^^^^^\nValueError: invalid literal for int() with base 10: 'b\"'\n"
+  },
+  {
+    "id": "30bc7cbedc30",
+    "supplemental": false,
+    "expected": "block",
+    "exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmp8av4o868/check.py\", line 5, in <module>\n    assert a=={'x':{'a':1},'l':[1]}\n           ^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+  },
+  {
+    "id": "45264190f293",
+    "supplemental": false,
+    "expected": "accept",
+    "exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "46c2846ea3ef",
+    "supplemental": false,
+    "expected": "block",
+    "exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmpcmlbij_3/check.py\", line 11, in <module>\n    else: raise AssertionError('outside file exposed')\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: outside file exposed\n"
+  },
+  {
+    "id": "57eb7a68cf11",
+    "supplemental": false,
+    "expected": "accept",
+    "exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "5bd05d6604f4",
+    "supplemental": false,
+    "expected": "accept",
+    "exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "5c093b674730",
+    "supplemental": false,
+    "expected": "accept",
+    "exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "5f27651072dd",
+    "supplemental": false,
+    "expected": "block",
+    "exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmplfkpcoos/check.py\", line 7, in <module>\n    else: raise AssertionError('conflict accepted')\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: conflict accepted\n"
+  },
+  {
+    "id": "72b0e7efc8c4",
+    "supplemental": false,
+    "expected": "block",
+    "exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmp8enqinu1/check.py\", line 4, in <module>\n    assert reserve(s,[('a',2),('b',2)]) is False and s=={'a':5,'b':1}\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+  },
+  {
+    "id": "7b2c0f64aa20",
+    "supplemental": false,
+    "expected": "accept",
+    "exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "868849946e78",
+    "supplemental": false,
+    "expected": "accept",
+    "exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "8d23262bb9ac",
+    "supplemental": false,
+    "expected": "accept",
+    "exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "9b911511abf3",
+    "supplemental": false,
+    "expected": "block",
+    "exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmp59su1a6d/check.py\", line 3, in <module>\n    assert total(['0.005','0.005'])=='0.02'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+  },
+  {
+    "id": "9db1122b48f8",
+    "supplemental": false,
+    "expected": "block",
+    "exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmpf10sen2q/check.py\", line 3, in <module>\n    assert due([{'id':'x','at':'2026-01-01T12:00:00+02:00'}],'2026-01-01T10:30:00+00:00')==['x']\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+  },
+  {
+    "id": "9de841f5d10f",
+    "supplemental": false,
+    "expected": "accept",
+    "exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "b94e411585d2",
+    "supplemental": false,
+    "expected": "block",
+    "exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmp1pt8kd3z/check.py\", line 3, in <module>\n    assert lines(['ab','c\\r','\\n\\n','tail\\r'])==['abc','','tail\\r']\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+  },
+  {
+    "id": "e8f7aaa4fc39",
+    "supplemental": false,
+    "expected": "accept",
+    "exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "ee3e5ae15226",
+    "supplemental": false,
+    "expected": "block",
+    "exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmpw_xgvkvt/check.py\", line 4, in <module>\n    assert collect(pages.__getitem__)==[1,2]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n"
+  },
+  {
+    "id": "9de841f5d10f",
+    "supplemental": true,
+    "expected": "block",
+    "exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmpuptyt_ss/check.py\", line 10, in <module>\n    assert total(['100000000000000000000000000.00']) == '100000000000000000000000000.00'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/tmpuptyt_ss/core.py\", line 3, in total\n    return format(sum((Decimal(x).quantize(Decimal('.01'),rounding=ROUND_HALF_UP) for x in rows),Decimal('0')),'.2f')\n                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/tmp/tmpuptyt_ss/core.py\", line 3, in <genexpr>\n    return format(sum((Decimal(x).quantize(Decimal('.01'),rounding=ROUND_HALF_UP) for x in rows),Decimal('0')),'.2f')\n                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\ndecimal.InvalidOperation: [<class 'decimal.InvalidOperation'>]\n"
+  },
+  {
+    "probe": "python312-Z",
+    "exit": 0,
+    "stdout": "2024-01-01 00:00:00+00:00\n",
+    "stderr": ""
+  },
+  {
+    "probe": "utf8-default",
+    "exit": 0,
+    "stdout": "UTF-8\n\u00e9\n",
+    "stderr": ""
+  },
+  {
+    "probe": "ascii-portability",
+    "exit": 1,
+    "stdout": "ANSI_X3.4-1968\n",
+    "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\n  File \"/home/gradrix/.local/share/uv/python/cpython-3.12.12-linux-x86_64-gnu/lib/python3.12/encodings/ascii.py\", line 26, in decode\n    return codecs.ascii_decode(input, self.errors)[0]\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nUnicodeDecodeError: 'ascii' codec can't decode byte 0xc3 in position 0: ordinal not in range(128)\n"
+  },
+  {
+    "probe": "ascii-explicit-utf8-control",
+    "exit": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "probe": "supplemental negative zero example",
+    "actual": "0.00",
+    "claimed": "-0.00"
+  }
+]

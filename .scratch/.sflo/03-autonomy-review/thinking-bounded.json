@@ -1,0 +1,89 @@
+{
+  "results": [
+    {
+      "input": ".gflo/review-qualification-v2/supplemental/original-money-input.json",
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "major",
+            "path": "core.py",
+            "line": 2,
+            "evidence": "Decimal(x).quantize(Decimal('.01'), rounding=ROUND_HALF_UP) uses the default Decimal context precision of 28 significant digits. For finite decimal amount strings with more than 28 significant digits, quantize can raise InvalidOperation. Example: Decimal('123456789012345678901234567890.123').quantize(Decimal('.01'), rounding=ROUND_HALF_UP) fails under the default context, while the objective requires finite decimal amount strings without a stated precision bound.",
+            "repair": "Use a sufficiently large local Decimal precision for each row, e.g. set a local context with precision = max(28, len(significant digits in x) + 2), or otherwise ensure quantize does not depend on the default 28-digit precision."
+          },
+          {
+            "severity": "minor",
+            "path": "core.py",
+            "line": 2,
+            "evidence": "format(Decimal('-0.00'), '.2f') can return '-0.00' for negative amounts that round to zero, e.g. rows=['-0.001']. The objective says negative amounts are refunds and empty input yields 0.00, but does not explicitly require suppressing negative zero.",
+            "repair": "If negative zero should be normalized, convert the final Decimal to a string and replace '-0.00' with '0.00'."
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 16.224165436986368
+    },
+    {
+      "input": ".gflo/review-qualification-v2/review-inputs/9de841f5d10f.json",
+      "review": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "elapsed_s": 11.864285652991384
+    },
+    {
+      "input": ".gflo/review-qualification-v2/review-inputs/100d1baca5f4.json",
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 3,
+            "evidence": "job['status'] is mutated to target BEFORE the validity check. For example, transition({'status':'queued'}, 'done') sets job['status']='done' on line 3, then raises ValueError on line 4. The job is left in an invalid state ('done' instead of 'queued'), violating the requirement 'raises ValueError without changing job'. Same for any invalid transition from any status.",
+            "repair": "Move the mutation after the validity check: `old=job['status']` on line 3, then `if target not in allowed.get(old,set()): raise ValueError('transition')` on line 4, then `job['status']=target` on line 5, then `return target` on line 6."
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 7.730502510996303
+    }
+  ],
+  "traces": [
+    {
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 1417,
+        "prompt_tokens": 467,
+        "total_tokens": 1884,
+        "prompt_tokens_details": {
+          "cached_tokens": 289
+        }
+      }
+    },
+    {
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 1043,
+        "prompt_tokens": 604,
+        "total_tokens": 1647,
+        "prompt_tokens_details": {
+          "cached_tokens": 289
+        }
+      }
+    },
+    {
+      "finish_reason": "stop",
+      "usage": {
+        "completion_tokens": 727,
+        "prompt_tokens": 476,
+        "total_tokens": 1203,
+        "prompt_tokens_details": {
+          "cached_tokens": 474
+        }
+      }
+    }
+  ]
+}

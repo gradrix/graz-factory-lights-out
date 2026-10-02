@@ -1,0 +1,7 @@
+{
+  "max_attempts": 3,
+  "max_turns": 24,
+  "wall_time_seconds_per_task": 900,
+  "enforcement": "Harness must enforce 900-second task wall clock externally; task metadata alone is not a guarantee of runner enforcement.",
+  "scope": "12 coding tasks; separate ambiguous policy task excluded from coding denominator"
+}

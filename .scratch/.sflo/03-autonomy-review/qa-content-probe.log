@@ -1,0 +1,58 @@
+[
+  {
+    "kind": "clean",
+    "expected": "accepted",
+    "actual": "accepted",
+    "attempts": 1,
+    "review_calls": 1,
+    "run": "55710021facd"
+  },
+  {
+    "kind": "binary",
+    "expected": "accepted",
+    "actual": "accepted",
+    "attempts": 2,
+    "review_calls": 1,
+    "run": "5ae5fac165e8"
+  },
+  {
+    "kind": "symlink",
+    "expected": "accepted",
+    "actual": "accepted",
+    "attempts": 2,
+    "review_calls": 1,
+    "run": "d5ea68e09828"
+  },
+  {
+    "kind": "oversize",
+    "expected": "accepted",
+    "actual": "accepted",
+    "attempts": 2,
+    "review_calls": 1,
+    "run": "3d0bb01fe6d4"
+  },
+  {
+    "kind": "empty",
+    "expected": "accepted",
+    "actual": "accepted",
+    "attempts": 2,
+    "review_calls": 1,
+    "run": "872a7efee590"
+  },
+  {
+    "kind": "persistent-binary",
+    "expected": "exhausted",
+    "actual": "exhausted",
+    "attempts": 2,
+    "review_calls": 0,
+    "run": "3c9e4ca50b39"
+  },
+  {
+    "kind": "invalid-review",
+    "expected": "interrupted",
+    "actual": "interrupted",
+    "attempts": 1,
+    "review_calls": 1,
+    "run": "a7575dcfa798"
+  }
+]

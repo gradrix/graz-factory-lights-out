@@ -9,6 +9,6 @@ Deliver a fresh-context local read-only reviewer whose structured findings refer
 
 Acceptance: 10 defect candidates and 10 clean controls, all critical seeds caught, at least 8 defects caught, at most 2 false blocks. Compare Flash and dense Qwen under equal request budgets with explicit serialized model switching and measured switching overhead. Then at least 10/12 held-out bounded coding tasks accepted with no critical missed requirement under independent evaluation; separate ambiguous task stops with a useful question. Existing lifecycle/acceptance regressions pass and review → repair → recheck is observed. Evidence remains labeled as a small qualification floor, not large-project reliability.
 
-Candidate: not produced
-Evidence: private independent fixture preparation in .gflo/review-qualification-prepared; frozen identities will be bound before use.
+Candidate: 04c7ef6; real coding cohort B running
+Evidence: execution record links controller QA, Flash/dense comparison, preserved failed cohort A and frozen unused cohort B. Stage remains unaccepted.
 Execution run: .scratch/.sflo/03-autonomy-review/run.md.

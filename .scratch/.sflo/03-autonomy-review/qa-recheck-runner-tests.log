@@ -1,0 +1,18 @@
+test_acceptance_is_snapshotted_and_tampering_is_rejected (test_runner.RunnerTests) ... ok
+test_changed_accepted_workspace_or_patch_is_not_reported_as_accepted (test_runner.RunnerTests) ... ok
+test_changed_patch_invalidates_acceptance (test_runner.RunnerTests) ... ok
+test_cleanup_happens_before_recovery_observes_workspace (test_runner.RunnerTests) ... ok
+test_cli_run_resume_and_status_without_source_mutation (test_runner.RunnerTests) ... ok
+test_contract_change_and_unknown_id_fail_closed (test_runner.RunnerTests) ... ok
+test_dirty_source_is_rejected (test_runner.RunnerTests) ... ok
+test_exhaustion_never_becomes_success (test_runner.RunnerTests) ... ok
+test_failure_evidence_drives_repair_and_source_is_unchanged (test_runner.RunnerTests) ... ok
+test_interrupted_attempt_resumes_with_retained_work (test_runner.RunnerTests) ... ok
+test_resume_after_attempt_directory_was_created_before_transaction (test_runner.RunnerTests) ... ok
+test_resume_published_verification_does_not_repeat_worker (test_runner.RunnerTests) ... ok
+test_task_validation_and_single_runner_lock (test_runner.RunnerTests) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.775s
+
+OK

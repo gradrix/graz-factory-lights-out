@@ -1,0 +1,378 @@
+{
+  "model": "flash-next-coder",
+  "review_prompt_sha256": "66a97b8ffdbe9322490b5eb11e329853cfb95c8412938b54cf16b40d106f44a7",
+  "manifest_sha256": "ee968dbee13632318264fb07a990e89ea0c98f3c1238dc8462bda64ec8abac7b",
+  "request_budget_s": 120,
+  "max_output_tokens": 4096,
+  "results": [
+    {
+      "id": "0b8019437578",
+      "supplemental": false,
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "elapsed_s": 2.15
+    },
+    {
+      "id": "100d1baca5f4",
+      "supplemental": false,
+      "expected": "block",
+      "critical": false,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 3,
+            "evidence": "The code mutates `job['status']` to `target` before validating the transition. If the transition is invalid, a `ValueError` is raised, but the `job` dictionary has already been modified. This violates the requirement 'Every other transition raises ValueError without changing job'. For example, calling `transition({'status': 'queued'}, 'done')` will change `job['status']` to `'done'` before raising the error.",
+            "repair": "Validate the transition before mutating the job dictionary. Move the assignment `job['status'] = target` to after the validation check."
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 2.37
+    },
+    {
+      "id": "1a9a97b91a6b",
+      "supplemental": false,
+      "expected": "block",
+      "critical": false,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 1,
+            "evidence": "The implementation uses `text.splitlines()` and `r.split(',')`, which does not handle CSV quoting. For example, input `name,value\\n\"a,b\",1` produces `[(\"a\", int('b\"'))]` which raises a ValueError, violating the requirement to preserve CSV quoting.",
+            "repair": "Use the standard library `csv` module to parse the CSV text correctly, handling quoted fields and commas within quotes."
+          },
+          {
+            "severity": "major",
+            "path": "core.py",
+            "line": 1,
+            "evidence": "The implementation assumes the header is always present and skips the first line unconditionally. If the input is empty or contains only whitespace, `text.splitlines()[1:]` may behave unexpectedly or fail to handle edge cases like header-only inputs correctly if the header itself is malformed or missing.",
+            "repair": "Ensure robust handling of empty inputs and verify that the header is correctly identified and skipped before processing data rows."
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 3.27
+    },
+    {
+      "id": "30bc7cbedc30",
+      "supplemental": false,
+      "expected": "block",
+      "critical": false,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 4,
+            "evidence": "The merge function performs a shallow copy of `base` and then uses `out[k].update(v)` for nested dictionaries. This mutates the nested dictionary object from `base` in-place, violating the requirement that 'Neither input may be mutated' and 'all nested containers in output must be independent of both inputs'. For example, if `base = {'a': {'b': 1}}` and `patch = {'a': {'c': 2}}`, calling `merge(base, patch)` will mutate `base['a']` to `{'b': 1, 'c': 2}`.",
+            "repair": "Implement a recursive merge that creates new dictionary objects at every level of nesting. Replace the current implementation with a recursive function that copies dictionaries explicitly rather than mutating them."
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 3.01
+    },
+    {
+      "id": "45264190f293",
+      "supplemental": false,
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "elapsed_s": 0.8
+    },
+    {
+      "id": "46c2846ea3ef",
+      "supplemental": false,
+      "expected": "block",
+      "critical": true,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "major",
+            "path": "core.py",
+            "line": 3,
+            "evidence": "The check `str(target).startswith(str(root))` is vulnerable to path prefix collisions. For example, if `root` resolves to `/home/user/project` and `target` resolves to `/home/user/project_evil/file.txt`, the string check passes because `/home/user/project_evil/file.txt` starts with `/home/user/project`, allowing access to files outside the intended root directory.",
+            "repair": "Replace the string prefix check with a robust path containment check using `Path.is_relative_to` (Python 3.12+) or `os.path.commonpath`. Example: `if not target.is_relative_to(root): raise ValueError('outside root')` or `if os.path.commonpath([root, target]) != str(root): raise ValueError('outside root')`."
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 2.81
+    },
+    {
+      "id": "57eb7a68cf11",
+      "supplemental": false,
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "elapsed_s": 0.89
+    },
+    {
+      "id": "5bd05d6604f4",
+      "supplemental": false,
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "elapsed_s": 0.62
+    },
+    {
+      "id": "5c093b674730",
+      "supplemental": false,
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "elapsed_s": 0.69
+    },
+    {
+      "id": "5f27651072dd",
+      "supplemental": false,
+      "expected": "block",
+      "critical": true,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 2,
+            "evidence": "The condition `if state['seen'].get(key):` evaluates to False if the stored amount is 0. This causes a replay request with amount 0 to be treated as a new request, adding 0 to the balance and overwriting the seen entry, rather than returning the current balance without mutation. While the balance doesn't change numerically, the logic flow is incorrect and fails the 'replay... returns current balance without adding' requirement in spirit, and more importantly, if the first request was amount 0, a subsequent request with a different non-zero amount would incorrectly pass the check and mutate the state instead of raising ValueError.",
+            "repair": "Change the condition to explicitly check for key existence: `if key in state['seen']:`"
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 2.68
+    },
+    {
+      "id": "72b0e7efc8c4",
+      "supplemental": false,
+      "expected": "block",
+      "critical": true,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 3,
+            "evidence": "The objective requires validating all quantities first before any stock checks or deductions. The current implementation interleaves validation with stock checks and deductions. For example, with stock={'A':10,'B':10} and requests=[('A',5),('B',-1)], the code deducts 5 from 'A' (line 5) before encountering the invalid quantity -1 for 'B' (line 3), raising ValueError but leaving stock mutated to {'A':5,'B':10}. This violates the requirement that every failure leaves the input dictionary unchanged.",
+            "repair": "Separate validation from execution: first iterate through all requests to validate quantities (raising ValueError if any is invalid), then check stock availability for all requests, and only then perform deductions. This ensures no mutation occurs before all validations pass."
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 3.33
+    },
+    {
+      "id": "7b2c0f64aa20",
+      "supplemental": false,
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "elapsed_s": 0.69
+    },
+    {
+      "id": "868849946e78",
+      "supplemental": false,
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "elapsed_s": 0.63
+    },
+    {
+      "id": "8d23262bb9ac",
+      "supplemental": false,
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "elapsed_s": 0.93
+    },
+    {
+      "id": "9b911511abf3",
+      "supplemental": false,
+      "expected": "block",
+      "critical": true,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 2,
+            "evidence": "The objective requires rounding EACH row to cents using ROUND_HALF_UP before summing. The current implementation sums all rows first and then quantizes the total once. This produces incorrect results when individual rows have sub-cent values that round differently than the sum. For example, rows=['0.004', '0.004'] should yield '0.00' (each rounds to 0.00, sum is 0.00), but the current code sums to 0.008 which quantizes to '0.01'.",
+            "repair": "Quantize each row to cents with ROUND_HALF_UP before summing: `return format(sum((Decimal(x).quantize(Decimal('.01'), rounding=ROUND_HALF_UP) for x in rows), Decimal('0')), '.2f')`"
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 2.97
+    },
+    {
+      "id": "9db1122b48f8",
+      "supplemental": false,
+      "expected": "block",
+      "critical": false,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 2,
+            "evidence": "The implementation strips timezone information using `.replace(tzinfo=None)`, which converts aware ISO-8601 timestamps to naive datetimes. This performs a lexicographic comparison of the date/time components rather than comparing the actual instants. For example, if `now` is '2024-01-01T12:00:00+00:00' and an event has `at` '2024-01-01T13:00:00+01:00', the actual instant of the event is 12:00:00 UTC, which is equal to `now` and should be included. However, stripping timezones results in comparing 13:00:00 > 12:00:00, incorrectly excluding the event. Similarly, '2024-01-01T11:00:00-01:00' (12:00:00 UTC) would be incorrectly included as 11:00:00 <= 12:00:00. The objective explicitly requires comparing instants.",
+            "repair": "Remove the `.replace(tzinfo=None)` calls to compare the aware datetime objects directly, which correctly compares their underlying UTC instants."
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 4.36
+    },
+    {
+      "id": "9de841f5d10f",
+      "supplemental": false,
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "major",
+            "path": "core.py",
+            "line": 2,
+            "evidence": "The list comprehension `[Decimal(value) for value in rows]` will raise `InvalidSyntax` or `InvalidOperation` if `rows` contains empty strings or whitespace, violating the requirement that empty input (or effectively empty rows) should yield '0.00'. Additionally, if `rows` is empty, `amounts` is empty, and `sum(rounded, Decimal('0'))` returns `Decimal('0')`, which formats to '0.00', but the crash on empty strings in non-empty lists is a critical failure.",
+            "repair": "Filter out empty/whitespace strings before converting to Decimal, or handle them as zero. For example: `amounts = [Decimal(value) for value in rows if value.strip()]`."
+          },
+          {
+            "severity": "major",
+            "path": "core.py",
+            "line": 3,
+            "evidence": "The generator expression `(value.quantize(cents, rounding=ROUND_HALF_UP) for value in amounts)` is passed to `sum()`. In Python, `sum()` expects an iterable, but a generator expression is valid. However, the logic for `integer_digits` uses `value.adjusted() + 1` which can be negative for small decimals, and `max(1, ...)` handles that. But the main issue is that `sum(rounded, Decimal('0'))` where `rounded` is a generator works, but if `amounts` is empty, `sum` returns `Decimal('0')`. The bigger issue is that `Decimal(value)` for an empty string raises an exception. If `rows` contains `['', '1.00']`, it crashes.",
+            "repair": "Ensure empty strings are treated as 0 or skipped. `amounts = [Decimal(value) if value.strip() else Decimal('0') for value in rows]`."
+          },
+          {
+            "severity": "minor",
+            "path": "core.py",
+            "line": 1,
+            "evidence": "The import `from decimal import Decimal, ROUND_HALF_UP, localcontext, MAX_EMAX, MIN_EMIN` is correct. However, `MAX_EMAX` and `MIN_EMIN` are not standard attributes of the `decimal` module in all Python versions (they are constants in `decimal` module but might need `decimal.MAX_EMAX` etc. depending on version, but in Python 3 they are available). This is likely fine.",
+            "repair": "None."
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 7.19
+    },
+    {
+      "id": "b94e411585d2",
+      "supplemental": false,
+      "expected": "block",
+      "critical": false,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 2,
+            "evidence": "The current implementation uses `chunk.splitlines()` which splits on multiple line delimiters (e.g., CR, LF, CRLF, VT, FF, NEL, LS, PS) and does not handle the case where a CR immediately preceding an LF spans across two different chunks. For example, if `chunks = [\"a\\r\", \"\\nb\"]`, the expected output is `[\"a\", \"b\"]` (the CR is removed because it precedes the LF), but `splitlines` on the first chunk yields `[\"a\"]` and on the second yields `[\"b\"]`, resulting in `[\"a\", \"b\"]` which happens to be correct here, but if `chunks = [\"a\\r\", \"\\r\\nb\"]`, `splitlines` on first yields `[\"a\"]`, second yields `[\"\", \"b\"]`, total `[\"a\", \"\", \"b\"]`, but the stream is `a\\r\\r\\nb`, which should be `a\\r` (CR not removed because next char is CR, not LF), then empty line, then `b`, so `[\"a\\r\", \"\", \"b\"]`. The current code loses the trailing CR in the first chunk. Additionally, `splitlines` does not preserve the requirement to emit final unterminated nonempty buffer unchanged including trailing CR if it's not followed by LF in the same chunk context.",
+            "repair": "Implement a stateful line splitter that processes characters sequentially, tracking whether a CR was seen at the end of the previous chunk. Only LF acts as a delimiter. If a CR is immediately followed by an LF (possibly across chunk boundaries), remove the CR. Otherwise, CR is part of the line content. Preserve empty lines. Do not emit an extra line for a final LF. Emit final unterminated nonempty buffer unchanged."
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 5.58
+    },
+    {
+      "id": "e8f7aaa4fc39",
+      "supplemental": false,
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "elapsed_s": 0.85
+    },
+    {
+      "id": "ee3e5ae15226",
+      "supplemental": false,
+      "expected": "block",
+      "critical": false,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 4,
+            "evidence": "The termination condition `if not page['items'] or cursor is None: return out` incorrectly stops traversal when an empty items list is encountered, even if `page['next']` is not None. The objective explicitly states that 'Empty items with a non-None next cursor do not end traversal.' For example, if `fetch(None)` returns `{'items': [], 'next': 'c1'}` and `fetch('c1')` returns `{'items': ['x'], 'next': None}`, the current code returns `[]` instead of `['x']`.",
+            "repair": "Change the termination condition to only check if the cursor is None: `if cursor is None: return out`."
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 2.48
+    },
+    {
+      "id": "9de841f5d10f",
+      "supplemental": true,
+      "expected": "block",
+      "critical": true,
+      "review": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "elapsed_s": 0.77
+    }
+  ],
+  "score": {
+    "defects_caught": 10,
+    "critical_missed": 0,
+    "false_blocks": 1,
+    "errors": 0
+  },
+  "supplemental_passed": false,
+  "gate_passed": false
+}

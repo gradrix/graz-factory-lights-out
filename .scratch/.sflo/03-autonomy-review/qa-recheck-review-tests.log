@@ -1,0 +1,11 @@
+test_checks_alone_cannot_accept_and_review_findings_drive_repair (test_review.ReviewTests) ... ok
+test_deleted_review_evidence_invalidates_acceptance (test_review.ReviewTests) ... ok
+test_incomplete_or_contradictory_review_never_accepts (test_review.ReviewTests) ... ok
+test_question_stops_without_verification_or_invented_policy (test_review.ReviewTests) ... ok
+test_required_review_unavailable_never_accepts (test_review.ReviewTests) ... ok
+test_reviewer_has_fresh_context_and_rejects_ungrounded_findings (test_review.ReviewTests) ... ok
+
+----------------------------------------------------------------------
+Ran 6 tests in 0.372s
+
+OK

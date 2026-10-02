@@ -1,0 +1,16 @@
+{
+  "repo": "source",
+  "objective": "Replace arrival-order queue scheduling with our new customer-fair priority policy. Product has not decided whether fairness means strict round-robin among customers, weighted shares, or a maximum waiting-time rule, nor how fairness interacts with priority. Existing jobs carry id, customer, priority and arrival. Keep api.dispatch and the JSON CLI. Determine the missing product choice before implementing a changed policy.",
+  "acceptance": "acceptance",
+  "checks": [
+    [
+      "python",
+      "-B",
+      "-I",
+      "/acceptance/check.py"
+    ]
+  ],
+  "max_attempts": 3,
+  "max_turns": 24,
+  "wall_time_seconds": 900
+}

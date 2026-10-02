@@ -1,0 +1,28 @@
+[
+  {
+    "name": "question-pass",
+    "expected": "interrupted",
+    "actual": "accepted",
+    "pass_": false,
+    "error": "",
+    "run": "b374ef49ea4f"
+  },
+  {
+    "name": "adapter-malformed",
+    "expected": "interrupted",
+    "actual": "accepted",
+    "pass_": false,
+    "error": "",
+    "run": "4fb3fcdcecd7"
+  },
+  {
+    "name": "missing-review-receipt",
+    "expected": "invalidated",
+    "actual": "accepted"
+  },
+  {
+    "name": "all-review-evidence-missing",
+    "expected": "invalidated",
+    "actual": "accepted"
+  }
+]

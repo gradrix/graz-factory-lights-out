@@ -19,3 +19,7 @@ htmlcov/
 .scratch/.sflo/03-autonomy-review/qa-recheck-candidate/
 .scratch/.sflo/03-autonomy-review/qa-evidence/*/
 .scratch/.sflo/03-autonomy-review/qa-recheck-evidence/*/
+
+.scratch/.sflo/03-autonomy-review/qa-question-evidence/*/
+.scratch/.sflo/03-autonomy-review/qa-content-evidence/*/
+.scratch/.sflo/03-autonomy-review/qa-final-question-evidence/*/

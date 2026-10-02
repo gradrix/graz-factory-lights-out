@@ -1,0 +1,106 @@
+[
+  {
+    "name": "valid",
+    "expected": "accepted",
+    "actual": "accepted",
+    "pass_": true,
+    "error": "",
+    "run": "a1c708003636"
+  },
+  {
+    "name": "unknown",
+    "expected": "interrupted",
+    "actual": "interrupted",
+    "pass_": true,
+    "error": "Invalid review decision",
+    "run": "d233efd88b7d"
+  },
+  {
+    "name": "missing",
+    "expected": "interrupted",
+    "actual": "interrupted",
+    "pass_": true,
+    "error": "Invalid review schema",
+    "run": "97bc7e0de578"
+  },
+  {
+    "name": "blocking-pass",
+    "expected": "interrupted",
+    "actual": "interrupted",
+    "pass_": true,
+    "error": "Inconsistent review decision",
+    "run": "fbdab83b2476"
+  },
+  {
+    "name": "question-pass",
+    "expected": "interrupted",
+    "actual": "interrupted",
+    "pass_": true,
+    "error": "Inconsistent review decision",
+    "run": "d45f217a3c9d"
+  },
+  {
+    "name": "adapter-malformed",
+    "expected": "interrupted",
+    "actual": "interrupted",
+    "pass_": true,
+    "error": "Invalid review schema",
+    "run": "2fe41bc70b47"
+  },
+  {
+    "name": "needs-input",
+    "expected": "needs_input",
+    "actual": "needs_input",
+    "pass_": true,
+    "error": "",
+    "run": "9de52ae0452b"
+  },
+  {
+    "name": "needs-input-resume",
+    "actual": "needs_input",
+    "attempts": 1
+  },
+  {
+    "name": "receipt",
+    "expected": "accepted",
+    "actual": "accepted",
+    "pass_": true,
+    "error": "",
+    "run": "09cec3f52396"
+  },
+  {
+    "name": "missing-review-receipt",
+    "expected": "invalidated",
+    "actual": "invalidated"
+  },
+  {
+    "name": "lifecycle",
+    "actual": "accepted",
+    "attempts": 2,
+    "repair_in_feedback": "repair"
+  },
+  {
+    "name": "required-review-recovery",
+    "actual": "rejected",
+    "error": "Frozen task requires an independent reviewer"
+  },
+  {
+    "name": "review-recovery",
+    "actual": "accepted",
+    "attempts": 1
+  },
+  {
+    "name": "fresh-context-readonly",
+    "actual": true
+  },
+  {
+    "name": "local-only",
+    "endpoint": "https://example.org",
+    "actual": "rejected"
+  },
+  {
+    "name": "local-only",
+    "endpoint": "http://192.168.1.5:8000",
+    "actual": "rejected"
+  }
+]

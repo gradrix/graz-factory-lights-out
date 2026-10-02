@@ -1,0 +1,92 @@
+[
+  {
+    "name": "proceed",
+    "expected": "accepted",
+    "actual": "accepted",
+    "attempts": 1,
+    "error": "",
+    "run": "ecf4cd00dc8b",
+    "requests": 4
+  },
+  {
+    "name": "needed",
+    "expected": "needs_input",
+    "actual": "needs_input",
+    "attempts": 1,
+    "error": "",
+    "run": "595b7b632035",
+    "requests": 2
+  },
+  {
+    "name": "malformed",
+    "expected": "interrupted",
+    "actual": "interrupted",
+    "attempts": 1,
+    "error": "RuntimeError: Question assessment needs a grounded decision",
+    "run": "95289d075d33",
+    "requests": 2
+  },
+  {
+    "name": "unavailable",
+    "expected": "interrupted",
+    "actual": "interrupted",
+    "attempts": 1,
+    "error": "RuntimeError: Local model HTTP 503: ",
+    "run": "1e5fdf00ad46",
+    "requests": 2
+  },
+  {
+    "name": "ungrounded",
+    "expected": "interrupted",
+    "actual": "interrupted",
+    "attempts": 1,
+    "error": "RuntimeError: Question assessment needs a grounded decision",
+    "run": "6c2915a60e36",
+    "requests": 2
+  },
+  {
+    "name": "wrong-type",
+    "expected": "interrupted",
+    "actual": "interrupted",
+    "attempts": 1,
+    "error": "RuntimeError: Question assessment needs a grounded decision",
+    "run": "0a41185b2082",
+    "requests": 2
+  },
+  {
+    "name": "invalid-json",
+    "expected": "interrupted",
+    "actual": "interrupted",
+    "attempts": 1,
+    "error": "RuntimeError: Local assessment returned a malformed JSON verdict",
+    "run": "152362242a8a",
+    "requests": 2
+  },
+  {
+    "name": "blank-guidance",
+    "expected": "interrupted",
+    "actual": "interrupted",
+    "attempts": 1,
+    "error": "RuntimeError: Question assessment needs a grounded decision",
+    "run": "ae69c6de7cd6",
+    "requests": 2
+  },
+  {
+    "name": "empty-choices",
+    "expected": "interrupted",
+    "actual": "interrupted",
+    "attempts": 1,
+    "error": "RuntimeError: Local assessment returned a malformed JSON verdict",
+    "run": "81e1d2486941",
+    "requests": 2
+  },
+  {
+    "name": "repair-after-proceed",
+    "expected": "accepted",
+    "actual": "accepted",
+    "attempts": 2,
+    "error": "",
+    "run": "70a74149d99b",
+    "requests": 6
+  }
+]

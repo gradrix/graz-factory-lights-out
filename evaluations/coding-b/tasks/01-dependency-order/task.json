@@ -1,0 +1,16 @@
+{
+  "repo": "source",
+  "objective": "Add action order with nodes: a list of objects {id: nonempty string, deps: list of IDs}. IDs must be unique, every dependency must name an input node; unknown dependency or duplicate ID raises ValueError. Repeated dependency entries are treated as one edge. Return a list of all IDs in topological order. At EACH selection choose the earliest node in the original nodes list among currently eligible nodes; newly eligible earlier nodes outrank later nodes already eligible. A cycle (including self-dependency) raises ValueError. Empty nodes returns []. Preserve action labels and its input-order behavior. All shapes/types are valid as described; only the explicit duplicate/unknown/cycle errors need validation. Implement the new action(s) in domain.py, route them through existing api.dispatch(payload), and support them through existing `python cli.py` reading one JSON object from stdin and printing one JSON result. Preserve existing actions, unknown-action ValueError, CLI exit 2 with nonempty stderr/no traceback on ValueError and successful CLI JSON behavior. Never mutate input payloads, including rejected inputs. Assume Python 3.12+ and UTF-8 runtime. Standard library only; all data shapes/types follow the stated contract except explicitly required validation cases. Do not invent additional validation or product policy. Add regression tests and document new usage. Implementation may add helpers/modules but must preserve these public interfaces.",
+  "acceptance": "acceptance",
+  "checks": [
+    [
+      "python",
+      "-B",
+      "-I",
+      "/acceptance/check.py"
+    ]
+  ],
+  "max_attempts": 3,
+  "max_turns": 24,
+  "wall_time_seconds": 900
+}

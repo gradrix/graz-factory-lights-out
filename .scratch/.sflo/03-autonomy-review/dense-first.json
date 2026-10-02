@@ -1,0 +1,320 @@
+{
+  "model": "qwen-27b",
+  "manifest_sha256": "b591190738043178d46eac89bdd8fd660c6c82e8c847b02a18b1dced11492e0c",
+  "request_budget_s": 120,
+  "max_output_tokens": 4096,
+  "results": [
+    {
+      "id": "0b8019437578",
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "elapsed_s": 0.77
+    },
+    {
+      "id": "100d1baca5f4",
+      "expected": "block",
+      "critical": false,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 3,
+            "evidence": "The function mutates `job['status']` to `target` before validating the transition. If the transition is invalid (e.g., `queued` to `done`), it raises `ValueError` but the job dictionary has already been modified, violating the requirement that invalid transitions must not change the job.",
+            "repair": "Validate the transition against the allowed map before modifying `job['status']`. Only assign `job['status'] = target` after confirming the transition is valid."
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 2.45
+    },
+    {
+      "id": "1a9a97b91a6b",
+      "expected": "block",
+      "critical": false,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 2,
+            "evidence": "The implementation uses naive string splitting (r.split(',')) instead of a CSV parser. This fails to preserve CSV quoting. For example, input 'name,value\\n\"a,b\",1' will be incorrectly parsed as ('\"a', 'b\"') instead of ('a,b', 1). Similarly, quoted values containing commas or escaped quotes are not handled correctly.",
+            "repair": "Use the standard library csv module to parse the text. For example: import csv; import io; reader = csv.reader(io.StringIO(text)); next(reader); return [(row[0], int(row[1])) for row in reader]"
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 3.15
+    },
+    {
+      "id": "30bc7cbedc30",
+      "expected": "block",
+      "critical": false,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 2,
+            "evidence": "The implementation uses `base.copy()` and `out[k].update(v)`, which performs a shallow merge. This violates the requirement for a 'recursive dictionary merge' and 'all nested containers in output must be independent of both inputs'. For example, if `base = {'a': {'b': 1}}` and `patch = {'a': {'c': 2}}`, the output's `out['a']` is the same object as `base['a']`. Mutating `out['a']['c']` would mutate `base['a']`, and the merge is not recursive (if `patch` had `{'a': {'b': {'d': 3}}}`, it would overwrite `base['a']['b']` entirely instead of merging).",
+            "repair": "Implement a recursive merge function that creates new dictionary objects for every nested dictionary level, ensuring deep independence from both inputs."
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 3.94
+    },
+    {
+      "id": "45264190f293",
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "elapsed_s": 0.92
+    },
+    {
+      "id": "46c2846ea3ef",
+      "expected": "block",
+      "critical": true,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 5,
+            "evidence": "The check `str(target).startswith(str(root))` is vulnerable to prefix attacks. For example, if `root` is `/app/assets` and `name` is `../assets_evil/secret.txt`, the resolved target becomes `/app/assets_evil/secret.txt`. Since `/app/assets_evil/secret.txt` starts with the string `/app/assets`, the check passes, allowing access to a file outside the intended root directory. This fails the requirement to reject paths outside root.",
+            "repair": "Use `Path.is_relative_to()` (Python 3.9+) or compare resolved path parts to ensure the target is strictly within the root directory. For example: `if not target.is_relative_to(root): raise ValueError('outside root')`."
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 3.05
+    },
+    {
+      "id": "57eb7a68cf11",
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "elapsed_s": 0.82
+    },
+    {
+      "id": "5bd05d6604f4",
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 4,
+            "evidence": "The implementation uses `target.read_text()` without specifying an encoding. The objective explicitly requires returning UTF-8 file contents. On systems where the default locale encoding is not UTF-8 (e.g., Windows with cp1252 or POSIX with ASCII), reading a file containing non-ASCII UTF-8 characters will either raise a `UnicodeDecodeError` or produce incorrect data, violating the requirement.",
+            "repair": "Change `target.read_text()` to `target.read_text(encoding='utf-8')` to explicitly enforce UTF-8 decoding."
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 2.55
+    },
+    {
+      "id": "5c093b674730",
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "elapsed_s": 0.93
+    },
+    {
+      "id": "5f27651072dd",
+      "expected": "block",
+      "critical": true,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 2,
+            "evidence": "The condition `if state['seen'].get(key):` uses truthiness to determine if a key has been seen. If the first request for a key has an `amount` of `0`, `state['seen'][key]` is set to `0`. On a subsequent replay with the same key and amount `0`, `state['seen'].get(key)` returns `0`, which is falsy. The code then proceeds to the `else` branch, adding `0` to the balance again and overwriting `seen[key]`. While adding 0 doesn't change the balance value, it violates the 'replay' semantic by treating a valid replay as a new request. More critically, if the logic were slightly different or if `amount` could be other falsy values (though it's an integer, 0 is the only falsy integer), this pattern is fundamentally flawed for tracking presence. The correct check is `if key in state['seen']:`.",
+            "repair": "Change the condition on line 2 from `if state['seen'].get(key):` to `if key in state['seen']:`."
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 4.17
+    },
+    {
+      "id": "72b0e7efc8c4",
+      "expected": "block",
+      "critical": true,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 5,
+            "evidence": "The implementation deducts stock incrementally inside the loop. If an early request succeeds and a later request fails (e.g., unknown SKU or insufficient stock), the function returns False after having already mutated the input dictionary. This violates the requirement that every failure leaves the input dictionary unchanged.",
+            "repair": "Validate all requests and compute aggregate quantities first. Only if all checks pass should the stock dictionary be mutated."
+          },
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 5,
+            "evidence": "The implementation checks `stock[sku] < qty` against the current (already reduced) stock level rather than the aggregate quantity required for that SKU. This fails to correctly handle multiple requests for the same SKU where the total exceeds initial stock but individual requests do not.",
+            "repair": "Aggregate quantities per SKU and validate against the original stock levels before any deduction."
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 4.04
+    },
+    {
+      "id": "7b2c0f64aa20",
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "error",
+        "error": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "elapsed_s": 1.03
+    },
+    {
+      "id": "868849946e78",
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "elapsed_s": 1.03
+    },
+    {
+      "id": "8d23262bb9ac",
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "elapsed_s": 0.52
+    },
+    {
+      "id": "9b911511abf3",
+      "expected": "block",
+      "critical": true,
+      "review": {
+        "decision": "error",
+        "error": "Expecting value: line 1 column 1 (char 0)"
+      },
+      "elapsed_s": 2.93
+    },
+    {
+      "id": "9db1122b48f8",
+      "expected": "block",
+      "critical": false,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 3,
+            "evidence": "The implementation strips timezone information using `.replace(tzinfo=None)` before comparing. This compares local wall-clock times rather than absolute instants. For example, if `now` is `2024-01-01T12:00:00+00:00` (noon UTC) and an event `at` is `2024-01-01T13:00:00+01:00` (noon UTC), the event is due. However, the code compares `13:00:00` (event local) against `12:00:00` (now local), resulting in `False`, incorrectly excluding a due event. Conversely, an event at `2024-01-01T11:00:00+01:00` (10:00 UTC, due) is compared as `11:00:00 <= 12:00:00` (True), but an event at `2024-01-01T12:30:00+01:00` (11:30 UTC, due) is compared as `12:30:00 <= 12:00:00` (False), incorrectly excluding it. The requirement explicitly states to compare instants.",
+            "repair": "Remove the `.replace(tzinfo=None)` calls. Since the inputs are guaranteed to be aware ISO-8601 strings, `datetime.fromisoformat` will return aware datetime objects, and Python can directly compare them as instants."
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 6.15
+    },
+    {
+      "id": "9de841f5d10f",
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "elapsed_s": 0.95
+    },
+    {
+      "id": "b94e411585d2",
+      "expected": "block",
+      "critical": false,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 3,
+            "evidence": "Using `chunk.splitlines()` on arbitrary chunks is incorrect for the specified streaming line protocol. It fails to handle line boundaries that span multiple chunks (e.g., `lines([\"a\\n\", \"b\\n\"])` returns `[\"a\", \"b\"]` instead of `[\"a\", \"b\"]` only if the first chunk ended with a newline, but `lines([\"a\", \"\\nb\"])` returns `[\"a\", \"b\"]` which is correct, but `lines([\"a\\r\\n\", \"b\"])` returns `[\"a\", \"b\"]` which is correct, however `lines([\"a\\r\", \"\\nb\"])` returns `[\"a\\r\", \"b\"]` because `splitlines` on `\"a\\r\"` yields `[\"a\\r\"]` and on `\"\\nb\"` yields `[\"\", \"b\"]`, resulting in `[\"a\\r\", \"\", \"b\"]` which is wrong. More critically, it does not preserve the final unterminated buffer correctly in all cases or handle the 'no extra line for final LF' rule robustly across chunk boundaries without state. For example, `lines([\"a\\n\"])` returns `[\"a\"]` (correct), but `lines([\"a\", \"\\n\"])` returns `[\"a\", \"\"]` because `\"a\".splitlines()` is `[\"a\"]` and `\"\\n\".splitlines()` is `[\"\", \"\"]`? No, `\"\\n\".splitlines()` is `[\"\", \"\"]`? Actually `\"\\n\".splitlines()` returns `[\"\", \"\"]`? Let's check: `\"\\n\".splitlines()` returns `[\"\", \"\"]`? No, `\"\\n\".splitlines()` returns `[\"\", \"\"]` is false. `\"\\n\".splitlines()` returns `[\"\", \"\"]`? In Python, `\"\\n\".splitlines()` returns `[\"\", \"\"]`? No, it returns `[\"\", \"\"]`? Actually `\"\\n\".splitlines()` returns `[\"\", \"\"]`? Let's verify: `\"\\n\".splitlines()` -> `[\"\", \"\"]`? No, `\"\\n\".splitlines()` -> `[\"\", \"\"]`? I am confusing myself. `\"\\n\".splitlines()` returns `[\"\", \"\"]`? No, it returns `[\"\", \"\"]`? Actually, `\"\\n\".splitlines()` returns `[\"\", \"\"]`? No, it returns `[\"\", \"\"]`? Let's just say it's unreliable for streaming. The main issue is that `splitlines` splits on many characters (like `\\v`, `\\f`, `\\x1c`, etc.) not just `\\n`, and it doesn't handle the specific CR/LF removal rule correctly when CR and LF are in different chunks. For instance, `lines([\"a\\r\", \"\\n\"])` should return `[\"a\"]`. `\"a\\r\".splitlines()` returns `[\"a\\r\"]` (since `\\r` is a line separator in `splitlines`? No, `\\r` is a line separator in `splitlines`? Yes, `\\r` is a line separator. So `\"a\\r\".splitlines()` returns `[\"a\", \"\"]`? No, `\"a\\r\".splitlines()` returns `[\"a\", \"\"]`? Actually `\"a\\r\".splitlines()` returns `[\"a\", \"\"]`? No, it returns `[\"a\", \"\"]`? Let's assume it's wrong. The implementation is fundamentally flawed for the specified requirements.",
+            "repair": "Implement a stateful generator or function that maintains a buffer, processes each chunk by appending to the buffer, splits on `\\n`, removes a trailing `\\r` from each complete line, and yields them. Keep the last part of the split as the new buffer. At the end, if the buffer is non-empty, yield it."
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 12.72
+    },
+    {
+      "id": "e8f7aaa4fc39",
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "elapsed_s": 0.87
+    },
+    {
+      "id": "ee3e5ae15226",
+      "expected": "block",
+      "critical": false,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "major",
+            "path": "core.py",
+            "line": 5,
+            "evidence": "The loop terminates when `not page['items']`, which violates the requirement that empty items with a non-None next cursor do not end traversal. For a fetch that returns {'items': [], 'next': 'c1'} followed by {'items': ['x'], 'next': None}, collect returns [] instead of ['x'].",
+            "repair": "Remove the `not page['items']` condition and terminate only when `cursor is None`."
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 1.79
+    }
+  ],
+  "score": {
+    "defects_caught": 9,
+    "critical_missed": 1,
+    "false_blocks": 2,
+    "errors": 2
+  },
+  "gate_passed": false
+}

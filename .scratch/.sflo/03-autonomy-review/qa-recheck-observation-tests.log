@@ -1,0 +1,12 @@
+test_cancel_during_startup_is_terminal_and_resumable (test_observation.ObservationTests) ... ok
+test_durable_events_and_budget_survive_reopen (test_observation.ObservationTests) ... ok
+test_http_view_is_readonly_and_reconnects_with_durable_cursor (test_observation.ObservationTests) ... ok
+test_observer_can_start_before_first_task (test_observation.ObservationTests) ... ok
+test_public_artifacts_reject_traversal_symlinks_and_secrets (test_observation.ObservationTests) ... ok
+test_real_process_cancel_and_kill_have_honest_state (test_observation.ObservationTests) ... ok
+test_stalled_model_has_live_heartbeat_without_fake_progress (test_observation.ObservationTests) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 2.712s
+
+OK

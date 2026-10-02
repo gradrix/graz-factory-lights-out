@@ -1,0 +1,423 @@
+{
+  "model": "flash-next-coder",
+  "review_prompt_sha256": "66a97b8ffdbe9322490b5eb11e329853cfb95c8412938b54cf16b40d106f44a7",
+  "manifest_sha256": "ee968dbee13632318264fb07a990e89ea0c98f3c1238dc8462bda64ec8abac7b",
+  "request_budget_s": 120,
+  "thinking_budget_tokens": 1024,
+  "max_output_tokens": 4096,
+  "results": [
+    {
+      "id": "0b8019437578",
+      "supplemental": false,
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "elapsed_s": 7.43
+    },
+    {
+      "id": "100d1baca5f4",
+      "supplemental": false,
+      "expected": "block",
+      "critical": false,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 3,
+            "evidence": "job['status'] is mutated to target BEFORE the validity check. For example, transition({'status':'queued'}, 'done') sets job['status']='done' on line 3, then raises ValueError on line 4. The job is left in an invalid state ('done' instead of 'queued'), violating the requirement 'raises ValueError without changing job'. Same for any invalid transition from any status.",
+            "repair": "Move the mutation after the validity check: `old=job['status']` on line 3, then `if target not in allowed.get(old,set()): raise ValueError('transition')` on line 4, then `job['status']=target` on line 5, then `return target` on line 6."
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 7.78
+    },
+    {
+      "id": "1a9a97b91a6b",
+      "supplemental": false,
+      "expected": "block",
+      "critical": false,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 2,
+            "evidence": "The implementation uses `r.split(',')`, which does not preserve CSV quoting. For example, a valid CSV row like `\"a,b\",1` would be split into `['\"a', 'b\"', '1']`, producing an incorrect name and failing to parse the value correctly. It also fails for quoted fields containing embedded newlines because `text.splitlines()` breaks the CSV record before CSV parsing.",
+            "repair": "Use the standard library `csv` module to parse CSV records and fields, skipping the header and returning `(row[0], int(row[1]))` for each data row. For example:\n\n```python\nimport csv\nfrom io import StringIO\n\ndef parse(text):\n    reader = csv.reader(StringIO(text))\n    try:\n        next(reader)\n    except StopIteration:\n        return []\n    return [(row[0], int(row[1])) for row in reader if len(row) >= 2]\n```"
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 15.16
+    },
+    {
+      "id": "30bc7cbedc30",
+      "supplemental": false,
+      "expected": "block",
+      "critical": false,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 4,
+            "evidence": "`out[k].update(v)` is a shallow one-level merge, not recursive. Example: base={'a':{'b':{'c':1}}}, patch={'a':{'b':{'d':2}}}. After `out=base.copy()`, `out['a']` is the same dict object as `base['a']`. Then `out['a'].update({'b':{'d':2}})` replaces the inner 'b' value entirely, losing 'c':1. Expected result is {'a':{'b':{'c':1,'d':2}}}; actual is {'a':{'b':{'d':2}}}. The merge must recurse into nested dicts.",
+            "repair": "Replace the shallow update with a recursive call: `out[k] = merge(out[k], v)` when both are dicts, and deep-copy all nested containers from base and patch so the output is fully independent."
+          },
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 2,
+            "evidence": "`base.copy()` is a shallow copy. Nested dicts/lists in `out` are the same objects as in `base`. When `out[k].update(v)` executes, it mutates the dict that `base[k]` also references, violating 'neither input may be mutated'. Example: base={'a':{'b':1}}, patch={'a':{'c':2}}. After the call, base becomes {'a':{'b':1,'c':2}}.",
+            "repair": "Deep-copy all nested containers from both base and patch into the output so no object in the result is shared with either input."
+          },
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 6,
+            "evidence": "`out[k]=v` assigns the patch's object directly into the output. If v is a list or dict (non-recursive case), the output shares that object with patch, violating 'all nested containers in output must be independent of both inputs'. Example: patch={'a':[1,2]}; mutating the output's 'a' list also mutates patch['a'].",
+            "repair": "Deep-copy v (and any nested containers from base that are not overwritten) before placing them in the output."
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 17.78
+    },
+    {
+      "id": "45264190f293",
+      "supplemental": false,
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "elapsed_s": 12.39
+    },
+    {
+      "id": "46c2846ea3ef",
+      "supplemental": false,
+      "expected": "block",
+      "critical": true,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 4,
+            "evidence": "The containment check uses `str(target).startswith(str(root))`, which accepts sibling paths with the same textual prefix. For example, with `root='/home/user'` and `name='../user2/file'`, `target` resolves to `/home/user2/file`, whose string starts with `/home/user`, so the function reads outside the intended root instead of raising `ValueError`.",
+            "repair": "Use a path-aware containment check, e.g. `if target != root and not target.is_relative_to(root): raise ValueError('outside root')`, or compare `target.parts[:len(root.parts)] == root.parts`."
+          },
+          {
+            "severity": "major",
+            "path": "core.py",
+            "line": 5,
+            "evidence": "`target.read_text()` uses the platform default encoding, not necessarily UTF-8. The objective requires returning UTF-8 file contents.",
+            "repair": "Read with explicit UTF-8 encoding: `return target.read_text(encoding='utf-8')`."
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 15.29
+    },
+    {
+      "id": "57eb7a68cf11",
+      "supplemental": false,
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "elapsed_s": 6.44
+    },
+    {
+      "id": "5bd05d6604f4",
+      "supplemental": false,
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "major",
+            "path": "core.py",
+            "line": 5,
+            "evidence": "target.read_text() uses the default locale-dependent encoding, not guaranteed UTF-8. For example, a file containing UTF-8 bytes for '\u00e9' may be decoded incorrectly or fail on a non-UTF-8 locale, violating the requirement to return UTF-8 file contents.",
+            "repair": "Use target.read_text(encoding='utf-8') so the returned contents are decoded as UTF-8."
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 13.26
+    },
+    {
+      "id": "5c093b674730",
+      "supplemental": false,
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "major",
+            "path": "core.py",
+            "line": 2,
+            "evidence": "datetime.fromisoformat is used directly on ISO-8601 timestamps. If the input uses the ISO-8601 UTC designator 'Z' (e.g. '2024-01-01T00:00:00Z'), this can raise ValueError on Python versions where fromisoformat does not accept 'Z', even though the objective says inputs are valid aware ISO-8601 timestamps with timezone offsets.",
+            "repair": "Normalize 'Z' to '+00:00' before calling datetime.fromisoformat, or otherwise parse ISO-8601 offsets robustly while still using only the standard library."
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 13.47
+    },
+    {
+      "id": "5f27651072dd",
+      "supplemental": false,
+      "expected": "block",
+      "critical": true,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 2,
+            "evidence": "`state['seen'].get(key)` returns 0 (falsy) when the stored amount is 0, so the replay/conflict branch is skipped. Trace: first call `apply(state,'k',0)` stores `seen['k']=0`. A subsequent call `apply(state,'k',5)` evaluates `state['seen'].get('k')` \u2192 0 \u2192 falsy, falls through to the 'first request' branch, mutates balance by +5 and overwrites `seen['k']=5` instead of raising ValueError. The replay case for amount=0 is also silently re-processed rather than detected.",
+            "repair": "Replace the truthiness check with an explicit membership test: `if key in state['seen']:`. This correctly distinguishes 'key not present' from 'key present with value 0'."
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 14.37
+    },
+    {
+      "id": "72b0e7efc8c4",
+      "supplemental": false,
+      "expected": "block",
+      "critical": true,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 2,
+            "evidence": "Validation and stock deduction are interleaved in a single loop. Concrete failure: stock={'A':5}, requests=[('A',3),('B',-1)]. First iteration deducts stock['A'] to 2, second iteration raises ValueError. The dictionary is now mutated despite a failure, violating 'Every failure leaves the input dictionary unchanged.' Additionally, 'Validate all quantities first' is not satisfied because stock operations occur before all quantities are validated.",
+            "repair": "Separate into three phases: (1) validate every qty in a first pass, raising ValueError before any mutation; (2) aggregate required quantities per SKU and verify every SKU exists and has sufficient aggregate stock, returning False without touching stock; (3) only then deduct. Example replacement:\n\n    def reserve(stock, requests):\n        for sku, qty in requests:\n            if type(qty) is not int or qty <= 0:\n                raise ValueError('quantity')\n        agg = {}\n        for sku, qty in requests:\n            agg[sku] = agg.get(sku, 0) + qty\n        for sku, need in agg.items():\n            if sku not in stock or stock[sku] < need:\n                return False\n        for sku, need in agg.items():\n            stock[sku] -= need\n        return True"
+          },
+          {
+            "severity": "major",
+            "path": "core.py",
+            "line": 4,
+            "evidence": "Same interleaved-loop problem causes a False return to leave stock partially mutated. Concrete failure: stock={'A':5}, requests=[('A',3),('A',3)]. First iteration deducts stock['A'] to 2; second iteration sees 2<3 and returns False, but stock['A'] is now 2 instead of 5. Violates 'Every failure leaves the input dictionary unchanged' and also fails to check aggregate stock correctly (the objective says 'insufficient aggregate stock').",
+            "repair": "Aggregate all quantities per SKU before checking stock, and only deduct after all checks pass (same fix as above)."
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 17.78
+    },
+    {
+      "id": "7b2c0f64aa20",
+      "supplemental": false,
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "elapsed_s": 12.17
+    },
+    {
+      "id": "868849946e78",
+      "supplemental": false,
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "elapsed_s": 10.08
+    },
+    {
+      "id": "8d23262bb9ac",
+      "supplemental": false,
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "elapsed_s": 12.48
+    },
+    {
+      "id": "9b911511abf3",
+      "supplemental": false,
+      "expected": "block",
+      "critical": true,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 3,
+            "evidence": "The implementation quantizes only the summed total, not each row. For rows ['0.005', '0.005'], each row should round to 0.01 and sum to 0.02, but the current code sums 0.010 and quantizes to 0.01.",
+            "repair": "Quantize each row to cents with ROUND_HALF_UP before summing, e.g. return format(sum((Decimal(x).quantize(Decimal('.01'), rounding=ROUND_HALF_UP) for x in rows), Decimal('0')), '.2f')"
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 13.74
+    },
+    {
+      "id": "9db1122b48f8",
+      "supplemental": false,
+      "expected": "block",
+      "critical": false,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 2,
+            "evidence": "The implementation strips timezone information with `.replace(tzinfo=None)` before comparison, so it compares wall-clock times rather than instants. For example, `due([{'id': 'x', 'at': '2024-01-01T00:00:00-01:00'}], '2024-01-01T00:00:00+00:00')` should return `[]` because the event instant is later than `now`, but this code returns `['x']` because both naive times are equal.",
+            "repair": "Parse both timestamps as aware `datetime` values and compare them directly without removing `tzinfo`, e.g. `cutoff = datetime.fromisoformat(now)` and compare `datetime.fromisoformat(e['at']) <= cutoff`."
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 14.29
+    },
+    {
+      "id": "9de841f5d10f",
+      "supplemental": false,
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "elapsed_s": 10.92
+    },
+    {
+      "id": "b94e411585d2",
+      "supplemental": false,
+      "expected": "block",
+      "critical": false,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 2,
+            "evidence": "Using chunk.splitlines() splits each chunk independently, so chunk boundaries can create false line breaks. For example, lines([\"a\", \"\\nb\"]) returns [\"a\", \"\", \"b\"], but the concatenated buffer \"a\\nb\" should produce [\"a\", \"b\"].",
+            "repair": "Process the chunks as one continuous stream or join them before splitting on LF only."
+          },
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 2,
+            "evidence": "str.splitlines() treats CR, vertical tab, form feed, and Unicode line separators as line boundaries, but the objective requires only LF to delimit lines. For example, lines([\"a\\rb\"]) returns [\"a\", \"b\"], but should return [\"a\\rb\"] because CR alone is not a delimiter.",
+            "repair": "Split only on '\\n' and remove exactly one '\\r' immediately preceding each '\\n'."
+          },
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 2,
+            "evidence": "str.splitlines() removes a trailing CR from an unterminated final buffer. For example, lines([\"a\\r\"]) returns [\"a\"], but the final unterminated nonempty buffer must be emitted unchanged as [\"a\\r\"].",
+            "repair": "Do not strip trailing CR from the final unterminated segment; only remove one CR when it immediately precedes an LF delimiter."
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 16.6
+    },
+    {
+      "id": "e8f7aaa4fc39",
+      "supplemental": false,
+      "expected": "accept",
+      "critical": false,
+      "review": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "elapsed_s": 12.38
+    },
+    {
+      "id": "ee3e5ae15226",
+      "supplemental": false,
+      "expected": "block",
+      "critical": false,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "critical",
+            "path": "core.py",
+            "line": 5,
+            "evidence": "The condition `if not page['items'] or cursor is None: return out` stops traversal when `page['items']` is empty, even if `page['next']` is non-None. This violates the requirement that empty items with a non-None next cursor do not end traversal. For example, if `fetch(None)` returns `{\"items\": [], \"next\": \"a\"}` and `fetch(\"a\")` returns `{\"items\": [1], \"next\": None}`, `collect(fetch)` returns `[]` instead of `[1]`.",
+            "repair": "Remove the empty-items stop condition and return only when `cursor is None`, e.g. `if cursor is None: return out`."
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 12.43
+    },
+    {
+      "id": "9de841f5d10f",
+      "supplemental": true,
+      "expected": "block",
+      "critical": true,
+      "review": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "major",
+            "path": "core.py",
+            "line": 2,
+            "evidence": "Decimal(x).quantize(Decimal('.01'), rounding=ROUND_HALF_UP) uses the default Decimal context precision of 28 significant digits. For finite decimal amount strings with more than 28 significant digits, quantize can raise InvalidOperation. Example: Decimal('123456789012345678901234567890.123').quantize(Decimal('.01'), rounding=ROUND_HALF_UP) fails under the default context, while the objective requires finite decimal amount strings without a stated precision bound.",
+            "repair": "Use a sufficiently large local Decimal precision for each row, e.g. set a local context with precision = max(28, len(significant digits in x) + 2), or otherwise ensure quantize does not depend on the default 28-digit precision."
+          },
+          {
+            "severity": "minor",
+            "path": "core.py",
+            "line": 2,
+            "evidence": "format(Decimal('-0.00'), '.2f') can return '-0.00' for negative amounts that round to zero, e.g. rows=['-0.001']. The objective says negative amounts are refunds and empty input yields 0.00, but does not explicitly require suppressing negative zero.",
+            "repair": "If negative zero should be normalized, convert the final Decimal to a string and replace '-0.00' with '0.00'."
+          }
+        ],
+        "question": ""
+      },
+      "elapsed_s": 15.34
+    }
+  ],
+  "score": {
+    "defects_caught": 10,
+    "critical_missed": 0,
+    "false_blocks": 2,
+    "errors": 0
+  },
+  "supplemental_passed": true,
+  "gate_passed": true
+}

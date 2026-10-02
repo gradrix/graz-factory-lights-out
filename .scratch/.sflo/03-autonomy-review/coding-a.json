@@ -1,0 +1,168 @@
+{
+  "manifest_sha256": "ee968dbee13632318264fb07a990e89ea0c98f3c1238dc8462bda64ec8abac7b",
+  "wall_budget_s_per_task": 900,
+  "results": [
+    {
+      "task": "01-inventory",
+      "run": "8dfcf59128a5",
+      "status": "needs_input",
+      "attempts": 1,
+      "elapsed_s": 8.33,
+      "timeout": false,
+      "question": "Which SKU should reserve() return False for when requests reference an unknown SKU: the SKU key absent from the stock dictionary, or the first SKU in the requests list?",
+      "review_decisions": [],
+      "independent_checks_passed": null
+    },
+    {
+      "task": "02-money",
+      "run": "a53574bf1f2c",
+      "status": "needs_input",
+      "attempts": 1,
+      "elapsed_s": 5.98,
+      "timeout": false,
+      "question": "What should total() do with invalid input \u2014 e.g. a non-numeric row like \"abc\" or a malformed amount? Should it raise an exception, or treat invalid rows as 0.00 (skip them)?",
+      "review_decisions": [],
+      "independent_checks_passed": null
+    },
+    {
+      "task": "03-paths",
+      "run": "655298d0ddb9",
+      "status": "accepted",
+      "attempts": 1,
+      "elapsed_s": 99.96,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "pass"
+      ],
+      "independent_checks_passed": true
+    },
+    {
+      "task": "04-timezones",
+      "run": "90932f6a1652",
+      "status": "interrupted",
+      "attempts": 2,
+      "elapsed_s": 399.03,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "repair"
+      ],
+      "independent_checks_passed": null
+    },
+    {
+      "task": "05-pagination",
+      "run": "34ad7db24fa4",
+      "status": "needs_input",
+      "attempts": 1,
+      "elapsed_s": 6.93,
+      "timeout": false,
+      "question": "What is the exact public signature and export expected for collect \u2014 specifically: should api.py expose `collect(fetch)` as a function named `collect` taking a single callable `fetch` (i.e., `from core import collect; collect(fetch)`), and what should collect return (a flat list of all items)? Also, what does fetch return exactly \u2014 a dict with keys \"items\" and \"next_cursor\" (or \"next\")? Please specify the exact key names used in the fetch result dict.",
+      "review_decisions": [],
+      "independent_checks_passed": null
+    },
+    {
+      "task": "06-idempotency",
+      "run": "25c56a7104b7",
+      "status": "accepted",
+      "attempts": 1,
+      "elapsed_s": 50.26,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "pass"
+      ],
+      "independent_checks_passed": true
+    },
+    {
+      "task": "07-transitions",
+      "run": "8be01b9f5d77",
+      "status": "accepted",
+      "attempts": 1,
+      "elapsed_s": 30.1,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "pass"
+      ],
+      "independent_checks_passed": true
+    },
+    {
+      "task": "08-streaming",
+      "run": "81d465cd5800",
+      "status": "accepted",
+      "attempts": 1,
+      "elapsed_s": 68.28,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "pass"
+      ],
+      "independent_checks_passed": true
+    },
+    {
+      "task": "09-csv",
+      "run": "bee09588db4f",
+      "status": "accepted",
+      "attempts": 1,
+      "elapsed_s": 36.81,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "pass"
+      ],
+      "independent_checks_passed": true
+    },
+    {
+      "task": "10-merge",
+      "run": "ef28877bfc44",
+      "status": "accepted",
+      "attempts": 1,
+      "elapsed_s": 61.68,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "pass"
+      ],
+      "independent_checks_passed": true
+    },
+    {
+      "task": "11-ranges",
+      "run": "0805ba5e0899",
+      "status": "accepted",
+      "attempts": 1,
+      "elapsed_s": 54.01,
+      "timeout": false,
+      "question": null,
+      "review_decisions": [
+        "pass"
+      ],
+      "independent_checks_passed": true
+    },
+    {
+      "task": "12-escaping",
+      "run": "a4be13503596",
+      "status": "needs_input",
+      "attempts": 1,
+      "elapsed_s": 6.88,
+      "timeout": false,
+      "question": "The acceptance check /acceptance/check.py is not present in this environment, so I can't see its exact expectations. What does it expect for render's handling of non-string values in the values mapping \u2014 (A) coerce any non-None value via str() before HTML-escaping, (B) only substitute when the value is a str and treat non-str values as unknown (leave placeholder literal), or (C) something else? Also: should a key present in values with value None be treated as known (substitute empty/escaped \"None\") or unknown (leave literal)?",
+      "review_decisions": [],
+      "independent_checks_passed": null
+    },
+    {
+      "task": "ambiguous",
+      "run": "3d3b982387f2",
+      "status": "needs_input",
+      "attempts": 1,
+      "elapsed_s": 4.92,
+      "timeout": false,
+      "question": "What is the new pricing policy for fee(amount): a flat fee or a percentage of amount, and what rate should be used (e.g., \"flat $5\" or \"2.5%\")?",
+      "review_decisions": [],
+      "independent_checks_passed": null
+    }
+  ],
+  "accepted": 7,
+  "ambiguity_stopped": true,
+  "gate_passed": false
+}

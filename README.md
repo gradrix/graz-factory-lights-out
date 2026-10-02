@@ -2,7 +2,7 @@
 
 A small local software factory: give it a repository, a task and executable acceptance checks. It edits an isolated copy, checks the result and repairs failures within a fixed budget. Your source repository stays unchanged. An accepted run produces a patch and its evidence.
 
-**Works today:** bounded Python tasks using prepared dependencies.
+**Works today:** bounded Python tasks using prepared dependencies, durable progress visibility and controlled recovery. [Incremental acceptance evidence](docs/evidence/autonomy-stages.md).
 
 **Destination:** end-to-end autonomous local delivery, introduced through measured stages: visibility, independent review, environment preparation, research/browser tools, planning and integration. See the [roadmap](docs/roadmap.md) and [feasibility research](docs/research/autonomy-feasibility.md). Visibility and controlled recovery are implemented and qualified on the rig. Independent local review is implemented but still under qualification; automatic environment preparation, research/browser tools, decomposition and merging remain planned.
 
