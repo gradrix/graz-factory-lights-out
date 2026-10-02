@@ -162,6 +162,12 @@ class EnvironmentStore:
                 with path.open('xb') as output:
                     output.write(receipt); output.flush(); os.fsync(output.fileno())
                 path.chmod(0o444)
+                pending = stage / 'pending'
+                with pending.open('xb') as output:
+                    output.write(b'Uncommitted environment preparation\n')
+                    output.flush(); os.fsync(output.fileno())
+                with self._directory_fd(stage) as directory:
+                    os.fsync(directory)
                 active()
                 destination = self.root / identifier
                 if os.path.lexists(destination):
@@ -170,7 +176,8 @@ class EnvironmentStore:
                 published = destination
                 with self._directory_fd() as directory:
                     os.fsync(directory)
-                result = self._resolve(identifier, identifier)
+                result = self._resolve(identifier, identifier, allow_pending=True)
+                (destination / 'pending').unlink()  # Final commit; no fallible work follows.
                 published = None  # Commit is durable and verified before releasing readers.
                 return result
             except BaseException:
@@ -184,8 +191,8 @@ class EnvironmentStore:
                     discard(stage)
 
     @contextmanager
-    def _directory_fd(self):
-        descriptor = os.open(self.root, os.O_RDONLY | os.O_DIRECTORY)
+    def _directory_fd(self, path=None):
+        descriptor = os.open(self.root if path is None else path, os.O_RDONLY | os.O_DIRECTORY)
         try:
             yield descriptor
         finally:
@@ -195,10 +202,12 @@ class EnvironmentStore:
         with self.locked(shared=True):
             return self._resolve(identifier, expected_hash)
 
-    def _resolve(self, identifier, expected_hash=None):
+    def _resolve(self, identifier, expected_hash=None, *, allow_pending=False):
         if not isinstance(identifier, str) or not HEX.fullmatch(identifier):
             raise ValueError('Environment ID must be a receipt SHA-256, never a path')
         root = self.root / identifier
+        if not allow_pending and os.path.lexists(root / 'pending'):
+            raise ValueError('Environment publication is pending; failed preparation cannot be reused')
         receipt = root / 'receipt.json'
         if root.exists() and (root.stat().st_uid != os.getuid() or stat.S_IMODE(root.stat().st_mode) != 0o700):
             raise ValueError('Environment publication directory ownership or mode changed')
