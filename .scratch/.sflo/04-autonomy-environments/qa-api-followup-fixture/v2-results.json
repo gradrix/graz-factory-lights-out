@@ -1,0 +1,14 @@
+[
+  {
+    "case": "reference",
+    "exit": 0,
+    "stdout": "Processing ./project\n  Preparing metadata (pyproject.toml): started\n  Preparing metadata (pyproject.toml): finished with status 'done'\nBuilding wheels for collected packages: gflo-telemetry-usage\n  Building wheel for gflo-telemetry-usage (pyproject.toml): started\n  Building wheel for gflo-telemetry-usage (pyproject.toml): finished with status 'done'\n  Created wheel for gflo-telemetry-usage: filename=gflo_telemetry_usage-0.0.1-py3-none-any.whl size=2857 sha256=9667062adc35a1cefd95135f0ed3185453959dd44cfb5ef848612fb1a66698ce\n  Stored in directory: /work/pip-ephem-wheel-cache-7va7ak8r/wheels/05/eb/af/dcbde0152474d5c71a6ad4c25620867cda8d2fd9a51361a815\nSuccessfully built gflo-telemetry-usage\nProcessing ./wheels/gflo_telemetry_usage-0.0.1-py3-none-any.whl\nInstalling collected packages: gflo-telemetry-usage\nSuccessfully installed gflo-telemetry-usage-0.0.1\nPASS\n",
+    "stderr": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.050s\n\nOK\n"
+  },
+  {
+    "case": "unbounded-at-original",
+    "exit": 1,
+    "stdout": "Processing ./project\n  Preparing metadata (pyproject.toml): started\n  Preparing metadata (pyproject.toml): finished with status 'done'\nBuilding wheels for collected packages: gflo-telemetry-usage\n  Building wheel for gflo-telemetry-usage (pyproject.toml): started\n  Building wheel for gflo-telemetry-usage (pyproject.toml): finished with status 'done'\n  Created wheel for gflo-telemetry-usage: filename=gflo_telemetry_usage-0.0.1-py3-none-any.whl size=2859 sha256=edc81f8c85a03013232f6d332a5b8cab442f1d6c79d6ad66e60b6c52c13fd667\n  Stored in directory: /work/pip-ephem-wheel-cache-7g3r948u/wheels/a8/f2/6a/6d734cb5f905c71e5c96b9c0712ca7a839c5019354f2b1996d\nSuccessfully built gflo-telemetry-usage\nProcessing ./wheels/gflo_telemetry_usage-0.0.1-py3-none-any.whl\nInstalling collected packages: gflo-telemetry-usage\nSuccessfully installed gflo-telemetry-usage-0.0.1\n",
+    "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 50, in <module>\n    for p in invalid:assert request('/telemetry/usage',p)[0]==422,'schema/domain rejection'\n                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: schema/domain rejection\n"
+  }
+]

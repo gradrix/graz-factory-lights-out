@@ -12,4 +12,4 @@ Later acceptance-bearing stages are in [the roadmap](../../docs/roadmap.md). The
 
 - [Independent local review](delivery/03-local-review.md) — accepted at3bd8ae2; D12/12 plus ambiguity and independent QA, with documented quality limitations.
 
-- [Prepare supported environments](delivery/04-environments.md) — active; owner /root. Three profiles implemented; cold rig preparation and independent reference checks passed. Repair rechecks passed; remaining input-failure checks and actual model qualification are active.
+- [Prepare supported environments](delivery/04-environments.md) — active; owner /root. Three profiles implemented; cold rig preparation and independent reference checks passed. Repair, input-failure, lifecycle and security checks passed. Original model cohort accepted1/3; fresh model qualification is active after fixture corrections and a measured96K/Q4 throughput improvement.

@@ -1,0 +1,26 @@
+{
+  "cohort": "environment-api-followup",
+  "version": 1,
+  "status": "proposed public fixture pending independent review; unused",
+  "environment": {
+    "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+    "version": "3.12.13",
+    "profile": "python-api"
+  },
+  "budget": {
+    "max_attempts": 3,
+    "max_turns": 24,
+    "wall_time_seconds": 900
+  },
+  "sha256": {
+    "README.md": "6bab161114babbebcdd85ab70a6daff8becbdbe4e18652bc3db8fc4550db2c48",
+    "requirements.lock": "890507545cbd69bf015bc092965ab76de09918593cf68119728fa8dc3d73bc3f",
+    "source/README.md": "dbbf21834684f59b0bec03d653e8a04b482cda878d38ca626041ce841d0df938",
+    "source/pyproject.toml": "6f0a07654f9778fd537ded997977a5c479a82ca15cbdd9be49e065e6e78b8f26",
+    "source/src/telemetry_usage/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "source/src/telemetry_usage/app.py": "1e45a96ae3337aaa00c14aaa08a2e672b853f42b654e9a782e431875b62975f4",
+    "source/src/telemetry_usage/domain.py": "7153e120e5fa1e0ee0f5eb77f3225f07de545fd23ab4fc24fca44db29abc2c55",
+    "source/src/telemetry_usage/schemas.py": "8d2bb4abb13e666afee411af5ba8249d19991c69dcb4a7fea00bdbd65e809200",
+    "task.json": "81217143c12779fcdcc96f95a43caf433ace8655224697e9d76303fd3e4b07de"
+  }
+}

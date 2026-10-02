@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/home/gradrix/gflo-stage3-25f75c3/qualify-followup.py", line 31, in <module>
+    for name, digest in manifest['sha256'].items():
+                        ~~~~~~~~^^^^^^^^^^
+KeyError: 'sha256'

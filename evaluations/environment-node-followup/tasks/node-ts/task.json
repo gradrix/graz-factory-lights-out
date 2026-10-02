@@ -1,0 +1,16 @@
+{
+  "profile": "node-ts",
+  "objective": "Add action availability across the TypeScript domain/API/CLI to find free scheduling slots. Its payload is {action:\"availability\", window:{start,end}, busy:[{start,end},...], minDuration}. All times are integers in 0..1000000; every interval must have start < end. Intervals are half-open [start,end). busy has at most 1000 intervals and may be empty, unsorted, overlapping, duplicated, adjacent or outside window. minDuration is an integer in 1..1000000. Reject missing fields and invalid shapes/types/ranges with Error; booleans and numeric strings are not integers. Unknown extra properties may be ignored. Validate every busy interval before clipping or filtering, including intervals wholly outside window. Clip valid busy intervals to window, merge their union, and return the maximal free gaps whose duration is at least minDuration, sorted by start. Each row is exactly {start,end,duration}, duration=end-start. A fully busy window returns []; an empty busy list returns the entire window if it meets minDuration, otherwise []. Never mutate input. Preserve action total and its existing safe-integer/overflow checks, unknown-action errors, exported dispatch in src/api.ts, JSON stdin/stdout, and CLI exit 2 with nonempty stderr and no stack trace on invalid input (including malformed JSON). Compile strict CommonJS with existing tsconfig. Add at least three meaningful node:test cases runnable with node --test after compilation, covering normal, boundary and rejected inputs. README.md must contain at least 40 words documenting availability usage and error behavior, and commands for offline compilation, testing and CLI use that work from any project location. No exact error wording or prose tokens beyond the action name availability are required. Environment: Node22.23.3/npm10.9.9/TypeScript5.8.3/@types/node22.15.3/undici-types6.21.0. Dependencies are prepared offline at /node_modules; compile with node /node_modules/typescript/bin/tsc -p /path/to/project/tsconfig.json. Do not download dependencies or change package.json/package-lock.json. Keep existing public behavior; no additional validation policy is needed.",
+  "max_attempts": 3,
+  "max_turns": 24,
+  "wall_time_seconds": 900,
+  "repo": "source",
+  "acceptance": "acceptance",
+  "checks": [
+    [
+      "node",
+      "/acceptance/check.cjs",
+      "."
+    ]
+  ]
+}

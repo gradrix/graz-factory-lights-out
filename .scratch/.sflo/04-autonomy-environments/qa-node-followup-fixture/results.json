@@ -1,0 +1,20 @@
+[
+  {
+    "case": "baseline",
+    "exit": 1,
+    "stdout": "",
+    "stderr": "/tmp/availability-check-MmyS7W/project/dist/api.js:8\n    throw new Error('unknown action');\n    ^\n\nError: unknown action\n    at dispatch (/tmp/availability-check-MmyS7W/project/dist/api.js:8:11)\n    at good (/acceptance/check.cjs:10:96)\n    at Object.<anonymous> (/acceptance/check.cjs:14:2)\n    at Module._compile (node:internal/modules/cjs/loader:1781:14)\n    at Object..js (node:internal/modules/cjs/loader:1913:10)\n    at Module.load (node:internal/modules/cjs/loader:1505:32)\n    at Function._load (node:internal/modules/cjs/loader:1309:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:254:19)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49\n\nNode.js v22.23.3\n"
+  },
+  {
+    "case": "reference-extra",
+    "exit": 0,
+    "stdout": "PASS: baseline compatibility, interval/API/CLI cases, 80 independent occupancy cases, generated tests and documentation presence\n",
+    "stderr": ""
+  },
+  {
+    "case": "reverse-output",
+    "exit": 1,
+    "stdout": "",
+    "stderr": "node:assert:150\n  throw new AssertionError(obj);\n  ^\n\nAssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n    {\n      duration: 3,\n+     end: 30,\n+     start: 27\n-     end: 18,\n-     start: 15\n    },\n    {\n      duration: 3,\n+     end: 18,\n+     start: 15\n-     end: 30,\n-     start: 27\n    }\n  ]\n\n    at good (/acceptance/check.cjs:10:80)\n    at Object.<anonymous> (/acceptance/check.cjs:16:2)\n    at Module._compile (node:internal/modules/cjs/loader:1781:14)\n    at Object..js (node:internal/modules/cjs/loader:1913:10)\n    at Module.load (node:internal/modules/cjs/loader:1505:32)\n    at Function._load (node:internal/modules/cjs/loader:1309:12)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:254:19)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:171:5)\n    at node:internal/main/run_main_module:36:49 {\n  generatedMessage: true,\n  code: 'ERR_ASSERTION',\n  actual: [\n    { start: 27, end: 30, duration: 3 },\n    { start: 15, end: 18, duration: 3 }\n  ],\n  expected: [\n    { start: 15, end: 18, duration: 3 },\n    { start: 27, end: 30, duration: 3 }\n  ],\n  operator: 'deepStrictEqual',\n  diff: 'simple'\n}\n\nNode.js v22.23.3\n"
+  }
+]

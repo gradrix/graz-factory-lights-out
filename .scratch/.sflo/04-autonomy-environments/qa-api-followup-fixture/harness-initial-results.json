@@ -1,0 +1,26 @@
+[
+  {
+    "case": "baseline",
+    "exit": 1,
+    "stdout": "Processing ./project\n  Preparing metadata (pyproject.toml): started\n  Preparing metadata (pyproject.toml): finished with status 'done'\nBuilding wheels for collected packages: gflo-telemetry-usage\n  Building wheel for gflo-telemetry-usage (pyproject.toml): started\n  Building wheel for gflo-telemetry-usage (pyproject.toml): finished with status 'done'\n  Created wheel for gflo-telemetry-usage: filename=gflo_telemetry_usage-0.0.1-py3-none-any.whl size=2094 sha256=a3336f3002162b34081c0f2ada4a9335657605cfe8c3b4d8409b8e4f289861c6\n  Stored in directory: /work/pip-ephem-wheel-cache-gt7wfmi6/wheels/06/fb/d7/14a62633ce3e45083bdf79a29475982f7d794ebfcdc1b644fc\nSuccessfully built gflo-telemetry-usage\nProcessing ./wheels/gflo_telemetry_usage-0.0.1-py3-none-any.whl\nInstalling collected packages: gflo-telemetry-usage\nSuccessfully installed gflo-telemetry-usage-0.0.1\n",
+    "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 45, in <module>\n    status,actual=request('/telemetry/usage',p);assert status!=404,'new endpoint missing';assert status==200 and equal(actual,want),'usage result/type'\n                                                       ^^^^^^^^^^^\nAssertionError: new endpoint missing\n"
+  },
+  {
+    "case": "reference-extra",
+    "exit": 1,
+    "stdout": "Processing ./project\n  Preparing metadata (pyproject.toml): started\n  Preparing metadata (pyproject.toml): finished with status 'done'\nBuilding wheels for collected packages: gflo-telemetry-usage\n  Building wheel for gflo-telemetry-usage (pyproject.toml): started\n  Building wheel for gflo-telemetry-usage (pyproject.toml): finished with status 'done'\n  Created wheel for gflo-telemetry-usage: filename=gflo_telemetry_usage-0.0.1-py3-none-any.whl size=2857 sha256=181d630b1fce5e196fc815ff11bb8244201fc7c9a8a68f48534209f9ab951f14\n  Stored in directory: /work/pip-ephem-wheel-cache-h05s7ugb/wheels/bc/c8/cc/348ce5530b1bbdd639f510effc8c839157052eb4a39f6ed89d\nSuccessfully built gflo-telemetry-usage\nProcessing ./wheels/gflo_telemetry_usage-0.0.1-py3-none-any.whl\nInstalling collected packages: gflo-telemetry-usage\nSuccessfully installed gflo-telemetry-usage-0.0.1\n",
+    "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 58, in <module>\n    else:raise AssertionError('domain duplicate must fail')\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: domain duplicate must fail\n"
+  },
+  {
+    "case": "unbounded-at-original",
+    "exit": 0,
+    "stdout": "Processing ./project\n  Preparing metadata (pyproject.toml): started\n  Preparing metadata (pyproject.toml): finished with status 'done'\nBuilding wheels for collected packages: gflo-telemetry-usage\n  Building wheel for gflo-telemetry-usage (pyproject.toml): started\n  Building wheel for gflo-telemetry-usage (pyproject.toml): finished with status 'done'\n  Created wheel for gflo-telemetry-usage: filename=gflo_telemetry_usage-0.0.1-py3-none-any.whl size=2859 sha256=9b3ff347d51e7a86506ec12537644561a6681e0a38139fb0431696faeab1bf90\n  Stored in directory: /work/pip-ephem-wheel-cache-tos7ciny/wheels/bf/7d/cb/3f731e4ed40b20b35329a880106d205036482fc29c1cafc8d8\nSuccessfully built gflo-telemetry-usage\nProcessing ./wheels/gflo_telemetry_usage-0.0.1-py3-none-any.whl\nInstalling collected packages: gflo-telemetry-usage\nSuccessfully installed gflo-telemetry-usage-0.0.1\nPASS\n",
+    "stderr": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.051s\n\nOK\n"
+  },
+  {
+    "case": "unbounded-at-extra",
+    "exit": 1,
+    "stdout": "Processing ./project\n  Preparing metadata (pyproject.toml): started\n  Preparing metadata (pyproject.toml): finished with status 'done'\nBuilding wheels for collected packages: gflo-telemetry-usage\n  Building wheel for gflo-telemetry-usage (pyproject.toml): started\n  Building wheel for gflo-telemetry-usage (pyproject.toml): finished with status 'done'\n  Created wheel for gflo-telemetry-usage: filename=gflo_telemetry_usage-0.0.1-py3-none-any.whl size=2859 sha256=59a6e8b94896c74f04344ba5badfb77da4d0ba594462f55b5e01c92af4610fbb\n  Stored in directory: /work/pip-ephem-wheel-cache-82gnhfb_/wheels/84/66/cb/b4f1af36e85ea8e6de46b544cdc3c45608bf41f414e1bed098\nSuccessfully built gflo-telemetry-usage\nProcessing ./wheels/gflo_telemetry_usage-0.0.1-py3-none-any.whl\nInstalling collected packages: gflo-telemetry-usage\nSuccessfully installed gflo-telemetry-usage-0.0.1\n",
+    "stderr": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 49, in <module>\n    for p in invalid:assert request('/telemetry/usage',p)[0]==422,'schema/domain rejection'\n                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: schema/domain rejection\n"
+  }
+]

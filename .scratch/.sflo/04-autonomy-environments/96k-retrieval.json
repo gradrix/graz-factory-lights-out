@@ -1,0 +1,31 @@
+{
+  "records": 3700,
+  "expected": {
+    "north": "cobalt-7419",
+    "middle": "cedar-2856",
+    "south": "amber-9631"
+  },
+  "request_sha256": "dd83a9ea003b911d74240095054e5325eb336b39a40a4c47a87128760a22497b",
+  "response": "{\n  \"north\": \"cobalt-7419\",\n  \"middle\": \"cedar-2856\",\n  \"south\": \"amber-9631\"\n}",
+  "usage": {
+    "completion_tokens": 45,
+    "prompt_tokens": 81441,
+    "total_tokens": 81486,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    }
+  },
+  "timings": {
+    "cache_n": 0,
+    "prompt_n": 81441,
+    "prompt_ms": 94987.185,
+    "prompt_per_token_ms": 1.1663312704902935,
+    "prompt_per_second": 857.3893415201219,
+    "predicted_n": 45,
+    "predicted_ms": 1226.867,
+    "predicted_per_token_ms": 27.883340909090908,
+    "predicted_per_second": 35.863708128101905
+  },
+  "passed": true,
+  "elapsed_s": 96.71811045799404
+}

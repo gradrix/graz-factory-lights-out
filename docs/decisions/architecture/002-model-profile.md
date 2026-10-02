@@ -12,3 +12,11 @@ Current repository-task qualification is recorded in docs/pilot-results.md. Thos
 Pins: model revision 5348543e0147355ac9cbcb031184a3546350988e; llama.cpp commit 25747b08e7a0f9a59a2089ce6b98d2229b76042a; exact CUDA image ID is in ops/model.py. The GGUF SHA256 values and summarized measurements are published in docs/model-profile.md. Files were already installed and hash-verified during that study; no download was needed for this reset.
 
 Remaining operational assumptions: Windows/WSL and Docker are running; the rig has its measured RAM/SSD resources as well as the 5090. The export uses host-mapped lookup data and is not GPU-only. No other GPU-heavy workload is admitted by GFLO. Cold-boot automation is not qualified.
+
+## Superseding trial default, 2026-10-02
+
+Decision maker: agent, under the same authorization. Use 98304/Q4 for the next qualification runs; retain explicit 131072/Q4 and 65536/Q8 options and permit explicit KV type for controlled comparisons. This supersedes the original default allocation above, not historical qualification results or the model/runtime pins.
+
+An identical 16947-token prompt decoded at a warm median16.52tokens/s on128K after restart,74.92 on64K/Q4 and73.95 on96K/Q4. Only allocation changed. 96K also retrieved three exact values across81441 inputtokens in96.72seconds. VRAM residency pressure is the likely mechanism; allocation-sensitive throughput is measured, but memory residency itself was not traced. 96K is the largest tested allocation retaining speed, not the physical maximum.
+
+The original environment cohort accepted1/3 and retained two900-second timeouts. Fresh independently checked API and TypeScript tasks will qualify the new setting; retrieval does not establish full-window coding reliability. Evidence and remaining limits: [profile](../../model-profile.md), [throughput experiment](../../../.scratch/autonomy/issues/05-serving-throughput.md). Revisit this reversible choice if desktop GPU load or project context needs change.

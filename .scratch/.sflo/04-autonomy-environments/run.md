@@ -55,3 +55,15 @@ API original70a187241924 remains interrupted at900.03s. Independent diagnosis re
 ## Original three-profile model cohort completed
 
 Frozen source25f75c3, driver ebc6b2a, fixturev2. Overall gate FAILED:1/3 accepted. python-stdlib: accepted, 482.71s, 1 attempts. python-api: interrupted, 900.03s, 2 attempts. node-ts: interrupted, 900.03s, 1 attempts. Full identities and results:rig-model-25f75c3.json. TypeScript interruption is preserved and independent diagnosis is pending. No environment or model profile was changed during this cohort. A separate fixed-input throughput probe began only after all three tasks stopped.
+
+Original driver metadata correction: ebc6b2a recorded `config.get(reasoning_effort)` although worker reads `reasoning`; its original qualification receipt therefore has a null metadata field. Model request trajectories remain authoritative and show the actual medium setting. New driver reads the correct key. Historical receipt is preserved, not rewritten; this is reporting only, no inference behavior change.
+
+## Follow-up qualification and serving trial
+
+Independent serving QA verified the one-variable comparison:128K16.52tokens/s,64K/Q474.92,96K/Q473.95 on identical16947-token input.96K retrieval passed81441tokens; see qa-serving-profile.md and its provenance caveat. Agent selected96K/Q4 trial default, retaining128K andexplicitKVoverride. Runtime gflo source remains25f75c3; opsmanager changed only profile selection.
+
+Fresh API fixturev2 e4cdd35d290c86aa115ae1c7e76d87acfdc5be135e6779768e0f7a0c646f9a5e passed independent pre-exposure QA after a timestamp-oracle gap was repaired under a new identity. Fresh generatedrun0ff5575a451b accepted firstattempt285.71s, protected checks/freshlocalreview/externalrerunpassed. Coder median73.06tokens/s, maximum prompt30021. Independent semantic QA is pending. Observer:localhost8789.
+
+Fresh Node fixture2ec5da0ddb1c0e60996efa706360f397e3bc3433c45d05a70205ef48be4daf52 passed independent pre-exposure QA. Driver initial invocation rejected an incompatible manifest layout before task creation or inference; preserved rig-node-followup.log. Driver now accepts the explicit task location and either frozen manifest hash mapping. Run df7b986b2ae8 is active at96K/Q4. Attempt1 stopped after2turns without implementation; protected checks rejected unknownaction and attempt2 automatically began. Observer:localhost8790. Original1/3cohort remains unchanged; follow-ups are distinct fresh tasks, not rescored retries.
+
+Fresh API independent semantic QA passed:100 domaincases,15 realHTTPcases,validation boundaries,6generatedtests and documentedcommands. See qa-model-api-followup.md. No additional API repair required.

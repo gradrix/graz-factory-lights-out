@@ -48,7 +48,7 @@ Each task needs:
 
 These are extensions of the current task record as their stages need them, not a new schema/framework to implement all at once. Each assignment gets fresh role context plus referenced project facts. Shared durable state stores requirements, decisions and evidence; conversations are not the project memory.
 
-Start qualification around coherent tasks whose useful context is roughly 8K–32K tokens, an agent-chosen experiment range rather than a hard product limit. Expand when evidence requires more surrounding code. The installed 128K capacity is available, but maximum context is not the default amount to fill. Measure correctness, useful progress, latency and context omissions. Task size can grow when reliable completion improves.
+Start qualification around coherent tasks whose useful context is roughly 8K–32K tokens, an agent-chosen experiment range rather than a hard product limit. Expand when evidence requires more surrounding code. The current trial uses 96K capacity after measured throughput loss at 128K; the larger profile remains available. Maximum capacity is not the default amount to fill. Measure correctness, useful progress, latency and context omissions. Task size can grow when reliable completion improves.
 
 Use Flash Coder for the first implementation trials. Compare fresh-context Flash review against tuned dense Qwen on the same known-defect and clean patches before choosing a reviewer. Bonsai is a candidate for document processing after its tool-loop behavior is qualified. Model switching is explicit and serialized on this GPU; several resident models are not assumed to fit.
 

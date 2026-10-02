@@ -11,15 +11,16 @@ User direction, 2026-10-02: push the first version, delete previous implementati
 ## Decisions so far
 
 - [First release evidence](../../docs/pilot-results.md): bounded execution/recovery works; semantic review caught defects executable checks missed.
+- [Serving allocation](../../docs/decisions/architecture/002-model-profile.md): 96K/Q4 is the measured faster trial default; fresh coding qualification remains active.
 - [Current architecture](../../docs/architecture.md): keep the small runtime as the implementation baseline.
 - [Autonomous delivery](../../docs/decisions/product/002-autonomous-delivery.md): user-approved destination and deletion/publication supersede first-release-only limits.
 - [Measured capability route](../../docs/decisions/architecture/003-autonomy-route.md): agent-proposed stages and qualification gates; engineering feasibility is distinct from model reliability.
 
 ## Not yet specified
 
-[Serving throughput under useful context](issues/05-serving-throughput.md) is an open measurement question after slower Stage3 samples; an equal-input replay is queued after the frozen model batch. [Browser/research route](../../docs/research/research-browser-route.md) is primary-source discovery for the next stage, not implementation.
+[Serving throughput under useful context](issues/05-serving-throughput.md) measured a roughly4.5x improvement at96K/Q4 over128K on identical input. Fresh coding trials are testing the practical effect. [Browser/research route](../../docs/research/research-browser-route.md) is primary-source discovery for the next stage, not implementation.
 
-[Local review qualification](issues/02-review-reliability.md) is accepted at3bd8ae2 after target-matched D12/12 plus independent QA; minor quality and reviewer false-positive limitations remain explicit. Model reliability across unfamiliar larger projects; useful task/context sizes; review false-negative rates; acceptable unattended throughput. These need experiments rather than promises. [Environment preparation research](issues/03-environment-preparation.md) is resolved; implementation is now the active frontier. [Bounded environment executor](issues/04-environment-build-boundary.md) is resolved toward immutable bases plus dependency snapshots; three profiles are implemented and have passed cold preparation on the rig; final lifecycle/input checks and model-task qualification are active.
+[Local review qualification](issues/02-review-reliability.md) is accepted at3bd8ae2 after target-matched D12/12 plus independent QA; minor quality and reviewer false-positive limitations remain explicit. Model reliability across unfamiliar larger projects; useful task/context sizes; review false-negative rates; acceptable unattended throughput. These need experiments rather than promises. [Environment preparation research](issues/03-environment-preparation.md) is resolved; implementation is now the active frontier. [Bounded environment executor](issues/04-environment-build-boundary.md) is resolved toward immutable bases plus dependency snapshots; three profiles are implemented and have passed cold preparation on the rig; lifecycle/input/security checks passed and model-task qualification remains active.
 
 ## Out of scope
 

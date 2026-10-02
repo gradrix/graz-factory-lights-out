@@ -1,0 +1,195 @@
+{
+  "status": "read-only receipt verification passed; operational trial only",
+  "input_sha256": {
+    "128k-long-restarted.json": "484383ea8638aaddd4555ba72026caa4cf753c63f9ae32bba66ac47172e09d08",
+    "64k-q4-long.json": "addb68f2ecfedfb4f3231fe83092f8472f51e88107eea6319cf71f9b54c9679e",
+    "96k-q4-long.json": "ecc1f3d9875fe2f7c4aea654c876129b7ac8213436740dec625d9f10a54350cb",
+    "96k-retrieval.json": "f1012cb53c6773d8e67ea64ed10819724f3f5f76e59a4ff5f91a16dd42a2f8bc",
+    "restart-64k-q4.json": "2898b647cdfb6d7738ca36e0c598eeb2ad48cdcf2e2ae3bba556cdc4d7d2072b",
+    "restart-96k-q4.json": "e1bb1ca2627bc5f330038a8dc949ba98dcf8af6398dce1036ade423c3866a241"
+  },
+  "ops_model_sha256": "d8e5a9de083b7a8ba8cc15cf7c8b97322e3038b9ff50b523470e1f66a1607c9f",
+  "restart128_receipt": {
+    "context": 131072,
+    "cache": "q4_0",
+    "image": "sha256:249ed60fdd67b96db472e16f945af5aaba565b20159d192ba378035b6d136a1c",
+    "container_id": "509ed815ad7dbbdafccae6176dc7a0d05585939ef590f7a3484faff4dce7ae44",
+    "endpoint": "http://127.0.0.1:18000",
+    "model": "flash-next-coder",
+    "command": [
+      "run",
+      "-d",
+      "--pull",
+      "never",
+      "--name",
+      "gflo-model",
+      "--label",
+      "gflo.owner=model-service",
+      "--restart",
+      "unless-stopped",
+      "--network",
+      "bridge",
+      "--gpus",
+      "all",
+      "--shm-size",
+      "8g",
+      "-p",
+      "127.0.0.1:18000:8000",
+      "-v",
+      "/home/gradrix/benchmark-5090/flash:/model:ro",
+      "-v",
+      "/home/gradrix/.local/state/gflo-model/api-key:/run/model-key:ro",
+      "--entrypoint",
+      "/model/runtime/llama-b11284/llama-server",
+      "sha256:249ed60fdd67b96db472e16f945af5aaba565b20159d192ba378035b6d136a1c",
+      "--model",
+      "/model/Qwen3.8-Flash-Next-GSQ-RCO-IQ1_M-00001-of-00002.gguf",
+      "--alias",
+      "flash-next-coder",
+      "--host",
+      "0.0.0.0",
+      "--port",
+      "8000",
+      "-ngl",
+      "99",
+      "-fa",
+      "on",
+      "-c",
+      "131072",
+      "-np",
+      "1",
+      "--cache-type-k",
+      "q4_0",
+      "--cache-type-v",
+      "q4_0",
+      "--offline",
+      "--api-key-file",
+      "/run/model-key",
+      "--reasoning",
+      "auto",
+      "--jinja",
+      "--fit",
+      "off",
+      "-b",
+      "512",
+      "-ub",
+      "512",
+      "-lm",
+      "mmap",
+      "--lazy-mode",
+      "on"
+    ]
+  },
+  "restart128_receipt_sha256": "e9dd545914f8be2e8e7cad748adde4cfe018689978cbf63df54ae102e02dcf01",
+  "single_argument_differences": [
+    {
+      "context": 65536,
+      "differences": [
+        {
+          "index": 38,
+          "old": "131072",
+          "new": "65536"
+        }
+      ]
+    },
+    {
+      "context": 98304,
+      "differences": [
+        {
+          "index": 38,
+          "old": "131072",
+          "new": "98304"
+        }
+      ]
+    }
+  ],
+  "fixed_request_sha256": "eeffe4fbfe8337d4d5c81b882b81cd2163d6f080a03f6052ffd1455271f15df9",
+  "warm_medians": [
+    {
+      "context": 131072,
+      "warm_samples": 2,
+      "median_tokens_s": 16.52284124320372,
+      "warm_elapsed_median_s": 15.578412178496365
+    },
+    {
+      "context": 65536,
+      "warm_samples": 2,
+      "median_tokens_s": 74.92489015895427,
+      "warm_elapsed_median_s": 3.5234894394961884
+    },
+    {
+      "context": 98304,
+      "warm_samples": 2,
+      "median_tokens_s": 73.9491459767569,
+      "warm_elapsed_median_s": 3.56846137548564
+    }
+  ],
+  "96k_vs128k_ratio": 4.47557081063005,
+  "retrieval": {
+    "correct": true,
+    "prompt_tokens": 81441,
+    "elapsed_s": 96.71811045799404,
+    "decode_tokens_s": 35.863708128101905,
+    "profile_identity_in_receipt": false
+  },
+  "cache_policy": [
+    {
+      "context": 65536,
+      "override": null,
+      "resolved": "q8_0"
+    },
+    {
+      "context": 65536,
+      "override": "q4_0",
+      "resolved": "q4_0"
+    },
+    {
+      "context": 65536,
+      "override": "q8_0",
+      "resolved": "q8_0"
+    },
+    {
+      "context": 98304,
+      "override": null,
+      "resolved": "q4_0"
+    },
+    {
+      "context": 98304,
+      "override": "q4_0",
+      "resolved": "q4_0"
+    },
+    {
+      "context": 98304,
+      "override": "q8_0",
+      "resolved": "q8_0"
+    },
+    {
+      "context": 131072,
+      "override": null,
+      "resolved": "q4_0"
+    },
+    {
+      "context": 131072,
+      "override": "q4_0",
+      "resolved": "q4_0"
+    },
+    {
+      "context": 131072,
+      "override": "q8_0",
+      "resolved": "q8_0"
+    }
+  ],
+  "model_calls": 0,
+  "service_changes": 0,
+  "cli_default_context": 98304,
+  "cli_cache_override_choices": [
+    "q4_0",
+    "q8_0"
+  ],
+  "documentation_sha256": {
+    "docs/model-profile.md": "888e97a70836eb9a225928dd892141aea272bfe8ac57ed0e7d9a39cac07b0a3e",
+    "docs/operations.md": "c0d057c7fa6e11a0e5f3a865bce090c6fc526a4658a4a04d762125ae34f2ecca",
+    "docs/roadmap.md": "ce3a0f01edfe7e0355a7e1520d677f8e4b9e417127850bec45612ee94aeeb308",
+    ".scratch/autonomy/issues/05-serving-throughput.md": "bf9d5b8d80e996c0f96dd2707b33807373214d578abc39984e09d84c422bddbf"
+  }
+}

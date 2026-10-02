@@ -1,0 +1,16 @@
+{
+  "name": "node-availability-followup",
+  "version": 1,
+  "source_commit": "f5bd510e3d7da5a4d107e9c869a12d1983fe3aee",
+  "files": {
+    "README.md": "5fb37ace7849afdd647d98eca06b1c4530826711a9ebe0dd6508991c682cb21e",
+    "tasks/node-ts/source/README.md": "4f800eff3e3121462cd6061b796cd68fb9391ee8ad1c1b3f6e7161e0236f9ff6",
+    "tasks/node-ts/source/package-lock.json": "2bd0d5d024a8f29b79d28b062d54d9e2a2f34737a67fd38d08ee0b031230b20f",
+    "tasks/node-ts/source/package.json": "152e1b3aa7d2f0fca2ab5da0c1b443e0b811cd699a15a19ed807a41588fa85ee",
+    "tasks/node-ts/source/src/api.ts": "5f59b0daeb9c85c0d90170d55010c808c976ceb8e09b1915fd30ba83e3578788",
+    "tasks/node-ts/source/src/cli.ts": "80fcbb4b369b4d0a6f33caea573e890dd6f9a5cd43b605515312d30dcc69a39c",
+    "tasks/node-ts/source/src/domain.ts": "18aee62fd5e9cefc604e152254892e3060d1f5c7a9bb6a39360e2e92502d7cf1",
+    "tasks/node-ts/source/tsconfig.json": "866cc08bd1a7f8ad36995c7194f2d9c6dc493716d5033741822e927d193eec1e",
+    "tasks/node-ts/task.json": "02749a26e2cb8c3aac577fe7bf3fefc94cd1f76881396509e2fb572d84d262d5"
+  }
+}

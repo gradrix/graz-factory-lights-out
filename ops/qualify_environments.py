@@ -46,7 +46,7 @@ def main():
                'preparation_sha256': hashlib.sha256(args.preparation.read_bytes()).hexdigest(),
                'source': {str(p): hashlib.sha256(p.read_bytes()).hexdigest()
                           for p in sorted(Path('gflo').rglob('*')) if p.is_file() and '__pycache__' not in str(p)},
-               'model': config['model'], 'reasoning_effort': config.get('reasoning_effort'),
+               'model': config['model'], 'reasoning_effort': config.get('reasoning', 'none'),
                'results': []}
     for profile in profiles:
         environment = store.resolve(rows[profile]['id'])

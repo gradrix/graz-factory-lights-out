@@ -1,0 +1,8 @@
+import pathlib,subprocess,os,json,hashlib,uuid
+out=pathlib.Path(__file__).resolve().parent;r=pathlib.Path('.gflo/stage3-evidence/0ff5575a451b').resolve();accepted=json.loads((r/'accepted.json').read_text());assert hashlib.sha256((r/'change.patch').read_bytes()).hexdigest()==accepted['patch_sha256']
+for p,h in accepted['artifacts'].items():assert hashlib.sha256((r/p).read_bytes()).hexdigest()==h
+name='gflo-api-semantic-'+uuid.uuid4().hex[:10]
+args=['docker','run','--rm','--pull','never','--runtime','runc','--name',name,'--network','none','--read-only','--cap-drop','ALL','--security-opt','no-new-privileges','--memory','1g','--memory-swap','1g','--cpus','1','--pids-limit','128','--user',f'{os.getuid()}:{os.getgid()}','--tmpfs','/work:rw,nosuid,nodev,size=480m,mode=1777','--tmpfs','/tmp:rw,nosuid,nodev,size=16m,mode=1777','--env','TMPDIR=/work','--env','HOME=/tmp','--env','PYTHONDONTWRITEBYTECODE=1','--env','PYTHONPATH=/opt/deps','--mount',f'type=bind,src={r}/workspace,dst=/source,readonly','--mount',f'type=bind,src={out}/inside.py,dst=/probe.py,readonly','--mount',f'type=bind,src={pathlib.Path(".gflo/environment-locks/python-api/deps").resolve()},dst=/opt/deps,readonly','sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc','python','/probe.py']
+try:p=subprocess.run(args,capture_output=True,text=True,timeout=120)
+finally:subprocess.run(['docker','rm','-f',name],capture_output=True,timeout=15)
+(out/'results.json').write_text(json.dumps({'run':'0ff5575a451b','accepted':accepted,'command':args,'exit':p.returncode,'stdout':p.stdout,'stderr':p.stderr},indent=2)+'\n');print(p.returncode,p.stdout[-800:],p.stderr[-500:]);assert p.returncode==0

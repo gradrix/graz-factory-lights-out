@@ -54,7 +54,7 @@ def restore():
     print('Original vLLM container started; allow its model to load.')
 
 
-def up(context, cache=None):
+def up(context):
     required = [ROOT / 'runtime/llama-b11284/llama-server',
                 ROOT / 'Qwen3.8-Flash-Next-GSQ-RCO-IQ1_M-00001-of-00002.gguf',
                 ROOT / 'Qwen3.8-Flash-Next-GSQ-RCO-IQ1_M-00002-of-00002.gguf']
@@ -79,7 +79,7 @@ def up(context, cache=None):
     remove_owned()
     docker('update', '--restart', 'no', 'local-vllm')
     docker('stop', '-t', '40', 'local-vllm')
-    cache = cache or ('q8_0' if context == 65536 else 'q4_0')
+    cache = 'q4_0'  # Experiment: context allocation changes alone.
     args = ['run', '-d', '--pull', 'never', '--name', NAME,
             '--label', 'gflo.owner=model-service', '--restart', 'unless-stopped',
             '--network', 'bridge', '--gpus', 'all', '--shm-size', '8g',
@@ -119,12 +119,10 @@ def up(context, cache=None):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('action', choices=['up', 'status', 'rollback'])
-    parser.add_argument('--context', type=int, choices=[65536, 98304, 131072], default=98304)
-    parser.add_argument('--cache-type', choices=['q4_0', 'q8_0'],
-                        help='Explicit KV type for controlled comparisons; defaults to Q4 at 96K/128K, Q8 at 64K')
+    parser.add_argument('--context', type=int, choices=[65536, 98304, 131072], default=131072)
     args = parser.parse_args()
     if args.action == 'up':
-        up(args.context, args.cache_type)
+        up(args.context)
     elif args.action == 'rollback':
         restore()
     else:
