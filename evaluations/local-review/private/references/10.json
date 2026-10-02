@@ -1,0 +1,4 @@
+{
+  "core.py": "from copy import deepcopy\ndef merge(base,patch):\n    out=deepcopy(base)\n    for k,v in patch.items():\n        out[k]=merge(out[k],v) if isinstance(v,dict) and isinstance(out.get(k),dict) else deepcopy(v)\n    return out\n",
+  "api.py": "from core import merge\n\ndef health():\n    return {\"status\": \"ok\", \"version\": 1}\n"
+}

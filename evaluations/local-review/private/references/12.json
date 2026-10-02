@@ -1,0 +1,4 @@
+{
+  "core.py": "import re,html\ndef render(template,values):\n    return re.sub(r'\\{([A-Za-z0-9_]+)\\}',lambda m: html.escape(str(values[m[1]]),quote=True) if m[1] in values else m[0],template)\n",
+  "api.py": "from core import render\n\ndef health():\n    return {\"status\": \"ok\", \"version\": 1}\n"
+}

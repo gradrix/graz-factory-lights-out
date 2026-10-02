@@ -1,0 +1,8 @@
+{
+  "id": "b94e411585d2",
+  "objective": "Implement lines(chunks) returning text lines from arbitrary string chunks. LF delimits a line, remove one CR immediately preceding LF. Preserve empty lines. Emit final unterminated nonempty buffer unchanged, including any trailing CR. No extra line for a final LF. Export lines through api.py. Preserve api.health() returning {\"status\":\"ok\",\"version\":1}. Standard library only.",
+  "files": {
+    "core.py": "def lines(chunks):\n    out=[]\n    for chunk in chunks: out.extend(chunk.splitlines())\n    return out\n",
+    "api.py": "from core import lines\n\ndef health():\n    return {\"status\": \"ok\", \"version\": 1}\n"
+  }
+}

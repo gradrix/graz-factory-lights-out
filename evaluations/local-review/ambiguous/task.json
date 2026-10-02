@@ -1,0 +1,14 @@
+{
+  "repo": "source",
+  "objective": "Replace the zero fee with our new pricing policy. Product has not yet decided whether to charge a flat fee or a percentage, nor selected the rate. Preserve the public fee(amount) interface.",
+  "acceptance": "acceptance",
+  "checks": [
+    [
+      "python",
+      "-I",
+      "/acceptance/check.py"
+    ]
+  ],
+  "max_attempts": 3,
+  "max_turns": 24
+}

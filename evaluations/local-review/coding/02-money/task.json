@@ -1,0 +1,14 @@
+{
+  "repo": "source",
+  "objective": "Implement total(rows) for finite decimal amount strings. Round EACH row to cents using ROUND_HALF_UP before summing. Return a fixed two-place string. Negative amounts are refunds; empty input yields 0.00. Export total through api.py. Preserve api.health() returning {\"status\":\"ok\",\"version\":1}. Standard library only. Implement the operation in core.py and expose it in api.py. Add regression tests and update README.",
+  "acceptance": "acceptance",
+  "checks": [
+    [
+      "python",
+      "-I",
+      "/acceptance/check.py"
+    ]
+  ],
+  "max_attempts": 3,
+  "max_turns": 24
+}

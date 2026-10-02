@@ -1,0 +1,8 @@
+{
+  "id": "57eb7a68cf11",
+  "objective": "Implement collect(fetch). fetch(cursor) returns a dictionary with items list and next cursor; first cursor is None. Follow next until it is None, retaining item order. Empty items with a non-None next cursor do not end traversal. Cursors are acyclic. Export collect through api.py. Preserve api.health() returning {\"status\":\"ok\",\"version\":1}. Standard library only.",
+  "files": {
+    "core.py": "def collect(fetch):\n    out=[]; cursor=None\n    while True:\n        page=fetch(cursor); out.extend(page['items']); cursor=page['next']\n        if cursor is None: return out\n",
+    "api.py": "from core import collect\n\ndef health():\n    return {\"status\": \"ok\", \"version\": 1}\n"
+  }
+}

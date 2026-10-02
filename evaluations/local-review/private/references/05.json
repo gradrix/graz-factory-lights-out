@@ -1,0 +1,4 @@
+{
+  "core.py": "def collect(fetch):\n    out=[]; cursor=None\n    while True:\n        page=fetch(cursor); out.extend(page['items']); cursor=page['next']\n        if cursor is None: return out\n",
+  "api.py": "from core import collect\n\ndef health():\n    return {\"status\": \"ok\", \"version\": 1}\n"
+}

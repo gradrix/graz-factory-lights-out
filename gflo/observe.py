@@ -1,11 +1,9 @@
 """Durable execution events and read-only views. Linux process identity fences PIDs."""
 from contextlib import contextmanager
-import hashlib
 import json
 import os
 from pathlib import Path
 import re
-import signal
 import sqlite3
 import threading
 import time

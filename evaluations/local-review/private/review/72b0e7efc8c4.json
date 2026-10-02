@@ -1,0 +1,12 @@
+{
+  "id": "72b0e7efc8c4",
+  "objective": "Implement reserve(stock, requests): requests is a list of (SKU, positive integer quantity); validate all quantities first (ValueError otherwise), unknown SKU or insufficient aggregate stock returns False, success deducts aggregate quantities and returns True. Every failure leaves the input dictionary unchanged. Export reserve through api.py. Preserve api.health() returning {\"status\":\"ok\",\"version\":1}. Standard library only.",
+  "files": {
+    "core.py": "def reserve(stock, requests):\n    for sku, qty in requests:\n        if type(qty) is not int or qty <= 0: raise ValueError('quantity')\n        if sku not in stock or stock[sku] < qty: return False\n        stock[sku] -= qty\n    return True\n",
+    "api.py": "from core import reserve\n\ndef health():\n    return {\"status\": \"ok\", \"version\": 1}\n"
+  },
+  "expected_verdict": "block",
+  "critical_seed": true,
+  "defect_explanation": "Partial deductions survive a rejected multi-SKU reservation.",
+  "executable_assertions": "from api import reserve, health\nassert health()=={\"status\":\"ok\",\"version\":1}\ns={'a':5,'b':1}\nassert reserve(s,[('a',2),('b',2)]) is False and s=={'a':5,'b':1}\nassert reserve(s,[('a',2),('a',3)]) is True and s=={'a':0,'b':1}\n\ns={'a':5}\nassert reserve(s,[('missing',1)]) is False and s=={'a':5}\nassert reserve(s,[('a',3),('a',3)]) is False and s=={'a':5}\nfor invalid in [0,-1,1.5,True]:\n    try: reserve(s,[('a',1),('a',invalid)])\n    except ValueError: pass\n    else: raise AssertionError('invalid quantity accepted')\n    assert s=={'a':5}\nassert reserve(s,[]) is True\n\n\n"
+}

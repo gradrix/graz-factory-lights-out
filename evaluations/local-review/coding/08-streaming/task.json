@@ -1,0 +1,14 @@
+{
+  "repo": "source",
+  "objective": "Implement lines(chunks) returning text lines from arbitrary string chunks. LF delimits a line, remove one CR immediately preceding LF. Preserve empty lines. Emit final unterminated nonempty buffer unchanged, including any trailing CR. No extra line for a final LF. Export lines through api.py. Preserve api.health() returning {\"status\":\"ok\",\"version\":1}. Standard library only. Implement the operation in core.py and expose it in api.py. Add regression tests and update README.",
+  "acceptance": "acceptance",
+  "checks": [
+    [
+      "python",
+      "-I",
+      "/acceptance/check.py"
+    ]
+  ],
+  "max_attempts": 3,
+  "max_turns": 24
+}

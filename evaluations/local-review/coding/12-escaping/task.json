@@ -1,0 +1,14 @@
+{
+  "repo": "source",
+  "objective": "Implement render(template, values) replacing {identifier} placeholders where identifier consists of ASCII letters, digits or underscore with at least one character. Substitute the HTML-escaped string value including both quote kinds. Unknown placeholders remain literal. Substitution is one pass: placeholder-looking replacement text is not processed. Preserve all other text. Export render through api.py. Preserve api.health() returning {\"status\":\"ok\",\"version\":1}. Standard library only. Implement the operation in core.py and expose it in api.py. Add regression tests and update README.",
+  "acceptance": "acceptance",
+  "checks": [
+    [
+      "python",
+      "-I",
+      "/acceptance/check.py"
+    ]
+  ],
+  "max_attempts": 3,
+  "max_turns": 24
+}

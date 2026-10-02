@@ -1,0 +1,8 @@
+{
+  "id": "45264190f293",
+  "objective": "Implement apply(state, key, amount). state has balance integer and seen dictionary. First request adds integer amount, saves amount under key, and returns balance. Replay with same key and amount returns current balance without adding. Same key with different amount raises ValueError without mutation. Export apply through api.py. Preserve api.health() returning {\"status\":\"ok\",\"version\":1}. Standard library only.",
+  "files": {
+    "core.py": "def apply(state,key,amount):\n    if key in state['seen']:\n        if state['seen'][key] != amount: raise ValueError('conflict')\n        return state['balance']\n    state['balance'] += amount; state['seen'][key]=amount\n    return state['balance']\n",
+    "api.py": "from core import apply\n\ndef health():\n    return {\"status\": \"ok\", \"version\": 1}\n"
+  }
+}

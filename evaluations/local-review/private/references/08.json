@@ -1,0 +1,4 @@
+{
+  "core.py": "def lines(chunks):\n    out=[]; buf=''\n    for chunk in chunks:\n        buf+=chunk\n        while '\\n' in buf:\n            line,buf=buf.split('\\n',1)\n            out.append(line[:-1] if line.endswith('\\r') else line)\n    if buf: out.append(buf)\n    return out\n",
+  "api.py": "from core import lines\n\ndef health():\n    return {\"status\": \"ok\", \"version\": 1}\n"
+}

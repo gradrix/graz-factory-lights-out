@@ -1,0 +1,14 @@
+{
+  "repo": "source",
+  "objective": "Implement transition(job, target). Allowed transitions: queued->running, queued->cancelled, running->done, running->failed. Every other transition raises ValueError without changing job. Return the new status on success. job is a dictionary with status. Export transition through api.py. Preserve api.health() returning {\"status\":\"ok\",\"version\":1}. Standard library only. Implement the operation in core.py and expose it in api.py. Add regression tests and update README.",
+  "acceptance": "acceptance",
+  "checks": [
+    [
+      "python",
+      "-I",
+      "/acceptance/check.py"
+    ]
+  ],
+  "max_attempts": 3,
+  "max_turns": 24
+}

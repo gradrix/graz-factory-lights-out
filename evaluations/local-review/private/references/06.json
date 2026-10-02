@@ -1,0 +1,4 @@
+{
+  "core.py": "def apply(state,key,amount):\n    if key in state['seen']:\n        if state['seen'][key] != amount: raise ValueError('conflict')\n        return state['balance']\n    state['balance'] += amount; state['seen'][key]=amount\n    return state['balance']\n",
+  "api.py": "from core import apply\n\ndef health():\n    return {\"status\": \"ok\", \"version\": 1}\n"
+}

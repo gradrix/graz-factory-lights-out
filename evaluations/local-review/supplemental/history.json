@@ -1,0 +1,9 @@
+{
+  "classification": "discovered requirement miss; score separately from the 20-case gate",
+  "original_manifest_sha256": "b591190738043178d46eac89bdd8fd660c6c82e8c847b02a18b1dced11492e0c",
+  "original_candidate": "9de841f5d10f",
+  "original_expected_label": "accept (incorrect)",
+  "flash_first_observed_decision": "pass",
+  "flash_first_semantic_outcome": "false acceptance of discovered defect",
+  "must_preserve": "Do not erase the original false acceptance when scoring corrected controls. Re-runs are repeat trials, not new held-out evidence."
+}

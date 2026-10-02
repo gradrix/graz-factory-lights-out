@@ -17,7 +17,7 @@ User direction, 2026-10-02: push the first version, delete previous implementati
 
 ## Not yet specified
 
-Model reliability across unfamiliar larger projects; useful task/context sizes; review false-negative rates; acceptable unattended throughput. These need experiments rather than promises.
+[Local review reliability](issues/02-review-reliability.md) is under active experiment after a reproduced false acceptance. Model reliability across unfamiliar larger projects; useful task/context sizes; review false-negative rates; acceptable unattended throughput. These need experiments rather than promises. [Environment preparation research](issues/03-environment-preparation.md) is resolved; implementation waits for review acceptance.
 
 ## Out of scope
 

@@ -1,0 +1,272 @@
+[
+  {
+    "id": "0b8019437578",
+    "expected_failure": false,
+    "actual_exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "100d1baca5f4",
+    "expected_failure": true,
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmp8cgd5tgz/check.py\", line 10, in <module>\n    assert j=={'status':'done'}\nAssertionError\n"
+  },
+  {
+    "id": "1a9a97b91a6b",
+    "expected_failure": true,
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmp1yyxhbod/check.py\", line 6, in <module>\n    assert parse('name,value\\n\"a,b\",3\\n')==[('a,b',3)]\n  File \"/tmp/tmp1yyxhbod/core.py\", line 2, in parse\n    return [(r.split(',')[0],int(r.split(',')[1])) for r in text.splitlines()[1:]]\n  File \"/tmp/tmp1yyxhbod/core.py\", line 2, in <listcomp>\n    return [(r.split(',')[0],int(r.split(',')[1])) for r in text.splitlines()[1:]]\nValueError: invalid literal for int() with base 10: 'b\"'\n"
+  },
+  {
+    "id": "30bc7cbedc30",
+    "expected_failure": true,
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmpo9nihsgz/check.py\", line 8, in <module>\n    assert a=={'x':{'a':1},'l':[1]}\nAssertionError\n"
+  },
+  {
+    "id": "45264190f293",
+    "expected_failure": false,
+    "actual_exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "46c2846ea3ef",
+    "expected_failure": true,
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmpjzdwijoa/check.py\", line 14, in <module>\n    else: raise AssertionError('outside file exposed')\nAssertionError: outside file exposed\n"
+  },
+  {
+    "id": "57eb7a68cf11",
+    "expected_failure": false,
+    "actual_exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "5bd05d6604f4",
+    "expected_failure": false,
+    "actual_exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "5c093b674730",
+    "expected_failure": false,
+    "actual_exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "5f27651072dd",
+    "expected_failure": true,
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmp0r80ve5i/check.py\", line 10, in <module>\n    else: raise AssertionError('conflict accepted')\nAssertionError: conflict accepted\n"
+  },
+  {
+    "id": "72b0e7efc8c4",
+    "expected_failure": true,
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmpsk5o9qx7/check.py\", line 7, in <module>\n    assert reserve(s,[('a',2),('b',2)]) is False and s=={'a':5,'b':1}\nAssertionError\n"
+  },
+  {
+    "id": "7b2c0f64aa20",
+    "expected_failure": false,
+    "actual_exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "868849946e78",
+    "expected_failure": false,
+    "actual_exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "8d23262bb9ac",
+    "expected_failure": false,
+    "actual_exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "9b911511abf3",
+    "expected_failure": true,
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmpls47tcrk/check.py\", line 6, in <module>\n    assert total(['0.005','0.005'])=='0.02'\nAssertionError\n"
+  },
+  {
+    "id": "9db1122b48f8",
+    "expected_failure": true,
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmpqwm4sqsb/check.py\", line 6, in <module>\n    assert due([{'id':'x','at':'2026-01-01T12:00:00+02:00'}],'2026-01-01T10:30:00+00:00')==['x']\nAssertionError\n"
+  },
+  {
+    "id": "9de841f5d10f",
+    "expected_failure": false,
+    "actual_exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "b94e411585d2",
+    "expected_failure": true,
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmpgk9zyn_6/check.py\", line 6, in <module>\n    assert lines(['ab','c\\r','\\n\\n','tail\\r'])==['abc','','tail\\r']\nAssertionError\n"
+  },
+  {
+    "id": "e8f7aaa4fc39",
+    "expected_failure": false,
+    "actual_exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "ee3e5ae15226",
+    "expected_failure": true,
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmp7lyz6wzy/check.py\", line 7, in <module>\n    assert collect(pages.__getitem__)==[1,2]\nAssertionError\n"
+  },
+  {
+    "id": "01-inventory-reference",
+    "expected_failure": false,
+    "actual_exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "01-inventory-baseline",
+    "expected_failure": true,
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmph1dc7fn6/check.py\", line 7, in <module>\n    from api import reserve, health\nImportError: cannot import name 'reserve' from 'api' (/tmp/tmph1dc7fn6/api.py)\n"
+  },
+  {
+    "id": "02-money-reference",
+    "expected_failure": false,
+    "actual_exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "02-money-baseline",
+    "expected_failure": true,
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmpeafvn4_d/check.py\", line 7, in <module>\n    from api import total, health\nImportError: cannot import name 'total' from 'api' (/tmp/tmpeafvn4_d/api.py)\n"
+  },
+  {
+    "id": "03-paths-reference",
+    "expected_failure": false,
+    "actual_exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "03-paths-baseline",
+    "expected_failure": true,
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmpxoy55lx3/check.py\", line 7, in <module>\n    from api import read_asset, health\nImportError: cannot import name 'read_asset' from 'api' (/tmp/tmpxoy55lx3/api.py)\n"
+  },
+  {
+    "id": "04-timezones-reference",
+    "expected_failure": false,
+    "actual_exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "04-timezones-baseline",
+    "expected_failure": true,
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmpkr2oglob/check.py\", line 7, in <module>\n    from api import due, health\nImportError: cannot import name 'due' from 'api' (/tmp/tmpkr2oglob/api.py)\n"
+  },
+  {
+    "id": "05-pagination-reference",
+    "expected_failure": false,
+    "actual_exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "05-pagination-baseline",
+    "expected_failure": true,
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmphcesxfzq/check.py\", line 7, in <module>\n    from api import collect, health\nImportError: cannot import name 'collect' from 'api' (/tmp/tmphcesxfzq/api.py)\n"
+  },
+  {
+    "id": "06-idempotency-reference",
+    "expected_failure": false,
+    "actual_exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "06-idempotency-baseline",
+    "expected_failure": true,
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmpee3xlnqk/check.py\", line 7, in <module>\n    from api import apply, health\nImportError: cannot import name 'apply' from 'api' (/tmp/tmpee3xlnqk/api.py)\n"
+  },
+  {
+    "id": "07-transitions-reference",
+    "expected_failure": false,
+    "actual_exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "07-transitions-baseline",
+    "expected_failure": true,
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmpjyaab_kn/check.py\", line 7, in <module>\n    from api import transition, health\nImportError: cannot import name 'transition' from 'api' (/tmp/tmpjyaab_kn/api.py)\n"
+  },
+  {
+    "id": "08-streaming-reference",
+    "expected_failure": false,
+    "actual_exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "08-streaming-baseline",
+    "expected_failure": true,
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmp6fo43xp1/check.py\", line 7, in <module>\n    from api import lines, health\nImportError: cannot import name 'lines' from 'api' (/tmp/tmp6fo43xp1/api.py)\n"
+  },
+  {
+    "id": "09-csv-reference",
+    "expected_failure": false,
+    "actual_exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "09-csv-baseline",
+    "expected_failure": true,
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmp135m1bov/check.py\", line 7, in <module>\n    from api import parse, health\nImportError: cannot import name 'parse' from 'api' (/tmp/tmp135m1bov/api.py)\n"
+  },
+  {
+    "id": "10-merge-reference",
+    "expected_failure": false,
+    "actual_exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "10-merge-baseline",
+    "expected_failure": true,
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmptq6dywaw/check.py\", line 7, in <module>\n    from api import merge, health\nImportError: cannot import name 'merge' from 'api' (/tmp/tmptq6dywaw/api.py)\n"
+  },
+  {
+    "id": "11-ranges-reference",
+    "expected_failure": false,
+    "actual_exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "11-ranges-baseline",
+    "expected_failure": true,
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmpjre2fh83/check.py\", line 7, in <module>\n    from api import coalesce, health\nImportError: cannot import name 'coalesce' from 'api' (/tmp/tmpjre2fh83/api.py)\n"
+  },
+  {
+    "id": "12-escaping-reference",
+    "expected_failure": false,
+    "actual_exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "12-escaping-baseline",
+    "expected_failure": true,
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmpyqsgb5sg/check.py\", line 7, in <module>\n    from api import render, health\nImportError: cannot import name 'render' from 'api' (/tmp/tmpyqsgb5sg/api.py)\n"
+  },
+  {
+    "id": "supplemental-original-money",
+    "expected_failure": true,
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmpnt4_urfi/check.py\", line 13, in <module>\n    assert total(['100000000000000000000000000.00']) == '100000000000000000000000000.00'\n  File \"/tmp/tmpnt4_urfi/core.py\", line 3, in total\n    return format(sum((Decimal(x).quantize(Decimal('.01'),rounding=ROUND_HALF_UP) for x in rows),Decimal('0')),'.2f')\n  File \"/tmp/tmpnt4_urfi/core.py\", line 3, in <genexpr>\n    return format(sum((Decimal(x).quantize(Decimal('.01'),rounding=ROUND_HALF_UP) for x in rows),Decimal('0')),'.2f')\ndecimal.InvalidOperation: [<class 'decimal.InvalidOperation'>]\n"
+  }
+]

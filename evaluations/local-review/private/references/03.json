@@ -1,0 +1,4 @@
+{
+  "core.py": "from pathlib import Path\ndef read_asset(root,name):\n    root=Path(root).resolve(); target=(root/name).resolve()\n    if not target.is_relative_to(root): raise ValueError('outside root')\n    return target.read_text()\n",
+  "api.py": "from core import read_asset\n\ndef health():\n    return {\"status\": \"ok\", \"version\": 1}\n"
+}

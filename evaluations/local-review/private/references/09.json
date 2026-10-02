@@ -1,0 +1,4 @@
+{
+  "core.py": "import csv,io\ndef parse(text):\n    return [(r['name'],int(r['value'])) for r in csv.DictReader(io.StringIO(text))]\n",
+  "api.py": "from core import parse\n\ndef health():\n    return {\"status\": \"ok\", \"version\": 1}\n"
+}

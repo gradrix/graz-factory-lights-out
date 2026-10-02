@@ -1,0 +1,8 @@
+{
+  "id": "46c2846ea3ef",
+  "objective": "Implement read_asset(root, name) returning UTF-8 file contents. Resolve symlinks and reject paths outside root with ValueError, including absolute paths outside root. root and target exist; ordinary filesystem errors may propagate. Export read_asset through api.py. Preserve api.health() returning {\"status\":\"ok\",\"version\":1}. Standard library only.",
+  "files": {
+    "core.py": "from pathlib import Path\ndef read_asset(root,name):\n    root=Path(root).resolve(); target=(root/name).resolve()\n    if not str(target).startswith(str(root)): raise ValueError('outside root')\n    return target.read_text()\n",
+    "api.py": "from core import read_asset\n\ndef health():\n    return {\"status\": \"ok\", \"version\": 1}\n"
+  }
+}

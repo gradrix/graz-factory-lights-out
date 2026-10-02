@@ -1,0 +1,274 @@
+[
+  {
+    "id": "72b0e7efc8c4",
+    "kind": "review",
+    "expected_exit": "nonzero",
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmp2u4tx_jd/check.py\", line 4, in <module>\n    assert reserve(s,[('a',2),('b',2)]) is False and s=={'a':5,'b':1}\nAssertionError\n"
+  },
+  {
+    "id": "7b2c0f64aa20",
+    "kind": "review",
+    "expected_exit": "zero",
+    "actual_exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "01-inventory",
+    "kind": "coding-reference",
+    "actual_exit": 0
+  },
+  {
+    "id": "01-inventory",
+    "kind": "coding-baseline",
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/home/gradrix/repos/gflo/.gflo/review-qualification-prepared/coding/01-inventory/acceptance/check.py\", line 4, in <module>\n    from api import reserve, health\nImportError: cannot import name 'reserve' from 'api' (/home/gradrix/repos/gflo/.gflo/review-qualification-prepared/coding/01-inventory/source/api.py)\n"
+  },
+  {
+    "id": "9b911511abf3",
+    "kind": "review",
+    "expected_exit": "nonzero",
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmp63dkvugb/check.py\", line 3, in <module>\n    assert total(['0.005','0.005'])=='0.02'\nAssertionError\n"
+  },
+  {
+    "id": "9de841f5d10f",
+    "kind": "review",
+    "expected_exit": "zero",
+    "actual_exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "02-money",
+    "kind": "coding-reference",
+    "actual_exit": 0
+  },
+  {
+    "id": "02-money",
+    "kind": "coding-baseline",
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/home/gradrix/repos/gflo/.gflo/review-qualification-prepared/coding/02-money/acceptance/check.py\", line 4, in <module>\n    from api import total, health\nImportError: cannot import name 'total' from 'api' (/home/gradrix/repos/gflo/.gflo/review-qualification-prepared/coding/02-money/source/api.py)\n"
+  },
+  {
+    "id": "46c2846ea3ef",
+    "kind": "review",
+    "expected_exit": "nonzero",
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmp5jxhwk2k/check.py\", line 11, in <module>\n    else: raise AssertionError('outside file exposed')\nAssertionError: outside file exposed\n"
+  },
+  {
+    "id": "5bd05d6604f4",
+    "kind": "review",
+    "expected_exit": "zero",
+    "actual_exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "03-paths",
+    "kind": "coding-reference",
+    "actual_exit": 0
+  },
+  {
+    "id": "03-paths",
+    "kind": "coding-baseline",
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/home/gradrix/repos/gflo/.gflo/review-qualification-prepared/coding/03-paths/acceptance/check.py\", line 4, in <module>\n    from api import read_asset, health\nImportError: cannot import name 'read_asset' from 'api' (/home/gradrix/repos/gflo/.gflo/review-qualification-prepared/coding/03-paths/source/api.py)\n"
+  },
+  {
+    "id": "9db1122b48f8",
+    "kind": "review",
+    "expected_exit": "nonzero",
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmp7xmap2st/check.py\", line 3, in <module>\n    assert due([{'id':'x','at':'2026-01-01T12:00:00+02:00'}],'2026-01-01T10:30:00+00:00')==['x']\nAssertionError\n"
+  },
+  {
+    "id": "5c093b674730",
+    "kind": "review",
+    "expected_exit": "zero",
+    "actual_exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "04-timezones",
+    "kind": "coding-reference",
+    "actual_exit": 0
+  },
+  {
+    "id": "04-timezones",
+    "kind": "coding-baseline",
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/home/gradrix/repos/gflo/.gflo/review-qualification-prepared/coding/04-timezones/acceptance/check.py\", line 4, in <module>\n    from api import due, health\nImportError: cannot import name 'due' from 'api' (/home/gradrix/repos/gflo/.gflo/review-qualification-prepared/coding/04-timezones/source/api.py)\n"
+  },
+  {
+    "id": "ee3e5ae15226",
+    "kind": "review",
+    "expected_exit": "nonzero",
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmpqdf81ddx/check.py\", line 4, in <module>\n    assert collect(pages.__getitem__)==[1,2]\nAssertionError\n"
+  },
+  {
+    "id": "57eb7a68cf11",
+    "kind": "review",
+    "expected_exit": "zero",
+    "actual_exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "05-pagination",
+    "kind": "coding-reference",
+    "actual_exit": 0
+  },
+  {
+    "id": "05-pagination",
+    "kind": "coding-baseline",
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/home/gradrix/repos/gflo/.gflo/review-qualification-prepared/coding/05-pagination/acceptance/check.py\", line 4, in <module>\n    from api import collect, health\nImportError: cannot import name 'collect' from 'api' (/home/gradrix/repos/gflo/.gflo/review-qualification-prepared/coding/05-pagination/source/api.py)\n"
+  },
+  {
+    "id": "5f27651072dd",
+    "kind": "review",
+    "expected_exit": "nonzero",
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmpkeqkahmo/check.py\", line 7, in <module>\n    else: raise AssertionError('conflict accepted')\nAssertionError: conflict accepted\n"
+  },
+  {
+    "id": "45264190f293",
+    "kind": "review",
+    "expected_exit": "zero",
+    "actual_exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "06-idempotency",
+    "kind": "coding-reference",
+    "actual_exit": 0
+  },
+  {
+    "id": "06-idempotency",
+    "kind": "coding-baseline",
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/home/gradrix/repos/gflo/.gflo/review-qualification-prepared/coding/06-idempotency/acceptance/check.py\", line 4, in <module>\n    from api import apply, health\nImportError: cannot import name 'apply' from 'api' (/home/gradrix/repos/gflo/.gflo/review-qualification-prepared/coding/06-idempotency/source/api.py)\n"
+  },
+  {
+    "id": "100d1baca5f4",
+    "kind": "review",
+    "expected_exit": "nonzero",
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmp74b5xz3z/check.py\", line 7, in <module>\n    assert j=={'status':'done'}\nAssertionError\n"
+  },
+  {
+    "id": "0b8019437578",
+    "kind": "review",
+    "expected_exit": "zero",
+    "actual_exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "07-transitions",
+    "kind": "coding-reference",
+    "actual_exit": 0
+  },
+  {
+    "id": "07-transitions",
+    "kind": "coding-baseline",
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/home/gradrix/repos/gflo/.gflo/review-qualification-prepared/coding/07-transitions/acceptance/check.py\", line 4, in <module>\n    from api import transition, health\nImportError: cannot import name 'transition' from 'api' (/home/gradrix/repos/gflo/.gflo/review-qualification-prepared/coding/07-transitions/source/api.py)\n"
+  },
+  {
+    "id": "b94e411585d2",
+    "kind": "review",
+    "expected_exit": "nonzero",
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmpe_6gnhqx/check.py\", line 3, in <module>\n    assert lines(['ab','c\\r','\\n\\n','tail\\r'])==['abc','','tail\\r']\nAssertionError\n"
+  },
+  {
+    "id": "8d23262bb9ac",
+    "kind": "review",
+    "expected_exit": "zero",
+    "actual_exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "08-streaming",
+    "kind": "coding-reference",
+    "actual_exit": 0
+  },
+  {
+    "id": "08-streaming",
+    "kind": "coding-baseline",
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/home/gradrix/repos/gflo/.gflo/review-qualification-prepared/coding/08-streaming/acceptance/check.py\", line 4, in <module>\n    from api import lines, health\nImportError: cannot import name 'lines' from 'api' (/home/gradrix/repos/gflo/.gflo/review-qualification-prepared/coding/08-streaming/source/api.py)\n"
+  },
+  {
+    "id": "1a9a97b91a6b",
+    "kind": "review",
+    "expected_exit": "nonzero",
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmpt_md6gl2/check.py\", line 3, in <module>\n    assert parse('name,value\\n\"a,b\",3\\n')==[('a,b',3)]\n  File \"/tmp/tmpt_md6gl2/core.py\", line 2, in parse\n    return [(r.split(',')[0],int(r.split(',')[1])) for r in text.splitlines()[1:]]\n  File \"/tmp/tmpt_md6gl2/core.py\", line 2, in <listcomp>\n    return [(r.split(',')[0],int(r.split(',')[1])) for r in text.splitlines()[1:]]\nValueError: invalid literal for int() with base 10: 'b\"'\n"
+  },
+  {
+    "id": "868849946e78",
+    "kind": "review",
+    "expected_exit": "zero",
+    "actual_exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "09-csv",
+    "kind": "coding-reference",
+    "actual_exit": 0
+  },
+  {
+    "id": "09-csv",
+    "kind": "coding-baseline",
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/home/gradrix/repos/gflo/.gflo/review-qualification-prepared/coding/09-csv/acceptance/check.py\", line 4, in <module>\n    from api import parse, health\nImportError: cannot import name 'parse' from 'api' (/home/gradrix/repos/gflo/.gflo/review-qualification-prepared/coding/09-csv/source/api.py)\n"
+  },
+  {
+    "id": "30bc7cbedc30",
+    "kind": "review",
+    "expected_exit": "nonzero",
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/tmp/tmptqo7ea3f/check.py\", line 5, in <module>\n    assert a=={'x':{'a':1},'l':[1]}\nAssertionError\n"
+  },
+  {
+    "id": "e8f7aaa4fc39",
+    "kind": "review",
+    "expected_exit": "zero",
+    "actual_exit": 0,
+    "stderr": ""
+  },
+  {
+    "id": "10-merge",
+    "kind": "coding-reference",
+    "actual_exit": 0
+  },
+  {
+    "id": "10-merge",
+    "kind": "coding-baseline",
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/home/gradrix/repos/gflo/.gflo/review-qualification-prepared/coding/10-merge/acceptance/check.py\", line 4, in <module>\n    from api import merge, health\nImportError: cannot import name 'merge' from 'api' (/home/gradrix/repos/gflo/.gflo/review-qualification-prepared/coding/10-merge/source/api.py)\n"
+  },
+  {
+    "id": "11-ranges",
+    "kind": "coding-reference",
+    "actual_exit": 0
+  },
+  {
+    "id": "11-ranges",
+    "kind": "coding-baseline",
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/home/gradrix/repos/gflo/.gflo/review-qualification-prepared/coding/11-ranges/acceptance/check.py\", line 4, in <module>\n    from api import coalesce, health\nImportError: cannot import name 'coalesce' from 'api' (/home/gradrix/repos/gflo/.gflo/review-qualification-prepared/coding/11-ranges/source/api.py)\n"
+  },
+  {
+    "id": "12-escaping",
+    "kind": "coding-reference",
+    "actual_exit": 0
+  },
+  {
+    "id": "12-escaping",
+    "kind": "coding-baseline",
+    "actual_exit": 1,
+    "stderr": "Traceback (most recent call last):\n  File \"/home/gradrix/repos/gflo/.gflo/review-qualification-prepared/coding/12-escaping/acceptance/check.py\", line 4, in <module>\n    from api import render, health\nImportError: cannot import name 'render' from 'api' (/home/gradrix/repos/gflo/.gflo/review-qualification-prepared/coding/12-escaping/source/api.py)\n"
+  }
+]

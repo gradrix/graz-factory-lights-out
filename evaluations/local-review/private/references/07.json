@@ -1,0 +1,4 @@
+{
+  "core.py": "def transition(job,target):\n    allowed={'queued':{'running','cancelled'},'running':{'done','failed'}}\n    if target not in allowed.get(job['status'],set()): raise ValueError('transition')\n    job['status']=target\n    return target\n",
+  "api.py": "from core import transition\n\ndef health():\n    return {\"status\": \"ok\", \"version\": 1}\n"
+}

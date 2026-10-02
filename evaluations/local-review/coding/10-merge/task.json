@@ -1,0 +1,14 @@
+{
+  "repo": "source",
+  "objective": "Implement merge(base, patch) returning a new recursive dictionary merge. Patch values override base; dictionaries merge recursively only when both values are dictionaries. Neither input may be mutated; all nested containers in output must be independent of both inputs. Inputs contain JSON-compatible data. Export merge through api.py. Preserve api.health() returning {\"status\":\"ok\",\"version\":1}. Standard library only. Implement the operation in core.py and expose it in api.py. Add regression tests and update README.",
+  "acceptance": "acceptance",
+  "checks": [
+    [
+      "python",
+      "-I",
+      "/acceptance/check.py"
+    ]
+  ],
+  "max_attempts": 3,
+  "max_turns": 24
+}

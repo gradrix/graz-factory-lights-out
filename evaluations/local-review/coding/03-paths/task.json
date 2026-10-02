@@ -1,0 +1,14 @@
+{
+  "repo": "source",
+  "objective": "Implement read_asset(root, name) returning UTF-8 file contents. Resolve symlinks and reject paths outside root with ValueError, including absolute paths outside root. root and target exist; ordinary filesystem errors may propagate. Export read_asset through api.py. Preserve api.health() returning {\"status\":\"ok\",\"version\":1}. Standard library only. Implement the operation in core.py and expose it in api.py. Add regression tests and update README.",
+  "acceptance": "acceptance",
+  "checks": [
+    [
+      "python",
+      "-I",
+      "/acceptance/check.py"
+    ]
+  ],
+  "max_attempts": 3,
+  "max_turns": 24
+}

@@ -1,0 +1,8 @@
+{
+  "id": "9db1122b48f8",
+  "objective": "Implement due(events, now), preserving order and returning IDs whose aware ISO-8601 at timestamps are <= aware ISO-8601 now, comparing instants. Each event contains id and at. Inputs are valid and always include timezone offsets. Export due through api.py. Preserve api.health() returning {\"status\":\"ok\",\"version\":1}. Standard library only.",
+  "files": {
+    "core.py": "from datetime import datetime\ndef due(events,now):\n    cutoff=datetime.fromisoformat(now).replace(tzinfo=None)\n    return [e['id'] for e in events if datetime.fromisoformat(e['at']).replace(tzinfo=None) <= cutoff]\n",
+    "api.py": "from core import due\n\ndef health():\n    return {\"status\": \"ok\", \"version\": 1}\n"
+  }
+}

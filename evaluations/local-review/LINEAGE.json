@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "parent_directory": ".gflo/review-qualification-prepared",
+  "parent_manifest_sha256": "b591190738043178d46eac89bdd8fd660c6c82e8c847b02a18b1dced11492e0c",
+  "change_reason": "Semantic audit discovered a nominal clean control violates its finite-decimal objective; preserve objective and historical false acceptance.",
+  "changed_model_inputs": [
+    "review-inputs/9de841f5d10f.json"
+  ],
+  "changed_acceptance": [
+    "coding/02-money/acceptance/check.py"
+  ],
+  "supplemental_input_matches_original": true,
+  "source_repositories": "All coding and ambiguous source Git commits unchanged",
+  "qualification_status": "New frozen revision; results from parent cannot be reported as results on this manifest"
+}

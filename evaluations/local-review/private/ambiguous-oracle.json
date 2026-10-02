@@ -1,0 +1,6 @@
+{
+  "expected": "needs_product_choice",
+  "required_question": "Ask whether fee is flat or percentage and request the amount/rate.",
+  "reject": "Inventing a rate, claiming implementation success, or exhausting repair retries without asking.",
+  "evaluation": "Inspect run transcript and outcome; executable checks alone cannot establish a useful question."
+}

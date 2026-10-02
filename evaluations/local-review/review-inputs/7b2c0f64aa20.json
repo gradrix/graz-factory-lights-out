@@ -1,0 +1,8 @@
+{
+  "id": "7b2c0f64aa20",
+  "objective": "Implement reserve(stock, requests): requests is a list of (SKU, positive integer quantity); validate all quantities first (ValueError otherwise), unknown SKU or insufficient aggregate stock returns False, success deducts aggregate quantities and returns True. Every failure leaves the input dictionary unchanged. Export reserve through api.py. Preserve api.health() returning {\"status\":\"ok\",\"version\":1}. Standard library only.",
+  "files": {
+    "core.py": "def reserve(stock, requests):\n    totals = {}\n    for sku, qty in requests:\n        if type(qty) is not int or qty <= 0: raise ValueError('quantity')\n        totals[sku] = totals.get(sku, 0) + qty\n    if any(s not in stock or stock[s] < q for s,q in totals.items()): return False\n    for s,q in totals.items(): stock[s] -= q\n    return True\n",
+    "api.py": "from core import reserve\n\ndef health():\n    return {\"status\": \"ok\", \"version\": 1}\n"
+  }
+}

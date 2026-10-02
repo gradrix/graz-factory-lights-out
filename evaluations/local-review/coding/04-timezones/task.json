@@ -1,0 +1,14 @@
+{
+  "repo": "source",
+  "objective": "Implement due(events, now), preserving order and returning IDs whose aware ISO-8601 at timestamps are <= aware ISO-8601 now, comparing instants. Each event contains id and at. Inputs are valid and always include timezone offsets. Export due through api.py. Preserve api.health() returning {\"status\":\"ok\",\"version\":1}. Standard library only. Implement the operation in core.py and expose it in api.py. Add regression tests and update README.",
+  "acceptance": "acceptance",
+  "checks": [
+    [
+      "python",
+      "-I",
+      "/acceptance/check.py"
+    ]
+  ],
+  "max_attempts": 3,
+  "max_turns": 24
+}

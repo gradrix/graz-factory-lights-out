@@ -1,0 +1,12 @@
+{
+  "id": "9de841f5d10f",
+  "objective": "Implement total(rows) for finite decimal amount strings. Round EACH row to cents using ROUND_HALF_UP before summing. Return a fixed two-place string. Negative amounts are refunds; empty input yields 0.00. Export total through api.py. Preserve api.health() returning {\"status\":\"ok\",\"version\":1}. Standard library only.",
+  "files": {
+    "core.py": "from decimal import Decimal, ROUND_HALF_UP\ndef total(rows):\n    return format(sum((Decimal(x).quantize(Decimal('.01'),rounding=ROUND_HALF_UP) for x in rows),Decimal('0')),'.2f')\n",
+    "api.py": "from core import total\n\ndef health():\n    return {\"status\": \"ok\", \"version\": 1}\n"
+  },
+  "expected_verdict": "block",
+  "critical_seed": true,
+  "defect_explanation": "Default Decimal precision rejects large finite amounts admitted by the unchanged objective.",
+  "executable_assertions": "from api import total, health\nassert health()=={\"status\":\"ok\",\"version\":1}\nassert total(['0.005','0.005'])=='0.02'\nassert total(['-1.005'])=='-1.01'\nassert total([])=='0.00'\nassert total(['1.004','2.005','-0.005'])=='3.00'\nassert total(['1000000000.01','0.01'])=='1000000000.02'\n\n\nassert total(['100000000000000000000000000.00']) == '100000000000000000000000000.00'\nassert total(['999999999999999999999999999.995']) == '1000000000000000000000000000.00'\nassert total(['999999999999999999999999999.995', '0.005']) == '1000000000000000000000000000.01'\nassert total(['100000000000000000000000000.01', '-100000000000000000000000000.00']) == '0.01'\nassert total(['1e-1000000', '-1e-1000000']) == '0.00'\nassert total(['1e1000000']) == '1' + '0' * 1000000 + '.00'\n"
+}

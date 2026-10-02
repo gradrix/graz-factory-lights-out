@@ -1,0 +1,14 @@
+{
+  "repo": "source",
+  "objective": "Implement apply(state, key, amount). state has balance integer and seen dictionary. First request adds integer amount, saves amount under key, and returns balance. Replay with same key and amount returns current balance without adding. Same key with different amount raises ValueError without mutation. Export apply through api.py. Preserve api.health() returning {\"status\":\"ok\",\"version\":1}. Standard library only. Implement the operation in core.py and expose it in api.py. Add regression tests and update README.",
+  "acceptance": "acceptance",
+  "checks": [
+    [
+      "python",
+      "-I",
+      "/acceptance/check.py"
+    ]
+  ],
+  "max_attempts": 3,
+  "max_turns": 24
+}

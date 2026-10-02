@@ -1,0 +1,12 @@
+{
+  "id": "30bc7cbedc30",
+  "objective": "Implement merge(base, patch) returning a new recursive dictionary merge. Patch values override base; dictionaries merge recursively only when both values are dictionaries. Neither input may be mutated; all nested containers in output must be independent of both inputs. Inputs contain JSON-compatible data. Export merge through api.py. Preserve api.health() returning {\"status\":\"ok\",\"version\":1}. Standard library only.",
+  "files": {
+    "core.py": "def merge(base,patch):\n    out=base.copy()\n    for k,v in patch.items():\n        if isinstance(v,dict) and isinstance(out.get(k),dict): out[k].update(v)\n        else: out[k]=v\n    return out\n",
+    "api.py": "from core import merge\n\ndef health():\n    return {\"status\": \"ok\", \"version\": 1}\n"
+  },
+  "expected_verdict": "block",
+  "critical_seed": false,
+  "defect_explanation": "Shallow copying mutates input dictionaries and aliases nested containers.",
+  "executable_assertions": "from api import merge, health\nassert health()=={\"status\":\"ok\",\"version\":1}\na={'x':{'a':1},'l':[1]}; b={'x':{'b':2}}\nr=merge(a,b)\nassert a=={'x':{'a':1},'l':[1]}\nr['l'].append(2)\nassert a['l']==[1]\na={'d':{'x':1},'n':2};b={'d':{'y':[3]},'n':{'v':4}}\nr=merge(a,b)\nassert r=={'d':{'x':1,'y':[3]},'n':{'v':4}}\nr['d']['y'].append(9)\nr['n']['v']=5\nassert b=={'d':{'y':[3]},'n':{'v':4}}\n\n"
+}

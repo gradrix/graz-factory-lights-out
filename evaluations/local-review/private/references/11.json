@@ -1,0 +1,4 @@
+{
+  "core.py": "def coalesce(ranges):\n    out=[]\n    for start,end in sorted(ranges):\n        if out and start <= out[-1][1]: out[-1]=(out[-1][0],max(end,out[-1][1]))\n        else: out.append((start,end))\n    return out\n",
+  "api.py": "from core import coalesce\n\ndef health():\n    return {\"status\": \"ok\", \"version\": 1}\n"
+}

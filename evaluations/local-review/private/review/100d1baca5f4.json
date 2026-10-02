@@ -1,0 +1,12 @@
+{
+  "id": "100d1baca5f4",
+  "objective": "Implement transition(job, target). Allowed transitions: queued->running, queued->cancelled, running->done, running->failed. Every other transition raises ValueError without changing job. Return the new status on success. job is a dictionary with status. Export transition through api.py. Preserve api.health() returning {\"status\":\"ok\",\"version\":1}. Standard library only.",
+  "files": {
+    "core.py": "def transition(job,target):\n    allowed={'queued':{'running','cancelled'},'running':{'done','failed'}}\n    old=job['status']; job['status']=target\n    if target not in allowed.get(old,set()): raise ValueError('transition')\n    return target\n",
+    "api.py": "from core import transition\n\ndef health():\n    return {\"status\": \"ok\", \"version\": 1}\n"
+  },
+  "expected_verdict": "block",
+  "critical_seed": false,
+  "defect_explanation": "Rejected transition still mutates terminal job status.",
+  "executable_assertions": "from api import transition, health\nassert health()=={\"status\":\"ok\",\"version\":1}\nj={'status':'done'}\ntry: transition(j,'running')\nexcept ValueError: pass\nelse: raise AssertionError('accepted')\nassert j=={'status':'done'}\nallowed={('queued','running'),('queued','cancelled'),('running','done'),('running','failed')}\nfor old in ['queued','running','done','failed','cancelled']:\n    for new in ['queued','running','done','failed','cancelled']:\n        j={'status':old}\n        if (old,new) in allowed: assert transition(j,new)==new and j['status']==new\n        else:\n            try: transition(j,new)\n            except ValueError: pass\n            else: raise AssertionError((old,new))\n            assert j['status']==old\n\n\n"
+}

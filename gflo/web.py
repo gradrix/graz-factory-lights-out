@@ -1,7 +1,6 @@
 """Loopback-only read-only observer, suitable for an SSH tunnel."""
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
-from pathlib import Path
 import urllib.parse
 
 from .observe import Observer

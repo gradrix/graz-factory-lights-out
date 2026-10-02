@@ -1,0 +1,12 @@
+{
+  "id": "9de841f5d10f",
+  "objective": "Implement total(rows) for finite decimal amount strings. Round EACH row to cents using ROUND_HALF_UP before summing. Return a fixed two-place string. Negative amounts are refunds; empty input yields 0.00. Export total through api.py. Preserve api.health() returning {\"status\":\"ok\",\"version\":1}. Standard library only.",
+  "files": {
+    "core.py": "from decimal import Decimal, ROUND_HALF_UP, localcontext, MAX_EMAX, MIN_EMIN\n\ndef total(rows):\n    amounts = [Decimal(value) for value in rows]\n    # Two fractional digits, one rounding carry, and enough carry for the sum.\n    integer_digits = max((max(1, value.adjusted() + 1) for value in amounts if value), default=1)\n    with localcontext() as context:\n        context.prec = max(28, integer_digits + 3 + len(str(len(amounts))))\n        context.Emax = MAX_EMAX\n        context.Emin = MIN_EMIN\n        cents = Decimal('0.01')\n        rounded = (value.quantize(cents, rounding=ROUND_HALF_UP) for value in amounts)\n        return format(sum(rounded, Decimal('0')), '.2f')\n",
+    "api.py": "from core import total\n\ndef health():\n    return {\"status\": \"ok\", \"version\": 1}\n"
+  },
+  "expected_verdict": "accept",
+  "critical_seed": false,
+  "defect_explanation": null,
+  "executable_assertions": "from api import total, health\nassert health()=={\"status\":\"ok\",\"version\":1}\nassert total(['0.005','0.005'])=='0.02'\nassert total(['-1.005'])=='-1.01'\nassert total([])=='0.00'\nassert total(['1.004','2.005','-0.005'])=='3.00'\nassert total(['1000000000.01','0.01'])=='1000000000.02'\n\n\nassert total(['100000000000000000000000000.00']) == '100000000000000000000000000.00'\nassert total(['999999999999999999999999999.995']) == '1000000000000000000000000000.00'\nassert total(['999999999999999999999999999.995', '0.005']) == '1000000000000000000000000000.01'\nassert total(['100000000000000000000000000.01', '-100000000000000000000000000.00']) == '0.01'\nassert total(['1e-1000000', '-1e-1000000']) == '0.00'\nassert total(['1e1000000']) == '1' + '0' * 1000000 + '.00'\n"
+}

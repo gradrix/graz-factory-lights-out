@@ -1,0 +1,4 @@
+{
+  "core.py": "from datetime import datetime\ndef due(events,now):\n    cutoff=datetime.fromisoformat(now)\n    return [e['id'] for e in events if datetime.fromisoformat(e['at']) <= cutoff]\n",
+  "api.py": "from core import due\n\ndef health():\n    return {\"status\": \"ok\", \"version\": 1}\n"
+}
