@@ -1,0 +1,67 @@
+[
+  {
+    "case": "catalog",
+    "rejected": "Reference catalog/protocol mismatch",
+    "prior_good_preserved": true
+  },
+  {
+    "case": "limits",
+    "rejected": "Reference catalog/protocol mismatch",
+    "prior_good_preserved": true
+  },
+  {
+    "case": "canonical-excerpt",
+    "rejected": "Canonical answer does not match last validated response",
+    "prior_good_preserved": true
+  },
+  {
+    "case": "canonical-source",
+    "rejected": "Canonical answer does not match last validated response",
+    "prior_good_preserved": true
+  },
+  {
+    "case": "canonical-span",
+    "rejected": "Canonical answer does not match last validated response",
+    "prior_good_preserved": true
+  },
+  {
+    "case": "raw-selection",
+    "rejected": "Canonical answer does not match last validated response",
+    "prior_good_preserved": true
+  },
+  {
+    "case": "request-hash",
+    "rejected": "Answer request hash mismatch",
+    "prior_good_preserved": true
+  },
+  {
+    "case": "format-bool",
+    "rejected": "Unsupported document receipt",
+    "prior_good_preserved": true
+  },
+  {
+    "case": "format-unknown",
+    "rejected": "Unsupported document receipt",
+    "prior_good_preserved": true
+  },
+  {
+    "case": "downgrade-format2",
+    "rejected": "Answer request hash mismatch",
+    "prior_good_preserved": true
+  },
+  {
+    "case": "extra-file",
+    "rejected": "Unexpected document record files",
+    "prior_good_preserved": true
+  },
+  {
+    "case": "postcommit-success",
+    "committed": true,
+    "postcommit_operations": []
+  },
+  {
+    "case": "postcommit-failed-diagnostic",
+    "committed": true,
+    "postcommit_operations": []
+  }
+]

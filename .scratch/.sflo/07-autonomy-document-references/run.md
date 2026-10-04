@@ -10,7 +10,7 @@ Predecessor: ../07-autonomy-document-reliability/run.md
 Status: active
 Owner: /root coordinator; /root/cohort_c sole maintained-code builder
 Candidate: source92deaab; manifestacd723171fe9b3f5ce9b90b2dc8aea29dbb5e57d41854cf322798690556bc698; notaccepted
-Next: independent frozen QA/security and actualrig acquisition; sourcealignmentbefore13question inference.
+Next: actual13question modeltrial running; independent complete semantics and25case cross-version rigoffline replay beforeacceptance.
 
 ## Evidence and decisions
 
@@ -23,3 +23,5 @@ Builder reports50affected tests pass and18actual preserved records resolve/repla
 Frozen successor92deaab:15hashes verified.169tests140.571s/86%;50affected1.404s. [Builder handoff](builder.md). Independent reviewers assigned, actualsourceacquisition allowed inparallel; inference waitsallgates.
 
 Actual92deaab rig acquisition1 succeededall3 with exactbaselinebodyhashes and unchanged96K/Q4 servingidentity. [Binding](rig-acquisition-1/binding.json). Independent [functional QA](qa-functional.md) passed publicformat3repair/requestidentity,7focusedtests and16actualoldrecords. Sourcealignment13cases underway; security checks explicitmetadataedge beforeverdict. No successor inference yet.
+
+Security PASS63controls plus18actualoldrecords; noopenfinding. Independent13case sourcealignment passed. Rootauthorized separate gatee6856dc86febe89b35357334397b9317b1c1c540072a143a359fead8693cfbe8 preserving reviewerfalsegate. Actual13question trialstarted at /home/gradrix/gflo-documents-92deaab/.gflo/qualification-1, onepublicinvocationpercase, productmaxone repair/noexternalretry. IndependentQA owns allclaims/citations and25case actualoffline replay aftercompletion.

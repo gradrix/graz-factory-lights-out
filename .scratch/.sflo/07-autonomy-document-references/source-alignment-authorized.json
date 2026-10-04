@@ -1,0 +1,25 @@
+{
+  "binding_sha256": "79d9f4311250d413a1056e95f58f7d000434102dc411a789c07ab2bb16b82725",
+  "qualification_manifest_sha256": "27e94d04f753112ce7e96470fbfc75980f7a8da3d61feea7ac6dcd0a370fb24c",
+  "decision": "aligned_for_inference",
+  "reviewer": "independent qa_resume",
+  "coordinator_go": true,
+  "cases": {
+    "row_shape_defaults": "aligned",
+    "json_hooks": "aligned",
+    "csv_newlines": "aligned",
+    "json_skipkeys": "aligned",
+    "asyncio_taskgroup": "aligned",
+    "asyncio_gather": "aligned",
+    "asyncio_wait_for": "aligned",
+    "asyncio_shield": "aligned",
+    "future_csv_date": "aligned",
+    "future_taskgroup_date": "aligned",
+    "csv_nonnumeric_reader": "aligned",
+    "json_raw_decode_suffix": "aligned",
+    "asyncio_wait_timeout": "aligned"
+  },
+  "changed_source_addenda": {},
+  "source_alignment_report": "qa-source-alignment.md",
+  "coordinator_basis": "Root reviewed independent13case sourcealignment and functionalPASS; frozen92deaab securityPASS63controls plus18actualoldrecords,15hashes unchanged."
+}

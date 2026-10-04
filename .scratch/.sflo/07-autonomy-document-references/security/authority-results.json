@@ -1,0 +1,43 @@
+[
+  {
+    "case": "tool",
+    "calls": 1,
+    "kind": "answer_failure",
+    "validations": [
+      "forbidden"
+    ]
+  },
+  {
+    "case": "function",
+    "calls": 1,
+    "kind": "answer_failure",
+    "validations": [
+      "forbidden"
+    ]
+  },
+  {
+    "case": "envelope",
+    "calls": 1,
+    "kind": "answer_failure",
+    "validations": [
+      "response_error"
+    ]
+  },
+  {
+    "case": "transport",
+    "calls": 1,
+    "kind": "answer_failure",
+    "validations": [
+      "inference_error"
+    ]
+  },
+  {
+    "case": "invalid-id-repaired",
+    "calls": 2,
+    "kind": "answer",
+    "validations": [
+      "invalid",
+      "valid"
+    ]
+  }
+]

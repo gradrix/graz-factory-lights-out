@@ -1,0 +1,29 @@
+[
+  {
+    "case": "first-astral-error",
+    "preflight_bytes": 12288,
+    "calls": 1,
+    "terminal_error_characters": 512,
+    "terminal_error_encoded_bytes": 6146,
+    "actual_metadata_bytes": 8942,
+    "saved_failure": true,
+    "first_response_retained": false
+  },
+  {
+    "case": "second-astral-error",
+    "preflight_bytes": 12288,
+    "calls": 2,
+    "terminal_error_characters": 512,
+    "terminal_error_encoded_bytes": 6146,
+    "actual_metadata_bytes": 9252,
+    "saved_failure": true,
+    "first_response_retained": true
+  },
+  {
+    "case": "one-byte-over-preflight",
+    "preflight_bytes": 12289,
+    "calls": 0,
+    "published": false,
+    "error": "Reference receipt metadata capacity exceeded"
+  }
+]

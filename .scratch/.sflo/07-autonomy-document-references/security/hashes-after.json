@@ -1,0 +1,86 @@
+{
+  "docs/document-evidence.md": {
+    "expected": "312b64323422a189b0376468c2d58bf5f01ab38f1634cb957755b182735207fc",
+    "commit_sha256": "312b64323422a189b0376468c2d58bf5f01ab38f1634cb957755b182735207fc",
+    "workspace_sha256": "312b64323422a189b0376468c2d58bf5f01ab38f1634cb957755b182735207fc"
+  },
+  "gflo/__main__.py": {
+    "expected": "4f20c5f979b363d963fdd5863585cd8b74a0837b5e5e2b6522aa1ee0674e48dd",
+    "commit_sha256": "4f20c5f979b363d963fdd5863585cd8b74a0837b5e5e2b6522aa1ee0674e48dd",
+    "workspace_sha256": "4f20c5f979b363d963fdd5863585cd8b74a0837b5e5e2b6522aa1ee0674e48dd",
+    "private_copy_sha256": "4f20c5f979b363d963fdd5863585cd8b74a0837b5e5e2b6522aa1ee0674e48dd"
+  },
+  "gflo/document_references.py": {
+    "expected": "0a31c631bd170be7becb611ffb0fc19bfc9a890bf67e54830173119032776bc1",
+    "commit_sha256": "0a31c631bd170be7becb611ffb0fc19bfc9a890bf67e54830173119032776bc1",
+    "workspace_sha256": "0a31c631bd170be7becb611ffb0fc19bfc9a890bf67e54830173119032776bc1",
+    "private_copy_sha256": "0a31c631bd170be7becb611ffb0fc19bfc9a890bf67e54830173119032776bc1"
+  },
+  "gflo/documents.py": {
+    "expected": "fd25e82baa4baf7917a043ef0f44b01ce5a6b92c5f4768f82fd383b44facef81",
+    "commit_sha256": "fd25e82baa4baf7917a043ef0f44b01ce5a6b92c5f4768f82fd383b44facef81",
+    "workspace_sha256": "fd25e82baa4baf7917a043ef0f44b01ce5a6b92c5f4768f82fd383b44facef81",
+    "private_copy_sha256": "fd25e82baa4baf7917a043ef0f44b01ce5a6b92c5f4768f82fd383b44facef81"
+  },
+  "gflo/guard.py": {
+    "expected": "8f623a2ff7f9958ef2e1d0a99686ab83f31ab2100fbf5124097bcf1ae88ace48",
+    "commit_sha256": "8f623a2ff7f9958ef2e1d0a99686ab83f31ab2100fbf5124097bcf1ae88ace48",
+    "workspace_sha256": "8f623a2ff7f9958ef2e1d0a99686ab83f31ab2100fbf5124097bcf1ae88ace48",
+    "private_copy_sha256": "8f623a2ff7f9958ef2e1d0a99686ab83f31ab2100fbf5124097bcf1ae88ace48"
+  },
+  "gflo/recipes/document.py": {
+    "expected": "f6795e60f08e387dbed96e1ce555b2fc75bd84a6a7ea23c82c677f85a8d71cf4",
+    "commit_sha256": "f6795e60f08e387dbed96e1ce555b2fc75bd84a6a7ea23c82c677f85a8d71cf4",
+    "workspace_sha256": "f6795e60f08e387dbed96e1ce555b2fc75bd84a6a7ea23c82c677f85a8d71cf4",
+    "private_copy_sha256": "f6795e60f08e387dbed96e1ce555b2fc75bd84a6a7ea23c82c677f85a8d71cf4"
+  },
+  "gflo/recipes/document_extract.py": {
+    "expected": "ca6c4b783184cc301d2610829e3bd56558838b1d99c2973f80d268ce868721c3",
+    "commit_sha256": "ca6c4b783184cc301d2610829e3bd56558838b1d99c2973f80d268ce868721c3",
+    "workspace_sha256": "ca6c4b783184cc301d2610829e3bd56558838b1d99c2973f80d268ce868721c3",
+    "private_copy_sha256": "ca6c4b783184cc301d2610829e3bd56558838b1d99c2973f80d268ce868721c3"
+  },
+  "gflo/recipes/fetch.py": {
+    "expected": "c0a798534ab2d29cac84f53ff1b88adad94e60b3f63f04ec3be5d8fbe516fcd8",
+    "commit_sha256": "c0a798534ab2d29cac84f53ff1b88adad94e60b3f63f04ec3be5d8fbe516fcd8",
+    "workspace_sha256": "c0a798534ab2d29cac84f53ff1b88adad94e60b3f63f04ec3be5d8fbe516fcd8",
+    "private_copy_sha256": "c0a798534ab2d29cac84f53ff1b88adad94e60b3f63f04ec3be5d8fbe516fcd8"
+  },
+  "gflo/sandbox.py": {
+    "expected": "b2cafa3f1ad779a2a022143c5aff8f09c1b945efcd8aa2fba90c923e769c36a0",
+    "commit_sha256": "b2cafa3f1ad779a2a022143c5aff8f09c1b945efcd8aa2fba90c923e769c36a0",
+    "workspace_sha256": "b2cafa3f1ad779a2a022143c5aff8f09c1b945efcd8aa2fba90c923e769c36a0",
+    "private_copy_sha256": "b2cafa3f1ad779a2a022143c5aff8f09c1b945efcd8aa2fba90c923e769c36a0"
+  },
+  "gflo/worker.py": {
+    "expected": "2ddce17fd1dcda0700cf9923d2d0a4edbea4d7df9debd1b1a4003966ad7afb0a",
+    "commit_sha256": "2ddce17fd1dcda0700cf9923d2d0a4edbea4d7df9debd1b1a4003966ad7afb0a",
+    "workspace_sha256": "2ddce17fd1dcda0700cf9923d2d0a4edbea4d7df9debd1b1a4003966ad7afb0a",
+    "private_copy_sha256": "2ddce17fd1dcda0700cf9923d2d0a4edbea4d7df9debd1b1a4003966ad7afb0a"
+  },
+  "tests/test_document_answer_process.py": {
+    "expected": "8d5cd6177f980e5a7cfc1faea439b9c2b3096cf35ef77fd18976799249d36286",
+    "commit_sha256": "8d5cd6177f980e5a7cfc1faea439b9c2b3096cf35ef77fd18976799249d36286",
+    "workspace_sha256": "8d5cd6177f980e5a7cfc1faea439b9c2b3096cf35ef77fd18976799249d36286"
+  },
+  "tests/test_document_protocol.py": {
+    "expected": "e59ee93f70e39d0dc5df94c93ab30822103d94ac352d3f7262ab1d04c9a8fda6",
+    "commit_sha256": "e59ee93f70e39d0dc5df94c93ab30822103d94ac352d3f7262ab1d04c9a8fda6",
+    "workspace_sha256": "e59ee93f70e39d0dc5df94c93ab30822103d94ac352d3f7262ab1d04c9a8fda6"
+  },
+  "tests/test_document_references.py": {
+    "expected": "fe30cc8b5754a655a352d22be20ea4a7c047289745f023df731ae4a4c86511f2",
+    "commit_sha256": "fe30cc8b5754a655a352d22be20ea4a7c047289745f023df731ae4a4c86511f2",
+    "workspace_sha256": "fe30cc8b5754a655a352d22be20ea4a7c047289745f023df731ae4a4c86511f2"
+  },
+  "tests/test_document_repair.py": {
+    "expected": "dd681c0f0abc6c9eb3247746c5e4636a33a0b77d1a7cdc01e1747bda6716652f",
+    "commit_sha256": "dd681c0f0abc6c9eb3247746c5e4636a33a0b77d1a7cdc01e1747bda6716652f",
+    "workspace_sha256": "dd681c0f0abc6c9eb3247746c5e4636a33a0b77d1a7cdc01e1747bda6716652f"
+  },
+  "tests/test_documents.py": {
+    "expected": "00c8cd013e03d8995e391e07e003be9c4ad624d41d5d78e15be6e4fed8129ae1",
+    "commit_sha256": "00c8cd013e03d8995e391e07e003be9c4ad624d41d5d78e15be6e4fed8129ae1",
+    "workspace_sha256": "00c8cd013e03d8995e391e07e003be9c4ad624d41d5d78e15be6e4fed8129ae1"
+  }
+}

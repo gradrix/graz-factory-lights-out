@@ -1,0 +1,42 @@
+{
+  "records": 18,
+  "by_format_kind": {
+    "1:evidence": 5,
+    "2:answer": 8,
+    "2:answer_failure": 2,
+    "1:answer": 3
+  },
+  "identical_outputs_except_age": true,
+  "original_and_copy_hashes_unchanged": true,
+  "identical_helper_hashes": {
+    "validate_answer": "928e08203d8231f151d0c304f73836e0740b9b6df33cf505bd09514195a6e585",
+    "answer_request": "d287e54842032212388ae5e9dd65facf567d76f1e13b58191db1cc859a9849d5",
+    "repair_request": "97e6aa01592c8967f8f90d0c35b656ff69a8951f1d5e20a2de58cb4f3df29db2",
+    "response_answer": "839749092c7deee52447ea5541c1987ae2dafc7803f62980c35294c602c6b361",
+    "bounded_answer": "4057f8d024a8d2d78b0df94b990c99753d66ccb1a06a202deb2cb3b23ceee8e2"
+  },
+  "record_ids": [
+    "2668f4453bf6c506879eea16d39479694833db2875fef9f917dd519abd728a7a",
+    "35031b6d9f9fabefc79b3f70f0ffe3ae41becd72c7fcd4d5f3d3c4a31c5108c3",
+    "3682b91c75083bd469f0cfa8feb91ab769eb9e90aab874f6c28179e493e07e9b",
+    "3b978720075c2a38170ef1eac291576330a3067d153c785e1683a38d98255294",
+    "3bfe7f28fd3aa69eb347b5436e00e91fed92ca41f3585beba45ec772bb9c1e47",
+    "6e5b5f486a79e16e6f2876d4ee3d9e2fc563d1cd178feec432c87900eba7fe70",
+    "7cbf89d6c9dad5500a05cf634001cb22d816f4182fbacd7ec5dd9b8e5b0be30d",
+    "97e675c4f4c3eb568818f1b23eb70027e11062f22d7f4d586c3e004340676935",
+    "99495eb5950c561ae8452eb11971d154ef132a21285ea49202994818ee3be943",
+    "a3b81a46eca5946eda5486c8a2fd0a456dc1825fd14666d07c64c6138d6a9a99",
+    "b13badfa500f2718bd156872107c4e18c7a86a8f020b5534eb0bc50bf28a2026",
+    "c13467a4c588ffdb5292aca0f58a1c9d95a711d8a2c68715525172e7045e6b37",
+    "c3b3ea5748161e6e6fb73410e805e4fd1152e09d351bfda6d2d5aa7bcfffd278",
+    "5ac8501869d4c2c45674bca84bd77d34e8837ba155623a263475b0755a501028",
+    "668a610ca3a215f603973c416728825e2b958e02aee36b235a51e9a5b6ff3e86",
+    "dbc3e94ea45cabb423f01f987f491a4c8592f62bcd69418a7c49b78eb7dde967",
+    "070c0e420dcec838aa77a74f108fac7668e9fe959b3880d4a0083520d0cebcb1",
+    "bf354fdec1b1c6e86af4e653f8a490270565ffdbad895f594b79136009819896"
+  ],
+  "failure_replay_errors": [
+    "Replay requires a saved answer ID",
+    "Replay requires a saved answer ID"
+  ]
+}

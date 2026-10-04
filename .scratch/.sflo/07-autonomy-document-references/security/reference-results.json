@@ -1,0 +1,239 @@
+[
+  {
+    "case": "id-True",
+    "refused_before_expansion": true,
+    "error": "Invalid source span ID"
+  },
+  {
+    "case": "id-False",
+    "refused_before_expansion": true,
+    "error": "Invalid source span ID"
+  },
+  {
+    "case": "id-0",
+    "refused_before_expansion": true,
+    "error": "Invalid source span ID"
+  },
+  {
+    "case": "id--1",
+    "refused_before_expansion": true,
+    "error": "Invalid source span ID"
+  },
+  {
+    "case": "id-2",
+    "refused_before_expansion": true,
+    "error": "Invalid source span ID"
+  },
+  {
+    "case": "id-1.0",
+    "refused_before_expansion": true,
+    "error": "Invalid source span ID"
+  },
+  {
+    "case": "id-'1'",
+    "refused_before_expansion": true,
+    "error": "Invalid source span ID"
+  },
+  {
+    "case": "id-None",
+    "refused_before_expansion": true,
+    "error": "Invalid source span ID"
+  },
+  {
+    "case": "refs-empty",
+    "refused_before_expansion": true,
+    "error": "Invalid bounded reference claim"
+  },
+  {
+    "case": "refs-five",
+    "refused_before_expansion": true,
+    "error": "Invalid bounded reference claim"
+  },
+  {
+    "case": "claims-nine",
+    "refused_before_expansion": true,
+    "error": "Supported reference answer requires 1\u20138 claims and empty reason"
+  },
+  {
+    "case": "occurrences17",
+    "refused_before_expansion": true,
+    "error": "Reference occurrence limit exceeded"
+  },
+  {
+    "case": "old-citation-field",
+    "refused_before_expansion": true,
+    "error": "Invalid bounded reference claim"
+  },
+  {
+    "case": "extra-evidence",
+    "refused_before_expansion": true,
+    "error": "Reference answer requires status, claims and reason only"
+  },
+  {
+    "case": "late-invalid-id",
+    "refused_before_expansion": true,
+    "error": "Invalid source span ID"
+  },
+  {
+    "case": "ascii-claim-at-cap",
+    "encoded_size": 1024,
+    "accepted": true,
+    "error": null
+  },
+  {
+    "case": "ascii-claimplus1",
+    "encoded_size": 1025,
+    "accepted": false,
+    "error": "Invalid bounded reference claim"
+  },
+  {
+    "case": "astral-claim-at-cap",
+    "encoded_size": 1024,
+    "accepted": true,
+    "error": null
+  },
+  {
+    "case": "astral-claimplus1",
+    "encoded_size": 1025,
+    "accepted": false,
+    "error": "Invalid bounded reference claim"
+  },
+  {
+    "case": "control-claim-at-cap",
+    "encoded_size": 1024,
+    "accepted": true,
+    "error": null
+  },
+  {
+    "case": "control-claimplus1",
+    "encoded_size": 1025,
+    "accepted": false,
+    "error": "Invalid bounded reference claim"
+  },
+  {
+    "case": "ascii-span-at-cap",
+    "encoded_size": 2048,
+    "accepted": true,
+    "error": null
+  },
+  {
+    "case": "ascii-spanplus1",
+    "encoded_size": 2049,
+    "accepted": false,
+    "error": "Selected span exceeds citation capacity"
+  },
+  {
+    "case": "astral-span-at-cap",
+    "encoded_size": 2048,
+    "accepted": true,
+    "error": null
+  },
+  {
+    "case": "astral-spanplus1",
+    "encoded_size": 2049,
+    "accepted": false,
+    "error": "Selected span exceeds citation capacity"
+  },
+  {
+    "case": "control-span-at-cap",
+    "encoded_size": 2048,
+    "accepted": true,
+    "error": null
+  },
+  {
+    "case": "control-spanplus1",
+    "encoded_size": 2049,
+    "accepted": false,
+    "error": "Selected span exceeds citation capacity"
+  },
+  {
+    "case": "ascii-reason-at-cap",
+    "encoded_size": 2048,
+    "accepted": true,
+    "error": null
+  },
+  {
+    "case": "ascii-reasonplus1",
+    "encoded_size": 2049,
+    "accepted": false,
+    "error": "Invalid bounded insufficient-evidence reason"
+  },
+  {
+    "case": "astral-reason-at-cap",
+    "encoded_size": 2048,
+    "accepted": true,
+    "error": null
+  },
+  {
+    "case": "astral-reasonplus1",
+    "encoded_size": 2049,
+    "accepted": false,
+    "error": "Invalid bounded insufficient-evidence reason"
+  },
+  {
+    "case": "maximum-legal-repeated-expansion",
+    "claims": 8,
+    "occurrences": 16,
+    "encoded_answer_bytes": 42893
+  },
+  {
+    "case": "metadata-12288",
+    "error": null
+  },
+  {
+    "case": "metadata-12289",
+    "error": "Reference receipt metadata capacity exceeded"
+  },
+  {
+    "case": "canonical-defense-49152",
+    "error": null,
+    "synthetic_serializer_control": true
+  },
+  {
+    "case": "canonical-defense-49153",
+    "error": "Canonical reference answer exceeds bound",
+    "synthetic_serializer_control": true
+  },
+  {
+    "case": "unicode-exact",
+    "calls": 1,
+    "error": null,
+    "status": "supported",
+    "published_count": 1
+  },
+  {
+    "case": "long-selected-to-insufficient",
+    "calls": 2,
+    "error": "Document answer failed; diagnostic 300a99b1b10bfe08198468b749f1ae766bf5b3ea08f7e90aa0e6b6b9566d2547: Returned response failed: invalid",
+    "status": null,
+    "published_count": 1
+  },
+  {
+    "case": "long-unselected-supported",
+    "calls": 1,
+    "error": null,
+    "status": "supported",
+    "published_count": 1
+  },
+  {
+    "case": "all-eligible-insufficient",
+    "calls": 1,
+    "error": null,
+    "status": "insufficient_evidence",
+    "published_count": 1
+  },
+  {
+    "case": "cancel-before-repair",
+    "calls": 1,
+    "error": "Document operation cancelled before publication",
+    "status": null,
+    "published_count": 0
+  },
+  {
+    "case": "final-cancel",
+    "calls": 1,
+    "error": "Document operation cancelled before publication",
+    "status": null,
+    "published_count": 0
+  }
+]
