@@ -190,3 +190,7 @@ htmlcov/
 
 !.scratch/.sflo/08-autonomy-planning-pilot/
 .scratch/.sflo/08-autonomy-planning-pilot/*/
+
+!.scratch/.sflo/08-autonomy-planning-pilot/serving-lifecycle/
+!.scratch/.sflo/08-autonomy-planning-pilot/serving-lifecycle/*.py
+!.scratch/.sflo/08-autonomy-planning-pilot/serving-lifecycle/*.json

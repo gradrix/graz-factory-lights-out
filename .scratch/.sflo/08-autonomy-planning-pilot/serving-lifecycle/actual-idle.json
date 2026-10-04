@@ -1,0 +1,155 @@
+{
+  "utc": "2026-10-04T16:37:49.136026+00:00",
+  "operation": "read-only GET; no inference/restart",
+  "before": {
+    "id": "2cac4229053dac00fdbcadb1952db80f0a9da3fd07b8f40bce1ba8cd3114f6e0",
+    "image": "sha256:249ed60fdd67b96db472e16f945af5aaba565b20159d192ba378035b6d136a1c",
+    "running": true,
+    "started_at": "2026-10-04T14:20:09.194925789Z",
+    "owner": "model-service",
+    "flags": {
+      "--alias": "flash-next-coder",
+      "-c": "98304",
+      "-np": "1",
+      "--cache-type-k": "q4_0",
+      "--cache-type-v": "q4_0",
+      "--host": "0.0.0.0",
+      "--port": "8000"
+    },
+    "slots_flag_explicit": false,
+    "slots_disabled_explicit": false,
+    "metrics_flag_explicit": false,
+    "offline": true,
+    "ports": {
+      "8000/tcp": [
+        {
+          "HostIp": "127.0.0.1",
+          "HostPort": "18000"
+        }
+      ]
+    },
+    "runtime_entrypoint": [
+      "/model/runtime/llama-b11284/llama-server"
+    ]
+  },
+  "key_mode": "0o600",
+  "samples": [
+    [
+      {
+        "path": "/health",
+        "http_status": 200,
+        "safe_body": {
+          "status": "ok",
+          "slots_idle": null,
+          "slots_processing": null
+        },
+        "raw_bytes": 15,
+        "elapsed_s": 0.0024182130000554025
+      },
+      {
+        "path": "/slots",
+        "http_status": 200,
+        "safe_body": [
+          {
+            "id": 0,
+            "is_processing": false,
+            "n_ctx": 98304,
+            "n_tokens": null,
+            "state": null
+          }
+        ],
+        "raw_bytes": 1271,
+        "elapsed_s": 0.001344287999017979
+      },
+      {
+        "path": "/slots?fail_on_no_slot=1",
+        "http_status": 200,
+        "safe_body": [
+          {
+            "id": 0,
+            "is_processing": false,
+            "n_ctx": 98304,
+            "n_tokens": null,
+            "state": null
+          }
+        ],
+        "raw_bytes": 1271,
+        "elapsed_s": 0.0010581869992165593
+      }
+    ],
+    [
+      {
+        "path": "/health",
+        "http_status": 200,
+        "safe_body": {
+          "status": "ok",
+          "slots_idle": null,
+          "slots_processing": null
+        },
+        "raw_bytes": 15,
+        "elapsed_s": 0.0014172640003380366
+      },
+      {
+        "path": "/slots",
+        "http_status": 200,
+        "safe_body": [
+          {
+            "id": 0,
+            "is_processing": false,
+            "n_ctx": 98304,
+            "n_tokens": null,
+            "state": null
+          }
+        ],
+        "raw_bytes": 1271,
+        "elapsed_s": 0.0012245859998074593
+      },
+      {
+        "path": "/slots?fail_on_no_slot=1",
+        "http_status": 200,
+        "safe_body": [
+          {
+            "id": 0,
+            "is_processing": false,
+            "n_ctx": 98304,
+            "n_tokens": null,
+            "state": null
+          }
+        ],
+        "raw_bytes": 1271,
+        "elapsed_s": 0.0010796200003824197
+      }
+    ]
+  ],
+  "after": {
+    "id": "2cac4229053dac00fdbcadb1952db80f0a9da3fd07b8f40bce1ba8cd3114f6e0",
+    "image": "sha256:249ed60fdd67b96db472e16f945af5aaba565b20159d192ba378035b6d136a1c",
+    "running": true,
+    "started_at": "2026-10-04T14:20:09.194925789Z",
+    "owner": "model-service",
+    "flags": {
+      "--alias": "flash-next-coder",
+      "-c": "98304",
+      "-np": "1",
+      "--cache-type-k": "q4_0",
+      "--cache-type-v": "q4_0",
+      "--host": "0.0.0.0",
+      "--port": "8000"
+    },
+    "slots_flag_explicit": false,
+    "slots_disabled_explicit": false,
+    "metrics_flag_explicit": false,
+    "offline": true,
+    "ports": {
+      "8000/tcp": [
+        {
+          "HostIp": "127.0.0.1",
+          "HostPort": "18000"
+        }
+      ]
+    },
+    "runtime_entrypoint": [
+      "/model/runtime/llama-b11284/llama-server"
+    ]
+  }
+}

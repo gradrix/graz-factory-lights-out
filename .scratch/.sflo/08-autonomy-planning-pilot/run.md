@@ -14,3 +14,5 @@ Next: independently freeze two cases, build minimal disposable driver, establish
 ## Binding
 
 Unit07 accepted, installed and pushed. Prototype worktree /home/gradrix/repos/gflo-planning-prototype on prototype/planning-pilot-20261004 isolates mechanism from main. Contract/unit/run binding verified on claim. No model calls or fixture implementation yet.
+
+Isolated agents assigned: harnesscohort_c; independentfixturesqa_resume (stdlibmanifest reconciliation/unique renames and packagedAPIatomicnestedconfigpreview, noveltychecked); serving/securityartifact_security. Actualread-only idle discovery confirms /slots slot0 falseprocessing/98304context, unchangedcontainer/image/start. [Lifecycle plan](serving-lifecycle-plan.md) requires actual controlled request cancellation onlyafter frozenharnessreview, before4arms. Approved API snapshot e591c2d6… in rigstage3-preparation/environments identified for offlinefixturecontrols; no downloads/servingchanges/modelcalls yet.
