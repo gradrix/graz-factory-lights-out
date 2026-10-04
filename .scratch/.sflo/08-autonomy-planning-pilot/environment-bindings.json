@@ -1,0 +1,39 @@
+{
+  "python-api": {
+    "id": "e591c2d6f97b02fc2a99ecef01848a4e74d743e499aeec3b4d4d7d6c6c400acb",
+    "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+    "profile": "python-api",
+    "receipt_sha256": "e591c2d6f97b02fc2a99ecef01848a4e74d743e499aeec3b4d4d7d6c6c400acb",
+    "runtime": {
+      "capabilities": "0000000000000000",
+      "docker_socket": "absent",
+      "fastapi": "0.115.12",
+      "gpu_devices": "absent",
+      "httpx": "0.28.1",
+      "machine": "x86_64",
+      "platform": "linux",
+      "pydantic": "2.13.5",
+      "python": "3.12.13",
+      "setuptools": "78.1.0",
+      "uid": "1000",
+      "uvicorn": "0.34.2"
+    },
+    "store": "/home/gradrix/gflo-stage3-25f75c3/.gflo/stage3-preparation/environments"
+  },
+  "python-stdlib": {
+    "id": "36cd138cbdc332246a2db473301200117f82404a4504c675db95966645348975",
+    "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+    "profile": "python-stdlib",
+    "receipt_sha256": "36cd138cbdc332246a2db473301200117f82404a4504c675db95966645348975",
+    "runtime": {
+      "capabilities": "0000000000000000",
+      "docker_socket": "absent",
+      "gpu_devices": "absent",
+      "machine": "x86_64",
+      "platform": "linux",
+      "python": "3.12.13",
+      "uid": "1000"
+    },
+    "store": "/home/gradrix/gflo-stage3-25f75c3/.gflo/stage3-preparation/environments"
+  }
+}

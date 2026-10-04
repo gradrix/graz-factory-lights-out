@@ -1,0 +1,158 @@
+test_admission_code_and_request_drift_refused (test_cancellation_probe.CancellationControls) ... ERROR
+test_cancellation_during_busy_probe_not_pass (test_cancellation_probe.CancellationControls) ... ERROR
+test_deadline_during_busy_probe_not_pass (test_cancellation_probe.CancellationControls) ... ERROR
+test_debit_cancellation_prevents_launch (test_cancellation_probe.CancellationControls) ... ERROR
+test_evidence_size_bound (test_cancellation_probe.CancellationControls) ... ok
+test_lease_held_during_preflight_and_cleanup (test_cancellation_probe.CancellationControls) ... ERROR
+test_normal_completion_race_inconclusive (test_cancellation_probe.CancellationControls) ... ERROR
+test_observed_busy_then_signal_and_idle_passes (test_cancellation_probe.CancellationControls) ... ERROR
+test_preflight_unknown_never_launches (test_cancellation_probe.CancellationControls) ... ok
+test_request_error_does_not_expose_credentials (test_cancellation_probe.CancellationControls) ... ok
+test_stop_group_terminates_owned_client (test_cancellation_probe.CancellationControls) ... ok
+test_unknown_cleanup_never_passes (test_cancellation_probe.CancellationControls) ... ERROR
+test_unknown_is_not_busy (test_cancellation_probe.CancellationControls) ... ERROR
+
+======================================================================
+ERROR: test_admission_code_and_request_drift_refused (test_cancellation_probe.CancellationControls)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo-planning-prototype/ops/test_cancellation_probe.py", line 150, in test_admission_code_and_request_drift_refused
+    self.assertEqual(c.validate_admission(p),receipt)
+  File "/home/gradrix/repos/gflo-planning-prototype/ops/cancellation_probe.py", line 112, in validate_admission
+    raise ValueError('Missing admission evidence')
+ValueError: Missing admission evidence
+
+======================================================================
+ERROR: test_cancellation_during_busy_probe_not_pass (test_cancellation_probe.CancellationControls)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo-planning-prototype/ops/test_cancellation_probe.py", line 98, in test_cancellation_during_busy_probe_not_pass
+    result,*_=self.trial(['idle','idle','busy','idle','idle'],during=signal_at_probe)
+  File "/home/gradrix/repos/gflo-planning-prototype/ops/test_cancellation_probe.py", line 71, in trial
+    else:result=c.experiment(args)
+  File "/home/gradrix/repos/gflo-planning-prototype/ops/cancellation_probe.py", line 171, in experiment
+    marker = consumed / hashlib.sha256(Path(args.admission).read_bytes()).hexdigest()
+  File "/usr/lib/python3.10/pathlib.py", line 1126, in read_bytes
+    with self.open(mode='rb') as f:
+  File "/usr/lib/python3.10/pathlib.py", line 1119, in open
+    return self._accessor.open(self, mode, buffering, encoding, errors,
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpwljygkoe/admission'
+
+======================================================================
+ERROR: test_deadline_during_busy_probe_not_pass (test_cancellation_probe.CancellationControls)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo-planning-prototype/ops/test_cancellation_probe.py", line 92, in test_deadline_during_busy_probe_not_pass
+    result,*_=self.trial(['idle','idle','deadline','idle','idle'])
+  File "/home/gradrix/repos/gflo-planning-prototype/ops/test_cancellation_probe.py", line 71, in trial
+    else:result=c.experiment(args)
+  File "/home/gradrix/repos/gflo-planning-prototype/ops/cancellation_probe.py", line 171, in experiment
+    marker = consumed / hashlib.sha256(Path(args.admission).read_bytes()).hexdigest()
+  File "/usr/lib/python3.10/pathlib.py", line 1126, in read_bytes
+    with self.open(mode='rb') as f:
+  File "/usr/lib/python3.10/pathlib.py", line 1119, in open
+    return self._accessor.open(self, mode, buffering, encoding, errors,
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpxy824fkp/admission'
+
+======================================================================
+ERROR: test_debit_cancellation_prevents_launch (test_cancellation_probe.CancellationControls)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo-planning-prototype/ops/test_cancellation_probe.py", line 104, in test_debit_cancellation_prevents_launch
+    result,children,*_=self.trial(['idle','idle','idle','idle'],during=cancel_debit)
+  File "/home/gradrix/repos/gflo-planning-prototype/ops/test_cancellation_probe.py", line 71, in trial
+    else:result=c.experiment(args)
+  File "/home/gradrix/repos/gflo-planning-prototype/ops/cancellation_probe.py", line 171, in experiment
+    marker = consumed / hashlib.sha256(Path(args.admission).read_bytes()).hexdigest()
+  File "/usr/lib/python3.10/pathlib.py", line 1126, in read_bytes
+    with self.open(mode='rb') as f:
+  File "/usr/lib/python3.10/pathlib.py", line 1119, in open
+    return self._accessor.open(self, mode, buffering, encoding, errors,
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpnkqy1c0x/admission'
+
+======================================================================
+ERROR: test_lease_held_during_preflight_and_cleanup (test_cancellation_probe.CancellationControls)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo-planning-prototype/ops/test_cancellation_probe.py", line 109, in test_lease_held_during_preflight_and_cleanup
+    result,*_=self.trial(['idle','idle','busy','idle','idle'],main=True)
+  File "/home/gradrix/repos/gflo-planning-prototype/ops/test_cancellation_probe.py", line 70, in trial
+    c.main();result=json.loads((out/'result.json').read_text())
+  File "/home/gradrix/repos/gflo-planning-prototype/ops/cancellation_probe.py", line 246, in main
+    result = experiment(args)
+  File "/home/gradrix/repos/gflo-planning-prototype/ops/cancellation_probe.py", line 171, in experiment
+    marker = consumed / hashlib.sha256(Path(args.admission).read_bytes()).hexdigest()
+  File "/usr/lib/python3.10/pathlib.py", line 1126, in read_bytes
+    with self.open(mode='rb') as f:
+  File "/usr/lib/python3.10/pathlib.py", line 1119, in open
+    return self._accessor.open(self, mode, buffering, encoding, errors,
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmp351jtbip/admission'
+
+======================================================================
+ERROR: test_normal_completion_race_inconclusive (test_cancellation_probe.CancellationControls)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo-planning-prototype/ops/test_cancellation_probe.py", line 88, in test_normal_completion_race_inconclusive
+    result,*_=self.trial(['idle','idle','normal','idle','idle'])
+  File "/home/gradrix/repos/gflo-planning-prototype/ops/test_cancellation_probe.py", line 71, in trial
+    else:result=c.experiment(args)
+  File "/home/gradrix/repos/gflo-planning-prototype/ops/cancellation_probe.py", line 171, in experiment
+    marker = consumed / hashlib.sha256(Path(args.admission).read_bytes()).hexdigest()
+  File "/usr/lib/python3.10/pathlib.py", line 1126, in read_bytes
+    with self.open(mode='rb') as f:
+  File "/usr/lib/python3.10/pathlib.py", line 1119, in open
+    return self._accessor.open(self, mode, buffering, encoding, errors,
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmp4zc2_9f2/admission'
+
+======================================================================
+ERROR: test_observed_busy_then_signal_and_idle_passes (test_cancellation_probe.CancellationControls)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo-planning-prototype/ops/test_cancellation_probe.py", line 75, in test_observed_busy_then_signal_and_idle_passes
+    result,children,seen,out=self.trial(['idle','idle','busy','idle','idle'])
+  File "/home/gradrix/repos/gflo-planning-prototype/ops/test_cancellation_probe.py", line 71, in trial
+    else:result=c.experiment(args)
+  File "/home/gradrix/repos/gflo-planning-prototype/ops/cancellation_probe.py", line 171, in experiment
+    marker = consumed / hashlib.sha256(Path(args.admission).read_bytes()).hexdigest()
+  File "/usr/lib/python3.10/pathlib.py", line 1126, in read_bytes
+    with self.open(mode='rb') as f:
+  File "/usr/lib/python3.10/pathlib.py", line 1119, in open
+    return self._accessor.open(self, mode, buffering, encoding, errors,
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmp5ndmb0y3/admission'
+
+======================================================================
+ERROR: test_unknown_cleanup_never_passes (test_cancellation_probe.CancellationControls)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo-planning-prototype/ops/test_cancellation_probe.py", line 113, in test_unknown_cleanup_never_passes
+    result,*_=self.trial(['idle','idle','busy']+['unknown']*100)
+  File "/home/gradrix/repos/gflo-planning-prototype/ops/test_cancellation_probe.py", line 71, in trial
+    else:result=c.experiment(args)
+  File "/home/gradrix/repos/gflo-planning-prototype/ops/cancellation_probe.py", line 171, in experiment
+    marker = consumed / hashlib.sha256(Path(args.admission).read_bytes()).hexdigest()
+  File "/usr/lib/python3.10/pathlib.py", line 1126, in read_bytes
+    with self.open(mode='rb') as f:
+  File "/usr/lib/python3.10/pathlib.py", line 1119, in open
+    return self._accessor.open(self, mode, buffering, encoding, errors,
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmpenbis6p_/admission'
+
+======================================================================
+ERROR: test_unknown_is_not_busy (test_cancellation_probe.CancellationControls)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo-planning-prototype/ops/test_cancellation_probe.py", line 80, in test_unknown_is_not_busy
+    result,*_=self.trial(['idle','idle','unknown','idle','idle'])
+  File "/home/gradrix/repos/gflo-planning-prototype/ops/test_cancellation_probe.py", line 71, in trial
+    else:result=c.experiment(args)
+  File "/home/gradrix/repos/gflo-planning-prototype/ops/cancellation_probe.py", line 171, in experiment
+    marker = consumed / hashlib.sha256(Path(args.admission).read_bytes()).hexdigest()
+  File "/usr/lib/python3.10/pathlib.py", line 1126, in read_bytes
+    with self.open(mode='rb') as f:
+  File "/usr/lib/python3.10/pathlib.py", line 1119, in open
+    return self._accessor.open(self, mode, buffering, encoding, errors,
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/tmp_n1km2nl/admission'
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.229s
+
+FAILED (errors=9)
