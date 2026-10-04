@@ -1,0 +1,154 @@
+{
+  "contract_sha256": "1fe3c4763dd4e1ee6d3b280619dcbce4ac1814d7253dbbba5c1d8d6f47f959d1",
+  "objective_task_sha256": "4b86eea588b19e05c8e50034715be6b84981a557bd3be1f58a41166598716f8b",
+  "objective_sha256": "1c06ec381998c75d35598306e1cbe96adcd9558acd1f13d818a1bb70e9272d3d",
+  "prior_results_sha256": "72d021ac029f6f8fe2894daccbfe5169cc43413e76ff08ef4d7d4714fc97c4d0",
+  "bindings": [
+    {
+      "arm": 1,
+      "kind": "original",
+      "files": {
+        "README.md": "ac477b2547f5112d7a9aeadf4c2b453fbe73402c1eb817c3bfce6612425a2df8",
+        "main.py": "db81c48d1fc42e61ab6b36fdfc386266d0aaa19db4a245c7a4bbdd9d4700aa22",
+        "tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tests/test_manifest_tool.py": "6c1307d37cbc26988092e296337b2eb3c31e10cefb79c98a22240cc660a8dced",
+        "manifest_tool/validation.py": "f75a5b4e4915b08361022eb535f31a6d118e4a04e8eaa28b9c73c5ca49bf6ed3",
+        "manifest_tool/cli.py": "65473e354f2a7f64fc3618b5abdb1915262cbf19244f94ece261ff30699eda15",
+        "manifest_tool/api.py": "54751d2883e115bdba3174d0ed0dce4a95b3fffe103fd4ad9f88b87bad523702",
+        "manifest_tool/domain.py": "dd60306661c9f57a2eeddb9220e17542538f1a9c879d7b75b21b2bf696c2cef9",
+        "manifest_tool/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "manifest_tool/report.py": "cba66004310885532689108ba41b15ca5540073d63f05643e31ad25801d4d9af"
+      },
+      "modes": {
+        "README.md": 436,
+        "main.py": 436,
+        "tests/__init__.py": 420,
+        "tests/test_manifest_tool.py": 420,
+        "manifest_tool/validation.py": 436,
+        "manifest_tool/cli.py": 436,
+        "manifest_tool/api.py": 436,
+        "manifest_tool/domain.py": 436,
+        "manifest_tool/__init__.py": 436,
+        "manifest_tool/report.py": 436
+      },
+      "control_receipt_sha256": "94b1739f9121d173bae9e25c537e8555e0bcade104f4877fc49593242ef136c5"
+    },
+    {
+      "arm": 1,
+      "kind": "control",
+      "files": {
+        "README.md": "ac477b2547f5112d7a9aeadf4c2b453fbe73402c1eb817c3bfce6612425a2df8",
+        "main.py": "db81c48d1fc42e61ab6b36fdfc386266d0aaa19db4a245c7a4bbdd9d4700aa22",
+        "tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tests/test_manifest_tool.py": "6f588a90fcd648cb0486d67860c7ca360c1abd8ddbc7de7d5d36f5b74e969cc0",
+        "manifest_tool/validation.py": "f75a5b4e4915b08361022eb535f31a6d118e4a04e8eaa28b9c73c5ca49bf6ed3",
+        "manifest_tool/cli.py": "65473e354f2a7f64fc3618b5abdb1915262cbf19244f94ece261ff30699eda15",
+        "manifest_tool/api.py": "54751d2883e115bdba3174d0ed0dce4a95b3fffe103fd4ad9f88b87bad523702",
+        "manifest_tool/domain.py": "dd60306661c9f57a2eeddb9220e17542538f1a9c879d7b75b21b2bf696c2cef9",
+        "manifest_tool/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "manifest_tool/report.py": "cba66004310885532689108ba41b15ca5540073d63f05643e31ad25801d4d9af"
+      },
+      "modes": {
+        "README.md": 436,
+        "main.py": 436,
+        "tests/__init__.py": 420,
+        "tests/test_manifest_tool.py": 420,
+        "manifest_tool/validation.py": 436,
+        "manifest_tool/cli.py": 436,
+        "manifest_tool/api.py": 436,
+        "manifest_tool/domain.py": 436,
+        "manifest_tool/__init__.py": 436,
+        "manifest_tool/report.py": 436
+      },
+      "control_receipt_sha256": "94b1739f9121d173bae9e25c537e8555e0bcade104f4877fc49593242ef136c5"
+    },
+    {
+      "arm": 2,
+      "kind": "original",
+      "files": {
+        "README.md": "1d404dbb5dee0d0ba71c0d2d52f15c43fc156205520d7dc1e5c3abcc9ec9b37a",
+        "main.py": "db81c48d1fc42e61ab6b36fdfc386266d0aaa19db4a245c7a4bbdd9d4700aa22",
+        "tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tests/test_manifest_tool.py": "6f1b44a8c34497cb312d7f7b3bae507faebe0bb82f9b58a6671d04ee9bacbbfc",
+        "manifest_tool/validation.py": "5fae250751d444fc378c9d5acc6ef316cfcabe4390d5af7f604659994350781a",
+        "manifest_tool/cli.py": "338f0b18514d96245226ff6cf9ea00c6beb382e26245d9a691d0c4e8877064f2",
+        "manifest_tool/api.py": "42487c5301dfe964532744e5f1de798a044da0184a9d63542543331626eb1029",
+        "manifest_tool/domain.py": "1bd325285b7168aa6c9631e663e4e7d106ca8c8ceeb35b8567343751e70173f8",
+        "manifest_tool/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "manifest_tool/report.py": "d8d24d9183f3cc26f934b18669eb29def63fdaa40fd329704fa812d0a2498b32"
+      },
+      "modes": {
+        "README.md": 436,
+        "main.py": 436,
+        "tests/__init__.py": 420,
+        "tests/test_manifest_tool.py": 420,
+        "manifest_tool/validation.py": 436,
+        "manifest_tool/cli.py": 436,
+        "manifest_tool/api.py": 436,
+        "manifest_tool/domain.py": 436,
+        "manifest_tool/__init__.py": 436,
+        "manifest_tool/report.py": 436
+      },
+      "control_receipt_sha256": "e09f19876d93ce699af85eb24de1f26c76a0c67224f2212450298ed7ede4584d"
+    },
+    {
+      "arm": 2,
+      "kind": "control",
+      "files": {
+        "README.md": "c69f30a573ec99c96a3a6f32bddadab6bcb9c25560d847d333a846b5d28d43c0",
+        "main.py": "db81c48d1fc42e61ab6b36fdfc386266d0aaa19db4a245c7a4bbdd9d4700aa22",
+        "tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "tests/test_manifest_tool.py": "6f1b44a8c34497cb312d7f7b3bae507faebe0bb82f9b58a6671d04ee9bacbbfc",
+        "manifest_tool/validation.py": "5fae250751d444fc378c9d5acc6ef316cfcabe4390d5af7f604659994350781a",
+        "manifest_tool/cli.py": "338f0b18514d96245226ff6cf9ea00c6beb382e26245d9a691d0c4e8877064f2",
+        "manifest_tool/api.py": "42487c5301dfe964532744e5f1de798a044da0184a9d63542543331626eb1029",
+        "manifest_tool/domain.py": "1bd325285b7168aa6c9631e663e4e7d106ca8c8ceeb35b8567343751e70173f8",
+        "manifest_tool/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "manifest_tool/report.py": "d8d24d9183f3cc26f934b18669eb29def63fdaa40fd329704fa812d0a2498b32"
+      },
+      "modes": {
+        "README.md": 436,
+        "main.py": 436,
+        "tests/__init__.py": 420,
+        "tests/test_manifest_tool.py": 420,
+        "manifest_tool/validation.py": 436,
+        "manifest_tool/cli.py": 436,
+        "manifest_tool/api.py": 436,
+        "manifest_tool/domain.py": 436,
+        "manifest_tool/__init__.py": 436,
+        "manifest_tool/report.py": 436
+      },
+      "control_receipt_sha256": "e09f19876d93ce699af85eb24de1f26c76a0c67224f2212450298ed7ede4584d"
+    }
+  ],
+  "order": [
+    {
+      "id": "case-01",
+      "arm": 1,
+      "kind": "original",
+      "expected": "repair",
+      "required_finding": "A6 project-root unittest fails because test helper hardcodes /workspace"
+    },
+    {
+      "id": "case-02",
+      "arm": 2,
+      "kind": "control",
+      "expected": "pass",
+      "required_finding": null
+    },
+    {
+      "id": "case-03",
+      "arm": 1,
+      "kind": "control",
+      "expected": "pass",
+      "required_finding": null
+    },
+    {
+      "id": "case-04",
+      "arm": 2,
+      "kind": "original",
+      "expected": "repair",
+      "required_finding": "A6 README compare example has 62/60-character digests and cannot produce documented success"
+    }
+  ]
+}

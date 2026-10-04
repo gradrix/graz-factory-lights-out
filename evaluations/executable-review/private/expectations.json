@@ -1,0 +1,30 @@
+[
+  {
+    "id": "case-01",
+    "arm": 1,
+    "kind": "original",
+    "expected": "repair",
+    "required_finding": "A6 project-root unittest fails because test helper hardcodes /workspace"
+  },
+  {
+    "id": "case-02",
+    "arm": 2,
+    "kind": "control",
+    "expected": "pass",
+    "required_finding": null
+  },
+  {
+    "id": "case-03",
+    "arm": 1,
+    "kind": "control",
+    "expected": "pass",
+    "required_finding": null
+  },
+  {
+    "id": "case-04",
+    "arm": 2,
+    "kind": "original",
+    "expected": "repair",
+    "required_finding": "A6 README compare example has 62/60-character digests and cannot produce documented success"
+  }
+]
