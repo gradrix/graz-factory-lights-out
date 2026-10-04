@@ -17,3 +17,5 @@ Decision basis: [planning outcome](../../../docs/decisions/architecture/008-plan
 [Delivery09](../delivery/09-executable-review.md) binds the frozen initial four-case discriminator and isolated execution.
 
 Initial trial completed with one correct valid repair and three incomplete reviews; raw evidence and independent audits remain in the initial run. The [protocol successor](../../.sflo/09-autonomy-executable-review-protocol/run.md) reserves a strict finalization request and one bounded truncation recovery under a new contract. This is an agent-defined repair, not a new user requirement or a reliability claim.
+
+Protocol successor produced4valid correct classifications but failed strict truthfulness because it claimed an unexecuted corrected-suite run. [Evidence-finalization repair](../../.sflo/09-autonomy-review-evidence/run.md) now tests a smaller final-only assignment over frozen captured evidence, with exact references and no repair proposal. No old outcome changes; no maintained promotion.

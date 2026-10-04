@@ -225,3 +225,6 @@ htmlcov/
 !.scratch/.sflo/09-autonomy-executable-review-protocol/security/*.json
 !.scratch/.sflo/09-autonomy-executable-review-protocol/qa-rig-vertical/
 !.scratch/.sflo/09-autonomy-executable-review-protocol/qa-rig-vertical/**
+
+!.scratch/.sflo/09-autonomy-review-evidence/
+.scratch/.sflo/09-autonomy-review-evidence/*/

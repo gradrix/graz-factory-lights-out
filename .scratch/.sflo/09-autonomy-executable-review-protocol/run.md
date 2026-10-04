@@ -10,7 +10,7 @@ Predecessor: ../09-autonomy-executable-review/run.md
 Status: waiting
 Owner: /root coordinator; /root/cohort_c builder; /root/qa_resume independent QA; /root/artifact_security boundaries
 Candidate: prototype847f90e9d4fe515e6c6eada9eb200008b6441fd2; mechanism c69e90f8359603b9bf6636fa02a6b0887a4ba2af38f9f481243f9c8e831530a8; maintained92deaab unchanged
-Next: completed failed strict semantic gate; select a separately bound evidence-finalization experiment. No replay or rescore of this batch.
+Next: completed failed strict semantic gate; [evidence-finalization successor](../09-autonomy-review-evidence/run.md) owns further work. No replay or rescore of this batch.
 
 ## Claim
 
