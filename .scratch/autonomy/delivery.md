@@ -18,4 +18,4 @@ Later acceptance-bearing stages are in [the roadmap](../../docs/roadmap.md). The
 
 - [Supervised local browser checks](delivery/06-local-browser.md) — accepted at596ecb6; five actual-rig journeys, independent boundary/recovery checks, installed browser support. [Acceptance](../.sflo/06-autonomy-browser/acceptance.md).
 
-- [Document extraction and bounded citation repair](delivery/07-document-reliability.md) — active; versioned40K extraction, durable one-repair answers and ten-question rig qualification.
+- [Document extraction and bounded citation repair](delivery/07-document-reliability.md) — active successor; exact-quote trial failed8/10 and is preserved. Bounded format3 references, ten repeats plus three fresh questions and cross-version replay are next.

@@ -162,3 +162,8 @@ htmlcov/
 !.scratch/.sflo/07-autonomy-document-reliability/rig-trial-1/
 !.scratch/.sflo/07-autonomy-document-reliability/rig-trial-1/**/
 !.scratch/.sflo/07-autonomy-document-reliability/rig-trial-1/**/*.json
+
+!.scratch/.sflo/07-autonomy-document-reliability/qa/replay/
+!.scratch/.sflo/07-autonomy-document-reliability/qa/replay/*.json
+!.scratch/.sflo/07-autonomy-document-references/
+.scratch/.sflo/07-autonomy-document-references/*/

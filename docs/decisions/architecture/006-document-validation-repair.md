@@ -1,6 +1,6 @@
 # Bounded document validation repair
 
-Status: chosen for implementation, acceptance pending. Decision maker: agent,2026-10-04, under continued local-autonomy authorization.
+Status: new-answer citation choice superseded by [bounded references](007-bounded-document-references.md) after actual trial failed8/10; lifecycle/extractor design retained. Decision maker: agent,2026-10-04, under continued local-autonomy authorization.
 
 Use the measured40000-event extractor ceiling and retain exact-excerpt answers, allowing one structural validation repair. The earlier event cap rejected an ordinary official page. The private citation comparison reproduced a copied apostrophe failure and corrected it in one extra call. Whole-span selection avoided that copy error but failed the4097-byte boundary and can expand legal references beyond the receipt limit; it is deferred until bounded addressing is designed.
 

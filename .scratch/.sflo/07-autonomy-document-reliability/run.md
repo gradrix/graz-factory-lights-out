@@ -6,10 +6,10 @@ Contract: contract.md sha256 b2adcce1ceaaa777d855d570b5a354b5480bb63209aeda5c784
 
 ## Execution
 
-Status: active
+Status: waiting
 Owner: /root coordinator; /root/cohort_c sole maintained-code builder
 Candidate: source2fe870d; manifest4e1481dede629f9c83be9bbd0002d0975eccbd33820d4456ef5c75bd9eecfc2e; not accepted
-Next: trial1 failed8/10 structural outcomes; complete semantic/offline QA, preserve failure, decide bounded reference successor before any new candidate or trial.
+Next: superseded by ../07-autonomy-document-references/run.md under its new contract; this failed trial is never accepted or rewritten.
 
 ## Evidence and decisions
 
@@ -28,3 +28,5 @@ Independent security PASS45 controls, no open defect. [Source alignment](qa-sour
 Trial1 interim failure: asyncio_gather exhausted two exact-citation-invalid responses, diagnostic6e5b5f48…;10/10 cohort acceptance is already unavailable. Remaining frozen cases continue once, with no retries. Independent QA will distinguish citation-format versus semantic failure and run diagnostic replay refusal. Candidate remains unaccepted/uninstalled.
 
 Trial1 completed10questions/13calls/460.340s:8 structurally valid published answers,2 exhausted citation failures (gather, shield). [All requests/responses/outcomes](rig-trial-1/manifest.json) preserved. Exact quote copying failed on Unicode punctuation despite a repair. No candidate installation. Independent final semantics/offline replay pending; bounded reference option analysis is read-only.
+
+Final independent [rig QA](qa-rig-documents.md):8/10 complete semantic/citation outcomes, two punctuation-only exact-citation failures; actual offline replay PASS0.574s with old/new success and diagnostic refusal, all bytes unchanged. Successor chosen in ADR007 with explicit bounded references and format3; unit07 binding now points to successor run.

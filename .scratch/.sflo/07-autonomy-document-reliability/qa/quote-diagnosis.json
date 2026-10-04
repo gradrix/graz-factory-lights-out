@@ -1,0 +1,50 @@
+[
+  {
+    "case": "row_shape_defaults",
+    "attempt": 1,
+    "span": 44,
+    "diagnosis_only_punctuation_substitution_matches": true
+  },
+  {
+    "case": "asyncio_gather",
+    "attempt": 1,
+    "span": 152,
+    "diagnosis_only_punctuation_substitution_matches": true
+  },
+  {
+    "case": "asyncio_gather",
+    "attempt": 2,
+    "span": 152,
+    "diagnosis_only_punctuation_substitution_matches": true
+  },
+  {
+    "case": "asyncio_gather",
+    "attempt": 2,
+    "span": 152,
+    "diagnosis_only_punctuation_substitution_matches": true
+  },
+  {
+    "case": "asyncio_shield",
+    "attempt": 1,
+    "span": 186,
+    "diagnosis_only_punctuation_substitution_matches": true
+  },
+  {
+    "case": "asyncio_shield",
+    "attempt": 1,
+    "span": 191,
+    "diagnosis_only_punctuation_substitution_matches": true
+  },
+  {
+    "case": "asyncio_shield",
+    "attempt": 2,
+    "span": 186,
+    "diagnosis_only_punctuation_substitution_matches": true
+  },
+  {
+    "case": "asyncio_shield",
+    "attempt": 2,
+    "span": 191,
+    "diagnosis_only_punctuation_substitution_matches": true
+  }
+]
