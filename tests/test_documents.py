@@ -79,7 +79,7 @@ class DocumentsTests(unittest.TestCase):
         self.assertEqual(saved['answer']['status'],'insufficient_evidence')
         self.assertEqual(self.store.resolve(saved['id'])['receipt']['question'],'What is the future release date?')
 
-    def test_invalid_citations_and_tool_calls_never_publish(self):
+    def test_invalid_citations_and_tool_calls_never_publish_answers(self):
         import copy
         evidence=self.store.acquire(APPROVAL)
         client=type('Client',(),{'config':{'model':'local'},'endpoint':'http://127.0.0.1:18000'})()
@@ -94,7 +94,9 @@ class DocumentsTests(unittest.TestCase):
                 self.store.answer(evidence['id'],client)
         with patch('gflo.documents.bounded_answer',return_value={'choices':[{'message':{'tool_calls':[{}],'content':json.dumps(valid)}}]}),self.assertRaises(ValueError):
             self.store.answer(evidence['id'],client)
-        self.assertEqual(set(self.store.root.iterdir()),before)
+        for path in set(self.store.root.iterdir()) - before:
+            self.assertEqual(self.store.resolve(path.name)['receipt']['kind'], 'answer_failure')
+            with self.assertRaises(ValueError):self.store.replay(path.name)
 
     def test_failed_publication_preserves_existing_snapshot(self):
         evidence=self.store.acquire(APPROVAL)

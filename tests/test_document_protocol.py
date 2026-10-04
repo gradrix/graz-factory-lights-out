@@ -9,7 +9,7 @@ APP={'url':'https://docs.python.org/3.12/library/json.html','source_version':'Py
 class DocumentProtocolTests(unittest.TestCase):
     def test_parser_instruction_events_are_bounded(self):
         with self.assertRaisesRegex(ValueError,'event'):
-            document_extract.extract(b'<?instruction ?>'*10001+b'<p>visible</p>','text/html')
+            document_extract.extract(b'<?instruction ?>'*40001+b'<p>visible</p>','text/html')
 
     def test_ambiguous_duplicate_json_fields_are_rejected(self):
         with self.assertRaises(ValueError):

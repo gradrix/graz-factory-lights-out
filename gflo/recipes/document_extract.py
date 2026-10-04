@@ -5,10 +5,10 @@ from pathlib import Path
 import sys
 
 TEXT_LIMIT = 128 * 1024
-EVENT_LIMIT = 10000
+EVENT_LIMIT = 40000
 DEPTH_LIMIT = 64
 BLOCK_LIMIT = 2048
-VERSION = 'document-text-v1'
+VERSION = 'document-text-v2'
 DROP = {'script', 'style', 'template', 'head', 'noscript', 'iframe', 'object', 'svg', 'canvas'}
 VOID = {'area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr'}
 BLOCK = {'p', 'div', 'section', 'article', 'li', 'dt', 'dd', 'tr', 'pre', 'blockquote', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'br', 'hr'}

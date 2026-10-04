@@ -16,6 +16,15 @@ class Client:
 
 
 class AnswerProcessTests(unittest.TestCase):
+    def test_remaining_operation_deadline_reserves_cleanup_time(self):
+        class SlowClient:
+            def request(self, *a, **kw):
+                time.sleep(30)
+        started = time.monotonic()
+        with self.assertRaisesRegex(ValueError, 'deadline'):
+            bounded_answer(SlowClient(), {}, lambda: False, deadline=started + 10.15)
+        self.assertLess(time.monotonic() - started, 2)
+
     def test_bounded_child_returns_response(self):
         self.assertEqual(bounded_answer(Client(), {}, lambda: False), {'choices': []})
 
