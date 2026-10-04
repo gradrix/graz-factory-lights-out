@@ -106,6 +106,50 @@ def snapshot(source, destination, entries, size):
     return tree_hash(destination, ArchiveLimits(entries=entries, expanded_bytes=size))
 
 
+def read_seed(source):
+    """Read one bounded ordinary seed through a pinned, no-follow descriptor."""
+    source=Path(source).absolute()
+    fields=('st_dev','st_ino','st_mode','st_nlink','st_uid','st_gid','st_size','st_mtime_ns','st_ctime_ns')
+    def identity(info):return tuple(getattr(info,key) for key in fields)
+    def regular(info):
+        if not stat.S_ISREG(info.st_mode) or info.st_nlink!=1 or info.st_size>65536:
+            raise ValueError('Invalid regular seed input')
+    def open_parent():
+        directory=os.open(source.anchor,os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW)
+        try:
+            for part in source.parts[1:-1]:
+                child=os.open(part,os.O_RDONLY|os.O_DIRECTORY|os.O_NOFOLLOW,dir_fd=directory)
+                os.close(directory);directory=child
+            return directory
+        except BaseException:
+            os.close(directory)
+            raise
+    parent=open_parent()
+    try:
+        parent_info=os.fstat(parent)
+        before=os.stat(source.name,dir_fd=parent,follow_symlinks=False);regular(before)
+        fd=os.open(source.name,os.O_RDONLY|os.O_NOFOLLOW|os.O_NONBLOCK,dir_fd=parent)
+        with os.fdopen(fd,'rb') as stream:
+            opened=os.fstat(stream.fileno());regular(opened)
+            if identity(opened)!=identity(before):raise ValueError('Seed replaced before read')
+            data=stream.read(65537)
+            after=os.fstat(stream.fileno());regular(after)
+        final_parent=open_parent()
+        try:
+            current=os.fstat(final_parent)
+            if (current.st_dev,current.st_ino)!=(parent_info.st_dev,parent_info.st_ino):
+                raise ValueError('Seed parent replaced during copy')
+            final=os.stat(source.name,dir_fd=final_parent,follow_symlinks=False);regular(final)
+        finally:
+            os.close(final_parent)
+        if (identity(before)!=identity(after) or identity(before)!=identity(final) or
+                len(data)!=before.st_size or len(data)>65536):
+            raise ValueError('Seed changed during copy')
+        return data
+    finally:
+        os.close(parent)
+
+
 def support_archive(path, destination, expected):
     path = Path(path)
     if any(p.is_symlink() for p in (path,*path.absolute().parents)) or not path.is_file() or path.stat().st_size > 8 * 1024 * 1024:
@@ -304,11 +348,7 @@ class BrowserStore:
                 inputs={'app':snapshot(approved['app'],stage/'app',256,4*1024*1024),
                         'checks':snapshot(approved['checks'],stage/'checks',64,1024*1024)}
                 if not (stage/'app'/'server.cjs').is_file() or not (stage/'checks'/'journey.cjs').is_file():raise ValueError('Fixed app/check entry missing')
-                seed=Path(approved['seed'])
-                if any(p.is_symlink() for p in (seed,*seed.absolute().parents)) or not seed.is_file() or seed.stat().st_size>65536:raise ValueError('Invalid seed input')
-                before=seed.stat()
-                with seed.open('rb') as stream:data=stream.read(65537)
-                if seed.stat()!=before or len(data)>65536:raise ValueError('Seed changed during copy')
+                data=read_seed(approved['seed'])
                 json.loads(data);write_file(stage/'seed.json',data);inputs['seed']=digest(data)
                 work=Path(tempfile.mkdtemp(prefix='.work-',dir=self.root))
                 import uuid

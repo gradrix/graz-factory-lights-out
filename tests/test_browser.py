@@ -165,6 +165,26 @@ class BrowserStoreTests(unittest.TestCase):
         self.assertEqual(self.store.check(self.approval)['receipt']['outcome']['status'],'passed')
 
 
+    def test_seed_access_time_change_is_not_content_mutation(self):
+        import os,time
+        os.utime(self.seed,ns=(time.time_ns()-172800*10**9,time.time_ns()))
+        before=self.seed.stat()
+        result=self.store.check(self.approval)
+        after=self.seed.stat()
+        self.assertEqual(result['receipt']['outcome']['status'],'passed')
+        self.assertEqual(before.st_mtime_ns,after.st_mtime_ns)
+        self.assertEqual(before.st_ctime_ns,after.st_ctime_ns)
+
+    def test_seed_hardlink_and_fifo_reject_before_pair_launch(self):
+        import os
+        alias=self.root/'seed-alias';os.link(self.seed,alias)
+        with self.assertRaises(ValueError):self.store.check(self.approval)
+        self.assertIsNone(self.spec)
+        alias.unlink();self.seed.unlink();os.mkfifo(self.seed)
+        with self.assertRaises(ValueError):self.store.check(self.approval)
+        self.assertIsNone(self.spec)
+
+
 class BrowserArtifactTests(unittest.TestCase):
     def test_fixed_transport_rejects_extra_duplicate_oversize_corrupt_and_dimensions(self):
         import hashlib
@@ -219,3 +239,66 @@ class BrowserInputPolicyTests(unittest.TestCase):
             self.assertNotIn('pull',run.call_args.args[0])
             run.return_value.returncode=0;run.return_value.stdout='[{"Id":"wrong","Architecture":"amd64","Os":"linux"}]'
             with self.assertRaises(ValueError):installed_images()
+
+class SeedReaderTests(unittest.TestCase):
+    def test_access_time_only_descriptor_change_is_accepted(self):
+        import os
+        from types import SimpleNamespace
+        from unittest.mock import patch
+        from gflo.browser import read_seed
+        with tempfile.TemporaryDirectory() as root:
+            seed=Path(root)/'seed.json';seed.write_bytes(b'{}');inode=seed.stat().st_ino
+            original=os.fstat;reads=[0]
+            def atime(fd):
+                info=original(fd)
+                if info.st_ino!=inode:return info
+                reads[0]+=1
+                fields={key:getattr(info,key) for key in dir(info) if key.startswith('st_')}
+                fields['st_atime_ns']+=reads[0];fields['st_atime']+=reads[0]
+                return SimpleNamespace(**fields)
+            with patch('gflo.browser.os.fstat',side_effect=atime):self.assertEqual(read_seed(seed),b'{}')
+            self.assertEqual(reads[0],2)
+
+    def test_write_replacement_and_parent_swap_during_read_are_rejected(self):
+        import os
+        from unittest.mock import patch
+        from gflo.browser import read_seed
+        for mutation in ['same-size','truncate','restore-mtime','replace','parent-replace']:
+            with self.subTest(mutation=mutation),tempfile.TemporaryDirectory() as root:
+                root=Path(root);parent=root/'input';parent.mkdir();seed=parent/'seed.json';seed.write_bytes(b'{}')
+                before=seed.stat();original=os.fstat;reads=[0]
+                def changed(fd):
+                    info=original(fd)
+                    if info.st_ino==before.st_ino:
+                        reads[0]+=1
+                        if reads[0]==2:
+                            if mutation in ['same-size','restore-mtime']:
+                                seed.write_bytes(b'[]')
+                                if mutation=='restore-mtime':os.utime(seed,ns=(before.st_atime_ns,before.st_mtime_ns))
+                            elif mutation=='truncate':seed.write_bytes(b'')
+                            elif mutation=='replace':
+                                replacement=parent/'replacement';replacement.write_bytes(b'{}');replacement.replace(seed)
+                            else:
+                                parent.rename(root/'original');parent.mkdir();seed.write_bytes(b'{}')
+                    return original(fd)
+                with patch('gflo.browser.os.fstat',side_effect=changed),self.assertRaises(ValueError):read_seed(seed)
+
+    def test_link_and_fifo_swap_before_open_fail_without_reading(self):
+        import os
+        from unittest.mock import patch
+        from gflo.browser import read_seed
+        for mutation in ['symlink','fifo','hardlink']:
+            with self.subTest(mutation=mutation),tempfile.TemporaryDirectory() as root:
+                root=Path(root);seed=root/'seed.json';seed.write_bytes(b'{}');secret=root/'secret';secret.write_bytes(b'secret')
+                original=os.open;changed=[False]
+                def swapped(path,flags,*args,**kwargs):
+                    if path=='seed.json' and not changed[0]:
+                        changed[0]=True
+                        if mutation=='hardlink':os.link(seed,root/'alias')
+                        else:
+                            seed.unlink()
+                            if mutation=='symlink':seed.symlink_to(secret)
+                            else:os.mkfifo(seed)
+                    return original(path,flags,*args,**kwargs)
+                with patch('gflo.browser.os.open',side_effect=swapped),self.assertRaises((OSError,ValueError)):read_seed(seed)
+                self.assertTrue(changed[0])
