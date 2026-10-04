@@ -42,7 +42,19 @@ async function newContext(){
  const context=await browser.newContext({viewport:{width:1280,height:800},serviceWorkers:'block',acceptDownloads:false});contexts.push(context);
  context.setDefaultTimeout(5000);context.setDefaultNavigationTimeout(10000);
  await context.tracing.start({screenshots:true,snapshots:true,sources:false});
- await context.route('**/*',async route=>{if(!allowed(route.request().url())){fail('Disallowed request '+route.request().url());await route.abort('blockedbyclient')}else await route.continue()});
+ await context.route('**/*',async route=>{
+  if(!allowed(route.request().url())){fail('Disallowed request '+route.request().url());await route.abort('blockedbyclient');return}
+  let response;
+  try{
+   // continue() lets Chromium follow redirect hops outside the route handler.
+   // Fetch exactly one approved-origin response, never a redirect target.
+   response=await route.fetch({maxRedirects:0,maxRetries:0,timeout:10000});
+   if(response.status()>=300&&response.status()<400){fail('HTTP redirects unsupported');await route.abort('blockedbyclient');return}
+   await route.fulfill({response});
+  }catch(error){fail(error);await route.abort('failed').catch(()=>{})}
+  finally{if(response)await response.dispose()}
+ });
+ await context.routeWebSocket('**/*',socket=>{fail('WebSockets unsupported');socket.close({code:1008,reason:'WebSockets unsupported'})});
  context.on('page',page=>{
   page.on('console',msg=>{try{event('console:'+msg.type(),msg.text())}catch(e){fail(e)}});
   page.on('pageerror',error=>{try{event('pageerror',error)}catch(e){fail(e)};fail(error)});
@@ -64,7 +76,7 @@ async function newContext(){
  let timer;let runtime={node:process.version,playwright:require('/support/playwright/package.json').version,core:require('/support/playwright-core/package.json').version};
  try{
   if(runtime.node!=='v24.20.0'||runtime.playwright!=='1.63.0'||runtime.core!=='1.63.0')throw new Error('Browser support/runtime mismatch');
-  const ready=Date.now()+15000;while(true){try{const r=await fetch(baseURL+'/health',{signal:AbortSignal.timeout(500)});if(r.ok)break}catch{}if(Date.now()>=ready)throw new Error('Application readiness deadline');await sleep(100)}
+  const ready=Date.now()+15000;while(true){try{const r=await fetch(baseURL+'/health',{signal:AbortSignal.timeout(500),redirect:'error'});if(r.ok)break}catch{}if(Date.now()>=ready)throw new Error('Application readiness deadline');await sleep(100)}
   runtime.network={interfaces:fs.readFileSync('/proc/net/dev','utf8'),routes:fs.readFileSync('/proc/net/route','utf8'),denials:[]};
   for(const host of ['172.17.0.1','10.1.1.155','1.1.1.1','2606:4700:4700::1111']){const d=await denial(host,443);runtime.network.denials.push(d);if(d.connected)throw new Error('Network isolation failed');}
   phase='launch';browser=await chromium.launch({headless:true,chromiumSandbox:true,timeout:20000,ignoreDefaultArgs:['--disable-dev-shm-usage']});

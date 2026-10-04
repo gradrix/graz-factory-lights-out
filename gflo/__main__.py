@@ -68,7 +68,7 @@ def main(argv=None):
     browser_actions.add_parser('prepare').add_argument('archives', help='Approved offline Playwright/core archives directory')
     browser_actions.add_parser('check').add_argument('approval', help='Approved app/checks/seed/case/support JSON')
     browser_actions.add_parser('inspect').add_argument('id')
-    browser_actions.add_parser('cleanup')
+    browser_actions.add_parser('cleanup').add_argument('--acknowledge-create-uncertainty', action='store_true', help='Controller confirms the daemon has settled after uncertain creation; retained as an acknowledgement, not measured completion')
     args = parser.parse_args(argv)
     logging.basicConfig(level=logging.INFO, format="%(message)s")
     try:
@@ -85,7 +85,7 @@ def main(argv=None):
                     raise ValueError('Browser approval exceeds 8 KiB')
                 result = browser_store.check(decode(raw))
             else:
-                browser_store.cleanup()
+                browser_store.cleanup(acknowledge_create_uncertainty=args.acknowledge_create_uncertainty)
                 result = {'cleaned': True}
             print(json.dumps(result, indent=2))
             return 1 if result.get('receipt', {}).get('outcome', {}).get('status') == 'failed' else 0

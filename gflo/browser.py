@@ -246,13 +246,14 @@ class BrowserStore:
             finally:
                 if stage is not None:discard(stage)
 
-    def _commit(self,stage,receipt):
+    def _commit(self,stage,receipt, *, cancelled=lambda:False):
         raw=encoded(receipt)
         if len(raw)>65536:raise ValueError('Browser receipt limit')
         identifier=digest(raw);write_file(stage/'receipt.json',raw)
         result=self._inspect(identifier,staging=stage)
         sync_directory(stage)
         if os.path.lexists(self.root/identifier):raise ValueError('Browser receipt already exists')
+        active(cancelled)
         stage.rename(self.root/identifier)
         return result
 
@@ -280,6 +281,8 @@ class BrowserStore:
                 if not re.fullmatch(r'screen-[1-8]\.png|trace\.zip|events\.json',name):raise ValueError('Invalid artifact path')
                 raw=checked_file(root/'artifacts'/name,LIMIT)
                 if len(raw)!=facts['size'] or digest(raw)!=facts['sha256']:raise ValueError('Browser artifact hash mismatch')
+        elif receipt['kind']=='recovery':
+            if {p.name for p in root.iterdir()}!={'receipt.json'}:raise ValueError('Unexpected recovery receipt files')
         else:raise ValueError('Unknown browser receipt kind')
         return {'id':identifier,'receipt':receipt}
 
@@ -313,7 +316,7 @@ class BrowserStore:
                 app_name='gflo-browser-app-'+run;browser_name='gflo-browser-check-'+run
                 def command(name,image,network,memory,cpus,pids,shm,tmp):
                     return ['docker','run','--rm','--pull','never','--name',name,'--label','gflo.browser='+self.label,
-                            '--label','gflo.browser.run='+run,'--runtime','runc','--network',network,'--read-only',
+                            '--label','gflo.browser.run='+run,'--log-driver','none','--runtime','runc','--network',network,'--read-only',
                             '--user','1000:1000','--cap-drop','ALL','--security-opt','no-new-privileges',
                             '--memory',memory,'--memory-swap',memory,'--cpus',cpus,'--pids-limit',pids,
                             '--ipc','private','--shm-size',shm,'--init','--tmpfs','/tmp:rw,nosuid,nodev,size='+tmp+',mode=1777',
@@ -331,7 +334,11 @@ class BrowserStore:
                 marker=self.root/'.cleanup-required';write_file(marker,encoded({'run':run,'names':[browser_name,app_name]}))
                 active(cancelled)
                 with tempfile.TemporaryFile(dir=work) as transport:
-                    outcome=self.pair(spec,transport,cancelled=cancelled)
+                    try:
+                        outcome=self.pair(spec,transport,cancelled=cancelled)
+                    except BaseException as error:
+                        write_file(self.root/'.failure.json',encoded({'case':approved['case'],'diagnostics':str(error)[:4096],'cleanup':{'confirmed':False,'uncertain_creates':[app_name,browser_name]}}))
+                        raise
                     facts=outcome['facts'];confirmed=facts.get('cleanup',{}).get('confirmed') is True
                     if confirmed:marker.unlink()
                     transport.seek(0)
@@ -351,15 +358,33 @@ class BrowserStore:
                 shutil.rmtree(work);work=None
                 # Cancellation is saved as a failed result when cleanup and capture are complete.
                 if cancelled():receipt['outcome']['status']='failed';receipt['outcome']['executor_failure']='cancelled'
-                published=self._commit(stage,receipt);stage=None
+                published=self._commit(stage,receipt,cancelled=cancelled);stage=None
                 return published
             finally:
                 if work is not None:shutil.rmtree(work)
                 if stage is not None:discard(stage)
 
-    def cleanup(self):
-        import subprocess
+    def cleanup(self, *, acknowledge_create_uncertainty=False):
         with self.locked():
+            evidence={};uncertain=[]
+            for name in ['.failure.json','.cleanup-required']:
+                path=self.root/name
+                if path.exists():
+                    raw=checked_file(path,65536)
+                    evidence[name]={'sha256':digest(raw),'value':json.loads(raw)}
+                    uncertain.extend(evidence[name]['value'].get('cleanup',{}).get('uncertain_creates',[]))
+            for path in self.root.glob('.work-*'):
+                if path.is_symlink() or not path.is_dir():raise ValueError('Invalid browser recovery work directory')
+                facts=path/'facts.json'
+                if not facts.exists():
+                    uncertain.append('guardian completion not recorded')
+                else:
+                    raw=checked_file(facts,65536,0o644)
+                    value=json.loads(raw)
+                    if len(evidence)>=8:raise ValueError('Recovery evidence count limit')
+                    evidence[path.name+'/facts.json']={'sha256':digest(raw),'value':value}
+                    uncertain.extend(value.get('cleanup',{}).get('uncertain_creates',[]))
+            uncertain=sorted(set(uncertain))
             result=subprocess.run(['docker','ps','-aq','--no-trunc','--filter','label=gflo.browser='+self.label],capture_output=True,text=True,check=True,timeout=15)
             ids=result.stdout.split()
             if ids:
@@ -371,6 +396,19 @@ class BrowserStore:
                     subprocess.run(['docker','rm','-f',fact['Id']],capture_output=True,check=True,timeout=30)
             remaining=subprocess.run(['docker','ps','-aq','--filter','label=gflo.browser='+self.label],capture_output=True,text=True,check=True,timeout=15)
             if remaining.stdout.strip():raise ValueError('Browser cleanup incomplete')
+            if uncertain and not acknowledge_create_uncertainty:
+                raise ValueError('Create completion remains uncertain despite current absence; verify the daemon has settled, then cleanup with --acknowledge-create-uncertainty')
+            if evidence:
+                # This immutable record attests the operator acknowledgement and
+                # current readback, not successful completion of uncertain creates.
+                receipt={'kind':'recovery','created_utc':utc(),'operator_acknowledged_create_uncertainty':bool(uncertain and acknowledge_create_uncertainty),
+                         'uncertain_creates':uncertain,'original_failure_evidence':evidence,
+                         'daemon_readback':'currently absent; not proof of create completion'}
+                stage=Path(tempfile.mkdtemp(prefix='.stage-',dir=self.root))
+                try:
+                    self._commit(stage,receipt);stage=None
+                finally:
+                    if stage is not None:discard(stage)
             for path in self.root.iterdir():
                 if path.name.startswith(('.stage-','.work-')):discard(path)
             for name in ['.failure.json','.cleanup-required']:

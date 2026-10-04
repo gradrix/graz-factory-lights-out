@@ -64,6 +64,9 @@ class BrowserStoreTests(unittest.TestCase):
         self.assertIn('OWNED_APP',self.spec['browser_args'])
         self.assertEqual(self.spec['app_args'][self.spec['app_args'].index('--network')+1],'none')
         self.assertIn('NODE_PATH=/support',self.spec['browser_args'])
+        for key in ['app_args','browser_args']:
+            args=self.spec[key]
+            self.assertEqual(args[args.index('--log-driver')+1],'none')
         self.store.pair=lambda *a,**k:self.fail('Offline inspect executed a pair')
         self.assertEqual(self.store.inspect(record['id'])['id'],record['id'])
         path=self.store.root/record['id']/'artifacts'/'trace.zip';path.chmod(0o600);path.write_bytes(b'bad');path.chmod(0o444)
@@ -123,6 +126,43 @@ class BrowserStoreTests(unittest.TestCase):
         self.seed.write_text('{}')
         with self.assertRaises(ValueError):self.store.check(self.approval,cancelled=lambda:True)
         self.assertIsNone(self.spec)
+
+
+    def test_cancellation_during_final_sync_cannot_publish_pass(self):
+        from unittest.mock import patch
+        from gflo.browser import sync_directory
+        cancelled=[False]
+        def sync(path):
+            sync_directory(path);cancelled[0]=True
+        before={p.name for p in self.store.root.iterdir() if len(p.name)==64}
+        with patch('gflo.browser.sync_directory',side_effect=sync),self.assertRaises(ValueError):
+            self.store.check(self.approval,cancelled=lambda:cancelled[0])
+        self.assertEqual({p.name for p in self.store.root.iterdir() if len(p.name)==64},before)
+
+
+    def test_uncertain_create_requires_explicit_ack_and_preserves_failure(self):
+        from unittest.mock import patch
+        original=self.executor
+        def uncertain(*args,**kwargs):
+            result=original(*args,**kwargs)
+            result['exit_code']=125
+            result['facts']['cleanup']={'confirmed':False,'uncertain_creates':['owned-app']}
+            return result
+        self.store.pair=uncertain
+        with self.assertRaises(RuntimeError):self.store.check(self.approval)
+        original_failure=json.loads((self.store.root/'.failure.json').read_bytes())
+        with patch('gflo.browser.subprocess.run') as run:
+            run.return_value.stdout=''
+            with self.assertRaisesRegex(ValueError,'acknowledge-create-uncertainty'):self.store.cleanup()
+            self.assertTrue((self.store.root/'.cleanup-required').exists())
+            self.store.cleanup(acknowledge_create_uncertainty=True)
+        recovery=[self.store.inspect(path.name)['receipt'] for path in self.store.root.iterdir() if len(path.name)==64]
+        recovery=next(receipt for receipt in recovery if receipt['kind']=='recovery')
+        self.assertTrue(recovery['operator_acknowledged_create_uncertainty'])
+        self.assertEqual(recovery['original_failure_evidence']['.failure.json']['value'],original_failure)
+        self.assertIn('not proof',recovery['daemon_readback'])
+        self.store.pair=self.executor
+        self.assertEqual(self.store.check(self.approval)['receipt']['outcome']['status'],'passed')
 
 
 class BrowserArtifactTests(unittest.TestCase):

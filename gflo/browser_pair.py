@@ -61,6 +61,7 @@ def main():
     spec=json.loads(sys.stdin.buffer.readline(65537));started=time.monotonic()
     app=browser=None;facts={'containers':{},'cleanup':{'confirmed':False},'failure':None}
     names=[spec['browser_name'],spec['app_name']]
+    uncertain_creates=[]
     def alive():
         if time.monotonic()-started>=110:raise TimeoutError('Pair work deadline')
         if select.select([sys.stdin.buffer],[],[],0)[0] and not sys.stdin.buffer.read(1):raise InterruptedError('Pair owner EOF')
@@ -70,9 +71,16 @@ def main():
     def create(args,name):
         if args[:3]!=['docker','run','--rm'] or '--name' not in args or args[args.index('--name')+1]!=name:
             raise ValueError('Invalid fixed pair command')
-        result=docker(['create',*args[3:]],30)
-        identifier=result.stdout.decode().strip()
-        if len(identifier)!=64 or any(c not in '0123456789abcdef' for c in identifier):raise ValueError('Invalid created container ID')
+        alive()
+        try:
+            result=subprocess.run(['docker','create',*args[3:]],capture_output=True,timeout=30,check=True)
+            identifier=result.stdout.decode().strip()
+            if len(identifier)!=64 or any(c not in '0123456789abcdef' for c in identifier):
+                raise ValueError('Invalid created container ID')
+        except (subprocess.SubprocessError,OSError,ValueError):
+            # No conclusive ID: creation may complete after client failure/readback.
+            uncertain_creates.append(name)
+            raise
         inspected=json.loads(docker(['inspect',identifier]).stdout)[0]
         if inspected['Id']!=identifier:raise ValueError('Container identity changed')
         expected=spec['app_image'] if name==spec['app_name'] else spec['browser_image']
@@ -103,7 +111,7 @@ def main():
         facts['failure']={'kind':type(error).__name__,'message':str(error)[:4096]}
         print(str(error)[:4096],file=sys.stderr)
     finally:
-        errors=[]
+        errors=['Create completion uncertain: '+name for name in uncertain_creates]
         for name in names:
             try:
                 result=subprocess.run(['docker','rm','-f',name],capture_output=True,timeout=30)
@@ -119,9 +127,9 @@ def main():
             result=subprocess.run(['docker','ps','-aq','--no-trunc','--filter','label=gflo.browser.run='+spec['run']],
                                   capture_output=True,check=True,timeout=15)
             remaining=result.stdout.decode().split()
-            facts['cleanup']={'confirmed':not remaining and not errors,'remaining':remaining,'errors':errors}
+            facts['cleanup']={'confirmed':not remaining and not errors,'remaining':remaining,'errors':errors,'uncertain_creates':uncertain_creates}
         except Exception as error:
-            facts['cleanup']={'confirmed':False,'errors':errors+[str(error)[:1024]]}
+            facts['cleanup']={'confirmed':False,'errors':errors+[str(error)[:1024]],'uncertain_creates':uncertain_creates}
         facts['elapsed_s']=time.monotonic()-started
         with open(spec['facts'],'x') as stream:json.dump(facts,stream)
     return code if facts['cleanup']['confirmed'] else 125

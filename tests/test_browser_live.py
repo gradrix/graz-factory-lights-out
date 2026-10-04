@@ -44,9 +44,10 @@ class BrowserLiveTests(unittest.TestCase):
             checks=Path(root)/'hang';checks.mkdir();(checks/'journey.cjs').write_text('module.exports=async()=>{await new Promise(()=>{})}')
             request.update(checks=str(checks),case='cancel')
             started=time.monotonic()
-            result=store.check(request,cancelled=lambda:time.monotonic()-started>2)['receipt']
-            self.assertEqual(result['outcome']['status'],'failed')
-            self.assertTrue(result['executor']['facts']['cleanup']['confirmed'])
+            with self.assertRaisesRegex(ValueError,'cancelled'):
+                store.check(request,cancelled=lambda:time.monotonic()-started>2)
+            remaining=subprocess.check_output(['docker','ps','-aq','--filter','label=gflo.browser='+store.label],text=True)
+            self.assertEqual(remaining.strip(),'')
             self.assertLess(time.monotonic()-started,15)
 
     def test_app_death_is_not_success(self):
@@ -67,3 +68,45 @@ class BrowserLiveTests(unittest.TestCase):
             result=store.check({'app':str(ROOT/'evaluations/local-browser/app'),'checks':str(checks),'seed':str(ROOT/'evaluations/local-browser/journeys/create-reload/seed.json'),'case':'context-cap','support':support})['receipt']
             self.assertEqual(result['outcome']['status'],'failed')
             self.assertIn('context limit',result['outcome']['failure']['message'])
+
+    def test_exact_origin_blocks_redirect_hops_and_websockets(self):
+        with tempfile.TemporaryDirectory() as root:
+            root=Path(root);store=BrowserStore(root/'store');support=store.prepare(self.archives)['id']
+            app=root/'app';app.mkdir()
+            (app/'server.cjs').write_text(r'''const http=require('http'),crypto=require('crypto');let hits=[];
+const side=http.createServer((q,r)=>{hits.push(q.url);r.setHeader('Access-Control-Allow-Origin','*');r.end('side')});
+side.on('upgrade',(q,s)=>{hits.push('ws:'+q.url);const accept=crypto.createHash('sha1').update(q.headers['sec-websocket-key']+'258EAFA5-E914-47DA-95CA-C5AB0DC85B11').digest('base64');s.write('HTTP/1.1 101 Switching Protocols\r\nUpgrade: websocket\r\nConnection: Upgrade\r\nSec-WebSocket-Accept: '+accept+'\r\n\r\n')});side.listen(3211,'127.0.0.1');
+http.createServer((q,r)=>{if(q.url==='/health')return r.end('ok');if(q.url==='/hits'){r.setHeader('Content-Type','application/json');return r.end(JSON.stringify(hits))}if(q.url==='/redirect'){r.writeHead(302,{Location:'http://127.0.0.1:3211/side'});return r.end()}if(q.url==='/local-redirect'){r.writeHead(302,{Location:'/'});return r.end()}r.setHeader('Content-Type','text/html');r.end('<!doctype html><h1>Owned</h1>')}).listen(3210,'127.0.0.1');''')
+            seed=root/'seed.json';seed.write_text('{}')
+            cases={
+                'control':"await page.evaluate(async()=>{await fetch('/health')})",
+                'redirect-fetch':"await page.evaluate(async()=>{try{await fetch('/redirect')}catch{}})",
+                'redirect-navigation':"try{await page.goto(baseURL+'/redirect')}catch{}",
+                'local-redirect':"await page.evaluate(async()=>{try{await fetch('/local-redirect')}catch{}})",
+                'websocket':"await page.evaluate(()=>new Promise(resolve=>{const socket=new WebSocket('ws://127.0.0.1:3211/ws');socket.onopen=()=>{socket.close();resolve()};socket.onerror=()=>resolve();socket.onclose=()=>resolve();setTimeout(resolve,1000)}))"}
+            for name,action in cases.items():
+                checks=root/name;checks.mkdir()
+                (checks/'journey.cjs').write_text("module.exports=async({page,baseURL,request,screenshot})=>{await page.goto(baseURL);"+action+";await page.waitForTimeout(100);const hits=await(await request.get(baseURL+'/hits')).json();require('assert/strict').deepEqual(hits,[]);console.error('CHECK_DIAGNOSTIC');await screenshot()}")
+                with self.subTest(case=name):
+                    saved=store.check({'app':str(app),'checks':str(checks),'seed':str(seed),'case':name,'support':support})
+                    result=saved['receipt']
+                    self.assertEqual(result['outcome']['status'],'passed' if name=='control' else 'failed')
+                    if name!='control':
+                        self.assertNotIn('AssertionError',result['outcome']['failure']['message'])
+                    self.assertTrue(result['executor']['facts']['cleanup']['confirmed'])
+                    for container in result['executor']['facts']['containers'].values():
+                        self.assertEqual(container['host']['LogConfig']['Type'],'none')
+                    self.assertIn('CHECK_DIAGNOSTIC',result['executor']['diagnostics'])
+
+    def test_readiness_does_not_follow_health_redirect(self):
+        with tempfile.TemporaryDirectory() as root:
+            root=Path(root);store=BrowserStore(root/'store');support=store.prepare(self.archives)['id']
+            app=root/'app';app.mkdir()
+            (app/'server.cjs').write_text("const http=require('http');http.createServer((q,r)=>{console.error('UNAPPROVED_HEALTH_CONTACT');r.end('ok')}).listen(3211,'127.0.0.1');http.createServer((q,r)=>{r.writeHead(302,{Location:'http://127.0.0.1:3211/health'});r.end()}).listen(3210,'127.0.0.1')")
+            checks=ROOT/'evaluations/local-browser/journeys/create-reload'
+            saved=store.check({'app':str(app),'checks':str(checks),'seed':str(checks/'seed.json'),'case':'redirect-health','support':support})
+            result=saved['receipt']
+            self.assertEqual(result['outcome']['status'],'failed')
+            self.assertIn('readiness deadline',result['outcome']['failure']['message'])
+            self.assertNotIn('UNAPPROVED_HEALTH_CONTACT',result['executor']['diagnostics'])
+            self.assertTrue(result['executor']['facts']['cleanup']['confirmed'])
