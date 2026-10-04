@@ -21,11 +21,13 @@ class DocumentRepairTests(unittest.TestCase):
         evidence = self.store.acquire(test_documents.APPROVAL)
         client = type('Client', (), {'config': {'model': 'local'}, 'endpoint': 'http://127.0.0.1:18000'})()
         answer = {'status': 'supported', 'claims': [{'text': 'Use compact separators.', 'citations': [
-            {'evidence_id': evidence['id'], 'span': 1, 'excerpt': 'separators'}]}], 'reason': ''}
+            {'evidence_id': evidence['id'], 'span': 1, 'excerpt': evidence['spans'][0]}]}], 'reason': ''}
         return evidence, client, answer
 
     @staticmethod
     def response(value):
+        if isinstance(value, dict) and value.get('status') == 'supported':
+            value = dict(value, claims=[{'text': c['text'], 'spans': [x['span'] for x in c['citations']]} for c in value['claims']])
         return {'choices': [{'message': {'content': value if isinstance(value, str) else json.dumps(value)}}]}
 
     def test_40000_events_are_complete_and_plus_one_refuses(self):
@@ -42,7 +44,7 @@ class DocumentRepairTests(unittest.TestCase):
             saved = self.store.answer(evidence['id'], client)
         self.assertEqual(infer.call_count, 2)
         receipt = self.store.resolve(saved['id'])['receipt']
-        self.assertEqual(receipt['format'], 2)
+        self.assertEqual(receipt['format'], 3)
         self.assertEqual([a['validation'] for a in receipt['attempts']], ['invalid', 'valid'])
         self.assertEqual(json.loads((self.store.root / saved['id'] / 'response-1.json').read_bytes()), rejected)
         self.assertEqual(json.loads((self.store.root / saved['id'] / 'response-2.json').read_bytes()), corrected)
@@ -72,7 +74,7 @@ class DocumentRepairTests(unittest.TestCase):
         self.assertEqual(infer.call_count, 1)
         self.assertEqual({p.name for p in (self.store.root / saved['id']).iterdir()}, {'receipt.json', 'response-1.json'})
         old_receipt = {'format': 1, 'kind': 'answer', 'evidence_id': evidence['id'],
-                       'answer': answer, 'response': response,
+                       'answer': answer, 'response': {'choices': [{'message': {'content': json.dumps(answer)}}]},
                        'verdict': 'citation_provenance_valid_not_semantic_entailment'}
         stage = Path(tempfile.mkdtemp(prefix='.stage-', dir=self.store.root))
         old = self.store._publish(stage, old_receipt, lambda: False)
@@ -97,10 +99,10 @@ class DocumentRepairTests(unittest.TestCase):
                 self.assertEqual(failed['receipt']['kind'], 'answer_failure')
                 self.assertNotIn('answer', failed['receipt'])
 
-    def test_invalid_quote_repair_is_exact_and_second_transport_keeps_first(self):
+    def test_invalid_reference_and_second_transport_keeps_first(self):
         evidence, client, answer = self.prepared()
         bad = copy.deepcopy(answer)
-        bad['claims'][0]['citations'][0]['excerpt'] = 'not in source'
+        bad['claims'][0]['citations'][0]['span'] = 1000
         with patch('gflo.documents.bounded_answer', side_effect=[self.response(bad), TimeoutError('second failed')]) as infer:
             with self.assertRaises(documents.AnswerFailure) as caught:
                 self.store.answer(evidence['id'], client)
@@ -174,10 +176,10 @@ class DocumentRepairTests(unittest.TestCase):
         self.assertEqual(len(failed), 1)
         self.assertIn(failed[0], output.getvalue())
 
-    def test_receipt_overflow_keeps_response_as_failure(self):
+    def test_oversized_claim_response_is_retained_as_failure(self):
         evidence, client, answer = self.prepared()
-        # Many short claims avoid response string escaping overwhelming the body
-        # before the complete answer+metadata receipt reaches its separate cap.
+        # A bounded transport body can still violate new claim/count capacity;
+        # preserve both rejected responses instead of clipping them.
         answer['claims'] = [copy.deepcopy(answer['claims'][0]) for _ in range(16)]
         answer['claims'][0]['text'] = 'x' * 4000
         for claim in answer['claims'][1:]:
@@ -190,8 +192,8 @@ class DocumentRepairTests(unittest.TestCase):
             with self.assertRaises(documents.AnswerFailure) as caught:
                 self.store.answer(evidence['id'], client)
         receipt = self.store.resolve(caught.exception.identifier)['receipt']
-        self.assertEqual(receipt['failure'], 'Canonical answer exceeds receipt bound')
-        self.assertEqual(receipt['attempts'][0]['validation'], 'valid')
+        self.assertEqual(receipt['failure'], 'Returned response failed: invalid')
+        self.assertEqual([a['validation'] for a in receipt['attempts']], ['invalid', 'invalid'])
         self.assertLessEqual((self.store.root / caught.exception.identifier / 'receipt.json').stat().st_size, 65536)
 
     def test_extra_and_symlink_response_files_refuse(self):

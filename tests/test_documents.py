@@ -39,7 +39,7 @@ class DocumentsTests(unittest.TestCase):
         from gflo.__main__ import main
         evidence=self.store.acquire(APPROVAL)
         client=type('Client',(),{'config':{'model':'local'},'endpoint':'http://127.0.0.1:18000'})()
-        response={'choices':[{'message':{'content':json.dumps({'status':'supported','claims':[{'text':'Use compact separators.','citations':[{'evidence_id':evidence['id'],'span':1,'excerpt':'separators=(",", ":")'}]}],'reason':''})}}]}
+        response={'choices':[{'message':{'content':json.dumps({'status':'supported','claims':[{'text':'Use compact separators.','spans':[1]}],'reason':''})}}]}
         with patch('gflo.documents.bounded_answer',return_value=response):saved=self.store.answer(evidence['id'],client)
         with patch('gflo.__main__.ModelWorker',side_effect=AssertionError('offline replay constructed inference')),patch('sys.stdout',new_callable=io.StringIO) as output:
             self.assertEqual(main(['documents','--store',str(self.store.root),'replay',saved['id']]),0)

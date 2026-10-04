@@ -147,6 +147,15 @@ def repair_request(request, response, error):
                     'rejected_answer': response['choices'][0]['message']['content']}, ensure_ascii=True)}])
 
 
+def answer_protocol(version):
+    if version == 2:
+        return answer_request, response_answer
+    if version == 3:
+        from .document_references import reference_request, reference_response
+        return reference_request, reference_response
+    raise ValueError('Unsupported answer protocol')
+
+
 def bounded_answer(client, request, cancelled, *, deadline=None):
     """One existing local-client call in a disposable child with an outer deadline."""
     call_deadline = min(time.monotonic() + 120, deadline - 10) if deadline is not None else time.monotonic() + 120
@@ -362,9 +371,9 @@ class DocumentStore:
             raise ValueError('Invalid document receipt')
         if evidence_only and (receipt.get('format') != 1 or receipt.get('kind') != 'evidence'):
             raise ValueError('Answer requires a document evidence ID')
-        if type(receipt.get('format')) is not int or receipt['format'] not in (1, 2):
+        if type(receipt.get('format')) is not int or receipt['format'] not in (1, 2, 3):
             raise ValueError('Unsupported document receipt')
-        if receipt['format'] == 2:
+        if receipt['format'] in (2, 3):
             return self._resolve_answer_ledger(identifier, root, receipt, names, allow_pending)
         expected = {'receipt.json', 'body', 'text'} if receipt['kind'] == 'evidence' else {'receipt.json'}
         if allow_pending:
@@ -394,6 +403,8 @@ class DocumentStore:
     def _resolve_answer_ledger(self, identifier, root, receipt, names, allow_pending):
         fields = {'format', 'kind', 'created_utc', 'evidence_id', 'question', 'question_sha256',
                   'model', 'config', 'profile', 'attempts', 'verdict'}
+        if receipt['format'] == 3:
+            fields.add('protocol')
         success = receipt.get('kind') == 'answer'
         fields.add('answer' if success else 'failure')
         if (set(receipt) != fields or receipt['kind'] not in ('answer', 'answer_failure') or
@@ -404,7 +415,13 @@ class DocumentStore:
             raise ValueError('Invalid answer ledger')
         expected = {'receipt.json'} | ({'pending'} if allow_pending else set())
         evidence = self._resolve(receipt['evidence_id'], evidence_only=True)
-        request = answer_request(evidence, receipt['model'], receipt['question'])
+        request_builder, response_reader = answer_protocol(receipt['format'])
+        request = request_builder(evidence, receipt['model'], receipt['question'])
+        if receipt['format'] == 3:
+            from .document_references import check_receipt_bounds, protocol
+            check_receipt_bounds(receipt)
+            if encoded(receipt['protocol']) != encoded(protocol(evidence)):
+                raise ValueError('Reference catalog/protocol mismatch')
         if (not isinstance(receipt['model'], str) or not receipt['model'] or
                 not isinstance(receipt['config'], dict) or set(receipt['config']) != {'endpoint', 'model'} or
                 not isinstance(receipt['config']['endpoint'], str) or
@@ -433,7 +450,7 @@ class DocumentStore:
                 if len(raw) != attempt['response_size'] or digest(raw) != attempt['response_sha256']:
                     raise ValueError('Answer response tampered')
                 response = decode(raw)
-                validation, error, last_value = response_answer(response, evidence)
+                validation, error, last_value = response_reader(response, evidence)
                 if validation != attempt['validation'] or error != attempt['error']:
                     raise ValueError('Answer validation metadata mismatch')
                 if validation == 'invalid':
@@ -476,15 +493,18 @@ class DocumentStore:
                 question = evidence['receipt']['approval']['question']
             if not isinstance(question, str) or not question.strip() or len(question.encode('utf-8')) > 2048:
                 raise ValueError('Question must be nonempty text of at most 2048 UTF-8 bytes')
-            request = answer_request(evidence, client.config['model'], question)
-            receipt = {'format': 2, 'kind': 'answer_failure', 'created_utc': utc(),
+            from .document_references import check_receipt_bounds, protocol
+            request_builder, response_reader = answer_protocol(3)
+            request = request_builder(evidence, client.config['model'], question)
+            receipt = {'format': 3, 'kind': 'answer_failure', 'created_utc': utc(),
                        'evidence_id': identifier, 'question': question,
                        'question_sha256': digest(question.encode()),
                        'model': client.config['model'],
                        'config': {'endpoint': client.endpoint, 'model': client.config['model']},
                        'profile': {k: v for k, v in request.items() if k != 'messages'},
                        'attempts': [], 'failure': 'No validated answer',
-                       'verdict': 'failed_not_a_cited_answer'}
+                       'verdict': 'failed_not_a_cited_answer', 'protocol': protocol(evidence)}
+            check_receipt_bounds(receipt, reserve=True)
             stage = Path(tempfile.mkdtemp(prefix='.stage-', dir=self.root))
             try:
                 for number in (1, 2):
@@ -506,7 +526,7 @@ class DocumentStore:
                         break
                     write_file(stage / f'response-{number}.json', raw)
                     attempt.update(response_sha256=digest(raw), response_size=len(raw))
-                    validation, error, value = response_answer(response, evidence)
+                    validation, error, value = response_reader(response, evidence)
                     attempt.update(validation=validation, error=error)
                     if validation == 'valid':
                         receipt.update(kind='answer', answer=value,
@@ -519,6 +539,7 @@ class DocumentStore:
                     active(cancelled, deadline)
                     request = repair_request(request, response, error)
                 active(cancelled, deadline)
+                check_receipt_bounds(receipt)
                 if len(encoded(receipt)) > ANSWER_LIMIT:
                     receipt.pop('answer', None)
                     receipt.update(kind='answer_failure', failure='Canonical answer exceeds receipt bound',
