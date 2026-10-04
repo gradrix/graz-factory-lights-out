@@ -1,0 +1,37 @@
+{
+  "request_limit": 8,
+  "command_limit": 12,
+  "deadline": 14829.545169274,
+  "requests": [
+    {
+      "number": 1,
+      "status": "returned",
+      "request_sha256": "db2be305eb57e03c84a0c7b82e87c2a09281326194d6eb8d195868f3b42ff06a",
+      "role": "reviewer",
+      "response_sha256": "d59b95a0cad2279421bd7a20c7d6d05c6b008d27dc1667854bb70536283d18a3",
+      "usage": null,
+      "elapsed_s": 0.00013836200014338829
+    },
+    {
+      "number": 2,
+      "status": "returned",
+      "request_sha256": "de6cd0fdb9605e886c60ea2f67ce2d5a0087eda4baf974ef5e1db450b554d63c",
+      "role": "reviewer",
+      "response_sha256": "2070227c5dc91d7289fbcf90f89b3c576b5384a5d1ae93bb373c99bf338b05e0",
+      "usage": null,
+      "elapsed_s": 0.00015543300105491653
+    }
+  ],
+  "commands": [
+    {
+      "number": 1,
+      "status": "attested",
+      "name": "gflo-review-d783f23185884bd09612932c",
+      "command": "python - <<'PYCODE'\nimport pathlib,sys,json,os\np=pathlib.Path('/candidate/main.py')\ntry:p.write_text('forbidden')\nexcept OSError:blocked=True\nelse:blocked=False\nassert blocked and not pathlib.Path('/workspace').exists() and os.getuid()!=0\nprint(json.dumps({'python':sys.version,'write_blocked':blocked,'cwd':os.getcwd(),'uid':os.getuid()}))\nPYCODE",
+      "exit_code": 0,
+      "timed_out": false,
+      "stdout_sha256": "398fda495ba7231e766e55240e806e0db83738c570b183207193b47746109c94",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

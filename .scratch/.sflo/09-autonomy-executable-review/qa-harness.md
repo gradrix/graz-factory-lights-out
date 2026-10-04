@@ -1,0 +1,21 @@
+# Independent unit09 harness QA
+
+Local controlled scope PASS: seven independent tests on mechanism SHA256 `ede30d388c75b1c69c683dbd4c61cae408afc73cd5d35f84c1748d0ab281ecaa`. Actual rig synthetic vertical remains pending coordinator authorization; no inference or rig staging by QA yet.
+
+Tests cover durable request/command counts across ledger reconstruction (8/12), failure/reserved credit retention, reset refusal, exact command length/authority and repeated IDs, grounded review schema/no-command rejection, whole malformed tool-batch rejection before dispatch, frozen public-only fixture routing and mode tamper, and hostile command text retained as tool data without replacing the system message. These are isolated controlled seams, not actual model behavior. Evidence `qa-harness/local-controls.txt`; invocation `python3 ops/test_executable_review_qa.py`.
+
+Test SHA256 `83503d964ad711bcea4bf6746b85e3e068a9c496e6778e30189620d1c77aed9f`. No new finding from this scope. Separate security18 and builder6 controls are supplemental evidence, not independently rerun here. Reused supervisor/publication helper evidence is carried from08 only for unchanged bytes.
+
+## Frozen proposed vertical control
+
+`ops/executable_review_vertical_qa.py`, SHA256 `2ed7739c19345fa59510fbcbd0d3e4f0623f160bad031d2b1c4a561b1ef22532`, runs actual case_work with the frozen public corrected case, real ReviewClient ledger and real CommandExecutor. Its mandatory fake transport has no opener; controller socket connect/create_connection are denied. Dummy config has no key and is never handed to a real transport. It sends one controlled command that verifies Python/runtime location, no /workspace, nonroot and source-write rejection, then consumes the actual attested output before returning a synthetic grounded pass. Two requests must be charged, one command attested, source/manifest unchanged and cleanup confirmed. This checks wiring only, not the model's correct classification of the fixture.
+
+After root authorizes a fresh isolated rig stage, run `python3 ops/executable_review_vertical_qa.py --bindings ENVIRONMENT_BINDINGS --output FRESH_OUTPUT`; preserve all command creation/start/output/cleanup receipts and raw synthetic requests. No model endpoint calls or serving changes. Candidate/control source remains readonly. This planned check does not claim independent actual timeout/output-limit coverage; those controls remain separately attributed until measured.
+
+## Authorized actual-rig vertical result
+
+**PASS**, executed once after coordinator authorization, on the same frozen mechanism/driver/manifest hashes above. Isolated staging `/home/gradrix/gflo-review-controls-ede30d3` contains exactly the32 carried sources, mechanism+driver and public fixtures; private expectations/control copies were excluded. Preflight verified all staged source hashes/file modes and fixture directory modes before execution (`qa-harness/stage-inventory.json`, `stage-preflight.txt`). Launch used explicit stage cwd and PYTHONPATH; no private model config, model/serving calls or service writes.
+
+Real case_work copied the bound corrected case, resolved the approved environment, charged two synthetic transport requests, ran one attested actual Docker command and consumed its real output before publishing a valid synthetic pass. Command took0.502s and reported Python3.12.13, uid1000, cwd `/candidate`, no `/workspace`, and source-write rejection. Creation receipt independently records the pinned image, runc/network-none/read-only root and both readonly mounts, resource restrictions and nonroot identity. Positive start nonce, raw command output, result, cleanup and complete synthetic request/response records are preserved in `qa-rig-vertical/`.
+
+Final candidate tree hash `54b38b1bfb5136242322c7908a0b1c71319218e4f9ab12d864a363df40ef4b00` matches the bounded input; frozen manifest was reverified. Owned container `gflo-review-d783f23185884bd09612932c` confirmed absent. No preflight failure or correction rerun occurred. All transport was mandatory in-memory fake with controller socket denial. This establishes actual readonly execution/feedback wiring and cleanup; it does not establish model discrimination, independent actual timeout/output stress, or admission to the real four-review batch.

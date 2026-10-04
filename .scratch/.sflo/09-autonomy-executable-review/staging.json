@@ -1,0 +1,377 @@
+{
+  "archive_sha256": "9f2d6e49123bfd3b0570c4d7802073f766cc7254fa8b73d4f70f521117dde144",
+  "archive_bytes": 532480,
+  "inventory": {
+    "prototype_commit": "37b7f1d1416d5497ca38291b47b364882d2d44ef",
+    "files": {
+      "gflo/__init__.py": {
+        "sha256": "6cbddf667328e01dd8f766ea554f7e0c10e19d6618b1eaa688e3e6548b8f275e",
+        "mode": 436
+      },
+      "gflo/__main__.py": {
+        "sha256": "4f20c5f979b363d963fdd5863585cd8b74a0837b5e5e2b6522aa1ee0674e48dd",
+        "mode": 436
+      },
+      "gflo/artifacts.py": {
+        "sha256": "53f94a54cdc948a752ab757c7f4bf943319073d71d82a601844a7d3825516b48",
+        "mode": 436
+      },
+      "gflo/browser.py": {
+        "sha256": "47fa36c2f443e13965dee71472178fc80d8ec0858a1da1190808cd3447f3d0ad",
+        "mode": 436
+      },
+      "gflo/browser_pair.py": {
+        "sha256": "b07802a4b3c76a4251fd3e42fd602a5adf7574f707afa3daeb8c1ae19d656ec9",
+        "mode": 436
+      },
+      "gflo/document_references.py": {
+        "sha256": "0a31c631bd170be7becb611ffb0fc19bfc9a890bf67e54830173119032776bc1",
+        "mode": 436
+      },
+      "gflo/documents.py": {
+        "sha256": "fd25e82baa4baf7917a043ef0f44b01ce5a6b92c5f4768f82fd383b44facef81",
+        "mode": 436
+      },
+      "gflo/environment.py": {
+        "sha256": "ad3c90434182f18f2e123b57f9316ba4d942f2ac78441037c0de3ab8c8a566c4",
+        "mode": 436
+      },
+      "gflo/guard.py": {
+        "sha256": "8f623a2ff7f9958ef2e1d0a99686ab83f31ab2100fbf5124097bcf1ae88ace48",
+        "mode": 436
+      },
+      "gflo/observe.py": {
+        "sha256": "8674c78a8d7654c0fb642e4a9186c061b86058808b72db997e54ba7efb0a145b",
+        "mode": 436
+      },
+      "gflo/prepare.py": {
+        "sha256": "2da306ab140fd2214cff6d3aa76c7a4b9539c9a2c9c7c75736dcd9157d1c7f25",
+        "mode": 436
+      },
+      "gflo/recipes/browser/journey.cjs": {
+        "sha256": "5fa647490f27342883ed5b1fa42aab972603f6b706ab16214942675891e9eb27",
+        "mode": 436
+      },
+      "gflo/recipes/browser/seccomp.json": {
+        "sha256": "322b86b4f7f5b597ed6a9c2cfd6193a4b249a51c8bc9cfba8ff1a485070b24e8",
+        "mode": 436
+      },
+      "gflo/recipes/document.py": {
+        "sha256": "f6795e60f08e387dbed96e1ce555b2fc75bd84a6a7ea23c82c677f85a8d71cf4",
+        "mode": 436
+      },
+      "gflo/recipes/document_extract.py": {
+        "sha256": "ca6c4b783184cc301d2610829e3bd56558838b1d99c2973f80d268ce868721c3",
+        "mode": 436
+      },
+      "gflo/recipes/fetch.py": {
+        "sha256": "c0a798534ab2d29cac84f53ff1b88adad94e60b3f63f04ec3be5d8fbe516fcd8",
+        "mode": 436
+      },
+      "gflo/recipes/node-ts/artifacts.json": {
+        "sha256": "4f85d5e7e3d8849b24ef4cf91d155d9bd3a3946d0fea63fe593a93fd128268bb",
+        "mode": 436
+      },
+      "gflo/recipes/node-ts/assemble.js": {
+        "sha256": "d6f213e9ced120be92049e80557f6fbafe7b7b1955a502b15ff74bc3b1fdcdde",
+        "mode": 436
+      },
+      "gflo/recipes/node-ts/package-lock.json": {
+        "sha256": "2bd0d5d024a8f29b79d28b062d54d9e2a2f34737a67fd38d08ee0b031230b20f",
+        "mode": 436
+      },
+      "gflo/recipes/node-ts/package.json": {
+        "sha256": "152e1b3aa7d2f0fca2ab5da0c1b443e0b811cd699a15a19ed807a41588fa85ee",
+        "mode": 436
+      },
+      "gflo/recipes/node-ts/smoke.js": {
+        "sha256": "472e67ec86cf78f4513de9d060758aed25b94368f2e0573c9cb95924923937f9",
+        "mode": 436
+      },
+      "gflo/recipes/python-api/artifacts.json": {
+        "sha256": "743289784dd853254fcf8a36e10bc6a479f7bfc99b2202d99aeb57c766a72a31",
+        "mode": 436
+      },
+      "gflo/recipes/python-api/assemble.py": {
+        "sha256": "e7656414445a4c35b17e40e1130f9ab8a7857c94218aa055ec19e1276120310d",
+        "mode": 436
+      },
+      "gflo/recipes/python-api/requirements.lock": {
+        "sha256": "890507545cbd69bf015bc092965ab76de09918593cf68119728fa8dc3d73bc3f",
+        "mode": 436
+      },
+      "gflo/recipes/validate.py": {
+        "sha256": "36226b01a39388ddb665a286f139feb98fde179e95cc8fed8ff5ed6662922739",
+        "mode": 436
+      },
+      "gflo/review.py": {
+        "sha256": "28f4e3ca944a125960786a487cff7a730cc8ed9356b9965f8e253bbf7c86194d",
+        "mode": 436
+      },
+      "gflo/runner.py": {
+        "sha256": "8938794b61fab8082d7b88d69dc161fa059a61d3b498f7e070e8b25697e58297",
+        "mode": 436
+      },
+      "gflo/sandbox.py": {
+        "sha256": "b2cafa3f1ad779a2a022143c5aff8f09c1b945efcd8aa2fba90c923e769c36a0",
+        "mode": 436
+      },
+      "gflo/web.py": {
+        "sha256": "05dcae9983bc9584f82209f21f3190f0250ba8ff1f6a7cf9a8af78530c785acd",
+        "mode": 436
+      },
+      "gflo/worker.py": {
+        "sha256": "2ddce17fd1dcda0700cf9923d2d0a4edbea4d7df9debd1b1a4003966ad7afb0a",
+        "mode": 436
+      },
+      "ops/planning_pilot_prototype.py": {
+        "sha256": "b4e7beaab66c480f6e5f6a9a6daad6f57dbbdea6ce6b3ec4c88bafad599aafa9",
+        "mode": 436
+      },
+      "ops/cancellation_probe.py": {
+        "sha256": "eef6fba8f02498c2c247f2d264a1dca5bbf2bb5caec5521db97f63a29b443128",
+        "mode": 436
+      },
+      "ops/executable_review_prototype.py": {
+        "sha256": "ede30d388c75b1c69c683dbd4c61cae408afc73cd5d35f84c1748d0ab281ecaa",
+        "mode": 436
+      },
+      "evaluations/executable-review/public/case-01/objective.txt": {
+        "sha256": "1c06ec381998c75d35598306e1cbe96adcd9558acd1f13d818a1bb70e9272d3d",
+        "mode": 436
+      },
+      "evaluations/executable-review/public/case-01/source/README.md": {
+        "sha256": "ac477b2547f5112d7a9aeadf4c2b453fbe73402c1eb817c3bfce6612425a2df8",
+        "mode": 436
+      },
+      "evaluations/executable-review/public/case-01/source/main.py": {
+        "sha256": "db81c48d1fc42e61ab6b36fdfc386266d0aaa19db4a245c7a4bbdd9d4700aa22",
+        "mode": 436
+      },
+      "evaluations/executable-review/public/case-01/source/manifest_tool/__init__.py": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": 436
+      },
+      "evaluations/executable-review/public/case-01/source/manifest_tool/api.py": {
+        "sha256": "54751d2883e115bdba3174d0ed0dce4a95b3fffe103fd4ad9f88b87bad523702",
+        "mode": 436
+      },
+      "evaluations/executable-review/public/case-01/source/manifest_tool/cli.py": {
+        "sha256": "65473e354f2a7f64fc3618b5abdb1915262cbf19244f94ece261ff30699eda15",
+        "mode": 436
+      },
+      "evaluations/executable-review/public/case-01/source/manifest_tool/domain.py": {
+        "sha256": "dd60306661c9f57a2eeddb9220e17542538f1a9c879d7b75b21b2bf696c2cef9",
+        "mode": 436
+      },
+      "evaluations/executable-review/public/case-01/source/manifest_tool/report.py": {
+        "sha256": "cba66004310885532689108ba41b15ca5540073d63f05643e31ad25801d4d9af",
+        "mode": 436
+      },
+      "evaluations/executable-review/public/case-01/source/manifest_tool/validation.py": {
+        "sha256": "f75a5b4e4915b08361022eb535f31a6d118e4a04e8eaa28b9c73c5ca49bf6ed3",
+        "mode": 436
+      },
+      "evaluations/executable-review/public/case-01/source/tests/__init__.py": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": 420
+      },
+      "evaluations/executable-review/public/case-01/source/tests/test_manifest_tool.py": {
+        "sha256": "6c1307d37cbc26988092e296337b2eb3c31e10cefb79c98a22240cc660a8dced",
+        "mode": 420
+      },
+      "evaluations/executable-review/public/case-02/objective.txt": {
+        "sha256": "1c06ec381998c75d35598306e1cbe96adcd9558acd1f13d818a1bb70e9272d3d",
+        "mode": 436
+      },
+      "evaluations/executable-review/public/case-02/source/README.md": {
+        "sha256": "c69f30a573ec99c96a3a6f32bddadab6bcb9c25560d847d333a846b5d28d43c0",
+        "mode": 436
+      },
+      "evaluations/executable-review/public/case-02/source/main.py": {
+        "sha256": "db81c48d1fc42e61ab6b36fdfc386266d0aaa19db4a245c7a4bbdd9d4700aa22",
+        "mode": 436
+      },
+      "evaluations/executable-review/public/case-02/source/manifest_tool/__init__.py": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": 436
+      },
+      "evaluations/executable-review/public/case-02/source/manifest_tool/api.py": {
+        "sha256": "42487c5301dfe964532744e5f1de798a044da0184a9d63542543331626eb1029",
+        "mode": 436
+      },
+      "evaluations/executable-review/public/case-02/source/manifest_tool/cli.py": {
+        "sha256": "338f0b18514d96245226ff6cf9ea00c6beb382e26245d9a691d0c4e8877064f2",
+        "mode": 436
+      },
+      "evaluations/executable-review/public/case-02/source/manifest_tool/domain.py": {
+        "sha256": "1bd325285b7168aa6c9631e663e4e7d106ca8c8ceeb35b8567343751e70173f8",
+        "mode": 436
+      },
+      "evaluations/executable-review/public/case-02/source/manifest_tool/report.py": {
+        "sha256": "d8d24d9183f3cc26f934b18669eb29def63fdaa40fd329704fa812d0a2498b32",
+        "mode": 436
+      },
+      "evaluations/executable-review/public/case-02/source/manifest_tool/validation.py": {
+        "sha256": "5fae250751d444fc378c9d5acc6ef316cfcabe4390d5af7f604659994350781a",
+        "mode": 436
+      },
+      "evaluations/executable-review/public/case-02/source/tests/__init__.py": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": 420
+      },
+      "evaluations/executable-review/public/case-02/source/tests/test_manifest_tool.py": {
+        "sha256": "6f1b44a8c34497cb312d7f7b3bae507faebe0bb82f9b58a6671d04ee9bacbbfc",
+        "mode": 420
+      },
+      "evaluations/executable-review/public/case-03/objective.txt": {
+        "sha256": "1c06ec381998c75d35598306e1cbe96adcd9558acd1f13d818a1bb70e9272d3d",
+        "mode": 436
+      },
+      "evaluations/executable-review/public/case-03/source/README.md": {
+        "sha256": "ac477b2547f5112d7a9aeadf4c2b453fbe73402c1eb817c3bfce6612425a2df8",
+        "mode": 436
+      },
+      "evaluations/executable-review/public/case-03/source/main.py": {
+        "sha256": "db81c48d1fc42e61ab6b36fdfc386266d0aaa19db4a245c7a4bbdd9d4700aa22",
+        "mode": 436
+      },
+      "evaluations/executable-review/public/case-03/source/manifest_tool/__init__.py": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": 436
+      },
+      "evaluations/executable-review/public/case-03/source/manifest_tool/api.py": {
+        "sha256": "54751d2883e115bdba3174d0ed0dce4a95b3fffe103fd4ad9f88b87bad523702",
+        "mode": 436
+      },
+      "evaluations/executable-review/public/case-03/source/manifest_tool/cli.py": {
+        "sha256": "65473e354f2a7f64fc3618b5abdb1915262cbf19244f94ece261ff30699eda15",
+        "mode": 436
+      },
+      "evaluations/executable-review/public/case-03/source/manifest_tool/domain.py": {
+        "sha256": "dd60306661c9f57a2eeddb9220e17542538f1a9c879d7b75b21b2bf696c2cef9",
+        "mode": 436
+      },
+      "evaluations/executable-review/public/case-03/source/manifest_tool/report.py": {
+        "sha256": "cba66004310885532689108ba41b15ca5540073d63f05643e31ad25801d4d9af",
+        "mode": 436
+      },
+      "evaluations/executable-review/public/case-03/source/manifest_tool/validation.py": {
+        "sha256": "f75a5b4e4915b08361022eb535f31a6d118e4a04e8eaa28b9c73c5ca49bf6ed3",
+        "mode": 436
+      },
+      "evaluations/executable-review/public/case-03/source/tests/__init__.py": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": 420
+      },
+      "evaluations/executable-review/public/case-03/source/tests/test_manifest_tool.py": {
+        "sha256": "6f588a90fcd648cb0486d67860c7ca360c1abd8ddbc7de7d5d36f5b74e969cc0",
+        "mode": 420
+      },
+      "evaluations/executable-review/public/case-04/objective.txt": {
+        "sha256": "1c06ec381998c75d35598306e1cbe96adcd9558acd1f13d818a1bb70e9272d3d",
+        "mode": 436
+      },
+      "evaluations/executable-review/public/case-04/source/README.md": {
+        "sha256": "1d404dbb5dee0d0ba71c0d2d52f15c43fc156205520d7dc1e5c3abcc9ec9b37a",
+        "mode": 436
+      },
+      "evaluations/executable-review/public/case-04/source/main.py": {
+        "sha256": "db81c48d1fc42e61ab6b36fdfc386266d0aaa19db4a245c7a4bbdd9d4700aa22",
+        "mode": 436
+      },
+      "evaluations/executable-review/public/case-04/source/manifest_tool/__init__.py": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": 436
+      },
+      "evaluations/executable-review/public/case-04/source/manifest_tool/api.py": {
+        "sha256": "42487c5301dfe964532744e5f1de798a044da0184a9d63542543331626eb1029",
+        "mode": 436
+      },
+      "evaluations/executable-review/public/case-04/source/manifest_tool/cli.py": {
+        "sha256": "338f0b18514d96245226ff6cf9ea00c6beb382e26245d9a691d0c4e8877064f2",
+        "mode": 436
+      },
+      "evaluations/executable-review/public/case-04/source/manifest_tool/domain.py": {
+        "sha256": "1bd325285b7168aa6c9631e663e4e7d106ca8c8ceeb35b8567343751e70173f8",
+        "mode": 436
+      },
+      "evaluations/executable-review/public/case-04/source/manifest_tool/report.py": {
+        "sha256": "d8d24d9183f3cc26f934b18669eb29def63fdaa40fd329704fa812d0a2498b32",
+        "mode": 436
+      },
+      "evaluations/executable-review/public/case-04/source/manifest_tool/validation.py": {
+        "sha256": "5fae250751d444fc378c9d5acc6ef316cfcabe4390d5af7f604659994350781a",
+        "mode": 436
+      },
+      "evaluations/executable-review/public/case-04/source/tests/__init__.py": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": 420
+      },
+      "evaluations/executable-review/public/case-04/source/tests/test_manifest_tool.py": {
+        "sha256": "6f1b44a8c34497cb312d7f7b3bae507faebe0bb82f9b58a6671d04ee9bacbbfc",
+        "mode": 420
+      },
+      "evaluations/executable-review/manifest.json": {
+        "sha256": "05de766048d96216865b8e5d0c817166ac1635391a6ed496b9ce6c3b0b6bdb37",
+        "mode": 420
+      },
+      "inputs/contract.md": {
+        "sha256": "1fe3c4763dd4e1ee6d3b280619dcbce4ac1814d7253dbbba5c1d8d6f47f959d1",
+        "mode": 420
+      },
+      "inputs/environment-bindings.json": {
+        "sha256": "65b9da495673d74eea93e4ce85e9384d5243dfaf171a90502339248c9cc66401",
+        "mode": 420
+      },
+      "inputs/expected-identity.json": {
+        "sha256": "72c8346f55dc51c8bba1fe503971c7269d6ef6ffbc7aa36b1f2bac1cd8821755",
+        "mode": 420
+      }
+    },
+    "directories": {
+      "gflo": 509,
+      "gflo/recipes/browser": 509,
+      "gflo/recipes": 509,
+      "gflo/recipes/node-ts": 509,
+      "gflo/recipes/python-api": 509,
+      "ops": 509,
+      "evaluations/executable-review/public/case-01": 509,
+      "evaluations/executable-review/public": 509,
+      "evaluations/executable-review": 509,
+      "evaluations": 509,
+      "evaluations/executable-review/public/case-01/source": 509,
+      "evaluations/executable-review/public/case-01/source/manifest_tool": 509,
+      "evaluations/executable-review/public/case-01/source/tests": 493,
+      "evaluations/executable-review/public/case-02": 509,
+      "evaluations/executable-review/public/case-02/source": 509,
+      "evaluations/executable-review/public/case-02/source/manifest_tool": 509,
+      "evaluations/executable-review/public/case-02/source/tests": 493,
+      "evaluations/executable-review/public/case-03": 509,
+      "evaluations/executable-review/public/case-03/source": 509,
+      "evaluations/executable-review/public/case-03/source/manifest_tool": 509,
+      "evaluations/executable-review/public/case-03/source/tests": 493,
+      "evaluations/executable-review/public/case-04": 509,
+      "evaluations/executable-review/public/case-04/source": 509,
+      "evaluations/executable-review/public/case-04/source/manifest_tool": 509,
+      "evaluations/executable-review/public/case-04/source/tests": 493,
+      "inputs": 493
+    },
+    "excluded": [
+      "private expectations",
+      "reference solutions",
+      "tests",
+      "synthetic transport drivers",
+      "private model config/key"
+    ]
+  },
+  "validation": {
+    "stage": "/home/gradrix/gflo-review-37b7f1d",
+    "files_verified": 81,
+    "directories_verified": 26,
+    "inventory_sha256": "c9ce412c03798dcbb4c68502bc0e5ab5ea9c19f3ba031d2874b5046fc0827aac",
+    "manifest_verified": true,
+    "environment_id": "36cd138cbdc332246a2db473301200117f82404a4504c675db95966645348975",
+    "no_inference": true
+  }
+}

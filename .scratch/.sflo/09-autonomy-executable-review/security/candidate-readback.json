@@ -1,0 +1,8 @@
+{
+  "candidate_sha256": "cbfe1fb7556f62dc454dd3fdaf937aba6e2a11ae1b9bee455cdce36ee4054cb6",
+  "prototype_commit": "37b7f1d1416d5497ca38291b47b364882d2d44ef",
+  "all_37_manifest_files_match": true,
+  "working_tree_source_matches_commit": true,
+  "combined_controls_sha256": "c7709e9f29f13db7820f54b835e9ef4e6bd92102fe1d2927b6e9fb74af63f93a",
+  "combined_hash_matches": true
+}

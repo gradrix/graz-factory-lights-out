@@ -1,0 +1,23 @@
+test_actual_signal_at_publication_fsync_refuses_success (test_executable_review_security.SecurityControls) ... ok
+test_actual_started_failure_is_valid_evidence_and_nonce_removed (test_executable_review_security.SecurityControls) ... ok
+test_candidate_links_and_special_types_rejected (test_executable_review_security.SecurityControls) ... ok
+test_cleanup_uncertainty_stops_next_case (test_executable_review_security.SecurityControls) ... ok
+test_conforming_completed_control_publishes (test_executable_review_security.SecurityControls) ... ok
+test_created_but_never_started_cannot_attest_execution (test_executable_review_security.SecurityControls) ... ok
+test_deadline_at_publication_fsync_refuses_success (test_executable_review_security.SecurityControls) ... ok
+test_expired_or_over_capacity_request_never_dispatches (test_executable_review_security.SecurityControls) ... ok
+test_failed_transport_is_debited_before_call_and_ninth_never_runs (test_executable_review_security.SecurityControls) ... ok
+test_malformed_transport_output_consumes_credit (test_executable_review_security.SecurityControls) ... ok
+test_missing_creation_is_sticky_even_after_empty_absence (test_executable_review_security.SecurityControls) ... ok
+test_missing_resource_limit_cannot_attest (test_executable_review_security.SecurityControls) ... ok
+test_no_command_verdict_refused_and_tool_data_not_policy (test_executable_review_security.SecurityControls) ... ok
+test_root_uid_refused_before_command_debit_or_dispatch (test_executable_review_security.SecurityControls) ... ok
+test_started_cleanup_uncertainty_cannot_attest (test_executable_review_security.SecurityControls) ... ok
+test_started_writable_mount_cannot_attest (test_executable_review_security.SecurityControls) ... ok
+test_unknown_idle_admission_prevents_case_dispatch (test_executable_review_security.SecurityControls) ... ok
+test_unknown_postcase_idle_prevents_next_case (test_executable_review_security.SecurityControls) ... ok
+
+----------------------------------------------------------------------
+Ran 18 tests in 0.263s
+
+OK

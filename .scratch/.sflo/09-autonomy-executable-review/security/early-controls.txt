@@ -1,0 +1,20 @@
+test_candidate_links_and_special_types_rejected (test_executable_review_security.SecurityControls) ... ok
+test_created_but_never_started_cannot_attest_execution (test_executable_review_security.SecurityControls) ... FAIL
+test_expired_or_over_capacity_request_never_dispatches (test_executable_review_security.SecurityControls) ... ok
+test_failed_transport_is_debited_before_call_and_ninth_never_runs (test_executable_review_security.SecurityControls) ... ok
+test_malformed_transport_output_consumes_credit (test_executable_review_security.SecurityControls) ... ok
+test_missing_creation_is_sticky_even_after_empty_absence (test_executable_review_security.SecurityControls) ... ok
+test_no_command_verdict_refused_and_tool_data_not_policy (test_executable_review_security.SecurityControls) ... ok
+
+======================================================================
+FAIL: test_created_but_never_started_cannot_attest_execution (test_executable_review_security.SecurityControls)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo-review-prototype/ops/test_executable_review_security.py", line 63, in test_created_but_never_started_cannot_attest_execution
+    with self.assertRaises(RuntimeError):self.executor().run('true')
+AssertionError: RuntimeError not raised
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.108s
+
+FAILED (failures=1)

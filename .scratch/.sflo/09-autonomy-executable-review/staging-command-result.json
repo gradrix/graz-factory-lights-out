@@ -1,0 +1,5 @@
+{
+  "exit": 0,
+  "stdout": "{\"stage\": \"/home/gradrix/gflo-review-37b7f1d\", \"files_verified\": 81, \"directories_verified\": 26, \"inventory_sha256\": \"c9ce412c03798dcbb4c68502bc0e5ab5ea9c19f3ba031d2874b5046fc0827aac\", \"manifest_verified\": true, \"environment_id\": \"36cd138cbdc332246a2db473301200117f82404a4504c675db95966645348975\", \"no_inference\": true}\n",
+  "stderr": ""
+}

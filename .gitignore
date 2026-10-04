@@ -209,3 +209,8 @@ htmlcov/
 
 !.scratch/.sflo/09-autonomy-executable-review/
 .scratch/.sflo/09-autonomy-executable-review/*/
+
+!.scratch/.sflo/09-autonomy-executable-review/security/
+!.scratch/.sflo/09-autonomy-executable-review/security/*
+!.scratch/.sflo/09-autonomy-executable-review/qa-rig-vertical/
+!.scratch/.sflo/09-autonomy-executable-review/qa-rig-vertical/**

@@ -1,0 +1,8 @@
+{
+  "carry_forward_count": 32,
+  "all_match": true,
+  "mismatches": [],
+  "contract_sha256": "1fe3c4763dd4e1ee6d3b280619dcbce4ac1814d7253dbbba5c1d8d6f47f959d1",
+  "test_sha256": "0bb884a6575de4f4fac3d42fad18e7ef42bc172471d695d208474ab16625d2dc",
+  "draft_source_sha256": "c7700e7a922177cfc8a49f669c440fe12041982ff7f44fa6a1009c417495967d"
+}

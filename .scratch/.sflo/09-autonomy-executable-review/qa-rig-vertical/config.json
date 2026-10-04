@@ -1,0 +1,5 @@
+{
+  "endpoint": "http://127.0.0.1:18000",
+  "model": "flash-next-coder",
+  "reasoning": "medium"
+}
