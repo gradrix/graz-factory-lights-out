@@ -1,0 +1,46 @@
+{
+  "id": "c13467a4c588ffdb5292aca0f58a1c9d95a711d8a2c68715525172e7045e6b37",
+  "receipt": {
+    "attempts": [
+      {
+        "error": "Citation does not match frozen evidence",
+        "number": 1,
+        "request_sha256": "8a5b68e1f1db0e53a8a2979e427b986db283811cbb497a29fb895627ca715200",
+        "response_sha256": "1d8b6d5b536f69820bbbb0665afc92e0b343115ef4c59de19fdac120cbf1be73",
+        "response_size": 3078,
+        "validation": "invalid"
+      },
+      {
+        "error": "Citation does not match frozen evidence",
+        "number": 2,
+        "request_sha256": "da2cc8a95989f9d3e47acd466986a82683d5ba0d57ebe7834420eac9f954be6a",
+        "response_sha256": "0fe5613e45bf1227dd9b969c6526b68a7654a98406dc9430b20a3030a608d1f6",
+        "response_size": 4567,
+        "validation": "invalid"
+      }
+    ],
+    "config": {
+      "endpoint": "http://127.0.0.1:18000",
+      "model": "flash-next-coder"
+    },
+    "created_utc": "2026-10-04T15:40:35.884052+00:00",
+    "evidence_id": "97e675c4f4c3eb568818f1b23eb70027e11062f22d7f4d586c3e004340676935",
+    "failure": "Returned response failed: invalid",
+    "format": 2,
+    "kind": "answer_failure",
+    "model": "flash-next-coder",
+    "profile": {
+      "chat_template_kwargs": {
+        "enable_thinking": true
+      },
+      "max_tokens": 2048,
+      "model": "flash-next-coder",
+      "reasoning_effort": "medium",
+      "temperature": 0,
+      "thinking_budget_tokens": 512
+    },
+    "question": "If the caller awaiting asyncio.shield(task) is cancelled, is the inner task cancelled by that caller cancellation, what exception does the caller still receive, and why should a strong reference to task be retained?",
+    "question_sha256": "5c4c7ecdadd03cc8bde0772d2884578eb83e948e05c606b3970e0e2fbf0b89f7",
+    "verdict": "failed_not_a_cited_answer"
+  }
+}

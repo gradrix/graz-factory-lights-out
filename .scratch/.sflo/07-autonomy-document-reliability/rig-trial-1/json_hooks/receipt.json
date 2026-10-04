@@ -1,0 +1,88 @@
+{
+  "id": "b13badfa500f2718bd156872107c4e18c7a86a8f020b5534eb0bc50bf28a2026",
+  "receipt": {
+    "answer": {
+      "claims": [
+        {
+          "citations": [
+            {
+              "evidence_id": "2668f4453bf6c506879eea16d39479694833db2875fef9f917dd519abd728a7a",
+              "excerpt": "If object_hook is also set, object_pairs_hook takes priority.",
+              "span": 89
+            },
+            {
+              "evidence_id": "2668f4453bf6c506879eea16d39479694833db2875fef9f917dd519abd728a7a",
+              "excerpt": "If object_hook is also defined, the object_pairs_hook takes priority.",
+              "span": 131
+            }
+          ],
+          "text": "When both object_hook and object_pairs_hook are set, object_pairs_hook takes priority."
+        },
+        {
+          "citations": [
+            {
+              "evidence_id": "2668f4453bf6c506879eea16d39479694833db2875fef9f917dd519abd728a7a",
+              "excerpt": "a function that is called with the result of any object literal decoded with an ordered list of pairs",
+              "span": 89
+            },
+            {
+              "evidence_id": "2668f4453bf6c506879eea16d39479694833db2875fef9f917dd519abd728a7a",
+              "excerpt": "an optional function that will be called with the result of every JSON object decoded with an ordered list of pairs",
+              "span": 131
+            }
+          ],
+          "text": "object_pairs_hook is called with the result of any object literal decoded with an ordered list of pairs."
+        },
+        {
+          "citations": [
+            {
+              "evidence_id": "2668f4453bf6c506879eea16d39479694833db2875fef9f917dd519abd728a7a",
+              "excerpt": "The return value of this function will be used instead of the dict.",
+              "span": 89
+            },
+            {
+              "evidence_id": "2668f4453bf6c506879eea16d39479694833db2875fef9f917dd519abd728a7a",
+              "excerpt": "The return value of object_pairs_hook will be used instead of the dict.",
+              "span": 131
+            }
+          ],
+          "text": "The return value of object_pairs_hook is used instead of the dict."
+        }
+      ],
+      "reason": "",
+      "status": "supported"
+    },
+    "attempts": [
+      {
+        "error": "",
+        "number": 1,
+        "request_sha256": "5100b23cdf1c7ab761c5d8545d02774f28cc602950359c1b551950638bfcd073",
+        "response_sha256": "e6a66e50e5c6143f566864f9b49912e33fde10372b6c8d427affeff23e7a4dda",
+        "response_size": 3460,
+        "validation": "valid"
+      }
+    ],
+    "config": {
+      "endpoint": "http://127.0.0.1:18000",
+      "model": "flash-next-coder"
+    },
+    "created_utc": "2026-10-04T15:36:22.664891+00:00",
+    "evidence_id": "2668f4453bf6c506879eea16d39479694833db2875fef9f917dd519abd728a7a",
+    "format": 2,
+    "kind": "answer",
+    "model": "flash-next-coder",
+    "profile": {
+      "chat_template_kwargs": {
+        "enable_thinking": true
+      },
+      "max_tokens": 2048,
+      "model": "flash-next-coder",
+      "reasoning_effort": "medium",
+      "temperature": 0,
+      "thinking_budget_tokens": 512
+    },
+    "question": "When json.loads receives both object_hook and object_pairs_hook, which takes priority, what does object_pairs_hook receive, and what does its return value replace?",
+    "question_sha256": "a09dd961fcdcdd205fea326776d05f10c27ff9e20bb35ce934549b29931d2a43",
+    "verdict": "citation_provenance_valid_not_semantic_entailment"
+  }
+}

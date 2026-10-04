@@ -1,0 +1,15 @@
+{
+  "id": "c3b3ea5748161e6e6fb73410e805e4fd1152e09d351bfda6d2d5aa7bcfffd278",
+  "evidence_id": "3682b91c75083bd469f0cfa8feb91ab769eb9e90aab874f6c28179e493e07e9b",
+  "answer": {
+    "status": "insufficient_evidence",
+    "claims": [],
+    "reason": "The supplied evidence is from Python 3.12.15 documentation and contains no reference to Python 3.16, no changelog entry about changing csv.DictReader's restval default to an empty string, and no date for such a change."
+  },
+  "source_url": "https://docs.python.org/3.12/library/csv.html",
+  "source_version": "Python3.12 historical documentation snapshot; floating series URL, not exact runtime patch",
+  "retrieved_utc": "2026-10-04T15:32:37.365155+00:00",
+  "age_seconds": 577,
+  "freshness": "historical snapshot; current accuracy is not established",
+  "verdict": "citation_provenance_valid_not_semantic_entailment"
+}

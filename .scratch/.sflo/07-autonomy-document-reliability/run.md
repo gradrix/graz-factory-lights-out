@@ -9,7 +9,7 @@ Contract: contract.md sha256 b2adcce1ceaaa777d855d570b5a354b5480bb63209aeda5c784
 Status: active
 Owner: /root coordinator; /root/cohort_c sole maintained-code builder
 Candidate: source2fe870d; manifest4e1481dede629f9c83be9bbd0002d0975eccbd33820d4456ef5c75bd9eecfc2e; not accepted
-Next: running actual ten-question inference trial1 on rig; independently review all claims/attempts and execute offline legacy/v2 replay before acceptance.
+Next: trial1 failed8/10 structural outcomes; complete semantic/offline QA, preserve failure, decide bounded reference successor before any new candidate or trial.
 
 ## Evidence and decisions
 
@@ -24,3 +24,7 @@ Frozen candidate2fe870d:13 bound hashes verified and preserved. Builder full gat
 Resume verified contract/unit/run binding and source at8d62dd7 (maintained candidate2fe870d unchanged). Independent [functional QA](qa-functional.md) passed. Actual rig acquisition1 fetched all three approved pages in1.33–1.48s each with exact baseline body hashes and unchanged96K/Q4 serving identity; [binding](rig-acquisition-1/binding.json). No unit07 model calls yet. Independent source-alignment review assigned; coordinator authorization pending security and alignment.
 
 Independent security PASS45 controls, no open defect. [Source alignment](qa-source-alignment.md) PASS all10, bodies and complete spans identical. Root authorized separate gate [source-alignment-authorized.json](source-alignment-authorized.json) sha256d5fb4148d14257f373e9793f7c418e72eae7614a138108dd0453ef6c06d31f21, preserving reviewer gate with coordinator_go=false. Actual model trial1 started in /home/gradrix/gflo-documents-2fe870d/.gflo/qualification-1; no external retries. QA assigned complete semantics and actual offline replay after inference finishes.
+
+Trial1 interim failure: asyncio_gather exhausted two exact-citation-invalid responses, diagnostic6e5b5f48…;10/10 cohort acceptance is already unavailable. Remaining frozen cases continue once, with no retries. Independent QA will distinguish citation-format versus semantic failure and run diagnostic replay refusal. Candidate remains unaccepted/uninstalled.
+
+Trial1 completed10questions/13calls/460.340s:8 structurally valid published answers,2 exhausted citation failures (gather, shield). [All requests/responses/outcomes](rig-trial-1/manifest.json) preserved. Exact quote copying failed on Unicode punctuation despite a repair. No candidate installation. Independent final semantics/offline replay pending; bounded reference option analysis is read-only.

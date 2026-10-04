@@ -1,0 +1,61 @@
+{
+  "id": "35031b6d9f9fabefc79b3f70f0ffe3ae41becd72c7fcd4d5f3d3c4a31c5108c3",
+  "evidence_id": "3682b91c75083bd469f0cfa8feb91ab769eb9e90aab874f6c28179e493e07e9b",
+  "answer": {
+    "status": "supported",
+    "claims": [
+      {
+        "text": "If newline='' is not specified, newlines embedded inside quoted fields will not be interpreted correctly.",
+        "citations": [
+          {
+            "evidence_id": "3682b91c75083bd469f0cfa8feb91ab769eb9e90aab874f6c28179e493e07e9b",
+            "span": 192,
+            "excerpt": "If newline='' is not specified, newlines embedded inside quoted fields will not be interpreted correctly"
+          }
+        ]
+      },
+      {
+        "text": "On platforms that use \\r\\n line endings, writing without newline='' causes an extra \\r to be added.",
+        "citations": [
+          {
+            "evidence_id": "3682b91c75083bd469f0cfa8feb91ab769eb9e90aab874f6c28179e493e07e9b",
+            "span": 192,
+            "excerpt": "on platforms that use \\r\\n linendings on write an extra \\r will be added"
+          }
+        ]
+      },
+      {
+        "text": "It should always be safe to specify newline='' because the csv module does its own (universal) newline handling.",
+        "citations": [
+          {
+            "evidence_id": "3682b91c75083bd469f0cfa8feb91ab769eb9e90aab874f6c28179e493e07e9b",
+            "span": 192,
+            "excerpt": "It should always be safe to specify newline='', since the csv module does its own (universal) newline handling."
+          }
+        ]
+      },
+      {
+        "text": "The csv module's reader and writer documentation both state that if csvfile is a file object, it should be opened with newline=''.",
+        "citations": [
+          {
+            "evidence_id": "3682b91c75083bd469f0cfa8feb91ab769eb9e90aab874f6c28179e493e07e9b",
+            "span": 39,
+            "excerpt": "If csvfile is a file object, it should be opened with newline=''."
+          },
+          {
+            "evidence_id": "3682b91c75083bd469f0cfa8feb91ab769eb9e90aab874f6c28179e493e07e9b",
+            "span": 44,
+            "excerpt": "If csvfile is a file object, it should be opened with newline='' [1]."
+          }
+        ]
+      }
+    ],
+    "reason": ""
+  },
+  "source_url": "https://docs.python.org/3.12/library/csv.html",
+  "source_version": "Python3.12 historical documentation snapshot; floating series URL, not exact runtime patch",
+  "retrieved_utc": "2026-10-04T15:32:37.365155+00:00",
+  "age_seconds": 302,
+  "freshness": "historical snapshot; current accuracy is not established",
+  "verdict": "citation_provenance_valid_not_semantic_entailment"
+}

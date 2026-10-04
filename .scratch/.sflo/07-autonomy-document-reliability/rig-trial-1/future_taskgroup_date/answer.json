@@ -1,0 +1,15 @@
+{
+  "id": "3bfe7f28fd3aa69eb347b5436e00e91fed92ca41f3585beba45ec772bb9c1e47",
+  "evidence_id": "97e675c4f4c3eb568818f1b23eb70027e11062f22d7f4d586c3e004340676935",
+  "answer": {
+    "status": "insufficient_evidence",
+    "claims": [],
+    "reason": "The supplied evidence is a Python 3.12 documentation snapshot and contains no information about Python 3.16 or any planned change to TaskGroup behavior regarding ValueError and sibling task cancellation. The evidence only documents TaskGroup behavior as of versions 3.11\u20133.12."
+  },
+  "source_url": "https://docs.python.org/3.12/library/asyncio-task.html",
+  "source_version": "Python3.12 historical documentation snapshot; floating series URL, not exact runtime patch",
+  "retrieved_utc": "2026-10-04T15:32:40.070386+00:00",
+  "age_seconds": 628,
+  "freshness": "historical snapshot; current accuracy is not established",
+  "verdict": "citation_provenance_valid_not_semantic_entailment"
+}

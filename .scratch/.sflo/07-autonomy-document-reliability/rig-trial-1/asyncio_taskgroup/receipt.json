@@ -1,0 +1,78 @@
+{
+  "id": "7cbf89d6c9dad5500a05cf634001cb22d816f4182fbacd7ec5dd9b8e5b0be30d",
+  "receipt": {
+    "answer": {
+      "claims": [
+        {
+          "citations": [
+            {
+              "evidence_id": "97e675c4f4c3eb568818f1b23eb70027e11062f22d7f4d586c3e004340676935",
+              "excerpt": "The first time any of the tasks belonging to the group fails with an exception other than asyncio.CancelledError, the remaining tasks in the group are cancelled.",
+              "span": 129
+            }
+          ],
+          "text": "When a TaskGroup child task raises ValueError (an exception other than asyncio.CancelledError), the remaining tasks in the group are cancelled."
+        },
+        {
+          "citations": [
+            {
+              "evidence_id": "97e675c4f4c3eb568818f1b23eb70027e11062f22d7f4d586c3e004340676935",
+              "excerpt": "The async with statement will wait for all tasks in the group to finish.",
+              "span": 128
+            },
+            {
+              "evidence_id": "97e675c4f4c3eb568818f1b23eb70027e11062f22d7f4d586c3e004340676935",
+              "excerpt": "Once all tasks have finished, if any tasks have failed with an exception other than asyncio.CancelledError, those exceptions are combined in an ExceptionGroup or BaseExceptionGroup (as appropriate; see their documentation) which is then raised.",
+              "span": 130
+            }
+          ],
+          "text": "The group exit waits for all tasks to finish before proceeding."
+        },
+        {
+          "citations": [
+            {
+              "evidence_id": "97e675c4f4c3eb568818f1b23eb70027e11062f22d7f4d586c3e004340676935",
+              "excerpt": "Once all tasks have finished, if any tasks have failed with an exception other than asyncio.CancelledError, those exceptions are combined in an ExceptionGroup or BaseExceptionGroup (as appropriate; see their documentation) which is then raised.",
+              "span": 130
+            }
+          ],
+          "text": "Once all tasks have finished, non-cancellation failures (such as ValueError) are combined in an ExceptionGroup or BaseExceptionGroup which is then raised."
+        }
+      ],
+      "reason": "",
+      "status": "supported"
+    },
+    "attempts": [
+      {
+        "error": "",
+        "number": 1,
+        "request_sha256": "0c9e11e3e238d48bd70281bfd3bc084a2a756ec7c852fa3482c879ec113aa7cc",
+        "response_sha256": "195ae6baba32fb4b8ea3e53faceffb23c513cfd7a9d954ff44dba5025e7e7ce0",
+        "response_size": 4059,
+        "validation": "valid"
+      }
+    ],
+    "config": {
+      "endpoint": "http://127.0.0.1:18000",
+      "model": "flash-next-coder"
+    },
+    "created_utc": "2026-10-04T15:38:03.128047+00:00",
+    "evidence_id": "97e675c4f4c3eb568818f1b23eb70027e11062f22d7f4d586c3e004340676935",
+    "format": 2,
+    "kind": "answer",
+    "model": "flash-next-coder",
+    "profile": {
+      "chat_template_kwargs": {
+        "enable_thinking": true
+      },
+      "max_tokens": 2048,
+      "model": "flash-next-coder",
+      "reasoning_effort": "medium",
+      "temperature": 0,
+      "thinking_budget_tokens": 512
+    },
+    "question": "In Python 3.12, if a TaskGroup child raises ValueError, are remaining tasks cancelled, does group exit wait for them, and how are non-cancellation failures reported once they finish?",
+    "question_sha256": "aec85a7a4db51985f7a76340d88aecf342e5ee24b511de8c2f786be3c5f854af",
+    "verdict": "citation_provenance_valid_not_semantic_entailment"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "id": "3bfe7f28fd3aa69eb347b5436e00e91fed92ca41f3585beba45ec772bb9c1e47",
+  "receipt": {
+    "answer": {
+      "claims": [],
+      "reason": "The supplied evidence is a Python 3.12 documentation snapshot and contains no information about Python 3.16 or any planned change to TaskGroup behavior regarding ValueError and sibling task cancellation. The evidence only documents TaskGroup behavior as of versions 3.11\u20133.12.",
+      "status": "insufficient_evidence"
+    },
+    "attempts": [
+      {
+        "error": "",
+        "number": 1,
+        "request_sha256": "80a7f366e9fa4fe2bee2a4856cf854b62a2440ecf7b492bea2b4d0e6b28d76ea",
+        "response_sha256": "769e875cb8f3451525a997e1ed7b6095b4e3676320dcea829d055ea70169507a",
+        "response_size": 1983,
+        "validation": "valid"
+      }
+    ],
+    "config": {
+      "endpoint": "http://127.0.0.1:18000",
+      "model": "flash-next-coder"
+    },
+    "created_utc": "2026-10-04T15:42:14.853804+00:00",
+    "evidence_id": "97e675c4f4c3eb568818f1b23eb70027e11062f22d7f4d586c3e004340676935",
+    "format": 2,
+    "kind": "answer",
+    "model": "flash-next-coder",
+    "profile": {
+      "chat_template_kwargs": {
+        "enable_thinking": true
+      },
+      "max_tokens": 2048,
+      "model": "flash-next-coder",
+      "reasoning_effort": "medium",
+      "temperature": 0,
+      "thinking_budget_tokens": 512
+    },
+    "question": "What exact date will Python 3.16 change TaskGroup so a child ValueError never cancels its sibling tasks?",
+    "question_sha256": "191ab943295d073327006e089a54373b990d9fe55f089c85ad227e85f3e6e62c",
+    "verdict": "citation_provenance_valid_not_semantic_entailment"
+  }
+}

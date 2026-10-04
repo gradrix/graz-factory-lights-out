@@ -1,0 +1,61 @@
+{
+  "id": "b13badfa500f2718bd156872107c4e18c7a86a8f020b5534eb0bc50bf28a2026",
+  "evidence_id": "2668f4453bf6c506879eea16d39479694833db2875fef9f917dd519abd728a7a",
+  "answer": {
+    "status": "supported",
+    "claims": [
+      {
+        "text": "When both object_hook and object_pairs_hook are set, object_pairs_hook takes priority.",
+        "citations": [
+          {
+            "evidence_id": "2668f4453bf6c506879eea16d39479694833db2875fef9f917dd519abd728a7a",
+            "span": 89,
+            "excerpt": "If object_hook is also set, object_pairs_hook takes priority."
+          },
+          {
+            "evidence_id": "2668f4453bf6c506879eea16d39479694833db2875fef9f917dd519abd728a7a",
+            "span": 131,
+            "excerpt": "If object_hook is also defined, the object_pairs_hook takes priority."
+          }
+        ]
+      },
+      {
+        "text": "object_pairs_hook is called with the result of any object literal decoded with an ordered list of pairs.",
+        "citations": [
+          {
+            "evidence_id": "2668f4453bf6c506879eea16d39479694833db2875fef9f917dd519abd728a7a",
+            "span": 89,
+            "excerpt": "a function that is called with the result of any object literal decoded with an ordered list of pairs"
+          },
+          {
+            "evidence_id": "2668f4453bf6c506879eea16d39479694833db2875fef9f917dd519abd728a7a",
+            "span": 131,
+            "excerpt": "an optional function that will be called with the result of every JSON object decoded with an ordered list of pairs"
+          }
+        ]
+      },
+      {
+        "text": "The return value of object_pairs_hook is used instead of the dict.",
+        "citations": [
+          {
+            "evidence_id": "2668f4453bf6c506879eea16d39479694833db2875fef9f917dd519abd728a7a",
+            "span": 89,
+            "excerpt": "The return value of this function will be used instead of the dict."
+          },
+          {
+            "evidence_id": "2668f4453bf6c506879eea16d39479694833db2875fef9f917dd519abd728a7a",
+            "span": 131,
+            "excerpt": "The return value of object_pairs_hook will be used instead of the dict."
+          }
+        ]
+      }
+    ],
+    "reason": ""
+  },
+  "source_url": "https://docs.python.org/3.12/library/json.html",
+  "source_version": "Python3.12 historical documentation snapshot; floating series URL, not exact runtime patch",
+  "retrieved_utc": "2026-10-04T15:32:38.741846+00:00",
+  "age_seconds": 267,
+  "freshness": "historical snapshot; current accuracy is not established",
+  "verdict": "citation_provenance_valid_not_semantic_entailment"
+}

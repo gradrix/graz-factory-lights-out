@@ -1,0 +1,42 @@
+{
+  "id": "c3b3ea5748161e6e6fb73410e805e4fd1152e09d351bfda6d2d5aa7bcfffd278",
+  "receipt": {
+    "answer": {
+      "claims": [],
+      "reason": "The supplied evidence is from Python 3.12.15 documentation and contains no reference to Python 3.16, no changelog entry about changing csv.DictReader's restval default to an empty string, and no date for such a change.",
+      "status": "insufficient_evidence"
+    },
+    "attempts": [
+      {
+        "error": "",
+        "number": 1,
+        "request_sha256": "88ebcb4402dc40675dff2d922975648d6cf380ff93b87a0b7eddceab5c0dae26",
+        "response_sha256": "82b5b32fbfe2b62d8c74bc8def761eb357cdafe0e6598fedefa7ff9cda1c9e9c",
+        "response_size": 1743,
+        "validation": "valid"
+      }
+    ],
+    "config": {
+      "endpoint": "http://127.0.0.1:18000",
+      "model": "flash-next-coder"
+    },
+    "created_utc": "2026-10-04T15:41:47.522060+00:00",
+    "evidence_id": "3682b91c75083bd469f0cfa8feb91ab769eb9e90aab874f6c28179e493e07e9b",
+    "format": 2,
+    "kind": "answer",
+    "model": "flash-next-coder",
+    "profile": {
+      "chat_template_kwargs": {
+        "enable_thinking": true
+      },
+      "max_tokens": 2048,
+      "model": "flash-next-coder",
+      "reasoning_effort": "medium",
+      "temperature": 0,
+      "thinking_budget_tokens": 512
+    },
+    "question": "What exact date will Python 3.16 change the default csv.DictReader restval to an empty string?",
+    "question_sha256": "1327daaa4da5b6a6eff46af8410e53da214a3a73140f3de6ba4e5e1b06e59f8e",
+    "verdict": "citation_provenance_valid_not_semantic_entailment"
+  }
+}

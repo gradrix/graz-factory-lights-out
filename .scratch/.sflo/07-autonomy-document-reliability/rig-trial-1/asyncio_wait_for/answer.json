@@ -1,0 +1,46 @@
+{
+  "id": "99495eb5950c561ae8452eb11971d154ef132a21285ea49202994818ee3be943",
+  "evidence_id": "97e675c4f4c3eb568818f1b23eb70027e11062f22d7f4d586c3e004340676935",
+  "answer": {
+    "status": "supported",
+    "claims": [
+      {
+        "text": "When asyncio.wait_for times out, it cancels the task and raises TimeoutError.",
+        "citations": [
+          {
+            "evidence_id": "97e675c4f4c3eb568818f1b23eb70027e11062f22d7f4d586c3e004340676935",
+            "span": 231,
+            "excerpt": "If a timeout occurs, it cancels the task and raises TimeoutError."
+          }
+        ]
+      },
+      {
+        "text": "The function will wait until the future is actually cancelled, so the total wait time may exceed the timeout.",
+        "citations": [
+          {
+            "evidence_id": "97e675c4f4c3eb568818f1b23eb70027e11062f22d7f4d586c3e004340676935",
+            "span": 233,
+            "excerpt": "The function will wait until the future is actually cancelled, so the total wait time may exceed the timeout."
+          }
+        ]
+      },
+      {
+        "text": "If an exception happens during cancellation, it is propagated.",
+        "citations": [
+          {
+            "evidence_id": "97e675c4f4c3eb568818f1b23eb70027e11062f22d7f4d586c3e004340676935",
+            "span": 233,
+            "excerpt": "If an exception happens during cancellation, it is propagated."
+          }
+        ]
+      }
+    ],
+    "reason": ""
+  },
+  "source_url": "https://docs.python.org/3.12/library/asyncio-task.html",
+  "source_version": "Python3.12 historical documentation snapshot; floating series URL, not exact runtime patch",
+  "retrieved_utc": "2026-10-04T15:32:40.070386+00:00",
+  "age_seconds": 475,
+  "freshness": "historical snapshot; current accuracy is not established",
+  "verdict": "citation_provenance_valid_not_semantic_entailment"
+}
