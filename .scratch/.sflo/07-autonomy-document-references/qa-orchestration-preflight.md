@@ -1,0 +1,11 @@
+# Combined fixture / orchestration preflight
+
+**PASS for document-level preservation and prompt separation; candidate API validation remains pending freeze.** No acquisition, model calls or maintained edits.
+
+Verified combined manifest SHA256 `27e94d04f753112ce7e96470fbfc75980f7a8da3d61feea7ac6dcd0a370fb24c`, all three bound file hashes, and both frozen parent-manifest hashes. Combined `questions.json` equals the exact ordered concatenation of the original ten questions and three transfer questions. `oracle.json.repeated_diagnostics` equals the complete original ten-case oracle; `fresh_transfer` equals the complete three-case oracle, including scope and passages. No expected facts, wording or original exposure fields changed. The grouping explicitly classifies the first ten as repeated diagnostics for this trial despite their preserved historical per-case exposure labels.
+
+Harness SHA256 `c299b7acae6920d2e5644d4746e2ac4038e4a482922faec341159f1b1808f3bc`; syntax compilation passed. Inspection confirms13unique questions, one public answer invocation per case, product-owned maximum two attempts, no external retry, preserved source acquisition/alignment gate, and output-directory refusal on a partial answer rerun. It hashes `oracle.json` as a frozen artifact but does not load its expected facts into prompts. `reference_request` receives only complete acquired evidence, model name and question text. Private config and serving argv are not published.
+
+Fresh acquisition creates new evidence IDs; baseline IDs/body/text hashes remain historical reference bindings, not silently reused acquisition identities. Independent pre-inference review must compare actual bodies **and spans**, bind all13cases to the new evidence files, and provide explicit changed-source addenda if needed. The reviewed gate remains separate from root's coordinator authorization.
+
+After source freeze, verify the proposed `gflo.document_references.reference_request` import/signature and deterministic request identity against the actual public answer path, plus format3 success/failure resolution. This preflight does not inspect or approve unfinished implementation. Subsequent semantic reporting must retain10repeat and3fresh denominators separately, and actual cross-version offline replay remains required.

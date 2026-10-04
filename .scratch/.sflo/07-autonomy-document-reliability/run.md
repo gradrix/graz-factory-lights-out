@@ -30,3 +30,5 @@ Trial1 interim failure: asyncio_gather exhausted two exact-citation-invalid resp
 Trial1 completed10questions/13calls/460.340s:8 structurally valid published answers,2 exhausted citation failures (gather, shield). [All requests/responses/outcomes](rig-trial-1/manifest.json) preserved. Exact quote copying failed on Unicode punctuation despite a repair. No candidate installation. Independent final semantics/offline replay pending; bounded reference option analysis is read-only.
 
 Final independent [rig QA](qa-rig-documents.md):8/10 complete semantic/citation outcomes, two punctuation-only exact-citation failures; actual offline replay PASS0.574s with old/new success and diagnostic refusal, all bytes unchanged. Successor chosen in ADR007 with explicit bounded references and format3; unit07 binding now points to successor run.
+
+Prepared promotion script was never executed and has been removed after failed qualification; accepted runtime596ecb6 remains installed.
