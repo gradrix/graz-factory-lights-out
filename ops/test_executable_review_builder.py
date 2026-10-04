@@ -14,13 +14,33 @@ class LedgerBehavior(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root=Path(directory)
             r.CaseLedger.create(root,time.monotonic()+300)
-            for i in range(8):
+            for i in range(7):
                 ledger=r.CaseLedger(root)
                 self.assertEqual(ledger.reserve('requests',{'role':'reviewer'}),i+1)
                 ledger.finish('requests',i+1,status='failed')
+            ledger.begin_final('request reserve')
+            ledger.reserve('requests',{'role':'reviewer'})
             with self.assertRaisesRegex(RuntimeError,'request'):
                 r.CaseLedger(root).reserve('requests',{})
             self.assertEqual(len(json.loads((root/'ledger.json').read_bytes())['requests']),8)
+
+    def test_reserved_final_is_separate_and_single_after_failure(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);r.CaseLedger.create(root,time.monotonic()+300)
+            ledger=r.CaseLedger(root)
+            for _ in range(7):ledger.reserve('requests',{})
+            with self.assertRaises(RuntimeError):ledger.reserve('requests',{})
+            ledger.begin_final('capacity')
+            final=ledger.reserve('requests',{});ledger.finish('requests',final,status='failed')
+            self.assertEqual(final,8)
+            with self.assertRaises(RuntimeError):r.CaseLedger(root).reserve('requests',{})
+
+    def test_length_recovery_survives_reconstruction(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory);r.CaseLedger.create(root,time.monotonic()+300)
+            r.CaseLedger(root).recover_length()
+            with self.assertRaises(RuntimeError):r.CaseLedger(root).recover_length()
+
 
     def test_tool_bound_and_expired_work_refuse(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -55,6 +75,7 @@ class ReviewLoopBehavior(unittest.TestCase):
             root=Path(directory);candidate=root/'candidate';candidate.mkdir();(candidate/'main.py').write_text('x=1\n')
             r.CaseLedger.create(root,time.monotonic()+300);ledger=r.CaseLedger(root)
             response=[{'choices':[{'finish_reason':'tool_calls','message':{'role':'assistant','content':None,'tool_calls':[{'id':'one','type':'function','function':{'name':'run','arguments':'{"command":"pwd"}'}}]}}]},
+                      {'choices':[{'finish_reason':'stop','message':{'role':'assistant','content':'```json proposed prose, never a verdict```'}}]},
                       {'choices':[{'finish_reason':'stop','message':{'role':'assistant','content':'{"decision":"pass","findings":[],"question":""}'}}]}]
             calls=[]
             class Transport:
@@ -69,7 +90,10 @@ class ReviewLoopBehavior(unittest.TestCase):
             self.assertEqual(calls[1]['messages'][0],calls[0]['messages'][0])
             self.assertEqual(calls[1]['messages'][-1]['role'],'tool')
             self.assertNotIn('Do not execute tools',r.SYSTEM)
-            self.assertEqual(len(ledger.read()['requests']),2)
+            self.assertEqual(len(ledger.read()['requests']),3)
+            self.assertNotIn('tools',calls[-1]);self.assertNotIn('tool_choice',calls[-1])
+            self.assertEqual(calls[-1]['response_format'],{'type':'json_object'})
+            self.assertEqual(ledger.read()['requests'][-1]['phase'],'final')
 
     def test_actual_local_readonly_relocated_command(self):
         import os,subprocess,types

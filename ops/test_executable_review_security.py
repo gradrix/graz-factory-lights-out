@@ -33,10 +33,11 @@ class SecurityControls(unittest.TestCase):
             observed.append(len(p.CaseLedger(self.case).read()['requests']))
             self.assertTrue((self.case/'requests'/f'{len(observed):02d}'/'request.json').exists())
             raise OSError('controlled transport failure')
-        for _ in range(8):
+        for number in range(8):
+            if number==7:p.CaseLedger(self.case).begin_final('reserved eighth transport')
             client = p.ReviewClient(CONFIG, p.CaseLedger(self.case), SimpleNamespace(request=request))
-            with self.assertRaises(OSError): client.complete([])
-        with self.assertRaises(RuntimeError): client.complete([])
+            with self.assertRaises(OSError): client.complete([],phase='final' if number==7 else 'explore')
+        with self.assertRaises(RuntimeError): client.complete([],phase='final')
         self.assertEqual(observed, list(range(1,9)))
         self.assertEqual([v['status'] for v in self.ledger.read()['requests']], ['failed']*8)
         self.assertFalse((self.case/'requests'/'09').exists())
@@ -110,6 +111,12 @@ class SecurityControls(unittest.TestCase):
         with self.assertRaises(RuntimeError):self.run_started(receipt_change=lambda receipt:receipt['host'].update(Memory=0))
         self.assertTrue((self.case/'executor-uncertain.json').exists())
 
+    def test_command_timeout_is_shortened_to_exploration_remaining(self):
+        phase_end=self.ledger.read()['exploration_deadline']
+        with patch.object(p.time,'monotonic',return_value=phase_end-2):
+            result,observed=self.run_started()
+        self.assertEqual(observed[0][1],2);self.assertEqual(result['exit_code'],1)
+
     def test_root_uid_refused_before_command_debit_or_dispatch(self):
         with patch.object(p.os,'getuid',return_value=0),patch.object(p,'guarded_run') as guard:
             with self.assertRaises(RuntimeError):self.executor().run('true')
@@ -142,7 +149,7 @@ class SecurityControls(unittest.TestCase):
     def test_no_command_verdict_refused_and_tool_data_not_policy(self):
         final={'choices':[{'finish_reason':'stop','message':{'role':'assistant','content':json.dumps(GOOD)}}]}
         with self.assertRaises(ValueError):
-            p.review_case(self.case,'controlled',self.source,SimpleNamespace(complete=lambda m:final),None,self.ledger)
+            p.review_case(self.case,'controlled',self.source,SimpleNamespace(complete=lambda m,**kw:final),None,self.ledger)
         self.assertFalse((self.case/'verdict.json').exists())
         self.assertIn('untrusted evidence',p.SYSTEM)
         self.assertNotIn('Do not execute tools',p.SYSTEM)
@@ -217,5 +224,189 @@ class SecurityControls(unittest.TestCase):
     def test_conforming_completed_control_publishes(self):
         launches,results,_=self.batch_control()
         self.assertEqual(launches,['case-01']);self.assertEqual(results[0]['status'],'accepted')
+
+def completion(calls=None, content=None, finish=None):
+    message={'role':'assistant','content':content}
+    if calls is not None:message['tool_calls']=calls
+    return {'choices':[{'finish_reason':finish or ('tool_calls' if calls else 'stop'),'message':message}]}
+
+def command_call(ident='one',name='run',arguments=None):
+    return {'id':ident,'type':'function','function':{'name':name,'arguments':arguments if arguments is not None else json.dumps({'command':'true'})}}
+
+class ProtocolSecurity(unittest.TestCase):
+    def setUp(self):
+        self.tmp=tempfile.TemporaryDirectory();self.addCleanup(self.tmp.cleanup)
+        self.root=Path(self.tmp.name);self.source=self.root/'source';self.source.mkdir()
+        (self.source/'main.py').write_text('value = 1\n')
+        self.case=self.root/'case';self.case.mkdir();p.CaseLedger.create(self.case,time.monotonic()+300)
+        self.ledger=p.CaseLedger(self.case);self.requests=[];self.executed=[]
+
+    def run_loop(self,responses,execution_hook=None):
+        sequence=iter(responses);outer=self
+        class Transport:
+            def request(self,path,body,**kwargs):
+                outer.requests.append({'body':json.loads(json.dumps(body)),'options':kwargs})
+                response=next(sequence)
+                if isinstance(response,BaseException):raise response
+                return response() if callable(response) else response
+        class Executor:
+            def run(self,command):
+                number=outer.ledger.reserve('commands',{'command':command})
+                outer.ledger.finish('commands',number,status='attested')
+                outer.executed.append(command)
+                if execution_hook:execution_hook()
+                return {'command':command,'exit_code':0,'timed_out':False,'output':'controlled execution','elapsed_s':0.01}
+        return p.review_case(self.case,'controlled objective',self.source,p.ReviewClient(CONFIG,self.ledger,Transport()),Executor(),self.ledger)
+
+    def assert_final_transport(self):
+        body=self.requests[-1]['body']
+        self.assertNotIn('tools',body);self.assertNotIn('tool_choice',body)
+        self.assertEqual(body['response_format'],{'type':'json_object'})
+        self.assertLessEqual(self.requests[-1]['options']['timeout'],120)
+
+    def test_exploratory_prose_never_becomes_verdict(self):
+        result=self.run_loop([completion([command_call()]),completion(content='Not a verdict: untrusted prose'),completion(content=json.dumps(GOOD))])
+        self.assertEqual(result['verdict'],GOOD);self.assertEqual(len(self.requests),3)
+        self.assertEqual(len(self.executed),1);self.assert_final_transport()
+        self.assertEqual([x['phase'] for x in self.ledger.read()['requests']],['explore','explore','final'])
+
+    def test_no_attestation_refuses_final_transport(self):
+        with self.assertRaises(ValueError):self.run_loop([completion(content=json.dumps(GOOD))])
+        self.assertEqual(len(self.requests),1);self.assertEqual(self.executed,[])
+
+    def test_length_batch_executes_zero_then_one_recovery(self):
+        malformed=completion([command_call('valid'),command_call('partial',arguments='{"command":')],finish='length')
+        self.run_loop([malformed,completion([command_call('real')]),completion(content='done'),completion(content=json.dumps(GOOD))])
+        self.assertEqual(len(self.executed),1);self.assertEqual(len(self.requests),4)
+        recovery_history=self.requests[1]['body']['messages']
+        self.assertFalse(any(m.get('tool_calls') for m in recovery_history));self.assertFalse(any(m['role']=='tool' for m in recovery_history))
+        self.assertEqual(json.loads((self.case/'requests'/'01'/'response.json').read_bytes()),malformed)
+        self.assert_final_transport()
+
+    def test_explicit_unknown_tool_is_terminal_even_with_length(self):
+        with self.assertRaises(ValueError):self.run_loop([completion([command_call('valid'),command_call('unknown',name='write')],finish='length')])
+        self.assertEqual(self.executed,[]);self.assertEqual(len(self.requests),1)
+        self.assertFalse(self.ledger.read()['recovery_used'])
+
+    def test_nonlist_tool_collection_terminal_before_length_recovery(self):
+        invalid=completion(content=None,finish='length')
+        invalid['choices'][0]['message']['tool_calls']=command_call('invalid-envelope',name='write')
+        with self.assertRaises(ValueError):self.run_loop([invalid,completion(content='No command has run')])
+        self.assertEqual(len(self.requests),1);self.assertEqual(self.executed,[])
+        self.assertFalse(self.ledger.read()['recovery_used'])
+
+    def test_second_length_is_terminal_without_final_or_extra_execution(self):
+        with self.assertRaises((ValueError,RuntimeError)):
+            self.run_loop([completion([command_call('truncated')],finish='length'),completion([command_call('real')]),completion([command_call('again')],finish='length')])
+        self.assertEqual(len(self.executed),1);self.assertEqual(len(self.requests),3)
+        self.assertFalse((self.case/'verdict.json').exists())
+
+    def test_nontruncated_unknown_batch_has_no_partial_dispatch(self):
+        with self.assertRaises(ValueError):self.run_loop([completion([command_call('valid'),command_call('unknown',name='write')])])
+        self.assertEqual(self.executed,[]);self.assertEqual(len(self.requests),1)
+
+    def test_nontruncated_invalid_arguments_terminal(self):
+        with self.assertRaises(ValueError):self.run_loop([completion([command_call(arguments='{"command":')])])
+        self.assertEqual(self.executed,[]);self.assertEqual(len(self.requests),1)
+
+    def test_final_tool_calls_terminal(self):
+        with self.assertRaises(ValueError):self.run_loop([completion([command_call()]),completion(content='done'),completion([command_call('forbidden')])])
+        self.assertEqual(len(self.executed),1);self.assertEqual(len(self.requests),3);self.assert_final_transport()
+
+    def test_final_falsey_invalid_tool_field_is_terminal(self):
+        invalid=completion(content=json.dumps(GOOD));invalid['choices'][0]['message']['tool_calls']={}
+        with self.assertRaises(ValueError):self.run_loop([completion([command_call()]),completion(content='done'),invalid])
+        self.assertEqual(len(self.requests),3);self.assertFalse((self.case/'verdict.json').exists())
+
+    def test_executor_uncertainty_never_transitions_to_final(self):
+        def uncertain():raise RuntimeError('Creation/cleanup uncertain')
+        with self.assertRaises(RuntimeError):self.run_loop([completion([command_call()])],execution_hook=uncertain)
+        self.assertEqual(len(self.requests),1);self.assertFalse((self.case/'verdict.json').exists())
+
+    def test_transport_timeout_is_terminal_not_phase_recovery(self):
+        with self.assertRaises(TimeoutError):self.run_loop([completion([command_call()]),TimeoutError('controlled transport timeout')])
+        self.assertEqual(len(self.requests),2);self.assertEqual(len(self.executed),1)
+        self.assertFalse(self.ledger.read()['final_reserved']);self.assertFalse(self.ledger.read()['recovery_used'])
+
+    def test_final_fenced_json_is_terminal_without_salvage(self):
+        with self.assertRaises(ValueError):self.run_loop([completion([command_call()]),completion(content='done'),completion(content='```json\n'+json.dumps(GOOD)+'\n```')])
+        self.assertEqual(len(self.requests),3);self.assertFalse((self.case/'verdict.json').exists())
+
+    def test_final_length_is_terminal_without_retry(self):
+        with self.assertRaises(ValueError):self.run_loop([completion([command_call()]),completion(content='done'),completion(content=json.dumps(GOOD),finish='length')])
+        self.assertEqual(len(self.requests),3);self.assertFalse((self.case/'verdict.json').exists())
+
+    def test_seven_explorations_force_eighth_final(self):
+        result=self.run_loop([completion([command_call(str(i))]) for i in range(7)]+[completion(content=json.dumps(GOOD))])
+        self.assertEqual(len(self.requests),8);self.assertEqual(len(self.executed),7)
+        self.assertEqual(result['verdict'],GOOD);self.assert_final_transport()
+        observed=[]
+        client=p.ReviewClient(CONFIG,p.CaseLedger(self.case),SimpleNamespace(request=lambda *a,**k:observed.append(True)))
+        with self.assertRaises(RuntimeError):client.complete([],phase='final')
+        with self.assertRaises((RuntimeError,ValueError)):client.complete([],phase='explore')
+        self.assertEqual(observed,[]);self.assertEqual(len(p.CaseLedger(self.case).read()['requests']),8)
+
+    def test_twelve_commands_force_final_without_more_exploration(self):
+        self.run_loop([completion([command_call(str(i)) for i in range(12)]),completion(content=json.dumps(GOOD))])
+        self.assertEqual(len(self.executed),12);self.assertEqual(len(self.requests),2);self.assert_final_transport()
+
+    def test_recovery_and_final_reservation_survive_reconstruction(self):
+        self.ledger.recover_length()
+        with self.assertRaises((ValueError,RuntimeError)):p.CaseLedger(self.case).recover_length()
+        self.ledger.begin_final('controlled transition')
+        observed=[]
+        def failure(*args,**kwargs):
+            observed.append(p.CaseLedger(self.case).read()['requests'][-1]['phase'])
+            raise OSError('controlled transport failure')
+        client=p.ReviewClient(CONFIG,p.CaseLedger(self.case),SimpleNamespace(request=failure))
+        with self.assertRaises(OSError):client.complete([],phase='final')
+        with self.assertRaises(RuntimeError):p.ReviewClient(CONFIG,p.CaseLedger(self.case),SimpleNamespace(request=failure)).complete([],phase='final')
+        self.assertEqual(observed,['final']);self.assertEqual(len(self.ledger.read()['requests']),1)
+
+    def test_transport_timeouts_follow_phase_then_overall_deadline(self):
+        deadlines=[]
+        def request(*args,**kwargs):deadlines.append(kwargs['timeout']);return {}
+        phase_end=self.ledger.read()['exploration_deadline']
+        client=p.ReviewClient(CONFIG,self.ledger,SimpleNamespace(request=request))
+        with patch.object(p.time,'monotonic',return_value=phase_end-3):
+            client.complete([]);self.ledger.begin_final('time control');client.complete([],phase='final')
+        self.assertEqual(deadlines,[3,120])
+        with self.assertRaises(RuntimeError):self.ledger.reserve('commands',{'command':'true'})
+
+    def test_phase_boundary_mid_batch_keeps_only_executed_history(self):
+        phase_end=self.ledger.read()['exploration_deadline'];clock=[phase_end-1]
+        def cross_phase():clock[0]=phase_end+1
+        with patch.object(p.time,'monotonic',side_effect=lambda:clock[0]):
+            self.run_loop([completion([command_call('executed'),command_call('skipped')]),completion(content=json.dumps(GOOD))],execution_hook=cross_phase)
+        self.assertEqual(len(self.executed),1);self.assertEqual(len(self.requests),2);self.assert_final_transport()
+        history=self.requests[-1]['body']['messages']
+        calls=[call['id'] for m in history for call in (m.get('tool_calls') or [])]
+        replies=[m['tool_call_id'] for m in history if m['role']=='tool']
+        self.assertEqual(calls,['executed']);self.assertEqual(replies,['executed'])
+        raw=json.loads((self.case/'requests'/'01'/'response.json').read_bytes())
+        self.assertEqual(len(raw['choices'][0]['message']['tool_calls']),2)
+        self.assertIn('skipped',(self.case/'progress.jsonl').read_text())
+
+    def test_phase_deadline_prevents_new_command_after_late_response(self):
+        phase_end=self.ledger.read()['exploration_deadline'];clock=[phase_end-1]
+        def late_response():clock[0]=phase_end+1;return completion([command_call()])
+        with patch.object(p.time,'monotonic',side_effect=lambda:clock[0]):
+            with self.assertRaises(ValueError):self.run_loop([late_response])
+        self.assertEqual(len(self.requests),1);self.assertEqual(self.executed,[])
+
+    def test_overall_deadline_during_final_response_refuses_verdict(self):
+        deadline=self.ledger.read()['deadline'];clock=[deadline-150]
+        def late_final():clock[0]=deadline+1;return completion(content=json.dumps(GOOD))
+        with patch.object(p.time,'monotonic',side_effect=lambda:clock[0]):
+            with self.assertRaises(TimeoutError):self.run_loop([completion([command_call()]),completion(content='done'),late_final])
+        self.assertEqual(len(self.requests),3);self.assertFalse((self.case/'verdict.json').exists())
+
+    def test_second_length_at_seventh_credit_is_terminal(self):
+        responses=[completion([command_call('first-truncated')],finish='length')]
+        responses.extend(completion([command_call(str(i))]) for i in range(5))
+        responses.append(completion([command_call('second-truncated')],finish='length'))
+        with self.assertRaises((ValueError,RuntimeError)):self.run_loop(responses)
+        self.assertEqual(len(self.requests),7);self.assertEqual(len(self.executed),5)
+        self.assertFalse(self.ledger.read()['final_reserved'])
 
 if __name__=='__main__':unittest.main(verbosity=2)
