@@ -9,7 +9,7 @@ Contract: contract.md sha256 ab3ba1d7aa4d11237de3914f2a1ed40d3dcb47a680ee181465e
 Status: active
 Owner: /root coordinator; /root/cohort_c sole maintained-code builder
 Candidate: frozen v5 manifest SHA256 ee60bbe4012e03acbcd5a9cd403a63f62290dd253c97a7f7979ead062ee53ea4; source596ecb6; not accepted
-Next: repair rig-discovered seed copy false mutation alarm, freeze v5 and independently recheck input seam before fresh rig trial.
+Next: fresh v5 actual-rig acceptance running; independently assess results before acceptance/installation.
 
 ## Checks and repairs
 
@@ -54,3 +54,5 @@ Rig v4 failed, preserved under rig-v4-failed and remote .gflo/rig-qualification-
 Seed diagnosis confirmed on actual rig temporary file: only st_atime_ns changed after own read; old full-stat equality rejected (builder-seed-atime-rig.json). New bounded nofollow reader passed on same filesystem while old comparison would reject (builder-seed-fixed-rig.json).31 affected browser tests pass39.116s. Frozen v5 and independent input-seam review pending; first failed qualification remains intact.
 
 V5 source596ecb6 preserved and staged in isolated rig checkout. Nine bound hashes verified; only seed reader/test changed from v4. Independent reviewer assigned affected seed seam; rig trial waits for verdict.
+
+V5 independent seed review reports24 cases passed, including real atime-only change and mutation/replacement/link controls. Public seam rejects unsafe seeds before pair. Final report saving; no scoped blocker. Fresh rig trial started at isolated596ecb6/.gflo/rig-qualification-v5 with unchanged harness hashes, fixed fixture and prepared support; outer log rig-qualification-v5.log. Previous v4 failure remains untouched.

@@ -124,3 +124,10 @@ htmlcov/
 .scratch/.sflo/06-autonomy-browser/rig-v4-failed/*
 !.scratch/.sflo/06-autonomy-browser/rig-v4-failed/*.json
 !.scratch/.sflo/06-autonomy-browser/rig-v4-failed/*.log
+
+!.scratch/.sflo/06-autonomy-browser/security-browser-v5/
+.scratch/.sflo/06-autonomy-browser/security-browser-v5/*
+!.scratch/.sflo/06-autonomy-browser/security-browser-v5/*.py
+!.scratch/.sflo/06-autonomy-browser/security-browser-v5/*.json
+!.scratch/.sflo/06-autonomy-browser/security-browser-v5/*.log
+!.scratch/.sflo/06-autonomy-browser/security-browser-v5/*.patch

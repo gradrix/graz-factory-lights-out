@@ -1,0 +1,282 @@
+[
+  {
+    "case": "actual-tmpfs-atime-only",
+    "accepted": true,
+    "atime_changed": true,
+    "mtime_changed": false,
+    "ctime_changed": false,
+    "old_full_stat_predicate_rejects": true
+  },
+  {
+    "case": "regular",
+    "accepted": true,
+    "error": null,
+    "returned_bytes": 2,
+    "requested_read_sizes": [
+      65537
+    ],
+    "actual_mutation_performed": false,
+    "elapsed_s": 0.00013376306742429733,
+    "atime_changed": false,
+    "mtime_changed": false,
+    "ctime_changed": false
+  },
+  {
+    "case": "actual-atime",
+    "accepted": true,
+    "error": null,
+    "returned_bytes": 2,
+    "requested_read_sizes": [
+      65537
+    ],
+    "actual_mutation_performed": false,
+    "elapsed_s": 0.0001212703064084053,
+    "atime_changed": false,
+    "mtime_changed": false,
+    "ctime_changed": false
+  },
+  {
+    "case": "exact65536",
+    "accepted": true,
+    "error": null,
+    "returned_bytes": 65536,
+    "requested_read_sizes": [
+      65537
+    ],
+    "actual_mutation_performed": false,
+    "elapsed_s": 0.00014320015907287598,
+    "atime_changed": false,
+    "mtime_changed": false,
+    "ctime_changed": false
+  },
+  {
+    "case": "oversize65537",
+    "accepted": false,
+    "error": "ValueError: Invalid regular seed input",
+    "returned_bytes": null,
+    "requested_read_sizes": [],
+    "actual_mutation_performed": false,
+    "elapsed_s": 7.630279287695885e-05,
+    "atime_changed": false,
+    "mtime_changed": false,
+    "ctime_changed": false
+  },
+  {
+    "case": "symlink",
+    "accepted": false,
+    "error": "ValueError: Invalid regular seed input",
+    "returned_bytes": null,
+    "requested_read_sizes": [],
+    "actual_mutation_performed": false,
+    "elapsed_s": 6.854720413684845e-05,
+    "atime_changed": false,
+    "mtime_changed": false,
+    "ctime_changed": false
+  },
+  {
+    "case": "ancestor-link",
+    "accepted": false,
+    "error": "NotADirectoryError: [Errno 20] Not a directory: 'alias'",
+    "returned_bytes": null,
+    "requested_read_sizes": [],
+    "actual_mutation_performed": false,
+    "elapsed_s": 6.906874477863312e-05,
+    "atime_changed": false,
+    "mtime_changed": false,
+    "ctime_changed": false
+  },
+  {
+    "case": "hardlink",
+    "accepted": false,
+    "error": "ValueError: Invalid regular seed input",
+    "returned_bytes": null,
+    "requested_read_sizes": [],
+    "actual_mutation_performed": false,
+    "elapsed_s": 6.75390474498272e-05,
+    "atime_changed": false,
+    "mtime_changed": false,
+    "ctime_changed": false
+  },
+  {
+    "case": "fifo",
+    "accepted": false,
+    "error": "ValueError: Invalid regular seed input",
+    "returned_bytes": null,
+    "requested_read_sizes": [],
+    "actual_mutation_performed": false,
+    "elapsed_s": 6.750598549842834e-05,
+    "atime_changed": false,
+    "mtime_changed": false,
+    "ctime_changed": false
+  },
+  {
+    "case": "directory",
+    "accepted": false,
+    "error": "ValueError: Invalid regular seed input",
+    "returned_bytes": null,
+    "requested_read_sizes": [],
+    "actual_mutation_performed": false,
+    "elapsed_s": 6.803590804338455e-05,
+    "atime_changed": false,
+    "mtime_changed": false,
+    "ctime_changed": false
+  },
+  {
+    "case": "before-open-replacement",
+    "accepted": false,
+    "error": "ValueError: Seed replaced before read",
+    "returned_bytes": null,
+    "requested_read_sizes": [],
+    "actual_mutation_performed": true,
+    "elapsed_s": 0.0001281769946217537,
+    "atime_changed": true,
+    "mtime_changed": true,
+    "ctime_changed": true
+  },
+  {
+    "case": "before-open-symlink",
+    "accepted": false,
+    "error": "OSError: [Errno 40] Too many levels of symbolic links: 'seed.json'",
+    "returned_bytes": null,
+    "requested_read_sizes": [],
+    "actual_mutation_performed": true,
+    "elapsed_s": 0.00014752987772226334,
+    "atime_changed": true,
+    "mtime_changed": true,
+    "ctime_changed": true
+  },
+  {
+    "case": "before-open-fifo",
+    "accepted": false,
+    "error": "ValueError: Invalid regular seed input",
+    "returned_bytes": null,
+    "requested_read_sizes": [],
+    "actual_mutation_performed": true,
+    "elapsed_s": 0.00011162878945469856,
+    "atime_changed": true,
+    "mtime_changed": true,
+    "ctime_changed": true
+  },
+  {
+    "case": "after-read-write",
+    "accepted": false,
+    "error": "ValueError: Seed changed during copy",
+    "returned_bytes": null,
+    "requested_read_sizes": [
+      65537
+    ],
+    "actual_mutation_performed": true,
+    "elapsed_s": 0.00016956590116024017,
+    "atime_changed": false,
+    "mtime_changed": true,
+    "ctime_changed": true
+  },
+  {
+    "case": "after-read-truncate",
+    "accepted": false,
+    "error": "ValueError: Seed changed during copy",
+    "returned_bytes": null,
+    "requested_read_sizes": [
+      65537
+    ],
+    "actual_mutation_performed": true,
+    "elapsed_s": 0.0001419982872903347,
+    "atime_changed": false,
+    "mtime_changed": true,
+    "ctime_changed": true
+  },
+  {
+    "case": "after-read-restore-mtime",
+    "accepted": false,
+    "error": "ValueError: Seed changed during copy",
+    "returned_bytes": null,
+    "requested_read_sizes": [
+      65537
+    ],
+    "actual_mutation_performed": true,
+    "elapsed_s": 0.0001812940463423729,
+    "atime_changed": false,
+    "mtime_changed": false,
+    "ctime_changed": true
+  },
+  {
+    "case": "after-read-replacement",
+    "accepted": false,
+    "error": "ValueError: Invalid regular seed input",
+    "returned_bytes": null,
+    "requested_read_sizes": [
+      65537
+    ],
+    "actual_mutation_performed": true,
+    "elapsed_s": 0.00017275288701057434,
+    "atime_changed": true,
+    "mtime_changed": true,
+    "ctime_changed": true
+  },
+  {
+    "case": "after-read-parent-replacement",
+    "accepted": false,
+    "error": "ValueError: Seed parent replaced during copy",
+    "returned_bytes": null,
+    "requested_read_sizes": [
+      65537
+    ],
+    "actual_mutation_performed": true,
+    "elapsed_s": 0.00018801400437951088,
+    "atime_changed": true,
+    "mtime_changed": true,
+    "ctime_changed": true
+  },
+  {
+    "case": "after-read-hardlink",
+    "accepted": false,
+    "error": "ValueError: Invalid regular seed input",
+    "returned_bytes": null,
+    "requested_read_sizes": [
+      65537
+    ],
+    "actual_mutation_performed": true,
+    "elapsed_s": 0.00011080503463745117,
+    "atime_changed": false,
+    "mtime_changed": false,
+    "ctime_changed": true
+  },
+  {
+    "case": "after-read-mode",
+    "accepted": false,
+    "error": "ValueError: Seed changed during copy",
+    "returned_bytes": null,
+    "requested_read_sizes": [
+      65537
+    ],
+    "actual_mutation_performed": true,
+    "elapsed_s": 0.00012631528079509735,
+    "atime_changed": false,
+    "mtime_changed": false,
+    "ctime_changed": true
+  },
+  {
+    "case": "store-actual-atime",
+    "pair_calls": 1,
+    "error": null,
+    "passed": "passed"
+  },
+  {
+    "case": "store-hardlink",
+    "pair_calls": 0,
+    "error": "ValueError: Invalid regular seed input",
+    "passed": null
+  },
+  {
+    "case": "store-fifo",
+    "pair_calls": 0,
+    "error": "ValueError: Invalid regular seed input",
+    "passed": null
+  },
+  {
+    "case": "store-symlink",
+    "pair_calls": 0,
+    "error": "ValueError: Invalid regular seed input",
+    "passed": null
+  }
+]
