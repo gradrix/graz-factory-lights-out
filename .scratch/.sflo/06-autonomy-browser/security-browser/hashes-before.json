@@ -1,0 +1,10 @@
+{
+  "docs/local-browser.md": true,
+  "gflo/__main__.py": true,
+  "gflo/browser.py": true,
+  "gflo/browser_pair.py": true,
+  "gflo/recipes/browser/journey.cjs": true,
+  "gflo/recipes/browser/seccomp.json": true,
+  "tests/test_browser.py": true,
+  "tests/test_browser_live.py": true
+}

@@ -1,0 +1,58 @@
+[
+  {
+    "mode": "owner-startup",
+    "observed_phase": true,
+    "exit": -9,
+    "stdout": "",
+    "stderr": "",
+    "remaining": [],
+    "before_cleanup": [
+      "d25ba737fbb1634f201c7f235ad2b8a8148db94beb4b4d0ebcc12c249a7a2f29",
+      ".work-9dlbh91q",
+      ".stage-8a1l_zsz",
+      ".lock",
+      ".cleanup-required"
+    ],
+    "after_cleanup": [
+      "d25ba737fbb1634f201c7f235ad2b8a8148db94beb4b4d0ebcc12c249a7a2f29",
+      ".lock"
+    ]
+  },
+  {
+    "mode": "owner-artifact",
+    "observed_phase": true,
+    "exit": -9,
+    "stdout": "",
+    "stderr": "",
+    "remaining": [],
+    "before_cleanup": [
+      ".stage-322ldgi0",
+      "cb0a4047ad3bd99157203a5d0b637acf2c6027fc300cdf5c4906431cd95105ed",
+      ".lock",
+      ".work-mkusl9w_",
+      ".cleanup-required"
+    ],
+    "after_cleanup": [
+      "cb0a4047ad3bd99157203a5d0b637acf2c6027fc300cdf5c4906431cd95105ed",
+      ".lock"
+    ]
+  },
+  {
+    "mode": "cancel-artifact",
+    "observed_phase": true,
+    "exit": 0,
+    "stdout": "{\"id\": \"d559f4002b447d634a50075e92e873ef63a83c8f0d511096166ad06f58ece102\", \"status\": \"failed\"}\n",
+    "stderr": "",
+    "remaining": [],
+    "before_cleanup": [
+      "d559f4002b447d634a50075e92e873ef63a83c8f0d511096166ad06f58ece102",
+      ".lock",
+      "420384790978f1d2cfcfc0a0a374aad4cd06e798ad25ce1022628632b862549b"
+    ],
+    "after_cleanup": [
+      "d559f4002b447d634a50075e92e873ef63a83c8f0d511096166ad06f58ece102",
+      ".lock",
+      "420384790978f1d2cfcfc0a0a374aad4cd06e798ad25ce1022628632b862549b"
+    ]
+  }
+]

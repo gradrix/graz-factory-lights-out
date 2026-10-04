@@ -1,0 +1,42 @@
+{
+  "docs/local-browser.md": {
+    "expected": "85665f65a219bbd3a0bf901f0e0100ac3d511d6552868699d3834eee72fdcb49",
+    "commit_sha256": "85665f65a219bbd3a0bf901f0e0100ac3d511d6552868699d3834eee72fdcb49",
+    "workspace_sha256": "85665f65a219bbd3a0bf901f0e0100ac3d511d6552868699d3834eee72fdcb49"
+  },
+  "gflo/__main__.py": {
+    "expected": "8f06ecff1622303bde7466ddf83de3a9dc1b6a0f65ac6a126c43989fa3749737",
+    "commit_sha256": "8f06ecff1622303bde7466ddf83de3a9dc1b6a0f65ac6a126c43989fa3749737",
+    "workspace_sha256": "8f06ecff1622303bde7466ddf83de3a9dc1b6a0f65ac6a126c43989fa3749737"
+  },
+  "gflo/browser.py": {
+    "expected": "e26e47d0d95683fd90d05b035a1c7a9dcb7ab9d24c37d455ca08291e0809e5a1",
+    "commit_sha256": "e26e47d0d95683fd90d05b035a1c7a9dcb7ab9d24c37d455ca08291e0809e5a1",
+    "workspace_sha256": "e26e47d0d95683fd90d05b035a1c7a9dcb7ab9d24c37d455ca08291e0809e5a1"
+  },
+  "gflo/browser_pair.py": {
+    "expected": "b75ae9f168a62c5c3907f604ee83c39aef39d384444f9e45d65054774a083924",
+    "commit_sha256": "b75ae9f168a62c5c3907f604ee83c39aef39d384444f9e45d65054774a083924",
+    "workspace_sha256": "b75ae9f168a62c5c3907f604ee83c39aef39d384444f9e45d65054774a083924"
+  },
+  "gflo/recipes/browser/journey.cjs": {
+    "expected": "51fe954cfae48b19ed618f3c82ae7d52c6997772aaad2c6dbe13b5be39fd000b",
+    "commit_sha256": "51fe954cfae48b19ed618f3c82ae7d52c6997772aaad2c6dbe13b5be39fd000b",
+    "workspace_sha256": "51fe954cfae48b19ed618f3c82ae7d52c6997772aaad2c6dbe13b5be39fd000b"
+  },
+  "gflo/recipes/browser/seccomp.json": {
+    "expected": "322b86b4f7f5b597ed6a9c2cfd6193a4b249a51c8bc9cfba8ff1a485070b24e8",
+    "commit_sha256": "322b86b4f7f5b597ed6a9c2cfd6193a4b249a51c8bc9cfba8ff1a485070b24e8",
+    "workspace_sha256": "322b86b4f7f5b597ed6a9c2cfd6193a4b249a51c8bc9cfba8ff1a485070b24e8"
+  },
+  "tests/test_browser.py": {
+    "expected": "d121436776a797f5ec6ff9e0be2c441a7146b5d058d336415c77f3f756da73e4",
+    "commit_sha256": "d121436776a797f5ec6ff9e0be2c441a7146b5d058d336415c77f3f756da73e4",
+    "workspace_sha256": "d121436776a797f5ec6ff9e0be2c441a7146b5d058d336415c77f3f756da73e4"
+  },
+  "tests/test_browser_live.py": {
+    "expected": "d5cd486fba964523feee8371127d19284232ad76cbd6ed431349312a0b614cc8",
+    "commit_sha256": "d5cd486fba964523feee8371127d19284232ad76cbd6ed431349312a0b614cc8",
+    "workspace_sha256": "d5cd486fba964523feee8371127d19284232ad76cbd6ed431349312a0b614cc8"
+  }
+}

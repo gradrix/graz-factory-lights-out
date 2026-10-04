@@ -1,0 +1,83 @@
+[
+  {
+    "case": "external-navigation",
+    "id": "607a607474f81b024bb56d87262f359b56739df534a41bac85d82f930d0716b5",
+    "status": "failed",
+    "failure": {
+      "message": "Disallowed request http://1.1.1.1/",
+      "phase": "journey"
+    },
+    "cleanup": {
+      "confirmed": true,
+      "errors": [],
+      "remaining": []
+    }
+  },
+  {
+    "case": "assertion",
+    "id": "be713901cb8a0b8b38e327844a523c3b5b6b53a4b00668b54f17b87481edd489",
+    "status": "failed",
+    "failure": {
+      "message": "AssertionError [ERR_ASSERTION]: 1 == 2",
+      "phase": "journey"
+    },
+    "cleanup": {
+      "confirmed": true,
+      "errors": [],
+      "remaining": []
+    }
+  },
+  {
+    "case": "hostile-text",
+    "id": "ea83074b85c9d09956f1471407cd0e6f3238bea9fe65b0e609036080de8e1551",
+    "status": "passed",
+    "failure": null,
+    "cleanup": {
+      "confirmed": true,
+      "errors": [],
+      "remaining": []
+    }
+  },
+  {
+    "case": "event-flood",
+    "id": "1e4f483015b18e021ea4ebf1250f43c56a77fa9e9cb69f6c8a6d43e1a7c1f8e2",
+    "status": "failed",
+    "failure": {
+      "message": "Error: Browser event limit",
+      "phase": "journey"
+    },
+    "cleanup": {
+      "confirmed": true,
+      "errors": [],
+      "remaining": []
+    }
+  },
+  {
+    "case": "download",
+    "id": "01709773cdabb53ccc1ab6f6ca164f6deb2a0ffd3607929704e97705c844d728",
+    "status": "failed",
+    "failure": {
+      "message": "Download forbidden",
+      "phase": "journey"
+    },
+    "cleanup": {
+      "confirmed": true,
+      "errors": [],
+      "remaining": []
+    }
+  },
+  {
+    "case": "file-upload",
+    "id": "0ec3df54e47e6a774bbeca1fbff71f345402f1fbe19500ea5904f90fac01e5a8",
+    "status": "failed",
+    "failure": {
+      "message": "Error: File uploads forbidden by local browser profile",
+      "phase": "journey"
+    },
+    "cleanup": {
+      "confirmed": true,
+      "errors": [],
+      "remaining": []
+    }
+  }
+]

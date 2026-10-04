@@ -1,0 +1,53 @@
+[
+  {
+    "mode": "startup",
+    "phase_observed": true,
+    "owned_ids_at_kill": [
+      "f8f1823b0b4cc292c8710e3fbc77b8bbf4da846a876faf745122fa9ac7f6a9ba"
+    ],
+    "owner_exit": -9,
+    "stdout": "",
+    "stderr": "",
+    "remaining": [],
+    "seconds_to_absence": 0.2620719689875841,
+    "before_recovery": [
+      ".stage-innf701b",
+      ".work-904r5ga2",
+      "0d8f8996867275b46236403a7fd9e4cc700e69e2c2211a7616f901ff55656744",
+      ".lock",
+      ".cleanup-required"
+    ],
+    "recovery_required": true,
+    "after_recovery": [
+      "0d8f8996867275b46236403a7fd9e4cc700e69e2c2211a7616f901ff55656744",
+      ".lock"
+    ],
+    "support_preserved": true
+  },
+  {
+    "mode": "artifact",
+    "phase_observed": true,
+    "owned_ids_at_kill": [
+      "603b002968ba2257f4f28b20f0e8e9aa976b8dbecc40793d9b1b6807d1543b13",
+      "6fad553a722ba556fc034b53e6db7bea1da476737b7c56eabe0cb0063eb96ecb"
+    ],
+    "owner_exit": -9,
+    "stdout": "",
+    "stderr": "",
+    "remaining": [],
+    "seconds_to_absence": 0.3137758676894009,
+    "before_recovery": [
+      "a54251cf1f34351d0c9d2d08c1294a9c6fa3745bbb416f359da7f95d7cfe37d7",
+      ".lock",
+      ".work-b1wpg7wk",
+      ".cleanup-required",
+      ".stage-swg3pqgc"
+    ],
+    "recovery_required": true,
+    "after_recovery": [
+      "a54251cf1f34351d0c9d2d08c1294a9c6fa3745bbb416f359da7f95d7cfe37d7",
+      ".lock"
+    ],
+    "support_preserved": true
+  }
+]

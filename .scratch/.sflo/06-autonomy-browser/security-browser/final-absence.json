@@ -1,0 +1,14 @@
+[
+  {
+    "store": ".gflo/browser-security-v2/live/store",
+    "remaining": []
+  },
+  {
+    "store": ".gflo/browser-security-v2/lifecycle/startup",
+    "remaining": []
+  },
+  {
+    "store": ".gflo/browser-security-v2/lifecycle/artifact",
+    "remaining": []
+  }
+]

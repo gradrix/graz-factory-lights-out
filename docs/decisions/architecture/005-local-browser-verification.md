@@ -14,3 +14,11 @@ The prototype retained Chromium's disable-dev-shm-usage default. The implementat
 Five independently checked stock-reservation journeys will qualify the first path. This establishes browser verification, not local-model app generation, public browsing, search, arbitrary framework support or fullStage4 completion. A later generated application can use these checks after the capability itself passes.
 
 Evidence: [prototype](../../../.scratch/autonomy/browser-boundary-prototype.md), [independent assessment](../../../.scratch/autonomy/browser-boundary-prototype/security-assessment.md), [proposal](../../../.scratch/autonomy/local-browser-unit-proposal.md), [active unit](../../../.scratch/autonomy/delivery/06-local-browser.md), [frozen contract](../../../.scratch/.sflo/06-autonomy-browser/contract.md).
+
+## Multiple browser contexts
+
+A journey may use up to four fresh contexts. The one opaque trace.zip artifact contains a manifest and one Playwright trace ZIP per context, within the existing aggregate16MiB cap. Every approved context is recorded, including the losing session in the conflict journey. Opening a particular inner trace is an explicit offline operator action; the factory does not extract or render it on the host. This agent decision fixes a pre-freeze primary-context-only recording gap without increasing the frozen artifact budget.
+
+## Redirect and WebSocket restriction
+
+Independent review of candidate c201083 demonstrated that ordinary HTTP routing did not prevent redirected fetches or WebSockets from reaching a second endpoint in the owned app namespace. On 2026-10-04 the agent chose to reject every HTTP redirect before delivering it to Chromium and block all WebSockets in this first profile. Applications requiring either are unsupported. This keeps ordinary exact-origin HTTP flows usable with a small preventive policy; the network-none namespace remains the outer boundary. Repair and independent recheck are required before acceptance.

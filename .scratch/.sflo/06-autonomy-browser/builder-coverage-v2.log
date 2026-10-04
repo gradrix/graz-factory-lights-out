@@ -1,0 +1,218 @@
+.venv/bin/coverage erase
+.venv/bin/coverage run -m unittest discover -s tests -v
+test_fixed_transport_rejects_extra_duplicate_oversize_corrupt_and_dimensions (test_browser.BrowserArtifactTests) ... ok
+test_offline_archive_digest_and_types_are_checked (test_browser.BrowserInputPolicyTests) ... ok
+test_snapshot_caps_and_unsafe_store (test_browser.BrowserInputPolicyTests) ... ok
+test_check_freezes_and_offline_inspect_detects_artifact_tamper (test_browser.BrowserStoreTests) ... ok
+test_failed_commit_preserves_prior_result (test_browser.BrowserStoreTests) ... ok
+test_incomplete_artifacts_are_saved_as_failure (test_browser.BrowserStoreTests) ... ok
+test_owner_or_guardian_exception_retains_fence (test_browser.BrowserStoreTests) ... ok
+test_request_bounds_and_missing_entry_fail_before_launch (test_browser.BrowserStoreTests) ... ok
+test_seed_bounds_and_cancel_before_launch (test_browser.BrowserStoreTests) ... ok
+test_support_tamper_rejected_before_launch (test_browser.BrowserStoreTests) ... ok
+test_uncertain_cleanup_never_publishes_and_fences_next_check (test_browser.BrowserStoreTests) ... ok
+test_cli_browser_inspect_is_offline (test_browser.BrowserTests) ... ok
+test_snapshot_freezes_and_rejects_links (test_browser.BrowserTests) ... ok
+test_app_death_is_not_success (test_browser_live.BrowserLiveTests) ... ok
+test_five_actual_journeys_and_cancelled_pair (test_browser_live.BrowserLiveTests) ... ok
+test_doctor_checks_image_and_model (test_cli.CliTests) ... ok
+test_missing_config_is_actionable (test_cli.CliTests) ... ok
+test_status_needs_no_model_or_config (test_cli.CliTests) ... ok
+test_bounded_child_returns_response (test_document_answer_process.AnswerProcessTests) ... ok
+test_child_errors_oversize_and_cancellation_are_bounded (test_document_answer_process.AnswerProcessTests) ... ok
+test_owner_death_terminates_child_and_releases_lease (test_document_answer_process.AnswerProcessTests) ... ok
+test_ambiguous_duplicate_json_fields_are_rejected (test_document_protocol.DocumentProtocolTests) ... ok
+test_approval_rejects_url_options_and_unbounded_authority (test_document_protocol.DocumentProtocolTests) ... ok
+test_extraction_preserves_order_without_active_content (test_document_protocol.DocumentProtocolTests) ... ok
+test_extraction_rejects_incomplete_or_oversized_evidence (test_document_protocol.DocumentProtocolTests) ... ok
+test_fetch_requires_exact_body_and_never_follows_redirect (test_document_protocol.DocumentProtocolTests) ... ok
+test_frames_reject_identity_size_policy_and_connection_mismatch (test_document_protocol.DocumentProtocolTests) ... ok
+test_parser_instruction_events_are_bounded (test_document_protocol.DocumentProtocolTests) ... ok
+test_retention_and_transport_fail_closed (test_document_protocol.DocumentProtocolTests) ... ok
+test_answer_commit_does_not_read_evidence_after_publication (test_documents.DocumentsTests) ... ok
+test_approved_acquisition_resolves_inert_spans_and_detects_tampering (test_documents.DocumentsTests) ... ok
+test_cancellation_and_invalid_question_do_not_infer (test_documents.DocumentsTests) ... ok
+test_cleanup_failure_blocks_new_work_until_explicit_recovery (test_documents.DocumentsTests) ... ok
+test_cli_acquire_inspect_answer_and_cleanup (test_documents.DocumentsTests) ... ok
+test_cli_saved_replay_does_not_construct_a_model_client (test_documents.DocumentsTests) ... ok
+test_commit_is_final_filesystem_operation (test_documents.DocumentsTests) ... ok
+test_exclusive_lease_and_interrupted_scratch (test_documents.DocumentsTests) ... ok
+test_explicit_new_question_reuses_evidence_without_fetch (test_documents.DocumentsTests) ... ok
+test_extractor_failure_and_runtime_cleanup_failure_publish_nothing (test_documents.DocumentsTests) ... ok
+test_failed_publication_preserves_existing_snapshot (test_documents.DocumentsTests) ... ok
+test_inspection_discloses_historical_age_and_version (test_documents.DocumentsTests) ... ok
+test_invalid_citations_and_tool_calls_never_publish (test_documents.DocumentsTests) ... ok
+test_model_response_read_is_bounded (test_documents.DocumentsTests) ... ok
+test_pending_and_extra_files_cannot_be_reused (test_documents.DocumentsTests) ... ok
+test_receipt_hash_and_text_hash_reject_tampering (test_documents.DocumentsTests) ... ok
+test_staging_sync_or_commit_rename_failure_never_publishes (test_documents.DocumentsTests) ... ok
+test_store_and_record_reject_links_and_permissions (test_documents.DocumentsTests) ... ok
+test_store_refuses_full_quota_without_eviction (test_documents.DocumentsTests) ... ok
+test_uncertain_executor_outcomes_fence_reuse (test_documents.DocumentsTests) ... ok
+test_byte_mode_and_receipt_tampering_invalidate_resolution (test_environment.EnvironmentStoreTests) ... ok
+test_cancellation_before_final_commit_keeps_candidate_unpublished (test_environment.EnvironmentStoreTests) ... ok
+test_failed_or_cancelled_checks_cannot_replace_a_good_receipt (test_environment.EnvironmentStoreTests) ... ok
+test_failed_retirement_leaves_a_non_runnable_pending_candidate (test_environment.EnvironmentStoreTests) ... ok
+test_post_rename_failure_retires_new_publication (test_environment.EnvironmentStoreTests) ... ok
+test_published_environment_binds_tree_receipt_and_runtime (test_environment.EnvironmentStoreTests) ... ok
+test_resolver_cannot_observe_an_in_progress_publication (test_environment.EnvironmentStoreTests) ... ok
+test_declared_expansion_is_rejected_without_waiting_for_body (test_environment_artifacts.ArchiveTests) ... ok
+test_existing_destination_link_is_not_followed_or_removed (test_environment_artifacts.ArchiveTests) ... ok
+test_implicit_directories_cannot_bypass_filesystem_entry_limit (test_environment_artifacts.ArchiveTests) ... ok
+test_independent_archives_validate_before_any_extraction (test_environment_artifacts.ArchiveTests) ... ok
+test_valid_content_and_execution_mode_are_preserved (test_environment_artifacts.ArchiveTests) ... ok
+test_zero_tests_and_scratch_files_fail_against_passing_control (test_example_quality.ExampleQualityTests) ... ok
+test_any_private_dns_answer_rejects_entire_set (test_fetch.FetchTests) ... ok
+test_body_caps_hashes_status_encoding_and_incomplete_length (test_fetch.FetchTests) ... ok
+test_only_exact_public_registry_urls_and_safe_output_names (test_fetch.FetchTests) ... ok
+test_cancel_during_startup_is_terminal_and_resumable (test_observation.ObservationTests) ... Attempt 1: verifying candidate
+ok
+test_dead_resume_owner_is_interrupted_even_before_old_cancelled_state_changes (test_observation.ObservationTests) ... ok
+test_durable_events_and_budget_survive_reopen (test_observation.ObservationTests) ... Attempt 1: verifying candidate
+ok
+test_escaped_backslash_at_secret_end_preserves_following_evidence (test_observation.ObservationTests) ... ok
+test_event_and_live_detail_preserve_json_and_redact_nested_secrets (test_observation.ObservationTests) ... ok
+test_http_view_is_readonly_and_reconnects_with_durable_cursor (test_observation.ObservationTests) ... Attempt 1: verifying candidate
+ok
+test_nested_encoded_credentials_are_hidden_in_public_artifacts (test_observation.ObservationTests) ... Attempt 1: verifying candidate
+ok
+test_observer_can_start_before_first_task (test_observation.ObservationTests) ... ok
+test_public_artifacts_reject_traversal_symlinks_and_secrets (test_observation.ObservationTests) ... Attempt 1: verifying candidate
+ok
+test_public_json_artifact_redaction_is_valid_json (test_observation.ObservationTests) ... Attempt 1: verifying candidate
+ok
+test_real_process_cancel_and_kill_have_honest_state (test_observation.ObservationTests) ... ok
+test_redaction_consumes_whole_quoted_and_unterminated_values (test_observation.ObservationTests) ... ok
+test_stalled_model_has_live_heartbeat_without_fake_progress (test_observation.ObservationTests) ... ok
+test_binary_output_is_separate_from_bounded_diagnostics (test_preparation_transport.PreparationTransportTests) ... ok
+test_transport_overflow_cannot_be_reported_as_success (test_preparation_transport.PreparationTransportTests) ... ok
+test_bound_sandbox_uses_frozen_image_and_rejects_tampering (test_prepare.PrepareTests) ... ok
+test_cli_prepares_inspects_and_checks_without_model_configuration (test_prepare.PrepareTests) ... ok
+test_failed_outer_cleanup_leaves_no_reusable_environment (test_prepare.PrepareTests) ... ok
+test_node_typescript_prepares_locked_packages_and_compiles_offline (test_prepare.PrepareTests) ... ok
+test_profile_selection_uses_manifest_kind (test_prepare.PrepareTests) ... ok
+test_project_manifests_must_match_supported_recipe (test_prepare.PrepareTests) ... ok
+test_python_api_prepares_locked_wheels_and_imports_offline (test_prepare.PrepareTests) ... ok
+test_stdlib_preparation_records_actual_runtime_and_rechecks_offline (test_prepare.PrepareTests) ... ok
+test_unsupported_profile_fails_before_execution (test_prepare.PrepareTests) ... ok
+test_executed_runtime_can_match_and_wrong_image_identity_cannot (test_qualification.QualificationTests) ... ok
+test_existing_qualification_evidence_is_never_replaced (test_qualification.QualificationTests) ... ok
+test_runtime_mismatch_is_recorded_before_any_model_or_task_creation (test_qualification.QualificationTests) ... Qualification environment mismatch: version: expected '0.0.0', observed '3.12.13'
+ok
+test_checks_alone_cannot_accept_and_review_findings_drive_repair (test_review.ReviewTests) ... Attempt 1: verifying candidate
+Attempt 2: verifying candidate
+ok
+test_deleted_review_evidence_invalidates_acceptance (test_review.ReviewTests) ... Attempt 1: verifying candidate
+ok
+test_empty_assessment_response_has_a_useful_failure (test_review.ReviewTests) ... ok
+test_generated_binary_gets_actionable_repair_instead_of_crashing_review (test_review.ReviewTests) ... Attempt 1: verifying candidate
+Attempt 2: verifying candidate
+ok
+test_incomplete_or_contradictory_review_never_accepts (test_review.ReviewTests) ... Attempt 1: verifying candidate
+Attempt 1: verifying candidate
+ok
+test_invalid_question_assessment_stops_instead_of_inventing_policy (test_review.ReviewTests) ... Attempt 1, model turn 1/2
+ok
+test_question_assessment_requires_grounding_and_preserves_product_choice (test_review.ReviewTests) ... ok
+test_question_stops_without_verification_or_invented_policy (test_review.ReviewTests) ... ok
+test_required_review_unavailable_never_accepts (test_review.ReviewTests) ... ok
+test_review_needs_input_is_not_repaired_without_a_new_contract (test_review.ReviewTests) ... Attempt 1: verifying candidate
+ok
+test_review_profile_reserves_output_after_bounded_thinking (test_review.ReviewTests) ... ok
+test_reviewer_has_fresh_context_and_rejects_ungrounded_findings (test_review.ReviewTests) ... ok
+test_unnecessary_question_returns_guidance_and_worker_continues (test_review.ReviewTests) ... Attempt 1, model turn 1/2
+  question: done
+Attempt 1, model turn 2/2
+ok
+test_worker_question_tool_produces_a_bounded_question (test_review.ReviewTests) ... Attempt 1, model turn 1/1
+ok
+test_acceptance_is_snapshotted_and_tampering_is_rejected (test_runner.RunnerTests) ... ok
+test_accepted_environment_tampering_invalidates_status_and_resume (test_runner.RunnerTests) ... Attempt 1: verifying candidate
+ok
+test_changed_accepted_workspace_or_patch_is_not_reported_as_accepted (test_runner.RunnerTests) ... Attempt 1: verifying candidate
+ok
+test_changed_patch_invalidates_acceptance (test_runner.RunnerTests) ... Attempt 1: verifying candidate
+ok
+test_cleanup_happens_before_recovery_observes_workspace (test_runner.RunnerTests) ... Attempt 1: verifying candidate
+ok
+test_cli_run_resume_and_status_without_source_mutation (test_runner.RunnerTests) ... Attempt 1: verifying candidate
+ok
+test_contract_change_and_unknown_id_fail_closed (test_runner.RunnerTests) ... ok
+test_dirty_source_is_rejected (test_runner.RunnerTests) ... ok
+test_environment_binding_survives_restart_and_rejects_changed_dependencies (test_runner.RunnerTests) ... ok
+test_exhaustion_never_becomes_success (test_runner.RunnerTests) ... Attempt 1: verifying candidate
+Attempt 2: verifying candidate
+ok
+test_failure_evidence_drives_repair_and_source_is_unchanged (test_runner.RunnerTests) ... Attempt 1: verifying candidate
+Attempt 2: verifying candidate
+ok
+test_interrupted_attempt_resumes_with_retained_work (test_runner.RunnerTests) ... Attempt 2: verifying candidate
+ok
+test_resume_after_attempt_directory_was_created_before_transaction (test_runner.RunnerTests) ... Attempt 1: verifying candidate
+ok
+test_resume_published_verification_does_not_repeat_worker (test_runner.RunnerTests) ... Attempt 1: verifying candidate
+ok
+test_task_validation_and_single_runner_lock (test_runner.RunnerTests) ... ok
+test_closed_owner_pipe_never_starts_a_new_writer (test_sandbox.SandboxTests) ... ok
+test_generated_regression_failure_blocks_passing_acceptance (test_sandbox.SandboxTests) ... ok
+test_killed_owner_does_not_leave_container_writer (test_sandbox.SandboxTests) ... ok
+test_real_offline_sandbox_and_readonly_verification (test_sandbox.SandboxTests) ... ok
+test_worker_arguments_are_not_rewritten_as_docker_flags (test_sandbox.SandboxTests) ... ok
+test_enabled_reasoning_has_a_separate_budget_on_the_http_wire (test_worker.WorkerTests) ... Attempt 1, model turn 1/1
+Attempt 1, model turn 1/1
+ok
+test_http_requests_use_key_file_and_report_errors (test_worker.WorkerTests) ... ok
+test_malformed_tools_and_repeated_calls_are_bounded (test_worker.WorkerTests) ... Attempt 1, model turn 1/8
+  unknown: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+Attempt 1, model turn 2/8
+  unknown: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+Attempt 1, model turn 3/8
+  unknown: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+Attempt 1, model turn 4/8
+  unknown: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
+Attempt 1, model turn 5/8
+ok
+test_previous_review_is_private_in_trace_but_unchanged_for_model (test_worker.WorkerTests) ... Attempt 2, model turn 1/1
+ok
+test_redacted_trajectory_remains_json_without_mutating_model_content (test_worker.WorkerTests) ... Attempt 1, model turn 1/1
+ok
+test_remote_inference_and_redirects_are_not_implicitly_allowed (test_worker.WorkerTests) ... ok
+test_tools_and_completion_leave_a_replayable_trace (test_worker.WorkerTests) ... Attempt 1, model turn 1/4
+  run: 0
+Attempt 1, model turn 2/4
+  check: False
+Attempt 1, model turn 3/4
+ok
+test_turn_budget_and_redirect_rejection (test_worker.WorkerTests) ... Attempt 1, model turn 1/1
+  run: 0
+ok
+
+----------------------------------------------------------------------
+Ran 134 tests in 108.336s
+
+OK
+.venv/bin/coverage combine
+Combined 12 files, skipped 59
+.venv/bin/coverage report
+Name                               Stmts   Miss Branch BrPart  Cover   Missing
+------------------------------------------------------------------------------
+gflo/__init__.py                       0      0      0      0   100%
+gflo/__main__.py                     187     33     64     12    80%   78, 81-89, 99, 114, 126-132, 134-138, 140-141, 151, 161, 169-170, 180-181, 183->185, 194-195, 202
+gflo/artifacts.py                    109     12     48      7    88%   23, 61, 65, 70, 72, 75-76, 95, 108, 130-132
+gflo/browser.py                      305     24    152     34    86%   41, 51, 56, 65, 68, 73, 77, 85, 95, 98, 104, 110, 123, 129, 132, 163, 186, 201, 222->exit, 226->exit, 234->exit, 236->exit, 240->exit, 242->exit, 244->exit, 245->exit, 247->exit, 249->exit, 251->exit, 254, 268->exit, 269->exit, 337-341, 343->exit
+gflo/browser_pair.py                 114     10     46     14    85%   24->20, 26, 40->44, 41->44, 46-48, 53->exit, 65->exit, 72, 75->exit, 77->exit, 79->exit, 91->102, 94->102, 100->102, 111-112, 114->113, 117, 123-124
+gflo/documents.py                    323     32    116     15    87%   52, 80, 91, 120-138, 145-146, 154->156, 158, 180, 288, 293, 299, 324, 340, 364, 389, 395, 425
+gflo/environment.py                  219     25     84     23    84%   24, 31, 33, 35, 37, 40, 46, 59, 62, 70, 86, 91->89, 111, 114, 131, 157, 215, 217, 219, 228, 232, 247, 251, 254, 261-264
+gflo/guard.py                        134     27     68     15    78%   37-40, 52->54, 59-62, 78-79, 88-93, 96->95, 102, 105, 112, 125, 130-131, 153-154, 156->151, 165-166, 168->172, 170
+gflo/observe.py                      147      6     42      6    94%   16, 33, 81, 146, 180, 191
+gflo/prepare.py                      171     15     56     13    88%   51-52, 54, 71, 97, 100, 133, 144, 151, 172, 178, 214, 222, 225, 238
+gflo/recipes/document.py             121      7     60      1    96%   11-12, 146-150
+gflo/recipes/document_extract.py      83      9     32      3    90%   48, 54->exit, 76, 97-103
+gflo/recipes/fetch.py                106     46     42      6    58%   21, 31, 33, 43, 48, 53-56, 59-66, 93-105, 109-127, 131
+gflo/review.py                        70     11     28      8    81%   17, 20, 26, 40, 47-48, 60, 62, 65, 71, 99
+gflo/runner.py                       312     19    104     18    91%   42, 48-49, 69, 134, 138, 140, 144, 156, 158, 164, 195, 231, 245, 256->259, 260-261, 300, 308, 317, 318->325
+gflo/sandbox.py                       63      5     24      6    85%   34, 41->exit, 50, 75->77, 92-94, 98->103
+gflo/web.py                           46      5     14      3    87%   53, 59-61, 71-72
+gflo/worker.py                       115      6     34      5    93%   54-55, 70, 93, 94->96, 103, 149
+------------------------------------------------------------------------------
+TOTAL                               2625    292   1014    189    86%

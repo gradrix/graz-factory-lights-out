@@ -1,0 +1,42 @@
+[
+  {
+    "case": "validation",
+    "id": "193475ec127fa4569e220202ad5c346d9cac7334f1bdd133e7f5d6a4fe322e38",
+    "outcome": "passed",
+    "failure": null,
+    "shm": {
+      "peakBytes": 14483456,
+      "samples": 11
+    }
+  },
+  {
+    "case": "edit-cancel",
+    "id": "2dcab1a7a2a59c30cce126545b6bb50c6d315f6c46cc3f56626f8d0092fa4d52",
+    "outcome": "passed",
+    "failure": null,
+    "shm": {
+      "peakBytes": 13729792,
+      "samples": 9
+    }
+  },
+  {
+    "case": "conflict",
+    "id": "31fcf351299c297624351976cd51da41681373319e8abfff025d6419ba09f1f7",
+    "outcome": "passed",
+    "failure": null,
+    "shm": {
+      "peakBytes": 12447744,
+      "samples": 8
+    }
+  },
+  {
+    "case": "failed-save-retry",
+    "id": "3b6a45458307ad939b701e7beedd4fad26f677fdb03c0a686b8f26ab1385b2f7",
+    "outcome": "passed",
+    "failure": null,
+    "shm": {
+      "peakBytes": 9142272,
+      "samples": 5
+    }
+  }
+]

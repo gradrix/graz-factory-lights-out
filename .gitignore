@@ -94,3 +94,15 @@ htmlcov/
 !.scratch/.sflo/05-autonomy-documents/qa-research-cohort/*.py
 !.scratch/.sflo/05-autonomy-documents/qa-research-cohort/*.json
 !.scratch/.sflo/05-autonomy-documents/qa-research-cohort/*.log
+
+!.scratch/.sflo/06-autonomy-browser/qa-browser/
+.scratch/.sflo/06-autonomy-browser/qa-browser/*
+!.scratch/.sflo/06-autonomy-browser/qa-browser/*.py
+!.scratch/.sflo/06-autonomy-browser/qa-browser/*.json
+!.scratch/.sflo/06-autonomy-browser/qa-browser/*.log
+
+!.scratch/.sflo/06-autonomy-browser/security-browser/
+.scratch/.sflo/06-autonomy-browser/security-browser/*
+!.scratch/.sflo/06-autonomy-browser/security-browser/*.py
+!.scratch/.sflo/06-autonomy-browser/security-browser/*.json
+!.scratch/.sflo/06-autonomy-browser/security-browser/*.log

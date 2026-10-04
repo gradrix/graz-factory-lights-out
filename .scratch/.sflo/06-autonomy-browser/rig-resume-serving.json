@@ -1,0 +1,12 @@
+{
+  "checked_at": "2026-10-04T14:26:23.588691+00:00",
+  "id": "2cac4229053dac00fdbcadb1952db80f0a9da3fd07b8f40bce1ba8cd3114f6e0",
+  "image": "sha256:249ed60fdd67b96db472e16f945af5aaba565b20159d192ba378035b6d136a1c",
+  "running": true,
+  "started_at": "2026-10-04T14:20:09.194925789Z",
+  "alias": "flash-next-coder",
+  "context": "98304",
+  "cache_k": "q4_0",
+  "cache_v": "q4_0",
+  "parallel": "1"
+}

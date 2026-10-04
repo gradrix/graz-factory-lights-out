@@ -1,0 +1,19 @@
+usage: qualify-browser.py [-h] --repo REPO --candidate CANDIDATE --fixture
+                          FIXTURE --support-store SUPPORT_STORE --output
+                          OUTPUT --candidate-sha256 CANDIDATE_SHA256
+                          --fixture-sha256 FIXTURE_SHA256 --support-id
+                          SUPPORT_ID [--run]
+
+Independent frozen browser fixture controls; explicit --run required.
+
+options:
+  -h, --help            show this help message and exit
+  --repo REPO
+  --candidate CANDIDATE
+  --fixture FIXTURE
+  --support-store SUPPORT_STORE
+  --output OUTPUT
+  --candidate-sha256 CANDIDATE_SHA256
+  --fixture-sha256 FIXTURE_SHA256
+  --support-id SUPPORT_ID
+  --run

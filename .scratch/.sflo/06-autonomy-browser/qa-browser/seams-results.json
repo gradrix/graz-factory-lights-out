@@ -1,0 +1,401 @@
+{
+  "root": "/tmp/gflo-browser-seams-jz_fq3h0",
+  "offline_cli_inspect": true,
+  "prior_good_preserved": true,
+  "cancel_elapsed_s": 1.1480161231011152,
+  "cancelled_result": {
+    "id": "83859ee2f6fc04507466e3b8a01b785f2ea77da694c6b0d7b13664cdde2f2969",
+    "receipt": {
+      "approved": {
+        "app": "/home/gradrix/repos/gflo/evaluations/local-browser/app",
+        "case": "qa-cancel-inside-journey",
+        "checks": "/tmp/gflo-browser-seams-jz_fq3h0/checks",
+        "seed": "/home/gradrix/repos/gflo/evaluations/local-browser/journeys/create-reload/seed.json",
+        "support": "f6dba2d707f42e5575d6bbd285f8db6041093861d47664c09276661a423f8c76"
+      },
+      "artifacts": {},
+      "created_utc": "2026-10-02T15:41:21.954008+00:00",
+      "executor": {
+        "diagnostics": "Pair owner EOF\n",
+        "elapsed_s": 1.0186289129778743,
+        "exit_code": 1,
+        "facts": {
+          "cleanup": {
+            "confirmed": true,
+            "errors": [],
+            "remaining": []
+          },
+          "containers": {
+            "gflo-browser-app-ce6cc19d699c44569cc373caa476f162": {
+              "config": {
+                "Cmd": [
+                  "node",
+                  "server.cjs"
+                ],
+                "Entrypoint": [
+                  "docker-entrypoint.sh"
+                ],
+                "Env": [
+                  "GFLO_SEED_FILE=/seed.json",
+                  "HOME=/tmp",
+                  "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                  "NODE_VERSION=22.23.3",
+                  "YARN_VERSION=1.22.22"
+                ],
+                "User": "1000:1000",
+                "WorkingDir": "/app"
+              },
+              "host": {
+                "AutoRemove": false,
+                "Binds": null,
+                "BlkioDeviceReadBps": [],
+                "BlkioDeviceReadIOps": [],
+                "BlkioDeviceWriteBps": [],
+                "BlkioDeviceWriteIOps": [],
+                "BlkioWeight": 0,
+                "BlkioWeightDevice": [],
+                "CapAdd": null,
+                "CapDrop": [
+                  "ALL"
+                ],
+                "Cgroup": "",
+                "CgroupParent": "",
+                "CgroupnsMode": "private",
+                "ConsoleSize": [
+                  0,
+                  0
+                ],
+                "ContainerIDFile": "",
+                "CpuCount": 0,
+                "CpuPercent": 0,
+                "CpuPeriod": 0,
+                "CpuQuota": 0,
+                "CpuRealtimePeriod": 0,
+                "CpuRealtimeRuntime": 0,
+                "CpuShares": 0,
+                "CpusetCpus": "",
+                "CpusetMems": "",
+                "DeviceCgroupRules": null,
+                "DeviceRequests": null,
+                "Devices": [],
+                "Dns": null,
+                "DnsOptions": [],
+                "DnsSearch": [],
+                "ExtraHosts": null,
+                "GroupAdd": null,
+                "IOMaximumBandwidth": 0,
+                "IOMaximumIOps": 0,
+                "Init": true,
+                "IpcMode": "private",
+                "Isolation": "",
+                "Links": null,
+                "LogConfig": {
+                  "Config": {},
+                  "Type": "json-file"
+                },
+                "MaskedPaths": [
+                  "/proc/acpi",
+                  "/proc/asound",
+                  "/proc/interrupts",
+                  "/proc/kcore",
+                  "/proc/keys",
+                  "/proc/latency_stats",
+                  "/proc/sched_debug",
+                  "/proc/scsi",
+                  "/proc/timer_list",
+                  "/proc/timer_stats",
+                  "/sys/devices/virtual/powercap",
+                  "/sys/firmware",
+                  "/sys/devices/system/cpu/cpu0/thermal_throttle",
+                  "/sys/devices/system/cpu/cpu1/thermal_throttle",
+                  "/sys/devices/system/cpu/cpu2/thermal_throttle",
+                  "/sys/devices/system/cpu/cpu3/thermal_throttle",
+                  "/sys/devices/system/cpu/cpu4/thermal_throttle",
+                  "/sys/devices/system/cpu/cpu5/thermal_throttle",
+                  "/sys/devices/system/cpu/cpu6/thermal_throttle",
+                  "/sys/devices/system/cpu/cpu7/thermal_throttle"
+                ],
+                "Memory": 134217728,
+                "MemoryReservation": 0,
+                "MemorySwap": 134217728,
+                "MemorySwappiness": null,
+                "Mounts": [
+                  {
+                    "ReadOnly": true,
+                    "Source": "/tmp/gflo-browser-seams-jz_fq3h0/store/.stage-g1n2wkqd/app",
+                    "Target": "/app",
+                    "Type": "bind"
+                  },
+                  {
+                    "ReadOnly": true,
+                    "Source": "/tmp/gflo-browser-seams-jz_fq3h0/store/.stage-g1n2wkqd/seed.json",
+                    "Target": "/seed.json",
+                    "Type": "bind"
+                  }
+                ],
+                "NanoCpus": 250000000,
+                "NetworkMode": "none",
+                "OomKillDisable": false,
+                "OomScoreAdj": 0,
+                "PidMode": "",
+                "PidsLimit": 64,
+                "PortBindings": {},
+                "Privileged": false,
+                "PublishAllPorts": false,
+                "ReadonlyPaths": [
+                  "/proc/bus",
+                  "/proc/fs",
+                  "/proc/irq",
+                  "/proc/sys",
+                  "/proc/sysrq-trigger"
+                ],
+                "ReadonlyRootfs": true,
+                "RestartPolicy": {
+                  "MaximumRetryCount": 0,
+                  "Name": "no"
+                },
+                "Runtime": "runc",
+                "SecurityOpt": [
+                  "no-new-privileges"
+                ],
+                "ShmSize": 16777216,
+                "Tmpfs": {
+                  "/tmp": "rw,nosuid,nodev,size=16m,mode=1777"
+                },
+                "UTSMode": "",
+                "Ulimits": [],
+                "UsernsMode": "",
+                "VolumeDriver": "",
+                "VolumesFrom": null
+              },
+              "id": "8e6638c02bbd5891b9dfe040b1b4ca98c8ec3fd5b8c662de281021feb3bda298",
+              "image": "sha256:88f8ba583a884279252779bbe221bf1ff2c61cf236cc973f8ca97676ae6d07f0",
+              "mounts": [
+                {
+                  "Destination": "/app",
+                  "Mode": "",
+                  "Propagation": "rprivate",
+                  "RW": false,
+                  "Source": "/tmp/gflo-browser-seams-jz_fq3h0/store/.stage-g1n2wkqd/app",
+                  "Type": "bind"
+                },
+                {
+                  "Destination": "/seed.json",
+                  "Mode": "",
+                  "Propagation": "rprivate",
+                  "RW": false,
+                  "Source": "/tmp/gflo-browser-seams-jz_fq3h0/store/.stage-g1n2wkqd/seed.json",
+                  "Type": "bind"
+                }
+              ]
+            },
+            "gflo-browser-check-ce6cc19d699c44569cc373caa476f162": {
+              "config": {
+                "Cmd": [
+                  "node",
+                  "/journey.cjs"
+                ],
+                "Entrypoint": null,
+                "Env": [
+                  "NODE_PATH=/support",
+                  "HOME=/tmp",
+                  "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                  "LANG=C.UTF-8",
+                  "LC_ALL=C.UTF-8",
+                  "PLAYWRIGHT_BROWSERS_PATH=/ms-playwright"
+                ],
+                "User": "1000:1000",
+                "WorkingDir": "/tmp"
+              },
+              "host": {
+                "AutoRemove": false,
+                "Binds": null,
+                "BlkioDeviceReadBps": [],
+                "BlkioDeviceReadIOps": [],
+                "BlkioDeviceWriteBps": [],
+                "BlkioDeviceWriteIOps": [],
+                "BlkioWeight": 0,
+                "BlkioWeightDevice": [],
+                "CapAdd": null,
+                "CapDrop": [
+                  "ALL"
+                ],
+                "Cgroup": "",
+                "CgroupParent": "",
+                "CgroupnsMode": "private",
+                "ConsoleSize": [
+                  0,
+                  0
+                ],
+                "ContainerIDFile": "",
+                "CpuCount": 0,
+                "CpuPercent": 0,
+                "CpuPeriod": 0,
+                "CpuQuota": 0,
+                "CpuRealtimePeriod": 0,
+                "CpuRealtimeRuntime": 0,
+                "CpuShares": 0,
+                "CpusetCpus": "",
+                "CpusetMems": "",
+                "DeviceCgroupRules": null,
+                "DeviceRequests": null,
+                "Devices": [],
+                "Dns": null,
+                "DnsOptions": [],
+                "DnsSearch": [],
+                "ExtraHosts": null,
+                "GroupAdd": null,
+                "IOMaximumBandwidth": 0,
+                "IOMaximumIOps": 0,
+                "Init": true,
+                "IpcMode": "private",
+                "Isolation": "",
+                "Links": null,
+                "LogConfig": {
+                  "Config": {},
+                  "Type": "json-file"
+                },
+                "MaskedPaths": [
+                  "/proc/acpi",
+                  "/proc/asound",
+                  "/proc/interrupts",
+                  "/proc/kcore",
+                  "/proc/keys",
+                  "/proc/latency_stats",
+                  "/proc/sched_debug",
+                  "/proc/scsi",
+                  "/proc/timer_list",
+                  "/proc/timer_stats",
+                  "/sys/devices/virtual/powercap",
+                  "/sys/firmware",
+                  "/sys/devices/system/cpu/cpu0/thermal_throttle",
+                  "/sys/devices/system/cpu/cpu1/thermal_throttle",
+                  "/sys/devices/system/cpu/cpu2/thermal_throttle",
+                  "/sys/devices/system/cpu/cpu3/thermal_throttle",
+                  "/sys/devices/system/cpu/cpu4/thermal_throttle",
+                  "/sys/devices/system/cpu/cpu5/thermal_throttle",
+                  "/sys/devices/system/cpu/cpu6/thermal_throttle",
+                  "/sys/devices/system/cpu/cpu7/thermal_throttle"
+                ],
+                "Memory": 1073741824,
+                "MemoryReservation": 0,
+                "MemorySwap": 1073741824,
+                "MemorySwappiness": null,
+                "Mounts": [
+                  {
+                    "ReadOnly": true,
+                    "Source": "/tmp/gflo-browser-seams-jz_fq3h0/store/f6dba2d707f42e5575d6bbd285f8db6041093861d47664c09276661a423f8c76/support",
+                    "Target": "/support",
+                    "Type": "bind"
+                  },
+                  {
+                    "ReadOnly": true,
+                    "Source": "/tmp/gflo-browser-seams-jz_fq3h0/store/.stage-g1n2wkqd/checks",
+                    "Target": "/checks",
+                    "Type": "bind"
+                  },
+                  {
+                    "ReadOnly": true,
+                    "Source": "/home/gradrix/repos/gflo/gflo/recipes/browser/journey.cjs",
+                    "Target": "/journey.cjs",
+                    "Type": "bind"
+                  }
+                ],
+                "NanoCpus": 2000000000,
+                "NetworkMode": "container:8e6638c02bbd5891b9dfe040b1b4ca98c8ec3fd5b8c662de281021feb3bda298",
+                "OomKillDisable": false,
+                "OomScoreAdj": 0,
+                "PidMode": "",
+                "PidsLimit": 256,
+                "PortBindings": {},
+                "Privileged": false,
+                "PublishAllPorts": false,
+                "ReadonlyPaths": [
+                  "/proc/bus",
+                  "/proc/fs",
+                  "/proc/irq",
+                  "/proc/sys",
+                  "/proc/sysrq-trigger"
+                ],
+                "ReadonlyRootfs": true,
+                "RestartPolicy": {
+                  "MaximumRetryCount": 0,
+                  "Name": "no"
+                },
+                "Runtime": "runc",
+                "SecurityOpt": [
+                  "no-new-privileges",
+                  "seccomp={\"defaultAction\":\"SCMP_ACT_ERRNO\",\"archMap\":[{\"architecture\":\"SCMP_ARCH_X86_64\",\"subArchitectures\":[\"SCMP_ARCH_X86\",\"SCMP_ARCH_X32\"]},{\"architecture\":\"SCMP_ARCH_AARCH64\",\"subArchitectures\":[\"SCMP_ARCH_ARM\"]},{\"architecture\":\"SCMP_ARCH_MIPS64\",\"subArchitectures\":[\"SCMP_ARCH_MIPS\",\"SCMP_ARCH_MIPS64N32\"]},{\"architecture\":\"SCMP_ARCH_MIPS64N32\",\"subArchitectures\":[\"SCMP_ARCH_MIPS\",\"SCMP_ARCH_MIPS64\"]},{\"architecture\":\"SCMP_ARCH_MIPSEL64\",\"subArchitectures\":[\"SCMP_ARCH_MIPSEL\",\"SCMP_ARCH_MIPSEL64N32\"]},{\"architecture\":\"SCMP_ARCH_MIPSEL64N32\",\"subArchitectures\":[\"SCMP_ARCH_MIPSEL\",\"SCMP_ARCH_MIPSEL64\"]},{\"architecture\":\"SCMP_ARCH_S390X\",\"subArchitectures\":[\"SCMP_ARCH_S390\"]}],\"syscalls\":[{\"comment\":\"Allow create user namespaces\",\"names\":[\"clone\",\"setns\",\"unshare\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[],\"includes\":{},\"excludes\":{}},{\"names\":[\"accept\",\"accept4\",\"access\",\"adjtimex\",\"alarm\",\"bind\",\"brk\",\"capget\",\"capset\",\"chdir\",\"chmod\",\"chown\",\"chown32\",\"clock_adjtime\",\"clock_adjtime64\",\"clock_getres\",\"clock_getres_time64\",\"clock_gettime\",\"clock_gettime64\",\"clock_nanosleep\",\"clock_nanosleep_time64\",\"close\",\"connect\",\"copy_file_range\",\"creat\",\"dup\",\"dup2\",\"dup3\",\"epoll_create\",\"epoll_create1\",\"epoll_ctl\",\"epoll_ctl_old\",\"epoll_pwait\",\"epoll_wait\",\"epoll_wait_old\",\"eventfd\",\"eventfd2\",\"execve\",\"execveat\",\"exit\",\"exit_group\",\"faccessat\",\"fadvise64\",\"fadvise64_64\",\"fallocate\",\"fanotify_mark\",\"fchdir\",\"fchmod\",\"fchmodat\",\"fchown\",\"fchown32\",\"fchownat\",\"fcntl\",\"fcntl64\",\"fdatasync\",\"fgetxattr\",\"flistxattr\",\"flock\",\"fork\",\"fremovexattr\",\"fsetxattr\",\"fstat\",\"fstat64\",\"fstatat64\",\"fstatfs\",\"fstatfs64\",\"fsync\",\"ftruncate\",\"ftruncate64\",\"futex\",\"futex_time64\",\"futimesat\",\"getcpu\",\"getcwd\",\"getdents\",\"getdents64\",\"getegid\",\"getegid32\",\"geteuid\",\"geteuid32\",\"getgid\",\"getgid32\",\"getgroups\",\"getgroups32\",\"getitimer\",\"getpeername\",\"getpgid\",\"getpgrp\",\"getpid\",\"getppid\",\"getpriority\",\"getrandom\",\"getresgid\",\"getresgid32\",\"getresuid\",\"getresuid32\",\"getrlimit\",\"get_robust_list\",\"getrusage\",\"getsid\",\"getsockname\",\"getsockopt\",\"get_thread_area\",\"gettid\",\"gettimeofday\",\"getuid\",\"getuid32\",\"getxattr\",\"inotify_add_watch\",\"inotify_init\",\"inotify_init1\",\"inotify_rm_watch\",\"io_cancel\",\"ioctl\",\"io_destroy\",\"io_getevents\",\"io_pgetevents\",\"io_pgetevents_time64\",\"ioprio_get\",\"ioprio_set\",\"io_setup\",\"io_submit\",\"io_uring_enter\",\"io_uring_register\",\"io_uring_setup\",\"ipc\",\"kill\",\"lchown\",\"lchown32\",\"lgetxattr\",\"link\",\"linkat\",\"listen\",\"listxattr\",\"llistxattr\",\"_llseek\",\"lremovexattr\",\"lseek\",\"lsetxattr\",\"lstat\",\"lstat64\",\"madvise\",\"membarrier\",\"memfd_create\",\"mincore\",\"mkdir\",\"mkdirat\",\"mknod\",\"mknodat\",\"mlock\",\"mlock2\",\"mlockall\",\"mmap\",\"mmap2\",\"mprotect\",\"mq_getsetattr\",\"mq_notify\",\"mq_open\",\"mq_timedreceive\",\"mq_timedreceive_time64\",\"mq_timedsend\",\"mq_timedsend_time64\",\"mq_unlink\",\"mremap\",\"msgctl\",\"msgget\",\"msgrcv\",\"msgsnd\",\"msync\",\"munlock\",\"munlockall\",\"munmap\",\"nanosleep\",\"newfstatat\",\"_newselect\",\"open\",\"openat\",\"pause\",\"pipe\",\"pipe2\",\"poll\",\"ppoll\",\"ppoll_time64\",\"prctl\",\"pread64\",\"preadv\",\"preadv2\",\"prlimit64\",\"pselect6\",\"pselect6_time64\",\"pwrite64\",\"pwritev\",\"pwritev2\",\"read\",\"readahead\",\"readlink\",\"readlinkat\",\"readv\",\"recv\",\"recvfrom\",\"recvmmsg\",\"recvmmsg_time64\",\"recvmsg\",\"remap_file_pages\",\"removexattr\",\"rename\",\"renameat\",\"renameat2\",\"restart_syscall\",\"rmdir\",\"rseq\",\"rt_sigaction\",\"rt_sigpending\",\"rt_sigprocmask\",\"rt_sigqueueinfo\",\"rt_sigreturn\",\"rt_sigsuspend\",\"rt_sigtimedwait\",\"rt_sigtimedwait_time64\",\"rt_tgsigqueueinfo\",\"sched_getaffinity\",\"sched_getattr\",\"sched_getparam\",\"sched_get_priority_max\",\"sched_get_priority_min\",\"sched_getscheduler\",\"sched_rr_get_interval\",\"sched_rr_get_interval_time64\",\"sched_setaffinity\",\"sched_setattr\",\"sched_setparam\",\"sched_setscheduler\",\"sched_yield\",\"seccomp\",\"select\",\"semctl\",\"semget\",\"semop\",\"semtimedop\",\"semtimedop_time64\",\"send\",\"sendfile\",\"sendfile64\",\"sendmmsg\",\"sendmsg\",\"sendto\",\"setfsgid\",\"setfsgid32\",\"setfsuid\",\"setfsuid32\",\"setgid\",\"setgid32\",\"setgroups\",\"setgroups32\",\"setitimer\",\"setpgid\",\"setpriority\",\"setregid\",\"setregid32\",\"setresgid\",\"setresgid32\",\"setresuid\",\"setresuid32\",\"setreuid\",\"setreuid32\",\"setrlimit\",\"set_robust_list\",\"setsid\",\"setsockopt\",\"set_thread_area\",\"set_tid_address\",\"setuid\",\"setuid32\",\"setxattr\",\"shmat\",\"shmctl\",\"shmdt\",\"shmget\",\"shutdown\",\"sigaltstack\",\"signalfd\",\"signalfd4\",\"sigprocmask\",\"sigreturn\",\"socket\",\"socketcall\",\"socketpair\",\"splice\",\"stat\",\"stat64\",\"statfs\",\"statfs64\",\"statx\",\"symlink\",\"symlinkat\",\"sync\",\"sync_file_range\",\"syncfs\",\"sysinfo\",\"tee\",\"tgkill\",\"time\",\"timer_create\",\"timer_delete\",\"timer_getoverrun\",\"timer_gettime\",\"timer_gettime64\",\"timer_settime\",\"timer_settime64\",\"timerfd_create\",\"timerfd_gettime\",\"timerfd_gettime64\",\"timerfd_settime\",\"timerfd_settime64\",\"times\",\"tkill\",\"truncate\",\"truncate64\",\"ugetrlimit\",\"umask\",\"uname\",\"unlink\",\"unlinkat\",\"utime\",\"utimensat\",\"utimensat_time64\",\"utimes\",\"vfork\",\"vmsplice\",\"wait4\",\"waitid\",\"waitpid\",\"write\",\"writev\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[],\"comment\":\"\",\"includes\":{},\"excludes\":{}},{\"names\":[\"ptrace\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":null,\"comment\":\"\",\"includes\":{\"minKernel\":\"4.8\"},\"excludes\":{}},{\"names\":[\"personality\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":0,\"valueTwo\":0,\"op\":\"SCMP_CMP_EQ\"}],\"comment\":\"\",\"includes\":{},\"excludes\":{}},{\"names\":[\"personality\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":8,\"valueTwo\":0,\"op\":\"SCMP_CMP_EQ\"}],\"comment\":\"\",\"includes\":{},\"excludes\":{}},{\"names\":[\"personality\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":131072,\"valueTwo\":0,\"op\":\"SCMP_CMP_EQ\"}],\"comment\":\"\",\"includes\":{},\"excludes\":{}},{\"names\":[\"personality\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":131080,\"valueTwo\":0,\"op\":\"SCMP_CMP_EQ\"}],\"comment\":\"\",\"includes\":{},\"excludes\":{}},{\"names\":[\"personality\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":4294967295,\"valueTwo\":0,\"op\":\"SCMP_CMP_EQ\"}],\"comment\":\"\",\"includes\":{},\"excludes\":{}},{\"names\":[\"sync_file_range2\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[],\"comment\":\"\",\"includes\":{\"arches\":[\"ppc64le\"]},\"excludes\":{}},{\"names\":[\"arm_fadvise64_64\",\"arm_sync_file_range\",\"sync_file_range2\",\"breakpoint\",\"cacheflush\",\"set_tls\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[],\"comment\":\"\",\"includes\":{\"arches\":[\"arm\",\"arm64\"]},\"excludes\":{}},{\"names\":[\"arch_prctl\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[],\"comment\":\"\",\"includes\":{\"arches\":[\"amd64\",\"x32\"]},\"excludes\":{}},{\"names\":[\"modify_ldt\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[],\"comment\":\"\",\"includes\":{\"arches\":[\"amd64\",\"x32\",\"x86\"]},\"excludes\":{}},{\"names\":[\"s390_pci_mmio_read\",\"s390_pci_mmio_write\",\"s390_runtime_instr\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[],\"comment\":\"\",\"includes\":{\"arches\":[\"s390\",\"s390x\"]},\"excludes\":{}},{\"names\":[\"open_by_handle_at\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[],\"comment\":\"\",\"includes\":{\"caps\":[\"CAP_DAC_READ_SEARCH\"]},\"excludes\":{}},{\"names\":[\"bpf\",\"clone\",\"fanotify_init\",\"lookup_dcookie\",\"mount\",\"name_to_handle_at\",\"perf_event_open\",\"quotactl\",\"setdomainname\",\"sethostname\",\"setns\",\"syslog\",\"umount\",\"umount2\",\"unshare\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[],\"comment\":\"\",\"includes\":{\"caps\":[\"CAP_SYS_ADMIN\"]},\"excludes\":{}},{\"names\":[\"clone\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":2114060288,\"valueTwo\":0,\"op\":\"SCMP_CMP_MASKED_EQ\"}],\"comment\":\"\",\"includes\":{},\"excludes\":{\"caps\":[\"CAP_SYS_ADMIN\"],\"arches\":[\"s390\",\"s390x\"]}},{\"names\":[\"clone\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":1,\"value\":2114060288,\"valueTwo\":0,\"op\":\"SCMP_CMP_MASKED_EQ\"}],\"comment\":\"s390 parameter ordering for clone is different\",\"includes\":{\"arches\":[\"s390\",\"s390x\"]},\"excludes\":{\"caps\":[\"CAP_SYS_ADMIN\"]}},{\"names\":[\"reboot\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[],\"comment\":\"\",\"includes\":{\"caps\":[\"CAP_SYS_BOOT\"]},\"excludes\":{}},{\"names\":[\"chroot\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[],\"comment\":\"\",\"includes\":{},\"excludes\":{}},{\"names\":[\"delete_module\",\"init_module\",\"finit_module\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[],\"comment\":\"\",\"includes\":{\"caps\":[\"CAP_SYS_MODULE\"]},\"excludes\":{}},{\"names\":[\"acct\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[],\"comment\":\"\",\"includes\":{\"caps\":[\"CAP_SYS_PACCT\"]},\"excludes\":{}},{\"names\":[\"kcmp\",\"process_vm_readv\",\"process_vm_writev\",\"ptrace\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[],\"comment\":\"\",\"includes\":{\"caps\":[\"CAP_SYS_PTRACE\"]},\"excludes\":{}},{\"names\":[\"iopl\",\"ioperm\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[],\"comment\":\"\",\"includes\":{\"caps\":[\"CAP_SYS_RAWIO\"]},\"excludes\":{}},{\"names\":[\"settimeofday\",\"stime\",\"clock_settime\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[],\"comment\":\"\",\"includes\":{\"caps\":[\"CAP_SYS_TIME\"]},\"excludes\":{}},{\"names\":[\"vhangup\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[],\"comment\":\"\",\"includes\":{\"caps\":[\"CAP_SYS_TTY_CONFIG\"]},\"excludes\":{}},{\"names\":[\"get_mempolicy\",\"mbind\",\"set_mempolicy\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[],\"comment\":\"\",\"includes\":{\"caps\":[\"CAP_SYS_NICE\"]},\"excludes\":{}},{\"names\":[\"syslog\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[],\"comment\":\"\",\"includes\":{\"caps\":[\"CAP_SYSLOG\"]},\"excludes\":{}}]}"
+                ],
+                "ShmSize": 268435456,
+                "Tmpfs": {
+                  "/tmp": "rw,nosuid,nodev,size=256m,mode=1777"
+                },
+                "UTSMode": "",
+                "Ulimits": [],
+                "UsernsMode": "",
+                "VolumeDriver": "",
+                "VolumesFrom": null
+              },
+              "id": "6b5f9894d74069b2525897efd1cb72a6a9764b395d59bc41bd87d78702e39094",
+              "image": "sha256:2c1f4e0fd6450f43ddb46d60c2a6df30855a8588e165b1f2559fb0eda8d7ff35",
+              "mounts": [
+                {
+                  "Destination": "/support",
+                  "Mode": "",
+                  "Propagation": "rprivate",
+                  "RW": false,
+                  "Source": "/tmp/gflo-browser-seams-jz_fq3h0/store/f6dba2d707f42e5575d6bbd285f8db6041093861d47664c09276661a423f8c76/support",
+                  "Type": "bind"
+                },
+                {
+                  "Destination": "/checks",
+                  "Mode": "",
+                  "Propagation": "rprivate",
+                  "RW": false,
+                  "Source": "/tmp/gflo-browser-seams-jz_fq3h0/store/.stage-g1n2wkqd/checks",
+                  "Type": "bind"
+                },
+                {
+                  "Destination": "/journey.cjs",
+                  "Mode": "",
+                  "Propagation": "rprivate",
+                  "RW": false,
+                  "Source": "/home/gradrix/repos/gflo/gflo/recipes/browser/journey.cjs",
+                  "Type": "bind"
+                }
+              ]
+            }
+          },
+          "elapsed_s": 0.9588969866745174,
+          "failure": {
+            "kind": "InterruptedError",
+            "message": "Pair owner EOF"
+          }
+        },
+        "reason": "cancelled",
+        "transport_errors": []
+      },
+      "helpers": {
+        "journey.cjs": "51fe954cfae48b19ed618f3c82ae7d52c6997772aaad2c6dbe13b5be39fd000b",
+        "seccomp.json": "322b86b4f7f5b597ed6a9c2cfd6193a4b249a51c8bc9cfba8ff1a485070b24e8"
+      },
+      "inputs": {
+        "app": "d1d7b3caa0e46a07ef5355c8a6da3e990cc3f087c3b0711a015a2329f2c822ed",
+        "checks": "1fa0a2cb37aa1eab93465cd2b584b96cfddb862dc326105719cde5ee17a5145b",
+        "seed": "7fc54f80aec82d14b3dc01ad8ce3eeb77b4a5373fdb0ea35cc7d383feb1dd0fc"
+      },
+      "kind": "result",
+      "outcome": {
+        "executor_failure": "cancelled",
+        "failure": {
+          "message": "Browser artifact metadata limit/incomplete frame",
+          "phase": "artifact"
+        },
+        "status": "failed"
+      },
+      "support": "f6dba2d707f42e5575d6bbd285f8db6041093861d47664c09276661a423f8c76"
+    }
+  },
+  "remaining": []
+}

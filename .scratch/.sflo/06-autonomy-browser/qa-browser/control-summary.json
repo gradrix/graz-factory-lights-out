@@ -1,0 +1,349 @@
+{
+  "candidate": "c201083d64810bc7767007e37a3fc8912e6d1c50",
+  "manifest": "44e94609e0174950894d2008649fe93a247abf9eacf4f7a3411144b011e9e0c3",
+  "fixture": "20d07c59c1af28f5728847179406560787b579b86c20c030e30032492f16ac10",
+  "support_id": "f6dba2d707f42e5575d6bbd285f8db6041093861d47664c09276661a423f8c76",
+  "elapsed_s": 32.191315785981715,
+  "rows": [
+    {
+      "case": "create-reload",
+      "mutant": false,
+      "request": "/home/gradrix/repos/gflo/.gflo/browser-independent-v2/inputs/create-reload-control/request.json",
+      "id": "0662146fb54219c7bd64c06720b1d7429d2cc3e4a9da1ac85e3d4be8b72a2d9e",
+      "elapsed_s": 1.4962956048548222,
+      "outcome": "passed",
+      "failure": null,
+      "contexts_traced": 1,
+      "expected_outcome_confirmed": true,
+      "artifacts": {
+        "events.json": {
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "size": 2
+        },
+        "screen-1.png": {
+          "sha256": "038462d54c7e86a4a27e0224d2bf09d17b02b90573f4fcc15545152138799734",
+          "size": 26569
+        },
+        "trace.zip": {
+          "sha256": "6dc698c321041f1b0d3a32577cd501906582163245dce8407e9500a270f4bffe",
+          "size": 118228
+        }
+      },
+      "cleanup": {
+        "confirmed": true,
+        "errors": [],
+        "remaining": []
+      },
+      "shm": {
+        "peakBytes": 11517952,
+        "samples": 7
+      },
+      "runtime": {
+        "node": "v24.20.0",
+        "playwright": "1.63.0",
+        "core": "1.63.0",
+        "browser": "153.0.8010.12"
+      }
+    },
+    {
+      "case": "validation",
+      "mutant": false,
+      "request": "/home/gradrix/repos/gflo/.gflo/browser-independent-v2/inputs/validation-control/request.json",
+      "id": "19589a94b0d7e345ce37ab8721d6c0aaed65a07206f46fadc395ec0b2f464e2b",
+      "elapsed_s": 1.8069672752171755,
+      "outcome": "passed",
+      "failure": null,
+      "contexts_traced": 1,
+      "expected_outcome_confirmed": true,
+      "artifacts": {
+        "events.json": {
+          "sha256": "5f81db1be34b1d8d2cd3db6e791987960340ecf501e0991d04dc103819856ec5",
+          "size": 183
+        },
+        "screen-1.png": {
+          "sha256": "71f0c42f1420be3e563c2403dff6f74cadccb185d8e6b104aada09da1040132d",
+          "size": 27835
+        },
+        "trace.zip": {
+          "sha256": "8dca51e67292d099d3a39e61635745018ccb507829798aee56ef1fa2a57306d1",
+          "size": 251405
+        }
+      },
+      "cleanup": {
+        "confirmed": true,
+        "errors": [],
+        "remaining": []
+      },
+      "shm": {
+        "peakBytes": 14827520,
+        "samples": 12
+      },
+      "runtime": {
+        "node": "v24.20.0",
+        "playwright": "1.63.0",
+        "core": "1.63.0",
+        "browser": "153.0.8010.12"
+      }
+    },
+    {
+      "case": "edit-cancel",
+      "mutant": false,
+      "request": "/home/gradrix/repos/gflo/.gflo/browser-independent-v2/inputs/edit-cancel-control/request.json",
+      "id": "38f73da109841ebcdcd8169befc3ae2d614ded1014e4cf13489001bd5be7406e",
+      "elapsed_s": 1.6147118150256574,
+      "outcome": "passed",
+      "failure": null,
+      "contexts_traced": 1,
+      "expected_outcome_confirmed": true,
+      "artifacts": {
+        "events.json": {
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "size": 2
+        },
+        "screen-1.png": {
+          "sha256": "5a9cd0278851b0fc8d394d7bcaa0e1314233d62cd7bfb2391d8992dcc53277e2",
+          "size": 22280
+        },
+        "trace.zip": {
+          "sha256": "2644e0ec674f94476dbc38599d12df3671f150590bd620c58cd8c6b0909c87ea",
+          "size": 142332
+        }
+      },
+      "cleanup": {
+        "confirmed": true,
+        "errors": [],
+        "remaining": []
+      },
+      "shm": {
+        "peakBytes": 11468800,
+        "samples": 9
+      },
+      "runtime": {
+        "node": "v24.20.0",
+        "playwright": "1.63.0",
+        "core": "1.63.0",
+        "browser": "153.0.8010.12"
+      }
+    },
+    {
+      "case": "conflict",
+      "mutant": false,
+      "request": "/home/gradrix/repos/gflo/.gflo/browser-independent-v2/inputs/conflict-control/request.json",
+      "id": "a73d9515794f635ac4329c8bcdc73b3e55ba136de0bd0849dd909792ed2c1985",
+      "elapsed_s": 1.661055983044207,
+      "outcome": "passed",
+      "failure": null,
+      "contexts_traced": 2,
+      "expected_outcome_confirmed": true,
+      "artifacts": {
+        "events.json": {
+          "sha256": "5f81db1be34b1d8d2cd3db6e791987960340ecf501e0991d04dc103819856ec5",
+          "size": 183
+        },
+        "screen-1.png": {
+          "sha256": "5e8ef7f7f5f22f9f69244de2fa48e544695d949e55a34f56615d200ef9943c54",
+          "size": 32174
+        },
+        "trace.zip": {
+          "sha256": "c9cf0784a7a7f91d5331fdc352cedb506cf1fa1eb644f1d13155fc276bb964c4",
+          "size": 202814
+        }
+      },
+      "cleanup": {
+        "confirmed": true,
+        "errors": [],
+        "remaining": []
+      },
+      "shm": {
+        "peakBytes": 17649664,
+        "samples": 9
+      },
+      "runtime": {
+        "node": "v24.20.0",
+        "playwright": "1.63.0",
+        "core": "1.63.0",
+        "browser": "153.0.8010.12"
+      }
+    },
+    {
+      "case": "failed-save-retry",
+      "mutant": false,
+      "request": "/home/gradrix/repos/gflo/.gflo/browser-independent-v2/inputs/failed-save-retry-control/request.json",
+      "id": "e721614fb6f91f578513a1a2aa6b332d62db8eb18458c0eba332f979a0d39527",
+      "elapsed_s": 1.4040519520640373,
+      "outcome": "passed",
+      "failure": null,
+      "contexts_traced": 1,
+      "expected_outcome_confirmed": true,
+      "artifacts": {
+        "events.json": {
+          "sha256": "a4a926ad62f4c34c2053ed5ca9f52230384687376f30e3fd3cc223f4ac23b559",
+          "size": 194
+        },
+        "screen-1.png": {
+          "sha256": "30618f605581a1e083c2bd27ce22f3d9e2beee4099ec50d4ccb471336613c66c",
+          "size": 30648
+        },
+        "trace.zip": {
+          "sha256": "da89cc1900fd11d7350613a4b342093011e2861bb8ba3868a957551720e9b5c7",
+          "size": 132000
+        }
+      },
+      "cleanup": {
+        "confirmed": true,
+        "errors": [],
+        "remaining": []
+      },
+      "shm": {
+        "peakBytes": 9142272,
+        "samples": 6
+      },
+      "runtime": {
+        "node": "v24.20.0",
+        "playwright": "1.63.0",
+        "core": "1.63.0",
+        "browser": "153.0.8010.12"
+      }
+    },
+    {
+      "case": "create-reload",
+      "mutant": true,
+      "request": "/home/gradrix/repos/gflo/.gflo/browser-independent-v2/inputs/create-reload-mutant/request.json",
+      "id": "d3d0d8276994ef56a22d00b6149a703a0307ede293e3f9a9132ffec619d14eb8",
+      "elapsed_s": 6.343014619778842,
+      "outcome": "failed",
+      "failure": {
+        "message": "TimeoutError: page.waitForFunction: Timeout 5000ms exceeded.",
+        "phase": "journey"
+      },
+      "expected_outcome_confirmed": true,
+      "artifacts": {
+        "events.json": {
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "size": 2
+        },
+        "trace.zip": {
+          "sha256": "f70a751f667c2ad29e2be2095334a7a2d3698dcd180dd72073952a183b5d2f14",
+          "size": 69929
+        }
+      },
+      "cleanup": {
+        "confirmed": true,
+        "errors": [],
+        "remaining": []
+      }
+    },
+    {
+      "case": "validation",
+      "mutant": true,
+      "request": "/home/gradrix/repos/gflo/.gflo/browser-independent-v2/inputs/validation-mutant/request.json",
+      "id": "039d4d6c68806e6f12f61726d8053cdcbe6c2d5bd5ade39ad153e3ed7b61a4ed",
+      "elapsed_s": 1.6133909970521927,
+      "outcome": "failed",
+      "failure": {
+        "message": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n    reservations: [],\n+   stock: 4\n-   stock: 5\n  }\n",
+        "phase": "journey"
+      },
+      "expected_outcome_confirmed": true,
+      "artifacts": {
+        "events.json": {
+          "sha256": "5f81db1be34b1d8d2cd3db6e791987960340ecf501e0991d04dc103819856ec5",
+          "size": 183
+        },
+        "trace.zip": {
+          "sha256": "1231f96661aa15758444b97030c2f39adaef78fb0ded0128d6b69df6804515a1",
+          "size": 187856
+        }
+      },
+      "cleanup": {
+        "confirmed": true,
+        "errors": [],
+        "remaining": []
+      }
+    },
+    {
+      "case": "edit-cancel",
+      "mutant": true,
+      "request": "/home/gradrix/repos/gflo/.gflo/browser-independent-v2/inputs/edit-cancel-mutant/request.json",
+      "id": "ec0fa9306647674350ad30095e5809daa22ce156d0eaf92e5b349569bc5b8aae",
+      "elapsed_s": 6.490393890067935,
+      "outcome": "failed",
+      "failure": {
+        "message": "TimeoutError: page.waitForFunction: Timeout 5000ms exceeded.",
+        "phase": "journey"
+      },
+      "expected_outcome_confirmed": true,
+      "artifacts": {
+        "events.json": {
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "size": 2
+        },
+        "trace.zip": {
+          "sha256": "2d9a74735a6c5674f793e9eabd2d91e8cfe12882794878133307cc71bdfe4f10",
+          "size": 116194
+        }
+      },
+      "cleanup": {
+        "confirmed": true,
+        "errors": [],
+        "remaining": []
+      }
+    },
+    {
+      "case": "conflict",
+      "mutant": true,
+      "request": "/home/gradrix/repos/gflo/.gflo/browser-independent-v2/inputs/conflict-mutant/request.json",
+      "id": "f77d06b115235bb29c7c3f77fb909897f1f1a6d2dbdca33d81dd33a294326ad1",
+      "elapsed_s": 6.6010283888317645,
+      "outcome": "failed",
+      "failure": {
+        "message": "TimeoutError: page.waitForFunction: Timeout 5000ms exceeded.",
+        "phase": "journey"
+      },
+      "expected_outcome_confirmed": true,
+      "artifacts": {
+        "events.json": {
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "size": 2
+        },
+        "trace.zip": {
+          "sha256": "58d653a6711d32a1610c3689c6bb4a88ec373eb29f2b3f8b08bc64a163acfcdc",
+          "size": 166041
+        }
+      },
+      "cleanup": {
+        "confirmed": true,
+        "errors": [],
+        "remaining": []
+      }
+    },
+    {
+      "case": "failed-save-retry",
+      "mutant": true,
+      "request": "/home/gradrix/repos/gflo/.gflo/browser-independent-v2/inputs/failed-save-retry-mutant/request.json",
+      "id": "880f93e9a7651ec1aef297f6d48d55223ccdc43c24a794841aff5bd71945bde2",
+      "elapsed_s": 1.3672515330836177,
+      "outcome": "failed",
+      "failure": {
+        "message": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n    reservations: [],\n+   stock: 3\n-   stock: 5\n  }\n",
+        "phase": "journey"
+      },
+      "expected_outcome_confirmed": true,
+      "artifacts": {
+        "events.json": {
+          "sha256": "a4a926ad62f4c34c2053ed5ca9f52230384687376f30e3fd3cc223f4ac23b559",
+          "size": 194
+        },
+        "trace.zip": {
+          "sha256": "d9d4f4db84bbce4a77d4f21add6f7ed9ad55d3d9194c41ff0217ad5554fd7659",
+          "size": 104042
+        }
+      },
+      "cleanup": {
+        "confirmed": true,
+        "errors": [],
+        "remaining": []
+      }
+    }
+  ]
+}

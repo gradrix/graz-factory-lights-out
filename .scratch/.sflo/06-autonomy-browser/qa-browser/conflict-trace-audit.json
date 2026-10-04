@@ -1,0 +1,308 @@
+{
+  "manifest": {
+    "contexts": [
+      {
+        "context": 1,
+        "name": "context-1.zip",
+        "size": 70557,
+        "sha256": "71c2542e9868ac8010e99e7a2db41f1c35751bdc1152654caff191ab08ced13e"
+      },
+      {
+        "context": 2,
+        "name": "context-2.zip",
+        "size": 131662,
+        "sha256": "d3ae4002c0d3107661c971e411dc03bdc04bfc3d9522c082c08f8c6e889f7210"
+      }
+    ]
+  },
+  "contexts": [
+    {
+      "context": 1,
+      "name": "context-1.zip",
+      "sha256": "71c2542e9868ac8010e99e7a2db41f1c35751bdc1152654caff191ab08ced13e",
+      "calls": [
+        {
+          "method": "setNetworkInterceptionPatterns",
+          "params": {
+            "patterns": [
+              {
+                "glob": "**/*"
+              }
+            ]
+          }
+        },
+        {
+          "method": "addInitScript",
+          "params": {
+            "source": "(()=>{\n  window.open=()=>{throw new Error('Popups forbidden by local browser profile')};\n  document.addEventListener('click',e=>{if(e.target instanceof HTMLInputElement&&e.target.type==='file'){e.preventDefault();throw new Error('File uploads forbidden by local browser profile')}},true);\n })(undefined)"
+          }
+        },
+        {
+          "method": "newPage",
+          "params": {}
+        },
+        {
+          "method": "goto",
+          "params": {
+            "url": "http://127.0.0.1:3210",
+            "waitUntil": "load",
+            "timeout": 10000
+          }
+        },
+        {
+          "method": "continue",
+          "params": {
+            "isFallback": false
+          }
+        },
+        {
+          "method": "continue",
+          "params": {
+            "isFallback": false
+          }
+        },
+        {
+          "method": "waitForFunction",
+          "params": {
+            "expression": "([stock,count])=>document.querySelector('#stock').textContent===String(stock)&&document.querySelectorAll('#reservations li').length===count",
+            "isFunction": true,
+            "arg": {
+              "value": {
+                "a": [
+                  {
+                    "n": 2
+                  },
+                  {
+                    "n": 0
+                  }
+                ],
+                "id": 1
+              },
+              "handles": []
+            },
+            "timeout": 5000
+          }
+        },
+        {
+          "method": "fill",
+          "params": {
+            "selector": "internal:label=\"Customer reference\"i",
+            "strict": true,
+            "value": "First",
+            "timeout": 5000
+          }
+        },
+        {
+          "method": "fill",
+          "params": {
+            "selector": "internal:label=\"Quantity\"s",
+            "strict": true,
+            "value": "2",
+            "timeout": 5000
+          }
+        },
+        {
+          "method": "click",
+          "params": {
+            "selector": "internal:role=button[name=\"Reserve\"s]",
+            "strict": true,
+            "timeout": 5000
+          }
+        },
+        {
+          "method": "continue",
+          "params": {
+            "isFallback": false
+          }
+        },
+        {
+          "method": "waitForFunction",
+          "params": {
+            "expression": "([stock,count])=>document.querySelector('#stock').textContent===String(stock)&&document.querySelectorAll('#reservations li').length===count",
+            "isFunction": true,
+            "arg": {
+              "value": {
+                "a": [
+                  {
+                    "n": 0
+                  },
+                  {
+                    "n": 1
+                  }
+                ],
+                "id": 1
+              },
+              "handles": []
+            },
+            "timeout": 5000
+          }
+        },
+        {
+          "method": "continue",
+          "params": {
+            "isFallback": false
+          }
+        }
+      ]
+    },
+    {
+      "context": 2,
+      "name": "context-2.zip",
+      "sha256": "d3ae4002c0d3107661c971e411dc03bdc04bfc3d9522c082c08f8c6e889f7210",
+      "calls": [
+        {
+          "method": "setNetworkInterceptionPatterns",
+          "params": {
+            "patterns": [
+              {
+                "glob": "**/*"
+              }
+            ]
+          }
+        },
+        {
+          "method": "addInitScript",
+          "params": {
+            "source": "(()=>{\n  window.open=()=>{throw new Error('Popups forbidden by local browser profile')};\n  document.addEventListener('click',e=>{if(e.target instanceof HTMLInputElement&&e.target.type==='file'){e.preventDefault();throw new Error('File uploads forbidden by local browser profile')}},true);\n })(undefined)"
+          }
+        },
+        {
+          "method": "newPage",
+          "params": {}
+        },
+        {
+          "method": "goto",
+          "params": {
+            "url": "http://127.0.0.1:3210",
+            "waitUntil": "load",
+            "timeout": 10000
+          }
+        },
+        {
+          "method": "continue",
+          "params": {
+            "isFallback": false
+          }
+        },
+        {
+          "method": "continue",
+          "params": {
+            "isFallback": false
+          }
+        },
+        {
+          "method": "waitForFunction",
+          "params": {
+            "expression": "([stock,count])=>document.querySelector('#stock').textContent===String(stock)&&document.querySelectorAll('#reservations li').length===count",
+            "isFunction": true,
+            "arg": {
+              "value": {
+                "a": [
+                  {
+                    "n": 2
+                  },
+                  {
+                    "n": 0
+                  }
+                ],
+                "id": 1
+              },
+              "handles": []
+            },
+            "timeout": 5000
+          }
+        },
+        {
+          "method": "fill",
+          "params": {
+            "selector": "internal:label=\"Customer reference\"i",
+            "strict": true,
+            "value": "Second",
+            "timeout": 5000
+          }
+        },
+        {
+          "method": "fill",
+          "params": {
+            "selector": "internal:label=\"Quantity\"s",
+            "strict": true,
+            "value": "2",
+            "timeout": 5000
+          }
+        },
+        {
+          "method": "click",
+          "params": {
+            "selector": "internal:role=button[name=\"Reserve\"s]",
+            "strict": true,
+            "timeout": 5000
+          }
+        },
+        {
+          "method": "continue",
+          "params": {
+            "isFallback": false
+          }
+        },
+        {
+          "method": "waitForFunction",
+          "params": {
+            "expression": "()=>document.querySelector('[role=alert]').textContent.trim().length>0",
+            "isFunction": true,
+            "arg": {
+              "value": {
+                "v": "undefined"
+              },
+              "handles": []
+            },
+            "timeout": 5000
+          }
+        },
+        {
+          "method": "continue",
+          "params": {
+            "isFallback": false
+          }
+        },
+        {
+          "method": "waitForFunction",
+          "params": {
+            "expression": "([stock,count])=>document.querySelector('#stock').textContent===String(stock)&&document.querySelectorAll('#reservations li').length===count",
+            "isFunction": true,
+            "arg": {
+              "value": {
+                "a": [
+                  {
+                    "n": 0
+                  },
+                  {
+                    "n": 1
+                  }
+                ],
+                "id": 1
+              },
+              "handles": []
+            },
+            "timeout": 5000
+          }
+        },
+        {
+          "method": "inputValue",
+          "params": {
+            "selector": "internal:label=\"Customer reference\"i",
+            "strict": true,
+            "timeout": 5000
+          }
+        },
+        {
+          "method": "screenshot",
+          "params": {
+            "type": "png",
+            "fullPage": false,
+            "timeout": 5000
+          }
+        }
+      ]
+    }
+  ]
+}
