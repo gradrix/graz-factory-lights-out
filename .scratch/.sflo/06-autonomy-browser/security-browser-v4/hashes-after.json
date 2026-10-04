@@ -1,0 +1,52 @@
+{
+  "docs/local-browser.md": {
+    "expected": "61b572d49aa189600f2047427f2f8e3237598c3f0ce238d4a4dd6becae0164b6",
+    "commit_sha256": "61b572d49aa189600f2047427f2f8e3237598c3f0ce238d4a4dd6becae0164b6",
+    "workspace_sha256": "61b572d49aa189600f2047427f2f8e3237598c3f0ce238d4a4dd6becae0164b6"
+  },
+  "gflo/__main__.py": {
+    "expected": "4f20c5f979b363d963fdd5863585cd8b74a0837b5e5e2b6522aa1ee0674e48dd",
+    "commit_sha256": "4f20c5f979b363d963fdd5863585cd8b74a0837b5e5e2b6522aa1ee0674e48dd",
+    "workspace_sha256": "4f20c5f979b363d963fdd5863585cd8b74a0837b5e5e2b6522aa1ee0674e48dd",
+    "private_copy_sha256": "4f20c5f979b363d963fdd5863585cd8b74a0837b5e5e2b6522aa1ee0674e48dd"
+  },
+  "gflo/browser.py": {
+    "expected": "d6872a21581a361189709b81ac1512c476673778210c18af14d9bd42294f94b1",
+    "commit_sha256": "d6872a21581a361189709b81ac1512c476673778210c18af14d9bd42294f94b1",
+    "workspace_sha256": "d6872a21581a361189709b81ac1512c476673778210c18af14d9bd42294f94b1",
+    "private_copy_sha256": "d6872a21581a361189709b81ac1512c476673778210c18af14d9bd42294f94b1"
+  },
+  "gflo/browser_pair.py": {
+    "expected": "b07802a4b3c76a4251fd3e42fd602a5adf7574f707afa3daeb8c1ae19d656ec9",
+    "commit_sha256": "b07802a4b3c76a4251fd3e42fd602a5adf7574f707afa3daeb8c1ae19d656ec9",
+    "workspace_sha256": "b07802a4b3c76a4251fd3e42fd602a5adf7574f707afa3daeb8c1ae19d656ec9",
+    "private_copy_sha256": "b07802a4b3c76a4251fd3e42fd602a5adf7574f707afa3daeb8c1ae19d656ec9"
+  },
+  "gflo/recipes/browser/journey.cjs": {
+    "expected": "5fa647490f27342883ed5b1fa42aab972603f6b706ab16214942675891e9eb27",
+    "commit_sha256": "5fa647490f27342883ed5b1fa42aab972603f6b706ab16214942675891e9eb27",
+    "workspace_sha256": "5fa647490f27342883ed5b1fa42aab972603f6b706ab16214942675891e9eb27",
+    "private_copy_sha256": "5fa647490f27342883ed5b1fa42aab972603f6b706ab16214942675891e9eb27"
+  },
+  "gflo/recipes/browser/seccomp.json": {
+    "expected": "322b86b4f7f5b597ed6a9c2cfd6193a4b249a51c8bc9cfba8ff1a485070b24e8",
+    "commit_sha256": "322b86b4f7f5b597ed6a9c2cfd6193a4b249a51c8bc9cfba8ff1a485070b24e8",
+    "workspace_sha256": "322b86b4f7f5b597ed6a9c2cfd6193a4b249a51c8bc9cfba8ff1a485070b24e8",
+    "private_copy_sha256": "322b86b4f7f5b597ed6a9c2cfd6193a4b249a51c8bc9cfba8ff1a485070b24e8"
+  },
+  "tests/test_browser.py": {
+    "expected": "83823990ab98aa5a3eb5522f07117ca074308cc583e419972bd74b5e0b78398a",
+    "commit_sha256": "83823990ab98aa5a3eb5522f07117ca074308cc583e419972bd74b5e0b78398a",
+    "workspace_sha256": "83823990ab98aa5a3eb5522f07117ca074308cc583e419972bd74b5e0b78398a"
+  },
+  "tests/test_browser_live.py": {
+    "expected": "f75c01bacd794f1292afb8d47bbf437495cbbf9282c94509b9e66cc67067ccae",
+    "commit_sha256": "f75c01bacd794f1292afb8d47bbf437495cbbf9282c94509b9e66cc67067ccae",
+    "workspace_sha256": "f75c01bacd794f1292afb8d47bbf437495cbbf9282c94509b9e66cc67067ccae"
+  },
+  "tests/test_browser_pair.py": {
+    "expected": "893d2d128d31cfe9cfad59415f60388a072d4403150ab42e2fb3e198e565ec87",
+    "commit_sha256": "893d2d128d31cfe9cfad59415f60388a072d4403150ab42e2fb3e198e565ec87",
+    "workspace_sha256": "893d2d128d31cfe9cfad59415f60388a072d4403150ab42e2fb3e198e565ec87"
+  }
+}

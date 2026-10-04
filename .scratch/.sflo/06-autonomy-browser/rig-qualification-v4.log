@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "/home/gradrix/gflo-browser-6852a20/.scratch/.sflo/06-autonomy-browser/rig-acceptance.py", line 98, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "/home/gradrix/gflo-browser-6852a20/.scratch/.sflo/06-autonomy-browser/rig-acceptance.py", line 21, in main
+    with (out/'five-flows.log').open('w') as log:subprocess.run(command,stdout=log,stderr=subprocess.STDOUT,timeout=1500,check=True,cwd=repo)
+                                                 ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.13/subprocess.py", line 577, in run
+    raise CalledProcessError(retcode, process.args,
+                             output=stdout, stderr=stderr)
+subprocess.CalledProcessError: Command '['/usr/bin/python3', '/home/gradrix/gflo-browser-6852a20/.scratch/autonomy/qualify-browser.py', '--repo', '/home/gradrix/gflo-browser-6852a20', '--candidate', '/home/gradrix/gflo-browser-6852a20/.scratch/.sflo/06-autonomy-browser/builder-candidate-v4.json', '--candidate-sha256', 'b9f0c1c64dc9f3802c7bf0d34997a648cdec383efd3a34d8570572ead61a216f', '--fixture', '/home/gradrix/gflo-browser-6852a20/evaluations/local-browser', '--fixture-sha256', '20d07c59c1af28f5728847179406560787b579b86c20c030e30032492f16ac10', '--support-store', '/home/gradrix/gflo-browser-c201083/.gflo/browser-support', '--support-id', 'df4755523d7682b461c222f22f99453346eccef769f6bbc096ac77772a8ffd20', '--output', '/home/gradrix/gflo-browser-6852a20/.gflo/rig-qualification-v4/five-flows', '--run']' returned non-zero exit status 1.

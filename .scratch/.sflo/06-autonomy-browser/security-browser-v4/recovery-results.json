@@ -1,0 +1,254 @@
+[
+  {
+    "mode": "uncertain-create",
+    "ordinary_recovery_refused": true,
+    "admission_refused": true,
+    "evidence_unchanged_before_ack": true,
+    "prior_preserved": true,
+    "ack_record": {
+      "created_utc": "2026-10-04T14:42:32.429917+00:00",
+      "daemon_readback": "currently absent; not proof of create completion",
+      "kind": "recovery",
+      "operator_acknowledged_create_uncertainty": true,
+      "original_failure_evidence": {
+        ".cleanup-required": {
+          "sha256": "80da4a275e6d1623475176041f89134bb735a165a4123af2809e88bda7f7eff9",
+          "value": {
+            "names": [
+              "gflo-browser-check-64220ed74a73427faf30a96227ec49da",
+              "gflo-browser-app-64220ed74a73427faf30a96227ec49da"
+            ],
+            "run": "64220ed74a73427faf30a96227ec49da"
+          }
+        },
+        ".failure.json": {
+          "sha256": "53f82e5d0940fbe7f91138a1ca0f365cb0710f00ee51028460a30c926358ea47",
+          "value": {
+            "case": "security",
+            "cleanup": {
+              "confirmed": false,
+              "errors": [
+                "controlled create response loss"
+              ],
+              "uncertain_creates": [
+                "owned-app"
+              ]
+            },
+            "diagnostics": ""
+          }
+        }
+      },
+      "uncertain_creates": [
+        "owned-app"
+      ]
+    },
+    "admission_after_ack_passed": true
+  },
+  {
+    "mode": "guardian-exception",
+    "ordinary_recovery_refused": true,
+    "admission_refused": true,
+    "evidence_unchanged_before_ack": true,
+    "prior_preserved": true,
+    "ack_record": {
+      "created_utc": "2026-10-04T14:42:32.511864+00:00",
+      "daemon_readback": "currently absent; not proof of create completion",
+      "kind": "recovery",
+      "operator_acknowledged_create_uncertainty": true,
+      "original_failure_evidence": {
+        ".cleanup-required": {
+          "sha256": "23ed4592dbb33084d74da6c932996b50664db8da48958a551d40504225f5f5bf",
+          "value": {
+            "names": [
+              "gflo-browser-check-7eb958e68fe4407a887e6dd4b2719adb",
+              "gflo-browser-app-7eb958e68fe4407a887e6dd4b2719adb"
+            ],
+            "run": "7eb958e68fe4407a887e6dd4b2719adb"
+          }
+        },
+        ".failure.json": {
+          "sha256": "99d0e3602a40b9a236785332ea4e7144c53bba1768b69da5fa46422638f5684f",
+          "value": {
+            "case": "security",
+            "cleanup": {
+              "confirmed": false,
+              "uncertain_creates": [
+                "gflo-browser-app-7eb958e68fe4407a887e6dd4b2719adb",
+                "gflo-browser-check-7eb958e68fe4407a887e6dd4b2719adb"
+              ]
+            },
+            "diagnostics": "controlled guardian loss"
+          }
+        }
+      },
+      "uncertain_creates": [
+        "gflo-browser-app-7eb958e68fe4407a887e6dd4b2719adb",
+        "gflo-browser-check-7eb958e68fe4407a887e6dd4b2719adb"
+      ]
+    },
+    "admission_after_ack_passed": true
+  },
+  {
+    "mode": "missing-guardian-facts",
+    "ordinary_recovery_refused": true,
+    "admission_refused": true,
+    "evidence_unchanged_before_ack": true,
+    "prior_preserved": true,
+    "ack_record": {
+      "created_utc": "2026-10-04T14:42:32.599155+00:00",
+      "daemon_readback": "currently absent; not proof of create completion",
+      "kind": "recovery",
+      "operator_acknowledged_create_uncertainty": true,
+      "original_failure_evidence": {
+        ".cleanup-required": {
+          "sha256": "15260f161b1848bc6cef3de869f04de103b379cee1ceeb3fe5b3e536b13c8cd1",
+          "value": {
+            "names": [
+              "gflo-browser-check-f8a39148f92f4b58ba55a2ed7282649b",
+              "gflo-browser-app-f8a39148f92f4b58ba55a2ed7282649b"
+            ],
+            "run": "f8a39148f92f4b58ba55a2ed7282649b"
+          }
+        }
+      },
+      "uncertain_creates": [
+        "guardian completion not recorded"
+      ]
+    },
+    "admission_after_ack_passed": true
+  },
+  {
+    "mode": "recorded-uncertain-facts",
+    "ordinary_recovery_refused": true,
+    "admission_refused": true,
+    "evidence_unchanged_before_ack": true,
+    "prior_preserved": true,
+    "ack_record": {
+      "created_utc": "2026-10-04T14:42:32.686747+00:00",
+      "daemon_readback": "currently absent; not proof of create completion",
+      "kind": "recovery",
+      "operator_acknowledged_create_uncertainty": true,
+      "original_failure_evidence": {
+        ".cleanup-required": {
+          "sha256": "e4402a02fe2c5f725bb3fdd2a417bcb357226907adafe6d6f1c22ff14fd63c4b",
+          "value": {
+            "names": [
+              "gflo-browser-check-76dc590fb4ff4e84a3f259f9392cf809",
+              "gflo-browser-app-76dc590fb4ff4e84a3f259f9392cf809"
+            ],
+            "run": "76dc590fb4ff4e84a3f259f9392cf809"
+          }
+        },
+        ".work-owned/facts.json": {
+          "sha256": "8c403da08379dee22ad18d1b6fb083cd40c9df80bb163e6f7226fd0da76c3964",
+          "value": {
+            "cleanup": {
+              "confirmed": false,
+              "uncertain_creates": [
+                "owned-browser"
+              ]
+            },
+            "failure": {
+              "kind": "TimeoutExpired",
+              "message": "controlled"
+            }
+          }
+        }
+      },
+      "uncertain_creates": [
+        "owned-browser"
+      ]
+    },
+    "admission_after_ack_passed": true
+  },
+  {
+    "mode": "ack-sync-failure",
+    "ordinary_recovery_refused": true,
+    "admission_refused": true,
+    "evidence_unchanged_before_ack": true,
+    "prior_preserved": true,
+    "ack_record": {
+      "created_utc": "2026-10-04T14:42:32.777853+00:00",
+      "daemon_readback": "currently absent; not proof of create completion",
+      "kind": "recovery",
+      "operator_acknowledged_create_uncertainty": true,
+      "original_failure_evidence": {
+        ".cleanup-required": {
+          "sha256": "902d7e29e740796efbf23340b8ffde2e2168f5c1358e8eb55df4ebd2e2fa0e06",
+          "value": {
+            "names": [
+              "gflo-browser-check-581723d46a0742aea12cd887148f13e3",
+              "gflo-browser-app-581723d46a0742aea12cd887148f13e3"
+            ],
+            "run": "581723d46a0742aea12cd887148f13e3"
+          }
+        },
+        ".failure.json": {
+          "sha256": "53f82e5d0940fbe7f91138a1ca0f365cb0710f00ee51028460a30c926358ea47",
+          "value": {
+            "case": "security",
+            "cleanup": {
+              "confirmed": false,
+              "errors": [
+                "controlled create response loss"
+              ],
+              "uncertain_creates": [
+                "owned-app"
+              ]
+            },
+            "diagnostics": ""
+          }
+        }
+      },
+      "uncertain_creates": [
+        "owned-app"
+      ]
+    },
+    "admission_after_ack_passed": true
+  },
+  {
+    "mode": "absence-query-failure",
+    "ordinary_recovery_refused": true,
+    "admission_refused": true,
+    "evidence_unchanged_before_ack": true,
+    "prior_preserved": true,
+    "ack_record": {
+      "created_utc": "2026-10-04T14:42:32.865892+00:00",
+      "daemon_readback": "currently absent; not proof of create completion",
+      "kind": "recovery",
+      "operator_acknowledged_create_uncertainty": true,
+      "original_failure_evidence": {
+        ".cleanup-required": {
+          "sha256": "8f088fdee1062d01ebf887268f2640f1c01838421a3ee4282b4edecb7b65c785",
+          "value": {
+            "names": [
+              "gflo-browser-check-88ec6518964c4b6f8fea1f23568f83c2",
+              "gflo-browser-app-88ec6518964c4b6f8fea1f23568f83c2"
+            ],
+            "run": "88ec6518964c4b6f8fea1f23568f83c2"
+          }
+        },
+        ".failure.json": {
+          "sha256": "53f82e5d0940fbe7f91138a1ca0f365cb0710f00ee51028460a30c926358ea47",
+          "value": {
+            "case": "security",
+            "cleanup": {
+              "confirmed": false,
+              "errors": [
+                "controlled create response loss"
+              ],
+              "uncertain_creates": [
+                "owned-app"
+              ]
+            },
+            "diagnostics": ""
+          }
+        }
+      },
+      "uncertain_creates": [
+        "owned-app"
+      ]
+    },
+    "admission_after_ack_passed": true
+  }
+]

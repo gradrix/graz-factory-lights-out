@@ -1,0 +1,8 @@
+.......................Command '['docker', 'create', '--name', 'owned-app']' returned non-zero exit status 1.
+.Invalid created container ID
+.Command '['docker', 'create', '--name', 'owned-app']' timed out after 30 seconds
+.
+----------------------------------------------------------------------
+Ran 26 tests in 38.713s
+
+OK

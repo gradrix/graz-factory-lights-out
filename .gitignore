@@ -112,3 +112,15 @@ htmlcov/
 !.scratch/.sflo/06-autonomy-browser/security-browser-recheck/*.py
 !.scratch/.sflo/06-autonomy-browser/security-browser-recheck/*.json
 !.scratch/.sflo/06-autonomy-browser/security-browser-recheck/*.log
+
+!.scratch/.sflo/06-autonomy-browser/security-browser-v4/
+.scratch/.sflo/06-autonomy-browser/security-browser-v4/*
+!.scratch/.sflo/06-autonomy-browser/security-browser-v4/*.py
+!.scratch/.sflo/06-autonomy-browser/security-browser-v4/*.json
+!.scratch/.sflo/06-autonomy-browser/security-browser-v4/*.log
+!.scratch/.sflo/06-autonomy-browser/security-browser-v4/*.patch
+
+!.scratch/.sflo/06-autonomy-browser/rig-v4-failed/
+.scratch/.sflo/06-autonomy-browser/rig-v4-failed/*
+!.scratch/.sflo/06-autonomy-browser/rig-v4-failed/*.json
+!.scratch/.sflo/06-autonomy-browser/rig-v4-failed/*.log

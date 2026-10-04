@@ -1,0 +1,30 @@
+diff --git a/gflo/browser.py b/gflo/browser.py
+index 75b6165..1e33d4e 100644
+--- a/gflo/browser.py
++++ b/gflo/browser.py
+@@ -379,7 +379,7 @@ class BrowserStore:
+                 if not facts.exists():
+                     uncertain.append('guardian completion not recorded')
+                 else:
+-                    raw=checked_file(facts,65536,0o644)
++                    raw=checked_file(facts,65536,0o600)
+                     value=json.loads(raw)
+                     if len(evidence)>=8:raise ValueError('Recovery evidence count limit')
+                     evidence[path.name+'/facts.json']={'sha256':digest(raw),'value':value}
+diff --git a/gflo/browser_pair.py b/gflo/browser_pair.py
+index 382e704..0772b77 100644
+--- a/gflo/browser_pair.py
++++ b/gflo/browser_pair.py
+@@ -131,7 +131,11 @@ def main():
+         except Exception as error:
+             facts['cleanup']={'confirmed':False,'errors':errors+[str(error)[:1024]],'uncertain_creates':uncertain_creates}
+         facts['elapsed_s']=time.monotonic()-started
+-        with open(spec['facts'],'x') as stream:json.dump(facts,stream)
++        fd=os.open(spec['facts'],os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW,0o600)
++        with os.fdopen(fd,'w') as stream:
++            os.fchmod(stream.fileno(),0o600)
++            json.dump(facts,stream)
++            stream.flush();os.fsync(stream.fileno())
+     return code if facts['cleanup']['confirmed'] else 125
+ 
+ 

@@ -1,0 +1,597 @@
+[
+  {
+    "mode": "clean",
+    "code": 0,
+    "facts": {
+      "containers": {
+        "owned-app": {
+          "id": "1111111111111111111111111111111111111111111111111111111111111111",
+          "image": "a",
+          "host": {},
+          "config": {
+            "User": null,
+            "Env": null,
+            "WorkingDir": null,
+            "Entrypoint": null,
+            "Cmd": null
+          },
+          "mounts": []
+        },
+        "owned-browser": {
+          "id": "2222222222222222222222222222222222222222222222222222222222222222",
+          "image": "b",
+          "host": {},
+          "config": {
+            "User": null,
+            "Env": null,
+            "WorkingDir": null,
+            "Entrypoint": null,
+            "Cmd": null
+          },
+          "mounts": []
+        }
+      },
+      "cleanup": {
+        "confirmed": true,
+        "remaining": [],
+        "errors": [],
+        "uncertain_creates": []
+      },
+      "failure": null,
+      "elapsed_s": 0.00015308894217014313
+    },
+    "calls": [
+      [
+        "docker",
+        "create",
+        "--name",
+        "owned-app"
+      ],
+      [
+        "docker",
+        "inspect",
+        "1111111111111111111111111111111111111111111111111111111111111111"
+      ],
+      [
+        "docker",
+        "create",
+        "--name",
+        "owned-browser",
+        "--network",
+        "container:1111111111111111111111111111111111111111111111111111111111111111"
+      ],
+      [
+        "docker",
+        "inspect",
+        "2222222222222222222222222222222222222222222222222222222222222222"
+      ],
+      [
+        "docker",
+        "rm",
+        "-f",
+        "owned-browser"
+      ],
+      [
+        "docker",
+        "rm",
+        "-f",
+        "owned-app"
+      ],
+      [
+        "docker",
+        "ps",
+        "-aq",
+        "--no-trunc",
+        "--filter",
+        "label=gflo.browser.run=owned-run"
+      ]
+    ]
+  },
+  {
+    "mode": "create-timeout",
+    "code": 125,
+    "facts": {
+      "containers": {},
+      "cleanup": {
+        "confirmed": false,
+        "remaining": [],
+        "errors": [
+          "Create completion uncertain: owned-app"
+        ],
+        "uncertain_creates": [
+          "owned-app"
+        ]
+      },
+      "failure": {
+        "kind": "TimeoutExpired",
+        "message": "Command '['docker', 'create', '--name', 'owned-app']' timed out after 30 seconds"
+      },
+      "elapsed_s": 0.0006435811519622803
+    },
+    "calls": [
+      [
+        "docker",
+        "create",
+        "--name",
+        "owned-app"
+      ],
+      [
+        "docker",
+        "rm",
+        "-f",
+        "owned-browser"
+      ],
+      [
+        "docker",
+        "rm",
+        "-f",
+        "owned-app"
+      ],
+      [
+        "docker",
+        "ps",
+        "-aq",
+        "--no-trunc",
+        "--filter",
+        "label=gflo.browser.run=owned-run"
+      ]
+    ]
+  },
+  {
+    "mode": "create-nonzero",
+    "code": 125,
+    "facts": {
+      "containers": {},
+      "cleanup": {
+        "confirmed": false,
+        "remaining": [],
+        "errors": [
+          "Create completion uncertain: owned-app"
+        ],
+        "uncertain_creates": [
+          "owned-app"
+        ]
+      },
+      "failure": {
+        "kind": "CalledProcessError",
+        "message": "Command '['docker', 'create', '--name', 'owned-app']' returned non-zero exit status 1."
+      },
+      "elapsed_s": 5.635293200612068e-05
+    },
+    "calls": [
+      [
+        "docker",
+        "create",
+        "--name",
+        "owned-app"
+      ],
+      [
+        "docker",
+        "rm",
+        "-f",
+        "owned-browser"
+      ],
+      [
+        "docker",
+        "rm",
+        "-f",
+        "owned-app"
+      ],
+      [
+        "docker",
+        "ps",
+        "-aq",
+        "--no-trunc",
+        "--filter",
+        "label=gflo.browser.run=owned-run"
+      ]
+    ]
+  },
+  {
+    "mode": "create-transport",
+    "code": 125,
+    "facts": {
+      "containers": {},
+      "cleanup": {
+        "confirmed": false,
+        "remaining": [],
+        "errors": [
+          "Create completion uncertain: owned-app"
+        ],
+        "uncertain_creates": [
+          "owned-app"
+        ]
+      },
+      "failure": {
+        "kind": "OSError",
+        "message": "controlled transport loss"
+      },
+      "elapsed_s": 4.379125311970711e-05
+    },
+    "calls": [
+      [
+        "docker",
+        "create",
+        "--name",
+        "owned-app"
+      ],
+      [
+        "docker",
+        "rm",
+        "-f",
+        "owned-browser"
+      ],
+      [
+        "docker",
+        "rm",
+        "-f",
+        "owned-app"
+      ],
+      [
+        "docker",
+        "ps",
+        "-aq",
+        "--no-trunc",
+        "--filter",
+        "label=gflo.browser.run=owned-run"
+      ]
+    ]
+  },
+  {
+    "mode": "create-malformed",
+    "code": 125,
+    "facts": {
+      "containers": {},
+      "cleanup": {
+        "confirmed": false,
+        "remaining": [],
+        "errors": [
+          "Create completion uncertain: owned-app"
+        ],
+        "uncertain_creates": [
+          "owned-app"
+        ]
+      },
+      "failure": {
+        "kind": "ValueError",
+        "message": "Invalid created container ID"
+      },
+      "elapsed_s": 3.917422145605087e-05
+    },
+    "calls": [
+      [
+        "docker",
+        "create",
+        "--name",
+        "owned-app"
+      ],
+      [
+        "docker",
+        "rm",
+        "-f",
+        "owned-browser"
+      ],
+      [
+        "docker",
+        "rm",
+        "-f",
+        "owned-app"
+      ],
+      [
+        "docker",
+        "ps",
+        "-aq",
+        "--no-trunc",
+        "--filter",
+        "label=gflo.browser.run=owned-run"
+      ]
+    ]
+  },
+  {
+    "mode": "create-invalid-encoding",
+    "code": 125,
+    "facts": {
+      "containers": {},
+      "cleanup": {
+        "confirmed": false,
+        "remaining": [],
+        "errors": [
+          "Create completion uncertain: owned-app"
+        ],
+        "uncertain_creates": [
+          "owned-app"
+        ]
+      },
+      "failure": {
+        "kind": "UnicodeDecodeError",
+        "message": "'utf-8' codec can't decode byte 0xff in position 0: invalid start byte"
+      },
+      "elapsed_s": 4.373304545879364e-05
+    },
+    "calls": [
+      [
+        "docker",
+        "create",
+        "--name",
+        "owned-app"
+      ],
+      [
+        "docker",
+        "rm",
+        "-f",
+        "owned-browser"
+      ],
+      [
+        "docker",
+        "rm",
+        "-f",
+        "owned-app"
+      ],
+      [
+        "docker",
+        "ps",
+        "-aq",
+        "--no-trunc",
+        "--filter",
+        "label=gflo.browser.run=owned-run"
+      ]
+    ]
+  },
+  {
+    "mode": "second-create-timeout",
+    "code": 125,
+    "facts": {
+      "containers": {
+        "owned-app": {
+          "id": "1111111111111111111111111111111111111111111111111111111111111111",
+          "image": "a",
+          "host": {},
+          "config": {
+            "User": null,
+            "Env": null,
+            "WorkingDir": null,
+            "Entrypoint": null,
+            "Cmd": null
+          },
+          "mounts": []
+        }
+      },
+      "cleanup": {
+        "confirmed": false,
+        "remaining": [],
+        "errors": [
+          "Create completion uncertain: owned-browser"
+        ],
+        "uncertain_creates": [
+          "owned-browser"
+        ]
+      },
+      "failure": {
+        "kind": "TimeoutExpired",
+        "message": "Command '['docker', 'create', '--name', 'owned-browser', '--network', 'container:1111111111111111111111111111111111111111111111111111111111111111']' timed out after 30 seconds"
+      },
+      "elapsed_s": 0.00010228203609585762
+    },
+    "calls": [
+      [
+        "docker",
+        "create",
+        "--name",
+        "owned-app"
+      ],
+      [
+        "docker",
+        "inspect",
+        "1111111111111111111111111111111111111111111111111111111111111111"
+      ],
+      [
+        "docker",
+        "create",
+        "--name",
+        "owned-browser",
+        "--network",
+        "container:1111111111111111111111111111111111111111111111111111111111111111"
+      ],
+      [
+        "docker",
+        "rm",
+        "-f",
+        "owned-browser"
+      ],
+      [
+        "docker",
+        "rm",
+        "-f",
+        "owned-app"
+      ],
+      [
+        "docker",
+        "ps",
+        "-aq",
+        "--no-trunc",
+        "--filter",
+        "label=gflo.browser.run=owned-run"
+      ]
+    ]
+  },
+  {
+    "mode": "absence-query-error",
+    "code": 125,
+    "facts": {
+      "containers": {
+        "owned-app": {
+          "id": "1111111111111111111111111111111111111111111111111111111111111111",
+          "image": "a",
+          "host": {},
+          "config": {
+            "User": null,
+            "Env": null,
+            "WorkingDir": null,
+            "Entrypoint": null,
+            "Cmd": null
+          },
+          "mounts": []
+        },
+        "owned-browser": {
+          "id": "2222222222222222222222222222222222222222222222222222222222222222",
+          "image": "b",
+          "host": {},
+          "config": {
+            "User": null,
+            "Env": null,
+            "WorkingDir": null,
+            "Entrypoint": null,
+            "Cmd": null
+          },
+          "mounts": []
+        }
+      },
+      "cleanup": {
+        "confirmed": false,
+        "errors": [
+          "Command '['docker', 'ps', '-aq', '--no-trunc', '--filter', 'label=gflo.browser.run=owned-run']' returned non-zero exit status 1."
+        ],
+        "uncertain_creates": []
+      },
+      "failure": null,
+      "elapsed_s": 0.000134211964905262
+    },
+    "calls": [
+      [
+        "docker",
+        "create",
+        "--name",
+        "owned-app"
+      ],
+      [
+        "docker",
+        "inspect",
+        "1111111111111111111111111111111111111111111111111111111111111111"
+      ],
+      [
+        "docker",
+        "create",
+        "--name",
+        "owned-browser",
+        "--network",
+        "container:1111111111111111111111111111111111111111111111111111111111111111"
+      ],
+      [
+        "docker",
+        "inspect",
+        "2222222222222222222222222222222222222222222222222222222222222222"
+      ],
+      [
+        "docker",
+        "rm",
+        "-f",
+        "owned-browser"
+      ],
+      [
+        "docker",
+        "rm",
+        "-f",
+        "owned-app"
+      ],
+      [
+        "docker",
+        "ps",
+        "-aq",
+        "--no-trunc",
+        "--filter",
+        "label=gflo.browser.run=owned-run"
+      ]
+    ]
+  },
+  {
+    "mode": "remove-error",
+    "code": 125,
+    "facts": {
+      "containers": {
+        "owned-app": {
+          "id": "1111111111111111111111111111111111111111111111111111111111111111",
+          "image": "a",
+          "host": {},
+          "config": {
+            "User": null,
+            "Env": null,
+            "WorkingDir": null,
+            "Entrypoint": null,
+            "Cmd": null
+          },
+          "mounts": []
+        },
+        "owned-browser": {
+          "id": "2222222222222222222222222222222222222222222222222222222222222222",
+          "image": "b",
+          "host": {},
+          "config": {
+            "User": null,
+            "Env": null,
+            "WorkingDir": null,
+            "Entrypoint": null,
+            "Cmd": null
+          },
+          "mounts": []
+        }
+      },
+      "cleanup": {
+        "confirmed": false,
+        "remaining": [],
+        "errors": [
+          "controlled removal failure",
+          "controlled removal failure"
+        ],
+        "uncertain_creates": []
+      },
+      "failure": null,
+      "elapsed_s": 0.00013087131083011627
+    },
+    "calls": [
+      [
+        "docker",
+        "create",
+        "--name",
+        "owned-app"
+      ],
+      [
+        "docker",
+        "inspect",
+        "1111111111111111111111111111111111111111111111111111111111111111"
+      ],
+      [
+        "docker",
+        "create",
+        "--name",
+        "owned-browser",
+        "--network",
+        "container:1111111111111111111111111111111111111111111111111111111111111111"
+      ],
+      [
+        "docker",
+        "inspect",
+        "2222222222222222222222222222222222222222222222222222222222222222"
+      ],
+      [
+        "docker",
+        "rm",
+        "-f",
+        "owned-browser"
+      ],
+      [
+        "docker",
+        "rm",
+        "-f",
+        "owned-app"
+      ],
+      [
+        "docker",
+        "ps",
+        "-aq",
+        "--no-trunc",
+        "--filter",
+        "label=gflo.browser.run=owned-run"
+      ]
+    ]
+  }
+]

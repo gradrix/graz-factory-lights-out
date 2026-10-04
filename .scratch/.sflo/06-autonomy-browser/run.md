@@ -8,8 +8,8 @@ Contract: contract.md sha256 ab3ba1d7aa4d11237de3914f2a1ed40d3dcb47a680ee181465e
 
 Status: active
 Owner: /root coordinator; /root/cohort_c sole maintained-code builder
-Candidate: frozen v3 manifest SHA256 bbcd59aa9ba4223a022eb0c7d0915188b530b5a35308897384d3594fdfa04da3; source91b1e76; not accepted
-Next: repair independent SEC-B5 retained guardian facts permission mismatch, freeze v4 and recheck affected recovery before rig qualification.
+Candidate: frozen v4 manifest SHA256 b9f0c1c64dc9f3802c7bf0d34997a648cdec383efd3a34d8570572ead61a216f; source6852a20; not accepted
+Next: repair rig-discovered seed copy false mutation alarm, freeze v5 and independently recheck input seam before fresh rig trial.
 
 ## Checks and repairs
 
@@ -44,3 +44,9 @@ V3 freeze: nine manifest paths verified on continuation. Builder reports actual 
 Independent v3 recheck reopened recovery as SEC-B5: guardian facts created with inherited umask (0664 under002,0600 under077), while cleanup requires0644. Controlled retained-facts probe confirms refusal before acknowledgement; no actual daemon outage. Builder assigned narrow deterministic-permission repair and umask regressions. V3 remains preserved at91b1e76. Independent unaffected origin/logging probes continue on frozen v3 copy; no rig journey has run.
 
 [V3 independent recheck](security-browser-recheck.md) passes SEC-B1-B4 within measured scope:23 seam observations,9 guardian cases,6 recovery controls,11 actual owned pairs including readiness no-follow and disabled daemon logs with attached diagnostics. Three mode controls preserve SEC-B5 failures at002/077 and022 positive; source/private hashes unchanged, owned containers absent. V4 narrow writer/reader permission repair pending.
+
+[V4 repair](builder-repair-v4.md): explicit private0600 guardian facts writer and matching recovery reader; actual002/077 owner-death controls pass,26 affected tests in38.713s. Nine manifest files verified and source preserved at6852a20. Exact isolated checkout staged on rig; security reviewer assigned focused B5/recovery check and verified carry-forward of unaffected v3 evidence.
+
+Independent reviewer gives go for rig after v4 actual002/077 owner-death recovery and six uncertainty/acknowledgement controls plus nine guardian cases under each umask. Exact reader/writer delta verified; B1-B4 implementation unchanged. Final report saving. Rig acceptance started on2026-10-04 against isolated6852a20 with v4 manifest and frozen fixtures; fresh output .gflo/rig-qualification-v4, outer log rig-qualification-v4.log. No model requests or model-service changes.
+
+Rig v4 failed, preserved under rig-v4-failed and remote .gflo/rig-qualification-v4: create/reload passed1.720s with complete trace; validation refused before launch with “Seed changed during copy”. Input/support final hashes still match. Source compares entire stat result including access time; own-read atime change is suspected pending controlled rig diagnosis. Builder assigned coherent seed seam repair (nofollow regular single-link descriptor and stable identity/size/mtime/ctime checks, no atime), retaining real modification/replacement rejection. No acceptance/installation; old run is not retried in place.
