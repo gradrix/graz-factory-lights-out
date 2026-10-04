@@ -1,0 +1,219 @@
+{
+  "fixture_manifest_sha256": "9d6b6dc798d148524ef7e360abfc31958a47bb05b6870e56735a7ef64c283e5b",
+  "reference_manifest_sha256": "e3b47b296f6a9829d1e3d0a0e59e2a3dd0de50076d09e0b4f3c29acb93772b18",
+  "control_results_sha256": "0fed1ca34068b95204375815317cd64cfe4441eea8e0d07dbee5feb86c62e2ea",
+  "rows": [
+    {
+      "case": "manifest-reconcile",
+      "label": "manifest-reconcile-starter-milestone",
+      "phase": "milestone",
+      "expected_pass": false,
+      "exit": 1,
+      "elapsed_s": 0.333118653999918,
+      "matched": true
+    },
+    {
+      "case": "manifest-reconcile",
+      "label": "manifest-reconcile-starter-full",
+      "phase": "full",
+      "expected_pass": false,
+      "exit": 1,
+      "elapsed_s": 0.29594067800098856,
+      "matched": true
+    },
+    {
+      "case": "manifest-reconcile",
+      "label": "manifest-reconcile-reference-milestone",
+      "phase": "milestone",
+      "expected_pass": true,
+      "exit": 0,
+      "elapsed_s": 0.29950903200005996,
+      "matched": true
+    },
+    {
+      "case": "manifest-reconcile",
+      "label": "manifest-reconcile-reference-full",
+      "phase": "full",
+      "expected_pass": true,
+      "exit": 0,
+      "elapsed_s": 0.6121016959987173,
+      "matched": true
+    },
+    {
+      "case": "config-preview",
+      "label": "config-preview-starter-milestone",
+      "phase": "milestone",
+      "expected_pass": false,
+      "exit": 1,
+      "elapsed_s": 0.8598667940004816,
+      "matched": true
+    },
+    {
+      "case": "config-preview",
+      "label": "config-preview-starter-full",
+      "phase": "full",
+      "expected_pass": false,
+      "exit": 1,
+      "elapsed_s": 0.8563920960004907,
+      "matched": true
+    },
+    {
+      "case": "config-preview",
+      "label": "config-preview-reference-milestone",
+      "phase": "milestone",
+      "expected_pass": true,
+      "exit": 0,
+      "elapsed_s": 0.8449305630001618,
+      "matched": true
+    },
+    {
+      "case": "config-preview",
+      "label": "config-preview-reference-full",
+      "phase": "full",
+      "expected_pass": true,
+      "exit": 0,
+      "elapsed_s": 2.246158693000325,
+      "matched": true
+    },
+    {
+      "case": "manifest-reconcile",
+      "label": "bool-size",
+      "phase": "full",
+      "expected_pass": false,
+      "exit": 1,
+      "elapsed_s": 0.30085721099931106,
+      "matched": true
+    },
+    {
+      "case": "manifest-reconcile",
+      "label": "greedy-rename",
+      "phase": "full",
+      "expected_pass": false,
+      "exit": 1,
+      "elapsed_s": 0.30202553299932333,
+      "matched": true
+    },
+    {
+      "case": "config-preview",
+      "label": "bool-test",
+      "phase": "full",
+      "expected_pass": false,
+      "exit": 1,
+      "elapsed_s": 0.8747859390005033,
+      "matched": true
+    },
+    {
+      "case": "config-preview",
+      "label": "mutates-input",
+      "phase": "full",
+      "expected_pass": false,
+      "exit": 1,
+      "elapsed_s": 0.8563477769985184,
+      "matched": true
+    },
+    {
+      "case": "manifest-reconcile",
+      "label": "manifest-reconcile-missing-tests",
+      "phase": "full",
+      "expected_pass": false,
+      "exit": 1,
+      "elapsed_s": 0.6032362890000513,
+      "matched": true
+    },
+    {
+      "case": "manifest-reconcile",
+      "label": "manifest-reconcile-unchanged-docs",
+      "phase": "full",
+      "expected_pass": false,
+      "exit": 1,
+      "elapsed_s": 0.6000951510013692,
+      "matched": true
+    },
+    {
+      "case": "config-preview",
+      "label": "config-preview-missing-tests",
+      "phase": "full",
+      "expected_pass": false,
+      "exit": 1,
+      "elapsed_s": 1.715858573999867,
+      "matched": true
+    },
+    {
+      "case": "config-preview",
+      "label": "config-preview-unchanged-docs",
+      "phase": "full",
+      "expected_pass": false,
+      "exit": 1,
+      "elapsed_s": 2.2429387429983763,
+      "matched": true
+    }
+  ],
+  "bindings": {
+    "python-stdlib": {
+      "id": "36cd138cbdc332246a2db473301200117f82404a4504c675db95966645348975",
+      "receipt_hash": "36cd138cbdc332246a2db473301200117f82404a4504c675db95966645348975",
+      "dependencies": "/home/gradrix/gflo-stage3-25f75c3/.gflo/stage3-preparation/environments/36cd138cbdc332246a2db473301200117f82404a4504c675db95966645348975/deps",
+      "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+      "profile": "python-stdlib",
+      "runtime": {
+        "capabilities": "0000000000000000",
+        "docker_socket": "absent",
+        "gpu_devices": "absent",
+        "machine": "x86_64",
+        "platform": "linux",
+        "python": "3.12.13",
+        "uid": "1000"
+      },
+      "store": "/home/gradrix/gflo-stage3-25f75c3/.gflo/stage3-preparation/environments"
+    },
+    "python-api": {
+      "id": "e591c2d6f97b02fc2a99ecef01848a4e74d743e499aeec3b4d4d7d6c6c400acb",
+      "receipt_hash": "e591c2d6f97b02fc2a99ecef01848a4e74d743e499aeec3b4d4d7d6c6c400acb",
+      "dependencies": "/home/gradrix/gflo-stage3-25f75c3/.gflo/stage3-preparation/environments/e591c2d6f97b02fc2a99ecef01848a4e74d743e499aeec3b4d4d7d6c6c400acb/deps",
+      "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+      "profile": "python-api",
+      "runtime": {
+        "capabilities": "0000000000000000",
+        "docker_socket": "absent",
+        "fastapi": "0.115.12",
+        "gpu_devices": "absent",
+        "httpx": "0.28.1",
+        "machine": "x86_64",
+        "platform": "linux",
+        "pydantic": "2.13.5",
+        "python": "3.12.13",
+        "setuptools": "78.1.0",
+        "uid": "1000",
+        "uvicorn": "0.34.2"
+      },
+      "store": "/home/gradrix/gflo-stage3-25f75c3/.gflo/stage3-preparation/environments"
+    }
+  },
+  "files": {
+    "cases/config-preview/SPEC.md": "a86e07695a4c1f7c535da1270fa9903eb62ec632cbd382d971e7de40e7a1a0d4",
+    "cases/config-preview/acceptance/check.py": "6dcb7aeb73e097423d0e15586108786f2f3bad65474ddb5edd82004ed51e5e82",
+    "cases/config-preview/requirements.json": "49b66083db16a8b2aff64b2d9a08b168877b18238a5c4994b7a4eb69fe5ee829",
+    "cases/config-preview/source/README.md": "26aec0f7735c48e961d41a9cf1736db89c1e01148bd6044dbc05b08ff0d37307",
+    "cases/config-preview/source/pyproject.toml": "8e88354be68c2b32a492c6a02ec1ed19dcabf81fa2b91d847617bccdf76ecb68",
+    "cases/config-preview/source/src/config_preview/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "cases/config-preview/source/src/config_preview/app.py": "a4976759335cd423f6e1c8bbc18b83d3b22dfb9bf400ebb2316e76297895be3a",
+    "cases/config-preview/source/src/config_preview/audit.py": "520a56742a815b6220812f67c3643fda4453ae4e4782d4bf65a2a1158b1629c3",
+    "cases/config-preview/source/src/config_preview/domain.py": "bdfc611f388aeb5805da3aa33fe04f487e7c50c981b365ecb53b21bb8c2d44c4",
+    "cases/config-preview/source/src/config_preview/errors.py": "27091aa12553b66e266f3335311ad4aeae2a205f2e88f4948b3b86fe61b94dd2",
+    "cases/config-preview/source/src/config_preview/routes.py": "d90a8fcb00904c43e4e91a1ca0162ee7d4353e1992c6bc39060595c866bf6540",
+    "cases/config-preview/source/src/config_preview/validation.py": "c1af10f4617fc5a4bcf17f3774e71618e84a86df6812dbfae21b25acf8b7390d",
+    "cases/config-preview/task.json": "66cff4ed15f3ce37ba319c6638b1ebea86daee32ade9c57efaef983b1bdd918d",
+    "cases/manifest-reconcile/SPEC.md": "f10061163863a0e4fb285a05f5745f2dbca64e2b45ed7155a5ed96102764dede",
+    "cases/manifest-reconcile/acceptance/check.py": "c3b8e71fb0e7e67ddc5d1182b5e90bbe92280d0d81db1ca4d4972aacbd72b20d",
+    "cases/manifest-reconcile/requirements.json": "401c0da68817abc05d296c602a0432d562fe27e6f240c0ff4920f8d5b4fc9361",
+    "cases/manifest-reconcile/source/README.md": "33ae18e7d8f3ea057ab937365ce44c96916afe6cc5f73d66db6b81116dd19e46",
+    "cases/manifest-reconcile/source/main.py": "db81c48d1fc42e61ab6b36fdfc386266d0aaa19db4a245c7a4bbdd9d4700aa22",
+    "cases/manifest-reconcile/source/manifest_tool/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "cases/manifest-reconcile/source/manifest_tool/api.py": "a0d86806163c16e2dfa9bad773324d53c2770573507bb002fcd34dba71694c7c",
+    "cases/manifest-reconcile/source/manifest_tool/cli.py": "49fce4a72e060504c66f7c0289bd0e9984a95d1c635b8de714d5a3fd65ef417d",
+    "cases/manifest-reconcile/source/manifest_tool/domain.py": "bdf404579b79c7e104f3b519e240fa28861227047cae9b2ae6c200a7e07cc801",
+    "cases/manifest-reconcile/source/manifest_tool/report.py": "6ee4168eec5864df1e0cd00469847d632440725c484503d5dc723f503f2b783b",
+    "cases/manifest-reconcile/source/manifest_tool/validation.py": "0f0811a4ae094d6e7124711c3004f5758f81b6b9bc08b9faa24358601766e151",
+    "cases/manifest-reconcile/task.json": "4b86eea588b19e05c8e50034715be6b84981a557bd3be1f58a41166598716f8b"
+  }
+}
