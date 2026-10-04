@@ -1,0 +1,297 @@
+[
+  {
+    "exit_code": 0,
+    "stop": null,
+    "work_elapsed_s": 172.8901301349979,
+    "work_finished_before_deadline": true,
+    "client_group_absent": true,
+    "cleanup": [
+      {
+        "name": "gflo-review-7a8567edfd7349c5be6b5c6a",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-7a21f2386c8c449dac9d2c72",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-e8b1200bc49e494bb84f490e",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-5aa8f8b2cbc84fcb851e69c6",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-5afe4e84e6c04b569a58aafc",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-9c74aa1e58864f699fea631f",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-9ef70b652f75423ebdf34a24",
+        "removed": [],
+        "confirmed_absent": true
+      }
+    ],
+    "cleanup_confirmed": true,
+    "idle_confirmed": true,
+    "cleanup_elapsed_s": 1.3455401040009747,
+    "case": "case-01",
+    "status": "accepted",
+    "child": {
+      "status": "accepted",
+      "verdict": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "critical",
+            "path": "tests/test_manifest_tool.py",
+            "line": 176,
+            "evidence": "CliBehavior._run_cli hardcodes cwd='/workspace' in subprocess.run(['python','main.py'], input=stdin_text, capture_output=True, text=True, cwd='/workspace', timeout=30). No /workspace exists in the project or in the environment where the tests are meant to run from the project root, so subprocess.run raises FileNotFoundError: [Errno 2] No such file or directory: '/workspace'. Observed: `cd /candidate && python3 -m unittest discover -s . -v` reported 'Ran 11 tests in 0.002s ... FAILED (errors=1)' with the traceback at tests/test_manifest_tool.py lines 176/184, so the README's documented command `python -m unittest discover -s .` does not work, violating A6 ('tests must pass offline', discoverable from the project root'). Re-running the same four CLI assertions with cwd set to the project root (/candidate) reproduced exactly the expected results: (0, '{\"ok\": true}', ''), (2, '{\"error\": \"invalid input\"}', ''), (2, '{\"error\": \"invalid input\"}', ''), and removed == ['a'] \u2014 so only the cwd (and the bare 'python' interpreter name) is at fault.",
+            "repair": "Locate main.py relative to the project root instead of an absolute host path: import os, sys at the top and compute root = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) (the project root, since the test file lives in tests/), then call subprocess.run([sys.executable, os.path.join(root, 'main.py')], input=stdin_text, capture_output=True, text=True, cwd=root, timeout=30). Using sys.executable also removes reliance on a bare 'python' name (not guaranteed to be Python 3.12). Verified against the counterexample: with cwd=root and an absolute script path, all four assertions in test_cli_success_and_errors pass (observed with cwd='/candidate'), so the suite then reports 11/11 passing under `python -m unittest discover -s .` from the project root."
+          },
+          {
+            "severity": "minor",
+            "path": "README.md",
+            "line": 41,
+            "evidence": "README documents `echo '...' | python main.py` and `python -m unittest discover -s .`; the objective pins Python 3.12 stdlib, and the bare `python` alias is not guaranteed to be Python 3 on every host (the unittest command as documented currently fails for the reason in the critical finding).",
+            "repair": "Document the commands as `python3 main.py` / `python3 -m unittest discover -s .` (or `python -m unittest discover -s /path/to/project`) so the documented invocations match the Python 3.12 requirement and pass once the test's cwd is fixed."
+          }
+        ],
+        "question": ""
+      },
+      "attested_commands": 7,
+      "candidate_sha256": "aa44ee038ad76ec4b571fd7d282d1f5a7a8d798a0733d448acaab35921ef01e8"
+    },
+    "meaning": "Completed execution/valid verdict only; independent classification pending"
+  },
+  {
+    "exit_code": 0,
+    "stop": null,
+    "work_elapsed_s": 185.17186505399877,
+    "work_finished_before_deadline": true,
+    "client_group_absent": true,
+    "cleanup": [
+      {
+        "name": "gflo-review-0f1a51998ff5465e84f50fe8",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-e154737112b347639da092ef",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-c6d111c736214c7f9c4208e9",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-02f88ffb63d44b37adb3e87d",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-c0b5630df8ad4fb781385a8c",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-2ecf5647376644518f2019c8",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-cdf89cf73e3c4662ac5edd64",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-e5f6a35daf924478acb51534",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-0d331b552a42400eac89410e",
+        "removed": [],
+        "confirmed_absent": true
+      }
+    ],
+    "cleanup_confirmed": true,
+    "idle_confirmed": true,
+    "cleanup_elapsed_s": 1.3695280499996443,
+    "case": "case-02",
+    "status": "accepted",
+    "child": {
+      "status": "accepted",
+      "verdict": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "attested_commands": 9,
+      "candidate_sha256": "54b38b1bfb5136242322c7908a0b1c71319218e4f9ab12d864a363df40ef4b00"
+    },
+    "meaning": "Completed execution/valid verdict only; independent classification pending"
+  },
+  {
+    "exit_code": 0,
+    "stop": null,
+    "work_elapsed_s": 127.5159474309985,
+    "work_finished_before_deadline": true,
+    "client_group_absent": true,
+    "cleanup": [
+      {
+        "name": "gflo-review-2622613d8fb74e5999a1690f",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-f5b7bb79aaac48eb9c99a4da",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-741c21e0b2914be4bc61775e",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-282c3f1623f240a4b64358d5",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-7d7da90f7cb64dc583f65e20",
+        "removed": [],
+        "confirmed_absent": true
+      }
+    ],
+    "cleanup_confirmed": true,
+    "idle_confirmed": true,
+    "cleanup_elapsed_s": 1.3156142599982559,
+    "case": "case-03",
+    "status": "accepted",
+    "child": {
+      "status": "accepted",
+      "verdict": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "attested_commands": 5,
+      "candidate_sha256": "cf886777b01db8ea5869d74293647942450e329599590592277a27061e6739a8"
+    },
+    "meaning": "Completed execution/valid verdict only; independent classification pending"
+  },
+  {
+    "exit_code": 0,
+    "stop": null,
+    "work_elapsed_s": 180.7068088749984,
+    "work_finished_before_deadline": true,
+    "client_group_absent": true,
+    "cleanup": [
+      {
+        "name": "gflo-review-193303af42514a2abc317049",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-12dd6e8ef35d44d0becb11c1",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-ff3563dd3e054ad08eb3da23",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-d8065395ee99479a8f3719c8",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-d94e481ab2214cb0a9e92b86",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-1ddfc713532a4c4397395f23",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-a5d6134de15a487fbfd435d1",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-3fb42b4a28344d5e96e7b7c0",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-46b3d6562ec9415d91661774",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-c5894aab0f624a81bb8f5ab7",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-4f2ff07f070e424aa9d0bfd9",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-36210b2e968d40e9959f93b8",
+        "removed": [],
+        "confirmed_absent": true
+      }
+    ],
+    "cleanup_confirmed": true,
+    "idle_confirmed": true,
+    "cleanup_elapsed_s": 1.4227883929997915,
+    "case": "case-04",
+    "status": "accepted",
+    "child": {
+      "status": "accepted",
+      "verdict": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "major",
+            "path": "README.md",
+            "line": 51,
+            "evidence": "The concrete request/response example (README.md lines 51-54) uses sha256 values that are not 64 lowercase hex characters: a programmatic scan of README.md found only two hex runs, of length 62 ('a'*62) and 60 ('b'*60). Running the documented command verbatim from an arbitrary cwd (`python3 /candidate/main.py <<'JSON' ...` executed in /tmp) printed `{\"error\":\"invalid input\"}` and exited 2, contradicting the documented success response and `$ echo $?` -> 0 shown in the same block. Validation (validation.py: `len(sha) != 64`) rejects those entries, so the README's A6 'concrete JSON request/response example' and the A5 success-path CLI example are not reproducible.",
+            "repair": "Pad every sha256 literal in the README compare example to exactly 64 lowercase hex characters (e.g. 'a'*64 and 'b'*64 on lines 51-54). Verified by execution: with 64-character hashes the same command from /tmp prints exactly `{\"added\":[],\"modified\":[{\"after_size\":2,\"before_size\":1,\"path\":\"keep\"}],\"removed\":[],\"renamed\":[{\"from\":\"a/x\",\"to\":\"b/y\"}],\"summary\":{\"after_bytes\":5,\"before_bytes\":4,\"delta_bytes\":1},\"unchanged\":[]}` and exits 0, matching the documented output."
+          },
+          {
+            "severity": "minor",
+            "path": "README.md",
+            "line": 43,
+            "evidence": "The first console block ends with a stray transcript line `$ echo 2` (line 43) instead of `$ echo $?`, so the block does not show the exit code of the preceding invalid-input command; the adjacent block at lines 44-48 does use `$ echo $?` correctly.",
+            "repair": "Replace `$ echo 2` with `$ echo $?` (expected output 2) so the transcript is a runnable/consistent example."
+          }
+        ],
+        "question": ""
+      },
+      "attested_commands": 12,
+      "candidate_sha256": "df1e964682cda0f6fb44fbd69a462262c3f14f303cf9099032390e9cc45f23d3"
+    },
+    "meaning": "Completed execution/valid verdict only; independent classification pending"
+  }
+]

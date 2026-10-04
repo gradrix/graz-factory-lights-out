@@ -1,0 +1,114 @@
+{
+  "prototype_commit": "847f90e9d4fe515e6c6eada9eb200008b6441fd2",
+  "cases": [
+    {
+      "case": "case-01",
+      "execution_status": "accepted",
+      "review_decision": "repair",
+      "requests": 6,
+      "commands": 7,
+      "recovery_used": false,
+      "phases": [
+        "explore",
+        "explore",
+        "explore",
+        "explore",
+        "explore",
+        "final"
+      ],
+      "work_s": 172.8901301349979,
+      "cleanup_s": 1.3455401040009747,
+      "cleanup": true,
+      "idle": true,
+      "reported_usage": {
+        "prompt_tokens": 71593,
+        "completion_tokens": 5771,
+        "total_tokens": 77364
+      }
+    },
+    {
+      "case": "case-02",
+      "execution_status": "accepted",
+      "review_decision": "pass",
+      "requests": 7,
+      "commands": 9,
+      "recovery_used": false,
+      "phases": [
+        "explore",
+        "explore",
+        "explore",
+        "explore",
+        "explore",
+        "explore",
+        "final"
+      ],
+      "work_s": 185.17186505399877,
+      "cleanup_s": 1.3695280499996443,
+      "cleanup": true,
+      "idle": true,
+      "reported_usage": {
+        "prompt_tokens": 96710,
+        "completion_tokens": 5663,
+        "total_tokens": 102373
+      }
+    },
+    {
+      "case": "case-03",
+      "execution_status": "accepted",
+      "review_decision": "pass",
+      "requests": 5,
+      "commands": 5,
+      "recovery_used": false,
+      "phases": [
+        "explore",
+        "explore",
+        "explore",
+        "explore",
+        "final"
+      ],
+      "work_s": 127.5159474309985,
+      "cleanup_s": 1.3156142599982559,
+      "cleanup": true,
+      "idle": true,
+      "reported_usage": {
+        "prompt_tokens": 54679,
+        "completion_tokens": 3986,
+        "total_tokens": 58665
+      }
+    },
+    {
+      "case": "case-04",
+      "execution_status": "accepted",
+      "review_decision": "repair",
+      "requests": 8,
+      "commands": 12,
+      "recovery_used": false,
+      "phases": [
+        "explore",
+        "explore",
+        "explore",
+        "explore",
+        "explore",
+        "explore",
+        "explore",
+        "final"
+      ],
+      "work_s": 180.7068088749984,
+      "cleanup_s": 1.4227883929997915,
+      "cleanup": true,
+      "idle": true,
+      "reported_usage": {
+        "prompt_tokens": 114770,
+        "completion_tokens": 5792,
+        "total_tokens": 120562
+      }
+    }
+  ],
+  "total_requests": 26,
+  "total_commands": 33,
+  "total_work_s": 666.2847514949935,
+  "gate": "failed strict evidence truth; all four correct valid classifications, case01 claims unexecuted corrected fullsuite pass",
+  "interpretation": "Known-case protocol repair trial, no reliability rate or maintained promotion. Initial trial remains immutable.",
+  "independent_semantics": "qa-trial-final.md",
+  "independent_accounting": "trial-accounting.md"
+}

@@ -1,0 +1,106 @@
+{
+  "case": "case-04",
+  "archive_bytes": 1177600,
+  "archive_sha256": "189e5e5c9c66a410268b93ddac9ca087b510b51a353f011caee29a81c71d0469",
+  "local_copy": ".gflo/executable-review-protocol-trial-1/case-04",
+  "result": {
+    "exit_code": 0,
+    "stop": null,
+    "work_elapsed_s": 180.7068088749984,
+    "work_finished_before_deadline": true,
+    "client_group_absent": true,
+    "cleanup": [
+      {
+        "name": "gflo-review-193303af42514a2abc317049",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-12dd6e8ef35d44d0becb11c1",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-ff3563dd3e054ad08eb3da23",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-d8065395ee99479a8f3719c8",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-d94e481ab2214cb0a9e92b86",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-1ddfc713532a4c4397395f23",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-a5d6134de15a487fbfd435d1",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-3fb42b4a28344d5e96e7b7c0",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-46b3d6562ec9415d91661774",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-c5894aab0f624a81bb8f5ab7",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-4f2ff07f070e424aa9d0bfd9",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-36210b2e968d40e9959f93b8",
+        "removed": [],
+        "confirmed_absent": true
+      }
+    ],
+    "cleanup_confirmed": true,
+    "idle_confirmed": true,
+    "cleanup_elapsed_s": 1.4227883929997915,
+    "case": "case-04",
+    "status": "accepted",
+    "child": {
+      "status": "accepted",
+      "verdict": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "major",
+            "path": "README.md",
+            "line": 51,
+            "evidence": "The concrete request/response example (README.md lines 51-54) uses sha256 values that are not 64 lowercase hex characters: a programmatic scan of README.md found only two hex runs, of length 62 ('a'*62) and 60 ('b'*60). Running the documented command verbatim from an arbitrary cwd (`python3 /candidate/main.py <<'JSON' ...` executed in /tmp) printed `{\"error\":\"invalid input\"}` and exited 2, contradicting the documented success response and `$ echo $?` -> 0 shown in the same block. Validation (validation.py: `len(sha) != 64`) rejects those entries, so the README's A6 'concrete JSON request/response example' and the A5 success-path CLI example are not reproducible.",
+            "repair": "Pad every sha256 literal in the README compare example to exactly 64 lowercase hex characters (e.g. 'a'*64 and 'b'*64 on lines 51-54). Verified by execution: with 64-character hashes the same command from /tmp prints exactly `{\"added\":[],\"modified\":[{\"after_size\":2,\"before_size\":1,\"path\":\"keep\"}],\"removed\":[],\"renamed\":[{\"from\":\"a/x\",\"to\":\"b/y\"}],\"summary\":{\"after_bytes\":5,\"before_bytes\":4,\"delta_bytes\":1},\"unchanged\":[]}` and exits 0, matching the documented output."
+          },
+          {
+            "severity": "minor",
+            "path": "README.md",
+            "line": 43,
+            "evidence": "The first console block ends with a stray transcript line `$ echo 2` (line 43) instead of `$ echo $?`, so the block does not show the exit code of the preceding invalid-input command; the adjacent block at lines 44-48 does use `$ echo $?` correctly.",
+            "repair": "Replace `$ echo 2` with `$ echo $?` (expected output 2) so the transcript is a runnable/consistent example."
+          }
+        ],
+        "question": ""
+      },
+      "attested_commands": 12,
+      "candidate_sha256": "df1e964682cda0f6fb44fbd69a462262c3f14f303cf9099032390e9cc45f23d3"
+    },
+    "meaning": "Completed execution/valid verdict only; independent classification pending"
+  }
+}

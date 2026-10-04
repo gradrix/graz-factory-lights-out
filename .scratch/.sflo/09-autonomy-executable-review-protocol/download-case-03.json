@@ -1,0 +1,56 @@
+{
+  "case": "case-03",
+  "archive_bytes": 583680,
+  "archive_sha256": "20af428872134af2f11a33b696d19209a77fbf385fb40479bc15c5b38e38b20e",
+  "local_copy": ".gflo/executable-review-protocol-trial-1/case-03",
+  "result": {
+    "exit_code": 0,
+    "stop": null,
+    "work_elapsed_s": 127.5159474309985,
+    "work_finished_before_deadline": true,
+    "client_group_absent": true,
+    "cleanup": [
+      {
+        "name": "gflo-review-2622613d8fb74e5999a1690f",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-f5b7bb79aaac48eb9c99a4da",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-741c21e0b2914be4bc61775e",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-282c3f1623f240a4b64358d5",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-7d7da90f7cb64dc583f65e20",
+        "removed": [],
+        "confirmed_absent": true
+      }
+    ],
+    "cleanup_confirmed": true,
+    "idle_confirmed": true,
+    "cleanup_elapsed_s": 1.3156142599982559,
+    "case": "case-03",
+    "status": "accepted",
+    "child": {
+      "status": "accepted",
+      "verdict": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "attested_commands": 5,
+      "candidate_sha256": "cf886777b01db8ea5869d74293647942450e329599590592277a27061e6739a8"
+    },
+    "meaning": "Completed execution/valid verdict only; independent classification pending"
+  }
+}

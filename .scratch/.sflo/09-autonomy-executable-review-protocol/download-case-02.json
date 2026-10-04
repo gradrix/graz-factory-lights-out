@@ -1,0 +1,76 @@
+{
+  "case": "case-02",
+  "archive_bytes": 993280,
+  "archive_sha256": "010ddbd47c7a0bef49316b2293220998485fe335a9eed5ba03446e963370bd90",
+  "local_copy": ".gflo/executable-review-protocol-trial-1/case-02",
+  "result": {
+    "exit_code": 0,
+    "stop": null,
+    "work_elapsed_s": 185.17186505399877,
+    "work_finished_before_deadline": true,
+    "client_group_absent": true,
+    "cleanup": [
+      {
+        "name": "gflo-review-0f1a51998ff5465e84f50fe8",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-e154737112b347639da092ef",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-c6d111c736214c7f9c4208e9",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-02f88ffb63d44b37adb3e87d",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-c0b5630df8ad4fb781385a8c",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-2ecf5647376644518f2019c8",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-cdf89cf73e3c4662ac5edd64",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-e5f6a35daf924478acb51534",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-0d331b552a42400eac89410e",
+        "removed": [],
+        "confirmed_absent": true
+      }
+    ],
+    "cleanup_confirmed": true,
+    "idle_confirmed": true,
+    "cleanup_elapsed_s": 1.3695280499996443,
+    "case": "case-02",
+    "status": "accepted",
+    "child": {
+      "status": "accepted",
+      "verdict": {
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "attested_commands": 9,
+      "candidate_sha256": "54b38b1bfb5136242322c7908a0b1c71319218e4f9ab12d864a363df40ef4b00"
+    },
+    "meaning": "Completed execution/valid verdict only; independent classification pending"
+  }
+}

@@ -1,0 +1,81 @@
+{
+  "case": "case-01",
+  "archive_bytes": 768000,
+  "archive_sha256": "bf504ea4de5b082a5e8a744c1ba2b7123325e5d430075e4452a454a3324bea79",
+  "local_copy": ".gflo/executable-review-protocol-trial-1/case-01",
+  "result": {
+    "exit_code": 0,
+    "stop": null,
+    "work_elapsed_s": 172.8901301349979,
+    "work_finished_before_deadline": true,
+    "client_group_absent": true,
+    "cleanup": [
+      {
+        "name": "gflo-review-7a8567edfd7349c5be6b5c6a",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-7a21f2386c8c449dac9d2c72",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-e8b1200bc49e494bb84f490e",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-5aa8f8b2cbc84fcb851e69c6",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-5afe4e84e6c04b569a58aafc",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-9c74aa1e58864f699fea631f",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-9ef70b652f75423ebdf34a24",
+        "removed": [],
+        "confirmed_absent": true
+      }
+    ],
+    "cleanup_confirmed": true,
+    "idle_confirmed": true,
+    "cleanup_elapsed_s": 1.3455401040009747,
+    "case": "case-01",
+    "status": "accepted",
+    "child": {
+      "status": "accepted",
+      "verdict": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "critical",
+            "path": "tests/test_manifest_tool.py",
+            "line": 176,
+            "evidence": "CliBehavior._run_cli hardcodes cwd='/workspace' in subprocess.run(['python','main.py'], input=stdin_text, capture_output=True, text=True, cwd='/workspace', timeout=30). No /workspace exists in the project or in the environment where the tests are meant to run from the project root, so subprocess.run raises FileNotFoundError: [Errno 2] No such file or directory: '/workspace'. Observed: `cd /candidate && python3 -m unittest discover -s . -v` reported 'Ran 11 tests in 0.002s ... FAILED (errors=1)' with the traceback at tests/test_manifest_tool.py lines 176/184, so the README's documented command `python -m unittest discover -s .` does not work, violating A6 ('tests must pass offline', discoverable from the project root'). Re-running the same four CLI assertions with cwd set to the project root (/candidate) reproduced exactly the expected results: (0, '{\"ok\": true}', ''), (2, '{\"error\": \"invalid input\"}', ''), (2, '{\"error\": \"invalid input\"}', ''), and removed == ['a'] \u2014 so only the cwd (and the bare 'python' interpreter name) is at fault.",
+            "repair": "Locate main.py relative to the project root instead of an absolute host path: import os, sys at the top and compute root = os.path.dirname(os.path.dirname(os.path.abspath(__file__))) (the project root, since the test file lives in tests/), then call subprocess.run([sys.executable, os.path.join(root, 'main.py')], input=stdin_text, capture_output=True, text=True, cwd=root, timeout=30). Using sys.executable also removes reliance on a bare 'python' name (not guaranteed to be Python 3.12). Verified against the counterexample: with cwd=root and an absolute script path, all four assertions in test_cli_success_and_errors pass (observed with cwd='/candidate'), so the suite then reports 11/11 passing under `python -m unittest discover -s .` from the project root."
+          },
+          {
+            "severity": "minor",
+            "path": "README.md",
+            "line": 41,
+            "evidence": "README documents `echo '...' | python main.py` and `python -m unittest discover -s .`; the objective pins Python 3.12 stdlib, and the bare `python` alias is not guaranteed to be Python 3 on every host (the unittest command as documented currently fails for the reason in the critical finding).",
+            "repair": "Document the commands as `python3 main.py` / `python3 -m unittest discover -s .` (or `python -m unittest discover -s /path/to/project`) so the documented invocations match the Python 3.12 requirement and pass once the test's cwd is fixed."
+          }
+        ],
+        "question": ""
+      },
+      "attested_commands": 7,
+      "candidate_sha256": "aa44ee038ad76ec4b571fd7d282d1f5a7a8d798a0733d448acaab35921ef01e8"
+    },
+    "meaning": "Completed execution/valid verdict only; independent classification pending"
+  }
+}
