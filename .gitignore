@@ -153,3 +153,8 @@ htmlcov/
 !.scratch/.sflo/07-autonomy-document-reliability/qa/*.json
 !.scratch/.sflo/07-autonomy-document-reliability/qa/*.log
 !.scratch/.sflo/07-autonomy-document-reliability/qa/*.txt
+
+!.scratch/.sflo/07-autonomy-document-reliability/security-documents/
+!.scratch/.sflo/07-autonomy-document-reliability/security-documents/*.py
+!.scratch/.sflo/07-autonomy-document-reliability/security-documents/*.json
+!.scratch/.sflo/07-autonomy-document-reliability/security-documents/*.log

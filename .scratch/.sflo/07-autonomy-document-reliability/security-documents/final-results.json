@@ -1,0 +1,27 @@
+[
+  {
+    "case": "success-no-postcommit-io",
+    "committed": true,
+    "postcommit_operations": [],
+    "kind": "answer"
+  },
+  {
+    "case": "failure-no-postcommit-io",
+    "committed": true,
+    "postcommit_operations": [],
+    "kind": "answer_failure"
+  },
+  {
+    "case": "failure-cli",
+    "exit": 1,
+    "stderr": "GFLO: Document answer failed; diagnostic a597a5134e15420ca35dc1d8b7ca6e0e76360283b90bd45713dad09958848cad: Returned response failed: invalid\n",
+    "stdout": "",
+    "calls": 2,
+    "kind": "answer_failure"
+  },
+  {
+    "case": "unavailable-source",
+    "calls": 0,
+    "refused": true
+  }
+]

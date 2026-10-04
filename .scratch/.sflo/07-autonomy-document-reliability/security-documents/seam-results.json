@@ -1,0 +1,305 @@
+[
+  {
+    "case": "valid",
+    "calls": 1,
+    "result": "supported",
+    "error": null,
+    "published": [
+      "9a275f79d00d0a50c41557aa490311d8e34ef8e0edfdabf025acea218de96f1a"
+    ],
+    "file_sizes": {
+      "receipt.json": 1048,
+      "response-1.json": 303
+    },
+    "prior_evidence_preserved": true
+  },
+  {
+    "case": "insufficient",
+    "calls": 1,
+    "result": "insufficient_evidence",
+    "error": null,
+    "published": [
+      "9c53a24266054913a9ecbacc2357db717f590b839499d981d17e719d8a98446e"
+    ],
+    "file_sizes": {
+      "receipt.json": 926,
+      "response-1.json": 157
+    },
+    "prior_evidence_preserved": true
+  },
+  {
+    "case": "json-repair",
+    "calls": 2,
+    "result": "supported",
+    "error": null,
+    "published": [
+      "ac8daa223253ab8f08d53558668acb022285878f887de7ea7b9451ace8ef5d43"
+    ],
+    "file_sizes": {
+      "receipt.json": 1358,
+      "response-1.json": 63,
+      "response-2.json": 303
+    },
+    "prior_evidence_preserved": true
+  },
+  {
+    "case": "quote-repair",
+    "calls": 2,
+    "result": "supported",
+    "error": null,
+    "published": [
+      "6fae03f7653fb16f5b989e9112dd26f5a87632e7e41c78aa197f62a2f2622401"
+    ],
+    "file_sizes": {
+      "receipt.json": 1323,
+      "response-1.json": 303,
+      "response-2.json": 303
+    },
+    "prior_evidence_preserved": true
+  },
+  {
+    "case": "two-invalid",
+    "calls": 2,
+    "result": null,
+    "error": "Document answer failed; diagnostic 3543496d4d98d87e202e0cac8d34bcf6e31dbd2d903a02d339dbfc3521cc5742: Returned response failed: invalid",
+    "published": [
+      "3543496d4d98d87e202e0cac8d34bcf6e31dbd2d903a02d339dbfc3521cc5742"
+    ],
+    "file_sizes": {
+      "receipt.json": 1214,
+      "response-1.json": 63,
+      "response-2.json": 303
+    },
+    "prior_evidence_preserved": true
+  },
+  {
+    "case": "first-transport",
+    "calls": 1,
+    "result": null,
+    "error": "Document answer failed; diagnostic b40e0044db34438ed215ab23c55c87feaece721924eca56720b6afce0d333d77: Inference failed; no repair authorized",
+    "published": [
+      "b40e0044db34438ed215ab23c55c87feaece721924eca56720b6afce0d333d77"
+    ],
+    "file_sizes": {
+      "receipt.json": 851
+    },
+    "prior_evidence_preserved": true
+  },
+  {
+    "case": "second-transport",
+    "calls": 2,
+    "result": null,
+    "error": "Document answer failed; diagnostic f416c999fe69b515d8190340956f974ac37ef4b9d5241ce97ed7ef2fa9dbe9c9: Inference failed; no repair authorized",
+    "published": [
+      "f416c999fe69b515d8190340956f974ac37ef4b9d5241ce97ed7ef2fa9dbe9c9"
+    ],
+    "file_sizes": {
+      "receipt.json": 1151,
+      "response-1.json": 63
+    },
+    "prior_evidence_preserved": true
+  },
+  {
+    "case": "first-overflow",
+    "calls": 1,
+    "result": null,
+    "error": "Document answer failed; diagnostic 2c95a04f44f9ba3a68605c88acfb5d7f1727a0a3e9d6095c11b4cc5c80e82c18: Inference failed; no repair authorized",
+    "published": [
+      "2c95a04f44f9ba3a68605c88acfb5d7f1727a0a3e9d6095c11b4cc5c80e82c18"
+    ],
+    "file_sizes": {
+      "receipt.json": 839
+    },
+    "prior_evidence_preserved": true
+  },
+  {
+    "case": "tool",
+    "calls": 1,
+    "result": null,
+    "error": "Document answer failed; diagnostic f6bfb7a732a939fc2397d863c4c9a386fa67c23d7aa0f705929e84bd3c121167: Returned response failed: forbidden",
+    "published": [
+      "f6bfb7a732a939fc2397d863c4c9a386fa67c23d7aa0f705929e84bd3c121167"
+    ],
+    "file_sizes": {
+      "receipt.json": 908,
+      "response-1.json": 321
+    },
+    "prior_evidence_preserved": true
+  },
+  {
+    "case": "function",
+    "calls": 1,
+    "result": null,
+    "error": "Document answer failed; diagnostic f25bd727f4bdfa67303d174bc7af8ca8ae69a2771890b6512cd1d8bc58d9c0fe: Returned response failed: forbidden",
+    "published": [
+      "f25bd727f4bdfa67303d174bc7af8ca8ae69a2771890b6512cd1d8bc58d9c0fe"
+    ],
+    "file_sizes": {
+      "receipt.json": 908,
+      "response-1.json": 322
+    },
+    "prior_evidence_preserved": true
+  },
+  {
+    "case": "wrong-envelope",
+    "calls": 1,
+    "result": null,
+    "error": "Document answer failed; diagnostic 3fd9322aa4532f2b4a1c430d4e0029f4f3a33025a2bbd39ee204d3818e82b23a: Returned response failed: response_error",
+    "published": [
+      "3fd9322aa4532f2b4a1c430d4e0029f4f3a33025a2bbd39ee204d3818e82b23a"
+    ],
+    "file_sizes": {
+      "receipt.json": 903,
+      "response-1.json": 14
+    },
+    "prior_evidence_preserved": true
+  },
+  {
+    "case": "wrong-role",
+    "calls": 1,
+    "result": null,
+    "error": "Document answer failed; diagnostic 3e5a9b075751f5a4b8df505e4a2f1439cd1588a250b7dd1a509f7e439873377e: Returned response failed: response_error",
+    "published": [
+      "3e5a9b075751f5a4b8df505e4a2f1439cd1588a250b7dd1a509f7e439873377e"
+    ],
+    "file_sizes": {
+      "receipt.json": 901,
+      "response-1.json": 300
+    },
+    "prior_evidence_preserved": true
+  },
+  {
+    "case": "nontext",
+    "calls": 1,
+    "result": null,
+    "error": "Document answer failed; diagnostic 3248d0c1b88b7d45f24156f424268fb2a33fdc5971005b3eba30acff49df592f: Returned response failed: response_error",
+    "published": [
+      "3248d0c1b88b7d45f24156f424268fb2a33fdc5971005b3eba30acff49df592f"
+    ],
+    "file_sizes": {
+      "receipt.json": 900,
+      "response-1.json": 65
+    },
+    "prior_evidence_preserved": true
+  },
+  {
+    "case": "cancel-error",
+    "calls": 1,
+    "result": null,
+    "error": "Document operation cancelled before publication",
+    "published": [],
+    "file_sizes": {},
+    "prior_evidence_preserved": true
+  },
+  {
+    "case": "cancel-before-repair",
+    "calls": 1,
+    "result": null,
+    "error": "Document operation cancelled before publication",
+    "published": [],
+    "file_sizes": {},
+    "prior_evidence_preserved": true
+  },
+  {
+    "case": "late-cancel",
+    "calls": 1,
+    "result": null,
+    "error": "Document operation cancelled before publication",
+    "published": [],
+    "file_sizes": {},
+    "prior_evidence_preserved": true
+  },
+  {
+    "case": "sync-failure",
+    "calls": 1,
+    "result": null,
+    "error": "controlled sync failure",
+    "published": [],
+    "file_sizes": {},
+    "prior_evidence_preserved": true
+  },
+  {
+    "case": "rename-failure",
+    "calls": 1,
+    "result": null,
+    "error": "controlled rename failure",
+    "published": [],
+    "file_sizes": {},
+    "prior_evidence_preserved": true
+  },
+  {
+    "case": "ledger-canonical",
+    "rejected": "ValueError: Canonical answer does not match last validated response",
+    "prior_good_preserved": true
+  },
+  {
+    "case": "ledger-attempt-gap",
+    "rejected": "ValueError: Invalid answer attempt ledger",
+    "prior_good_preserved": true
+  },
+  {
+    "case": "ledger-request-hash",
+    "rejected": "ValueError: Answer request hash mismatch",
+    "prior_good_preserved": true
+  },
+  {
+    "case": "ledger-response-hash",
+    "rejected": "ValueError: Answer response tampered",
+    "prior_good_preserved": true
+  },
+  {
+    "case": "ledger-size-bool",
+    "rejected": "ValueError: Invalid answer attempt ledger",
+    "prior_good_preserved": true
+  },
+  {
+    "case": "ledger-validation",
+    "rejected": "ValueError: Answer validation metadata mismatch",
+    "prior_good_preserved": true
+  },
+  {
+    "case": "ledger-question",
+    "rejected": "ValueError: Answer request hash mismatch",
+    "prior_good_preserved": true
+  },
+  {
+    "case": "ledger-profile",
+    "rejected": "ValueError: Invalid answer profile",
+    "prior_good_preserved": true
+  },
+  {
+    "case": "ledger-failed-as-success",
+    "rejected": "ValueError: Valid response mislabeled as failed",
+    "prior_good_preserved": true
+  },
+  {
+    "case": "ledger-missing",
+    "rejected": "FileNotFoundError: [Errno 2] No such file or directory: '/home/gradrix/repos/gflo/.gflo/document-security07/tmp75pugrzg/store/.stage-9gmnzrpl/response-1.json'",
+    "prior_good_preserved": true
+  },
+  {
+    "case": "ledger-extra",
+    "rejected": "ValueError: Unexpected document record files",
+    "prior_good_preserved": true
+  },
+  {
+    "case": "ledger-symlink",
+    "rejected": "ValueError: Document record file type/owner/mode/size changed",
+    "prior_good_preserved": true
+  },
+  {
+    "case": "ledger-hardlink",
+    "rejected": "ValueError: Document record file type/owner/mode/size changed",
+    "prior_good_preserved": true
+  },
+  {
+    "case": "ledger-fifo",
+    "rejected": "ValueError: Document record file type/owner/mode/size changed",
+    "prior_good_preserved": true
+  },
+  {
+    "case": "legacy-and-v2-offline",
+    "legacy_sha256": "64768c5d1fdbe0686bc98df18a69632d5c19b38be338c2f846f5193911112784",
+    "unchanged": true
+  }
+]

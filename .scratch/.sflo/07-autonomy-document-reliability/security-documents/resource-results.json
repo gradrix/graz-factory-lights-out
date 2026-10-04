@@ -1,0 +1,119 @@
+[
+  {
+    "case": "near-response-bound",
+    "calls": 1,
+    "elapsed_s": 0.017615657299757004,
+    "sizes": {
+      "receipt.json": 1050,
+      "response-1.json": 65523
+    },
+    "kind": "answer",
+    "failure": null,
+    "attempts": [
+      {
+        "error": "",
+        "number": 1,
+        "request_sha256": "0ca6ad9be9a08feacbf1a382e4c9ec17147d2e0c4a4a5e9c34a9df99b788984a",
+        "response_sha256": "2bb4856b7a355b4db61909c7a2097c6bae5e8d03209fd54187ab4bddd2240638",
+        "response_size": 65523,
+        "validation": "valid"
+      }
+    ],
+    "actual_fake_child": true
+  },
+  {
+    "case": "response-bound-plus-one",
+    "calls": 1,
+    "elapsed_s": 0.01417622622102499,
+    "sizes": {
+      "receipt.json": 860
+    },
+    "kind": "answer_failure",
+    "failure": "Inference failed; no repair authorized",
+    "attempts": [
+      {
+        "error": "Local answer failed: Model response byte limit",
+        "number": 1,
+        "request_sha256": "0ca6ad9be9a08feacbf1a382e4c9ec17147d2e0c4a4a5e9c34a9df99b788984a",
+        "response_sha256": null,
+        "response_size": 0,
+        "validation": "inference_error"
+      }
+    ],
+    "actual_fake_child": true
+  },
+  {
+    "case": "two-large-invalid",
+    "calls": 2,
+    "elapsed_s": 0.02672135829925537,
+    "sizes": {
+      "receipt.json": 1255,
+      "response-1.json": 65523,
+      "response-2.json": 65523
+    },
+    "kind": "answer_failure",
+    "failure": "Returned response failed: invalid",
+    "attempts": [
+      {
+        "error": "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)",
+        "number": 1,
+        "request_sha256": "0ca6ad9be9a08feacbf1a382e4c9ec17147d2e0c4a4a5e9c34a9df99b788984a",
+        "response_sha256": "0453aff480df90bdebe6f71f003fe89f0e41d5279c702e69241f707b3be2a2df",
+        "response_size": 65523,
+        "validation": "invalid"
+      },
+      {
+        "error": "Expecting property name enclosed in double quotes: line 1 column 2 (char 1)",
+        "number": 2,
+        "request_sha256": "924158ba86292ff240a035c5fd3626ede4ab1d2c069a059080b210437302bec4",
+        "response_sha256": "0453aff480df90bdebe6f71f003fe89f0e41d5279c702e69241f707b3be2a2df",
+        "response_size": 65523,
+        "validation": "invalid"
+      }
+    ],
+    "actual_fake_child": true
+  },
+  {
+    "case": "shortened-total-deadline",
+    "calls": 1,
+    "elapsed_s": 0.2777083641849458,
+    "sizes": {
+      "receipt.json": 855
+    },
+    "kind": "answer_failure",
+    "failure": "Inference failed; no repair authorized",
+    "attempts": [
+      {
+        "error": "Document operation work deadline exceeded",
+        "number": 1,
+        "request_sha256": "0ca6ad9be9a08feacbf1a382e4c9ec17147d2e0c4a4a5e9c34a9df99b788984a",
+        "response_sha256": null,
+        "response_size": 0,
+        "validation": "inference_error"
+      }
+    ],
+    "actual_fake_child": true
+  },
+  {
+    "case": "canonical-receipt-overflow",
+    "calls": 1,
+    "elapsed_s": 0.02592372801154852,
+    "sizes": {
+      "receipt.json": 870,
+      "response-1.json": 65523
+    },
+    "kind": "answer_failure",
+    "failure": "Canonical answer exceeds receipt bound",
+    "attempts": [
+      {
+        "error": "",
+        "number": 1,
+        "request_sha256": "0ca6ad9be9a08feacbf1a382e4c9ec17147d2e0c4a4a5e9c34a9df99b788984a",
+        "response_sha256": "f14d0d0b6aa051f9b3dc8fc7acac4ebe9a697700c5a5865b67ef2d29474a6aa7",
+        "response_size": 65523,
+        "validation": "valid"
+      }
+    ],
+    "actual_fake_child": true
+  }
+]

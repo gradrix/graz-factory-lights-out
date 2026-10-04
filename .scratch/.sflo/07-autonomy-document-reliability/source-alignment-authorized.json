@@ -1,0 +1,22 @@
+{
+  "binding_sha256": "090bce9a18ad5ef85a37b5077d81c8e5959ec2ed89e530df0bb5ca83cfda4def",
+  "qualification_manifest_sha256": "0fd8ecff10b17c584e049ae072eb9f31c67f6c33f4dc70beebfbc457e1394de1",
+  "decision": "aligned_for_inference",
+  "reviewer": "independent qa_resume",
+  "coordinator_go": true,
+  "cases": {
+    "row_shape_defaults": "aligned",
+    "json_hooks": "aligned",
+    "csv_newlines": "aligned",
+    "json_skipkeys": "aligned",
+    "asyncio_taskgroup": "aligned",
+    "asyncio_gather": "aligned",
+    "asyncio_wait_for": "aligned",
+    "asyncio_shield": "aligned",
+    "future_csv_date": "aligned",
+    "future_taskgroup_date": "aligned"
+  },
+  "changed_source_addenda": {},
+  "source_alignment_report": "qa-source-alignment.md",
+  "coordinator_basis": "Root reviewed independent source alignment and functional PASS; independent security PASS45 controls, frozen candidate unchanged."
+}

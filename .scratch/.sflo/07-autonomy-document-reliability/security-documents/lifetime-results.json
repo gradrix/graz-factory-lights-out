@@ -1,0 +1,38 @@
+[
+  {
+    "case": "owner-sigkill-second",
+    "calls": 2,
+    "second_child": 1595176,
+    "child_running_after": false,
+    "lease_released": true,
+    "public_record_count": 1,
+    "private_stage_before_cleanup": 1,
+    "error": null,
+    "elapsed_s": 0.1646948978304863,
+    "cleanup_daemon_query": "controlled empty"
+  },
+  {
+    "case": "cancel-second",
+    "calls": 2,
+    "second_child": 1595178,
+    "child_running_after": false,
+    "lease_released": true,
+    "public_record_count": 1,
+    "private_stage_before_cleanup": 0,
+    "error": "Document operation cancelled before publication",
+    "elapsed_s": 0.07877540122717619,
+    "cleanup_daemon_query": "not used"
+  },
+  {
+    "case": "deadline-second",
+    "calls": 2,
+    "second_child": 1595180,
+    "child_running_after": false,
+    "lease_released": true,
+    "public_record_count": 2,
+    "private_stage_before_cleanup": 0,
+    "error": "Document answer failed; diagnostic 6d750fbbcc8ff9e73f220eba11843470ff4ce070c40a6d9f45c3e3fbeb77beef: Inference failed; no repair authorized",
+    "elapsed_s": 0.3462498136796057,
+    "cleanup_daemon_query": "not used"
+  }
+]
