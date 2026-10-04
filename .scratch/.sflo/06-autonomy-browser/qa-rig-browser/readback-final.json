@@ -1,0 +1,130 @@
+{
+  "source_fixture_hashes_match": true,
+  "rows": [
+    {
+      "case": "conflict-control-receipt",
+      "id": "4a5d1419e44cb9858db9a6269a04a86c0f91282540faec3ed14ee0ee2955e65c",
+      "status": "passed",
+      "cleanup": true,
+      "artifacts_verified": 3,
+      "shm": {
+        "peakBytes": 13066240,
+        "samples": 6
+      },
+      "versions": {
+        "node": "v24.20.0",
+        "playwright": "1.63.0",
+        "core": "1.63.0",
+        "browser": "153.0.8010.12"
+      },
+      "contexts": 2
+    },
+    {
+      "case": "conflict-mutant-receipt",
+      "id": "5f6ccc81dad78412b7c7015e6a573f7e95c334a8ca0366c0fea6ae1b8f46ae86",
+      "status": "failed",
+      "cleanup": true,
+      "artifacts_verified": 2
+    },
+    {
+      "case": "create-reload-control-receipt",
+      "id": "c7b4f99897292badc5c29337e17fec7b5995fad1cd1cd789803abf704b5b77f8",
+      "status": "passed",
+      "cleanup": true,
+      "artifacts_verified": 3,
+      "shm": {
+        "peakBytes": 10350592,
+        "samples": 5
+      },
+      "versions": {
+        "node": "v24.20.0",
+        "playwright": "1.63.0",
+        "core": "1.63.0",
+        "browser": "153.0.8010.12"
+      },
+      "contexts": 1
+    },
+    {
+      "case": "create-reload-mutant-receipt",
+      "id": "1c521c551f0d20273601b3e6de8c1f5dcb173b00f2319be6720343f0ed17be90",
+      "status": "failed",
+      "cleanup": true,
+      "artifacts_verified": 2
+    },
+    {
+      "case": "edit-cancel-control-receipt",
+      "id": "0179250b3da885445b71d18d0fe879584a9bc81374eb8085586451e08ce49958",
+      "status": "passed",
+      "cleanup": true,
+      "artifacts_verified": 3,
+      "shm": {
+        "peakBytes": 7131136,
+        "samples": 7
+      },
+      "versions": {
+        "node": "v24.20.0",
+        "playwright": "1.63.0",
+        "core": "1.63.0",
+        "browser": "153.0.8010.12"
+      },
+      "contexts": 1
+    },
+    {
+      "case": "edit-cancel-mutant-receipt",
+      "id": "528f32009023521befccb35fa02d295f308ec2b350330f84c93332758c90cd1a",
+      "status": "failed",
+      "cleanup": true,
+      "artifacts_verified": 2
+    },
+    {
+      "case": "failed-save-retry-control-receipt",
+      "id": "d4e0996534756ee37ce7344dadfdf2a64b9f5e1cdc90e696b526c9546ea11f02",
+      "status": "passed",
+      "cleanup": true,
+      "artifacts_verified": 3,
+      "shm": {
+        "peakBytes": 7049216,
+        "samples": 4
+      },
+      "versions": {
+        "node": "v24.20.0",
+        "playwright": "1.63.0",
+        "core": "1.63.0",
+        "browser": "153.0.8010.12"
+      },
+      "contexts": 1
+    },
+    {
+      "case": "failed-save-retry-mutant-receipt",
+      "id": "3b0c024bb7f9649737d52b882ee38e95112b5c406dfb1f5daa733fbf5d538e08",
+      "status": "failed",
+      "cleanup": true,
+      "artifacts_verified": 2
+    },
+    {
+      "case": "validation-control-receipt",
+      "id": "a729f9bb8c58bed5de6aaadfad380545401d789ac695241acf7c75e9eb636e38",
+      "status": "passed",
+      "cleanup": true,
+      "artifacts_verified": 3,
+      "shm": {
+        "peakBytes": 7327744,
+        "samples": 9
+      },
+      "versions": {
+        "node": "v24.20.0",
+        "playwright": "1.63.0",
+        "core": "1.63.0",
+        "browser": "153.0.8010.12"
+      },
+      "contexts": 1
+    },
+    {
+      "case": "validation-mutant-receipt",
+      "id": "1a4a20445fa9674683a85a8f8c58b811830c2b98111ef3845c43aaca66ea8cd8",
+      "status": "failed",
+      "cleanup": true,
+      "artifacts_verified": 2
+    }
+  ]
+}

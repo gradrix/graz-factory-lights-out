@@ -55,4 +55,8 @@ Use an existing environment ID for registry-independent execution. Automatic pre
 
 ## Approved documentation
 
-`documents.py` owns bounded historical snapshots, checked citations and offline saved answers. Fixed fetch and inert extraction helpers run in separate restricted containers; only fetch has network access. Local inference receives source text as untrusted data with no tools. The controller approves the URL/question and validates citations; semantic entailment remains separately assessed. See [usage and limits](document-evidence.md). Search, browser journeys and automatic research delegation remain later units.
+`documents.py` owns bounded historical snapshots, checked citations and offline saved answers. Fixed fetch and inert extraction helpers run in separate restricted containers; only fetch has network access. Local inference receives source text as untrusted data with no tools. The controller approves the URL/question and validates citations; semantic entailment remains separately assessed. See [usage and limits](document-evidence.md). Search, public browsing and automatic research delegation remain later units.
+
+## Supervised application browser
+
+`browser.py` freezes approved app/check/seed inputs and owns immutable bounded result records. `browser_pair.py` supervises an app with no network and a browser joining its exact namespace, including controller death and uncertain cleanup. The fixed Playwright helper records every context, screenshots and bounded events with Chromium sandboxing enabled. Redirects and WebSockets are unsupported by the first profile. Prepared support and saved inspection work offline. See [usage](local-browser.md) and [actual rig acceptance](../.scratch/.sflo/06-autonomy-browser/acceptance.md). This is a separate controller capability; automatic worker/planner invocation is future work.

@@ -1,0 +1,9 @@
+test_fixed_transport_rejects_extra_duplicate_oversize_corrupt_and_dimensions (test_browser.BrowserArtifactTests.test_fixed_transport_rejects_extra_duplicate_oversize_corrupt_and_dimensions) ... ok
+test_uncertain_cleanup_never_publishes_and_fences_next_check (test_browser.BrowserStoreTests.test_uncertain_cleanup_never_publishes_and_fences_next_check) ... ok
+test_uncertain_create_requires_explicit_ack_and_preserves_failure (test_browser.BrowserStoreTests.test_uncertain_create_requires_explicit_ack_and_preserves_failure) ... ok
+test_cancellation_during_final_sync_cannot_publish_pass (test_browser.BrowserStoreTests.test_cancellation_during_final_sync_cannot_publish_pass) ... ok
+
+----------------------------------------------------------------------
+Ran 4 tests in 0.032s
+
+OK

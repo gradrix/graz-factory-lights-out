@@ -131,3 +131,14 @@ htmlcov/
 !.scratch/.sflo/06-autonomy-browser/security-browser-v5/*.json
 !.scratch/.sflo/06-autonomy-browser/security-browser-v5/*.log
 !.scratch/.sflo/06-autonomy-browser/security-browser-v5/*.patch
+
+!.scratch/.sflo/06-autonomy-browser/qa-rig-browser/
+.scratch/.sflo/06-autonomy-browser/qa-rig-browser/*
+!.scratch/.sflo/06-autonomy-browser/qa-rig-browser/*.py
+!.scratch/.sflo/06-autonomy-browser/qa-rig-browser/*.json
+!.scratch/.sflo/06-autonomy-browser/qa-rig-browser/*.log
+!.scratch/.sflo/06-autonomy-browser/qa-rig-browser/*.md
+
+!.scratch/.sflo/06-autonomy-browser/qa-rig-browser/five-flows/
+.scratch/.sflo/06-autonomy-browser/qa-rig-browser/five-flows/*
+!.scratch/.sflo/06-autonomy-browser/qa-rig-browser/five-flows/*.json

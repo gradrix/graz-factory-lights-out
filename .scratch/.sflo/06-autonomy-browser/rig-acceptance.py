@@ -91,7 +91,7 @@ def main():
    assert '--no-sandbox' not in renderer['command'] and '--disable-dev-shm-usage' not in renderer['command'];assert renderer['namespaces']['user']!=rt['isolation']['reporter']['user'];assert any(x.startswith('Seccomp:') and x.split(':')[1].strip()=='2' for x in renderer['status'])
   facts.append({'case':rec['approved']['case'],'shm':rt['shm'],'network':rt['network'],'isolation':rt['isolation']})
  frozen()
- lifecycle=[sys.executable,str(Path(__file__).with_name('rig-lifecycle.py')),'--repo',str(repo),'--support-store',str(a.support_store.resolve()),'--support-id',a.support_id,'--prior-store',str(out/'five-flows/store'),'--output',str(out/'lifecycle'),'--run']
+ lifecycle=[sys.executable,str(pathlib.Path(__file__).with_name('rig-lifecycle.py')),'--repo',str(repo),'--support-store',str(a.support_store.resolve()),'--support-id',a.support_id,'--prior-store',str(out/'five-flows/store'),'--output',str(out/'lifecycle'),'--run']
  with (out/'lifecycle.log').open('w') as log:subprocess.run(lifecycle,stdout=log,stderr=subprocess.STDOUT,timeout=500,check=True)
  recovery_rows=json.loads((out/'lifecycle/results.json').read_text());assert all('refused' not in r['recovery'] for r in recovery_rows),'Lifecycle fence preserved; coordinator must review acknowledgment before acceptance'
  (out/'sandbox-shm.json').write_text(json.dumps(facts,indent=2));frozen();assert all(r['expected_confirmed'] for r in rows);print('PASS bounded rig controls; separate security repair gate remains required')

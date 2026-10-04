@@ -1,0 +1,624 @@
+{
+  "id": "0179250b3da885445b71d18d0fe879584a9bc81374eb8085586451e08ce49958",
+  "receipt": {
+    "approved": {
+      "app": "/home/gradrix/gflo-browser-596ecb6/.gflo/rig-qualification-v5/five-flows/inputs/edit-cancel-control/app",
+      "case": "edit-cancel-control",
+      "checks": "/home/gradrix/gflo-browser-596ecb6/.gflo/rig-qualification-v5/five-flows/inputs/edit-cancel-control/checks",
+      "seed": "/home/gradrix/gflo-browser-596ecb6/.gflo/rig-qualification-v5/five-flows/inputs/edit-cancel-control/seed.json",
+      "support": "df4755523d7682b461c222f22f99453346eccef769f6bbc096ac77772a8ffd20"
+    },
+    "artifacts": {
+      "events.json": {
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "size": 2
+      },
+      "screen-1.png": {
+        "sha256": "5a9cd0278851b0fc8d394d7bcaa0e1314233d62cd7bfb2391d8992dcc53277e2",
+        "size": 22280
+      },
+      "trace.zip": {
+        "sha256": "84d9a08665e4c8e0630974ad92fa15d089372cb0941bc323485ab11f35bcb3da",
+        "size": 142837
+      }
+    },
+    "created_utc": "2026-10-04T14:54:32.551173+00:00",
+    "executor": {
+      "diagnostics": "",
+      "elapsed_s": 1.2033630119999543,
+      "exit_code": 0,
+      "facts": {
+        "cleanup": {
+          "confirmed": true,
+          "errors": [],
+          "remaining": [],
+          "uncertain_creates": []
+        },
+        "containers": {
+          "gflo-browser-app-4275d405504649ed957c0e40d4ce0460": {
+            "config": {
+              "Cmd": [
+                "node",
+                "server.cjs"
+              ],
+              "Entrypoint": [
+                "docker-entrypoint.sh"
+              ],
+              "Env": [
+                "HOME=/tmp",
+                "GFLO_SEED_FILE=/seed.json",
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "NODE_VERSION=22.23.3",
+                "YARN_VERSION=1.22.22"
+              ],
+              "User": "1000:1000",
+              "WorkingDir": "/app"
+            },
+            "host": {
+              "AutoRemove": false,
+              "Binds": null,
+              "BlkioDeviceReadBps": [],
+              "BlkioDeviceReadIOps": [],
+              "BlkioDeviceWriteBps": [],
+              "BlkioDeviceWriteIOps": [],
+              "BlkioWeight": 0,
+              "BlkioWeightDevice": [],
+              "CapAdd": null,
+              "CapDrop": [
+                "ALL"
+              ],
+              "Cgroup": "",
+              "CgroupParent": "",
+              "CgroupnsMode": "private",
+              "ConsoleSize": [
+                0,
+                0
+              ],
+              "ContainerIDFile": "",
+              "CpuCount": 0,
+              "CpuPercent": 0,
+              "CpuPeriod": 0,
+              "CpuQuota": 0,
+              "CpuRealtimePeriod": 0,
+              "CpuRealtimeRuntime": 0,
+              "CpuShares": 0,
+              "CpusetCpus": "",
+              "CpusetMems": "",
+              "DeviceCgroupRules": null,
+              "DeviceRequests": null,
+              "Devices": [],
+              "Dns": [],
+              "DnsOptions": [],
+              "DnsSearch": [],
+              "ExtraHosts": null,
+              "GroupAdd": null,
+              "IOMaximumBandwidth": 0,
+              "IOMaximumIOps": 0,
+              "Init": true,
+              "IpcMode": "private",
+              "Isolation": "",
+              "Links": null,
+              "LogConfig": {
+                "Config": {},
+                "Type": "none"
+              },
+              "MaskedPaths": [
+                "/proc/asound",
+                "/proc/acpi",
+                "/proc/interrupts",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/sys/firmware",
+                "/sys/devices/virtual/powercap"
+              ],
+              "Memory": 134217728,
+              "MemoryReservation": 0,
+              "MemorySwap": 134217728,
+              "MemorySwappiness": null,
+              "Mounts": [
+                {
+                  "ReadOnly": true,
+                  "Source": "/home/gradrix/gflo-browser-596ecb6/.gflo/rig-qualification-v5/five-flows/store/.stage-ub044461/app",
+                  "Target": "/app",
+                  "Type": "bind"
+                },
+                {
+                  "ReadOnly": true,
+                  "Source": "/home/gradrix/gflo-browser-596ecb6/.gflo/rig-qualification-v5/five-flows/store/.stage-ub044461/seed.json",
+                  "Target": "/seed.json",
+                  "Type": "bind"
+                }
+              ],
+              "NanoCpus": 250000000,
+              "NetworkMode": "none",
+              "OomKillDisable": false,
+              "OomScoreAdj": 0,
+              "PidMode": "",
+              "PidsLimit": 64,
+              "PortBindings": {},
+              "Privileged": false,
+              "PublishAllPorts": false,
+              "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+              ],
+              "ReadonlyRootfs": true,
+              "RestartPolicy": {
+                "MaximumRetryCount": 0,
+                "Name": "no"
+              },
+              "Runtime": "runc",
+              "SecurityOpt": [
+                "no-new-privileges"
+              ],
+              "ShmSize": 16777216,
+              "Tmpfs": {
+                "/tmp": "rw,nosuid,nodev,size=16m,mode=1777"
+              },
+              "UTSMode": "",
+              "Ulimits": [],
+              "UsernsMode": "",
+              "VolumeDriver": "",
+              "VolumesFrom": null
+            },
+            "id": "afcaff97c0c86e9e482f0c656bc77bd57f434d631116ea9d0a871bcb7af6c5ca",
+            "image": "sha256:88f8ba583a884279252779bbe221bf1ff2c61cf236cc973f8ca97676ae6d07f0",
+            "mounts": [
+              {
+                "Destination": "/app",
+                "Mode": "",
+                "Propagation": "rprivate",
+                "RW": false,
+                "Source": "/home/gradrix/gflo-browser-596ecb6/.gflo/rig-qualification-v5/five-flows/store/.stage-ub044461/app",
+                "Type": "bind"
+              },
+              {
+                "Destination": "/seed.json",
+                "Mode": "",
+                "Propagation": "rprivate",
+                "RW": false,
+                "Source": "/home/gradrix/gflo-browser-596ecb6/.gflo/rig-qualification-v5/five-flows/store/.stage-ub044461/seed.json",
+                "Type": "bind"
+              }
+            ]
+          },
+          "gflo-browser-check-4275d405504649ed957c0e40d4ce0460": {
+            "config": {
+              "Cmd": [
+                "node",
+                "/journey.cjs"
+              ],
+              "Entrypoint": null,
+              "Env": [
+                "HOME=/tmp",
+                "NODE_PATH=/support",
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+                "LANG=C.UTF-8",
+                "LC_ALL=C.UTF-8",
+                "PLAYWRIGHT_BROWSERS_PATH=/ms-playwright"
+              ],
+              "User": "1000:1000",
+              "WorkingDir": "/tmp"
+            },
+            "host": {
+              "AutoRemove": false,
+              "Binds": null,
+              "BlkioDeviceReadBps": [],
+              "BlkioDeviceReadIOps": [],
+              "BlkioDeviceWriteBps": [],
+              "BlkioDeviceWriteIOps": [],
+              "BlkioWeight": 0,
+              "BlkioWeightDevice": [],
+              "CapAdd": null,
+              "CapDrop": [
+                "ALL"
+              ],
+              "Cgroup": "",
+              "CgroupParent": "",
+              "CgroupnsMode": "private",
+              "ConsoleSize": [
+                0,
+                0
+              ],
+              "ContainerIDFile": "",
+              "CpuCount": 0,
+              "CpuPercent": 0,
+              "CpuPeriod": 0,
+              "CpuQuota": 0,
+              "CpuRealtimePeriod": 0,
+              "CpuRealtimeRuntime": 0,
+              "CpuShares": 0,
+              "CpusetCpus": "",
+              "CpusetMems": "",
+              "DeviceCgroupRules": null,
+              "DeviceRequests": null,
+              "Devices": [],
+              "Dns": [],
+              "DnsOptions": [],
+              "DnsSearch": [],
+              "ExtraHosts": null,
+              "GroupAdd": null,
+              "IOMaximumBandwidth": 0,
+              "IOMaximumIOps": 0,
+              "Init": true,
+              "IpcMode": "private",
+              "Isolation": "",
+              "Links": null,
+              "LogConfig": {
+                "Config": {},
+                "Type": "none"
+              },
+              "MaskedPaths": [
+                "/proc/asound",
+                "/proc/acpi",
+                "/proc/interrupts",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/sys/firmware",
+                "/sys/devices/virtual/powercap"
+              ],
+              "Memory": 1073741824,
+              "MemoryReservation": 0,
+              "MemorySwap": 1073741824,
+              "MemorySwappiness": null,
+              "Mounts": [
+                {
+                  "ReadOnly": true,
+                  "Source": "/home/gradrix/gflo-browser-596ecb6/.gflo/rig-qualification-v5/five-flows/store/df4755523d7682b461c222f22f99453346eccef769f6bbc096ac77772a8ffd20/support",
+                  "Target": "/support",
+                  "Type": "bind"
+                },
+                {
+                  "ReadOnly": true,
+                  "Source": "/home/gradrix/gflo-browser-596ecb6/.gflo/rig-qualification-v5/five-flows/store/.stage-ub044461/checks",
+                  "Target": "/checks",
+                  "Type": "bind"
+                },
+                {
+                  "ReadOnly": true,
+                  "Source": "/home/gradrix/gflo-browser-596ecb6/gflo/recipes/browser/journey.cjs",
+                  "Target": "/journey.cjs",
+                  "Type": "bind"
+                }
+              ],
+              "NanoCpus": 2000000000,
+              "NetworkMode": "container:afcaff97c0c86e9e482f0c656bc77bd57f434d631116ea9d0a871bcb7af6c5ca",
+              "OomKillDisable": false,
+              "OomScoreAdj": 0,
+              "PidMode": "",
+              "PidsLimit": 256,
+              "PortBindings": {},
+              "Privileged": false,
+              "PublishAllPorts": false,
+              "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+              ],
+              "ReadonlyRootfs": true,
+              "RestartPolicy": {
+                "MaximumRetryCount": 0,
+                "Name": "no"
+              },
+              "Runtime": "runc",
+              "SecurityOpt": [
+                "no-new-privileges",
+                "seccomp={\"defaultAction\":\"SCMP_ACT_ERRNO\",\"archMap\":[{\"architecture\":\"SCMP_ARCH_X86_64\",\"subArchitectures\":[\"SCMP_ARCH_X86\",\"SCMP_ARCH_X32\"]},{\"architecture\":\"SCMP_ARCH_AARCH64\",\"subArchitectures\":[\"SCMP_ARCH_ARM\"]},{\"architecture\":\"SCMP_ARCH_MIPS64\",\"subArchitectures\":[\"SCMP_ARCH_MIPS\",\"SCMP_ARCH_MIPS64N32\"]},{\"architecture\":\"SCMP_ARCH_MIPS64N32\",\"subArchitectures\":[\"SCMP_ARCH_MIPS\",\"SCMP_ARCH_MIPS64\"]},{\"architecture\":\"SCMP_ARCH_MIPSEL64\",\"subArchitectures\":[\"SCMP_ARCH_MIPSEL\",\"SCMP_ARCH_MIPSEL64N32\"]},{\"architecture\":\"SCMP_ARCH_MIPSEL64N32\",\"subArchitectures\":[\"SCMP_ARCH_MIPSEL\",\"SCMP_ARCH_MIPSEL64\"]},{\"architecture\":\"SCMP_ARCH_S390X\",\"subArchitectures\":[\"SCMP_ARCH_S390\"]}],\"syscalls\":[{\"comment\":\"Allow create user namespaces\",\"names\":[\"clone\",\"setns\",\"unshare\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[],\"includes\":{},\"excludes\":{}},{\"names\":[\"accept\",\"accept4\",\"access\",\"adjtimex\",\"alarm\",\"bind\",\"brk\",\"capget\",\"capset\",\"chdir\",\"chmod\",\"chown\",\"chown32\",\"clock_adjtime\",\"clock_adjtime64\",\"clock_getres\",\"clock_getres_time64\",\"clock_gettime\",\"clock_gettime64\",\"clock_nanosleep\",\"clock_nanosleep_time64\",\"close\",\"connect\",\"copy_file_range\",\"creat\",\"dup\",\"dup2\",\"dup3\",\"epoll_create\",\"epoll_create1\",\"epoll_ctl\",\"epoll_ctl_old\",\"epoll_pwait\",\"epoll_wait\",\"epoll_wait_old\",\"eventfd\",\"eventfd2\",\"execve\",\"execveat\",\"exit\",\"exit_group\",\"faccessat\",\"fadvise64\",\"fadvise64_64\",\"fallocate\",\"fanotify_mark\",\"fchdir\",\"fchmod\",\"fchmodat\",\"fchown\",\"fchown32\",\"fchownat\",\"fcntl\",\"fcntl64\",\"fdatasync\",\"fgetxattr\",\"flistxattr\",\"flock\",\"fork\",\"fremovexattr\",\"fsetxattr\",\"fstat\",\"fstat64\",\"fstatat64\",\"fstatfs\",\"fstatfs64\",\"fsync\",\"ftruncate\",\"ftruncate64\",\"futex\",\"futex_time64\",\"futimesat\",\"getcpu\",\"getcwd\",\"getdents\",\"getdents64\",\"getegid\",\"getegid32\",\"geteuid\",\"geteuid32\",\"getgid\",\"getgid32\",\"getgroups\",\"getgroups32\",\"getitimer\",\"getpeername\",\"getpgid\",\"getpgrp\",\"getpid\",\"getppid\",\"getpriority\",\"getrandom\",\"getresgid\",\"getresgid32\",\"getresuid\",\"getresuid32\",\"getrlimit\",\"get_robust_list\",\"getrusage\",\"getsid\",\"getsockname\",\"getsockopt\",\"get_thread_area\",\"gettid\",\"gettimeofday\",\"getuid\",\"getuid32\",\"getxattr\",\"inotify_add_watch\",\"inotify_init\",\"inotify_init1\",\"inotify_rm_watch\",\"io_cancel\",\"ioctl\",\"io_destroy\",\"io_getevents\",\"io_pgetevents\",\"io_pgetevents_time64\",\"ioprio_get\",\"ioprio_set\",\"io_setup\",\"io_submit\",\"io_uring_enter\",\"io_uring_register\",\"io_uring_setup\",\"ipc\",\"kill\",\"lchown\",\"lchown32\",\"lgetxattr\",\"link\",\"linkat\",\"listen\",\"listxattr\",\"llistxattr\",\"_llseek\",\"lremovexattr\",\"lseek\",\"lsetxattr\",\"lstat\",\"lstat64\",\"madvise\",\"membarrier\",\"memfd_create\",\"mincore\",\"mkdir\",\"mkdirat\",\"mknod\",\"mknodat\",\"mlock\",\"mlock2\",\"mlockall\",\"mmap\",\"mmap2\",\"mprotect\",\"mq_getsetattr\",\"mq_notify\",\"mq_open\",\"mq_timedreceive\",\"mq_timedreceive_time64\",\"mq_timedsend\",\"mq_timedsend_time64\",\"mq_unlink\",\"mremap\",\"msgctl\",\"msgget\",\"msgrcv\",\"msgsnd\",\"msync\",\"munlock\",\"munlockall\",\"munmap\",\"nanosleep\",\"newfstatat\",\"_newselect\",\"open\",\"openat\",\"pause\",\"pipe\",\"pipe2\",\"poll\",\"ppoll\",\"ppoll_time64\",\"prctl\",\"pread64\",\"preadv\",\"preadv2\",\"prlimit64\",\"pselect6\",\"pselect6_time64\",\"pwrite64\",\"pwritev\",\"pwritev2\",\"read\",\"readahead\",\"readlink\",\"readlinkat\",\"readv\",\"recv\",\"recvfrom\",\"recvmmsg\",\"recvmmsg_time64\",\"recvmsg\",\"remap_file_pages\",\"removexattr\",\"rename\",\"renameat\",\"renameat2\",\"restart_syscall\",\"rmdir\",\"rseq\",\"rt_sigaction\",\"rt_sigpending\",\"rt_sigprocmask\",\"rt_sigqueueinfo\",\"rt_sigreturn\",\"rt_sigsuspend\",\"rt_sigtimedwait\",\"rt_sigtimedwait_time64\",\"rt_tgsigqueueinfo\",\"sched_getaffinity\",\"sched_getattr\",\"sched_getparam\",\"sched_get_priority_max\",\"sched_get_priority_min\",\"sched_getscheduler\",\"sched_rr_get_interval\",\"sched_rr_get_interval_time64\",\"sched_setaffinity\",\"sched_setattr\",\"sched_setparam\",\"sched_setscheduler\",\"sched_yield\",\"seccomp\",\"select\",\"semctl\",\"semget\",\"semop\",\"semtimedop\",\"semtimedop_time64\",\"send\",\"sendfile\",\"sendfile64\",\"sendmmsg\",\"sendmsg\",\"sendto\",\"setfsgid\",\"setfsgid32\",\"setfsuid\",\"setfsuid32\",\"setgid\",\"setgid32\",\"setgroups\",\"setgroups32\",\"setitimer\",\"setpgid\",\"setpriority\",\"setregid\",\"setregid32\",\"setresgid\",\"setresgid32\",\"setresuid\",\"setresuid32\",\"setreuid\",\"setreuid32\",\"setrlimit\",\"set_robust_list\",\"setsid\",\"setsockopt\",\"set_thread_area\",\"set_tid_address\",\"setuid\",\"setuid32\",\"setxattr\",\"shmat\",\"shmctl\",\"shmdt\",\"shmget\",\"shutdown\",\"sigaltstack\",\"signalfd\",\"signalfd4\",\"sigprocmask\",\"sigreturn\",\"socket\",\"socketcall\",\"socketpair\",\"splice\",\"stat\",\"stat64\",\"statfs\",\"statfs64\",\"statx\",\"symlink\",\"symlinkat\",\"sync\",\"sync_file_range\",\"syncfs\",\"sysinfo\",\"tee\",\"tgkill\",\"time\",\"timer_create\",\"timer_delete\",\"timer_getoverrun\",\"timer_gettime\",\"timer_gettime64\",\"timer_settime\",\"timer_settime64\",\"timerfd_create\",\"timerfd_gettime\",\"timerfd_gettime64\",\"timerfd_settime\",\"timerfd_settime64\",\"times\",\"tkill\",\"truncate\",\"truncate64\",\"ugetrlimit\",\"umask\",\"uname\",\"unlink\",\"unlinkat\",\"utime\",\"utimensat\",\"utimensat_time64\",\"utimes\",\"vfork\",\"vmsplice\",\"wait4\",\"waitid\",\"waitpid\",\"write\",\"writev\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[],\"comment\":\"\",\"includes\":{},\"excludes\":{}},{\"names\":[\"ptrace\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":null,\"comment\":\"\",\"includes\":{\"minKernel\":\"4.8\"},\"excludes\":{}},{\"names\":[\"personality\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":0,\"valueTwo\":0,\"op\":\"SCMP_CMP_EQ\"}],\"comment\":\"\",\"includes\":{},\"excludes\":{}},{\"names\":[\"personality\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":8,\"valueTwo\":0,\"op\":\"SCMP_CMP_EQ\"}],\"comment\":\"\",\"includes\":{},\"excludes\":{}},{\"names\":[\"personality\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":131072,\"valueTwo\":0,\"op\":\"SCMP_CMP_EQ\"}],\"comment\":\"\",\"includes\":{},\"excludes\":{}},{\"names\":[\"personality\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":131080,\"valueTwo\":0,\"op\":\"SCMP_CMP_EQ\"}],\"comment\":\"\",\"includes\":{},\"excludes\":{}},{\"names\":[\"personality\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":4294967295,\"valueTwo\":0,\"op\":\"SCMP_CMP_EQ\"}],\"comment\":\"\",\"includes\":{},\"excludes\":{}},{\"names\":[\"sync_file_range2\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[],\"comment\":\"\",\"includes\":{\"arches\":[\"ppc64le\"]},\"excludes\":{}},{\"names\":[\"arm_fadvise64_64\",\"arm_sync_file_range\",\"sync_file_range2\",\"breakpoint\",\"cacheflush\",\"set_tls\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[],\"comment\":\"\",\"includes\":{\"arches\":[\"arm\",\"arm64\"]},\"excludes\":{}},{\"names\":[\"arch_prctl\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[],\"comment\":\"\",\"includes\":{\"arches\":[\"amd64\",\"x32\"]},\"excludes\":{}},{\"names\":[\"modify_ldt\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[],\"comment\":\"\",\"includes\":{\"arches\":[\"amd64\",\"x32\",\"x86\"]},\"excludes\":{}},{\"names\":[\"s390_pci_mmio_read\",\"s390_pci_mmio_write\",\"s390_runtime_instr\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[],\"comment\":\"\",\"includes\":{\"arches\":[\"s390\",\"s390x\"]},\"excludes\":{}},{\"names\":[\"open_by_handle_at\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[],\"comment\":\"\",\"includes\":{\"caps\":[\"CAP_DAC_READ_SEARCH\"]},\"excludes\":{}},{\"names\":[\"bpf\",\"clone\",\"fanotify_init\",\"lookup_dcookie\",\"mount\",\"name_to_handle_at\",\"perf_event_open\",\"quotactl\",\"setdomainname\",\"sethostname\",\"setns\",\"syslog\",\"umount\",\"umount2\",\"unshare\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[],\"comment\":\"\",\"includes\":{\"caps\":[\"CAP_SYS_ADMIN\"]},\"excludes\":{}},{\"names\":[\"clone\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":0,\"value\":2114060288,\"valueTwo\":0,\"op\":\"SCMP_CMP_MASKED_EQ\"}],\"comment\":\"\",\"includes\":{},\"excludes\":{\"caps\":[\"CAP_SYS_ADMIN\"],\"arches\":[\"s390\",\"s390x\"]}},{\"names\":[\"clone\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[{\"index\":1,\"value\":2114060288,\"valueTwo\":0,\"op\":\"SCMP_CMP_MASKED_EQ\"}],\"comment\":\"s390 parameter ordering for clone is different\",\"includes\":{\"arches\":[\"s390\",\"s390x\"]},\"excludes\":{\"caps\":[\"CAP_SYS_ADMIN\"]}},{\"names\":[\"reboot\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[],\"comment\":\"\",\"includes\":{\"caps\":[\"CAP_SYS_BOOT\"]},\"excludes\":{}},{\"names\":[\"chroot\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[],\"comment\":\"\",\"includes\":{},\"excludes\":{}},{\"names\":[\"delete_module\",\"init_module\",\"finit_module\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[],\"comment\":\"\",\"includes\":{\"caps\":[\"CAP_SYS_MODULE\"]},\"excludes\":{}},{\"names\":[\"acct\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[],\"comment\":\"\",\"includes\":{\"caps\":[\"CAP_SYS_PACCT\"]},\"excludes\":{}},{\"names\":[\"kcmp\",\"process_vm_readv\",\"process_vm_writev\",\"ptrace\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[],\"comment\":\"\",\"includes\":{\"caps\":[\"CAP_SYS_PTRACE\"]},\"excludes\":{}},{\"names\":[\"iopl\",\"ioperm\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[],\"comment\":\"\",\"includes\":{\"caps\":[\"CAP_SYS_RAWIO\"]},\"excludes\":{}},{\"names\":[\"settimeofday\",\"stime\",\"clock_settime\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[],\"comment\":\"\",\"includes\":{\"caps\":[\"CAP_SYS_TIME\"]},\"excludes\":{}},{\"names\":[\"vhangup\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[],\"comment\":\"\",\"includes\":{\"caps\":[\"CAP_SYS_TTY_CONFIG\"]},\"excludes\":{}},{\"names\":[\"get_mempolicy\",\"mbind\",\"set_mempolicy\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[],\"comment\":\"\",\"includes\":{\"caps\":[\"CAP_SYS_NICE\"]},\"excludes\":{}},{\"names\":[\"syslog\"],\"action\":\"SCMP_ACT_ALLOW\",\"args\":[],\"comment\":\"\",\"includes\":{\"caps\":[\"CAP_SYSLOG\"]},\"excludes\":{}}]}"
+              ],
+              "ShmSize": 268435456,
+              "Tmpfs": {
+                "/tmp": "rw,nosuid,nodev,size=256m,mode=1777"
+              },
+              "UTSMode": "",
+              "Ulimits": [],
+              "UsernsMode": "",
+              "VolumeDriver": "",
+              "VolumesFrom": null
+            },
+            "id": "b363096f529cb428b75918e25b4c7cfa32aef996ca1fffc698b4a776b29c122e",
+            "image": "sha256:2c1f4e0fd6450f43ddb46d60c2a6df30855a8588e165b1f2559fb0eda8d7ff35",
+            "mounts": [
+              {
+                "Destination": "/journey.cjs",
+                "Mode": "",
+                "Propagation": "rprivate",
+                "RW": false,
+                "Source": "/home/gradrix/gflo-browser-596ecb6/gflo/recipes/browser/journey.cjs",
+                "Type": "bind"
+              },
+              {
+                "Destination": "/support",
+                "Mode": "",
+                "Propagation": "rprivate",
+                "RW": false,
+                "Source": "/home/gradrix/gflo-browser-596ecb6/.gflo/rig-qualification-v5/five-flows/store/df4755523d7682b461c222f22f99453346eccef769f6bbc096ac77772a8ffd20/support",
+                "Type": "bind"
+              },
+              {
+                "Destination": "/checks",
+                "Mode": "",
+                "Propagation": "rprivate",
+                "RW": false,
+                "Source": "/home/gradrix/gflo-browser-596ecb6/.gflo/rig-qualification-v5/five-flows/store/.stage-ub044461/checks",
+                "Type": "bind"
+              }
+            ]
+          }
+        },
+        "elapsed_s": 1.1605516149998039,
+        "failure": null
+      },
+      "reason": null,
+      "transport_errors": []
+    },
+    "helpers": {
+      "journey.cjs": "5fa647490f27342883ed5b1fa42aab972603f6b706ab16214942675891e9eb27",
+      "seccomp.json": "322b86b4f7f5b597ed6a9c2cfd6193a4b249a51c8bc9cfba8ff1a485070b24e8"
+    },
+    "inputs": {
+      "app": "d1d7b3caa0e46a07ef5355c8a6da3e990cc3f087c3b0711a015a2329f2c822ed",
+      "checks": "0f392315a0feef8a875d327d709a189b1bfab63f687e1aae110ee38c0e6834ed",
+      "seed": "7fc54f80aec82d14b3dc01ad8ce3eeb77b4a5373fdb0ea35cc7d383feb1dd0fc"
+    },
+    "kind": "result",
+    "outcome": {
+      "elapsedMs": 498,
+      "failure": null,
+      "files": [
+        {
+          "name": "screen-1.png",
+          "sha256": "5a9cd0278851b0fc8d394d7bcaa0e1314233d62cd7bfb2391d8992dcc53277e2",
+          "size": 22280
+        },
+        {
+          "name": "trace.zip",
+          "sha256": "84d9a08665e4c8e0630974ad92fa15d089372cb0941bc323485ab11f35bcb3da",
+          "size": 142837
+        },
+        {
+          "name": "events.json",
+          "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+          "size": 2
+        }
+      ],
+      "runtime": {
+        "browser": "153.0.8010.12",
+        "core": "1.63.0",
+        "isolation": {
+          "memory": "181055488",
+          "memoryEvents": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\n",
+          "memoryPeak": "185593856",
+          "memoryStat": "anon 161599488\nfile 7999488\nkernel 10743808\nkernel_stack 1097728\npagetables 5664768\nsec_pagetables 0\npercpu 3336\nsock 0\nvmalloc 24576\nshmem 7843840\nfile_mapped 6930432\nfile_dirty 16384\nfile_writeback 0\nswapcached 0\nanon_thp 0\nfile_thp 0\nshmem_thp 0\ninactive_anon 165974016\nactive_anon 3354624\ninactive_file 139264\nactive_file 16384\nunevictable 0\nslab_reclaimable 909800\nslab_unreclaimable 2163272\nslab 3073072\nworkingset_refault_anon 0\nworkingset_refault_file 0\nworkingset_activate_anon 0\nworkingset_activate_file 0\nworkingset_restore_anon 0\nworkingset_restore_file 0\nworkingset_nodereclaim 0\npgscan 0\npgsteal 0\npgscan_kswapd 0\npgscan_direct 0\npgscan_khugepaged 0\npgsteal_kswapd 0\npgsteal_direct 0\npgsteal_khugepaged 0\npgfault 110907\npgmajfault 1\npgrefill 0\npgactivate 1813\npgdeactivate 0\npglazyfree 0\npglazyfreed 0\nthp_fault_alloc 0\nthp_collapse_alloc 0\n",
+          "processes": [
+            {
+              "command": "/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --user-data-dir=/tmp/playwright_chromiumdev_profile-klxEuP --remote-debugging-pipe --no-startup-window ",
+              "namespaces": {
+                "net": "net:[4026532302]",
+                "pid": "pid:[4026532364]",
+                "user": "user:[4026531837]"
+              },
+              "pid": "19",
+              "status": [
+                "Uid:\t1000\t1000\t1000\t1000",
+                "Gid:\t1000\t1000\t1000\t1000",
+                "NSpid:\t19",
+                "CapInh:\t0000000000000000",
+                "CapPrm:\t0000000000000000",
+                "CapEff:\t0000000000000000",
+                "CapBnd:\t0000000000000000",
+                "CapAmb:\t0000000000000000",
+                "NoNewPrivs:\t1",
+                "Seccomp:\t2",
+                "Seccomp_filters:\t2"
+              ]
+            },
+            {
+              "command": "/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell --type=zygote --no-zygote-sandbox --headless ",
+              "namespaces": {
+                "net": "net:[4026532302]",
+                "pid": "pid:[4026532364]",
+                "user": "user:[4026531837]"
+              },
+              "pid": "22",
+              "status": [
+                "Uid:\t1000\t1000\t1000\t1000",
+                "Gid:\t1000\t1000\t1000\t1000",
+                "NSpid:\t22",
+                "CapInh:\t0000000000000000",
+                "CapPrm:\t0000000000000000",
+                "CapEff:\t0000000000000000",
+                "CapBnd:\t0000000000000000",
+                "CapAmb:\t0000000000000000",
+                "NoNewPrivs:\t1",
+                "Seccomp:\t2",
+                "Seccomp_filters:\t2"
+              ]
+            },
+            {
+              "command": "/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell --type=zygote --headless ",
+              "namespaces": {
+                "net": "net:[4026532370]",
+                "pid": "pid:[4026532369]",
+                "user": "user:[4026532429]"
+              },
+              "pid": "23",
+              "status": [
+                "Uid:\t1000\t1000\t1000\t1000",
+                "Gid:\t1000\t1000\t1000\t1000",
+                "NSpid:\t23\t1",
+                "CapInh:\t0000000000000000",
+                "CapPrm:\t0000000000000000",
+                "CapEff:\t0000000000000000",
+                "CapBnd:\t000001ffffffffff",
+                "CapAmb:\t0000000000000000",
+                "NoNewPrivs:\t1",
+                "Seccomp:\t2",
+                "Seccomp_filters:\t2"
+              ]
+            },
+            {
+              "command": "/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell --type=zygote --headless ",
+              "namespaces": {
+                "net": "net:[4026532370]",
+                "pid": "pid:[4026532369]",
+                "user": "user:[4026532429]"
+              },
+              "pid": "25",
+              "status": [
+                "Uid:\t1000\t1000\t1000\t1000",
+                "Gid:\t1000\t1000\t1000\t1000",
+                "NSpid:\t25\t3",
+                "CapInh:\t0000000000000000",
+                "CapPrm:\t0000000000200000",
+                "CapEff:\t0000000000200000",
+                "CapBnd:\t000001ffffffffff",
+                "CapAmb:\t0000000000000000",
+                "NoNewPrivs:\t1",
+                "Seccomp:\t2",
+                "Seccomp_filters:\t2"
+              ]
+            },
+            {
+              "command": "/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell --type=gpu-process --disable-breakpad --headless --ozone-platform=headless --use-angle=swiftshader-webgl --enable-unsafe-swiftshader --gpu-preferences=YAAAAAAAAAAgAAAEAAAAAAAAAAAAAGAASAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAMAAAAAAAAAAwAAAAAAAAAAAAAAAAAAAA ",
+              "namespaces": {
+                "net": "net:[4026532302]",
+                "pid": "pid:[4026532364]",
+                "user": "user:[4026531837]"
+              },
+              "pid": "42",
+              "status": [
+                "Uid:\t1000\t1000\t1000\t1000",
+                "Gid:\t1000\t1000\t1000\t1000",
+                "NSpid:\t42",
+                "CapInh:\t0000000000000000",
+                "CapPrm:\t0000000000000000",
+                "CapEff:\t0000000000000000",
+                "CapBnd:\t0000000000000000",
+                "CapAmb:\t0000000000000000",
+                "NoNewPrivs:\t1",
+                "Seccomp:\t2",
+                "Seccomp_filters:\t2"
+              ]
+            },
+            {
+              "command": "/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell --type=utility --utility-sub-type=network.mojom.NetworkService --lang=en-US --service-sandbox-type=none --use-angle=swiftshader-webgl --use-gl=angle --mute-audio --headless=old --shared-files=v8_context_snapshot_data:100 --field-trial-handle=3,i,6660776413509715358,10172015775340752330,262144 --enable-features=CDPScreenshotNewSurface --disable-features=AutoDeElevate,AvoidUnnecessaryBeforeUnloadCheckSync,BlockOriginHeaderModificationOnRedirect,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,OptimizationHints,PaintHolding,ThirdPartyStoragePartitioning,Translate,msEdgeUpdateLaunchServicesPreferredVersion,msForceBrowserSignIn --variations-seed-version --pseudonymization-salt-handle=7,i,12003035591286462020,8627928501900854953,4 --trace-process-track-uuid=3190708989122997041 ",
+              "namespaces": {
+                "net": "net:[4026532302]",
+                "pid": "pid:[4026532364]",
+                "user": "user:[4026531837]"
+              },
+              "pid": "55",
+              "status": [
+                "Uid:\t1000\t1000\t1000\t1000",
+                "Gid:\t1000\t1000\t1000\t1000",
+                "NSpid:\t55",
+                "CapInh:\t0000000000000000",
+                "CapPrm:\t0000000000000000",
+                "CapEff:\t0000000000000000",
+                "CapBnd:\t0000000000000000",
+                "CapAmb:\t0000000000000000",
+                "NoNewPrivs:\t1",
+                "Seccomp:\t2",
+                "Seccomp_filters:\t2"
+              ]
+            },
+            {
+              "command": "/ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell --type=renderer --headless=old --disable-back-forward-cache --disable-background-timer-throttling --disable-breakpad --force-color-profile=srgb --remote-debugging-pipe --allow-pre-commit-input --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --o ",
+              "namespaces": {
+                "net": "net:[4026532370]",
+                "pid": "pid:[4026532366]",
+                "user": "user:[4026532429]"
+              },
+              "pid": "66",
+              "status": [
+                "Uid:\t1000\t1000\t1000\t1000",
+                "Gid:\t1000\t1000\t1000\t1000",
+                "NSpid:\t66\t4\t1",
+                "CapInh:\t0000000000000000",
+                "CapPrm:\t0000000000000000",
+                "CapEff:\t0000000000000000",
+                "CapBnd:\t000001ffffffffff",
+                "CapAmb:\t0000000000000000",
+                "NoNewPrivs:\t1",
+                "Seccomp:\t2",
+                "Seccomp_filters:\t3"
+              ]
+            }
+          ],
+          "reporter": {
+            "net": "net:[4026532302]",
+            "pid": "pid:[4026532364]",
+            "user": "user:[4026531837]"
+          },
+          "shm": {
+            "bavail": 63795,
+            "bfree": 63795,
+            "blocks": 65536,
+            "bsize": 4096,
+            "ffree": 5779581,
+            "files": 5779610,
+            "frsize": 4096,
+            "type": 16914836
+          }
+        },
+        "network": {
+          "denials": [
+            {
+              "connected": false,
+              "error": "ENETUNREACH",
+              "host": "172.17.0.1"
+            },
+            {
+              "connected": false,
+              "error": "ENETUNREACH",
+              "host": "10.1.1.155"
+            },
+            {
+              "connected": false,
+              "error": "ENETUNREACH",
+              "host": "1.1.1.1"
+            },
+            {
+              "connected": false,
+              "error": "ENETUNREACH",
+              "host": "2606:4700:4700::1111"
+            }
+          ],
+          "interfaces": "Inter-|   Receive                                                |  Transmit\n face |bytes    packets errs drop fifo frame compressed multicast|bytes    packets errs drop fifo colls carrier compressed\n    lo:     739       7    0    0    0     0          0         0      739       7    0    0    0     0       0          0\n",
+          "routes": "Iface\tDestination\tGateway \tFlags\tRefCnt\tUse\tMetric\tMask\t\tMTU\tWindow\tIRTT                                                       \n"
+        },
+        "node": "v24.20.0",
+        "playwright": "1.63.0",
+        "shm": {
+          "peakBytes": 7131136,
+          "samples": 7
+        },
+        "traces": [
+          {
+            "context": 1,
+            "name": "context-1.zip",
+            "sha256": "b4fdd55162548579c0cafe9d0008266830e7aa7e9b291dc8ab10bb175f2d343e",
+            "size": 142470
+          }
+        ]
+      },
+      "status": "passed"
+    },
+    "support": "df4755523d7682b461c222f22f99453346eccef769f6bbc096ac77772a8ffd20"
+  }
+}

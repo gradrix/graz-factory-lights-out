@@ -6,10 +6,10 @@ Contract: contract.md sha256 ab3ba1d7aa4d11237de3914f2a1ed40d3dcb47a680ee181465e
 
 ## Execution
 
-Status: active
+Status: accepted
 Owner: /root coordinator; /root/cohort_c sole maintained-code builder
-Candidate: frozen v5 manifest SHA256 ee60bbe4012e03acbcd5a9cd403a63f62290dd253c97a7f7979ead062ee53ea4; source596ecb6; not accepted
-Next: fresh v5 actual-rig acceptance running; independently assess results before acceptance/installation.
+Candidate: frozen v5 manifest SHA256 ee60bbe4012e03acbcd5a9cd403a63f62290dd253c97a7f7979ead062ee53ea4; source596ecb6; accepted
+Next: resolve private citation prototype and version the next documentation reliability unit.
 
 ## Checks and repairs
 
@@ -56,3 +56,17 @@ Seed diagnosis confirmed on actual rig temporary file: only st_atime_ns changed 
 V5 source596ecb6 preserved and staged in isolated rig checkout. Nine bound hashes verified; only seed reader/test changed from v4. Independent reviewer assigned affected seed seam; rig trial waits for verdict.
 
 V5 independent seed review reports24 cases passed, including real atime-only change and mutation/replacement/link controls. Public seam rejects unsafe seeds before pair. Final report saving; no scoped blocker. Fresh rig trial started at isolated596ecb6/.gflo/rig-qualification-v5 with unchanged harness hashes, fixed fixture and prepared support; outer log rig-qualification-v5.log. Previous v4 failure remains untouched.
+
+V5 rig product checks completed: five positive journeys/five mutants and15 supplemental controls all expected outcomes. Full60s deadline measured60.91s. Harness then failed before lifecycle dispatch with NameError: Path not defined atline94 (pathlib was imported). This is a qualification harness defect; lifecycle remains unattempted. Preserve outer failure log and completed raw results. QA assigned one-name harness repair; run standalone lifecycle against existing prior good record in fresh lifecycle directory rather than repeating passed product controls.
+
+Standalone unchanged lifecycle harness completed exit0 into lifecycle-continuation. Both startup/artifact SIGKILL phases observed, guardian completed, no containers/new result, prior passed record unchanged; ordinary recovery completed without uncertainty acknowledgement. Corrected top-level dispatch is a harness-only Path→pathlib.Path change; original failing invocation/log retained. Independent QA assesses raw receipts, screenshot/trace semantics and remaining literal contract coverage before closure.
+
+Independent rig assessment confirms15 supplemental controls and both lifecycle phases. Remaining literal gates: actual startup cancellation and target controlled oversize/uncertainty/final-sync seams. QA assigned smallest explicit supplementary run, frozen source unchanged; no repeated five-flow suite.
+
+While final read-only QA proceeds, cohort_c owns a private non-maintained citation-format prototype for issue07 on accepted2049361/cache and unchanged96K/Q4 local model. Four cases frozen before calls compare bounded one-repair exact excerpts versus controller-derived excerpts from selected span references. No document/runtime mutation; unit06 remains sole maintained unit until acceptance.
+
+Promotion preflight found an earlier installation projection gap: all18 installed Python files match accepted2049361, but seven tracked Node/Python environment recipe assets (JS/JSON/locks) are absent. Original05 receipt explicitly lists Python hashes; it did not prove full-tree identity. Current promotion must copy/verify every tracked gflo file including browserCJS/seccompJSON and missing environment recipes, preserving .gflo config/state. This deployment packaging correction is separate from browser/model qualification.
+
+Closure: contract/unit/run binding verified; independent functional/security gates accepted. All29 source/assets installed and hashed, model doctor ready96K, config unchanged; prepared support531199628d73a5700f67039574cb2df172707fefea11fa4ee440bed365b7bb1c resolves in normal runtime. [Acceptance](acceptance.md) records coverage, preserved failures and scope. No maintained mutation unit remains active until next contract is frozen.
+
+Normal runtime installation smoke passed through public browser check/inspect, result189b2d56b22c1f85055688950488c92eeaba15eb63b2a71ac96c4e4294eeb094. Prepared user approval .gflo/browser-example.json and fixture docs copied. No model inference used for smoke; private citation prototype has sole GPU inference ownership.

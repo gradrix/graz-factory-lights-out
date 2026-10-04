@@ -4,7 +4,7 @@ A small local software factory: give it a repository, a task and executable acce
 
 **Works today:** bounded Python and TypeScript tasks using prepared dependencies, durable progress visibility and controlled recovery. [Incremental acceptance evidence](docs/evidence/autonomy-stages.md).
 
-**Destination:** end-to-end autonomous local delivery, introduced through measured stages: visibility, independent review, environment preparation, research/browser tools, planning and integration. See the [roadmap](docs/roadmap.md) and [feasibility research](docs/research/autonomy-feasibility.md). Visibility and controlled recovery are implemented and qualified on the rig. Independent local review has passed the bounded qualification (12/12 fresh tasks, with documented quality limitations); three fixed environment profiles have passed bounded rig qualification, including an automatic repair. Approved-document fetch, cited local answers and offline replay have passed their first rig slice. Search, browser journeys, decomposition and merging remain planned. The model trials retain failed outcomes and do not qualify unattended large projects. See [environment preparation and offline use](docs/environments.md).
+**Destination:** end-to-end autonomous local delivery, introduced through measured stages: visibility, independent review, environment preparation, research/browser tools, planning and integration. See the [roadmap](docs/roadmap.md) and [feasibility research](docs/research/autonomy-feasibility.md). Visibility and controlled recovery are implemented and qualified on the rig. Independent local review has passed the bounded qualification (12/12 fresh tasks, with documented quality limitations); three fixed environment profiles have passed bounded rig qualification, including an automatic repair. Approved-document fetch, cited local answers and offline replay have passed their first rig slice. Five supervised local-app browser journeys have passed rig qualification. Search, public browsing, decomposition and merging remain planned. The model trials retain failed outcomes and do not qualify unattended large projects. See [environment preparation and offline use](docs/environments.md).
 
 ## Run on MONSTER-GAMING-PC
 
@@ -67,6 +67,15 @@ GFLO never pushes, merges or deploys generated changes. Full prompts and tool ou
 ## Use approved documentation
 
 The [document CLI](docs/document-evidence.md) fetches an explicitly approved official page, stores a historical snapshot and asks the local model for cited answers. Saved answers replay offline. Initial acquisition needs Internet access; the model gets no browsing or tool authority.
+
+## Check a local application
+
+The [browser CLI](docs/local-browser.md) runs reviewed Playwright checks against a disposable Node application and saves screenshots, traces and cleanup evidence. Pinned support is prepared on the rig. It is a separate verification tool; the coding worker does not yet invoke it automatically. The prepared rig example is:
+
+```sh
+cd /home/gradrix/gflo-runtime
+python3 -m gflo browser check .gflo/browser-example.json
+```
 
 ## Develop and extend
 

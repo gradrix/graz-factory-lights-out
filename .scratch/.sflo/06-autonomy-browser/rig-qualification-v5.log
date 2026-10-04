@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/home/gradrix/gflo-browser-596ecb6/.scratch/.sflo/06-autonomy-browser/rig-acceptance.py", line 98, in <module>
+    if __name__=='__main__':main()
+                            ~~~~^^
+  File "/home/gradrix/gflo-browser-596ecb6/.scratch/.sflo/06-autonomy-browser/rig-acceptance.py", line 94, in main
+    lifecycle=[sys.executable,str(Path(__file__).with_name('rig-lifecycle.py')),'--repo',str(repo),'--support-store',str(a.support_store.resolve()),'--support-id',a.support_id,'--prior-store',str(out/'five-flows/store'),'--output',str(out/'lifecycle'),'--run']
+                                  ^^^^
+NameError: name 'Path' is not defined. Did you mean: 'path'?

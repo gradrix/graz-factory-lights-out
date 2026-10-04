@@ -1,0 +1,167 @@
+{
+  "candidate_manifest": "ee60bbe4012e03acbcd5a9cd403a63f62290dd253c97a7f7979ead062ee53ea4",
+  "fixture_manifest": "20d07c59c1af28f5728847179406560787b579b86c20c030e30032492f16ac10",
+  "support_id": "df4755523d7682b461c222f22f99453346eccef769f6bbc096ac77772a8ffd20",
+  "rows": [
+    {
+      "case": "create-reload",
+      "mutant": false,
+      "request": "/home/gradrix/gflo-browser-596ecb6/.gflo/rig-qualification-v5/five-flows/inputs/create-reload-control/request.json",
+      "id": "c7b4f99897292badc5c29337e17fec7b5995fad1cd1cd789803abf704b5b77f8",
+      "elapsed_s": 1.7930113539996455,
+      "outcome": "passed",
+      "failure": null,
+      "contexts_traced": 1,
+      "expected_outcome_confirmed": true
+    },
+    {
+      "case": "validation",
+      "mutant": false,
+      "request": "/home/gradrix/gflo-browser-596ecb6/.gflo/rig-qualification-v5/five-flows/inputs/validation-control/request.json",
+      "id": "a729f9bb8c58bed5de6aaadfad380545401d789ac695241acf7c75e9eb636e38",
+      "elapsed_s": 1.4405620709999312,
+      "outcome": "passed",
+      "failure": null,
+      "contexts_traced": 1,
+      "expected_outcome_confirmed": true
+    },
+    {
+      "case": "edit-cancel",
+      "mutant": false,
+      "request": "/home/gradrix/gflo-browser-596ecb6/.gflo/rig-qualification-v5/five-flows/inputs/edit-cancel-control/request.json",
+      "id": "0179250b3da885445b71d18d0fe879584a9bc81374eb8085586451e08ce49958",
+      "elapsed_s": 1.292105798999728,
+      "outcome": "passed",
+      "failure": null,
+      "contexts_traced": 1,
+      "expected_outcome_confirmed": true
+    },
+    {
+      "case": "conflict",
+      "mutant": false,
+      "request": "/home/gradrix/gflo-browser-596ecb6/.gflo/rig-qualification-v5/five-flows/inputs/conflict-control/request.json",
+      "id": "4a5d1419e44cb9858db9a6269a04a86c0f91282540faec3ed14ee0ee2955e65c",
+      "elapsed_s": 1.230504013999962,
+      "outcome": "passed",
+      "failure": null,
+      "contexts_traced": 2,
+      "expected_outcome_confirmed": true
+    },
+    {
+      "case": "failed-save-retry",
+      "mutant": false,
+      "request": "/home/gradrix/gflo-browser-596ecb6/.gflo/rig-qualification-v5/five-flows/inputs/failed-save-retry-control/request.json",
+      "id": "d4e0996534756ee37ce7344dadfdf2a64b9f5e1cdc90e696b526c9546ea11f02",
+      "elapsed_s": 1.0194976319999114,
+      "outcome": "passed",
+      "failure": null,
+      "contexts_traced": 1,
+      "expected_outcome_confirmed": true
+    },
+    {
+      "case": "create-reload",
+      "mutant": true,
+      "request": "/home/gradrix/gflo-browser-596ecb6/.gflo/rig-qualification-v5/five-flows/inputs/create-reload-mutant/request.json",
+      "id": "1c521c551f0d20273601b3e6de8c1f5dcb173b00f2319be6720343f0ed17be90",
+      "elapsed_s": 5.976978539999891,
+      "outcome": "failed",
+      "failure": {
+        "message": "TimeoutError: page.waitForFunction: Timeout 5000ms exceeded.",
+        "phase": "journey"
+      },
+      "expected_outcome_confirmed": true
+    },
+    {
+      "case": "validation",
+      "mutant": true,
+      "request": "/home/gradrix/gflo-browser-596ecb6/.gflo/rig-qualification-v5/five-flows/inputs/validation-mutant/request.json",
+      "id": "1a4a20445fa9674683a85a8f8c58b811830c2b98111ef3845c43aaca66ea8cd8",
+      "elapsed_s": 1.2196343670002534,
+      "outcome": "failed",
+      "failure": {
+        "message": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n    reservations: [],\n+   stock: 4\n-   stock: 5\n  }\n",
+        "phase": "journey"
+      },
+      "expected_outcome_confirmed": true
+    },
+    {
+      "case": "edit-cancel",
+      "mutant": true,
+      "request": "/home/gradrix/gflo-browser-596ecb6/.gflo/rig-qualification-v5/five-flows/inputs/edit-cancel-mutant/request.json",
+      "id": "528f32009023521befccb35fa02d295f308ec2b350330f84c93332758c90cd1a",
+      "elapsed_s": 6.030199141000139,
+      "outcome": "failed",
+      "failure": {
+        "message": "TimeoutError: page.waitForFunction: Timeout 5000ms exceeded.",
+        "phase": "journey"
+      },
+      "expected_outcome_confirmed": true
+    },
+    {
+      "case": "conflict",
+      "mutant": true,
+      "request": "/home/gradrix/gflo-browser-596ecb6/.gflo/rig-qualification-v5/five-flows/inputs/conflict-mutant/request.json",
+      "id": "5f6ccc81dad78412b7c7015e6a573f7e95c334a8ca0366c0fea6ae1b8f46ae86",
+      "elapsed_s": 6.12940100600008,
+      "outcome": "failed",
+      "failure": {
+        "message": "TimeoutError: page.waitForFunction: Timeout 5000ms exceeded.",
+        "phase": "journey"
+      },
+      "expected_outcome_confirmed": true
+    },
+    {
+      "case": "failed-save-retry",
+      "mutant": true,
+      "request": "/home/gradrix/gflo-browser-596ecb6/.gflo/rig-qualification-v5/five-flows/inputs/failed-save-retry-mutant/request.json",
+      "id": "3b0c024bb7f9649737d52b882ee38e95112b5c406dfb1f5daa733fbf5d538e08",
+      "elapsed_s": 0.9678422739998496,
+      "outcome": "failed",
+      "failure": {
+        "message": "AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:\n+ actual - expected\n\n  {\n    reservations: [],\n+   stock: 3\n-   stock: 5\n  }\n",
+        "phase": "journey"
+      },
+      "expected_outcome_confirmed": true
+    }
+  ],
+  "status": "passed_fixture_controls_not_full_product_acceptance",
+  "support_receipt": {
+    "id": "df4755523d7682b461c222f22f99453346eccef769f6bbc096ac77772a8ffd20",
+    "receipt": {
+      "app_image": "sha256:88f8ba583a884279252779bbe221bf1ff2c61cf236cc973f8ca97676ae6d07f0",
+      "created_utc": "2026-10-02T15:42:32.213533+00:00",
+      "image": "sha256:2c1f4e0fd6450f43ddb46d60c2a6df30855a8588e165b1f2559fb0eda8d7ff35",
+      "installed_images": {
+        "app": {
+          "environment": [
+            "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "NODE_VERSION=22.23.3",
+            "YARN_VERSION=1.22.22"
+          ],
+          "id": "sha256:88f8ba583a884279252779bbe221bf1ff2c61cf236cc973f8ca97676ae6d07f0",
+          "platform": "linux/amd64"
+        },
+        "browser": {
+          "environment": [
+            "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "LANG=C.UTF-8",
+            "LC_ALL=C.UTF-8",
+            "PLAYWRIGHT_BROWSERS_PATH=/ms-playwright"
+          ],
+          "id": "sha256:2c1f4e0fd6450f43ddb46d60c2a6df30855a8588e165b1f2559fb0eda8d7ff35",
+          "platform": "linux/amd64"
+        }
+      },
+      "kind": "support",
+      "packages": {
+        "playwright": "195a5ee9bfed7c6e9c03965950e32e5e4dbedaa02e740e5a530eb4b87dae050c",
+        "playwright-core": "208593d4e1bcd8f8fe5f869cad1cc332dc7f1d70dc1d58c102dc3ac36e30f26c"
+      },
+      "seccomp_sha256": "322b86b4f7f5b597ed6a9c2cfd6193a4b249a51c8bc9cfba8ff1a485070b24e8",
+      "tree_sha256": "ae186fc6c6f76b7f06b3d14550e0c24c4f59b4a41ced6890aa958e1b7523b6e4"
+    }
+  },
+  "elapsed_s": 27.64898287699998,
+  "final_input_hashes_match": true,
+  "final_support_matches": true
+}

@@ -1,0 +1,375 @@
+{
+  "manifest": {
+    "contexts": [
+      {
+        "context": 1,
+        "name": "context-1.zip",
+        "size": 124458,
+        "sha256": "22d8a7738936a7389557011b40964164e2a67605a45f07ff4e29526fc020ab05"
+      }
+    ]
+  },
+  "contexts": [
+    {
+      "context": 1,
+      "name": "context-1.zip",
+      "sha256": "22d8a7738936a7389557011b40964164e2a67605a45f07ff4e29526fc020ab05",
+      "calls": [
+        {
+          "method": "setNetworkInterceptionPatterns",
+          "params": {
+            "patterns": [
+              {
+                "glob": "**/*"
+              }
+            ]
+          }
+        },
+        {
+          "method": "setWebSocketInterceptionPatterns",
+          "params": {
+            "patterns": [
+              {
+                "glob": "**/*"
+              }
+            ]
+          }
+        },
+        {
+          "method": "addInitScript",
+          "params": {
+            "source": "(()=>{\n  window.open=()=>{throw new Error('Popups forbidden by local browser profile')};\n  document.addEventListener('click',e=>{if(e.target instanceof HTMLInputElement&&e.target.type==='file'){e.preventDefault();throw new Error('File uploads forbidden by local browser profile')}},true);\n })(undefined)"
+          }
+        },
+        {
+          "method": "newPage",
+          "params": {}
+        },
+        {
+          "method": "goto",
+          "params": {
+            "url": "http://127.0.0.1:3210",
+            "waitUntil": "load",
+            "timeout": 10000
+          }
+        },
+        {
+          "method": "fulfill",
+          "params": {
+            "status": 200,
+            "headers": [
+              {
+                "name": "content-type",
+                "value": "text/html; charset=utf-8"
+              },
+              {
+                "name": "date",
+                "value": "Sun, 04 Oct 2026 14:54:34 GMT"
+              },
+              {
+                "name": "connection",
+                "value": "keep-alive"
+              },
+              {
+                "name": "keep-alive",
+                "value": "timeout=5"
+              },
+              {
+                "name": "transfer-encoding",
+                "value": "chunked"
+              }
+            ],
+            "isBase64": false,
+            "fetchResponseUid": "04ea48525de198ffcc5808ec6c8a2ae8"
+          }
+        },
+        {
+          "method": "fulfill",
+          "params": {
+            "status": 200,
+            "headers": [
+              {
+                "name": "content-type",
+                "value": "application/json"
+              },
+              {
+                "name": "date",
+                "value": "Sun, 04 Oct 2026 14:54:34 GMT"
+              },
+              {
+                "name": "connection",
+                "value": "keep-alive"
+              },
+              {
+                "name": "keep-alive",
+                "value": "timeout=5"
+              },
+              {
+                "name": "transfer-encoding",
+                "value": "chunked"
+              }
+            ],
+            "isBase64": false,
+            "fetchResponseUid": "3c77eac5d7734995441bb462f8582d5a"
+          }
+        },
+        {
+          "method": "waitForFunction",
+          "params": {
+            "expression": "([stock,count])=>document.querySelector('#stock').textContent===String(stock)&&document.querySelectorAll('#reservations li').length===count",
+            "isFunction": true,
+            "arg": {
+              "value": {
+                "a": [
+                  {
+                    "n": 5
+                  },
+                  {
+                    "n": 0
+                  }
+                ],
+                "id": 1
+              },
+              "handles": []
+            },
+            "timeout": 5000
+          }
+        },
+        {
+          "method": "keyboardPress",
+          "params": {
+            "key": "Tab"
+          }
+        },
+        {
+          "method": "waitForSelector",
+          "params": {
+            "selector": "internal:label=\"Customer reference\"i",
+            "strict": true,
+            "state": "attached",
+            "timeout": 5000
+          }
+        },
+        {
+          "method": "keyboardType",
+          "params": {
+            "text": "Retry order"
+          }
+        },
+        {
+          "method": "keyboardPress",
+          "params": {
+            "key": "Tab"
+          }
+        },
+        {
+          "method": "keyboardType",
+          "params": {
+            "text": "2"
+          }
+        },
+        {
+          "method": "keyboardPress",
+          "params": {
+            "key": "Tab"
+          }
+        },
+        {
+          "method": "waitForSelector",
+          "params": {
+            "selector": "internal:role=button[name=\"Reserve\"s]",
+            "strict": true,
+            "state": "attached",
+            "timeout": 5000
+          }
+        },
+        {
+          "method": "keyboardPress",
+          "params": {
+            "key": "Enter"
+          }
+        },
+        {
+          "method": "waitForFunction",
+          "params": {
+            "expression": "()=>document.querySelector('[role=alert]').textContent.trim().length>0",
+            "isFunction": true,
+            "arg": {
+              "value": {
+                "v": "undefined"
+              },
+              "handles": []
+            },
+            "timeout": 5000
+          }
+        },
+        {
+          "method": "fulfill",
+          "params": {
+            "status": 503,
+            "headers": [
+              {
+                "name": "content-type",
+                "value": "application/json"
+              },
+              {
+                "name": "date",
+                "value": "Sun, 04 Oct 2026 14:54:34 GMT"
+              },
+              {
+                "name": "connection",
+                "value": "keep-alive"
+              },
+              {
+                "name": "keep-alive",
+                "value": "timeout=5"
+              },
+              {
+                "name": "transfer-encoding",
+                "value": "chunked"
+              }
+            ],
+            "isBase64": false,
+            "fetchResponseUid": "84bb6d955292be9a52a4e3322378c688"
+          }
+        },
+        {
+          "method": "waitForSelector",
+          "params": {
+            "selector": "internal:role=alert",
+            "strict": true,
+            "state": "attached",
+            "timeout": 5000
+          }
+        },
+        {
+          "method": "inputValue",
+          "params": {
+            "selector": "internal:label=\"Customer reference\"i",
+            "strict": true,
+            "timeout": 5000
+          }
+        },
+        {
+          "method": "inputValue",
+          "params": {
+            "selector": "internal:label=\"Quantity\"s",
+            "strict": true,
+            "timeout": 5000
+          }
+        },
+        {
+          "method": "keyboardPress",
+          "params": {
+            "key": "Shift+Tab"
+          }
+        },
+        {
+          "method": "waitForSelector",
+          "params": {
+            "selector": "internal:role=button[name=\"Reserve\"s]",
+            "strict": true,
+            "state": "attached",
+            "timeout": 5000
+          }
+        },
+        {
+          "method": "keyboardPress",
+          "params": {
+            "key": "Enter"
+          }
+        },
+        {
+          "method": "waitForFunction",
+          "params": {
+            "expression": "([stock,count])=>document.querySelector('#stock').textContent===String(stock)&&document.querySelectorAll('#reservations li').length===count",
+            "isFunction": true,
+            "arg": {
+              "value": {
+                "a": [
+                  {
+                    "n": 3
+                  },
+                  {
+                    "n": 1
+                  }
+                ],
+                "id": 1
+              },
+              "handles": []
+            },
+            "timeout": 5000
+          }
+        },
+        {
+          "method": "fulfill",
+          "params": {
+            "status": 200,
+            "headers": [
+              {
+                "name": "content-type",
+                "value": "application/json"
+              },
+              {
+                "name": "date",
+                "value": "Sun, 04 Oct 2026 14:54:34 GMT"
+              },
+              {
+                "name": "connection",
+                "value": "keep-alive"
+              },
+              {
+                "name": "keep-alive",
+                "value": "timeout=5"
+              },
+              {
+                "name": "transfer-encoding",
+                "value": "chunked"
+              }
+            ],
+            "isBase64": false,
+            "fetchResponseUid": "53bc3bfa833dbdbc6591df093dd49194"
+          }
+        },
+        {
+          "method": "fulfill",
+          "params": {
+            "status": 200,
+            "headers": [
+              {
+                "name": "content-type",
+                "value": "application/json"
+              },
+              {
+                "name": "date",
+                "value": "Sun, 04 Oct 2026 14:54:34 GMT"
+              },
+              {
+                "name": "connection",
+                "value": "keep-alive"
+              },
+              {
+                "name": "keep-alive",
+                "value": "timeout=5"
+              },
+              {
+                "name": "transfer-encoding",
+                "value": "chunked"
+              }
+            ],
+            "isBase64": false,
+            "fetchResponseUid": "37b2eb8eed7cdbc0783ee3da9ad1b4d1"
+          }
+        },
+        {
+          "method": "screenshot",
+          "params": {
+            "type": "png",
+            "fullPage": false,
+            "timeout": 5000
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 # Supervised browser verification of owned applications
 
-Status: chosen for implementation; capability acceptance pending.
+Status: accepted at596ecb6 on2026-10-04; [qualification](../../../.scratch/.sflo/06-autonomy-browser/acceptance.md).
 Decision maker: agent under the user's2026-10-02 authorization to progress local autonomy through tested increments.
 
 Use one disposable Node application and one pinned Playwright browser for each reviewed journey. The app has only a network-none namespace; the browser joins that exact namespace and reaches the app through loopback. Neither receives a host port, credentials, writable project mount, Docker socket or GPU. The controller freezes inputs, owns deadlines/cleanup and validates evidence. Ordinary Playwright assertions remain trusted acceptance code; page text cannot grant tools or change a check.

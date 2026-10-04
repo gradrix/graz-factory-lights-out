@@ -17,3 +17,7 @@ No production/runtime mutation follows from this diagnostic record. Browser unit
 ## Event-ceiling experiment result
 
 [Private prototype](../document-event-prototype.md) supports a40,000-event repair trial without other limit changes. Actual official page needs11,442 events and extracts37,712 bytes/440spans in0.046–0.048s at about23MiB peak Python RSS.16 fresh-container checks passed expected cap/+1/depth/text/block outcomes; source/runtime unchanged. Agent chooses40,000 for the next versioned implementation trial, not as an arbitrary-page guarantee. Quote-copy behavior remains a separate unresolved repair design.
+
+## Citation-format discovery underway
+
+Agent assigned a private four-case actual-local-model comparison while browser acceptance remains in read-only final QA: existing exact-excerpt output plus at most one validation repair versus valid evidence/span references with controller-derived exact excerpts. Freeze cases/expected facts and equal profile before calls, preserve raw outputs and distinguish provenance from semantic adequacy. No maintained source or serving changes are authorized by this prototype; recommendation pending.

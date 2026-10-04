@@ -1,0 +1,41 @@
+{
+  "installed_runtime": "596ecb6",
+  "support": {
+    "id": "531199628d73a5700f67039574cb2df172707fefea11fa4ee440bed365b7bb1c",
+    "receipt": {
+      "app_image": "sha256:88f8ba583a884279252779bbe221bf1ff2c61cf236cc973f8ca97676ae6d07f0",
+      "created_utc": "2026-10-04T15:02:37.519371+00:00",
+      "image": "sha256:2c1f4e0fd6450f43ddb46d60c2a6df30855a8588e165b1f2559fb0eda8d7ff35",
+      "installed_images": {
+        "app": {
+          "environment": [
+            "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "NODE_VERSION=22.23.3",
+            "YARN_VERSION=1.22.22"
+          ],
+          "id": "sha256:88f8ba583a884279252779bbe221bf1ff2c61cf236cc973f8ca97676ae6d07f0",
+          "platform": "linux/amd64"
+        },
+        "browser": {
+          "environment": [
+            "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+            "LANG=C.UTF-8",
+            "LC_ALL=C.UTF-8",
+            "PLAYWRIGHT_BROWSERS_PATH=/ms-playwright"
+          ],
+          "id": "sha256:2c1f4e0fd6450f43ddb46d60c2a6df30855a8588e165b1f2559fb0eda8d7ff35",
+          "platform": "linux/amd64"
+        }
+      },
+      "kind": "support",
+      "packages": {
+        "playwright": "195a5ee9bfed7c6e9c03965950e32e5e4dbedaa02e740e5a530eb4b87dae050c",
+        "playwright-core": "208593d4e1bcd8f8fe5f869cad1cc332dc7f1d70dc1d58c102dc3ac36e30f26c"
+      },
+      "seccomp_sha256": "322b86b4f7f5b597ed6a9c2cfd6193a4b249a51c8bc9cfba8ff1a485070b24e8",
+      "tree_sha256": "ae186fc6c6f76b7f06b3d14550e0c24c4f59b4a41ced6890aa958e1b7523b6e4"
+    }
+  },
+  "offline_archives": "/home/gradrix/gflo-runtime/.gflo/approved-browser-archives",
+  "inspect_readback_matches": true
+}

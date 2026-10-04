@@ -1,0 +1,167 @@
+{
+  "candidate": "ee60bbe4012e03acbcd5a9cd403a63f62290dd253c97a7f7979ead062ee53ea4",
+  "rows": [
+    {
+      "case": "hostile",
+      "expected_confirmed": true,
+      "elapsed_s": 0.924811630000022,
+      "id": "99c952ad5a22e10a27fde3c67bef9872989e98285f5afecddb80c928e4d166d1",
+      "failure": null,
+      "mode": "actual owned containers"
+    },
+    {
+      "case": "external-navigation",
+      "expected_confirmed": true,
+      "elapsed_s": 0.8680921910004145,
+      "id": "4aa8dfed0e791bb7bc257cfeffa87724cf0140bc65626c58507485646f689216",
+      "failure": {
+        "message": "Disallowed request http://1.1.1.1/",
+        "phase": "journey"
+      },
+      "mode": "actual owned containers"
+    },
+    {
+      "case": "event-flood",
+      "expected_confirmed": true,
+      "elapsed_s": 0.9207800449999013,
+      "id": "4266d188ad92b2330b491e4671e715db2e6701bdc9c5b43e05cefafb9277b9fd",
+      "failure": {
+        "message": "Error: Browser event limit",
+        "phase": "journey"
+      },
+      "mode": "actual owned containers"
+    },
+    {
+      "case": "download",
+      "expected_confirmed": true,
+      "elapsed_s": 1.1737520599999698,
+      "id": "3d43a1caa7c8d700b939ecf5a6dce9342303892483b4b74b8bb9a8367384ce35",
+      "failure": {
+        "message": "Download forbidden",
+        "phase": "journey"
+      },
+      "mode": "actual owned containers"
+    },
+    {
+      "case": "upload",
+      "expected_confirmed": true,
+      "elapsed_s": 0.9227253700000801,
+      "id": "81a7c1cd5a39282b12c266b46914532b94b7a7dd51a1150c2e00cf66a1a7fb4b",
+      "failure": {
+        "message": "Error: File uploads forbidden by local browser profile",
+        "phase": "journey"
+      },
+      "mode": "actual owned containers"
+    },
+    {
+      "case": "deadline",
+      "expected_confirmed": true,
+      "elapsed_s": 60.91008935899981,
+      "id": "57b90509b327f3937b769f94c44ed0b1d305e70e7004398ee38f189c265298c6",
+      "failure": {
+        "message": "Error: Journey deadline",
+        "phase": "journey"
+      },
+      "mode": "actual owned containers"
+    },
+    {
+      "case": "app-death",
+      "expected_confirmed": true,
+      "elapsed_s": 0.9715196069996637,
+      "id": "f3ba8c84892a2678969e3e382b6b59ca9e9f95e3e0ca14fd3129cc4734b7dffa",
+      "failure": {
+        "message": "Error: route.fetch: socket hang up\nCall log:\n  - \u2192 GET http://127.0.0.1:3210/die\n    - user-agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/153.0.8010.12 Safari/537.36\n    - accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7\n    - accept-encoding: gzip,deflate,br\n    - upgrade-insecure-requests: 1\n    - sec-ch-ua: \"HeadlessChrome\";v=\"153\", \"Not_A Brand\";v=\"8\", \"Chromium\";v=\"153\"\n    - sec-ch-ua-mobile: ?0\n    - sec-ch-ua-platform: \"Linux\"\n",
+        "phase": "journey"
+      },
+      "mode": "actual owned containers"
+    },
+    {
+      "case": "private-redirect",
+      "expected_confirmed": true,
+      "elapsed_s": 1.17362960499986,
+      "id": "cc7042ae698e0272f8af4868e20ecb828b4dfc51be3f259e00abae9ec335c17a",
+      "failure": {
+        "message": "HTTP redirects unsupported",
+        "phase": "journey"
+      },
+      "mode": "copied helper final independent readback plus actual pair"
+    },
+    {
+      "case": "public-redirect",
+      "expected_confirmed": true,
+      "elapsed_s": 0.9200575469999421,
+      "id": "84ffff16df92822cf7acac866b877bdf9b912a4c24fe727321e37a862c295015",
+      "failure": {
+        "message": "HTTP redirects unsupported",
+        "phase": "journey"
+      },
+      "mode": "actual owned containers"
+    },
+    {
+      "case": "websocket",
+      "expected_confirmed": true,
+      "elapsed_s": 1.1729525010000543,
+      "id": "9cdfb0ec0693979719fe5f6b214c5a8acb95e15872dfe46506187f59a1200fcf",
+      "failure": {
+        "message": "WebSockets unsupported",
+        "phase": "journey"
+      },
+      "mode": "copied helper final independent readback plus actual pair"
+    },
+    {
+      "case": "version-mismatch",
+      "expected_confirmed": true,
+      "elapsed_s": 0.7164567209997585,
+      "id": "6a0fe915adc07f830b6d9903cdc68e414e72d5404f82c62fa00e16bacc8653c4",
+      "failure": {
+        "message": "Error: Browser support/runtime mismatch",
+        "phase": "readiness"
+      },
+      "mode": "copied expected-version predicate plus actual pair"
+    },
+    {
+      "case": "original-seccomp",
+      "expected_confirmed": true,
+      "elapsed_s": 0.7643466020003871,
+      "id": "ba232b2fce833a152f3136bf5eb2bc4bd88ad90ded02463744f885ac6dc312c8",
+      "failure": {
+        "message": "Error: browserType.launch: Target page, context or browser has been closed\nBrowser logs:\n\n<launching> /ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --user-data-dir=/tmp/playwright_chromiumdev_profile-DlaaMH --remote-debugging-pipe --no-startup-window\n<launched> pid=19\n[pid=19][err] Check failed: sys_chroot(\"/proc/self/fdinfo/\") == 0\n[pid=19][err] [1004/145607.159380:FATAL:content/browser/zygote_host/zygote_host_impl_linux.cc:237] Zygote process exited prematurely with exit code -1\nCall log:\n  - <launching> /ms-playwright/chromium_headless_shell-1243/chrome-headless-shell-linux64/chrome-headless-shell --disable-field-trial-config --disable-background-networking --disable-background-timer-throttling --disable-backgrounding-occluded-windows --disable-back-forward-cache --disable-breakpad --disable-client-side-phishing-detection --disable-component-extensions-with-background-pages --disable-component-update --no-default-browser-check --disable-default-apps --disable-edgeupdater --disable-extensions --disable-features=AvoidUnnecessaryBeforeUnloadCheckSync,DestroyProfileOnBrowserClose,DialMediaRouteProvider,GlobalMediaControls,HttpsUpgrades,LensOverlay,MediaRouter,PaintHolding,ThirdPartyStoragePartitioning,BlockOriginHeaderModificationOnRedirect,Translate,AutoDeElevate,OptimizationHints,msForceBrowserSignIn,msEdgeUpdateLaunchServicesPreferredVersion --enable-features=CDPScreenshotNewSurface --allow-pre-commit-input --disable-hang-monitor --disable-ipc-flooding-protection --disable-popup-blocking --disable-prompt-on-repost --disable-renderer-backgrounding --disable-updater-scheduler --force-color-profile=srgb --metrics-recording-only --no-first-run --password-store=basic --use-mock-keychain --no-service-autorun --export-tagged-pdf --disable-search-engine-choice-screen --unsafely-disable-devtools-self-xss-warnings --edge-skip-compat-layer-relaunch --disable-infobars --disable-search-engine-choice-screen --disable-sync --enable-unsafe-swiftshader --headless --hide-scrollbars --mute-audio --blink-settings=primaryHoverType=2,availableHoverTypes=2,primaryPointerType=4,availablePointerTypes=4 --user-data-dir=/tmp/playwright_chromiumdev_profile-DlaaMH --remote-debugging-pipe --no-startup-window\n  - <launched> pid=19\n  - [pid=19][err] Check failed: sys_chroot(\"/proc/self/fdinfo/\") == 0\n  - [pid=19][err] [1004/145607.159380:FATAL:content/browser/zygote_host/zygote_host_impl_linux.cc:237] Zygote process exited prematurely with exit code -1\n  - [pid=19] <gracefully close start>\n  - [pid=19] <kill>\n  - [pid=19]",
+        "phase": "launch"
+      },
+      "mode": "actual owned containers"
+    },
+    {
+      "case": "corrupt-artifact",
+      "expected_confirmed": true,
+      "elapsed_s": 0.9173873849999836,
+      "id": "12be597dfeae7ae224c6ba69d369e1c1cd7a478e9a7a132248d8c9a05581f109",
+      "failure": {
+        "message": "Incomplete/corrupt browser artifact",
+        "phase": "artifact"
+      },
+      "mode": "controlled transport corruption after actual pair"
+    },
+    {
+      "case": "extra-artifact-byte",
+      "expected_confirmed": true,
+      "elapsed_s": 0.9211408920000395,
+      "id": "95de2722196920a760ee6d5c7697183f77b30cdb8b775bb6ba529b956eca2324",
+      "failure": {
+        "message": "Trailing browser artifact bytes",
+        "phase": "artifact"
+      },
+      "mode": "controlled transport corruption after actual pair"
+    },
+    {
+      "case": "cancel-artifact",
+      "expected_confirmed": true,
+      "elapsed_s": 0.888469196999722,
+      "id": "cd61cd1617d0df122e0ab321a014b8644c360f375bcf9171412878d80cdde955",
+      "failure": {
+        "message": "Browser artifact metadata limit/incomplete frame",
+        "phase": "artifact"
+      },
+      "mode": "copied-helper barrier plus actual pair"
+    }
+  ]
+}
