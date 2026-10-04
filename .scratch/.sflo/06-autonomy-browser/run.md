@@ -8,7 +8,7 @@ Contract: contract.md sha256 ab3ba1d7aa4d11237de3914f2a1ed40d3dcb47a680ee181465e
 
 Status: active
 Owner: /root coordinator; /root/cohort_c sole maintained-code builder
-Candidate: frozen v4 manifest SHA256 b9f0c1c64dc9f3802c7bf0d34997a648cdec383efd3a34d8570572ead61a216f; source6852a20; not accepted
+Candidate: frozen v5 manifest SHA256 ee60bbe4012e03acbcd5a9cd403a63f62290dd253c97a7f7979ead062ee53ea4; source596ecb6; not accepted
 Next: repair rig-discovered seed copy false mutation alarm, freeze v5 and independently recheck input seam before fresh rig trial.
 
 ## Checks and repairs
@@ -50,3 +50,7 @@ Independent v3 recheck reopened recovery as SEC-B5: guardian facts created with 
 Independent reviewer gives go for rig after v4 actual002/077 owner-death recovery and six uncertainty/acknowledgement controls plus nine guardian cases under each umask. Exact reader/writer delta verified; B1-B4 implementation unchanged. Final report saving. Rig acceptance started on2026-10-04 against isolated6852a20 with v4 manifest and frozen fixtures; fresh output .gflo/rig-qualification-v4, outer log rig-qualification-v4.log. No model requests or model-service changes.
 
 Rig v4 failed, preserved under rig-v4-failed and remote .gflo/rig-qualification-v4: create/reload passed1.720s with complete trace; validation refused before launch with “Seed changed during copy”. Input/support final hashes still match. Source compares entire stat result including access time; own-read atime change is suspected pending controlled rig diagnosis. Builder assigned coherent seed seam repair (nofollow regular single-link descriptor and stable identity/size/mtime/ctime checks, no atime), retaining real modification/replacement rejection. No acceptance/installation; old run is not retried in place.
+
+Seed diagnosis confirmed on actual rig temporary file: only st_atime_ns changed after own read; old full-stat equality rejected (builder-seed-atime-rig.json). New bounded nofollow reader passed on same filesystem while old comparison would reject (builder-seed-fixed-rig.json).31 affected browser tests pass39.116s. Frozen v5 and independent input-seam review pending; first failed qualification remains intact.
+
+V5 source596ecb6 preserved and staged in isolated rig checkout. Nine bound hashes verified; only seed reader/test changed from v4. Independent reviewer assigned affected seed seam; rig trial waits for verdict.

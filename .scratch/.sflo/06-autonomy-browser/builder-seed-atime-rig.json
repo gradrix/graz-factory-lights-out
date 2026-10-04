@@ -1,0 +1,33 @@
+{
+  "host": "monster-gaming-pc.lan",
+  "temporary_probe_only": true,
+  "body": "{}",
+  "old_comparison_rejects": true,
+  "before": {
+    "st_dev": 2096,
+    "st_ino": 876158,
+    "st_mode": 33204,
+    "st_nlink": 1,
+    "st_uid": 1000,
+    "st_gid": 1000,
+    "st_size": 2,
+    "st_mtime_ns": 1791125134095760896,
+    "st_ctime_ns": 1791125134092655894,
+    "st_atime_ns": 1790952334095760186
+  },
+  "after": {
+    "st_dev": 2096,
+    "st_ino": 876158,
+    "st_mode": 33204,
+    "st_nlink": 1,
+    "st_uid": 1000,
+    "st_gid": 1000,
+    "st_size": 2,
+    "st_mtime_ns": 1791125134095760896,
+    "st_ctime_ns": 1791125134092655894,
+    "st_atime_ns": 1791125134092655894
+  },
+  "changed_fields": [
+    "st_atime_ns"
+  ]
+}

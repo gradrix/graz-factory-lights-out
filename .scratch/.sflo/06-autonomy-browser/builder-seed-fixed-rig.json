@@ -1,0 +1,11 @@
+{
+  "host": "monster-gaming-pc.lan",
+  "temporary_probe_only": true,
+  "reader_sha256": "1800a85f224b27d50a07e608335ad6e53a8c25cff4708ec0a9ea459a66493b17",
+  "body": "{}",
+  "fixed_reader_passed": true,
+  "old_comparison_would_reject": true,
+  "changed_fields": [
+    "st_atime_ns"
+  ]
+}
