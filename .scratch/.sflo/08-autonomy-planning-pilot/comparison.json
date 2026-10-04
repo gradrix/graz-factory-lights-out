@@ -1,0 +1,93 @@
+{
+  "mechanism_commit": "d186b9330b7b9916e06b3807f1ea03adc02943e8",
+  "fixture_sha256": "9d6b6dc798d148524ef7e360abfc31958a47bb05b6870e56735a7ef64c283e5b",
+  "arms": [
+    {
+      "arm": "1-manifest-reconcile-direct",
+      "factory_status": "accepted",
+      "independent_complete": false,
+      "calls": 23,
+      "work_s": 321.07706248199975,
+      "cleanup_s": 1.2522600909996981,
+      "roles": {
+        "code_review": 2,
+        "implementation": 21
+      },
+      "reported_usage": {
+        "prompt_tokens": 322919,
+        "completion_tokens": 15612,
+        "total_tokens": 338531
+      },
+      "cached_prompt_tokens": 301883,
+      "cleanup_confirmed": true,
+      "idle_confirmed": true
+    },
+    {
+      "arm": "2-manifest-reconcile-decomposed",
+      "factory_status": "accepted",
+      "independent_complete": false,
+      "calls": 36,
+      "work_s": 494.78466609799943,
+      "cleanup_s": 1.266241634000835,
+      "roles": {
+        "code_review": 3,
+        "implementation": 31,
+        "plan_review": 1,
+        "planner": 1
+      },
+      "reported_usage": {
+        "prompt_tokens": 412232,
+        "completion_tokens": 24483,
+        "total_tokens": 436715
+      },
+      "cached_prompt_tokens": 365905,
+      "cleanup_confirmed": true,
+      "idle_confirmed": true
+    },
+    {
+      "arm": "3-config-preview-decomposed",
+      "factory_status": "failed",
+      "independent_complete": false,
+      "calls": 48,
+      "work_s": 873.5399703910007,
+      "cleanup_s": 1.2695157729995117,
+      "roles": {
+        "code_review": 1,
+        "implementation": 45,
+        "plan_review": 1,
+        "planner": 1
+      },
+      "reported_usage": {
+        "prompt_tokens": 1106081,
+        "completion_tokens": 38751,
+        "total_tokens": 1144832
+      },
+      "cached_prompt_tokens": 1043590,
+      "cleanup_confirmed": true,
+      "idle_confirmed": true
+    },
+    {
+      "arm": "4-config-preview-direct",
+      "factory_status": "failed",
+      "independent_complete": false,
+      "calls": 48,
+      "work_s": 963.985982401,
+      "cleanup_s": 1.250519451999935,
+      "roles": {
+        "implementation": 48
+      },
+      "reported_usage": {
+        "prompt_tokens": 1148091,
+        "completion_tokens": 39305,
+        "total_tokens": 1187396
+      },
+      "cached_prompt_tokens": 1099131,
+      "cleanup_confirmed": true,
+      "idle_confirmed": true
+    }
+  ],
+  "total_calls": 155,
+  "total_work_s": 2653.387681372,
+  "separate_cancellation_calls": 1,
+  "interpretation": "Two cases, one run per arm. No reliability rate or statistical superiority. Two Factory passes fail independent A6; two API arms fail shared request ceiling. Supplemental API checks confirm HTTP/depth/operation-shape and documented-command defects; unchanged failed candidates remain failed."
+}

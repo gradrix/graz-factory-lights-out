@@ -1,0 +1,10 @@
+{
+  "arm": "1-manifest-reconcile-direct",
+  "archive_bytes": 4403200,
+  "archive_sha256": "b462f5ffad8958f26e399e7e380fdbe99e72e9460f3f017f39b8e64fdf471ac2",
+  "local_copy": ".gflo/planning-trial-1/1-manifest-reconcile-direct",
+  "run_id": "b420f7770b76",
+  "candidate": "5dc1f9fd353e215802c8b363f20db41371ae5db99b086601c054a348bb3d918d",
+  "factory_outcome": "accepted",
+  "independent_semantics": "pending"
+}

@@ -1,0 +1,18 @@
+{
+  "results": [
+    {
+      "label": "documented_bare_uvicorn",
+      "passed": false,
+      "type": "FileNotFoundError",
+      "detail": "[Errno 2] No such file or directory: 'uvicorn'"
+    },
+    {
+      "label": "conforming_module_command",
+      "passed": true,
+      "health": {
+        "status": "ok"
+      }
+    }
+  ],
+  "bare_uvicorn_available": null
+}

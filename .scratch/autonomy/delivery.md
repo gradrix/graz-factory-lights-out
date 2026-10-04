@@ -20,4 +20,4 @@ Later acceptance-bearing stages are in [the roadmap](../../docs/roadmap.md). The
 
 - [Document extraction and bounded citation repair](delivery/07-document-reliability.md) — accepted at92deaab and installed;10/10repeats+3/3fresh,25cross-versionreplay checks. Exact-quote8/10failure preserved. [Acceptance](../.sflo/07-autonomy-document-references/acceptance.md).
 
-- [Direct versus two-task planning pilot](delivery/08-planning-pilot.md) — active isolated experiment; two fresh cases/four equal-ceiling arms, no maintained parent framework.
+- [Direct versus two-task planning pilot](delivery/08-planning-pilot.md) — accepted discovery; four arms and independent checks complete, no independently complete increment. Planning stays advisory; [closure](../.sflo/08-autonomy-planning-pilot/acceptance.md).

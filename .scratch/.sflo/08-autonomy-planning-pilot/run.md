@@ -6,10 +6,10 @@ Contract: contract.md sha256 d52ae8c2f322f417fed6c8cf6ace5343720cc40f86f0d0aeb6b
 
 ## Execution
 
-Status: active
+Status: accepted discovery
 Owner: /root coordinator; /root/cohort_c isolated harness; /root/qa_resume independent fixtures
 Candidate: prototype d186b9330b7b9916e06b3807f1ea03adc02943e8, harness b4e7beaab66c480f6e5f6a9a6daad6f57dbbdea6ce6b3ec4c88bafad599aafa9; maintained baseline92deaab unchanged
-Next: monitor actual four-arm trial1, preserve every result, independently review final semantics/test/docs and decide the smallest maintained next step.
+Next: accepted discovery; continue with issue09 executable-review prototype under a new frozen contract.
 
 ## Binding
 
@@ -36,3 +36,15 @@ Successor d186b93 (b4e7beaab66c480f6e5f6a9a6daad6f57dbbdea6ce6b3ec4c88bafad599aa
 ## Actual trial1 dispatched
 
 2026-10-04T17:15:07Z, rig controller PID19815, stage /home/gradrix/gflo-planning-d186b93, output trial-1. [Admission](trial-1-admission.json) SHA2563eb500ccaec5e5f367cfb0fb624813f950bffb3647d5c17dc2b8ced7febd302e freezes four orderedarms under48requests/1800s each,150scleanup. [Launch receipt](trial-1-process.json). One real cancellation request already passed independentreadback; no other trial retries. Backgroundcontroller holds sharedlease and serializesallarms; do not dispatch anothermodelclient. Monitor roottrial results and per-arm progress/budgets. No maintained installation or originalproject integration.
+
+Trial progress: arm1 manifest-direct Factoryaccepted321.077s/23calls, finalb420f7770b76/candidate5dc1f9fd…; arm2 manifest-decomposed Factoryaccepted494.785s/36calls, childrenb90b66156d7f→037a513a8192/finalf317046…. Immutablelocalcopies .gflo/planning-trial-1/{1-manifest-reconcile-direct,2-manifest-reconcile-decomposed}. Arm1accountingPASS; independentstaticQA findsA6testpathportability concern requiring laterdynamicconfirmation. Arm2reviewsrunning. APIdecomposed arm3active; arm4directpending. Do not confuse Factoryaccepted with finalindependentsemanticacceptance.
+
+Continuation: arm3 config-preview-decomposed failed at exactly48 charged requests after873.540s, with positive cleanup/idle and no49th transport. [Independent accounting](arm3-accounting.md) verifies failed parent and unpromoted accepted milestone. [Static QA](qa-arm3-static.md) identifies retained HTTP-body binding and depth-boundary defects; dynamic checks pending. Arm4 direct API remains active under the original admission; no retry or model/profile change. Arm1/2 static A6 concerns have prepared independent post-timing probes; no supplemental candidate execution until all arms finish.
+
+## Timed trial complete
+
+All four arms finished once under frozen admission; controller19815 exited. Final direct API arm failed at48charged implementation calls after963.986s. Every arm confirms cleanup and same-identity idle. [Final monitor](trial-final-monitor.json), [outcomes](trial-results.json), [download integrity](trial-download-integrity.json): all1334 finalmanifest entries match retained local copies, including failed outputs; manifest83340a9d6356ea9186e4ff117493975fa1a84056c7b560c532b23eedb3ef6c5d. No maintained mutation or model/service change. Independent post-timed manifest/API probes now assigned to the existing verifiers in separate owned offline-container stages; accounting review of final arm pending. Historical Factory acceptance is not independently confirmed completion.
+
+## Closure
+
+[Acceptance](acceptance.md) records the completed experiment and all original outcomes. Independent manifest/API probes and accounting complete; no independently complete increment. [Decision008](../../../docs/decisions/architecture/008-planning-pilot-outcome.md) keeps planning advisory and chooses executable-review discovery. Unit/run links and contract hash verified. Prototype remains quarantined; no maintained installation.

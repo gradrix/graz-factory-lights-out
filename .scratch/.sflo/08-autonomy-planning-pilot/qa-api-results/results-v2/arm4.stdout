@@ -1,0 +1,300 @@
+{
+  "supplemental_only": true,
+  "project_unchanged": true,
+  "probes": [
+    {
+      "name": "API/depth6-at-limit",
+      "passed": true
+    },
+    {
+      "name": "API/200-nodes-empty-operations",
+      "passed": true
+    },
+    {
+      "name": "API/replace-at-node-limit",
+      "passed": true
+    },
+    {
+      "name": "API/unicode80-and-int-extremes",
+      "passed": true
+    },
+    {
+      "name": "API/50-operations",
+      "passed": true
+    },
+    {
+      "name": "API/nested-exact-test-key-order",
+      "passed": true
+    },
+    {
+      "name": "API/depth7-base",
+      "passed": true
+    },
+    {
+      "name": "API/201-nodes-base",
+      "passed": true
+    },
+    {
+      "name": "API/unicode81",
+      "passed": true
+    },
+    {
+      "name": "API/negative-int-overflow",
+      "passed": true
+    },
+    {
+      "name": "API/non-ascii-key",
+      "passed": true
+    },
+    {
+      "name": "API/key32-valid-prefix33",
+      "passed": true
+    },
+    {
+      "name": "API/operations-object",
+      "passed": true
+    },
+    {
+      "name": "API/operation-null",
+      "passed": true
+    },
+    {
+      "name": "API/op-boolean",
+      "passed": true
+    },
+    {
+      "name": "API/path-string",
+      "passed": true
+    },
+    {
+      "name": "API/path-boolean",
+      "passed": true
+    },
+    {
+      "name": "API/path7",
+      "passed": true
+    },
+    {
+      "name": "API/missing-set-value",
+      "passed": false,
+      "type": "AssertionError",
+      "detail": "('Expected rejection', 'shape', {'document': {'a': None}, 'audit': [{'index': 0, 'op': 'set', 'path': ['a'], 'before': {'present': False, 'value': None}, 'after': {'present': True, 'value': None}}]})"
+    },
+    {
+      "name": "API/missing-test-value",
+      "passed": false,
+      "type": "AssertionError",
+      "detail": "('shape', 0, 'test_failed')"
+    },
+    {
+      "name": "API/remove-extra-value",
+      "passed": false,
+      "type": "AssertionError",
+      "detail": "('Expected rejection', 'shape', {'document': {}, 'audit': [{'index': 0, 'op': 'remove', 'path': ['a'], 'before': {'present': True, 'value': 0}, 'after': {'present': False, 'value': None}}]})"
+    },
+    {
+      "name": "API/nested-float",
+      "passed": true
+    },
+    {
+      "name": "API/late-invalid-preempts-conflict",
+      "passed": true
+    },
+    {
+      "name": "API/late-node-overflow-preempts-conflict",
+      "passed": true
+    },
+    {
+      "name": "API/insert-valid-value-exceeds-total-nodes",
+      "passed": true
+    },
+    {
+      "name": "API/insert-valid-value-exceeds-total-depth",
+      "passed": true
+    },
+    {
+      "name": "API/nested-true-versus-one",
+      "passed": true
+    },
+    {
+      "name": "API/nested-zero-versus-false",
+      "passed": true
+    },
+    {
+      "name": "API/later-limit-is-atomic",
+      "passed": true
+    },
+    {
+      "name": "API/audit-snapshots-and-input-aliasing",
+      "passed": true
+    },
+    {
+      "name": "HTTP/depth6-at-limit",
+      "passed": true
+    },
+    {
+      "name": "HTTP/200-nodes-empty-operations",
+      "passed": true
+    },
+    {
+      "name": "HTTP/replace-at-node-limit",
+      "passed": true
+    },
+    {
+      "name": "HTTP/unicode80-and-int-extremes",
+      "passed": true
+    },
+    {
+      "name": "HTTP/50-operations",
+      "passed": true
+    },
+    {
+      "name": "HTTP/nested-exact-test-key-order",
+      "passed": true
+    },
+    {
+      "name": "HTTP/depth7-base",
+      "passed": true
+    },
+    {
+      "name": "HTTP/201-nodes-base",
+      "passed": true
+    },
+    {
+      "name": "HTTP/unicode81",
+      "passed": true
+    },
+    {
+      "name": "HTTP/negative-int-overflow",
+      "passed": true
+    },
+    {
+      "name": "HTTP/non-ascii-key",
+      "passed": true
+    },
+    {
+      "name": "HTTP/key32-valid-prefix33",
+      "passed": true
+    },
+    {
+      "name": "HTTP/operations-object",
+      "passed": true
+    },
+    {
+      "name": "HTTP/operation-null",
+      "passed": true
+    },
+    {
+      "name": "HTTP/op-boolean",
+      "passed": true
+    },
+    {
+      "name": "HTTP/path-string",
+      "passed": true
+    },
+    {
+      "name": "HTTP/path-boolean",
+      "passed": true
+    },
+    {
+      "name": "HTTP/path7",
+      "passed": true
+    },
+    {
+      "name": "HTTP/missing-set-value",
+      "passed": false,
+      "type": "AssertionError",
+      "detail": "(200, 422)"
+    },
+    {
+      "name": "HTTP/missing-test-value",
+      "passed": false,
+      "type": "AssertionError",
+      "detail": "(409, 422)"
+    },
+    {
+      "name": "HTTP/remove-extra-value",
+      "passed": false,
+      "type": "AssertionError",
+      "detail": "(200, 422)"
+    },
+    {
+      "name": "HTTP/nested-float",
+      "passed": true
+    },
+    {
+      "name": "HTTP/late-invalid-preempts-conflict",
+      "passed": true
+    },
+    {
+      "name": "HTTP/late-node-overflow-preempts-conflict",
+      "passed": true
+    },
+    {
+      "name": "HTTP/insert-valid-value-exceeds-total-nodes",
+      "passed": true
+    },
+    {
+      "name": "HTTP/insert-valid-value-exceeds-total-depth",
+      "passed": true
+    },
+    {
+      "name": "HTTP/nested-true-versus-one",
+      "passed": true
+    },
+    {
+      "name": "HTTP/nested-zero-versus-false",
+      "passed": true
+    },
+    {
+      "name": "HTTP/later-limit-is-atomic",
+      "passed": true
+    },
+    {
+      "name": "HTTP/top-null",
+      "passed": true
+    },
+    {
+      "name": "HTTP/top-array",
+      "passed": true
+    },
+    {
+      "name": "HTTP/missing-base",
+      "passed": true
+    },
+    {
+      "name": "HTTP/missing-operations",
+      "passed": true
+    },
+    {
+      "name": "HTTP/base-null",
+      "passed": true
+    },
+    {
+      "name": "HTTP/malformed-json",
+      "passed": true
+    },
+    {
+      "name": "HTTP/stateless-after-conflicts",
+      "passed": true
+    },
+    {
+      "name": "B5/installed-unittest-from-arbitrary-cwd",
+      "passed": true,
+      "output": ".....\n----------------------------------------------------------------------\nRan 5 tests in 0.045s\n\nOK\n"
+    }
+  ],
+  "documentation": {
+    "words": 497,
+    "command_lines": [
+      "Serve the app (uvicorn is a declared dependency):",
+      "uvicorn config_preview.app:app --host 127.0.0.1 --port 8000",
+      "from config_preview.app import app  # use with fastapi/httpx TestClient or uvicorn",
+      "python -m pip wheel /path/to/project --no-index --no-deps --no-build-isolation --wheel-dir /tmp/wheels",
+      "python -m pip install --no-index --no-deps --target /tmp/installed /tmp/wheels/*.whl",
+      "PYTHONPATH=/tmp/installed:/opt/deps python -m unittest discover -s /path/to/project"
+    ],
+    "note": "Command lines are evidence for semantic review, not keyword acceptance. The mandated installed-package unittest and app-target commands ran above."
+  },
+  "passed": false
+}

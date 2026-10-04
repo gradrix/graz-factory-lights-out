@@ -1,0 +1,117 @@
+[
+  {
+    "exit_code": 0,
+    "stop": null,
+    "work_elapsed_s": 321.07706248199975,
+    "work_finished_before_deadline": true,
+    "client_group_absent": true,
+    "cleanup": [
+      {
+        "workspace_label": "c828285d0aab01e48e5b1e7b921056c7a9ce6911bbc1a9c4fd75e2ab4ce6ed04",
+        "removed": [],
+        "confirmed_absent": true
+      }
+    ],
+    "idle_confirmed": true,
+    "cleanup_confirmed": true,
+    "cleanup_elapsed_s": 1.2522600909996981,
+    "integrity_confirmed": true,
+    "arm": "1-manifest-reconcile-direct",
+    "status": "accepted",
+    "child": {
+      "status": "accepted",
+      "children": [
+        "b420f7770b76"
+      ],
+      "candidate": "5dc1f9fd353e215802c8b363f20db41371ae5db99b086601c054a348bb3d918d"
+    }
+  },
+  {
+    "exit_code": 0,
+    "stop": null,
+    "work_elapsed_s": 494.78466609799943,
+    "work_finished_before_deadline": true,
+    "client_group_absent": true,
+    "cleanup": [
+      {
+        "workspace_label": "be2f29f28969809a9cb081bc6fd164de7c4eb56b073f07a1f8c050128dff4300",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "workspace_label": "a72e43f07e5b5288aa1d247a58b08c45285869c495086e247b6b6abf1955024f",
+        "removed": [],
+        "confirmed_absent": true
+      }
+    ],
+    "idle_confirmed": true,
+    "cleanup_confirmed": true,
+    "cleanup_elapsed_s": 1.266241634000835,
+    "integrity_confirmed": true,
+    "arm": "2-manifest-reconcile-decomposed",
+    "status": "accepted",
+    "child": {
+      "status": "accepted",
+      "children": [
+        "b90b66156d7f",
+        "037a513a8192"
+      ],
+      "candidate": "f3170468840e203ac45fe8e2f563a736b774ad25794bbca53c41197825f9742a"
+    }
+  },
+  {
+    "exit_code": 1,
+    "stop": null,
+    "work_elapsed_s": 873.5399703910007,
+    "work_finished_before_deadline": true,
+    "client_group_absent": true,
+    "cleanup": [
+      {
+        "workspace_label": "f9dc50ffb9bcd48f26a44184016166760e496a66d364252404b8e125b4c1d6e2",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "workspace_label": "4d599a3f48b9a91a43215905eb0fb53c450a25b79858732a123051d9b02f323a",
+        "removed": [],
+        "confirmed_absent": true
+      }
+    ],
+    "idle_confirmed": true,
+    "cleanup_confirmed": true,
+    "cleanup_elapsed_s": 1.2695157729995117,
+    "integrity_confirmed": false,
+    "arm": "3-config-preview-decomposed",
+    "status": "failed",
+    "child": {
+      "status": "failed",
+      "error_type": "RuntimeError",
+      "error": "Shared completion request budget exhausted"
+    }
+  },
+  {
+    "exit_code": 1,
+    "stop": null,
+    "work_elapsed_s": 963.985982401,
+    "work_finished_before_deadline": true,
+    "client_group_absent": true,
+    "cleanup": [
+      {
+        "workspace_label": "fbbc70f0a53d8179183e89dea1f22671e2197e04fae87ac5459977e703bccb0e",
+        "removed": [],
+        "confirmed_absent": true
+      }
+    ],
+    "idle_confirmed": true,
+    "cleanup_confirmed": true,
+    "cleanup_elapsed_s": 1.250519451999935,
+    "integrity_confirmed": false,
+    "arm": "4-config-preview-direct",
+    "status": "failed",
+    "child": {
+      "status": "failed",
+      "error_type": "RuntimeError",
+      "error": "Shared completion request budget exhausted"
+    }
+  }
+]

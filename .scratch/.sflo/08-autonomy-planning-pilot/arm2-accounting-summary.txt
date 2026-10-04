@@ -1,0 +1,33 @@
+{
+  "outcome": "PASS_accounting_and_boundary_readback",
+  "request_count": 36,
+  "roles": {
+    "planner": 1,
+    "plan_review": 1,
+    "implementation": 31,
+    "code_review": 3
+  },
+  "usage_reported_totals": {
+    "prompt_tokens": 412232,
+    "completion_tokens": 24483,
+    "total_tokens": 436715,
+    "cached_prompt_tokens": 365905
+  },
+  "usage_missing_call_counts": {
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "total_tokens": 0,
+    "cached_prompt_tokens": 0
+  },
+  "latency": {
+    "work_s": 494.78466609799943,
+    "cleanup_s": 1.266241634000835,
+    "sum_reported_request_elapsed_s": 474.80269381599646,
+    "minimum_request_s": 2.127412267998807,
+    "median_request_s": 8.071380741999747,
+    "maximum_request_s": 56.71885942100016
+  },
+  "executor_creation_count": 37,
+  "executor_acceptance_mount_count": 6,
+  "reviewed_file_count": 361
+}

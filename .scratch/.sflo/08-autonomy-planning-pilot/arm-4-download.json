@@ -1,0 +1,31 @@
+{
+  "arm": "4-config-preview-direct",
+  "archive_bytes": 14479360,
+  "archive_sha256": "555420a23a77452cfd45efa96ac9bb36ee37eb592038f631820d3246ef87924e",
+  "local_copy": ".gflo/planning-trial-1/4-config-preview-direct",
+  "result": {
+    "exit_code": 1,
+    "stop": null,
+    "work_elapsed_s": 963.985982401,
+    "work_finished_before_deadline": true,
+    "client_group_absent": true,
+    "cleanup": [
+      {
+        "workspace_label": "fbbc70f0a53d8179183e89dea1f22671e2197e04fae87ac5459977e703bccb0e",
+        "removed": [],
+        "confirmed_absent": true
+      }
+    ],
+    "idle_confirmed": true,
+    "cleanup_confirmed": true,
+    "cleanup_elapsed_s": 1.250519451999935,
+    "integrity_confirmed": false,
+    "arm": "4-config-preview-direct",
+    "status": "failed",
+    "child": {
+      "status": "failed",
+      "error_type": "RuntimeError",
+      "error": "Shared completion request budget exhausted"
+    }
+  }
+}

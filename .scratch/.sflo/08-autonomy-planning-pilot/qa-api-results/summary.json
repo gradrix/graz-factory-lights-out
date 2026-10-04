@@ -1,0 +1,108 @@
+{
+  "arm3": {
+    "total": 67,
+    "failed": [
+      "API/depth7-base",
+      "API/late-invalid-preempts-conflict",
+      "API/insert-valid-value-exceeds-total-depth",
+      "HTTP/depth6-at-limit",
+      "HTTP/200-nodes-empty-operations",
+      "HTTP/replace-at-node-limit",
+      "HTTP/unicode80-and-int-extremes",
+      "HTTP/50-operations",
+      "HTTP/nested-exact-test-key-order",
+      "HTTP/insert-valid-value-exceeds-total-nodes",
+      "HTTP/insert-valid-value-exceeds-total-depth",
+      "HTTP/nested-true-versus-one",
+      "HTTP/nested-zero-versus-false",
+      "HTTP/later-limit-is-atomic",
+      "HTTP/stateless-after-conflicts",
+      "B5/installed-unittest-from-arbitrary-cwd"
+    ],
+    "exit_code": 1,
+    "elapsed_s": 2.9056705759994657,
+    "source_unchanged": true,
+    "creation_attested": true,
+    "absence_confirmed": true
+  },
+  "arm4": {
+    "total": 67,
+    "failed": [
+      "API/missing-set-value",
+      "API/missing-test-value",
+      "API/remove-extra-value",
+      "HTTP/missing-set-value",
+      "HTTP/missing-test-value",
+      "HTTP/remove-extra-value"
+    ],
+    "exit_code": 1,
+    "elapsed_s": 3.0060755649992643,
+    "source_unchanged": true,
+    "creation_attested": true,
+    "absence_confirmed": true
+  },
+  "conforming": {
+    "total": 67,
+    "failed": [],
+    "exit_code": 0,
+    "elapsed_s": 3.055949519999558,
+    "source_unchanged": true,
+    "creation_attested": true,
+    "absence_confirmed": true
+  },
+  "missing-body-mutant": {
+    "total": 67,
+    "failed": [
+      "HTTP/depth6-at-limit",
+      "HTTP/200-nodes-empty-operations",
+      "HTTP/replace-at-node-limit",
+      "HTTP/unicode80-and-int-extremes",
+      "HTTP/50-operations",
+      "HTTP/nested-exact-test-key-order",
+      "HTTP/insert-valid-value-exceeds-total-nodes",
+      "HTTP/insert-valid-value-exceeds-total-depth",
+      "HTTP/nested-true-versus-one",
+      "HTTP/nested-zero-versus-false",
+      "HTTP/later-limit-is-atomic",
+      "HTTP/stateless-after-conflicts",
+      "B5/installed-unittest-from-arbitrary-cwd"
+    ],
+    "exit_code": 1,
+    "elapsed_s": 3.055858031999378,
+    "source_unchanged": true,
+    "creation_attested": true,
+    "absence_confirmed": true
+  },
+  "scalar-depth-mutant": {
+    "total": 67,
+    "failed": [
+      "API/depth7-base",
+      "API/late-invalid-preempts-conflict",
+      "API/insert-valid-value-exceeds-total-depth",
+      "HTTP/depth7-base",
+      "HTTP/late-invalid-preempts-conflict",
+      "HTTP/insert-valid-value-exceeds-total-depth"
+    ],
+    "exit_code": 1,
+    "elapsed_s": 3.0557451840013528,
+    "source_unchanged": true,
+    "creation_attested": true,
+    "absence_confirmed": true
+  },
+  "validation-order-mutant": {
+    "total": 67,
+    "failed": [
+      "API/operations-object",
+      "API/late-invalid-preempts-conflict",
+      "API/late-node-overflow-preempts-conflict",
+      "HTTP/operations-object",
+      "HTTP/late-invalid-preempts-conflict",
+      "HTTP/late-node-overflow-preempts-conflict"
+    ],
+    "exit_code": 1,
+    "elapsed_s": 2.905375391999769,
+    "source_unchanged": true,
+    "creation_attested": true,
+    "absence_confirmed": true
+  }
+}

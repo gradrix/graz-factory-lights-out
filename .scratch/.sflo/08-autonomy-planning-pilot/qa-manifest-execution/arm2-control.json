@@ -1,0 +1,96 @@
+{
+  "arm": 2,
+  "python": "3.12.13 (main, Mar 16 2026, 23:06:54) [GCC 14.2.0]",
+  "candidate_mount": "/candidate",
+  "workspace_absent": true,
+  "rows": [
+    {
+      "name": "public-boundaries-and-nonmutation",
+      "passed": true
+    },
+    {
+      "name": "asymmetric-renames-permutation",
+      "passed": true
+    },
+    {
+      "name": "absolute-cli-unrelated-cwd",
+      "passed": true
+    },
+    {
+      "name": "A6-relocated-root-unittest",
+      "command": [
+        "/usr/local/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "."
+      ],
+      "cwd": "/candidate",
+      "exit": 0,
+      "stdout": "",
+      "stderr": "............\n----------------------------------------------------------------------\nRan 12 tests in 0.233s\n\nOK\n",
+      "passed": true
+    },
+    {
+      "name": "literal-readme-compare-payload-and-outcome",
+      "path_substitution_only": true,
+      "expected_exit": 0,
+      "expected": {
+        "added": [],
+        "modified": [
+          {
+            "after_size": 2,
+            "before_size": 1,
+            "path": "keep"
+          }
+        ],
+        "removed": [],
+        "renamed": [
+          {
+            "from": "a/x",
+            "to": "b/y"
+          }
+        ],
+        "summary": {
+          "after_bytes": 5,
+          "before_bytes": 4,
+          "delta_bytes": 1
+        },
+        "unchanged": []
+      },
+      "exit": 0,
+      "actual": {
+        "added": [],
+        "modified": [
+          {
+            "after_size": 2,
+            "before_size": 1,
+            "path": "keep"
+          }
+        ],
+        "removed": [],
+        "renamed": [
+          {
+            "from": "a/x",
+            "to": "b/y"
+          }
+        ],
+        "summary": {
+          "after_bytes": 5,
+          "before_bytes": 4,
+          "delta_bytes": 1
+        },
+        "unchanged": []
+      },
+      "stderr": "",
+      "digest_lengths": [
+        64,
+        64,
+        64,
+        64
+      ],
+      "passed": true
+    }
+  ]
+}

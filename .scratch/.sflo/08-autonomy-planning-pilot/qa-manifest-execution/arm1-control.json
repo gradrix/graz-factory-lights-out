@@ -1,0 +1,88 @@
+{
+  "arm": 1,
+  "python": "3.12.13 (main, Mar 16 2026, 23:06:54) [GCC 14.2.0]",
+  "candidate_mount": "/candidate",
+  "workspace_absent": true,
+  "rows": [
+    {
+      "name": "public-boundaries-and-nonmutation",
+      "passed": true
+    },
+    {
+      "name": "asymmetric-renames-permutation",
+      "passed": true
+    },
+    {
+      "name": "absolute-cli-unrelated-cwd",
+      "passed": true
+    },
+    {
+      "name": "documented-root-unittest",
+      "command": [
+        "/usr/local/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "."
+      ],
+      "cwd": "/candidate",
+      "exit": 0,
+      "stdout": "",
+      "stderr": "...........\n----------------------------------------------------------------------\nRan 11 tests in 0.155s\n\nOK\n",
+      "passed": true
+    },
+    {
+      "name": "literal-readme-compare-payload-and-outcome",
+      "path_substitution_only": false,
+      "expected_exit": 0,
+      "expected": {
+        "added": [],
+        "modified": [],
+        "removed": [],
+        "renamed": [
+          {
+            "from": "old/name",
+            "to": "new/name"
+          }
+        ],
+        "summary": {
+          "after_bytes": 19,
+          "before_bytes": 19,
+          "delta_bytes": 0
+        },
+        "unchanged": [
+          "docs/a.txt"
+        ]
+      },
+      "exit": 0,
+      "actual": {
+        "added": [],
+        "modified": [],
+        "removed": [],
+        "renamed": [
+          {
+            "from": "old/name",
+            "to": "new/name"
+          }
+        ],
+        "summary": {
+          "after_bytes": 19,
+          "before_bytes": 19,
+          "delta_bytes": 0
+        },
+        "unchanged": [
+          "docs/a.txt"
+        ]
+      },
+      "stderr": "",
+      "digest_lengths": [
+        64,
+        64,
+        64,
+        64
+      ],
+      "passed": true
+    }
+  ]
+}

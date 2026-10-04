@@ -1,0 +1,88 @@
+{
+  "arm": 1,
+  "python": "3.12.13 (main, Mar 16 2026, 23:06:54) [GCC 14.2.0]",
+  "candidate_mount": "/candidate",
+  "workspace_absent": true,
+  "rows": [
+    {
+      "name": "public-boundaries-and-nonmutation",
+      "passed": true
+    },
+    {
+      "name": "asymmetric-renames-permutation",
+      "passed": true
+    },
+    {
+      "name": "absolute-cli-unrelated-cwd",
+      "passed": true
+    },
+    {
+      "name": "documented-root-unittest",
+      "command": [
+        "/usr/local/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "."
+      ],
+      "cwd": "/candidate",
+      "exit": 1,
+      "stdout": "",
+      "stderr": "..E........\n======================================================================\nERROR: test_cli_success_and_errors (tests.test_manifest_tool.CliBehavior.test_cli_success_and_errors)\nExit 0 with only the JSON result; exit 2 with the fixed error.\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/candidate/tests/test_manifest_tool.py\", line 184, in test_cli_success_and_errors\n    code, out, err = self._run_cli(payload)\n                     ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/candidate/tests/test_manifest_tool.py\", line 176, in _run_cli\n    proc = subprocess.run([ 'python', 'main.py' ],\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/subprocess.py\", line 548, in run\n    with Popen(*popenargs, **kwargs) as process:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/subprocess.py\", line 1026, in __init__\n    self._execute_child(args, executable, preexec_fn, close_fds,\n  File \"/usr/local/lib/python3.12/subprocess.py\", line 1955, in _execute_child\n    raise child_exception_type(errno_num, err_msg, err_filename)\nFileNotFoundError: [Errno 2] No such file or directory: '/workspace'\n\n----------------------------------------------------------------------\nRan 11 tests in 0.002s\n\nFAILED (errors=1)\n",
+      "passed": false
+    },
+    {
+      "name": "literal-readme-compare-payload-and-outcome",
+      "path_substitution_only": false,
+      "expected_exit": 0,
+      "expected": {
+        "added": [],
+        "modified": [],
+        "removed": [],
+        "renamed": [
+          {
+            "from": "old/name",
+            "to": "new/name"
+          }
+        ],
+        "summary": {
+          "after_bytes": 19,
+          "before_bytes": 19,
+          "delta_bytes": 0
+        },
+        "unchanged": [
+          "docs/a.txt"
+        ]
+      },
+      "exit": 0,
+      "actual": {
+        "added": [],
+        "modified": [],
+        "removed": [],
+        "renamed": [
+          {
+            "from": "old/name",
+            "to": "new/name"
+          }
+        ],
+        "summary": {
+          "after_bytes": 19,
+          "before_bytes": 19,
+          "delta_bytes": 0
+        },
+        "unchanged": [
+          "docs/a.txt"
+        ]
+      },
+      "stderr": "",
+      "digest_lengths": [
+        64,
+        64,
+        64,
+        64
+      ],
+      "passed": true
+    }
+  ]
+}

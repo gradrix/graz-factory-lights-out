@@ -1,0 +1,30 @@
+{
+  "outcome": "PASS_accounting_and_boundary_readback",
+  "request_count": 48,
+  "roles": {
+    "implementation": 48
+  },
+  "usage_reported_totals": {
+    "prompt_tokens": 1148091,
+    "completion_tokens": 39305,
+    "total_tokens": 1187396,
+    "cached_prompt_tokens": 1099131
+  },
+  "usage_missing_call_counts": {
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "total_tokens": 0,
+    "cached_prompt_tokens": 0
+  },
+  "latency": {
+    "work_s": 963.985982401,
+    "cleanup_s": 1.250519451999935,
+    "sum_reported_request_elapsed_s": 822.2100250269978,
+    "minimum_request_s": 4.126307763999648,
+    "median_request_s": 12.723808847000328,
+    "maximum_request_s": 49.073120745999404
+  },
+  "executor_creation_count": 59,
+  "executor_acceptance_mount_count": 8,
+  "reviewed_file_count": 410
+}

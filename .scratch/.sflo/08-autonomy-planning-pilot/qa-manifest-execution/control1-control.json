@@ -1,0 +1,34 @@
+{
+  "arm": 1,
+  "source": "/home/gradrix/gflo-planning-d186b93/trial-1/1-manifest-reconcile-direct/factory/b420f7770b76/workspace",
+  "control": "/home/gradrix/gflo-planning-postqa-manifest-1/control1",
+  "source_unchanged": true,
+  "changed": [
+    "tests/test_manifest_tool.py"
+  ],
+  "original_files": {
+    "README.md": "ac477b2547f5112d7a9aeadf4c2b453fbe73402c1eb817c3bfce6612425a2df8",
+    "main.py": "db81c48d1fc42e61ab6b36fdfc386266d0aaa19db4a245c7a4bbdd9d4700aa22",
+    "manifest_tool/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "manifest_tool/api.py": "54751d2883e115bdba3174d0ed0dce4a95b3fffe103fd4ad9f88b87bad523702",
+    "manifest_tool/cli.py": "65473e354f2a7f64fc3618b5abdb1915262cbf19244f94ece261ff30699eda15",
+    "manifest_tool/domain.py": "dd60306661c9f57a2eeddb9220e17542538f1a9c879d7b75b21b2bf696c2cef9",
+    "manifest_tool/report.py": "cba66004310885532689108ba41b15ca5540073d63f05643e31ad25801d4d9af",
+    "manifest_tool/validation.py": "f75a5b4e4915b08361022eb535f31a6d118e4a04e8eaa28b9c73c5ca49bf6ed3",
+    "tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests/test_manifest_tool.py": "6c1307d37cbc26988092e296337b2eb3c31e10cefb79c98a22240cc660a8dced"
+  },
+  "control_files": {
+    "README.md": "ac477b2547f5112d7a9aeadf4c2b453fbe73402c1eb817c3bfce6612425a2df8",
+    "main.py": "db81c48d1fc42e61ab6b36fdfc386266d0aaa19db4a245c7a4bbdd9d4700aa22",
+    "manifest_tool/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "manifest_tool/api.py": "54751d2883e115bdba3174d0ed0dce4a95b3fffe103fd4ad9f88b87bad523702",
+    "manifest_tool/cli.py": "65473e354f2a7f64fc3618b5abdb1915262cbf19244f94ece261ff30699eda15",
+    "manifest_tool/domain.py": "dd60306661c9f57a2eeddb9220e17542538f1a9c879d7b75b21b2bf696c2cef9",
+    "manifest_tool/report.py": "cba66004310885532689108ba41b15ca5540073d63f05643e31ad25801d4d9af",
+    "manifest_tool/validation.py": "f75a5b4e4915b08361022eb535f31a6d118e4a04e8eaa28b9c73c5ca49bf6ed3",
+    "tests/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "tests/test_manifest_tool.py": "6f588a90fcd648cb0486d67860c7ca360c1abd8ddbc7de7d5d36f5b74e969cc0"
+  },
+  "purpose": "Synthetic conforming control only; never re-score actual arm"
+}

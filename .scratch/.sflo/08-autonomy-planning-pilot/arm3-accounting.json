@@ -1,0 +1,2880 @@
+{
+  "outcome": "PASS_accounting_and_boundary_readback",
+  "arm": "3-config-preview-decomposed",
+  "run_ids": [
+    "ba6255bd4d74",
+    "300151e5e413"
+  ],
+  "child_checks": [
+    {
+      "run_id": "ba6255bd4d74",
+      "status": "accepted",
+      "attempts": 1,
+      "checks": [
+        [
+          "python",
+          "-I",
+          "/acceptance/check.py",
+          "--project",
+          "/workspace",
+          "--phase",
+          "milestone"
+        ]
+      ],
+      "observed_workspace_fingerprint": "05a300568c6742c59ca01d034f8b55196b3202c7b10557528bbb18df456a0e78",
+      "contract_sha256": "c4c0a16c81e59d7fa114018e97b732bb1bf2d7479111d3508a9217b9c607b113"
+    },
+    {
+      "run_id": "300151e5e413",
+      "status": "interrupted",
+      "attempts": 1,
+      "checks": [
+        [
+          "python",
+          "-I",
+          "/acceptance/check.py",
+          "--project",
+          "/workspace",
+          "--phase",
+          "full"
+        ]
+      ],
+      "observed_workspace_fingerprint": "93275b3e323ea486cdb544c6126fe98883ee184f15f1bf8c9c27a12af6479c9c",
+      "contract_sha256": "55d2ebee5ab59a3dbe391aab9b75844366710d678d92f3aee2f5de4e78e4e4cf"
+    }
+  ],
+  "plan_requirement_coverage_verified": true,
+  "checkpoint": {
+    "run_id": "ba6255bd4d74",
+    "candidate": "05a300568c6742c59ca01d034f8b55196b3202c7b10557528bbb18df456a0e78",
+    "modes": {
+      "README.md": 436,
+      "pyproject.toml": 436,
+      "src": 509,
+      "src/config_preview": 509,
+      "src/config_preview/__init__.py": 436,
+      "src/config_preview/app.py": 436,
+      "src/config_preview/audit.py": 436,
+      "src/config_preview/domain.py": 436,
+      "src/config_preview/errors.py": 436,
+      "src/config_preview/routes.py": 436,
+      "src/config_preview/validation.py": 436,
+      "tests": 493,
+      "tests/test_config_preview.py": 420
+    },
+    "commit": "6888fc6cef5f05d04d41c92f032f33d52f385729",
+    "patch_sha256": "b069e473314b9ee8b17826bf54d1484148ca83f7c6226ca3d7275ebb6be0d9ee"
+  },
+  "restoration": {
+    "before": "c9d6667bf61fbcc4511d0e6b34852e35819d4d5f95fddaf4e71085c8203b3f36",
+    "after": "05a300568c6742c59ca01d034f8b55196b3202c7b10557528bbb18df456a0e78",
+    "mode_map_sha256": "1b86448fe977d83cee38dc722eea909ff0c953cf4822c5769e4f50b4988257af",
+    "git_tree": "61b5e416061618ca9533ff47be96046e04b26803",
+    "base_sha256": "7d7d98b86a495eb4a5ceafc5247c76bf5a5051d665f45fb37ef2d58434f8a228"
+  },
+  "milestone_accepted_candidate": "05a300568c6742c59ca01d034f8b55196b3202c7b10557528bbb18df456a0e78",
+  "final_candidate_status": "unaccepted_partial_workspace",
+  "request_count": 48,
+  "request_limit": 48,
+  "roles": {
+    "planner": 1,
+    "plan_review": 1,
+    "implementation": 45,
+    "code_review": 1
+  },
+  "all48_raw_pairs_complete_and_hash_consistent": true,
+  "budget_failure": {
+    "status": "failed",
+    "error_type": "RuntimeError",
+    "error": "Shared completion request budget exhausted"
+  },
+  "durable_child_states": {
+    "ba6255bd4d74": {
+      "id": "ba6255bd4d74",
+      "status": "accepted",
+      "attempts": 1,
+      "message": "",
+      "contract_hash": "c4c0a16c81e59d7fa114018e97b732bb1bf2d7479111d3508a9217b9c607b113"
+    },
+    "300151e5e413": {
+      "id": "300151e5e413",
+      "status": "interrupted",
+      "attempts": 1,
+      "message": "Shared completion request budget exhausted",
+      "contract_hash": "55d2ebee5ab59a3dbe391aab9b75844366710d678d92f3aee2f5de4e78e4e4cf"
+    }
+  },
+  "no49thtransport": "48reservations+48rawcapturepairs+frozenpretransportdenial; uncharged planned request22 in task2 trajectory",
+  "usage_reported_totals": {
+    "prompt_tokens": 1106081,
+    "completion_tokens": 38751,
+    "total_tokens": 1144832,
+    "cached_prompt_tokens": 1043590
+  },
+  "usage_missing_call_counts": {
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "total_tokens": 0,
+    "cached_prompt_tokens": 0
+  },
+  "finish_reasons": {
+    "stop": 3,
+    "tool_calls": 45
+  },
+  "latency": {
+    "work_s": 873.5399703910007,
+    "cleanup_s": 1.2695157729995117,
+    "sum_reported_request_elapsed_s": 828.1557796859961,
+    "minimum_request_s": 3.3075015989998064,
+    "median_request_s": 15.803809066500435,
+    "maximum_request_s": 54.540306263001185
+  },
+  "environment": {
+    "id": "e591c2d6f97b02fc2a99ecef01848a4e74d743e499aeec3b4d4d7d6c6c400acb",
+    "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+    "profile": "python-api",
+    "receipt_sha256": "e591c2d6f97b02fc2a99ecef01848a4e74d743e499aeec3b4d4d7d6c6c400acb",
+    "runtime": {
+      "capabilities": "0000000000000000",
+      "docker_socket": "absent",
+      "fastapi": "0.115.12",
+      "gpu_devices": "absent",
+      "httpx": "0.28.1",
+      "machine": "x86_64",
+      "platform": "linux",
+      "pydantic": "2.13.5",
+      "python": "3.12.13",
+      "setuptools": "78.1.0",
+      "uid": "1000",
+      "uvicorn": "0.34.2"
+    },
+    "store": "/home/gradrix/gflo-stage3-25f75c3/.gflo/stage3-preparation/environments"
+  },
+  "executor_creation_count": 53,
+  "executor_acceptance_mount_count": 4,
+  "executor_creation": [
+    {
+      "file": "0001.json",
+      "name": "gflo-job-adefe47d75174e22",
+      "sha256": "4e14e97e11022f5a64718f83336a198975bb66cd300e85cb5d6772388da7f219",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0002.json",
+      "name": "gflo-job-ec51482e2bcc457b",
+      "sha256": "397b9be7fea958c654c87dacd9e20546a9ed611fd05bf41a005b0c9871abc224",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0003.json",
+      "name": "gflo-job-f9ca9109131448e0",
+      "sha256": "98ce8971de8647ae1d3dc3abae5d51b3cf1aa35a8c608556cbc8965a962f9326",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0004.json",
+      "name": "gflo-job-5e149c7019d34839",
+      "sha256": "ba3491213a02b79285bc9453a173bced09b02bd9e57c6abda0710661329970e8",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0005.json",
+      "name": "gflo-job-ba3d557d64d54982",
+      "sha256": "4e4f5dbd56bef8c2a5f989732d9c60868417b2e4bf9fa46ef15dadf61d8800c9",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0006.json",
+      "name": "gflo-job-c4ee6f7132924795",
+      "sha256": "dd630167d6e4d046f6c6ce6ebf3adc1ed2e20900ec1d762d6ee01ee00f282e48",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0007.json",
+      "name": "gflo-job-fa085bcf01f9424f",
+      "sha256": "5d37be0d8c284d19f369db8b9449ccfe20028b783a7e227f0976f78cd5365dac",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0008.json",
+      "name": "gflo-job-cd707fa3066f439a",
+      "sha256": "3c0708a7994668385f9b164a57221c4576115af61c08b5e19b0bde31c0f23d76",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0009.json",
+      "name": "gflo-job-7c4e09cb128b4606",
+      "sha256": "03e0a84cb94be90dfeba3cb9ed1baa2842b7f4f2ccea629d5c6ac06820662ae0",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0010.json",
+      "name": "gflo-job-f352626ce0344405",
+      "sha256": "8655db50bf6489bfc6809bb780b62d2ec74a779c57da92710cfa6461cd12c47b",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0011.json",
+      "name": "gflo-job-beeb705b4c594a13",
+      "sha256": "3c395b868a358da8637d57a47464825c98615ba0ebec45858d0f628ada718a07",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0012.json",
+      "name": "gflo-job-8ddb0c231e394b92",
+      "sha256": "8259b5f55ad833ebd11435959da0f9380b82bd1ef2a7a0a19dd92f4c076ed326",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0013.json",
+      "name": "gflo-job-1b3ebd4773d44479",
+      "sha256": "b2f35329932d0c0f76c7c5480ebe391e5f6b895e705c3798b30f1fba5f63d0c0",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0014.json",
+      "name": "gflo-job-367c3c8e74a64244",
+      "sha256": "035954e7e7e0934d13fb835e4e11c66336dcc4e59414c7a769759c50d9af9896",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0015.json",
+      "name": "gflo-job-5cce2ad45e3a481c",
+      "sha256": "a65bf1f17c0b0a5546b3ee7e95140b0f52caa5899148c3c2bf393c370a6fb7c5",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0016.json",
+      "name": "gflo-job-8083c55136424489",
+      "sha256": "77122120b8704a1b3a230fad6b51a99336ba7b6a2ecec1aae73eccfb9ccf50e4",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0017.json",
+      "name": "gflo-job-88bec4d537f44bf3",
+      "sha256": "dfb99f28d287b239582fd75f145cb61725dabed8ac12e965e5899534d6b44574",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0018.json",
+      "name": "gflo-job-ea99bdb99e1b4de3",
+      "sha256": "e57819663cce690207f2b41690375ec3a5778443016af57512d0f99ad371f0d1",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0019.json",
+      "name": "gflo-job-451f44bc507a4f90",
+      "sha256": "e6ff91dd3ff252e14cb6e28d5af524387ba6e08043dd96ba7b6e426eead4b8de",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0020.json",
+      "name": "gflo-job-421a082c1b674636",
+      "sha256": "f0f145dc80ba9da02ce3cda34232e76342368df1e61228051d0ba869395dea81",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0021.json",
+      "name": "gflo-job-a39eb6b629ed48f3",
+      "sha256": "827a653111d19f316a5bc59afcdc88c5681000cfdf1195a6492996a8c705b605",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0022.json",
+      "name": "gflo-job-9126cedd770b4ade",
+      "sha256": "893cdcc578e8eeeb3d62041b92cffd47b51ea2264c5744b67b309a72b797596b",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0023.json",
+      "name": "gflo-job-f2d5ec02b4564e67",
+      "sha256": "83857ccfa7b438a2ff832a492c8b167ddc05ef43327ab7abd8ab40fa8e787c8e",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0024.json",
+      "name": "gflo-job-1b2fc52466c048f0",
+      "sha256": "335cb6fd1b15f54861c165be6460be75846a87d2cf90c56a6450d4ca07955a8f",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0025.json",
+      "name": "gflo-job-b5553d3806a948d5",
+      "sha256": "63d917b8aae34f1b0b318c4fdc08f30096a1d50d58211b26005fee1ae621ad77",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0026.json",
+      "name": "gflo-job-df8b61e717964185",
+      "sha256": "36c0ec4ea10ba3d29a8fc8df0a3d7ae0afaaa4a21b3d143e5ed7270f7b2bf9a6",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0027.json",
+      "name": "gflo-job-965f311bca8f4829",
+      "sha256": "c33167967d0f4f453dfa2d11746a38f0abd84dc6c97efe2589d9292be767fb7d",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0028.json",
+      "name": "gflo-job-d30494c1bbf341ef",
+      "sha256": "f7bd6e7070b40cb17d1d24770abcf571ebefd6cdfaf3aff743ead22b1a792369",
+      "acceptance_mount": true
+    },
+    {
+      "file": "0029.json",
+      "name": "gflo-job-62c8e4c7365a4a8e",
+      "sha256": "fcff167cc060ffd2788c5e59cbe44d3ca3d592376c4b890e4aec1b927d91ace1",
+      "acceptance_mount": true
+    },
+    {
+      "file": "0030.json",
+      "name": "gflo-job-b2243633522d45ec",
+      "sha256": "fc9b00345d9a14e8031ac96110ae94afb47699bac89f39847a0331dd2f705342",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0031.json",
+      "name": "gflo-job-c0e195859dfb4450",
+      "sha256": "c3908999e817144dd1cd002af8683f20748b59b59d405b44d87ea87bc7a34226",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0032.json",
+      "name": "gflo-job-80850796806542ad",
+      "sha256": "9b781dcb7349fbd34bbe24c9e425f078ca104473199bc4285a5e4fb40fe004c4",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0033.json",
+      "name": "gflo-job-dc1541d5fe0f4557",
+      "sha256": "346bc0ed989d661229c6de76d72c8cc8bf52a2434c86b4c191b4d4381486b908",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0034.json",
+      "name": "gflo-job-e5bbe8fc28184949",
+      "sha256": "3a1d692e3e94d946dd5aaf1cf1da6292c0212e286f84efaf3f4b315b36cb4ee2",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0035.json",
+      "name": "gflo-job-34a37a465c8f4359",
+      "sha256": "92db6f3d85b6bdbedf4ee2555b8336366703fc57f56a1a44791c7ef5bcdd2c6f",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0036.json",
+      "name": "gflo-job-3a21da1f7f5e450f",
+      "sha256": "1a55dbd12b78c5b7e64fe8eeb5e3a9ac9a1b0a4fb3c3711e98be66cb3ac44d31",
+      "acceptance_mount": true
+    },
+    {
+      "file": "0037.json",
+      "name": "gflo-job-ec6beb8307714ffb",
+      "sha256": "f975723721774b577a1ba94ce4a93c2e606c8fa5111ee8c14886ceff09f99071",
+      "acceptance_mount": true
+    },
+    {
+      "file": "0038.json",
+      "name": "gflo-job-5f2e409e57064ff0",
+      "sha256": "105cb397038dbd90b1856d061e1708fe978ed974ab9403beb02cf37c94d73c1c",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0039.json",
+      "name": "gflo-job-5926664fb1824220",
+      "sha256": "e3120bd97d7431b95f212c73abb7ad21c0cc9096449378f5cf2435669a7b7fdc",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0040.json",
+      "name": "gflo-job-4e4e5f4e0d574547",
+      "sha256": "d317da1915bf67ee5a16c712548225ecf7c2ccb7e6fb665d1e9f56fd4430c2cf",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0041.json",
+      "name": "gflo-job-cde23d39f4c54326",
+      "sha256": "3dbda4d598b35e39176a39a65c3b7ae69e24705ab8f4f87f2141b8a47778a0fd",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0042.json",
+      "name": "gflo-job-91c28b99ccb746b4",
+      "sha256": "4ef3ba961faeff3f89789e8d9a03c37c52d11145a30752bb83a5abfb195c678b",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0043.json",
+      "name": "gflo-job-9db2f02bccbd498b",
+      "sha256": "43739fd4d7403d7d32a00547aa19837325bcdd3c0f826d1c031070bbd3e7af78",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0044.json",
+      "name": "gflo-job-cdf85767e02d4d40",
+      "sha256": "82a6fb976031e80566ae11e03f4daf07d8f72d85c67113ba9f5c66c84eda0aa5",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0045.json",
+      "name": "gflo-job-a569e69323b24981",
+      "sha256": "f773dc8b4bd13ce550a746ad1a41d485d8fcc641b36b5cfc1375b567fcac80b0",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0046.json",
+      "name": "gflo-job-ecd3e1402113493f",
+      "sha256": "547444046480102249c9b5dd232c1633a96418850de32d9bf9e4c95ade187510",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0047.json",
+      "name": "gflo-job-0d6f266804944717",
+      "sha256": "d4fe60cd3780a27b65f64878bd0ddd640577189d745c9a8b0a512f53e41fcc3b",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0048.json",
+      "name": "gflo-job-936d2bf516b3409b",
+      "sha256": "e0f700499842341a225a95b17cacc0ce97bbbd8bf0e9cd91e5530a99dee63fb4",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0049.json",
+      "name": "gflo-job-8a54d7de280e4cfd",
+      "sha256": "7b778dd0b6bbd9b88f1f901850cdff53f0ba9373aaf780da94a680d2208512c5",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0050.json",
+      "name": "gflo-job-2c8ccd815a19451f",
+      "sha256": "ed9819be1586af3a920fafdf719c43ea908d41bad043978cd4e0d277045af98f",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0051.json",
+      "name": "gflo-job-c4ac8af2469f47c6",
+      "sha256": "6c31d51b5e5d1e5e6ece3acc2ded9dcf62d94c590e86e23af5ea7ca1ee4ab1a3",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0052.json",
+      "name": "gflo-job-4c71dbf111fc4c93",
+      "sha256": "613ce476043ac1da88ad78ad74e4a96c5f490835d8ee5f774f41a31eb2ccf63d",
+      "acceptance_mount": false
+    },
+    {
+      "file": "0053.json",
+      "name": "gflo-job-bd7c69067a47418b",
+      "sha256": "78bf0a7f1f619767e94faec0e6c5be5dfaa554bc1c17161f650955bbde74373d",
+      "acceptance_mount": false
+    }
+  ],
+  "serving_observation_count": 4,
+  "serving_identity": {
+    "cache_k": "q4_0",
+    "cache_v": "q4_0",
+    "context": "98304",
+    "host": "0.0.0.0",
+    "id": "2cac4229053dac00fdbcadb1952db80f0a9da3fd07b8f40bce1ba8cd3114f6e0",
+    "image": "sha256:249ed60fdd67b96db472e16f945af5aaba565b20159d192ba378035b6d136a1c",
+    "model": "flash-next-coder",
+    "offline": true,
+    "owner": "model-service",
+    "parallel": "1",
+    "port": "8000",
+    "ports": {
+      "8000/tcp": [
+        {
+          "HostIp": "127.0.0.1",
+          "HostPort": "18000"
+        }
+      ]
+    },
+    "running": true,
+    "runtime_entrypoint": [
+      "/model/runtime/llama-b11284/llama-server"
+    ],
+    "started_at": "2026-10-04T14:20:09.194925789Z"
+  },
+  "serving_idle_pair_gaps_s": [
+    1.117522,
+    1.117447
+  ],
+  "fixed_checks": [
+    [
+      "python",
+      "-I",
+      "/acceptance/check.py",
+      "--project",
+      "/workspace",
+      "--phase",
+      "full"
+    ]
+  ],
+  "final_verification": null,
+  "source_files_unchanged": true,
+  "reviewed_file_count": 457,
+  "request_rows": [
+    {
+      "number": 1,
+      "role": "planner",
+      "elapsed_s": 19.16179669000121,
+      "usage": {
+        "prompt_tokens": 2422,
+        "completion_tokens": 716,
+        "total_tokens": 3138,
+        "cached_prompt_tokens": 0
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "stop"
+      ],
+      "timings": {
+        "cache_n": 0,
+        "predicted_ms": 8869.902,
+        "predicted_n": 716,
+        "predicted_per_second": 80.60968430090885,
+        "predicted_per_token_ms": 12.405457342657343,
+        "prompt_ms": 10137.323,
+        "prompt_n": 2422,
+        "prompt_per_second": 238.91909136169383,
+        "prompt_per_token_ms": 4.1855173410404625
+      },
+      "files": {
+        "request.body": {
+          "sha256": "34c662f075ad7e2b00dbeb0f970d022b6c4b270eb6db2d92a62cda05a670e86a",
+          "bytes": 10839
+        },
+        "request.json": {
+          "sha256": "9bdeecea285c1b9230b186a9e8771f84c6889dee5290290777a3f155e5f782f7",
+          "bytes": 10815
+        },
+        "response.body": {
+          "sha256": "cc40381c9f3a1dab5ac1812f28996783c3662ab4f14eb9101029f8182344ddd3",
+          "bytes": 3626
+        },
+        "response.json": {
+          "sha256": "bd52f1a1417bbf6cc98374b5d045ecdf949d8d9e45962809894d08daa350e9ac",
+          "bytes": 3641
+        },
+        "transport.json": {
+          "sha256": "5e622d1e9025685f550680cc26a974f2e101bf224501bc5d88660445ba5701d9",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 2,
+      "role": "plan_review",
+      "elapsed_s": 24.990492151999206,
+      "usage": {
+        "prompt_tokens": 2962,
+        "completion_tokens": 1342,
+        "total_tokens": 4304,
+        "cached_prompt_tokens": 0
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "stop"
+      ],
+      "timings": {
+        "cache_n": 0,
+        "predicted_ms": 15562.031,
+        "predicted_n": 1342,
+        "predicted_per_second": 86.17127160330165,
+        "predicted_per_token_ms": 11.604795674869502,
+        "prompt_ms": 9117.63,
+        "prompt_n": 2962,
+        "prompt_per_second": 324.86512394119967,
+        "prompt_per_token_ms": 3.078200540175557
+      },
+      "files": {
+        "request.body": {
+          "sha256": "3cac21dda3a2ba7dc26814a82fb645f688649f7594b66e4c6bc39f4549ed7d07",
+          "bytes": 13020
+        },
+        "request.json": {
+          "sha256": "8a7e4f7fa98087adda4841805a7e056b6040af16a9d9b73ef97516c8b9dbdc4b",
+          "bytes": 12996
+        },
+        "response.body": {
+          "sha256": "92484d41e5079b9db41a666a71f6465781d1b7b4f4ecc0f324d0423758ffdeda",
+          "bytes": 6281
+        },
+        "response.json": {
+          "sha256": "2a6dd14ee07b3b5a341ca64d183a6d1197c960abdf4598204927edaa15b02edb",
+          "bytes": 6335
+        },
+        "transport.json": {
+          "sha256": "7232cae31deee419f62fdad557440bcccd7d13ce1a0ea7e144a8312efa37cbac",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 3,
+      "role": "implementation",
+      "elapsed_s": 7.678824665999855,
+      "usage": {
+        "prompt_tokens": 2312,
+        "completion_tokens": 136,
+        "total_tokens": 2448,
+        "cached_prompt_tokens": 0
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 0,
+        "predicted_ms": 1598.541,
+        "predicted_n": 136,
+        "predicted_per_second": 84.45200967632361,
+        "predicted_per_token_ms": 11.841044444444444,
+        "prompt_ms": 5946.836,
+        "prompt_n": 2312,
+        "prompt_per_second": 388.77816707909886,
+        "prompt_per_token_ms": 2.5721608996539795
+      },
+      "files": {
+        "request.body": {
+          "sha256": "8b8f9eed1aed815bab987348c78183089cb6f4efda4fe0ff2d659918bb9e9108",
+          "bytes": 9426
+        },
+        "request.json": {
+          "sha256": "3ac280b89f88211df081b149babb408ddaa0607ac30519309456b232496fc0f1",
+          "bytes": 9352
+        },
+        "response.body": {
+          "sha256": "3e94cd99f192d7c0154cd9e7d2e4e5cb4d2d6690509dfd346d17817e14b98c06",
+          "bytes": 1211
+        },
+        "response.json": {
+          "sha256": "86ba83c6812a4ec01d77a8678043623d0e2fff468d5401c3123fbd60aa005b57",
+          "bytes": 1211
+        },
+        "transport.json": {
+          "sha256": "775760a81dedc12dab4415d0c571a789fec215eb49329139625734070bb4f0b6",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 4,
+      "role": "implementation",
+      "elapsed_s": 3.6342891109998163,
+      "usage": {
+        "prompt_tokens": 3363,
+        "completion_tokens": 68,
+        "total_tokens": 3431,
+        "cached_prompt_tokens": 2447
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 2447,
+        "predicted_ms": 758.095,
+        "predicted_n": 68,
+        "predicted_per_second": 88.37942474228163,
+        "predicted_per_token_ms": 11.314850746268657,
+        "prompt_ms": 2862.273,
+        "prompt_n": 916,
+        "prompt_per_second": 320.02537843175685,
+        "prompt_per_token_ms": 3.124752183406114
+      },
+      "files": {
+        "request.body": {
+          "sha256": "6986010f6f8efca37b9861c10368c0c93a13410269514e8a2a106159d1482bec",
+          "bytes": 13007
+        },
+        "request.json": {
+          "sha256": "98ac59a45a896cab8a471d918ebf84311972eb0dd0643fa2b4dfbe82d146c846",
+          "bytes": 12896
+        },
+        "response.body": {
+          "sha256": "dfa7f287b5cf745190468eefd216e9fbf41e75143943cca9f5f4c470807218e3",
+          "bytes": 950
+        },
+        "response.json": {
+          "sha256": "6eb7c2a0ce8ecf8f559680f3ac902148c9a9ca3809ba62d0ceeff57a8b76cca7",
+          "bytes": 950
+        },
+        "transport.json": {
+          "sha256": "0829824884f2ec5df170030d43bbfe8ed7bc44c82f52a2eaa03f566f4c38be4d",
+          "bytes": 70
+        }
+      }
+    },
+    {
+      "number": 5,
+      "role": "implementation",
+      "elapsed_s": 13.834091163998892,
+      "usage": {
+        "prompt_tokens": 3796,
+        "completion_tokens": 1119,
+        "total_tokens": 4915,
+        "cached_prompt_tokens": 3430
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 3430,
+        "predicted_ms": 12998.908,
+        "predicted_n": 1119,
+        "predicted_per_second": 86.00722460686697,
+        "predicted_per_token_ms": 11.62693023255814,
+        "prompt_ms": 820.129,
+        "prompt_n": 366,
+        "prompt_per_second": 446.2712573265913,
+        "prompt_per_token_ms": 2.240789617486339
+      },
+      "files": {
+        "request.body": {
+          "sha256": "17eb12a499152002a37615d50aacf60ae062bfc15ff1d1cfdc4bc35269643982",
+          "bytes": 14308
+        },
+        "request.json": {
+          "sha256": "a438b388b8d76b01f773a559dc588f076b47a3980a9e537233fcb405aed8bd11",
+          "bytes": 14175
+        },
+        "response.body": {
+          "sha256": "9112c83d31d49b797652670ed5f3d832577442cfa181a170604b64d654e5ad89",
+          "bytes": 5303
+        },
+        "response.json": {
+          "sha256": "d75d5f66de367c59d57a641ff9ab8a637ceb524145c2ef0177e39c6569c118b4",
+          "bytes": 5330
+        },
+        "transport.json": {
+          "sha256": "b1a4cd04ba45035f2f47a4020790fb2692162ca4d8b2de7494813fce84a1d09c",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 6,
+      "role": "implementation",
+      "elapsed_s": 28.78151711300052,
+      "usage": {
+        "prompt_tokens": 5427,
+        "completion_tokens": 2158,
+        "total_tokens": 7585,
+        "cached_prompt_tokens": 4914
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 4914,
+        "predicted_ms": 26770.672,
+        "predicted_n": 2158,
+        "predicted_per_second": 80.57324821730288,
+        "predicted_per_token_ms": 12.4110672229949,
+        "prompt_ms": 1993.769,
+        "prompt_n": 513,
+        "prompt_per_second": 257.30162320710167,
+        "prompt_per_token_ms": 3.8864892787524368
+      },
+      "files": {
+        "request.body": {
+          "sha256": "a030c8bd3c52558564d72aecc143cd747a8a0633b4072c44c1a5e2347d48031b",
+          "bytes": 20288
+        },
+        "request.json": {
+          "sha256": "dd82738025e125e0ac9fc7fce8de1e56d97f17da7ffda4aca56d06ae09589e3f",
+          "bytes": 20133
+        },
+        "response.body": {
+          "sha256": "0e9d79e525e9683a7947fbe9cc09cbebf30884daa166c5fe4ea4c699d78e11be",
+          "bytes": 10213
+        },
+        "response.json": {
+          "sha256": "221958001e253d0b70ddc220560dc1b77dc2b46d8ba03fa4c0154aa888ea289d",
+          "bytes": 10237
+        },
+        "transport.json": {
+          "sha256": "e16dfbc1c97e5c2c4ac2751e7fe4448bdcbdbcdfde21b776242c7f8adf8a09b9",
+          "bytes": 72
+        }
+      }
+    },
+    {
+      "number": 7,
+      "role": "implementation",
+      "elapsed_s": 20.897867507999763,
+      "usage": {
+        "prompt_tokens": 9003,
+        "completion_tokens": 1178,
+        "total_tokens": 10181,
+        "cached_prompt_tokens": 7584
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 7584,
+        "predicted_ms": 15087.039,
+        "predicted_n": 1178,
+        "predicted_per_second": 78.01398273047481,
+        "predicted_per_token_ms": 12.81821495327103,
+        "prompt_ms": 5790.408,
+        "prompt_n": 1419,
+        "prompt_per_second": 245.06045169874037,
+        "prompt_per_token_ms": 4.08062579281184
+      },
+      "files": {
+        "request.body": {
+          "sha256": "9d5ea54d2f9a7213804d738d7263f5c237d45688f0caf248ecc4a5191e1be623",
+          "bytes": 35615
+        },
+        "request.json": {
+          "sha256": "7022075d8d5df305a21e4f50fa96a632ce814c6ba7eb52b6da9815821429af85",
+          "bytes": 35438
+        },
+        "response.body": {
+          "sha256": "4f8188af6b5f91cde7dcf96a13005ab6edb131a650e6ca99735826cc13b5f9d0",
+          "bytes": 5962
+        },
+        "response.json": {
+          "sha256": "f82ea600254f0149b2f75f72967866661b6d11e5efcfe33e5bcb8495470a70ce",
+          "bytes": 5962
+        },
+        "transport.json": {
+          "sha256": "2a76db0b0b37a105ae7035ec16c41fe2b49b07e55428f51d4b6a4908192905d7",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 8,
+      "role": "implementation",
+      "elapsed_s": 12.727619617999153,
+      "usage": {
+        "prompt_tokens": 11502,
+        "completion_tokens": 513,
+        "total_tokens": 12015,
+        "cached_prompt_tokens": 10180
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 10180,
+        "predicted_ms": 7398.337,
+        "predicted_n": 513,
+        "predicted_per_second": 69.20474155205419,
+        "predicted_per_token_ms": 14.449876953125,
+        "prompt_ms": 5303.55,
+        "prompt_n": 1322,
+        "prompt_per_second": 249.26700040538884,
+        "prompt_per_token_ms": 4.011762481089259
+      },
+      "files": {
+        "request.body": {
+          "sha256": "447cee9270d2a8b6c67e2dbfcbc9ab5cd204aa685f832e6ab7bd44f7d9e75569",
+          "bytes": 46254
+        },
+        "request.json": {
+          "sha256": "a775655d654aed643b4438a972849a87e17ad4d5e99165e364dd415b833ae9b9",
+          "bytes": 46055
+        },
+        "response.body": {
+          "sha256": "c6cd03e66742e5ebad8b2d4c2a3d5f97075e4d263cf6f21f7c4d3f4a1f568e85",
+          "bytes": 3008
+        },
+        "response.json": {
+          "sha256": "98c0f55869ecc87737865ccbc7eac2baac5adb27f165fe7630145954b388db63",
+          "bytes": 3011
+        },
+        "transport.json": {
+          "sha256": "5121b77bd56c546f417eac7916bb1ca178eb52b27cc1e5e9e82bdfaaa89acddf",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 9,
+      "role": "implementation",
+      "elapsed_s": 18.12252518999958,
+      "usage": {
+        "prompt_tokens": 12732,
+        "completion_tokens": 1026,
+        "total_tokens": 13758,
+        "cached_prompt_tokens": 12014
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 12014,
+        "predicted_ms": 14929.093,
+        "predicted_n": 1026,
+        "predicted_per_second": 68.65788832583465,
+        "predicted_per_token_ms": 14.564968780487806,
+        "prompt_ms": 3165.428,
+        "prompt_n": 718,
+        "prompt_per_second": 226.82556671641245,
+        "prompt_per_token_ms": 4.4086740947075205
+      },
+      "files": {
+        "request.body": {
+          "sha256": "aecfc00362baace7f29d01bd167a43cf9e545e6c960a5f326490928584ec4f09",
+          "bytes": 51183
+        },
+        "request.json": {
+          "sha256": "ff822b05b1ee4919dd4eb36a9b8ff2982744b92ec3ac368b217afcaff8ec9668",
+          "bytes": 50947
+        },
+        "response.body": {
+          "sha256": "a79a32489c9631a7dabd88f07e39d412440d31f7ba55a6b4be091b33a8f691ab",
+          "bytes": 5475
+        },
+        "response.json": {
+          "sha256": "67203547a33e96b9c80c88821a0436985c332719df9635b77876636584e0bd78",
+          "bytes": 5481
+        },
+        "transport.json": {
+          "sha256": "e73a15f15ae6d3fab9728a03e7891bfbfb325a53c98a373e4a589ece9c37267b",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 10,
+      "role": "implementation",
+      "elapsed_s": 22.032207201000347,
+      "usage": {
+        "prompt_tokens": 14845,
+        "completion_tokens": 1187,
+        "total_tokens": 16032,
+        "cached_prompt_tokens": 13757
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 13757,
+        "predicted_ms": 16833.189,
+        "predicted_n": 1187,
+        "predicted_per_second": 70.45604965286138,
+        "predicted_per_token_ms": 14.193245362563237,
+        "prompt_ms": 5168.288,
+        "prompt_n": 1088,
+        "prompt_per_second": 210.51458432657003,
+        "prompt_per_token_ms": 4.750264705882352
+      },
+      "files": {
+        "request.body": {
+          "sha256": "8c30770a848057e214ab5e49911efb92f7cea1ebd5b5d4aa37bf10a054f45c18",
+          "bytes": 60546
+        },
+        "request.json": {
+          "sha256": "8f6d3d9b33709ef050479546c659487ea095ffaba81d44e0d640f90b2f04cdd9",
+          "bytes": 60288
+        },
+        "response.body": {
+          "sha256": "aa015dad28b55dd1661c955719cad262cb1f55a7a915bd6ee261ab70406e108b",
+          "bytes": 6207
+        },
+        "response.json": {
+          "sha256": "08eef2b9640325256602232429d9a79c261c38970e23df558bc6b9152c5a4173",
+          "bytes": 6225
+        },
+        "transport.json": {
+          "sha256": "b50e3cce39708d5dbe101a71e4f7c5f06ce8232c54cebee620236dfde7a650df",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 11,
+      "role": "implementation",
+      "elapsed_s": 18.768314760998692,
+      "usage": {
+        "prompt_tokens": 17098,
+        "completion_tokens": 940,
+        "total_tokens": 18038,
+        "cached_prompt_tokens": 16031
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 16031,
+        "predicted_ms": 14405.088,
+        "predicted_n": 940,
+        "predicted_per_second": 65.18530119357827,
+        "predicted_per_token_ms": 15.34088178913738,
+        "prompt_ms": 4333.179,
+        "prompt_n": 1067,
+        "prompt_per_second": 246.23953914666345,
+        "prompt_per_token_ms": 4.0610862230552955
+      },
+      "files": {
+        "request.body": {
+          "sha256": "6e74db15c0ab33b617c011926dc65f3177e2d35f0be5c2c7f65f483d93bc26d7",
+          "bytes": 70618
+        },
+        "request.json": {
+          "sha256": "e7455bf020fc21b910a074e133d07b62046a5d05bf8a76254a87473d172c1ab5",
+          "bytes": 70338
+        },
+        "response.body": {
+          "sha256": "7483a4f18fa5dfa9766844aaf2e0d298a5514687ccb8b01b5c100c49bea31274",
+          "bytes": 4660
+        },
+        "response.json": {
+          "sha256": "3f761a7e620af91ec8f1b7e095c8cff2d24620457b5a0381333fdbc735a9e667",
+          "bytes": 4666
+        },
+        "transport.json": {
+          "sha256": "a190ffd70ec03353b256e4f4231b9ffe533322a79c8d8d7e671abcfc8570e67e",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 12,
+      "role": "implementation",
+      "elapsed_s": 34.40611188399998,
+      "usage": {
+        "prompt_tokens": 19716,
+        "completion_tokens": 1693,
+        "total_tokens": 21409,
+        "cached_prompt_tokens": 18037
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 18037,
+        "predicted_ms": 26641.743,
+        "predicted_n": 1693,
+        "predicted_per_second": 63.50935822780064,
+        "predicted_per_token_ms": 15.745710992907801,
+        "prompt_ms": 7732.714,
+        "prompt_n": 1679,
+        "prompt_per_second": 217.12945804021717,
+        "prompt_per_token_ms": 4.6055473496128645
+      },
+      "files": {
+        "request.body": {
+          "sha256": "f870c62cf13332c8aeb653619387c5cb4a3983f1f16aeefbedc394100cb79219",
+          "bytes": 80585
+        },
+        "request.json": {
+          "sha256": "f3bd299f53e5429dc129cbbf36d5a3d018269ef2908296387757a9b896e9f08e",
+          "bytes": 80283
+        },
+        "response.body": {
+          "sha256": "e9f14dfe571d17013319f96ad9df657ecf1702b629f35e551e6c32d5244dbcad",
+          "bytes": 7263
+        },
+        "response.json": {
+          "sha256": "228c8c74db4d17822b56035a52d555d2b415b5441852933ca0620d589b9be2c8",
+          "bytes": 7356
+        },
+        "transport.json": {
+          "sha256": "2b7739cc169125d5abf1380a508d3b9b80701641a4888c07b4f1120330f1cc6a",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 13,
+      "role": "implementation",
+      "elapsed_s": 15.636049509999793,
+      "usage": {
+        "prompt_tokens": 22179,
+        "completion_tokens": 795,
+        "total_tokens": 22974,
+        "cached_prompt_tokens": 21408
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 21408,
+        "predicted_ms": 12181.122,
+        "predicted_n": 795,
+        "predicted_per_second": 65.18282962768126,
+        "predicted_per_token_ms": 15.341463476070528,
+        "prompt_ms": 3417.483,
+        "prompt_n": 771,
+        "prompt_per_second": 225.60463358559502,
+        "prompt_per_token_ms": 4.432533073929961
+      },
+      "files": {
+        "request.body": {
+          "sha256": "e08b8a43cb53627c1fc3f1719d8143d6c22b69d20132eb2254fc5deb132983f5",
+          "bytes": 90259
+        },
+        "request.json": {
+          "sha256": "2fcf216828505f6dbea5330db31941a39e2eb4aab4c49191aa1c9c1f83b6d2d6",
+          "bytes": 89935
+        },
+        "response.body": {
+          "sha256": "e4ac6f7adfd443bd2af1c21c6fd9cbb18e689d21ad4da405f6d6047c0f8aac40",
+          "bytes": 4131
+        },
+        "response.json": {
+          "sha256": "880927d1e5667d4918f315b9550c7f2bdd79253df7845b542dea35e3feae8bf3",
+          "bytes": 4137
+        },
+        "transport.json": {
+          "sha256": "fa6f41b31401f4aecf7267ccbe760be5972edd046ea508c7b8bf096036eb6aa2",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 14,
+      "role": "implementation",
+      "elapsed_s": 39.44157724800061,
+      "usage": {
+        "prompt_tokens": 27762,
+        "completion_tokens": 1265,
+        "total_tokens": 29027,
+        "cached_prompt_tokens": 22973
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 22973,
+        "predicted_ms": 22026.987,
+        "predicted_n": 1265,
+        "predicted_per_second": 57.3841533569707,
+        "predicted_per_token_ms": 17.426413765822787,
+        "prompt_ms": 17373.006,
+        "prompt_n": 4789,
+        "prompt_per_second": 275.65753445316255,
+        "prompt_per_token_ms": 3.627689705575277
+      },
+      "files": {
+        "request.body": {
+          "sha256": "95becfcaef33ad417c88264f7902911199df58e40efe33b4e9c0ae3aeaed0e46",
+          "bytes": 107516
+        },
+        "request.json": {
+          "sha256": "851dab01fddf42a675e5b287fe33c9a7b0411a06001f8c53d23ec4e87376ffce",
+          "bytes": 107155
+        },
+        "response.body": {
+          "sha256": "f6ff09bcf54bbf3a80a43a9e50b0562a1f4091726f9ecd624a5dce5a2ab3cf15",
+          "bytes": 5580
+        },
+        "response.json": {
+          "sha256": "b99d178ea94ed94b3ec4d07717bbf42f4c90f79739b2dbb5d1783b428cfc48e8",
+          "bytes": 5671
+        },
+        "transport.json": {
+          "sha256": "b08d874b749ad6c69571e1ebb2c678280c2c1fc99262e5e8b95b10ceca22d060",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 15,
+      "role": "implementation",
+      "elapsed_s": 54.540306263001185,
+      "usage": {
+        "prompt_tokens": 29372,
+        "completion_tokens": 3007,
+        "total_tokens": 32379,
+        "cached_prompt_tokens": 29026
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 29026,
+        "predicted_ms": 52975.057,
+        "predicted_n": 3007,
+        "predicted_per_second": 56.74368599546764,
+        "predicted_per_token_ms": 17.62310612109115,
+        "prompt_ms": 1521.737,
+        "prompt_n": 346,
+        "prompt_per_second": 227.37174689187418,
+        "prompt_per_token_ms": 4.398083815028902
+      },
+      "files": {
+        "request.body": {
+          "sha256": "bff8eaf75143eb6df021372c2e20d506f59545c8ade8bba6bf394373e5376801",
+          "bytes": 113737
+        },
+        "request.json": {
+          "sha256": "3f9cc16501bcbfd72bba22f7eadc8def1e1040791921b44645717fb167d8ddb4",
+          "bytes": 113354
+        },
+        "response.body": {
+          "sha256": "f4255ff37c78ddb1dd04cb7d70efa3d6e6182286badefb42353e4181b87f5b1e",
+          "bytes": 14622
+        },
+        "response.json": {
+          "sha256": "7593a50a8594b0991da8ee24f02d6fc66f488cab0e567f19278a6d6f4894eb19",
+          "bytes": 14652
+        },
+        "transport.json": {
+          "sha256": "bc44489f3021e9f6b5dfaa7abbfa5420ff0dcb65f17d3cd9c252304c5c002dc6",
+          "bytes": 72
+        }
+      }
+    },
+    {
+      "number": 16,
+      "role": "implementation",
+      "elapsed_s": 21.35759012299968,
+      "usage": {
+        "prompt_tokens": 35501,
+        "completion_tokens": 676,
+        "total_tokens": 36177,
+        "cached_prompt_tokens": 32378
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 32378,
+        "predicted_ms": 11982.52,
+        "predicted_n": 676,
+        "predicted_per_second": 56.332057029739985,
+        "predicted_per_token_ms": 17.751881481481483,
+        "prompt_ms": 9330.217,
+        "prompt_n": 3123,
+        "prompt_per_second": 334.7189031080413,
+        "prompt_per_token_ms": 2.9875814921549795
+      },
+      "files": {
+        "request.body": {
+          "sha256": "9f1f9e8d87c914231d65c725edaa6e0afcacc55004e0fd2592b24575e64ab257",
+          "bytes": 140400
+        },
+        "request.json": {
+          "sha256": "a531f188a5873ab90a73883bca222874053157fad7aa818bb294b56e9a0d41e6",
+          "bytes": 139995
+        },
+        "response.body": {
+          "sha256": "e3fc24ecb6ec331a68efcd52544a475dc6fb3c452edd7a06d31566871876944e",
+          "bytes": 3205
+        },
+        "response.json": {
+          "sha256": "9bc2f0e5b1cb5991e3b3f3eb9e13e0ade37472a131aa5e27a0919be47f7c73be",
+          "bytes": 3244
+        },
+        "transport.json": {
+          "sha256": "c34991704b1f116d9cd47dd73474fbc00fcae7e1764b18b44d7be7d02365dbc4",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 17,
+      "role": "implementation",
+      "elapsed_s": 15.635218301998975,
+      "usage": {
+        "prompt_tokens": 37381,
+        "completion_tokens": 605,
+        "total_tokens": 37986,
+        "cached_prompt_tokens": 36176
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 36176,
+        "predicted_ms": 11143.238,
+        "predicted_n": 605,
+        "predicted_per_second": 54.20327556496595,
+        "predicted_per_token_ms": 18.44906953642384,
+        "prompt_ms": 4443.922,
+        "prompt_n": 1205,
+        "prompt_per_second": 271.15687449059635,
+        "prompt_per_token_ms": 3.6879020746887963
+      },
+      "files": {
+        "request.body": {
+          "sha256": "0923ab5fe83c40d0ef5a160c7da0afd69d7094ef19329fcdfdc539ce52974999",
+          "bytes": 147909
+        },
+        "request.json": {
+          "sha256": "2d2d1a03e276e110c69067445f0aae87f80e7301179e6e18c4abc6b5feb5451f",
+          "bytes": 147482
+        },
+        "response.body": {
+          "sha256": "8b2e1a3609c260b8b8ec3c14d98bd1a53734dc14ab73a60378d257819a7737c0",
+          "bytes": 2875
+        },
+        "response.json": {
+          "sha256": "ef6125962a92e7c35d869df1d3b168942d04bf89a00d07a72bbd7bffd37a22c6",
+          "bytes": 2947
+        },
+        "transport.json": {
+          "sha256": "9a72eaa079ec0f6fd1addce362e17e4544c2e7c560553c92d537bc3f4da46773",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 18,
+      "role": "implementation",
+      "elapsed_s": 24.99011592200077,
+      "usage": {
+        "prompt_tokens": 39014,
+        "completion_tokens": 1104,
+        "total_tokens": 40118,
+        "cached_prompt_tokens": 37985
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 37985,
+        "predicted_ms": 21050.554,
+        "predicted_n": 1104,
+        "predicted_per_second": 52.39767086414923,
+        "predicted_per_token_ms": 19.08481776971895,
+        "prompt_ms": 3886.517,
+        "prompt_n": 1029,
+        "prompt_per_second": 264.76148181006283,
+        "prompt_per_token_ms": 3.7769844509232264
+      },
+      "files": {
+        "request.body": {
+          "sha256": "c131b29381b009476d3df4d15d530eea676c78dcda8c10b4dd01b72587b0bd6b",
+          "bytes": 154454
+        },
+        "request.json": {
+          "sha256": "a74f63c9c05cf50968e8f1475f9ad6cce1bb659b4041cce66a9189bcda4d05ca",
+          "bytes": 154005
+        },
+        "response.body": {
+          "sha256": "2ff9a6aa2a82515a4ca8dd1e7de7c17cb0e607484de9c4737f3726111624218c",
+          "bytes": 4292
+        },
+        "response.json": {
+          "sha256": "48fb713764607a81800b3ee7df1ce0601816782022b42a908a193c667516c88c",
+          "bytes": 4427
+        },
+        "transport.json": {
+          "sha256": "e593ddeef09163c01a56ad14703d9aeacb67bdd06dab71a4c28bf4de39352ee7",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 19,
+      "role": "implementation",
+      "elapsed_s": 35.222093374000906,
+      "usage": {
+        "prompt_tokens": 40779,
+        "completion_tokens": 1686,
+        "total_tokens": 42465,
+        "cached_prompt_tokens": 40117
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 40117,
+        "predicted_ms": 33081.357,
+        "predicted_n": 1686,
+        "predicted_per_second": 50.93503268321187,
+        "predicted_per_token_ms": 19.6328528189911,
+        "prompt_ms": 2087.057,
+        "prompt_n": 662,
+        "prompt_per_second": 317.193061809045,
+        "prompt_per_token_ms": 3.1526540785498485
+      },
+      "files": {
+        "request.body": {
+          "sha256": "6845f50427c3c4634b707bc9823a43f140c434e5f196cf8a944d6a839ebdb9dc",
+          "bytes": 160037
+        },
+        "request.json": {
+          "sha256": "01ca63f5de5484b761a16a4c2198c8b13848c63f2829f33b40127231679c03a2",
+          "bytes": 159566
+        },
+        "response.body": {
+          "sha256": "c8852e48c91e3ec164df93407c8148e75370d76b9990ebb5b384ec81b752af11",
+          "bytes": 7485
+        },
+        "response.json": {
+          "sha256": "9f25151d30194e0602090645acd23aa11534745a3a5ce4e00b6f400a38db2e06",
+          "bytes": 7506
+        },
+        "transport.json": {
+          "sha256": "a7ba8e8b3de8e578ecd92211bf385e08422be9cdfced340afb2884448d4395e3",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 20,
+      "role": "implementation",
+      "elapsed_s": 29.231948606000515,
+      "usage": {
+        "prompt_tokens": 43573,
+        "completion_tokens": 983,
+        "total_tokens": 44556,
+        "cached_prompt_tokens": 40775
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 40775,
+        "predicted_ms": 19266.955,
+        "predicted_n": 983,
+        "predicted_per_second": 50.968095373659196,
+        "predicted_per_token_ms": 19.620117107942974,
+        "prompt_ms": 9909.725,
+        "prompt_n": 2798,
+        "prompt_per_second": 282.34890473751796,
+        "prompt_per_token_ms": 3.54171729807005
+      },
+      "files": {
+        "request.body": {
+          "sha256": "793be961724216887fd96f8cc71074ad6a52bcb34b3864a328148f0efddb387f",
+          "bytes": 170400
+        },
+        "request.json": {
+          "sha256": "f809df47d57a968231e736f10d0f174b6bdfad848f3ade791cc64b062eb8abc3",
+          "bytes": 169907
+        },
+        "response.body": {
+          "sha256": "fdd098fda1e27eca58b517b3eae7dd3614d8abd863632c80ab994820b731fff8",
+          "bytes": 4528
+        },
+        "response.json": {
+          "sha256": "e9f492f753a280003f9bdb709ed45e8d11fe66aee61f83623cf80c23f04b5ceb",
+          "bytes": 4570
+        },
+        "transport.json": {
+          "sha256": "607338f18f61a189ff9e67e99208733e30306c30dd46a52dfa9d4accffd8f62e",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 21,
+      "role": "implementation",
+      "elapsed_s": 19.08443258999978,
+      "usage": {
+        "prompt_tokens": 45601,
+        "completion_tokens": 780,
+        "total_tokens": 46381,
+        "cached_prompt_tokens": 44555
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 44555,
+        "predicted_ms": 15510.024,
+        "predicted_n": 780,
+        "predicted_per_second": 50.225583145454834,
+        "predicted_per_token_ms": 19.910172015404363,
+        "prompt_ms": 3519.158,
+        "prompt_n": 1046,
+        "prompt_per_second": 297.2301897215186,
+        "prompt_per_token_ms": 3.364395793499044
+      },
+      "files": {
+        "request.body": {
+          "sha256": "851242a7c2aaf75b9898b0ac0d06f7924fbee8000cf47fe4551576c549747d3c",
+          "bytes": 177706
+        },
+        "request.json": {
+          "sha256": "15cffd26d48402c995caca7ee53de58810de75f000513e66d6193aebb33e8799",
+          "bytes": 177191
+        },
+        "response.body": {
+          "sha256": "8db3a4306886d58dcdd26aa5403276e532753e38431db68eb6b066378b5073eb",
+          "bytes": 3682
+        },
+        "response.json": {
+          "sha256": "07829e816a4b2a4b9243546527517e0f5c1b12e6254609cd6ffcd9ccff48850f",
+          "bytes": 3721
+        },
+        "transport.json": {
+          "sha256": "626a5cb32472153fdd927b52131f751f0586542adf4307ab3807d765af57a508",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 22,
+      "role": "implementation",
+      "elapsed_s": 21.99829114899876,
+      "usage": {
+        "prompt_tokens": 47009,
+        "completion_tokens": 947,
+        "total_tokens": 47956,
+        "cached_prompt_tokens": 46380
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 46380,
+        "predicted_ms": 19205.043,
+        "predicted_n": 947,
+        "predicted_per_second": 49.25789543923437,
+        "predicted_per_token_ms": 20.301313953488375,
+        "prompt_ms": 2735.734,
+        "prompt_n": 629,
+        "prompt_per_second": 229.9200141534228,
+        "prompt_per_token_ms": 4.349338632750397
+      },
+      "files": {
+        "request.body": {
+          "sha256": "1c59ac38ede9070fa92660af305ba39cb9144e2385af0276cd8875ce20992e97",
+          "bytes": 183286
+        },
+        "request.json": {
+          "sha256": "f853a61823af2d17e209294b7c10eb1d3ca0ed2af05fd88e873b1878c1d30144",
+          "bytes": 182749
+        },
+        "response.body": {
+          "sha256": "06bc7a04bd1706f1d515fbe47c6bbc4b1f106aa6bd91ecf88a10640b3c9c638a",
+          "bytes": 4813
+        },
+        "response.json": {
+          "sha256": "417840f8c8784e8087d4a217e26631e768733b45eb2be381500f8991fdde3124",
+          "bytes": 4879
+        },
+        "transport.json": {
+          "sha256": "b0af0e0e226d0d3cba4141298e95d5ef3e0fbc7b883e7d750da88e57df0acad0",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 23,
+      "role": "implementation",
+      "elapsed_s": 8.675003059999653,
+      "usage": {
+        "prompt_tokens": 48799,
+        "completion_tokens": 275,
+        "total_tokens": 49074,
+        "cached_prompt_tokens": 47955
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 47955,
+        "predicted_ms": 5692.9,
+        "predicted_n": 275,
+        "predicted_per_second": 48.13012700029862,
+        "predicted_per_token_ms": 20.77700729927007,
+        "prompt_ms": 2917.855,
+        "prompt_n": 844,
+        "prompt_per_second": 289.25357839920076,
+        "prompt_per_token_ms": 3.457174170616114
+      },
+      "files": {
+        "request.body": {
+          "sha256": "15794445cd2002366eec8db4485c5511110b65df2bf5726b97282dd8d27115b6",
+          "bytes": 190550
+        },
+        "request.json": {
+          "sha256": "f58f1a2551bab94c072250fe309995ac70c7f1f37841ffe1486b625b9bc910bc",
+          "bytes": 189991
+        },
+        "response.body": {
+          "sha256": "9fdb7f7b3941ec5fdb832c8569877cf30a7a4c7d1024bd01ae6fea86c2233d89",
+          "bytes": 1806
+        },
+        "response.json": {
+          "sha256": "0068cf819ce7c0d3d3998302af2db55ede9ee12c01e51016c31a0e9eca422e88",
+          "bytes": 1812
+        },
+        "transport.json": {
+          "sha256": "6e81fec5d07d5991ba3c0927007d136013a8bd54add10bd60ae9b175d803470f",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 24,
+      "role": "implementation",
+      "elapsed_s": 6.246433749000062,
+      "usage": {
+        "prompt_tokens": 49428,
+        "completion_tokens": 248,
+        "total_tokens": 49676,
+        "cached_prompt_tokens": 49073
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 49073,
+        "predicted_ms": 5089.645,
+        "predicted_n": 248,
+        "predicted_per_second": 48.529907292158875,
+        "predicted_per_token_ms": 20.605850202429153,
+        "prompt_ms": 1096.772,
+        "prompt_n": 355,
+        "prompt_per_second": 323.67711794247117,
+        "prompt_per_token_ms": 3.0894985915492956
+      },
+      "files": {
+        "request.body": {
+          "sha256": "01212e30b8ec4ab779d8cfbe4c5821df54d5ba49e46c88c51c8d50418340e1d1",
+          "bytes": 192770
+        },
+        "request.json": {
+          "sha256": "132da99566b0213ac2a5906e048648455969d602c101ff780e29b9525508cf3f",
+          "bytes": 192189
+        },
+        "response.body": {
+          "sha256": "991b021c03499fabf17ecaf8a90e71b981657530ae63d6bb87b0a9e7b4dbcb14",
+          "bytes": 1620
+        },
+        "response.json": {
+          "sha256": "b8a7f4a7d43e5666883538ea9cc39c69058eaceb0025f920ba3952352c8e80cd",
+          "bytes": 1623
+        },
+        "transport.json": {
+          "sha256": "e6d5d6de973e5a4a6b62132cdbd133b156cd850a9ef704cb3466dff266184d22",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 25,
+      "role": "implementation",
+      "elapsed_s": 5.353443617999801,
+      "usage": {
+        "prompt_tokens": 50131,
+        "completion_tokens": 179,
+        "total_tokens": 50310,
+        "cached_prompt_tokens": 49675
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 49675,
+        "predicted_ms": 3845.88,
+        "predicted_n": 179,
+        "predicted_per_second": 46.283295370630384,
+        "predicted_per_token_ms": 21.606067415730337,
+        "prompt_ms": 1445.36,
+        "prompt_n": 456,
+        "prompt_per_second": 315.492334089777,
+        "prompt_per_token_ms": 3.169649122807017
+      },
+      "files": {
+        "request.body": {
+          "sha256": "fa900a994e67d9a0f3c1ea3b27cd1b594dc94b47c6c3d7baf73ee5b8e76f26e6",
+          "bytes": 194990
+        },
+        "request.json": {
+          "sha256": "746991ba865a19a39b5589af6a1063c016cd751daf9ef68eb9e62d3dd09fcec9",
+          "bytes": 194387
+        },
+        "response.body": {
+          "sha256": "f6578edf53bf3db78fc5496e2be93e555c071321122e23ec721e1cf57160f955",
+          "bytes": 1420
+        },
+        "response.json": {
+          "sha256": "d6d154dbd82f09ffe4f1019c63a0b04cba6d614b43e01932ddcf929e371ec1c0",
+          "bytes": 1423
+        },
+        "transport.json": {
+          "sha256": "48018267f545c68ff93de9353e293621cbc849d2cc873ea29c949d87b08ca064",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 26,
+      "role": "implementation",
+      "elapsed_s": 14.44918020499972,
+      "usage": {
+        "prompt_tokens": 50569,
+        "completion_tokens": 633,
+        "total_tokens": 51202,
+        "cached_prompt_tokens": 50309
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 50309,
+        "predicted_ms": 13418.756,
+        "predicted_n": 633,
+        "predicted_per_second": 47.09825560581026,
+        "predicted_per_token_ms": 21.232208860759492,
+        "prompt_ms": 967.251,
+        "prompt_n": 260,
+        "prompt_per_second": 268.8030304440109,
+        "prompt_per_token_ms": 3.7201961538461537
+      },
+      "files": {
+        "request.body": {
+          "sha256": "638b0d2e5e5393f89a1e44582f3eca97bebf590e1c4b0baec379b775702fc844",
+          "bytes": 196561
+        },
+        "request.json": {
+          "sha256": "5485ac199d4bb248a531d42b54c9576e14f66528c93ff5649e28b67928319d28",
+          "bytes": 195936
+        },
+        "response.body": {
+          "sha256": "a2adf8fe8942a5f274fafec0f5bdff60428dcf4659af276770c1fd8300ce8fed",
+          "bytes": 3286
+        },
+        "response.json": {
+          "sha256": "cc7ddd65030c07bf79b214a02253b369d5820b2401f0d16d8c628d20c822e63d",
+          "bytes": 3301
+        },
+        "transport.json": {
+          "sha256": "e7cc811be429a593585a672540363190dd07e0bee8a30d3964c6114f7fedfcd6",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 27,
+      "role": "code_review",
+      "elapsed_s": 37.473395304001315,
+      "usage": {
+        "prompt_tokens": 7551,
+        "completion_tokens": 1043,
+        "total_tokens": 8594,
+        "cached_prompt_tokens": 0
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "stop"
+      ],
+      "timings": {
+        "cache_n": 0,
+        "predicted_ms": 12834.613,
+        "predicted_n": 1043,
+        "predicted_per_second": 81.18670972003598,
+        "predicted_per_token_ms": 12.317286948176584,
+        "prompt_ms": 23665.6,
+        "prompt_n": 7551,
+        "prompt_per_second": 319.07071868027856,
+        "prompt_per_token_ms": 3.1341014435174146
+      },
+      "files": {
+        "request.body": {
+          "sha256": "5030b2ec9cea77f441befc604b4224e651db719b86d27954e70150efa59bb637",
+          "bytes": 32143
+        },
+        "request.json": {
+          "sha256": "b529a73a5da57255f56ab4787a67fbd57d08d5b85f363f641dc198e28d19c769",
+          "bytes": 32119
+        },
+        "response.body": {
+          "sha256": "46ee81441703e18acd35ad21bea9cf45267329eb94c82ae18d8995f070baddd8",
+          "bytes": 4519
+        },
+        "response.json": {
+          "sha256": "7a8001256dd1e5a5f0cfb858a49ef63e81730b31a6c9a3e0f837a55afb9fe2a5",
+          "bytes": 4525
+        },
+        "transport.json": {
+          "sha256": "11d1da07c3000b84fb7b628202337bd58d7a348fb26e57a4ae5daeda876695ef",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 28,
+      "role": "implementation",
+      "elapsed_s": 9.382086927998898,
+      "usage": {
+        "prompt_tokens": 2251,
+        "completion_tokens": 119,
+        "total_tokens": 2370,
+        "cached_prompt_tokens": 0
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 0,
+        "predicted_ms": 1487.595,
+        "predicted_n": 119,
+        "predicted_per_second": 79.32266510710241,
+        "predicted_per_token_ms": 12.606737288135593,
+        "prompt_ms": 7638.679,
+        "prompt_n": 2251,
+        "prompt_per_second": 294.68446049375814,
+        "prompt_per_token_ms": 3.393460239893381
+      },
+      "files": {
+        "request.body": {
+          "sha256": "73e824bb79d42b58f5dabb4331c254691bb01cf66856a1082a3fdedb94a4bad0",
+          "bytes": 9318
+        },
+        "request.json": {
+          "sha256": "a18f972d95eda5b61593b09612b46114d887000016d236bb96f8fa1a13096a41",
+          "bytes": 9244
+        },
+        "response.body": {
+          "sha256": "f5aec11cb3034e4d76b420cc8a77655a2a4524e1a87a22a124419f1eddff2ac2",
+          "bytes": 1141
+        },
+        "response.json": {
+          "sha256": "fc3c584f1e728616f5fcc3b42bcc6618ddeeb3c23157332a80cf191c71ecd3eb",
+          "bytes": 1141
+        },
+        "transport.json": {
+          "sha256": "48add499c9199ba720a090fa047f49b5be58eebd08989b740144a62e14d526f0",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 29,
+      "role": "implementation",
+      "elapsed_s": 3.467643178999424,
+      "usage": {
+        "prompt_tokens": 3318,
+        "completion_tokens": 82,
+        "total_tokens": 3400,
+        "cached_prompt_tokens": 2369
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 2369,
+        "predicted_ms": 1338.443,
+        "predicted_n": 82,
+        "predicted_per_second": 60.51807958949317,
+        "predicted_per_token_ms": 16.523987654320987,
+        "prompt_ms": 2115.134,
+        "prompt_n": 949,
+        "prompt_per_second": 448.6713371351413,
+        "prompt_per_token_ms": 2.2288029504741833
+      },
+      "files": {
+        "request.body": {
+          "sha256": "d4f4aaad83688b37f2c1dadb281d1762056f1a5c23cbc0151b36df3e48dd15b0",
+          "bytes": 12276
+        },
+        "request.json": {
+          "sha256": "9b045bf052509d80de0179b05681ae51731d94899e1d6f1366e87a1f759b0bc6",
+          "bytes": 12165
+        },
+        "response.body": {
+          "sha256": "875e1c55d216a00ad68483a9ca2e6173a0bf4707ad2c4690b583b2ae3992c316",
+          "bytes": 1023
+        },
+        "response.json": {
+          "sha256": "8ceda5a1b59f7072714745a2a079f61c50cc13dc3f5da8961331b935df618a86",
+          "bytes": 1023
+        },
+        "transport.json": {
+          "sha256": "abd5d288b40ed889234529666df0bb04299e8a7cd1a67b38bd9c2f4dc212d239",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 30,
+      "role": "implementation",
+      "elapsed_s": 15.971568623001076,
+      "usage": {
+        "prompt_tokens": 8268,
+        "completion_tokens": 163,
+        "total_tokens": 8431,
+        "cached_prompt_tokens": 3399
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 3399,
+        "predicted_ms": 2092.945,
+        "predicted_n": 163,
+        "predicted_per_second": 77.40289400820375,
+        "predicted_per_token_ms": 12.919413580246914,
+        "prompt_ms": 13861.592,
+        "prompt_n": 4869,
+        "prompt_per_second": 351.25835474020585,
+        "prompt_per_token_ms": 2.846907373177244
+      },
+      "files": {
+        "request.body": {
+          "sha256": "35f1f9fee6fb411e294b45606faada2923b3b5ebb8a84e3f0073e86fe072328c",
+          "bytes": 32812
+        },
+        "request.json": {
+          "sha256": "b474bfc5889646898c2f3b89f5124ec9a18fa4f0ba69d660405d6b40afee8784",
+          "bytes": 32679
+        },
+        "response.body": {
+          "sha256": "33192378629dc4e0d54b5fadd4e2679800eea4968125785a02e7be64cbfde126",
+          "bytes": 1385
+        },
+        "response.json": {
+          "sha256": "57942226bf95872d6ee4dfd4ddd27965ece4d252591d5f04afb6b401775bed1e",
+          "bytes": 1385
+        },
+        "transport.json": {
+          "sha256": "028ac808bd7b15e47081eb116567495d049ca21a6a3de7540de8e76e7cfd2f08",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 31,
+      "role": "implementation",
+      "elapsed_s": 18.312847524999597,
+      "usage": {
+        "prompt_tokens": 9649,
+        "completion_tokens": 1128,
+        "total_tokens": 10777,
+        "cached_prompt_tokens": 8430
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 8430,
+        "predicted_ms": 14750.559,
+        "predicted_n": 1128,
+        "predicted_per_second": 76.40388408330831,
+        "predicted_per_token_ms": 13.08833984028394,
+        "prompt_ms": 3543.791,
+        "prompt_n": 1219,
+        "prompt_per_second": 343.98191089711554,
+        "prompt_per_token_ms": 2.9071296144380643
+      },
+      "files": {
+        "request.body": {
+          "sha256": "6885c541e68ea0faea4337f120c5ad2257af3d957950a5b8478ac29e919a3318",
+          "bytes": 38404
+        },
+        "request.json": {
+          "sha256": "e31c243c655108f295c625264bd85cf5030a2da51590bc0165e64248a81ef1f8",
+          "bytes": 38249
+        },
+        "response.body": {
+          "sha256": "cf3869aba9e2149555077b984a6f32f466e333370c18475c4cfc7e4a420d7d36",
+          "bytes": 5426
+        },
+        "response.json": {
+          "sha256": "8add512fbe47df35ebe02cdc295ee16547f35821e0dcf5d98d72ef3ac9e8db14",
+          "bytes": 5480
+        },
+        "transport.json": {
+          "sha256": "fcd41267b66bf80d459bed3857881cdc57334b6dc6a6157e278754f6f2becc9f",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 32,
+      "role": "implementation",
+      "elapsed_s": 14.052584906999982,
+      "usage": {
+        "prompt_tokens": 11055,
+        "completion_tokens": 1008,
+        "total_tokens": 12063,
+        "cached_prompt_tokens": 10776
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 10776,
+        "predicted_ms": 13234.53,
+        "predicted_n": 1008,
+        "predicted_per_second": 76.08883730665161,
+        "predicted_per_token_ms": 13.14253227408143,
+        "prompt_ms": 796.339,
+        "prompt_n": 279,
+        "prompt_per_second": 350.35330430884335,
+        "prompt_per_token_ms": 2.85426164874552
+      },
+      "files": {
+        "request.body": {
+          "sha256": "c6ebdc9bbd9172b6bb21fce2b43b7533a8abd38a1b51ca51d52c214508516758",
+          "bytes": 44004
+        },
+        "request.json": {
+          "sha256": "608343355a7fd8ea500c6c72b3fd1f4bd603e363741725168ec2d8d4371a72cc",
+          "bytes": 43827
+        },
+        "response.body": {
+          "sha256": "64996eb5e819840edb8ddd59345343c0c7e560bbeec1dec43222157ee527ef32",
+          "bytes": 4961
+        },
+        "response.json": {
+          "sha256": "94e757306a496c7a5360480b1ecedc054bcc3ba2cfd7e05f25079f177a21a36e",
+          "bytes": 4997
+        },
+        "transport.json": {
+          "sha256": "61125e6f11af6e0f864266f01c6273a7c08fdd34da219494e9ec4dde5e4e8479",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 33,
+      "role": "implementation",
+      "elapsed_s": 22.439245683999616,
+      "usage": {
+        "prompt_tokens": 13205,
+        "completion_tokens": 1359,
+        "total_tokens": 14564,
+        "cached_prompt_tokens": 12062
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 12062,
+        "predicted_ms": 19450.337,
+        "predicted_n": 1359,
+        "predicted_per_second": 69.81884169924665,
+        "predicted_per_token_ms": 14.322781296023564,
+        "prompt_ms": 2964.329,
+        "prompt_n": 1143,
+        "prompt_per_second": 385.584730979591,
+        "prompt_per_token_ms": 2.5934636920384952
+      },
+      "files": {
+        "request.body": {
+          "sha256": "27022cf1936351dc61f28bd4f0359bebc5c6320a84a852dc8d0bca9181554e14",
+          "bytes": 51895
+        },
+        "request.json": {
+          "sha256": "1b6acdb29c2bf44c8c805aad3378974a0d5ed1723c5e9db2b58403c9b6df3553",
+          "bytes": 51681
+        },
+        "response.body": {
+          "sha256": "fe315396036fa2fe1f4b97eab1d50285897604a1b35cf0ec0804c1fdf522bebf",
+          "bytes": 6557
+        },
+        "response.json": {
+          "sha256": "cdd06c0691fdf7970c3649b5f90d6395ba581c3544dcb2a0e12513a87ffddbde",
+          "bytes": 6596
+        },
+        "transport.json": {
+          "sha256": "ecac560831d7cce6d6efe9ff2ce54bae0d8f6fe3ccd282cc750a2a2fdfb04fce",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 34,
+      "role": "implementation",
+      "elapsed_s": 36.29338995899889,
+      "usage": {
+        "prompt_tokens": 15012,
+        "completion_tokens": 2471,
+        "total_tokens": 17483,
+        "cached_prompt_tokens": 14563
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 14563,
+        "predicted_ms": 35642.506,
+        "predicted_n": 2471,
+        "predicted_per_second": 69.29927991034076,
+        "predicted_per_token_ms": 14.430164372469637,
+        "prompt_ms": 623.133,
+        "prompt_n": 449,
+        "prompt_per_second": 720.5524342315364,
+        "prompt_per_token_ms": 1.3878240534521158
+      },
+      "files": {
+        "request.body": {
+          "sha256": "352bcf3fd142f06c658d43ae6c4990021b6565a34b84524be667717bd26c39c8",
+          "bytes": 59575
+        },
+        "request.json": {
+          "sha256": "bb3c7acbc9b1ba13b6de19ebef1f2ccc04b80ff5adfe5211bd4a78da8c8175d9",
+          "bytes": 59339
+        },
+        "response.body": {
+          "sha256": "91b2f311fae898a6e1dea81cfef0f2a249e5663fcebd1c53000f7228c52dff14",
+          "bytes": 11669
+        },
+        "response.json": {
+          "sha256": "38cb324aefd5f92e8d728900af10662683d10aad10838711d62ffb9f89098889",
+          "bytes": 11699
+        },
+        "transport.json": {
+          "sha256": "2f84b8ca5132a570153665b43f38bcac11128525fd6d06464b08c1ff094361f4",
+          "bytes": 72
+        }
+      }
+    },
+    {
+      "number": 35,
+      "role": "implementation",
+      "elapsed_s": 24.630355973000405,
+      "usage": {
+        "prompt_tokens": 19197,
+        "completion_tokens": 1465,
+        "total_tokens": 20662,
+        "cached_prompt_tokens": 17482
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 17482,
+        "predicted_ms": 21321.83,
+        "predicted_n": 1465,
+        "predicted_per_second": 68.66202385067324,
+        "predicted_per_token_ms": 14.564091530054647,
+        "prompt_ms": 3277.401,
+        "prompt_n": 1715,
+        "prompt_per_second": 523.280489631876,
+        "prompt_per_token_ms": 1.9110209912536442
+      },
+      "files": {
+        "request.body": {
+          "sha256": "0610d529f0bd4be511d410833e4f30a1af683df6c62bb03bb059df70e457364a",
+          "bytes": 77697
+        },
+        "request.json": {
+          "sha256": "447e8bd27d0de8533de5015617d14cdb77f70cd1cfe0cf3fedd1f42410156fd2",
+          "bytes": 77439
+        },
+        "response.body": {
+          "sha256": "dc3f615c4224a4fcd38f941c39a8734ccb676d5137b172ab81d787bfe5a6128e",
+          "bytes": 6607
+        },
+        "response.json": {
+          "sha256": "76f905ce193f9178175e91e328c82c6b45cbe34335fc264ab813499379bcbe03",
+          "bytes": 6680
+        },
+        "transport.json": {
+          "sha256": "50cc96f3ceaf72876fe96eb49cebe84caae3b350dffbd51d95d67060a7c636a1",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 36,
+      "role": "implementation",
+      "elapsed_s": 8.492411539000386,
+      "usage": {
+        "prompt_tokens": 21972,
+        "completion_tokens": 210,
+        "total_tokens": 22182,
+        "cached_prompt_tokens": 20661
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 20661,
+        "predicted_ms": 3455.477,
+        "predicted_n": 210,
+        "predicted_per_second": 60.48369009546294,
+        "predicted_per_token_ms": 16.533382775119616,
+        "prompt_ms": 5000.573,
+        "prompt_n": 1311,
+        "prompt_per_second": 262.16995532311995,
+        "prompt_per_token_ms": 3.814319603356217
+      },
+      "files": {
+        "request.body": {
+          "sha256": "f890d2e3cb01de34b3301a0eda188c334638a83896ef3d13829b13f02d70cb2b",
+          "bytes": 88269
+        },
+        "request.json": {
+          "sha256": "eb157846d301df6ff3dd12742c3891a1161256ebb826900bbd535bfe287726a2",
+          "bytes": 87989
+        },
+        "response.body": {
+          "sha256": "af2a477e672a301d2a9c554e63fc8a83660dc1b29a2a9d5fc6639392bc267a8d",
+          "bytes": 1475
+        },
+        "response.json": {
+          "sha256": "3b1a6a5ec182f3731b1408a325b8c15c52176b67021542e6c982ebda140f7a18",
+          "bytes": 1475
+        },
+        "transport.json": {
+          "sha256": "3e635915574b3c7dff416dd46278feb0e7e1a11519789c4f9342c6b4d541b284",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 37,
+      "role": "implementation",
+      "elapsed_s": 20.082202503999724,
+      "usage": {
+        "prompt_tokens": 22454,
+        "completion_tokens": 1134,
+        "total_tokens": 23588,
+        "cached_prompt_tokens": 22181
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 22181,
+        "predicted_ms": 18606.81,
+        "predicted_n": 1134,
+        "predicted_per_second": 60.89168428118522,
+        "predicted_per_token_ms": 16.42260370697264,
+        "prompt_ms": 1441.315,
+        "prompt_n": 273,
+        "prompt_per_second": 189.41036484044085,
+        "prompt_per_token_ms": 5.279542124542124
+      },
+      "files": {
+        "request.body": {
+          "sha256": "fea1ab452821ccaccf9180bbb681424129104e61bd7f2d17e6d4949811b025e3",
+          "bytes": 89923
+        },
+        "request.json": {
+          "sha256": "0e5f67d5f34bff9340962796b90f9dfe89d4448da1a0fc980d87ba89acb1b96f",
+          "bytes": 89621
+        },
+        "response.body": {
+          "sha256": "bcc3db50e3cee048c01d5fcc9572e4d2c3487c018531a2d18ed45c8320e8db7d",
+          "bytes": 5503
+        },
+        "response.json": {
+          "sha256": "eb115949869e3b5d0f6f2439e98457a381ea7a8608f23053c6717064e70870e5",
+          "bytes": 5512
+        },
+        "transport.json": {
+          "sha256": "045836021b5831d9a70ccc75cb050604656f568d606bc7852d9f9cac31061197",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 38,
+      "role": "implementation",
+      "elapsed_s": 3.5688083580007515,
+      "usage": {
+        "prompt_tokens": 23855,
+        "completion_tokens": 129,
+        "total_tokens": 23984,
+        "cached_prompt_tokens": 23587
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 23587,
+        "predicted_ms": 2235.064,
+        "predicted_n": 129,
+        "predicted_per_second": 57.26905359309622,
+        "predicted_per_token_ms": 17.4614375,
+        "prompt_ms": 1297.053,
+        "prompt_n": 268,
+        "prompt_per_second": 206.6222428844465,
+        "prompt_per_token_ms": 4.83975
+      },
+      "files": {
+        "request.body": {
+          "sha256": "9f87a13886e02a3be1b64ec4ee17ccb06b74f24af53d590c23757705e17020be",
+          "bytes": 95552
+        },
+        "request.json": {
+          "sha256": "4e1619045e29f63dae39dd04b1dd3235d239fc80078ae9cbb4a399a876ef8419",
+          "bytes": 95228
+        },
+        "response.body": {
+          "sha256": "cee3b549861c018cadd6c1cbf5efb2625a7a96b587987eb573a3ab05debc32d1",
+          "bytes": 1207
+        },
+        "response.json": {
+          "sha256": "014c7ea1a54aafc15333674e588c4ac73e2c691fabb7afcf9379b2103071bd22",
+          "bytes": 1210
+        },
+        "transport.json": {
+          "sha256": "55c07b69218ec0b8ebbf82181ca1b857d7bfc47f7268671e08135165c2059404",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 39,
+      "role": "implementation",
+      "elapsed_s": 4.565772568001194,
+      "usage": {
+        "prompt_tokens": 24223,
+        "completion_tokens": 161,
+        "total_tokens": 24384,
+        "cached_prompt_tokens": 23983
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 23983,
+        "predicted_ms": 3037.784,
+        "predicted_n": 161,
+        "predicted_per_second": 52.66997258527927,
+        "predicted_per_token_ms": 18.986150000000002,
+        "prompt_ms": 1489.233,
+        "prompt_n": 240,
+        "prompt_per_second": 161.15678339118193,
+        "prompt_per_token_ms": 6.2051375
+      },
+      "files": {
+        "request.body": {
+          "sha256": "497c7e0c459db21403101e96ee174a4f3f7cd87e9bed82c96c69694271a49f67",
+          "bytes": 96843
+        },
+        "request.json": {
+          "sha256": "2ba8a44e453b1a5b72a276f024e232a789afe04b42de78c93e497bfc874fca2b",
+          "bytes": 96497
+        },
+        "response.body": {
+          "sha256": "fa9f92d16130cf071796baa3f18054ae3f01382744d3d2f981fe0525b4ad91d7",
+          "bytes": 1457
+        },
+        "response.json": {
+          "sha256": "12ba6805c2613350a358204168d903fb917135f8418414190e866ac66db7c7b2",
+          "bytes": 1460
+        },
+        "transport.json": {
+          "sha256": "9ef1f522dd85dfbc97fc8d98e0c75d881c8f1b987772877c9640dd11e68605ae",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 40,
+      "role": "implementation",
+      "elapsed_s": 4.367102378999334,
+      "usage": {
+        "prompt_tokens": 24589,
+        "completion_tokens": 203,
+        "total_tokens": 24792,
+        "cached_prompt_tokens": 24383
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 24383,
+        "predicted_ms": 3404.276,
+        "predicted_n": 203,
+        "predicted_per_second": 59.33713952687737,
+        "predicted_per_token_ms": 16.852851485148513,
+        "prompt_ms": 925.193,
+        "prompt_n": 206,
+        "prompt_per_second": 222.65624577790797,
+        "prompt_per_token_ms": 4.4912281553398055
+      },
+      "files": {
+        "request.body": {
+          "sha256": "472be8857db48310187f8c7401dc1ae21d4c93a7e72043a1e7a185fe8e4f0f54",
+          "bytes": 98289
+        },
+        "request.json": {
+          "sha256": "343dd2e86a058eb07fe7483ad9e2844004b3b000fbd776d8eef8537a2cba14b4",
+          "bytes": 97921
+        },
+        "response.body": {
+          "sha256": "34410a3615b63e6886db32f0036288d042f7a94bdcc3ebbe6436d63d4ff9d698",
+          "bytes": 1546
+        },
+        "response.json": {
+          "sha256": "8a5f9cf35511bc8a3c9b3af5ebabf04a5f2211aee732d8e8af789578ee71b079",
+          "bytes": 1549
+        },
+        "transport.json": {
+          "sha256": "f5538ad58d5aa98c59fb15b1bf25ad30e5cd5cb1f38a3e4efba7d00ad5be7970",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 41,
+      "role": "implementation",
+      "elapsed_s": 3.3075015989998064,
+      "usage": {
+        "prompt_tokens": 25086,
+        "completion_tokens": 114,
+        "total_tokens": 25200,
+        "cached_prompt_tokens": 24791
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 24791,
+        "predicted_ms": 2037.26,
+        "predicted_n": 114,
+        "predicted_per_second": 55.466656195085555,
+        "predicted_per_token_ms": 18.028849557522125,
+        "prompt_ms": 1229.935,
+        "prompt_n": 295,
+        "prompt_per_second": 239.85007337786143,
+        "prompt_per_token_ms": 4.169271186440678
+      },
+      "files": {
+        "request.body": {
+          "sha256": "ac4be36eba5e451365e7951ccacf50e193df46a5aedc44464e49bde86b37b48c",
+          "bytes": 100228
+        },
+        "request.json": {
+          "sha256": "9421e66ca30d190036d462c1f50442e5cb0bff7ee914d9a6524821a5b90193bb",
+          "bytes": 99838
+        },
+        "response.body": {
+          "sha256": "1f86e61d080b63905d2bc25c522be953899e05fc8dbc92007efb7432fb0927f1",
+          "bytes": 1118
+        },
+        "response.json": {
+          "sha256": "a08a1e391b6085ed66b1a6fbd2fbb8d8e2110e13808e6460e0002d70427886aa",
+          "bytes": 1121
+        },
+        "transport.json": {
+          "sha256": "ae34b65be751ca8f0f53cd265115291485a92785ddb98dbf603e5561fd9b8287",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 42,
+      "role": "implementation",
+      "elapsed_s": 5.8482750299990585,
+      "usage": {
+        "prompt_tokens": 25422,
+        "completion_tokens": 276,
+        "total_tokens": 25698,
+        "cached_prompt_tokens": 25199
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 25199,
+        "predicted_ms": 4667.996,
+        "predicted_n": 276,
+        "predicted_per_second": 58.911789984395874,
+        "predicted_per_token_ms": 16.97453090909091,
+        "prompt_ms": 1139.911,
+        "prompt_n": 223,
+        "prompt_per_second": 195.62930790210814,
+        "prompt_per_token_ms": 5.111708520179373
+      },
+      "files": {
+        "request.body": {
+          "sha256": "1869eec773d742672dbd53b127f9afe870025b82923f7a3b6ed35b9180309462",
+          "bytes": 101327
+        },
+        "request.json": {
+          "sha256": "059eecb4af24f66c70c9ef672743bbd60ee82f8a69c75d4ef58971ef7b1c32bc",
+          "bytes": 100915
+        },
+        "response.body": {
+          "sha256": "d4802a754e0e9439e3e15fd733cad93525f19b60fb9ec77e78f569a1ded82e60",
+          "bytes": 1893
+        },
+        "response.json": {
+          "sha256": "56a0e990caf31488ac9a666e51bf16041a1749f64d83d750fed90652726ce8a0",
+          "bytes": 1896
+        },
+        "transport.json": {
+          "sha256": "58b8670af84f0d90391ecc8d00b5ce8a2b4aae094d79321a66bbb42ab23b29aa",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 43,
+      "role": "implementation",
+      "elapsed_s": 4.234267353998803,
+      "usage": {
+        "prompt_tokens": 26224,
+        "completion_tokens": 86,
+        "total_tokens": 26310,
+        "cached_prompt_tokens": 25697
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 25697,
+        "predicted_ms": 1512.636,
+        "predicted_n": 86,
+        "predicted_per_second": 56.19329435501998,
+        "predicted_per_token_ms": 17.795717647058822,
+        "prompt_ms": 2680.806,
+        "prompt_n": 527,
+        "prompt_per_second": 196.58266954042924,
+        "prompt_per_token_ms": 5.086918406072106
+      },
+      "files": {
+        "request.body": {
+          "sha256": "23d8c2a4bacfaef3d6e4c184b564a1144d933519d2e14433c59c3b803bd6a055",
+          "bytes": 104294
+        },
+        "request.json": {
+          "sha256": "8a499e7534b6de6667d559ed0d4e249351dea4291268048591c4b1b8fc1b02bc",
+          "bytes": 103860
+        },
+        "response.body": {
+          "sha256": "f145728ca798b2367bfcd8a3d1f6edc2fba0fe173f15506a170af09082e3fa52",
+          "bytes": 1014
+        },
+        "response.json": {
+          "sha256": "5e1cb7fcb1a18b30bc5dd25d38b10546737b427ba2bfeeb43bdcec5706181509",
+          "bytes": 1014
+        },
+        "transport.json": {
+          "sha256": "a639ae9f127cd4bc7e53ad5495c95f2fb028aaf7eac5c0828bbc3b03641762e6",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 44,
+      "role": "implementation",
+      "elapsed_s": 8.131204895000337,
+      "usage": {
+        "prompt_tokens": 28007,
+        "completion_tokens": 234,
+        "total_tokens": 28241,
+        "cached_prompt_tokens": 26309
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 26309,
+        "predicted_ms": 3742.351,
+        "predicted_n": 234,
+        "predicted_per_second": 62.260327799289804,
+        "predicted_per_token_ms": 16.061592274678112,
+        "prompt_ms": 4343.782,
+        "prompt_n": 1698,
+        "prompt_per_second": 390.9035950699183,
+        "prompt_per_token_ms": 2.5581755005889284
+      },
+      "files": {
+        "request.body": {
+          "sha256": "6aa84a136a1f14823f90d7939c69c0097b8e13d3d0c53b50084eac37afd547de",
+          "bytes": 112452
+        },
+        "request.json": {
+          "sha256": "d82995002b3f5212e763e70457f1f89c9fde9da5ca33f241069c1a428cc8adfa",
+          "bytes": 111996
+        },
+        "response.body": {
+          "sha256": "712dee26f52c6dbeb5a28c46fb381aed350453949726bc6a0f3b11eed63dfa8b",
+          "bytes": 1620
+        },
+        "response.json": {
+          "sha256": "10378b16c0924824e7fa4147d3fc050d7059e74ff724aa790e11ee5bc81e790d",
+          "bytes": 1623
+        },
+        "transport.json": {
+          "sha256": "e6d5d6de973e5a4a6b62132cdbd133b156cd850a9ef704cb3466dff266184d22",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 45,
+      "role": "implementation",
+      "elapsed_s": 21.507429395000145,
+      "usage": {
+        "prompt_tokens": 29216,
+        "completion_tokens": 956,
+        "total_tokens": 30172,
+        "cached_prompt_tokens": 28240
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 28240,
+        "predicted_ms": 16706.272,
+        "predicted_n": 956,
+        "predicted_per_second": 57.16415966410698,
+        "predicted_per_token_ms": 17.493478534031414,
+        "prompt_ms": 4755.074,
+        "prompt_n": 976,
+        "prompt_per_second": 205.25442926860865,
+        "prompt_per_token_ms": 4.8720020491803275
+      },
+      "files": {
+        "request.body": {
+          "sha256": "1ea9271d59c775762119f5ba362c9b5d1d4fd6620b2622e283d7ce7e244fd957",
+          "bytes": 117878
+        },
+        "request.json": {
+          "sha256": "ebf29d021a64de383765ff36a16999356497783d7535958d1b0eff2ae4e74b9c",
+          "bytes": 117400
+        },
+        "response.body": {
+          "sha256": "ad0adf2e32f0ae9824c333fafa100e44303b69d9aac62a810a92e2bd0b5d2eb2",
+          "bytes": 4762
+        },
+        "response.json": {
+          "sha256": "be27a17c61c38f4058b5c9a9f5f3b25e4ceee7843f36e9edf611f15ae162ea58",
+          "bytes": 4819
+        },
+        "transport.json": {
+          "sha256": "5fd039945086460db1a7509701639fd5c3a48fd467d9d12604f06874636117b3",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 46,
+      "role": "implementation",
+      "elapsed_s": 3.4119419300004665,
+      "usage": {
+        "prompt_tokens": 30447,
+        "completion_tokens": 84,
+        "total_tokens": 30531,
+        "cached_prompt_tokens": 30171
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 30171,
+        "predicted_ms": 1806.161,
+        "predicted_n": 84,
+        "predicted_per_second": 45.95382139244508,
+        "predicted_per_token_ms": 21.760975903614458,
+        "prompt_ms": 1554.67,
+        "prompt_n": 276,
+        "prompt_per_second": 177.52963651450145,
+        "prompt_per_token_ms": 5.63286231884058
+      },
+      "files": {
+        "request.body": {
+          "sha256": "f7345f14ca0cc9ce964e6f37900fb6dead72c0a6e817872b01122d65854c1934",
+          "bytes": 122966
+        },
+        "request.json": {
+          "sha256": "c25df69daeacb9b4119347f5e62822980d59214db235a84ea798769b5241bd7f",
+          "bytes": 122466
+        },
+        "response.body": {
+          "sha256": "cc90734f58506eb8ba5923fb4a72af8aaf0c526d056a69ebf497469a64a83dcc",
+          "bytes": 1017
+        },
+        "response.json": {
+          "sha256": "9ce6e8ff937b7634e3a6f7181bc3b44c229bc9136665a52de45a86b8fcf8e0a4",
+          "bytes": 1017
+        },
+        "transport.json": {
+          "sha256": "5e573423f70d99fb914406ff3e43d361e1c4ed21fda3c7cc036a6d740b5833cf",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 47,
+      "role": "implementation",
+      "elapsed_s": 13.501739191000524,
+      "usage": {
+        "prompt_tokens": 30919,
+        "completion_tokens": 680,
+        "total_tokens": 31599,
+        "cached_prompt_tokens": 30530
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 30530,
+        "predicted_ms": 11856.266,
+        "predicted_n": 680,
+        "predicted_per_second": 57.26929540885806,
+        "predicted_per_token_ms": 17.46136377025037,
+        "prompt_ms": 1597.555,
+        "prompt_n": 389,
+        "prompt_per_second": 243.4970939967638,
+        "prompt_per_token_ms": 4.106825192802057
+      },
+      "files": {
+        "request.body": {
+          "sha256": "06aa54eb1dfb9d4eb647c23e4c61a34adeefa8b23a5e57f9303ac48149617da3",
+          "bytes": 124827
+        },
+        "request.json": {
+          "sha256": "08b4a10fc74aefe90e26706c6ef3bf60482f6881d0b68f99c61736c2ff936202",
+          "bytes": 124305
+        },
+        "response.body": {
+          "sha256": "899838ceab8b6f44e300a6802b8aae4fcafaad0c79e7d5b4cd313a7e16a94eba",
+          "bytes": 3509
+        },
+        "response.json": {
+          "sha256": "3956fd3e5d3dc914988962643c34430669b4475329fe3f34382b8d6ff56c3e6e",
+          "bytes": 3539
+        },
+        "transport.json": {
+          "sha256": "279a132c94acda86c619bd1b1d01bbd4623a0f4e74b39b0d0a21dd16b466af01",
+          "bytes": 71
+        }
+      }
+    },
+    {
+      "number": 48,
+      "role": "implementation",
+      "elapsed_s": 8.216664084999138,
+      "usage": {
+        "prompt_tokens": 31885,
+        "completion_tokens": 387,
+        "total_tokens": 32272,
+        "cached_prompt_tokens": 31598
+      },
+      "response_model": "flash-next-coder",
+      "finish_reason": [
+        "tool_calls"
+      ],
+      "timings": {
+        "cache_n": 31598,
+        "predicted_ms": 6778.682,
+        "predicted_n": 387,
+        "predicted_per_second": 56.94322288610087,
+        "predicted_per_token_ms": 17.561352331606216,
+        "prompt_ms": 1388.843,
+        "prompt_n": 287,
+        "prompt_per_second": 206.64682761118425,
+        "prompt_per_token_ms": 4.839174216027875
+      },
+      "files": {
+        "request.body": {
+          "sha256": "4b731cbe26304593bc1e4f8cf79b5fb862bd0fe413cc79cfc26973c2263b5d7e",
+          "bytes": 128576
+        },
+        "request.json": {
+          "sha256": "1da991ec010ae47485f024dbf4a85355e9c8a7b193cdf1f893f303d8051f527a",
+          "bytes": 128032
+        },
+        "response.body": {
+          "sha256": "baab3818ca592d6344b54e633e3a56a3d33805bc82099821ceb5c3908bc34484",
+          "bytes": 2112
+        },
+        "response.json": {
+          "sha256": "c108ca046f78bfb1da011d765c64375c735d30ff023089ba441da42c9893fa16",
+          "bytes": 2124
+        },
+        "transport.json": {
+          "sha256": "74a4d2f4c063e7d94dc7a38fef09ef0b2a4cf2a4726ec0ac07de175e66547c7b",
+          "bytes": 71
+        }
+      }
+    }
+  ],
+  "primary_hashes": {
+    "budget.json": "d841a1f944c34ac8c3ac168a9901c311a345640d7431fba44d82ebbc7ec9d7dd",
+    "result.json": "6903efb8cee068621296820c930f64a3dd1e12d95db058631805407846768deb",
+    "progress.jsonl": "1621e4869eb572239e53a2404ff6e20633505a0e9da1712322c7f09402cedbf7",
+    "spec.json": "a09674726ca6053b4a13bd741aa3fec2e4fbab476d35137b2a38d034706ac73b",
+    "factory/300151e5e413/task.json": "55d2ebee5ab59a3dbe391aab9b75844366710d678d92f3aee2f5de4e78e4e4cf",
+    "factory/ba6255bd4d74/accepted.json": "f43d96e2bb1c1a2f11ae939233b5211136954e9a21fbb3d518c2e6a03f4468ce",
+    "checkpoint.json": "52fe3a1b121a40713ae3266388f32dd04ba731e3df21738735ae5181fbe9880b",
+    "handoff-restoration.json": "72f6b027378f490fd9b094ed56a5490ce326efea742fe9fba8e4bfe1b8e7522c",
+    "plan.json": "0bd70f794e05bbb54c3eb5de24a66b52a3a795c1e7c60ac724beb4526ab904e1",
+    "plan-review.json": "915795812effacdc97129d7c9b5a60b6267dc75adf58a3d4dd90947a0915aea7"
+  },
+  "original_source_matches_frozen_fixture": true,
+  "original_source_file_count": 9,
+  "request_max_raw_bytes": 196561,
+  "response_max_raw_bytes": 14622,
+  "worker_turns": [
+    {
+      "run_id": "ba6255bd4d74",
+      "turns": 24,
+      "limited": true,
+      "summary_status": "turn_budget_exhausted"
+    },
+    {
+      "run_id": "300151e5e413",
+      "returned_turns": 21,
+      "denied_planned_turn": 22,
+      "summary_status": "no_worker_result_budget_exception"
+    }
+  ],
+  "request_allocation": {
+    "planner": [
+      1
+    ],
+    "plan_review": [
+      2
+    ],
+    "task1_implementation": [
+      3,
+      26
+    ],
+    "task1_review": [
+      27
+    ],
+    "task2_implementation": [
+      28,
+      48
+    ],
+    "task2_review": [],
+    "final_full_review": []
+  },
+  "actual_mode_restoration_changed_fingerprint": true,
+  "arm_outcome": "failed",
+  "final_acceptance": false
+}

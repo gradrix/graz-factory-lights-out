@@ -1,0 +1,111 @@
+{
+  "controller_alive": false,
+  "pid": 19815,
+  "arms": [
+    {
+      "arm": "1-manifest-reconcile-direct",
+      "calls": 23,
+      "remaining_s": -871.2,
+      "roles": {
+        "code_review": 2,
+        "implementation": 21
+      },
+      "last_call": {
+        "number": 23,
+        "role": "code_review",
+        "status": "returned"
+      },
+      "status": "accepted",
+      "stop": null,
+      "cleanup": true,
+      "idle": true,
+      "work_s": 321.07706248199975,
+      "child": {
+        "status": "accepted",
+        "children": [
+          "b420f7770b76"
+        ],
+        "candidate": "5dc1f9fd353e215802c8b363f20db41371ae5db99b086601c054a348bb3d918d"
+      }
+    },
+    {
+      "arm": "2-manifest-reconcile-decomposed",
+      "calls": 36,
+      "remaining_s": -547.7,
+      "roles": {
+        "code_review": 3,
+        "implementation": 31,
+        "plan_review": 1,
+        "planner": 1
+      },
+      "last_call": {
+        "number": 36,
+        "role": "code_review",
+        "status": "returned"
+      },
+      "status": "accepted",
+      "stop": null,
+      "cleanup": true,
+      "idle": true,
+      "work_s": 494.78466609799943,
+      "child": {
+        "status": "accepted",
+        "children": [
+          "b90b66156d7f",
+          "037a513a8192"
+        ],
+        "candidate": "f3170468840e203ac45fe8e2f563a736b774ad25794bbca53c41197825f9742a"
+      }
+    },
+    {
+      "arm": "3-config-preview-decomposed",
+      "calls": 48,
+      "remaining_s": -50.4,
+      "roles": {
+        "code_review": 1,
+        "implementation": 45,
+        "plan_review": 1,
+        "planner": 1
+      },
+      "last_call": {
+        "number": 48,
+        "role": "implementation",
+        "status": "returned"
+      },
+      "status": "failed",
+      "stop": null,
+      "cleanup": true,
+      "idle": true,
+      "work_s": 873.5399703910007,
+      "child": {
+        "status": "failed",
+        "error_type": "RuntimeError",
+        "error": "Shared completion request budget exhausted"
+      }
+    },
+    {
+      "arm": "4-config-preview-direct",
+      "calls": 48,
+      "remaining_s": 825.7,
+      "roles": {
+        "implementation": 48
+      },
+      "last_call": {
+        "number": 48,
+        "role": "implementation",
+        "status": "returned"
+      },
+      "status": "failed",
+      "stop": null,
+      "cleanup": true,
+      "idle": true,
+      "work_s": 963.985982401,
+      "child": {
+        "status": "failed",
+        "error_type": "RuntimeError",
+        "error": "Shared completion request budget exhausted"
+      }
+    }
+  ],
+  "artifact_manifest_present": true
+}

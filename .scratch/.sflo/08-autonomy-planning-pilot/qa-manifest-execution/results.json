@@ -1,0 +1,441 @@
+{
+  "rows": [
+    {
+      "arm": 1,
+      "role": "original",
+      "exit": 1,
+      "elapsed_s": 0.5819608620004146,
+      "checks": [
+        {
+          "name": "public-boundaries-and-nonmutation",
+          "passed": true
+        },
+        {
+          "name": "asymmetric-renames-permutation",
+          "passed": true
+        },
+        {
+          "name": "absolute-cli-unrelated-cwd",
+          "passed": true
+        },
+        {
+          "name": "documented-root-unittest",
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "."
+          ],
+          "cwd": "/candidate",
+          "exit": 1,
+          "stdout": "",
+          "stderr": "..E........\n======================================================================\nERROR: test_cli_success_and_errors (tests.test_manifest_tool.CliBehavior.test_cli_success_and_errors)\nExit 0 with only the JSON result; exit 2 with the fixed error.\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/candidate/tests/test_manifest_tool.py\", line 184, in test_cli_success_and_errors\n    code, out, err = self._run_cli(payload)\n                     ^^^^^^^^^^^^^^^^^^^^^^\n  File \"/candidate/tests/test_manifest_tool.py\", line 176, in _run_cli\n    proc = subprocess.run([ 'python', 'main.py' ],\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/subprocess.py\", line 548, in run\n    with Popen(*popenargs, **kwargs) as process:\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/local/lib/python3.12/subprocess.py\", line 1026, in __init__\n    self._execute_child(args, executable, preexec_fn, close_fds,\n  File \"/usr/local/lib/python3.12/subprocess.py\", line 1955, in _execute_child\n    raise child_exception_type(errno_num, err_msg, err_filename)\nFileNotFoundError: [Errno 2] No such file or directory: '/workspace'\n\n----------------------------------------------------------------------\nRan 11 tests in 0.002s\n\nFAILED (errors=1)\n",
+          "passed": false
+        },
+        {
+          "name": "literal-readme-compare-payload-and-outcome",
+          "path_substitution_only": false,
+          "expected_exit": 0,
+          "expected": {
+            "added": [],
+            "modified": [],
+            "removed": [],
+            "renamed": [
+              {
+                "from": "old/name",
+                "to": "new/name"
+              }
+            ],
+            "summary": {
+              "after_bytes": 19,
+              "before_bytes": 19,
+              "delta_bytes": 0
+            },
+            "unchanged": [
+              "docs/a.txt"
+            ]
+          },
+          "exit": 0,
+          "actual": {
+            "added": [],
+            "modified": [],
+            "removed": [],
+            "renamed": [
+              {
+                "from": "old/name",
+                "to": "new/name"
+              }
+            ],
+            "summary": {
+              "after_bytes": 19,
+              "before_bytes": 19,
+              "delta_bytes": 0
+            },
+            "unchanged": [
+              "docs/a.txt"
+            ]
+          },
+          "stderr": "",
+          "digest_lengths": [
+            64,
+            64,
+            64,
+            64
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "arm": 1,
+      "role": "control",
+      "exit": 0,
+      "elapsed_s": 0.7214484409996658,
+      "checks": [
+        {
+          "name": "public-boundaries-and-nonmutation",
+          "passed": true
+        },
+        {
+          "name": "asymmetric-renames-permutation",
+          "passed": true
+        },
+        {
+          "name": "absolute-cli-unrelated-cwd",
+          "passed": true
+        },
+        {
+          "name": "documented-root-unittest",
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "."
+          ],
+          "cwd": "/candidate",
+          "exit": 0,
+          "stdout": "",
+          "stderr": "...........\n----------------------------------------------------------------------\nRan 11 tests in 0.155s\n\nOK\n",
+          "passed": true
+        },
+        {
+          "name": "literal-readme-compare-payload-and-outcome",
+          "path_substitution_only": false,
+          "expected_exit": 0,
+          "expected": {
+            "added": [],
+            "modified": [],
+            "removed": [],
+            "renamed": [
+              {
+                "from": "old/name",
+                "to": "new/name"
+              }
+            ],
+            "summary": {
+              "after_bytes": 19,
+              "before_bytes": 19,
+              "delta_bytes": 0
+            },
+            "unchanged": [
+              "docs/a.txt"
+            ]
+          },
+          "exit": 0,
+          "actual": {
+            "added": [],
+            "modified": [],
+            "removed": [],
+            "renamed": [
+              {
+                "from": "old/name",
+                "to": "new/name"
+              }
+            ],
+            "summary": {
+              "after_bytes": 19,
+              "before_bytes": 19,
+              "delta_bytes": 0
+            },
+            "unchanged": [
+              "docs/a.txt"
+            ]
+          },
+          "stderr": "",
+          "digest_lengths": [
+            64,
+            64,
+            64,
+            64
+          ],
+          "passed": true
+        }
+      ]
+    },
+    {
+      "arm": 2,
+      "role": "original",
+      "exit": 1,
+      "elapsed_s": 0.801728620999711,
+      "checks": [
+        {
+          "name": "public-boundaries-and-nonmutation",
+          "passed": true
+        },
+        {
+          "name": "asymmetric-renames-permutation",
+          "passed": true
+        },
+        {
+          "name": "absolute-cli-unrelated-cwd",
+          "passed": true
+        },
+        {
+          "name": "A6-relocated-root-unittest",
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "."
+          ],
+          "cwd": "/candidate",
+          "exit": 0,
+          "stdout": "",
+          "stderr": "............\n----------------------------------------------------------------------\nRan 12 tests in 0.237s\n\nOK\n",
+          "passed": true
+        },
+        {
+          "name": "literal-readme-compare-payload-and-outcome",
+          "path_substitution_only": true,
+          "expected_exit": 0,
+          "expected": {
+            "added": [],
+            "modified": [
+              {
+                "after_size": 2,
+                "before_size": 1,
+                "path": "keep"
+              }
+            ],
+            "removed": [],
+            "renamed": [
+              {
+                "from": "a/x",
+                "to": "b/y"
+              }
+            ],
+            "summary": {
+              "after_bytes": 5,
+              "before_bytes": 4,
+              "delta_bytes": 1
+            },
+            "unchanged": []
+          },
+          "exit": 2,
+          "actual": {
+            "error": "invalid input"
+          },
+          "stderr": "",
+          "digest_lengths": [
+            62,
+            60,
+            62,
+            60
+          ],
+          "passed": false
+        }
+      ]
+    },
+    {
+      "arm": 2,
+      "role": "control",
+      "exit": 0,
+      "elapsed_s": 0.7940399639992393,
+      "checks": [
+        {
+          "name": "public-boundaries-and-nonmutation",
+          "passed": true
+        },
+        {
+          "name": "asymmetric-renames-permutation",
+          "passed": true
+        },
+        {
+          "name": "absolute-cli-unrelated-cwd",
+          "passed": true
+        },
+        {
+          "name": "A6-relocated-root-unittest",
+          "command": [
+            "/usr/local/bin/python",
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "."
+          ],
+          "cwd": "/candidate",
+          "exit": 0,
+          "stdout": "",
+          "stderr": "............\n----------------------------------------------------------------------\nRan 12 tests in 0.233s\n\nOK\n",
+          "passed": true
+        },
+        {
+          "name": "literal-readme-compare-payload-and-outcome",
+          "path_substitution_only": true,
+          "expected_exit": 0,
+          "expected": {
+            "added": [],
+            "modified": [
+              {
+                "after_size": 2,
+                "before_size": 1,
+                "path": "keep"
+              }
+            ],
+            "removed": [],
+            "renamed": [
+              {
+                "from": "a/x",
+                "to": "b/y"
+              }
+            ],
+            "summary": {
+              "after_bytes": 5,
+              "before_bytes": 4,
+              "delta_bytes": 1
+            },
+            "unchanged": []
+          },
+          "exit": 0,
+          "actual": {
+            "added": [],
+            "modified": [
+              {
+                "after_size": 2,
+                "before_size": 1,
+                "path": "keep"
+              }
+            ],
+            "removed": [],
+            "renamed": [
+              {
+                "from": "a/x",
+                "to": "b/y"
+              }
+            ],
+            "summary": {
+              "after_bytes": 5,
+              "before_bytes": 4,
+              "delta_bytes": 1
+            },
+            "unchanged": []
+          },
+          "stderr": "",
+          "digest_lengths": [
+            64,
+            64,
+            64,
+            64
+          ],
+          "passed": true
+        }
+      ]
+    }
+  ],
+  "originals_unchanged": true,
+  "source_hashes": [
+    {
+      "README.md": {
+        "sha256": "ac477b2547f5112d7a9aeadf4c2b453fbe73402c1eb817c3bfce6612425a2df8",
+        "mode": 436
+      },
+      "main.py": {
+        "sha256": "db81c48d1fc42e61ab6b36fdfc386266d0aaa19db4a245c7a4bbdd9d4700aa22",
+        "mode": 436
+      },
+      "manifest_tool/__init__.py": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": 436
+      },
+      "manifest_tool/api.py": {
+        "sha256": "54751d2883e115bdba3174d0ed0dce4a95b3fffe103fd4ad9f88b87bad523702",
+        "mode": 436
+      },
+      "manifest_tool/cli.py": {
+        "sha256": "65473e354f2a7f64fc3618b5abdb1915262cbf19244f94ece261ff30699eda15",
+        "mode": 436
+      },
+      "manifest_tool/domain.py": {
+        "sha256": "dd60306661c9f57a2eeddb9220e17542538f1a9c879d7b75b21b2bf696c2cef9",
+        "mode": 436
+      },
+      "manifest_tool/report.py": {
+        "sha256": "cba66004310885532689108ba41b15ca5540073d63f05643e31ad25801d4d9af",
+        "mode": 436
+      },
+      "manifest_tool/validation.py": {
+        "sha256": "f75a5b4e4915b08361022eb535f31a6d118e4a04e8eaa28b9c73c5ca49bf6ed3",
+        "mode": 436
+      },
+      "tests/__init__.py": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": 420
+      },
+      "tests/test_manifest_tool.py": {
+        "sha256": "6c1307d37cbc26988092e296337b2eb3c31e10cefb79c98a22240cc660a8dced",
+        "mode": 420
+      }
+    },
+    {
+      "README.md": {
+        "sha256": "1d404dbb5dee0d0ba71c0d2d52f15c43fc156205520d7dc1e5c3abcc9ec9b37a",
+        "mode": 436
+      },
+      "main.py": {
+        "sha256": "db81c48d1fc42e61ab6b36fdfc386266d0aaa19db4a245c7a4bbdd9d4700aa22",
+        "mode": 436
+      },
+      "manifest_tool/__init__.py": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": 436
+      },
+      "manifest_tool/api.py": {
+        "sha256": "42487c5301dfe964532744e5f1de798a044da0184a9d63542543331626eb1029",
+        "mode": 436
+      },
+      "manifest_tool/cli.py": {
+        "sha256": "338f0b18514d96245226ff6cf9ea00c6beb382e26245d9a691d0c4e8877064f2",
+        "mode": 436
+      },
+      "manifest_tool/domain.py": {
+        "sha256": "1bd325285b7168aa6c9631e663e4e7d106ca8c8ceeb35b8567343751e70173f8",
+        "mode": 436
+      },
+      "manifest_tool/report.py": {
+        "sha256": "d8d24d9183f3cc26f934b18669eb29def63fdaa40fd329704fa812d0a2498b32",
+        "mode": 436
+      },
+      "manifest_tool/validation.py": {
+        "sha256": "5fae250751d444fc378c9d5acc6ef316cfcabe4390d5af7f604659994350781a",
+        "mode": 436
+      },
+      "tests/__init__.py": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "mode": 420
+      },
+      "tests/test_manifest_tool.py": {
+        "sha256": "6f1b44a8c34497cb312d7f7b3bae507faebe0bb82f9b58a6671d04ee9bacbbfc",
+        "mode": 420
+      }
+    }
+  ],
+  "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+  "cleanup_confirmed": true
+}

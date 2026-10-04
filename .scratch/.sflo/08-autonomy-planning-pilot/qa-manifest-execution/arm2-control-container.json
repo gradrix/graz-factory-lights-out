@@ -1,0 +1,248 @@
+{
+  "Id": "08030638dda6450053e37c51a0298e73bafd7529404a327d477c82599de619e9",
+  "Created": "2026-10-04T18:00:48.545276342Z",
+  "Path": "python",
+  "Args": [
+    "/probe/qa-manifest-probes.py",
+    "--arm",
+    "2"
+  ],
+  "State": {
+    "Status": "created",
+    "Running": false,
+    "Paused": false,
+    "Restarting": false,
+    "OOMKilled": false,
+    "Dead": false,
+    "Pid": 0,
+    "ExitCode": 0,
+    "Error": "",
+    "StartedAt": "0001-01-01T00:00:00Z",
+    "FinishedAt": "0001-01-01T00:00:00Z"
+  },
+  "Image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+  "ResolvConfPath": "",
+  "HostnamePath": "",
+  "HostsPath": "",
+  "LogPath": "",
+  "Name": "/gflo-postqa-f15a30f2075b",
+  "RestartCount": 0,
+  "Driver": "overlay2",
+  "Platform": "linux",
+  "MountLabel": "",
+  "ProcessLabel": "",
+  "AppArmorProfile": "",
+  "ExecIDs": null,
+  "HostConfig": {
+    "Binds": null,
+    "ContainerIDFile": "",
+    "LogConfig": {
+      "Type": "json-file",
+      "Config": {}
+    },
+    "NetworkMode": "none",
+    "PortBindings": {},
+    "RestartPolicy": {
+      "Name": "no",
+      "MaximumRetryCount": 0
+    },
+    "AutoRemove": false,
+    "VolumeDriver": "",
+    "VolumesFrom": null,
+    "ConsoleSize": [
+      0,
+      0
+    ],
+    "CapAdd": null,
+    "CapDrop": [
+      "ALL"
+    ],
+    "CgroupnsMode": "private",
+    "Dns": [],
+    "DnsOptions": [],
+    "DnsSearch": [],
+    "ExtraHosts": null,
+    "GroupAdd": null,
+    "IpcMode": "private",
+    "Cgroup": "",
+    "Links": null,
+    "OomScoreAdj": 0,
+    "PidMode": "",
+    "Privileged": false,
+    "PublishAllPorts": false,
+    "ReadonlyRootfs": true,
+    "SecurityOpt": [
+      "no-new-privileges"
+    ],
+    "Tmpfs": {
+      "/tmp": "rw,nosuid,nodev,size=64m"
+    },
+    "UTSMode": "",
+    "UsernsMode": "",
+    "ShmSize": 67108864,
+    "Runtime": "runc",
+    "Isolation": "",
+    "CpuShares": 0,
+    "Memory": 536870912,
+    "NanoCpus": 1000000000,
+    "CgroupParent": "",
+    "BlkioWeight": 0,
+    "BlkioWeightDevice": [],
+    "BlkioDeviceReadBps": [],
+    "BlkioDeviceWriteBps": [],
+    "BlkioDeviceReadIOps": [],
+    "BlkioDeviceWriteIOps": [],
+    "CpuPeriod": 0,
+    "CpuQuota": 0,
+    "CpuRealtimePeriod": 0,
+    "CpuRealtimeRuntime": 0,
+    "CpusetCpus": "",
+    "CpusetMems": "",
+    "Devices": [],
+    "DeviceCgroupRules": null,
+    "DeviceRequests": null,
+    "MemoryReservation": 0,
+    "MemorySwap": 536870912,
+    "MemorySwappiness": null,
+    "OomKillDisable": false,
+    "PidsLimit": 64,
+    "Ulimits": [],
+    "CpuCount": 0,
+    "CpuPercent": 0,
+    "IOMaximumIOps": 0,
+    "IOMaximumBandwidth": 0,
+    "Mounts": [
+      {
+        "Type": "bind",
+        "Source": "/home/gradrix/gflo-planning-postqa-manifest-1/control2",
+        "Target": "/candidate",
+        "ReadOnly": true
+      },
+      {
+        "Type": "bind",
+        "Source": "/home/gradrix/gflo-planning-postqa-manifest-1",
+        "Target": "/probe",
+        "ReadOnly": true
+      }
+    ],
+    "MaskedPaths": [
+      "/proc/asound",
+      "/proc/acpi",
+      "/proc/interrupts",
+      "/proc/kcore",
+      "/proc/keys",
+      "/proc/latency_stats",
+      "/proc/timer_list",
+      "/proc/timer_stats",
+      "/proc/sched_debug",
+      "/proc/scsi",
+      "/sys/firmware",
+      "/sys/devices/virtual/powercap"
+    ],
+    "ReadonlyPaths": [
+      "/proc/bus",
+      "/proc/fs",
+      "/proc/irq",
+      "/proc/sys",
+      "/proc/sysrq-trigger"
+    ],
+    "Init": true
+  },
+  "GraphDriver": {
+    "Data": {
+      "ID": "08030638dda6450053e37c51a0298e73bafd7529404a327d477c82599de619e9",
+      "LowerDir": "/var/lib/docker/overlay2/f37ad12c6c03a8d18e18cf34b2bbe77e862b04b9df1198c2b7100df445bec0b0-init/diff:/var/lib/docker/overlay2/981d68f4dda8c484823cd809a2432d0968f3f571fcac806864b5bc4e103de410/diff:/var/lib/docker/overlay2/053608fa05145d61deed62e4e63b54811974c3952e1ea0929db40343b8a1b51b/diff:/var/lib/docker/overlay2/10f97bdf6261b2990c34d1c19f7567d32dd900ea2c548bfbb05453c9ebd6cab8/diff:/var/lib/docker/overlay2/526f69f6aebd6a532a0bd7fa2fde0dd43a0d772d748f9e32e4a3b22da169fd27/diff",
+      "MergedDir": "/var/lib/docker/overlay2/f37ad12c6c03a8d18e18cf34b2bbe77e862b04b9df1198c2b7100df445bec0b0/merged",
+      "UpperDir": "/var/lib/docker/overlay2/f37ad12c6c03a8d18e18cf34b2bbe77e862b04b9df1198c2b7100df445bec0b0/diff",
+      "WorkDir": "/var/lib/docker/overlay2/f37ad12c6c03a8d18e18cf34b2bbe77e862b04b9df1198c2b7100df445bec0b0/work"
+    },
+    "Name": "overlay2"
+  },
+  "Mounts": [
+    {
+      "Type": "bind",
+      "Source": "/home/gradrix/gflo-planning-postqa-manifest-1/control2",
+      "Destination": "/candidate",
+      "Mode": "",
+      "RW": false,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "bind",
+      "Source": "/home/gradrix/gflo-planning-postqa-manifest-1",
+      "Destination": "/probe",
+      "Mode": "",
+      "RW": false,
+      "Propagation": "rprivate"
+    }
+  ],
+  "Config": {
+    "Hostname": "08030638dda6",
+    "Domainname": "",
+    "User": "1000:1000",
+    "AttachStdin": false,
+    "AttachStdout": true,
+    "AttachStderr": true,
+    "Tty": false,
+    "OpenStdin": false,
+    "StdinOnce": false,
+    "Env": [
+      "PYTHONDONTWRITEBYTECODE=1",
+      "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+      "LANG=C.UTF-8",
+      "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+      "PYTHON_VERSION=3.12.13",
+      "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684"
+    ],
+    "Cmd": [
+      "python",
+      "/probe/qa-manifest-probes.py",
+      "--arm",
+      "2"
+    ],
+    "Image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+    "Volumes": null,
+    "WorkingDir": "/candidate",
+    "Entrypoint": null,
+    "OnBuild": null,
+    "Labels": {}
+  },
+  "NetworkSettings": {
+    "Bridge": "",
+    "SandboxID": "",
+    "SandboxKey": "",
+    "Ports": {},
+    "HairpinMode": false,
+    "LinkLocalIPv6Address": "",
+    "LinkLocalIPv6PrefixLen": 0,
+    "SecondaryIPAddresses": null,
+    "SecondaryIPv6Addresses": null,
+    "EndpointID": "",
+    "Gateway": "",
+    "GlobalIPv6Address": "",
+    "GlobalIPv6PrefixLen": 0,
+    "IPAddress": "",
+    "IPPrefixLen": 0,
+    "IPv6Gateway": "",
+    "MacAddress": "",
+    "Networks": {
+      "none": {
+        "IPAMConfig": null,
+        "Links": null,
+        "Aliases": null,
+        "MacAddress": "",
+        "DriverOpts": null,
+        "GwPriority": 0,
+        "NetworkID": "",
+        "EndpointID": "",
+        "Gateway": "",
+        "IPAddress": "",
+        "IPPrefixLen": 0,
+        "IPv6Gateway": "",
+        "GlobalIPv6Address": "",
+        "GlobalIPv6PrefixLen": 0,
+        "DNSNames": null
+      }
+    }
+  }
+}

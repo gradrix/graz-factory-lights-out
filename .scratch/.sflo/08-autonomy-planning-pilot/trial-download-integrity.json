@@ -1,0 +1,8 @@
+{
+  "verified_file_count": 1334,
+  "all_manifest_entries_match": true,
+  "manifest_sha256": "83340a9d6356ea9186e4ff117493975fa1a84056c7b560c532b23eedb3ef6c5d",
+  "raw_local_root": ".gflo/planning-trial-1",
+  "rig_root": "/home/gradrix/gflo-planning-d186b93/trial-1",
+  "no_candidate_execution": true
+}

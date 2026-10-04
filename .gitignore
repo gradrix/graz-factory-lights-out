@@ -201,3 +201,8 @@ htmlcov/
 !.scratch/.sflo/08-autonomy-planning-pilot/qa-harness/*.txt
 !.scratch/.sflo/08-autonomy-planning-pilot/rig-cancellation-1/
 !.scratch/.sflo/08-autonomy-planning-pilot/rig-cancellation-1/*.json
+
+!.scratch/.sflo/08-autonomy-planning-pilot/qa-manifest-execution/
+!.scratch/.sflo/08-autonomy-planning-pilot/qa-manifest-execution/*
+!.scratch/.sflo/08-autonomy-planning-pilot/qa-api-results/
+!.scratch/.sflo/08-autonomy-planning-pilot/qa-api-results/**
