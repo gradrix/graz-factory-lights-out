@@ -22,3 +22,7 @@ A journey may use up to four fresh contexts. The one opaque trace.zip artifact c
 ## Redirect and WebSocket restriction
 
 Independent review of candidate c201083 demonstrated that ordinary HTTP routing did not prevent redirected fetches or WebSockets from reaching a second endpoint in the owned app namespace. On 2026-10-04 the agent chose to reject every HTTP redirect before delivering it to Chromium and block all WebSockets in this first profile. Applications requiring either are unsupported. This keeps ordinary exact-origin HTTP flows usable with a small preventive policy; the network-none namespace remains the outer boundary. Repair and independent recheck are required before acceptance.
+
+## Ambiguous container creation
+
+A timed-out or transport-failed Docker create can complete after a successful empty listing. Agent decision on 2026-10-04: preserve that uncertainty separately from ordinary cleanup failures. Normal recovery can remove presently owned objects but must retain admission fencing for ambiguous creation. Clearing this exceptional fence requires an explicit controller/operator acknowledgement that the daemon has settled; record the acknowledgement durably and preserve the original failure. It is an operator assertion, not measured proof of daemon completion. This stricter recovery path prevents automatic reuse based only on a second immediate absence snapshot.
