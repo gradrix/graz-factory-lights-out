@@ -1,0 +1,1 @@
+[{"mode": "repair", "kind": "answer", "attempt_validation": ["invalid", "valid"], "two_actual_bounded_children": true}, {"mode": "exhaust", "kind": "answer_failure", "attempt_validation": ["invalid", "invalid"], "two_actual_bounded_children": true}]

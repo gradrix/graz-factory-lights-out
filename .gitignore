@@ -173,3 +173,10 @@ htmlcov/
 !.scratch/.sflo/07-autonomy-document-references/qa/*.json
 !.scratch/.sflo/07-autonomy-document-references/qa/*.log
 !.scratch/.sflo/07-autonomy-document-references/qa/*.md
+
+!.scratch/.sflo/07-autonomy-document-references/rig-acquisition-1/
+!.scratch/.sflo/07-autonomy-document-references/rig-acquisition-1/*.json
+!.scratch/.sflo/07-autonomy-document-references/security/
+!.scratch/.sflo/07-autonomy-document-references/security/*.py
+!.scratch/.sflo/07-autonomy-document-references/security/*.json
+!.scratch/.sflo/07-autonomy-document-references/security/*.log

@@ -1,0 +1,110 @@
+[
+  {
+    "group": "format2",
+    "id": "2668f4453bf6c506879eea16d39479694833db2875fef9f917dd519abd728a7a",
+    "kind": "evidence",
+    "format": 1
+  },
+  {
+    "group": "format2",
+    "id": "35031b6d9f9fabefc79b3f70f0ffe3ae41becd72c7fcd4d5f3d3c4a31c5108c3",
+    "kind": "answer",
+    "format": 2,
+    "replayed": true
+  },
+  {
+    "group": "format2",
+    "id": "3682b91c75083bd469f0cfa8feb91ab769eb9e90aab874f6c28179e493e07e9b",
+    "kind": "evidence",
+    "format": 1
+  },
+  {
+    "group": "format2",
+    "id": "3b978720075c2a38170ef1eac291576330a3067d153c785e1683a38d98255294",
+    "kind": "answer",
+    "format": 2,
+    "replayed": true
+  },
+  {
+    "group": "format2",
+    "id": "3bfe7f28fd3aa69eb347b5436e00e91fed92ca41f3585beba45ec772bb9c1e47",
+    "kind": "answer",
+    "format": 2,
+    "replayed": true
+  },
+  {
+    "group": "format2",
+    "id": "6e5b5f486a79e16e6f2876d4ee3d9e2fc563d1cd178feec432c87900eba7fe70",
+    "kind": "answer_failure",
+    "format": 2,
+    "replay_refused": true
+  },
+  {
+    "group": "format2",
+    "id": "7cbf89d6c9dad5500a05cf634001cb22d816f4182fbacd7ec5dd9b8e5b0be30d",
+    "kind": "answer",
+    "format": 2,
+    "replayed": true
+  },
+  {
+    "group": "format2",
+    "id": "97e675c4f4c3eb568818f1b23eb70027e11062f22d7f4d586c3e004340676935",
+    "kind": "evidence",
+    "format": 1
+  },
+  {
+    "group": "format2",
+    "id": "99495eb5950c561ae8452eb11971d154ef132a21285ea49202994818ee3be943",
+    "kind": "answer",
+    "format": 2,
+    "replayed": true
+  },
+  {
+    "group": "format2",
+    "id": "a3b81a46eca5946eda5486c8a2fd0a456dc1825fd14666d07c64c6138d6a9a99",
+    "kind": "answer",
+    "format": 2,
+    "replayed": true
+  },
+  {
+    "group": "format2",
+    "id": "b13badfa500f2718bd156872107c4e18c7a86a8f020b5534eb0bc50bf28a2026",
+    "kind": "answer",
+    "format": 2,
+    "replayed": true
+  },
+  {
+    "group": "format2",
+    "id": "c13467a4c588ffdb5292aca0f58a1c9d95a711d8a2c68715525172e7045e6b37",
+    "kind": "answer_failure",
+    "format": 2,
+    "replay_refused": true
+  },
+  {
+    "group": "format2",
+    "id": "c3b3ea5748161e6e6fb73410e805e4fd1152e09d351bfda6d2d5aa7bcfffd278",
+    "kind": "answer",
+    "format": 2,
+    "replayed": true
+  },
+  {
+    "group": "format1",
+    "id": "8e6d0aae07e8aa97daf49feb029ceb60d55c74ab0383ecb4378b3c484a8b9cf1",
+    "kind": "evidence",
+    "format": 1
+  },
+  {
+    "group": "format1",
+    "id": "d5d47a808460b75d4c3d170529826af6be3780f21ee98e1bb9d96d4560294870",
+    "kind": "answer",
+    "format": 1,
+    "replayed": true
+  },
+  {
+    "group": "format1",
+    "id": "df1c58cca2da34875344007f2d7deaeca2c14dc086fec776e774677b36d861b3",
+    "kind": "answer",
+    "format": 1,
+    "replayed": true
+  }
+]

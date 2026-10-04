@@ -21,3 +21,5 @@ Independent three-question transferfixture frozen (manifest50dedc21413e8f97b41c8
 Builder reports50affected tests pass and18actual preserved records resolve/replay identically with unchangedbytes. Four format2helper bodies match2fe870d. Maxlegal reference expansion42893bytes below48KiB. Fullgate running; candidate notyetfrozen. No successor modelcalls. QA preparing three-store rigoffline replay separately.
 
 Frozen successor92deaab:15hashes verified.169tests140.571s/86%;50affected1.404s. [Builder handoff](builder.md). Independent reviewers assigned, actualsourceacquisition allowed inparallel; inference waitsallgates.
+
+Actual92deaab rig acquisition1 succeededall3 with exactbaselinebodyhashes and unchanged96K/Q4 servingidentity. [Binding](rig-acquisition-1/binding.json). Independent [functional QA](qa-functional.md) passed publicformat3repair/requestidentity,7focusedtests and16actualoldrecords. Sourcealignment13cases underway; security checks explicitmetadataedge beforeverdict. No successor inference yet.

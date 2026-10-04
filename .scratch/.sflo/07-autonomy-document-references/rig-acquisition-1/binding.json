@@ -1,0 +1,52 @@
+{
+  "candidate_sha256": "acd723171fe9b3f5ce9b90b2dc8aea29dbb5e57d41854cf322798690556bc698",
+  "qualification_manifest_sha256": "27e94d04f753112ce7e96470fbfc75980f7a8da3d61feea7ac6dcd0a370fb24c",
+  "serving_before": {
+    "id": "2cac4229053dac00fdbcadb1952db80f0a9da3fd07b8f40bce1ba8cd3114f6e0",
+    "image": "sha256:249ed60fdd67b96db472e16f945af5aaba565b20159d192ba378035b6d136a1c",
+    "alias": "flash-next-coder",
+    "context": 98304,
+    "cache_k": "q4_0",
+    "cache_v": "q4_0",
+    "parallel": 1
+  },
+  "sources": {
+    "csv": {
+      "status": "acquired",
+      "id": "11ec4a87fbedc84645e333921f07f523b59ac102aa63547406e2e10df949460c",
+      "body_sha256": "f56ff04a9bac6327b4eb086c854e4842b0b235d6e6135b737d1fc7723186f8c0",
+      "evidence_sha256": "40947f57156c6c345903ab4a6ca41f4601209372c5d8144ef84abef2b3f3d0c6",
+      "baseline_body_sha256": "f56ff04a9bac6327b4eb086c854e4842b0b235d6e6135b737d1fc7723186f8c0",
+      "body_matches_baseline": true,
+      "elapsed_s": 1.3791033480001715
+    },
+    "json": {
+      "status": "acquired",
+      "id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+      "body_sha256": "1a5e4ba18342b32f5f174d129f9c226a21a9445a89384f13a3f33ec327c2b68f",
+      "evidence_sha256": "1b1f8715e9c9ce40004581cc3cbb2c862f90c22e5e002f8198a9247b9c4c2426",
+      "baseline_body_sha256": "1a5e4ba18342b32f5f174d129f9c226a21a9445a89384f13a3f33ec327c2b68f",
+      "body_matches_baseline": true,
+      "elapsed_s": 1.2271834899993337
+    },
+    "asyncio": {
+      "status": "acquired",
+      "id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+      "body_sha256": "b395cf62082c34beeebfdc8b7a5a34f997411f6499fa14cf66425bcd20ff1381",
+      "evidence_sha256": "55a19fcd4a1c7d1a9626887e8ab4f98bfefcc3a26ba995a886ea9f9e6c606cff",
+      "baseline_body_sha256": "b395cf62082c34beeebfdc8b7a5a34f997411f6499fa14cf66425bcd20ff1381",
+      "body_matches_baseline": true,
+      "elapsed_s": 1.227809164000064
+    }
+  },
+  "status": "awaiting_independent_source_alignment",
+  "serving_after": {
+    "id": "2cac4229053dac00fdbcadb1952db80f0a9da3fd07b8f40bce1ba8cd3114f6e0",
+    "image": "sha256:249ed60fdd67b96db472e16f945af5aaba565b20159d192ba378035b6d136a1c",
+    "alias": "flash-next-coder",
+    "context": 98304,
+    "cache_k": "q4_0",
+    "cache_v": "q4_0",
+    "parallel": 1
+  }
+}
