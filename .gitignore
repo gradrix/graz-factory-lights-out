@@ -187,3 +187,6 @@ htmlcov/
 
 !.scratch/.sflo/07-autonomy-document-references/qa/replay/
 !.scratch/.sflo/07-autonomy-document-references/qa/replay/*.json
+
+!.scratch/.sflo/08-autonomy-planning-pilot/
+.scratch/.sflo/08-autonomy-planning-pilot/*/
