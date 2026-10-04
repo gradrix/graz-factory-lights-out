@@ -1,0 +1,65 @@
+{
+  "body_sha256": "b395cf62082c34beeebfdc8b7a5a34f997411f6499fa14cf66425bcd20ff1381",
+  "spans": 440,
+  "text_bytes": 37712,
+  "elapsed_s": 0.40442210575565696,
+  "result_sha256": "14d4153f4ce19c76b10bf2f1acbcad5c284d655c0d5b7ebcae1dfefeb1f4177e",
+  "executor": {
+    "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+    "name": "gflo-document-4cd8530e244c49699ace4c220847f1e6",
+    "host": {
+      "Runtime": "runc",
+      "NetworkMode": "none",
+      "ReadonlyRootfs": true,
+      "CapDrop": [
+        "ALL"
+      ],
+      "SecurityOpt": [
+        "no-new-privileges"
+      ],
+      "Memory": 268435456,
+      "MemorySwap": 268435456,
+      "NanoCpus": 1000000000,
+      "PidsLimit": 64,
+      "ShmSize": 8388608,
+      "Tmpfs": {
+        "/tmp": "rw,nosuid,nodev,size=16m,mode=1777"
+      },
+      "Devices": [],
+      "DeviceRequests": null
+    },
+    "config": {
+      "User": "1000:1000",
+      "Env": [
+        "HOME=/tmp",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+        "LANG=C.UTF-8",
+        "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+        "PYTHON_VERSION=3.12.13",
+        "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684"
+      ],
+      "WorkingDir": "/tmp"
+    },
+    "mounts": [
+      {
+        "Type": "bind",
+        "Source": "/home/gradrix/repos/gflo/.gflo/document-reliability-builder/extract/extract-request",
+        "Destination": "/approved",
+        "RW": false
+      },
+      {
+        "Type": "bind",
+        "Source": "/home/gradrix/repos/gflo/gflo/recipes/document_extract.py",
+        "Destination": "/helpers/document_extract.py",
+        "RW": false
+      },
+      {
+        "Type": "bind",
+        "Source": "/home/gradrix/repos/gflo/.gflo/document-reliability-builder/extract/body",
+        "Destination": "/body",
+        "RW": false
+      }
+    ]
+  }
+}
