@@ -1,0 +1,17 @@
+{
+  "records": 18,
+  "by_format_kind": {
+    "1:evidence": 5,
+    "2:answer": 8,
+    "2:answer_failure": 2,
+    "1:answer": 3
+  },
+  "same_legacy_helpers": {
+    "validate_answer": "928e08203d8231f151d0c304f73836e0740b9b6df33cf505bd09514195a6e585",
+    "answer_request": "d287e54842032212388ae5e9dd65facf567d76f1e13b58191db1cc859a9849d5",
+    "repair_request": "97e6aa01592c8967f8f90d0c35b656ff69a8951f1d5e20a2de58cb4f3df29db2",
+    "response_answer": "839749092c7deee52447ea5541c1987ae2dafc7803f62980c35294c602c6b361"
+  },
+  "original_and_copied_record_hashes_unchanged": true,
+  "resolved_and_replayed_equal_excluding_age_seconds": true
+}

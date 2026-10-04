@@ -1,0 +1,66 @@
+................E.E.EFE......E..............
+======================================================================
+ERROR: test_extra_and_symlink_response_files_refuse (test_document_repair.DocumentRepairTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo/tests/test_document_repair.py", line 200, in test_extra_and_symlink_response_files_refuse
+    saved = self.store.answer(evidence['id'], client)
+  File "/home/gradrix/repos/gflo/gflo/documents.py", line 556, in answer
+    raise failure
+gflo.documents.AnswerFailure: Document answer failed; diagnostic 10eb8764f37219847a6764885b9475ea322df0f225a6c30a8b37c4c6b8b2802f: Returned response failed: invalid
+
+======================================================================
+ERROR: test_first_valid_call_and_legacy_receipt_remain_offline (test_document_repair.DocumentRepairTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo/tests/test_document_repair.py", line 71, in test_first_valid_call_and_legacy_receipt_remain_offline
+    saved = self.store.answer(evidence['id'], client)
+  File "/home/gradrix/repos/gflo/gflo/documents.py", line 556, in answer
+    raise failure
+gflo.documents.AnswerFailure: Document answer failed; diagnostic bfca665e42858ba488d7bcc667ccdb9fa23335c831ef9cf5fe0426d135fa926a: Returned response failed: invalid
+
+======================================================================
+ERROR: test_ledger_and_response_tampering_refuse_even_with_new_receipt_identity (test_document_repair.DocumentRepairTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo/tests/test_document_repair.py", line 137, in test_ledger_and_response_tampering_refuse_even_with_new_receipt_identity
+    saved = self.store.answer(evidence['id'], client)
+  File "/home/gradrix/repos/gflo/gflo/documents.py", line 556, in answer
+    raise failure
+gflo.documents.AnswerFailure: Document answer failed; diagnostic 8e1405c6bf1e76d68065684827df4e01cd7f8ee40f8b17dbfb4cb14c9797415b: Returned response failed: invalid
+
+======================================================================
+ERROR: test_repair_retains_rejected_response_and_replays_offline (test_document_repair.DocumentRepairTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo/tests/test_document_repair.py", line 42, in test_repair_retains_rejected_response_and_replays_offline
+    saved = self.store.answer(evidence['id'], client)
+  File "/home/gradrix/repos/gflo/gflo/documents.py", line 556, in answer
+    raise failure
+gflo.documents.AnswerFailure: Document answer failed; diagnostic 3bb32f2bfbec6dfb0c8682f72e654e78188dbb13edd9cd7a72a3dff3bca20e33: Returned response failed: invalid
+
+======================================================================
+ERROR: test_cli_saved_replay_does_not_construct_a_model_client (test_documents.DocumentsTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo/tests/test_documents.py", line 43, in test_cli_saved_replay_does_not_construct_a_model_client
+    with patch('gflo.documents.bounded_answer',return_value=response):saved=self.store.answer(evidence['id'],client)
+  File "/home/gradrix/repos/gflo/gflo/documents.py", line 556, in answer
+    raise failure
+gflo.documents.AnswerFailure: Document answer failed; diagnostic 1ee704af1de23f6f7887b287ddaa9f0d742e9956d97ec980141f6bc87e2da0c4: Returned response failed: invalid
+
+======================================================================
+FAIL: test_receipt_overflow_keeps_response_as_failure (test_document_repair.DocumentRepairTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo/tests/test_document_repair.py", line 193, in test_receipt_overflow_keeps_response_as_failure
+    self.assertEqual(receipt['failure'], 'Canonical answer exceeds receipt bound')
+AssertionError: 'Returned response failed: invalid' != 'Canonical answer exceeds receipt bound'
+- Returned response failed: invalid
++ Canonical answer exceeds receipt bound
+
+
+----------------------------------------------------------------------
+Ran 44 tests in 1.294s
+
+FAILED (failures=1, errors=5)

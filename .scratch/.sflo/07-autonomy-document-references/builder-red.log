@@ -1,0 +1,15 @@
+E
+======================================================================
+ERROR: test_selected_span_preserves_exact_unicode_without_model_quote (test_document_references.DocumentReferenceTests)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo/tests/test_document_references.py", line 20, in test_selected_span_preserves_exact_unicode_without_model_quote
+    saved = self.store.answer(evidence['id'], client)
+  File "/home/gradrix/repos/gflo/gflo/documents.py", line 535, in answer
+    raise failure
+gflo.documents.AnswerFailure: Document answer failed; diagnostic f899af30fc5a75c4b2ec403a79fc2058feb8fd6169a87fffe12db72ff264f053: Returned response failed: invalid
+
+----------------------------------------------------------------------
+Ran 1 test in 0.021s
+
+FAILED (errors=1)

@@ -1,0 +1,35 @@
+# Format3 builder handoff
+
+2026-10-04. Frozen [candidate manifest](builder-candidate.json) SHA256 `acd723171fe9b3f5ce9b90b2dc8aea29dbb5e57d41854cf322798690556bc698`,15bound paths. Contract `4e1077bd1e2ef48f4a76375e79eb5c42dd9ce6ca0719ca6418474fe5e5ffd106` unchanged. Baseline2fe870d, coordinator-only parent c987b7e. Builder made no commit, model/rig call or installation. Prior failed trial and original records remain unchanged. Independent review and13-question qualification remain pending.
+
+## Implementation
+
+New `gflo.document_references.reference_request(evidence, model, question)` is the exact initial request helper for the new public answer path. The returned model schema is `{status, claims, reason}` with each supported claim exactly `{text, spans:[int]}`. The helper supplies unchanged complete evidence spans, eligibility/size metadata, deterministic catalog hash, fixed limits and historical context. Receipt format3 adds `protocol={name:span-ref-v1,catalog_sha256,limits}`. Evidence ID already binds the immutable source receipt and its text hash.
+
+`materialize` validates all fields/counts/IDs/selected-span sizes before expanding canonical citations. Limits:8claims;1024canonical ASCII JSON bytes per nonempty claim string;1–4references per claim;16occurrences total, including duplicates within/across claims; selected span≤2048encoded-string bytes and≤4096UTF8bytes; nonempty insufficiency reason≤2048encoded-string bytes. Full source spans remain present. An overlong selected span is structural invalidity. If any source span is ineligible, abstention is capacity-unresolved invalidity; eligible supported answers remain possible. There is no quote normalization, truncation, segmentation or fallback protocol.
+
+Canonical answer≤48KiB and metadata≤12KiB. Metadata means canonical encoding of the entire receipt with only `answer` removed, including protocol, config, profile, question, attempts and errors. Before inference, a conservative preflight reserves both attempt slots and maximal bounded encoded errors/failure text. Oversized operator context fails before any call; no invented attempt or clipped question/config. Final metadata/answer guards and existing64KiB complete-receipt bound are enforced. Response files and192KiB maximum record retain existing limits.
+
+`documents.answer_protocol` dispatches version2 and3 request/response behavior. Public `DocumentStore.answer` uses3 without a format switch. Format1 remains its original reader; format2 retains exact legacy request, repair and response-validation/error behavior. Format3 inspection reconstructs its catalog/request, reruns transformation on each response and verifies the saved canonical answer. Common one-repair lifecycle, transport/tool/cancel exclusions, fixed hashed response files,260second deadline, owner cleanup, immutable diagnostic and final-rename publication are shared unchanged. Unknown versions and rehashed protocol/canonical tampering refuse. Failure inspection is distinct from successful cited replay.
+
+## Bounds arithmetic and limitations
+
+The measured maximum structurally legal expansion is **42,893bytes**:8maximal claim strings,16maximal excerpt strings,64character evidence ID and four-digit span IDs. Repeated references are charged and materialized each time. This is below48KiB; a normal valid selection cannot reach that final defense's exact boundary under current constraints. No invalid synthetic answer is claimed as a normally reachable48KiB case.48KiB answer +12KiB metadata +fixed answer-field separator overhead also stays below the unchanged64KiB publication cap. Final serialization checks remain authoritative if code evolves.
+
+The2048encoded-string ceiling is stricter than4096UTF8bytes for valid JSON strings, so isolated4096/+1 UTF8 acceptance with the encoded bound satisfied is mathematically unavailable. Tests still verify both measured sizes/eligibility and rejection; encoded2048/+1 is exercised with ASCII, Unicode and control escapes. The separate48KiB guard is defensive, not an excuse to omit the per-field/count checks.
+
+Long unrelated spans can prevent a genuinely correct abstention; this conservative limitation is explicit. Same-source authenticity does not establish entailment. The original failed outputs remain failures; only a new frozen trial can qualify the new protocol. Future changes to either version's prompt/catalog/materializer must retain compatible readers rather than changing old request hashes.
+
+## Builder checks
+
+[Initial red](builder-red.log): public raw span selection was rejected by format2. First green proved source U+2019 preserved exactly without a model quote. [Affected suite](builder-affected.log): **50tests passed in1.404seconds**. Controls include bool/zero/range/type/extra-field failures;8/+1claims,4/+1references,16/+1occurrences; watched source access showing invalid inputs fail before expansion; encoded claim/reason/span boundaries with Unicode/control escapes; capacity repair-to-abstention failure; eligible citation despite unrelated long span; pure metadata serialization boundary and no-inference capacity preflight; rehashed catalog/limits/version/canonical tampering; retained legacy request hashes. Existing lifecycle/authority/response-file/cancellation/publication controls run through the new default path.
+
+[Full coverage gate](builder-coverage.log): `make coverage` **169tests passed in140.571seconds;86% branch-aware total**, above85% gate. New reference module93%, documents87%. No source changes after the gate. `git diff --check` passed. One full gate only.
+
+[Actual-record legacy comparison](builder-legacy.json), [script](builder-legacy.py): copied18actual records from preserved trial1 and earlier CSV/JSON stores into a private directory. Baseline2fe870d and current code produced identical resolve/replay results excluding dynamic age:5format1evidence,3format1answers,8format2answers,2format2failed diagnostics. Failed replay error text matched. Original/copy record hashes unchanged; no executor/model access. Complete comparison outputs are `.gflo/document-reference-builder/{old,new}-replay.json`. The four legacy helper bodies—validate_answer, answer_request, repair_request, response_answer—match2fe870d byte-for-byte; hashes are retained in the comparison result. Unit tests also bind deterministic legacy initial/repair request hashes.
+
+## Maintained changes
+
+`gflo/document_references.py` (new), `gflo/documents.py`, `tests/test_document_references.py` (new), `tests/test_document_repair.py`, `tests/test_documents.py`, `docs/document-evidence.md`.
+
+Existing new-answer tests now send span selections and expect format3/whole-span canonical output; the oversized-claim regression now expects retained structural failure under the tighter contract. Legacy compatibility was checked independently against preserved actual records, rather than relabeling format3 tests as format2 evidence. Extractor remains version2/40000events. No browser, package-fetch policy, runtime/service configuration, root-owned map/run/contract or new qualification oracle was changed/read into prompts.
