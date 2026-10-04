@@ -8,8 +8,8 @@ Contract: contract.md sha256 d52ae8c2f322f417fed6c8cf6ace5343720cc40f86f0d0aeb6b
 
 Status: active
 Owner: /root coordinator; /root/cohort_c isolated harness; /root/qa_resume independent fixtures
-Candidate: pending prototype; maintained baseline92deaab/publishedc81429b unchanged
-Next: independently freeze two cases, build minimal disposable driver, establish budget/lifecycle/serving-idle gates before any model arms.
+Candidate: prototype d186b9330b7b9916e06b3807f1ea03adc02943e8, harness b4e7beaab66c480f6e5f6a9a6daad6f57dbbdea6ce6b3ec4c88bafad599aafa9; maintained baseline92deaab unchanged
+Next: monitor actual four-arm trial1, preserve every result, independently review final semantics/test/docs and decide the smallest maintained next step.
 
 ## Binding
 
@@ -26,3 +26,13 @@ Main clean atf95d083 on resume. Builder confirms budget/capture/planner/checkpoi
 Fixture freeze complete: [independent author/control report](fixture-control-report.md), [root review](fixture-review.md), manifest9d6b6dc798d148524ef7e360abfc31958a47bb05b6870e56735a7ef64c283e5b, all25filehashes verified. Final actual-rig16/16 expected controls passed. QA now checks harness independently; security checks checkpoint and root-owned cancellation driver. Neither candidate nor inference admission is complete.
 
 Prototype fixture commit a94728a now freezes all fixture/reference/control evidence on the isolated branch. Root created canonical environment bindings by freshly resolving both accepted rig receipts through the installed environment module. Expected serving identity is translated from measured discovery and still requires a fresh probe. Cancellation driver controls passed16cases with independent report; full harness reviews remain pending.
+
+[Pre-exposure findings](findings.md) retain concrete repairs and pending rechecks. Actual-rig vertical controls now assigned to independent QA: real Factory/prepared containers/two-worker checkpoint with mandatory networkless synthetic completion transport and controller socket denial, no model key or endpoint use. This verifies environment/handoff wiring before any real inference.
+
+First mechanism freeze: prototype8d43977, harness162819c48a3449e00add6b7fb2232c11b6dff1a2c2188a5413fb8263ace135d9. Actual synthetic vertical controls passed stdlib4.74s/API19.36s with13chargedcalls each across five roles and confirmed owned cleanup. Independent publication cancellation test then failed (P08-PUBLISH); candidate not admitted, successor repair pending. Preserve unaffected vertical evidence under its original identity. No real model calls or actual-trial staging yet.
+
+Successor d186b93 (b4e7beaab66c480f6e5f6a9a6daad6f57dbbdea6ce6b3ec4c88bafad599aafa9) passes independent QA8/security18 and combined52 controls. Prototype242166a adds frozen test sources only. Actual stage verified59files and bothenvironmentbindings; fresh strict probeidle. One real cancellation request admitted under receipt69d38f8aa5bd597fbefd239707fdbe3a49ccee01097134127aa5daf33ce7c689: PASS5.0288stotal/2.4109scleanup, observedbusy, SIGTERM/-15, groupabsent, busy→idle→idle unchangedidentity. Evidence rig-cancellation-1; independent readbackpending. Four codingarms not yet dispatched.
+
+## Actual trial1 dispatched
+
+2026-10-04T17:15:07Z, rig controller PID19815, stage /home/gradrix/gflo-planning-d186b93, output trial-1. [Admission](trial-1-admission.json) SHA2563eb500ccaec5e5f367cfb0fb624813f950bffb3647d5c17dc2b8ced7febd302e freezes four orderedarms under48requests/1800s each,150scleanup. [Launch receipt](trial-1-process.json). One real cancellation request already passed independentreadback; no other trial retries. Backgroundcontroller holds sharedlease and serializesallarms; do not dispatch anothermodelclient. Monitor roottrial results and per-arm progress/budgets. No maintained installation or originalproject integration.

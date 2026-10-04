@@ -1,0 +1,21 @@
+test_attested_application_failure_requires_absence (test_planning_security.SecurityControls) ... ok
+test_checked_exact_capacity_and_copy (test_planning_security.SecurityControls) ... ok
+test_checked_types_and_special_modes (test_planning_security.SecurityControls) ... ok
+test_classification_strict_types_and_identity (test_planning_security.SecurityControls) ... ok
+test_clean_git_blocks_inherited_hook_filter_environment (test_planning_security.SecurityControls) ... ok
+test_cleanup_daemon_failure_or_bad_ids_refuse (test_planning_security.SecurityControls) ... ok
+test_cleanup_uncertainty_even_after_empty_queries (test_planning_security.SecurityControls) ... ok
+test_git_template_hook_disabled_with_positive_control (test_planning_security.SecurityControls) ... ok
+test_missing_create_attestation_sticky_fence (test_planning_security.SecurityControls) ... ok
+test_pending_mode_restore_exact_and_prior_good_unchanged (test_planning_security.SecurityControls) ... ok
+test_probe_bounded_output_nonzero_and_malformed_refuse (test_planning_security.SecurityControls) ... ok
+test_probe_expired_deadline_no_subprocess (test_planning_security.SecurityControls) ... ok
+test_reserved_control_files_refuse_before_git (test_planning_security.SecurityControls) ... ok
+test_restore_nonpending_or_attempted_refuses (test_planning_security.SecurityControls) ... ok
+test_restore_wrong_bytes_exec_or_set_refuses_before_chmod (test_planning_security.SecurityControls) ... ok
+test_snapshot_rejects_git_controls_before_index (test_planning_security.SecurityControls) ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.496s
+
+OK

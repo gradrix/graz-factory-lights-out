@@ -1,0 +1,37 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "command": [
+        "python",
+        "-I",
+        "/acceptance/check.py",
+        "--project",
+        "/workspace",
+        "--phase",
+        "full"
+      ],
+      "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+      "exit_code": 0,
+      "timed_out": false,
+      "output": "PASS full\n",
+      "elapsed_s": 0.7017166620007629
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests"
+      ],
+      "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+      "exit_code": 0,
+      "timed_out": false,
+      "output": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.000s\n\nOK\n",
+      "elapsed_s": 0.4010749989993201
+    }
+  ]
+}

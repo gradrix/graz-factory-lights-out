@@ -1,0 +1,24 @@
+{
+  "outcome": "PASS_readback",
+  "admission_sha256": "69d38f8aa5bd597fbefd239707fdbe3a49ccee01097134127aa5daf33ce7c689",
+  "admission_copy_sha256": "8611f7bf50abdf706a6e7f3c4f7a8b9854792de216c154d2c3c23813fa377de0",
+  "admission_json_identical": true,
+  "commit": "d186b9330b7b9916e06b3807f1ea03adc02943e8",
+  "verified_code_files": 32,
+  "observations": 6,
+  "identities_equal": true,
+  "preflight_idle_gap_s": 1.1175473219991545,
+  "final_idle_gap_s": 1.1184914799996477,
+  "first_idle_after_stop_s": 1.2888100230011332,
+  "stop_s": 2.617979306998677,
+  "total_s": 5.028800017998947,
+  "cleanup_s": 2.410863941999196,
+  "files": {
+    "admission.json": "8611f7bf50abdf706a6e7f3c4f7a8b9854792de216c154d2c3c23813fa377de0",
+    "client-started.json": "1f03d5de4e0c94133f9306133f7244de643c72e8ebc6de8758e9e9be9994928c",
+    "debit.json": "65b54ee1af5178681bd9eb6ebf7d574627368a65e2d04c48bd02d497d1286f50",
+    "events.json": "b3daaad7dea24bb08cd2c6500147f665f989f969ec03a483d162e43c90465432",
+    "request.json": "fc6f2e5b5f36baf5d660cf542ebbc7a1f0e4c3001c16e0bb17f504335d0954da",
+    "result.json": "37e1f1e2cf3a897aa00251a0767aaf6e1b1b701304fa9bd47cecc50b35e2b48d"
+  }
+}

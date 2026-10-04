@@ -1,0 +1,6 @@
+test_clean_git_blocks_inherited_hook_filter_environment (test_planning_security.SecurityControls) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.025s
+
+OK

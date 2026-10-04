@@ -1,0 +1,38 @@
+{
+  "state": "idle",
+  "reason": "fresh same-identity slot",
+  "identity": {
+    "id": "2cac4229053dac00fdbcadb1952db80f0a9da3fd07b8f40bce1ba8cd3114f6e0",
+    "image": "sha256:249ed60fdd67b96db472e16f945af5aaba565b20159d192ba378035b6d136a1c",
+    "started_at": "2026-10-04T14:20:09.194925789Z",
+    "running": true,
+    "owner": "model-service",
+    "context": "98304",
+    "parallel": "1",
+    "cache_k": "q4_0",
+    "cache_v": "q4_0",
+    "model": "flash-next-coder",
+    "ports": {
+      "8000/tcp": [
+        {
+          "HostIp": "127.0.0.1",
+          "HostPort": "18000"
+        }
+      ]
+    },
+    "offline": true,
+    "runtime_entrypoint": [
+      "/model/runtime/llama-b11284/llama-server"
+    ],
+    "host": "0.0.0.0",
+    "port": "8000"
+  },
+  "slots": [
+    {
+      "id": 0,
+      "n_ctx": 98304,
+      "is_processing": false
+    }
+  ],
+  "utc": "2026-10-04T17:06:41.634607+00:00"
+}

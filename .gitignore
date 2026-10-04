@@ -194,3 +194,10 @@ htmlcov/
 !.scratch/.sflo/08-autonomy-planning-pilot/serving-lifecycle/
 !.scratch/.sflo/08-autonomy-planning-pilot/serving-lifecycle/*.py
 !.scratch/.sflo/08-autonomy-planning-pilot/serving-lifecycle/*.json
+
+!.scratch/.sflo/08-autonomy-planning-pilot/qa-harness/
+!.scratch/.sflo/08-autonomy-planning-pilot/qa-harness/*.json
+!.scratch/.sflo/08-autonomy-planning-pilot/qa-harness/*.log
+!.scratch/.sflo/08-autonomy-planning-pilot/qa-harness/*.txt
+!.scratch/.sflo/08-autonomy-planning-pilot/rig-cancellation-1/
+!.scratch/.sflo/08-autonomy-planning-pilot/rig-cancellation-1/*.json

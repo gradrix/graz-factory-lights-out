@@ -1,0 +1,123 @@
+{
+  "limit": 48,
+  "calls": [
+    {
+      "number": 1,
+      "role": "planner",
+      "status": "returned",
+      "request_sha256": "d33136918c660fc41b64ad4052a5dac4f7de633b1e02f9fd7c33c97e2c021f7d",
+      "response_sha256": "32287afea95e8db022d19abb8be6bb4a3242594a23df872700118fc09d6b5ee4",
+      "usage": null,
+      "elapsed_s": 8.827100100461394e-05
+    },
+    {
+      "number": 2,
+      "role": "plan_review",
+      "status": "returned",
+      "request_sha256": "d8a953f7e2d1f1b0bfb60b21601980726f1382b2f450b9930473b61da0b05220",
+      "response_sha256": "c8428575377be3dcce125af8db055f96637071a0ed680e81014ea9acf6e6e178",
+      "usage": null,
+      "elapsed_s": 8.294100007333327e-05
+    },
+    {
+      "number": 3,
+      "role": "implementation",
+      "status": "returned",
+      "request_sha256": "27661e0ab04318fcc0a837cb717bd23960c462bb45cf4dec2fbdc5a731722001",
+      "response_sha256": "73aee407268905192ec91a88640d4b9c05da5ff5e2cd7ff52c007f463ef27c89",
+      "usage": null,
+      "elapsed_s": 0.00016143299944815226
+    },
+    {
+      "number": 4,
+      "role": "question_assessment",
+      "status": "returned",
+      "request_sha256": "128d2070d96e6eae54a215de2039894c614ecb47b1e83f8721a4534c71114702",
+      "response_sha256": "593afd2e4f5f833ddadaf1e1c5d4aae20c0cd450201283d84250accdfc9a3d0c",
+      "usage": null,
+      "elapsed_s": 0.0001688030006334884
+    },
+    {
+      "number": 5,
+      "role": "implementation",
+      "status": "returned",
+      "request_sha256": "54e0b4e5821f7640cef009063ea3c17cf53cd940b268a6f83a23554f7bb2ac08",
+      "response_sha256": "389b39ec714b965c124f3c7e1ac8e56fa7fe886b53620395e577fe835fd24fc0",
+      "usage": null,
+      "elapsed_s": 0.0007849649991840124
+    },
+    {
+      "number": 6,
+      "role": "implementation",
+      "status": "returned",
+      "request_sha256": "d82ed12eb79e4e622dd65cf2e5f06266b7fa71259db138b2ca01a857ad448bc0",
+      "response_sha256": "1e50f00dc37f7f56035a16727408726ffd2ae294278f2fcca1776bd56a6c02c3",
+      "usage": null,
+      "elapsed_s": 8.040099965000991e-05
+    },
+    {
+      "number": 7,
+      "role": "code_review",
+      "status": "returned",
+      "request_sha256": "1e251f855e65fc72f9ce57812b7114dbf4626e3d9deb391541ccc2025e719cf2",
+      "response_sha256": "2070227c5dc91d7289fbcf90f89b3c576b5384a5d1ae93bb373c99bf338b05e0",
+      "usage": null,
+      "elapsed_s": 0.0001455630008422304
+    },
+    {
+      "number": 8,
+      "role": "implementation",
+      "status": "returned",
+      "request_sha256": "3410e58c6916dfdbd3bee13124827a364223638900f0a8c1fa16b35494b50a56",
+      "response_sha256": "73aee407268905192ec91a88640d4b9c05da5ff5e2cd7ff52c007f463ef27c89",
+      "usage": null,
+      "elapsed_s": 8.083100146905053e-05
+    },
+    {
+      "number": 9,
+      "role": "question_assessment",
+      "status": "returned",
+      "request_sha256": "e598058d8f44c07885b0198341df5b2e1bb3baec835898671666556c63926c22",
+      "response_sha256": "593afd2e4f5f833ddadaf1e1c5d4aae20c0cd450201283d84250accdfc9a3d0c",
+      "usage": null,
+      "elapsed_s": 8.692200026416685e-05
+    },
+    {
+      "number": 10,
+      "role": "implementation",
+      "status": "returned",
+      "request_sha256": "f349c2ab8179fb5531af39b8571583ccaa8c92fca888432fa5c0de074c281769",
+      "response_sha256": "389b39ec714b965c124f3c7e1ac8e56fa7fe886b53620395e577fe835fd24fc0",
+      "usage": null,
+      "elapsed_s": 0.00036817699947278015
+    },
+    {
+      "number": 11,
+      "role": "implementation",
+      "status": "returned",
+      "request_sha256": "65657462142b26e322af145f4d68a5d9feb67c2bb2eb2e492de602ce2d134ab3",
+      "response_sha256": "1e50f00dc37f7f56035a16727408726ffd2ae294278f2fcca1776bd56a6c02c3",
+      "usage": null,
+      "elapsed_s": 8.039200110943057e-05
+    },
+    {
+      "number": 12,
+      "role": "code_review",
+      "status": "returned",
+      "request_sha256": "8973145b27f6c8253932baf0e34fa981bcb129d4d41cc0f7cdf6caa9b68d4e9a",
+      "response_sha256": "2070227c5dc91d7289fbcf90f89b3c576b5384a5d1ae93bb373c99bf338b05e0",
+      "usage": null,
+      "elapsed_s": 0.00014861300041957293
+    },
+    {
+      "number": 13,
+      "role": "code_review",
+      "status": "returned",
+      "request_sha256": "5f5ce927e2b038794f5f1cb1029c64a3dc40ad113a5c5b12a96a67893471f778",
+      "response_sha256": "2070227c5dc91d7289fbcf90f89b3c576b5384a5d1ae93bb373c99bf338b05e0",
+      "usage": null,
+      "elapsed_s": 0.00010486199971637689
+    }
+  ],
+  "deadline": 10124.843929796
+}

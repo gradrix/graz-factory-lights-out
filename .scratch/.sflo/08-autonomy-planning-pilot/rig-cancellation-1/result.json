@@ -1,0 +1,16 @@
+{
+  "cancelled": false,
+  "charged_requests": 1,
+  "cleanup": {
+    "actions": [
+      "SIGTERM"
+    ],
+    "group_absent": true,
+    "returncode": -15
+  },
+  "cleanup_s": 2.410863941999196,
+  "elapsed_s": 5.028800017998947,
+  "observed_busy": true,
+  "outcome": "passed",
+  "settled_idle": true
+}

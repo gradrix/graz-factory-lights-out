@@ -1,0 +1,68 @@
+[
+  {
+    "case": "manifest-reconcile",
+    "result": {
+      "status": "accepted",
+      "children": [
+        "b51c3fad5c95",
+        "fd83a305e940"
+      ],
+      "candidate": "8b128c3f7f34df43c58e11cd23ff2e5117f4121d0253d3f645d2190a72dc3e88"
+    },
+    "integrity": true,
+    "cleanup": [
+      {
+        "workspace_label": "5b3f071b2d54efd61a89df5c114bd8ec23b05f4af89cbca1e63ba7a19aa1d63e",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "workspace_label": "310e8388a82b37a030f101c28ec1032ba5b9a396c61e900aab0bc1b9cd7d7b12",
+        "removed": [],
+        "confirmed_absent": true
+      }
+    ],
+    "calls": 13,
+    "roles": [
+      "code_review",
+      "implementation",
+      "plan_review",
+      "planner",
+      "question_assessment"
+    ],
+    "elapsed_s": 4.736229235000792
+  },
+  {
+    "case": "config-preview",
+    "result": {
+      "status": "accepted",
+      "children": [
+        "88b4787d5ff7",
+        "5c1f5f0b7334"
+      ],
+      "candidate": "522c693cfc98c012effa65ce52d12fd83fbe82ccaab9838bfca5ef947329dbe3"
+    },
+    "integrity": true,
+    "cleanup": [
+      {
+        "workspace_label": "949332b18f8f331b15510e15dc8af5b137362df2332d8b8437f5fe7101dc4bc4",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "workspace_label": "69f5be38bed4ab27c8794649e5d83bbe5dd7b55d17c8adc8f49fb6b4869fcbb6",
+        "removed": [],
+        "confirmed_absent": true
+      }
+    ],
+    "calls": 13,
+    "roles": [
+      "code_review",
+      "implementation",
+      "plan_review",
+      "planner",
+      "question_assessment"
+    ],
+    "elapsed_s": 19.360280304999833
+  }
+]

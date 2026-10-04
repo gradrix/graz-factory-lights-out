@@ -1,0 +1,14 @@
+{
+  "prototype_commit": "d186b9330b7b9916e06b3807f1ea03adc02943e8",
+  "rig_stage": "/home/gradrix/gflo-planning-d186b93",
+  "archive_sha256": "0389b90db5da1218d1fad0b3df40e16e14890dd36af2e8fab3c637053c2e3a9e",
+  "included_paths": [
+    "gflo",
+    "ops/planning_pilot_prototype.py",
+    "ops/cancellation_probe.py",
+    "ops/PLANNING_PILOT.md",
+    "evaluations/planning-pilot/manifest.json",
+    "evaluations/planning-pilot/cases"
+  ],
+  "purpose": "frozen prototype, GET-only preflight; inference not admitted"
+}

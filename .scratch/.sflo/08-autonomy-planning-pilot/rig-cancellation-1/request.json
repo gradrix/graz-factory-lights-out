@@ -1,0 +1,20 @@
+{
+  "chat_template_kwargs": {
+    "enable_thinking": true
+  },
+  "max_tokens": 4096,
+  "messages": [
+    {
+      "content": "Follow the counting instruction. Do not use tools.",
+      "role": "system"
+    },
+    {
+      "content": "Print consecutive integers from 1 through 2000, one integer per line, without explanation.",
+      "role": "user"
+    }
+  ],
+  "model": "flash-next-coder",
+  "reasoning_effort": "medium",
+  "temperature": 0,
+  "thinking_budget_tokens": 1024
+}

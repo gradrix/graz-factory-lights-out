@@ -1,0 +1,276 @@
+[
+  {
+    "elapsed_s": 0.1140250640000886,
+    "kind": "preflight",
+    "observation": {
+      "identity": {
+        "cache_k": "q4_0",
+        "cache_v": "q4_0",
+        "context": "98304",
+        "host": "0.0.0.0",
+        "id": "2cac4229053dac00fdbcadb1952db80f0a9da3fd07b8f40bce1ba8cd3114f6e0",
+        "image": "sha256:249ed60fdd67b96db472e16f945af5aaba565b20159d192ba378035b6d136a1c",
+        "model": "flash-next-coder",
+        "offline": true,
+        "owner": "model-service",
+        "parallel": "1",
+        "port": "8000",
+        "ports": {
+          "8000/tcp": [
+            {
+              "HostIp": "127.0.0.1",
+              "HostPort": "18000"
+            }
+          ]
+        },
+        "running": true,
+        "runtime_entrypoint": [
+          "/model/runtime/llama-b11284/llama-server"
+        ],
+        "started_at": "2026-10-04T14:20:09.194925789Z"
+      },
+      "reason": "fresh same-identity slot",
+      "slots": [
+        {
+          "id": 0,
+          "is_processing": false,
+          "n_ctx": 98304
+        }
+      ],
+      "state": "idle",
+      "utc": "2026-10-04T17:11:15.096698+00:00"
+    }
+  },
+  {
+    "elapsed_s": 1.2315723859992431,
+    "kind": "preflight",
+    "observation": {
+      "identity": {
+        "cache_k": "q4_0",
+        "cache_v": "q4_0",
+        "context": "98304",
+        "host": "0.0.0.0",
+        "id": "2cac4229053dac00fdbcadb1952db80f0a9da3fd07b8f40bce1ba8cd3114f6e0",
+        "image": "sha256:249ed60fdd67b96db472e16f945af5aaba565b20159d192ba378035b6d136a1c",
+        "model": "flash-next-coder",
+        "offline": true,
+        "owner": "model-service",
+        "parallel": "1",
+        "port": "8000",
+        "ports": {
+          "8000/tcp": [
+            {
+              "HostIp": "127.0.0.1",
+              "HostPort": "18000"
+            }
+          ]
+        },
+        "running": true,
+        "runtime_entrypoint": [
+          "/model/runtime/llama-b11284/llama-server"
+        ],
+        "started_at": "2026-10-04T14:20:09.194925789Z"
+      },
+      "reason": "fresh same-identity slot",
+      "slots": [
+        {
+          "id": 0,
+          "is_processing": false,
+          "n_ctx": 98304
+        }
+      ],
+      "state": "idle",
+      "utc": "2026-10-04T17:11:16.214184+00:00"
+    }
+  },
+  {
+    "elapsed_s": 2.2472037030001957,
+    "kind": "client_launched",
+    "pid": 19741
+  },
+  {
+    "elapsed_s": 2.6147322059987346,
+    "kind": "active_observation",
+    "observation": {
+      "identity": {
+        "cache_k": "q4_0",
+        "cache_v": "q4_0",
+        "context": "98304",
+        "host": "0.0.0.0",
+        "id": "2cac4229053dac00fdbcadb1952db80f0a9da3fd07b8f40bce1ba8cd3114f6e0",
+        "image": "sha256:249ed60fdd67b96db472e16f945af5aaba565b20159d192ba378035b6d136a1c",
+        "model": "flash-next-coder",
+        "offline": true,
+        "owner": "model-service",
+        "parallel": "1",
+        "port": "8000",
+        "ports": {
+          "8000/tcp": [
+            {
+              "HostIp": "127.0.0.1",
+              "HostPort": "18000"
+            }
+          ]
+        },
+        "running": true,
+        "runtime_entrypoint": [
+          "/model/runtime/llama-b11284/llama-server"
+        ],
+        "started_at": "2026-10-04T14:20:09.194925789Z"
+      },
+      "reason": "fresh same-identity slot",
+      "slots": [
+        {
+          "id": 0,
+          "is_processing": true,
+          "n_ctx": 98304
+        }
+      ],
+      "state": "busy",
+      "utc": "2026-10-04T17:11:17.346951+00:00"
+    }
+  },
+  {
+    "alive": true,
+    "cancelled": false,
+    "completed": false,
+    "elapsed_s": 2.617979306998677,
+    "kind": "stop_transition",
+    "observed_busy": true
+  },
+  {
+    "actions": [
+      "SIGTERM"
+    ],
+    "elapsed_s": 2.6720240089998697,
+    "group_absent": true,
+    "kind": "client_cleanup",
+    "returncode": -15
+  },
+  {
+    "elapsed_s": 2.7889518679985486,
+    "kind": "cleanup_observation",
+    "observation": {
+      "identity": {
+        "cache_k": "q4_0",
+        "cache_v": "q4_0",
+        "context": "98304",
+        "host": "0.0.0.0",
+        "id": "2cac4229053dac00fdbcadb1952db80f0a9da3fd07b8f40bce1ba8cd3114f6e0",
+        "image": "sha256:249ed60fdd67b96db472e16f945af5aaba565b20159d192ba378035b6d136a1c",
+        "model": "flash-next-coder",
+        "offline": true,
+        "owner": "model-service",
+        "parallel": "1",
+        "port": "8000",
+        "ports": {
+          "8000/tcp": [
+            {
+              "HostIp": "127.0.0.1",
+              "HostPort": "18000"
+            }
+          ]
+        },
+        "running": true,
+        "runtime_entrypoint": [
+          "/model/runtime/llama-b11284/llama-server"
+        ],
+        "started_at": "2026-10-04T14:20:09.194925789Z"
+      },
+      "reason": "fresh same-identity slot",
+      "slots": [
+        {
+          "id": 0,
+          "is_processing": true,
+          "n_ctx": 98304
+        }
+      ],
+      "state": "busy",
+      "utc": "2026-10-04T17:11:17.771735+00:00"
+    }
+  },
+  {
+    "elapsed_s": 3.9067893299998104,
+    "kind": "cleanup_observation",
+    "observation": {
+      "identity": {
+        "cache_k": "q4_0",
+        "cache_v": "q4_0",
+        "context": "98304",
+        "host": "0.0.0.0",
+        "id": "2cac4229053dac00fdbcadb1952db80f0a9da3fd07b8f40bce1ba8cd3114f6e0",
+        "image": "sha256:249ed60fdd67b96db472e16f945af5aaba565b20159d192ba378035b6d136a1c",
+        "model": "flash-next-coder",
+        "offline": true,
+        "owner": "model-service",
+        "parallel": "1",
+        "port": "8000",
+        "ports": {
+          "8000/tcp": [
+            {
+              "HostIp": "127.0.0.1",
+              "HostPort": "18000"
+            }
+          ]
+        },
+        "running": true,
+        "runtime_entrypoint": [
+          "/model/runtime/llama-b11284/llama-server"
+        ],
+        "started_at": "2026-10-04T14:20:09.194925789Z"
+      },
+      "reason": "fresh same-identity slot",
+      "slots": [
+        {
+          "id": 0,
+          "is_processing": false,
+          "n_ctx": 98304
+        }
+      ],
+      "state": "idle",
+      "utc": "2026-10-04T17:11:18.889237+00:00"
+    }
+  },
+  {
+    "elapsed_s": 5.025280809999458,
+    "kind": "cleanup_observation",
+    "observation": {
+      "identity": {
+        "cache_k": "q4_0",
+        "cache_v": "q4_0",
+        "context": "98304",
+        "host": "0.0.0.0",
+        "id": "2cac4229053dac00fdbcadb1952db80f0a9da3fd07b8f40bce1ba8cd3114f6e0",
+        "image": "sha256:249ed60fdd67b96db472e16f945af5aaba565b20159d192ba378035b6d136a1c",
+        "model": "flash-next-coder",
+        "offline": true,
+        "owner": "model-service",
+        "parallel": "1",
+        "port": "8000",
+        "ports": {
+          "8000/tcp": [
+            {
+              "HostIp": "127.0.0.1",
+              "HostPort": "18000"
+            }
+          ]
+        },
+        "running": true,
+        "runtime_entrypoint": [
+          "/model/runtime/llama-b11284/llama-server"
+        ],
+        "started_at": "2026-10-04T14:20:09.194925789Z"
+      },
+      "reason": "fresh same-identity slot",
+      "slots": [
+        {
+          "id": 0,
+          "is_processing": false,
+          "n_ctx": 98304
+        }
+      ],
+      "state": "idle",
+      "utc": "2026-10-04T17:11:20.007811+00:00"
+    }
+  }
+]

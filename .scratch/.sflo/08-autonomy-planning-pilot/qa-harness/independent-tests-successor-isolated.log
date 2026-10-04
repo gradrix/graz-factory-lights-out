@@ -1,0 +1,13 @@
+test_actual_supervisor_cancellation (__main__.IndependentQA) ... ok
+test_actual_supervisor_deadline (__main__.IndependentQA) ... ok
+test_deadline_denies_before_transport (__main__.IndependentQA) ... ok
+test_failed_transport_and_malformed_completion_remain_charged (__main__.IndependentQA) ... ok
+test_fixed_plan_authority (__main__.IndependentQA) ... ok
+test_milestone_pass_final_failure_never_promotes (__main__.IndependentQA) ... ok
+test_profile_changes_denied (__main__.IndependentQA) ... ok
+test_shared_all_roles_recreation_and_denial (__main__.IndependentQA) ... ok
+
+----------------------------------------------------------------------
+Ran 8 tests in 0.841s
+
+OK

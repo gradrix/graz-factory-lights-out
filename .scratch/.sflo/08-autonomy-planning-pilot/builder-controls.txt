@@ -1,0 +1,15 @@
+test_exact_mode_restore_preserves_tree_and_prior_source (test_planning_pilot_builder.BuilderControls) ... ok
+test_git_controls_rejected_before_host_git (test_planning_pilot_builder.BuilderControls) ... ok
+test_git_directory_link_and_special_modes_refused (test_planning_pilot_builder.BuilderControls) ... ok
+test_global_hook_filter_and_template_cannot_execute (test_planning_pilot_builder.BuilderControls) ... ok
+test_http_failure_body_and_overflow_preserved (test_planning_pilot_builder.BuilderControls) ... ok
+test_normal_exit_descendant_is_terminated (test_planning_pilot_builder.BuilderControls) ... ok
+test_raw_malformed_body_captured_before_json_parser (test_planning_pilot_builder.BuilderControls) ... ok
+test_restore_changed_bytes_and_executable_refuses (test_planning_pilot_builder.BuilderControls) ... ok
+test_sigterm_supervisor_returns_failed_cancellation (test_planning_pilot_builder.BuilderControls) ... ok
+test_slot_raw_shape_and_strict_types (test_planning_pilot_builder.BuilderControls) ... ok
+
+----------------------------------------------------------------------
+Ran 10 tests in 0.475s
+
+OK

@@ -1,0 +1,42 @@
+{
+  "version": 2,
+  "purpose": "Disposable planning pilot; not maintained runtime",
+  "prototype_commit": "d186b93",
+  "prior_rejected_commit": "8d43977",
+  "prior_harness_sha256": "162819c48a3449e00add6b7fb2232c11b6dff1a2c2188a5413fb8263ace135d9",
+  "contract_sha256": "d52ae8c2f322f417fed6c8cf6ace5343720cc40f86f0d0aeb6b9294e2fc33bea",
+  "sha256": {
+    "ops/planning_pilot_prototype.py": "b4e7beaab66c480f6e5f6a9a6daad6f57dbbdea6ce6b3ec4c88bafad599aafa9",
+    "ops/cancellation_probe.py": "eef6fba8f02498c2c247f2d264a1dca5bbf2bb5caec5521db97f63a29b443128",
+    "ops/PLANNING_PILOT.md": "6c01ff495906a2a47714aeda7db151314b78498ad5085674b3636fdd5b9db031",
+    "ops/test_planning_pilot_builder.py": "008e331d31a1845e62b77eccab4fd95342318c9c2594acb98d33fa4621f5f8a4",
+    "ops/test_planning_pilot_qa.py": "4856e31a0bb5b69e7a58635c86ff591e4dac8bb62caab89df4707af75d6a550d",
+    "ops/test_planning_security.py": "0a635f3182a8b621fa0cb5f2c1acf91a472498fc9b85861178918c334936b9aa",
+    "ops/test_cancellation_probe.py": "3ecdfad0418381d6a547466c840a875ebeea09a9db8cb02dbf9a734a9ded4591",
+    "ops/planning_pilot_vertical_qa.py": "e17e9924fddd94f8ae4d85e3fb7b2813d84a0f8ad9989f8c72315c28c3a735d6",
+    "evaluations/planning-pilot/manifest.json": "9d6b6dc798d148524ef7e360abfc31958a47bb05b6870e56735a7ef64c283e5b"
+  },
+  "controller_bindings": {
+    "environment-bindings.json": "65b9da495673d74eea93e4ce85e9384d5243dfaf171a90502339248c9cc66401",
+    "serving-lifecycle/expected-identity.json": "72c8346f55dc51c8bba1fe503971c7269d6ef6ffbc7aa36b1f2bac1cd8821755"
+  },
+  "limits": {
+    "arms": 4,
+    "completion_requests_per_arm": 48,
+    "work_seconds_per_arm": 1800,
+    "cleanup_seconds_per_arm": 150,
+    "max_output_tokens": 4096,
+    "thinking_tokens": 1024,
+    "request_bytes": 4194304,
+    "response_bytes": 1048576
+  },
+  "verification": {
+    "builder_controls": 10,
+    "independent_security_controls": 18,
+    "synthetic_real_factory_decomposed_cases": 2,
+    "synthetic_integration_harness_sha256": "162819c48a3449e00add6b7fb2232c11b6dff1a2c2188a5413fb8263ace135d9",
+    "successor_delta": "Final publication cancellation/deadline fence only; arm integration path unchanged",
+    "actual_model_calls_by_builder": 0,
+    "actual_model_qualification": "not yet run; root admission required"
+  }
+}

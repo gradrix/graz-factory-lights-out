@@ -1,0 +1,58 @@
+test_admission_code_and_request_drift_refused (test_cancellation_probe.CancellationControls) ... ok
+test_cancellation_during_busy_probe_not_pass (test_cancellation_probe.CancellationControls) ... ok
+test_consumed_admission_refuses_fresh_output (test_cancellation_probe.CancellationControls) ... ok
+test_deadline_during_busy_probe_not_pass (test_cancellation_probe.CancellationControls) ... ok
+test_debit_cancellation_prevents_launch (test_cancellation_probe.CancellationControls) ... ok
+test_evidence_size_bound (test_cancellation_probe.CancellationControls) ... ok
+test_group_descendant_cleanup (test_cancellation_probe.CancellationControls) ... ok
+test_lease_held_during_preflight_and_cleanup (test_cancellation_probe.CancellationControls) ... ok
+test_normal_completion_race_inconclusive (test_cancellation_probe.CancellationControls) ... ok
+test_observed_busy_then_signal_and_idle_passes (test_cancellation_probe.CancellationControls) ... ok
+test_preflight_unknown_never_launches (test_cancellation_probe.CancellationControls) ... ok
+test_real_idle_spacing (test_cancellation_probe.CancellationControls) ... ok
+test_request_error_does_not_expose_credentials (test_cancellation_probe.CancellationControls) ... ok
+test_stop_group_terminates_owned_client (test_cancellation_probe.CancellationControls) ... ok
+test_unknown_cleanup_never_passes (test_cancellation_probe.CancellationControls) ... ok
+test_unknown_is_not_busy (test_cancellation_probe.CancellationControls) ... ok
+test_exact_mode_restore_preserves_tree_and_prior_source (test_planning_pilot_builder.BuilderControls) ... ok
+test_git_controls_rejected_before_host_git (test_planning_pilot_builder.BuilderControls) ... ok
+test_git_directory_link_and_special_modes_refused (test_planning_pilot_builder.BuilderControls) ... ok
+test_global_hook_filter_and_template_cannot_execute (test_planning_pilot_builder.BuilderControls) ... ok
+test_http_failure_body_and_overflow_preserved (test_planning_pilot_builder.BuilderControls) ... ok
+test_normal_exit_descendant_is_terminated (test_planning_pilot_builder.BuilderControls) ... ok
+test_raw_malformed_body_captured_before_json_parser (test_planning_pilot_builder.BuilderControls) ... ok
+test_restore_changed_bytes_and_executable_refuses (test_planning_pilot_builder.BuilderControls) ... ok
+test_sigterm_supervisor_returns_failed_cancellation (test_planning_pilot_builder.BuilderControls) ... ok
+test_slot_raw_shape_and_strict_types (test_planning_pilot_builder.BuilderControls) ... ok
+test_actual_supervisor_cancellation (test_planning_pilot_qa.IndependentQA) ... ok
+test_actual_supervisor_deadline (test_planning_pilot_qa.IndependentQA) ... ok
+test_deadline_denies_before_transport (test_planning_pilot_qa.IndependentQA) ... ok
+test_failed_transport_and_malformed_completion_remain_charged (test_planning_pilot_qa.IndependentQA) ... ok
+test_fixed_plan_authority (test_planning_pilot_qa.IndependentQA) ... ok
+test_milestone_pass_final_failure_never_promotes (test_planning_pilot_qa.IndependentQA) ... ok
+test_profile_changes_denied (test_planning_pilot_qa.IndependentQA) ... ok
+test_shared_all_roles_recreation_and_denial (test_planning_pilot_qa.IndependentQA) ... ok
+test_attested_application_failure_requires_absence (test_planning_security.SecurityControls) ... ok
+test_checked_exact_capacity_and_copy (test_planning_security.SecurityControls) ... ok
+test_checked_types_and_special_modes (test_planning_security.SecurityControls) ... ok
+test_classification_strict_types_and_identity (test_planning_security.SecurityControls) ... ok
+test_clean_git_blocks_inherited_hook_filter_environment (test_planning_security.SecurityControls) ... ok
+test_cleanup_daemon_failure_or_bad_ids_refuse (test_planning_security.SecurityControls) ... ok
+test_cleanup_uncertainty_even_after_empty_queries (test_planning_security.SecurityControls) ... ok
+test_git_template_hook_disabled_with_positive_control (test_planning_security.SecurityControls) ... ok
+test_missing_create_attestation_sticky_fence (test_planning_security.SecurityControls) ... ok
+test_parent_cancellation_at_publication_never_accepts (test_planning_security.SecurityControls) ... ok
+test_pending_mode_restore_exact_and_prior_good_unchanged (test_planning_security.SecurityControls) ... ok
+test_probe_bounded_output_nonzero_and_malformed_refuse (test_planning_security.SecurityControls) ... ok
+test_probe_expired_deadline_no_subprocess (test_planning_security.SecurityControls) ... ok
+test_publication_deadline_after_fsync_and_conforming_control (test_planning_security.SecurityControls) ... ok
+test_reserved_control_files_refuse_before_git (test_planning_security.SecurityControls) ... ok
+test_restore_nonpending_or_attempted_refuses (test_planning_security.SecurityControls) ... ok
+test_restore_wrong_bytes_exec_or_set_refuses_before_chmod (test_planning_security.SecurityControls) ... ok
+test_snapshot_rejects_git_controls_before_index (test_planning_security.SecurityControls) ... ok
+
+----------------------------------------------------------------------
+Ran 52 tests in 5.789s
+
+OK
+{"cancelled": false, "charged_requests": 1, "cleanup": {"actions": ["SIGTERM"], "group_absent": true, "returncode": -15}, "cleanup_s": 0.01640013698488474, "elapsed_s": 0.03520741267129779, "observed_busy": true, "outcome": "passed", "settled_idle": true}

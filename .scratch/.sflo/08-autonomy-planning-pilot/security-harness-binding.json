@@ -1,0 +1,15 @@
+{
+  "harness_sha256": "b4e7beaab66c480f6e5f6a9a6daad6f57dbbdea6ce6b3ec4c88bafad599aafa9",
+  "test_sha256": "d0d8597a4d715ae7d44a239091ecf7d94959d6f610ad3c70b8391bb3fab6a559",
+  "contract_sha256": "d52ae8c2f322f417fed6c8cf6ace5343720cc40f86f0d0aeb6b9294e2fc33bea",
+  "result_sha256": "7e2b0eea0ee07425717567b1434e402d890b6e558a6b2cdf04613459e68ce028",
+  "original_finding_harness_sha256": "162819c48a3449e00add6b7fb2232c11b6dff1a2c2188a5413fb8263ace135d9",
+  "tests": 18,
+  "outcome": "PASS_scoped_security",
+  "no_model_or_rig_calls": true,
+  "qa_test_sha256": "1ff0479a52c567d8d98f4cd19be33973798b29baeb933b6ab3705bdc7cfb1971",
+  "combined_tests": 52,
+  "combined_elapsed_s": 5.789,
+  "combined_result": "combined-controls-final.txt",
+  "combined_result_sha256": "5f6b65eaca29bd6d556b9de137bbcb1fc044cb230dc1afbadeda37a541427c84"
+}
