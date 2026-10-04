@@ -1,0 +1,13 @@
+{
+  "attempt": 1,
+  "usage": {
+    "completion_tokens": 710,
+    "prompt_tokens": 10109,
+    "prompt_tokens_details": {
+      "cached_tokens": 127
+    },
+    "total_tokens": 10819
+  },
+  "finish_reason": "stop",
+  "elapsed_s": 48.861444352000035
+}

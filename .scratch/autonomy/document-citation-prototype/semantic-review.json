@@ -1,0 +1,77 @@
+{
+  "reviewer": "builder manual review; independent QA pending",
+  "rows": [
+    {
+      "case": "row_shape",
+      "method": "exact",
+      "requested_facts_satisfied": true,
+      "all_claims_supported_by_full_source": true,
+      "all_claim_details_entailed_by_cited_spans": false,
+      "expected_status_matched": true,
+      "review": "All asked facts present and cited. Extra added-in-version3.12 assertion has no supporting cited span:111 describes writer behavior;113 records version. Truth in the wider source is not complete citation support."
+    },
+    {
+      "case": "row_shape",
+      "method": "references",
+      "requested_facts_satisfied": true,
+      "all_claims_supported_by_full_source": true,
+      "all_claim_details_entailed_by_cited_spans": true,
+      "expected_status_matched": true,
+      "review": "Requested facts and claim details supported by cited spans; unsupported future-date question correctly abstains."
+    },
+    {
+      "case": "header_selection",
+      "method": "references",
+      "requested_facts_satisfied": true,
+      "all_claims_supported_by_full_source": true,
+      "all_claim_details_entailed_by_cited_spans": true,
+      "expected_status_matched": true,
+      "review": "Requested facts and claim details supported by cited spans; unsupported future-date question correctly abstains."
+    },
+    {
+      "case": "header_selection",
+      "method": "exact",
+      "requested_facts_satisfied": true,
+      "all_claims_supported_by_full_source": true,
+      "all_claim_details_entailed_by_cited_spans": true,
+      "expected_status_matched": true,
+      "review": "Requested facts and claim details supported by cited spans; unsupported future-date question correctly abstains."
+    },
+    {
+      "case": "skipkeys",
+      "method": "exact",
+      "requested_facts_satisfied": true,
+      "all_claims_supported_by_full_source": true,
+      "all_claim_details_entailed_by_cited_spans": true,
+      "expected_status_matched": true,
+      "review": "Requested facts and claim details supported by cited spans; unsupported future-date question correctly abstains."
+    },
+    {
+      "case": "skipkeys",
+      "method": "references",
+      "requested_facts_satisfied": true,
+      "all_claims_supported_by_full_source": true,
+      "all_claim_details_entailed_by_cited_spans": true,
+      "expected_status_matched": true,
+      "review": "Requested facts and claim details supported by cited spans; unsupported future-date question correctly abstains."
+    },
+    {
+      "case": "unpublished_future_csv",
+      "method": "references",
+      "requested_facts_satisfied": true,
+      "all_claims_supported_by_full_source": true,
+      "all_claim_details_entailed_by_cited_spans": true,
+      "expected_status_matched": true,
+      "review": "Requested facts and claim details supported by cited spans; unsupported future-date question correctly abstains."
+    },
+    {
+      "case": "unpublished_future_csv",
+      "method": "exact",
+      "requested_facts_satisfied": true,
+      "all_claims_supported_by_full_source": true,
+      "all_claim_details_entailed_by_cited_spans": true,
+      "expected_status_matched": true,
+      "review": "Requested facts and claim details supported by cited spans; unsupported future-date question correctly abstains."
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "purpose": "Stage07 bounded document repair qualification; no general research acceptance",
+  "case_count": 10,
+  "expected_supported": 8,
+  "expected_insufficient": 2,
+  "sources": {
+    "csv": {
+      "path": ".gflo/document-repair-qualification/csv-evidence.json",
+      "sha256": "87e2a587744dd28d080033c52fabed801a1bf41162883f3ae4ea3bb63560ae5f",
+      "source_url": "https://docs.python.org/3.12/library/csv.html",
+      "source_version": "Python3.12 historical documentation snapshot; floating series URL, not exact runtime patch",
+      "evidence_id": "070c0e420dcec838aa77a74f108fac7668e9fe959b3880d4a0083520d0cebcb1",
+      "body_sha256": "f56ff04a9bac6327b4eb086c854e4842b0b235d6e6135b737d1fc7723186f8c0"
+    },
+    "json": {
+      "path": ".gflo/document-repair-qualification/json-evidence.json",
+      "sha256": "248a623c40d7ba2032dd87980141ee207e0b83f243653a54cc22d07ebe79256f",
+      "source_url": "https://docs.python.org/3.12/library/json.html",
+      "source_version": "Python3.12 historical documentation snapshot; floating series URL, not exact runtime patch",
+      "evidence_id": "dbc3e94ea45cabb423f01f987f491a4c8592f62bcd69418a7c49b78eb7dde967",
+      "body_sha256": "1a5e4ba18342b32f5f174d129f9c226a21a9445a89384f13a3f33ec327c2b68f"
+    },
+    "asyncio": {
+      "body_path": ".gflo/document-event-prototype/asyncio-body.html",
+      "body_sha256": "b395cf62082c34beeebfdc8b7a5a34f997411f6499fa14cf66425bcd20ff1381",
+      "acquisition_receipt": ".scratch/autonomy/document-event-prototype/acquisition.json",
+      "acquisition_receipt_sha256": "93ccd9ecf5b081dbb756d8eb4c3e0362f8d908a42867cc783c29e6c949310046",
+      "source_url": "https://docs.python.org/3.12/library/asyncio-task.html",
+      "source_version": "Python3.12 historical documentation snapshot; floating series URL, not exact runtime patch",
+      "review_spans_path": ".gflo/document-repair-qualification/asyncio-spans.json",
+      "review_spans_sha256": "14d4153f4ce19c76b10bf2f1acbcad5c284d655c0d5b7ebcae1dfefeb1f4177e",
+      "extraction_basis": "Accepted2049361 extractor with only in-process EVENT_LIMIT=40000 for QA grounding; identical spans hash to prior actual40000 prototype. Runtime candidate must bind its actual acquisition/extraction independently."
+    }
+  },
+  "profile": {
+    "model": "flash-next-coder",
+    "context": 98304,
+    "cache_k": "q4_0",
+    "cache_v": "q4_0",
+    "temperature": 0,
+    "reasoning_effort": "medium",
+    "thinking_budget_tokens": 512,
+    "max_tokens_per_call": 2048,
+    "deadline_s_per_call": 120,
+    "response_bytes_per_call": 65536,
+    "max_calls_per_case": 2,
+    "repair": "At most one structural-validation repair; no semantic repair or transport retry"
+  },
+  "execution": [
+    "Freeze candidate manifest and serving identity separately before calls.",
+    "Use existing exact excerpt format; every original response, rejection and repair retained.",
+    "Model receives only source evidence plus questions.json fields; oracle.json and reference span IDs stay outside model input.",
+    "Source acquisition/extraction failure is not_attempted_source_failure, never model pass; preserve original4asyncio unattempted outcomes.",
+    "Cached source qualification is historical replay, not proof of fresh network acquisition. Any live acquisition must produce separately bound receipt/body/spans; changed body requires explicit new reviewed source version before model calls.",
+    "Every final answer receives independent requested-fact and all-extra-claim citation/entailment/version review. Structural validity alone cannot pass semantic gate.",
+    "Score repeated diagnostics separately from new inference; no 10-unseen claim.",
+    "Expected spans are nonexclusive review aids; accept other actually entailing citations.",
+    "Do not add unasked return/version/detail requirements."
+  ],
+  "case_order": [
+    "row_shape_defaults",
+    "json_hooks",
+    "csv_newlines",
+    "json_skipkeys",
+    "asyncio_taskgroup",
+    "asyncio_gather",
+    "asyncio_wait_for",
+    "asyncio_shield",
+    "future_csv_date",
+    "future_taskgroup_date"
+  ]
+}

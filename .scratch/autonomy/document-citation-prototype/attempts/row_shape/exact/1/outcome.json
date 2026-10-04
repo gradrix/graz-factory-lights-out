@@ -1,0 +1,14 @@
+{
+  "attempt": 1,
+  "usage": {
+    "completion_tokens": 1066,
+    "prompt_tokens": 7814,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "total_tokens": 8880
+  },
+  "finish_reason": "stop",
+  "validation_error": "Citation does not match frozen evidence",
+  "elapsed_s": 35.619809609000185
+}

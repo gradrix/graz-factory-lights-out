@@ -1,0 +1,92 @@
+{
+  "whole_span_boundaries": [
+    {
+      "utf8_bytes": 4096,
+      "character_count": 4096,
+      "accepted": true
+    },
+    {
+      "utf8_bytes": 4097,
+      "character_count": 4097,
+      "accepted": false
+    },
+    {
+      "utf8_bytes": 4096,
+      "character_count": 2048,
+      "accepted": true
+    },
+    {
+      "utf8_bytes": 4098,
+      "character_count": 2049,
+      "accepted": false
+    }
+  ],
+  "legal_reference_expansion": {
+    "model_json_bytes": 12397,
+    "derived_answer_bytes": 538349,
+    "existing_receipt_limit_bytes": 65536,
+    "answer_alone_exceeds_receipt_limit": true
+  },
+  "observed_sizes": [
+    {
+      "case": "row_shape",
+      "method": "exact",
+      "derived_answer_bytes": 1889,
+      "raw_responses_plus_answer_bytes": 11889
+    },
+    {
+      "case": "row_shape",
+      "method": "references",
+      "derived_answer_bytes": 2205,
+      "raw_responses_plus_answer_bytes": 5831
+    },
+    {
+      "case": "header_selection",
+      "method": "references",
+      "derived_answer_bytes": 1891,
+      "raw_responses_plus_answer_bytes": 4293
+    },
+    {
+      "case": "header_selection",
+      "method": "exact",
+      "derived_answer_bytes": 1091,
+      "raw_responses_plus_answer_bytes": 3636
+    },
+    {
+      "case": "skipkeys",
+      "method": "exact",
+      "derived_answer_bytes": 1270,
+      "raw_responses_plus_answer_bytes": 4232
+    },
+    {
+      "case": "skipkeys",
+      "method": "references",
+      "derived_answer_bytes": 1476,
+      "raw_responses_plus_answer_bytes": 3597
+    },
+    {
+      "case": "unpublished_future_csv",
+      "method": "references",
+      "derived_answer_bytes": 283,
+      "raw_responses_plus_answer_bytes": 1996
+    },
+    {
+      "case": "unpublished_future_csv",
+      "method": "exact",
+      "derived_answer_bytes": 321,
+      "raw_responses_plus_answer_bytes": 2283
+    }
+  ],
+  "unchanged_accepted_replay": [
+    {
+      "id": "bf354fdec1b1c6e86af4e653f8a490270565ffdbad895f594b79136009819896",
+      "receipt_sha256": "bf354fdec1b1c6e86af4e653f8a490270565ffdbad895f594b79136009819896",
+      "status": "supported"
+    }
+  ],
+  "derived_answer_existing_replay_shape": [
+    "row_shape",
+    "header_selection",
+    "unpublished_future_csv"
+  ]
+}

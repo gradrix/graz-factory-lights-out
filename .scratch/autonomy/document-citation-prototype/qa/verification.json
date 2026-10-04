@@ -1,0 +1,121 @@
+{
+  "all_bound_input_hashes_match": true,
+  "rows": [
+    {
+      "case": "row_shape",
+      "method": "exact",
+      "attempts": [
+        {
+          "number": 1,
+          "error": "Citation does not match frozen evidence",
+          "raw_sha256": "2d95360cc39575b0e8289f5a86e75e5800bb42aa33f5b428a6bb619db7e59e9b"
+        },
+        {
+          "number": 2,
+          "error": null,
+          "raw_sha256": "7dfa666bb44835c7fcd6e8dbba9139eb6c76252553bf04f3d358c7cf0c293541"
+        }
+      ],
+      "elapsed_s": 51.40434227199967,
+      "excerpt_bytes": 684
+    },
+    {
+      "case": "row_shape",
+      "method": "references",
+      "attempts": [
+        {
+          "number": 1,
+          "error": null,
+          "raw_sha256": "c051510214d969658932b0cded452b4b49df1e11c4b4fadfa330be3e3eeed0fa"
+        }
+      ],
+      "elapsed_s": 35.54203132399971,
+      "excerpt_bytes": 1401
+    },
+    {
+      "case": "header_selection",
+      "method": "references",
+      "attempts": [
+        {
+          "number": 1,
+          "error": null,
+          "raw_sha256": "1c8fdb9c62c7da2ded0ba487fd0b25e6a87031412edfaa9dcc9a40bcb2d97e97"
+        }
+      ],
+      "elapsed_s": 29.028283438000017,
+      "excerpt_bytes": 1101
+    },
+    {
+      "case": "header_selection",
+      "method": "exact",
+      "attempts": [
+        {
+          "number": 1,
+          "error": null,
+          "raw_sha256": "a62f4e4f411db4827933767dcad86b87764c5134fe9f25d74f86bbc05a60794a"
+        }
+      ],
+      "elapsed_s": 31.494766503999926,
+      "excerpt_bytes": 325
+    },
+    {
+      "case": "skipkeys",
+      "method": "exact",
+      "attempts": [
+        {
+          "number": 1,
+          "error": null,
+          "raw_sha256": "47ef306fe496e8e3f226d4429c262d526a7e66c51cf2ff6b9aff94a03c660caf"
+        }
+      ],
+      "elapsed_s": 48.861757429000136,
+      "excerpt_bytes": 459
+    },
+    {
+      "case": "skipkeys",
+      "method": "references",
+      "attempts": [
+        {
+          "number": 1,
+          "error": null,
+          "raw_sha256": "82d29d50be71b6ea16e66a0461c472eb997d8b045f6b785e1d774666ddb24643"
+        }
+      ],
+      "elapsed_s": 37.21557140999994,
+      "excerpt_bytes": 680
+    },
+    {
+      "case": "unpublished_future_csv",
+      "method": "references",
+      "attempts": [
+        {
+          "number": 1,
+          "error": null,
+          "raw_sha256": "197cf1f687d5d37341118835712d0601f85d472e6277b869f190bad4bbda453b"
+        }
+      ],
+      "elapsed_s": 27.402926093999668,
+      "excerpt_bytes": 0
+    },
+    {
+      "case": "unpublished_future_csv",
+      "method": "exact",
+      "attempts": [
+        {
+          "number": 1,
+          "error": null,
+          "raw_sha256": "0ef959869cf8befd0d13c78e20f6cbd5687ba31805434c0b53a1a17d9b8b451a"
+        }
+      ],
+      "elapsed_s": 29.49657229200011,
+      "excerpt_bytes": 0
+    }
+  ],
+  "source_max_span_bytes": {
+    "csv": 1109,
+    "json": 457
+  },
+  "long_whole_span_error": "Citation does not match frozen evidence",
+  "short_exact_excerpt_in_long_span_valid": true,
+  "deliberately_false_claim_with_valid_citation_structurally_accepted": true
+}

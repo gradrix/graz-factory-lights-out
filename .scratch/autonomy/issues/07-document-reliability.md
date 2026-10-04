@@ -1,7 +1,7 @@
 # Broader documentation reliability
 
 Type: task/prototype
-Status: open; resolve after the active local-browser mutation unit or in demonstrated isolation.
+Status: resolved for bounded repair implementation; linked delivery unit07 active.
 Question: how should bounded document extraction and local citation output handle common larger official pages and quote-copy errors without weakening honest acceptance?
 
 Accepted first slice2049361 remains two correctly answered frozen questions plus offline replay. The separately frozen eight-question extension at38820cf produced three structurally valid saved answers, one rejected citation, and four questions never inferred because their source exceeded the extractor HTML event limit. Original outputs and failed admission are preserved; this is not eight successful answers.
@@ -21,3 +21,5 @@ No production/runtime mutation follows from this diagnostic record. Browser unit
 ## Citation-format discovery underway
 
 Agent assigned a private four-case actual-local-model comparison while browser acceptance remains in read-only final QA: existing exact-excerpt output plus at most one validation repair versus valid evidence/span references with controller-derived exact excerpts. Freeze cases/expected facts and equal profile before calls, preserve raw outputs and distinguish provenance from semantic adequacy. No maintained source or serving changes are authorized by this prototype; recommendation pending.
+
+Decision: [bounded validation repair](../../../docs/decisions/architecture/006-document-validation-repair.md). Independent prototype QA supports the narrow direction; whole-span promotion deferred. Browser06 is accepted; [delivery07](../delivery/07-document-reliability.md) now owns maintained implementation and qualification.

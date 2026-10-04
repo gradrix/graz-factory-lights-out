@@ -142,3 +142,6 @@ htmlcov/
 !.scratch/.sflo/06-autonomy-browser/qa-rig-browser/five-flows/
 .scratch/.sflo/06-autonomy-browser/qa-rig-browser/five-flows/*
 !.scratch/.sflo/06-autonomy-browser/qa-rig-browser/five-flows/*.json
+
+!.scratch/.sflo/07-autonomy-document-reliability/
+.scratch/.sflo/07-autonomy-document-reliability/*/

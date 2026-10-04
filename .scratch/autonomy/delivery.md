@@ -17,3 +17,5 @@ Later acceptance-bearing stages are in [the roadmap](../../docs/roadmap.md). The
 - [Approved document evidence](delivery/05-document-evidence.md) — accepted at2049361; first Stage4 slice, two actual local answers and offline replay independently verified.
 
 - [Supervised local browser checks](delivery/06-local-browser.md) — accepted at596ecb6; five actual-rig journeys, independent boundary/recovery checks, installed browser support. [Acceptance](../.sflo/06-autonomy-browser/acceptance.md).
+
+- [Document extraction and bounded citation repair](delivery/07-document-reliability.md) — active; versioned40K extraction, durable one-repair answers and ten-question rig qualification.

@@ -1,0 +1,119 @@
+{
+  "version": 1,
+  "purpose": "Private issue07 design comparison only; no product promotion",
+  "accepted_source_commit": "20493612b62de19a5e4dbb713803abd8a9667b0b",
+  "sources": "Existing frozen historical CSV/JSON evidence; no acquisition, current-doc claim, or extraction change",
+  "cases": [
+    {
+      "name": "row_shape",
+      "question": "How does csv.DictReader handle extra or missing fields by default, and can csv.writer preserve a distinction between None and an empty string?",
+      "expected_status": "supported",
+      "semantic_facts": [
+        "Extra fields form a list under restkey, default None.",
+        "Missing fields use restval, default None.",
+        "writer writes None as empty string, losing that distinction."
+      ],
+      "citation_requirement": "Every claim needs exact entailing frozen spans.",
+      "source": "csv",
+      "reference_spans": [
+        44,
+        58,
+        61
+      ]
+    },
+    {
+      "name": "header_selection",
+      "source": "csv",
+      "question": "For csv.DictReader, what happens to the first row when fieldnames is omitted versus explicitly provided, and is the fieldnames order preserved?",
+      "expected_status": "supported",
+      "semantic_facts": [
+        "Omitted fieldnames use the first row as names and omit it from results.",
+        "Explicit fieldnames keep the first row in results.",
+        "Original fieldnames ordering is preserved."
+      ],
+      "reference_spans": [
+        60
+      ]
+    },
+    {
+      "name": "skipkeys",
+      "source": "json",
+      "question": "When encoding a dictionary with json.dump, what happens to keys outside str, int, float, bool and None by default, and what changes with skipkeys=True?",
+      "expected_status": "supported",
+      "semantic_facts": [
+        "skipkeys defaults to False and unsupported key types raise TypeError.",
+        "skipkeys=True skips unsupported keys/items."
+      ],
+      "reference_spans": [
+        67,
+        166
+      ]
+    },
+    {
+      "name": "unpublished_future_csv",
+      "source": "csv",
+      "question": "What exact date will Python 3.16 change the default csv.DictReader restval to an empty string?",
+      "expected_status": "insufficient_evidence",
+      "semantic_facts": [
+        "The supplied historical Python 3.12 CSV page does not establish that future change or an exact date."
+      ],
+      "reference_spans": []
+    }
+  ],
+  "methods": {
+    "exact": "Accepted answer_request/validate_answer; at most one structural validation repair",
+    "references": "Same base prompt except citation schema removes excerpt; strict evidence_id/integer span checks; controller derives complete unchanged span, then accepted validator; at most one structural validation repair"
+  },
+  "profile": {
+    "model": "flash-next-coder",
+    "context": 98304,
+    "cache_k": "q4_0",
+    "cache_v": "q4_0",
+    "temperature": 0,
+    "reasoning_effort": "medium",
+    "thinking_budget_tokens": 512,
+    "max_tokens_per_call": 2048,
+    "deadline_s_per_call": 120,
+    "max_calls_per_case_method": 2,
+    "max_model_time_s_per_case_method": 240,
+    "response_bytes_per_call": 65536
+  },
+  "order": "Case order as listed, alternating exact-first and references-first; all calls serial; no semantic repair or retry after transport failure",
+  "semantic_rule": "Manual evaluate every claim for entailment/version caveats and all explicitly requested facts, independently of structural provenance. Expected span IDs are review aids, not exclusive oracle matches. Report omissions, extras, unsupported claims, false insufficiency, raw rejection and repairs separately.",
+  "limitations": [
+    "Four deterministic single-trial cases; cache/order effects and no general accuracy or speed guarantee.",
+    "Both methods have same allowed budgets; reference method may not consume repair call.",
+    "Whole-span citations may be broader and longer; cached spans all <=4096 UTF-8 bytes; general long-span design unresolved.",
+    "Repair adds a bounded second request and can change substantive claims; provenance does not certify entailment."
+  ],
+  "input_hashes": {
+    "inputs/csv.json": "87e2a587744dd28d080033c52fabed801a1bf41162883f3ae4ea3bb63560ae5f",
+    "inputs/json.json": "248a623c40d7ba2032dd87980141ee207e0b83f243653a54cc22d07ebe79256f",
+    "prototype.py": "464f11deac0733a390243e69df5bada927fa9fe292b5ae2305821d64b013a9ee",
+    "source/gflo/__init__.py": "6cbddf667328e01dd8f766ea554f7e0c10e19d6618b1eaa688e3e6548b8f275e",
+    "source/gflo/__main__.py": "f11294c39ce7ec10736517584789a3e303763888b30025ae680ac5389712e024",
+    "source/gflo/artifacts.py": "53f94a54cdc948a752ab757c7f4bf943319073d71d82a601844a7d3825516b48",
+    "source/gflo/documents.py": "ac39b8dab36e52561f1e08206096ca6602cf874b7b8c65af31fbcfe4dbc1a169",
+    "source/gflo/environment.py": "ad3c90434182f18f2e123b57f9316ba4d942f2ac78441037c0de3ab8c8a566c4",
+    "source/gflo/guard.py": "8f623a2ff7f9958ef2e1d0a99686ab83f31ab2100fbf5124097bcf1ae88ace48",
+    "source/gflo/observe.py": "8674c78a8d7654c0fb642e4a9186c061b86058808b72db997e54ba7efb0a145b",
+    "source/gflo/prepare.py": "2da306ab140fd2214cff6d3aa76c7a4b9539c9a2c9c7c75736dcd9157d1c7f25",
+    "source/gflo/recipes/document.py": "f6795e60f08e387dbed96e1ce555b2fc75bd84a6a7ea23c82c677f85a8d71cf4",
+    "source/gflo/recipes/document_extract.py": "5201f7b93b1ff6d650d4a035873663f7451112e441e084d303b2e2d0147fdca3",
+    "source/gflo/recipes/fetch.py": "c0a798534ab2d29cac84f53ff1b88adad94e60b3f63f04ec3be5d8fbe516fcd8",
+    "source/gflo/recipes/node-ts/artifacts.json": "4f85d5e7e3d8849b24ef4cf91d155d9bd3a3946d0fea63fe593a93fd128268bb",
+    "source/gflo/recipes/node-ts/assemble.js": "d6f213e9ced120be92049e80557f6fbafe7b7b1955a502b15ff74bc3b1fdcdde",
+    "source/gflo/recipes/node-ts/package-lock.json": "2bd0d5d024a8f29b79d28b062d54d9e2a2f34737a67fd38d08ee0b031230b20f",
+    "source/gflo/recipes/node-ts/package.json": "152e1b3aa7d2f0fca2ab5da0c1b443e0b811cd699a15a19ed807a41588fa85ee",
+    "source/gflo/recipes/node-ts/smoke.js": "472e67ec86cf78f4513de9d060758aed25b94368f2e0573c9cb95924923937f9",
+    "source/gflo/recipes/python-api/artifacts.json": "743289784dd853254fcf8a36e10bc6a479f7bfc99b2202d99aeb57c766a72a31",
+    "source/gflo/recipes/python-api/assemble.py": "e7656414445a4c35b17e40e1130f9ab8a7857c94218aa055ec19e1276120310d",
+    "source/gflo/recipes/python-api/requirements.lock": "890507545cbd69bf015bc092965ab76de09918593cf68119728fa8dc3d73bc3f",
+    "source/gflo/recipes/validate.py": "36226b01a39388ddb665a286f139feb98fde179e95cc8fed8ff5ed6662922739",
+    "source/gflo/review.py": "28f4e3ca944a125960786a487cff7a730cc8ed9356b9965f8e253bbf7c86194d",
+    "source/gflo/runner.py": "8938794b61fab8082d7b88d69dc161fa059a61d3b498f7e070e8b25697e58297",
+    "source/gflo/sandbox.py": "b2cafa3f1ad779a2a022143c5aff8f09c1b945efcd8aa2fba90c923e769c36a0",
+    "source/gflo/web.py": "05dcae9983bc9584f82209f21f3190f0250ba8ff1f6a7cf9a8af78530c785acd",
+    "source/gflo/worker.py": "2ddce17fd1dcda0700cf9923d2d0a4edbea4d7df9debd1b1a4003966ad7afb0a"
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "container_id": "2cac4229053dac00fdbcadb1952db80f0a9da3fd07b8f40bce1ba8cd3114f6e0",
+  "image": "sha256:249ed60fdd67b96db472e16f945af5aaba565b20159d192ba378035b6d136a1c",
+  "model_alias": "flash-next-coder",
+  "context": "98304",
+  "parallel": "1",
+  "cache_k": "q4_0",
+  "cache_v": "q4_0",
+  "private_command_sha256": "813f7a321901e40d49381807889edc2b0554ee5e38c7f7de82c3713993d309c0",
+  "private_capture_review": "No inline API-key argument; configured key-file value omitted from this allowlisted receipt. Original private capture retained unchanged."
+}

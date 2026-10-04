@@ -1,0 +1,149 @@
+[
+  {
+    "name": "row_shape_defaults",
+    "source": "csv",
+    "exposure": "repeat_diagnostic_corrected_scope",
+    "question": "Using default csv.DictReader restkey/restval and default csv.writer quoting, how are extra and missing fields handled, and does writer output distinguish None from an empty string? Limit the writer answer to default behavior.",
+    "expected_status": "supported",
+    "semantic_facts": [
+      "Extra fields form a list under restkey, default None.",
+      "Missing fields in a nonblank row use restval, default None.",
+      "Default writer writes None as empty string and loses that distinction."
+    ],
+    "reference_spans": [
+      44,
+      61
+    ]
+  },
+  {
+    "name": "json_hooks",
+    "source": "json",
+    "exposure": "repeat_diagnostic_explicit_extra_fact",
+    "question": "When json.loads receives both object_hook and object_pairs_hook, which takes priority, what does object_pairs_hook receive, and what does its return value replace?",
+    "expected_status": "supported",
+    "semantic_facts": [
+      "object_pairs_hook takes priority.",
+      "Receives an ordered list of pairs.",
+      "Its return value replaces the ordinary dict."
+    ],
+    "reference_spans": [
+      89,
+      131
+    ]
+  },
+  {
+    "name": "csv_newlines",
+    "source": "csv",
+    "exposure": "repeat_diagnostic",
+    "question": "Why should text CSV files be opened with newline=\"\" for both reading and writing: what can otherwise happen to embedded quoted newlines and to output on platforms using CRLF?",
+    "expected_status": "supported",
+    "semantic_facts": [
+      "Embedded quoted newlines otherwise interpreted incorrectly.",
+      "On CRLF-writing platforms an extra carriage return can be added.",
+      "CSV module handles newlines itself."
+    ],
+    "reference_spans": [
+      192
+    ]
+  },
+  {
+    "name": "json_skipkeys",
+    "source": "json",
+    "exposure": "repeat_diagnostic",
+    "question": "With json.dump, what happens by default to dictionary keys outside str, int, float, bool and None, and what happens with skipkeys=True?",
+    "expected_status": "supported",
+    "semantic_facts": [
+      "Default skipkeys=False raises TypeError for unsupported keys.",
+      "True skips those items."
+    ],
+    "reference_spans": [
+      67,
+      166
+    ]
+  },
+  {
+    "name": "asyncio_taskgroup",
+    "source": "asyncio",
+    "exposure": "new_inference_previously_acquisition_blocked",
+    "question": "In Python 3.12, if a TaskGroup child raises ValueError, are remaining tasks cancelled, does group exit wait for them, and how are non-cancellation failures reported once they finish?",
+    "expected_status": "supported",
+    "semantic_facts": [
+      "Remaining tasks cancelled.",
+      "Group exit waits for all tasks to finish.",
+      "Non-cancellation failures combined and raised as appropriate ExceptionGroup or BaseExceptionGroup."
+    ],
+    "reference_spans": [
+      128,
+      129,
+      130
+    ]
+  },
+  {
+    "name": "asyncio_gather",
+    "source": "asyncio",
+    "exposure": "new_inference_previously_acquisition_blocked",
+    "question": "With asyncio.gather(return_exceptions=False), one awaitable raises ValueError. When and to whom is the first exception propagated, and do the other awaitables automatically get cancelled or continue?",
+    "expected_status": "supported",
+    "semantic_facts": [
+      "First exception immediately propagated to awaiting task.",
+      "Other awaitables are not automatically cancelled and continue."
+    ],
+    "reference_spans": [
+      152
+    ]
+  },
+  {
+    "name": "asyncio_wait_for",
+    "source": "asyncio",
+    "exposure": "new_inference_previously_acquisition_blocked",
+    "question": "When asyncio.wait_for times out, what happens to its awaited task, which exception is raised, and why can the total wait exceed the timeout?",
+    "expected_status": "supported",
+    "semantic_facts": [
+      "Awaited task cancelled.",
+      "TimeoutError raised.",
+      "Waits until future actually cancelled, so total time may exceed timeout."
+    ],
+    "reference_spans": [
+      231,
+      233
+    ]
+  },
+  {
+    "name": "asyncio_shield",
+    "source": "asyncio",
+    "exposure": "new_inference_previously_acquisition_blocked",
+    "question": "If the caller awaiting asyncio.shield(task) is cancelled, is the inner task cancelled by that caller cancellation, what exception does the caller still receive, and why should a strong reference to task be retained?",
+    "expected_status": "supported",
+    "semantic_facts": [
+      "Inner task protected from this caller cancellation.",
+      "Caller still receives CancelledError.",
+      "Loop holds only weak references; otherwise task may be garbage collected before completion."
+    ],
+    "reference_spans": [
+      186,
+      191
+    ]
+  },
+  {
+    "name": "future_csv_date",
+    "source": "csv",
+    "exposure": "repeat_diagnostic",
+    "question": "What exact date will Python 3.16 change the default csv.DictReader restval to an empty string?",
+    "expected_status": "insufficient_evidence",
+    "semantic_facts": [
+      "Historical source does not establish this future change or its date; no invented premise/date."
+    ],
+    "reference_spans": []
+  },
+  {
+    "name": "future_taskgroup_date",
+    "source": "asyncio",
+    "exposure": "new_inference",
+    "question": "What exact date will Python 3.16 change TaskGroup so a child ValueError never cancels its sibling tasks?",
+    "expected_status": "insufficient_evidence",
+    "semantic_facts": [
+      "Historical source does not establish this future change or its date; no invented premise/date."
+    ],
+    "reference_spans": []
+  }
+]

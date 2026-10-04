@@ -20,7 +20,7 @@ User direction, 2026-10-02: push the first version, delete previous implementati
 
 ## Not yet specified
 
-[Broader document reliability](issues/07-document-reliability.md): additional frozen questions exposed the extractor event ceiling and literal quote-copy failures; an oracle overconstraint is recorded separately. Address after the active browser unit with evidence and a versioned contract.
+[Broader document reliability](issues/07-document-reliability.md) resolved toward measured40K extraction and one bounded structural repair; [delivery07](delivery/07-document-reliability.md) is the sole active maintained unit. Ten-question qualification and semantic reliability remain unproven.
 
 [Serving throughput under useful context](issues/05-serving-throughput.md) measured a roughly4.5x improvement at96K/Q4 over128K on identical input. Fresh API and TypeScript tasks passed with independent semantic QA. [Approved document evidence](delivery/05-document-evidence.md) is accepted at2049361; [supervised local-browser journeys](delivery/06-local-browser.md) are accepted at596ecb6. [Browser/research route](../../docs/research/research-browser-route.md) informs later work; [Local-browser feasibility](issues/06-local-browser-boundary.md) is measured in an isolated prototype; supervised browser source596ecb6 is installed after independent rig acceptance; earlier defects and failed trials remain preserved.
 

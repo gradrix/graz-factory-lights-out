@@ -1,0 +1,52 @@
+[
+  {
+    "name": "row_shape_defaults",
+    "source": "csv",
+    "question": "Using default csv.DictReader restkey/restval and default csv.writer quoting, how are extra and missing fields handled, and does writer output distinguish None from an empty string? Limit the writer answer to default behavior."
+  },
+  {
+    "name": "json_hooks",
+    "source": "json",
+    "question": "When json.loads receives both object_hook and object_pairs_hook, which takes priority, what does object_pairs_hook receive, and what does its return value replace?"
+  },
+  {
+    "name": "csv_newlines",
+    "source": "csv",
+    "question": "Why should text CSV files be opened with newline=\"\" for both reading and writing: what can otherwise happen to embedded quoted newlines and to output on platforms using CRLF?"
+  },
+  {
+    "name": "json_skipkeys",
+    "source": "json",
+    "question": "With json.dump, what happens by default to dictionary keys outside str, int, float, bool and None, and what happens with skipkeys=True?"
+  },
+  {
+    "name": "asyncio_taskgroup",
+    "source": "asyncio",
+    "question": "In Python 3.12, if a TaskGroup child raises ValueError, are remaining tasks cancelled, does group exit wait for them, and how are non-cancellation failures reported once they finish?"
+  },
+  {
+    "name": "asyncio_gather",
+    "source": "asyncio",
+    "question": "With asyncio.gather(return_exceptions=False), one awaitable raises ValueError. When and to whom is the first exception propagated, and do the other awaitables automatically get cancelled or continue?"
+  },
+  {
+    "name": "asyncio_wait_for",
+    "source": "asyncio",
+    "question": "When asyncio.wait_for times out, what happens to its awaited task, which exception is raised, and why can the total wait exceed the timeout?"
+  },
+  {
+    "name": "asyncio_shield",
+    "source": "asyncio",
+    "question": "If the caller awaiting asyncio.shield(task) is cancelled, is the inner task cancelled by that caller cancellation, what exception does the caller still receive, and why should a strong reference to task be retained?"
+  },
+  {
+    "name": "future_csv_date",
+    "source": "csv",
+    "question": "What exact date will Python 3.16 change the default csv.DictReader restval to an empty string?"
+  },
+  {
+    "name": "future_taskgroup_date",
+    "source": "asyncio",
+    "question": "What exact date will Python 3.16 change TaskGroup so a child ValueError never cancels its sibling tasks?"
+  }
+]
