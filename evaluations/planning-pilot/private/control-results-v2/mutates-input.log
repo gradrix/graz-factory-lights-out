@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/acceptance/check.py", line 30, in <module>
+    good({'a':None},[op('set',['a'],3),op('set',['nested'],{'x':True}),op('remove',['a'])],{'document':{'nested':{'x':True}},'audit':[audit(0,'set',['a'],True,None,True,3),audit(1,'set',['nested'],False,None,True,{'x':True}),audit(2,'remove',['a'],True,3,False,None)]})
+  File "/acceptance/check.py", line 23, in good
+    old=copy.deepcopy([base,ops]);result=preview(base,ops);eq(result,want);eq([base,ops],old);result['document']['qaAliasProbe']=1
+                                                                           ^^^^^^^^^^^^^^^^^^
+  File "/acceptance/check.py", line 18, in eq
+    elif isinstance(w,(list,tuple)):assert len(g)==len(w);[eq(x,y)for x,y in zip(g,w)]
+                                                           ^^^^^^^
+  File "/acceptance/check.py", line 17, in eq
+    if isinstance(w,dict):assert g.keys()==w.keys();[eq(g[k],v)for k,v in w.items()]
+                                 ^^^^^^^^^^^^^^^^^^
+AssertionError

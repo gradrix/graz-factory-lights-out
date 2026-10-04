@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "/acceptance/check.py", line 13, in <module>
+    expect([],[]);expect([entry('keep'),entry('gone',2)],[entry('new',3,'b'),entry('keep')],added=['new'],removed=['gone'],unchanged=['keep'])
+    ^^^^^^^^^^^^^
+  File "/acceptance/check.py", line 12, in expect
+    before=copy.deepcopy([left,right]);got=compare(left,right);eq(got,{'added':added,'removed':removed,'modified':modified,'renamed':renamed,'unchanged':unchanged});eq([left,right],before)
+                                           ^^^^^^^^^^^^^^^^^^^
+  File "/workspace/manifest_tool/domain.py", line 2, in compare
+    raise NotImplementedError("manifest comparison")
+NotImplementedError: manifest comparison

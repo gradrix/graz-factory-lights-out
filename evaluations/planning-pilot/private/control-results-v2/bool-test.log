@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/acceptance/check.py", line 46, in <module>
+    else:raise AssertionError('Conflict accepted')
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Conflict accepted

@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "/acceptance/check.py", line 24, in <module>
+    expect([entry('old',5)],[entry('new',5)],renamed=[{'from':'old','to':'new'}]);expect([entry('o2'),entry('o1')],[entry('n')],added=['n'],removed=['o1','o2']);expect([entry('o')],[entry('n2'),entry('n1')],added=['n1','n2'],removed=['o'])
+                                                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/acceptance/check.py", line 12, in expect
+    before=copy.deepcopy([left,right]);got=compare(left,right);eq(got,{'added':added,'removed':removed,'modified':modified,'renamed':renamed,'unchanged':unchanged});eq([left,right],before)
+                                                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/acceptance/check.py", line 7, in eq
+    if isinstance(want,dict):assert got.keys()==want.keys();[eq(got[k],v)for k,v in want.items()]
+                                                             ^^^^^^^^^^^^
+  File "/acceptance/check.py", line 8, in eq
+    elif isinstance(want,list):assert len(got)==len(want);[eq(g,v)for g,v in zip(got,want)]
+                                      ^^^^^^^^^^^^^^^^^^^
+AssertionError

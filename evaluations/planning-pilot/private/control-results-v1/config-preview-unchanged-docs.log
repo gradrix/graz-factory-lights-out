@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/acceptance/check.py", line 74, in <module>
+    assert len((project/'README.md').read_text().split())>=40
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

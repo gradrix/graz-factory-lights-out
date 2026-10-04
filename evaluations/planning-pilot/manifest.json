@@ -1,0 +1,147 @@
+{
+  "version": 1,
+  "contract_sha256": "d52ae8c2f322f417fed6c8cf6ace5343720cc40f86f0d0aeb6b9294e2fc33bea",
+  "cases": [
+    {
+      "id": "manifest-reconcile",
+      "task": "cases/manifest-reconcile/task.json",
+      "source": "cases/manifest-reconcile/source",
+      "acceptance": "cases/manifest-reconcile/acceptance",
+      "profile": "python-stdlib",
+      "requirements": [
+        {
+          "id": "A1",
+          "text": "Validate before/after as lists of at most100 entries, each exactly {path,size,sha256}. path is1..120ASCII characters split by / into nonempty segments matching [A-Za-z0-9_.-]+, excluding . and ..; no absolute, trailing, repeated slash or backslash. Paths unique within each list. size is strict int0..1000000 (not bool); sha256 is exactly64lowercase hex characters. Reject invalid input with ValueError; never mutate either input on success or failure."
+        },
+        {
+          "id": "A2",
+          "text": "Expose manifest_tool.domain.compare(before,after). Compare shared paths first: unchanged when both size and sha256 equal, otherwise modified. Return exactly {added:[paths],removed:[paths],modified:[{path,before_size,after_size}],renamed:[{from,to}],unchanged:[paths]}. All path lists and modified sort ascending by path; renamed sorts by from. Empty inputs produce empty lists. Shared paths never participate in rename matching."
+        },
+        {
+          "id": "A3",
+          "text": "Among only paths absent from the opposite manifest, signature=(size,sha256). Recognize a rename only if exactly one unmatched old path AND exactly one unmatched new path have that signature; remove both from added/removed. Ambiguous signatures remain additions/removals, with no greedy pairing. Match based on the original unmatched sets, independent of input order."
+        },
+        {
+          "id": "A4",
+          "text": "Expose manifest_tool.report.totals(before,after) for already validated entries: {before_bytes,after_bytes,delta_bytes}, summing ALL respective entry sizes, delta=after-before. Expose manifest_tool.api.run(payload): exactly {action:\"compare\",before,after} returns domain result plus summary=totals; unknown action/fields or malformed payload raises ValueError. Preserve run({action:\"ping\"})={ok:true}."
+        },
+        {
+          "id": "A5",
+          "text": "CLI python /path/to/project/main.py reads one JSON document from stdin. Success prints only its JSON result and exits0; malformed JSON or invalid action/payload prints exactly {\"error\":\"invalid input\"} as JSON and exits2, without traceback. It must work from arbitrary cwd; no filesystem reads/writes beyond stdin/stdout are part of comparison."
+        },
+        {
+          "id": "A6",
+          "text": "Add at least three meaningful unittest test methods discoverable from the project root, covering ordinary behavior, an edge case, and rejection/nonmutation; tests must pass offline. Update README.md with at least40words explaining behavior and errors, a concrete JSON request/response example, and working run/server and unittest commands. Preserve baseline interfaces. No new dependencies. Semantic review will assess test/docs usefulness; a test count alone is not proof. For this stdlib project run tests with python -m unittest discover -s /path/to/project; use only Python3.12stdlib."
+        }
+      ],
+      "milestone_requirement_ids": [
+        "A1",
+        "A2"
+      ],
+      "milestone_checks": [
+        [
+          "python",
+          "-I",
+          "/acceptance/check.py",
+          "--project",
+          "/workspace",
+          "--phase",
+          "milestone"
+        ]
+      ],
+      "full_checks": [
+        [
+          "python",
+          "-I",
+          "/acceptance/check.py",
+          "--project",
+          "/workspace",
+          "--phase",
+          "full"
+        ]
+      ]
+    },
+    {
+      "id": "config-preview",
+      "task": "cases/config-preview/task.json",
+      "source": "cases/config-preview/source",
+      "acceptance": "cases/config-preview/acceptance",
+      "profile": "python-api",
+      "requirements": [
+        {
+          "id": "B1",
+          "text": "Strictly validate base as an object and operations as list of at most50 items. A document/value is nested objects and scalar null/bool/int/string only: no arrays/floats, int strictly -1000000..1000000, strings at most80Unicode codepoints. Every object key matches ASCII [A-Za-z][A-Za-z0-9_-]{0,31}. Count every object and scalar value as a node (keys not nodes): at most200nodes; root depth0, child depth+1, maxdepth6. An operation is exactly {op,path,value} for set/test or {op,path} for remove. op is one of those3strings; path is1..6valid key strings. Validate the complete original base and ALL operation shapes/values before executing any operations. Shape/range violations raise ValueError (HTTP422), even if an earlier well-shaped operation would conflict."
+        },
+        {
+          "id": "B2",
+          "text": "Expose config_preview.domain.preview(base,operations). Work on a deep copy; never mutate/alias input objects on success or failure. Apply operations sequentially. All parent path components must already exist and be objects. set writes/replaces the final key with a deep copy of value; remove requires final key present and deletes it. After each operation the resulting whole document must still meet node/depth/type bounds. Return exactly {document:result,audit:[{index,op,path,before:{present,value},after:{present,value}}]}; zero-based index, original operation order, copied path; absent value is null with present:false (distinct from present null). Empty operations returns a copied base and empty audit. Expose config_preview.audit.event(index,op,path,before_present,before_value,after_present,after_value) for valid operation metadata; it returns that one audit event with copied path/deep-copied values, forcing null for absent values; domain.preview uses it."
+        },
+        {
+          "id": "B3",
+          "text": "test requires final key present and structurally equal to value, comparing scalar types exactly: true is not1 and false is not0; object key order irrelevant. It leaves document unchanged but adds ordinary before/after audit. Conflict is config_preview.errors.Conflict(ValueError) with integer index and code. Codes: parent_missing for an absent intermediate key; parent_not_object for a scalar intermediate; missing for remove of absent final key; test_failed for absent/unequal test target; limit when applying an otherwise valid operation exceeds whole-document capacity. Stop at first conflict and expose no partial result; original inputs remain unchanged."
+        },
+        {
+          "id": "B4",
+          "text": "Add POST /config/preview JSON exactly {base,operations}; wire domain.preview through real HTTP. Success200 returns its result. Invalid shapes/ranges/unknown fields422 (detail text unspecified). Conflict409 returns exactly {error:{index,code}}. Requests stateless. Keep GET /health={status:\"ok\"}, POST /sum with exactly {values:[strict integers]}\u2192{total:sum} and invalid422, and unknown-route404. App target config_preview.app:app; preserve src-layout installable package and exact declared dependencies/build backend."
+        },
+        {
+          "id": "B5",
+          "text": "Add at least three meaningful unittest test methods discoverable from the project root, covering ordinary behavior, an edge case, and rejection/nonmutation; tests must pass offline. Update README.md with at least40words explaining behavior and errors, a concrete JSON request/response example, and working run/server and unittest commands. Preserve baseline interfaces. No new dependencies. Semantic review will assess test/docs usefulness; a test count alone is not proof. Use the approved python-api profile: CPython3.12.13,FastAPI0.115.12,Uvicorn0.34.2,Pydantic2.13.5,HTTPX0.28.1 for tests,setuptools78.1.0. Build/install offline. Tests run after wheel installation using python -m unittest discover -s /path/to/project from arbitrary cwd; no source-layout PYTHONPATH workaround. Include HTTP behavior among meaningful tests."
+        }
+      ],
+      "milestone_requirement_ids": [
+        "B1",
+        "B2"
+      ],
+      "milestone_checks": [
+        [
+          "python",
+          "-I",
+          "/acceptance/check.py",
+          "--project",
+          "/workspace",
+          "--phase",
+          "milestone"
+        ]
+      ],
+      "full_checks": [
+        [
+          "python",
+          "-I",
+          "/acceptance/check.py",
+          "--project",
+          "/workspace",
+          "--phase",
+          "full"
+        ]
+      ]
+    }
+  ],
+  "files": {
+    "cases/config-preview/SPEC.md": "a86e07695a4c1f7c535da1270fa9903eb62ec632cbd382d971e7de40e7a1a0d4",
+    "cases/config-preview/acceptance/check.py": "6dcb7aeb73e097423d0e15586108786f2f3bad65474ddb5edd82004ed51e5e82",
+    "cases/config-preview/requirements.json": "49b66083db16a8b2aff64b2d9a08b168877b18238a5c4994b7a4eb69fe5ee829",
+    "cases/config-preview/source/README.md": "26aec0f7735c48e961d41a9cf1736db89c1e01148bd6044dbc05b08ff0d37307",
+    "cases/config-preview/source/pyproject.toml": "8e88354be68c2b32a492c6a02ec1ed19dcabf81fa2b91d847617bccdf76ecb68",
+    "cases/config-preview/source/src/config_preview/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "cases/config-preview/source/src/config_preview/app.py": "a4976759335cd423f6e1c8bbc18b83d3b22dfb9bf400ebb2316e76297895be3a",
+    "cases/config-preview/source/src/config_preview/audit.py": "520a56742a815b6220812f67c3643fda4453ae4e4782d4bf65a2a1158b1629c3",
+    "cases/config-preview/source/src/config_preview/domain.py": "bdfc611f388aeb5805da3aa33fe04f487e7c50c981b365ecb53b21bb8c2d44c4",
+    "cases/config-preview/source/src/config_preview/errors.py": "27091aa12553b66e266f3335311ad4aeae2a205f2e88f4948b3b86fe61b94dd2",
+    "cases/config-preview/source/src/config_preview/routes.py": "d90a8fcb00904c43e4e91a1ca0162ee7d4353e1992c6bc39060595c866bf6540",
+    "cases/config-preview/source/src/config_preview/validation.py": "c1af10f4617fc5a4bcf17f3774e71618e84a86df6812dbfae21b25acf8b7390d",
+    "cases/config-preview/task.json": "66cff4ed15f3ce37ba319c6638b1ebea86daee32ade9c57efaef983b1bdd918d",
+    "cases/manifest-reconcile/SPEC.md": "f10061163863a0e4fb285a05f5745f2dbca64e2b45ed7155a5ed96102764dede",
+    "cases/manifest-reconcile/acceptance/check.py": "c3b8e71fb0e7e67ddc5d1182b5e90bbe92280d0d81db1ca4d4972aacbd72b20d",
+    "cases/manifest-reconcile/requirements.json": "401c0da68817abc05d296c602a0432d562fe27e6f240c0ff4920f8d5b4fc9361",
+    "cases/manifest-reconcile/source/README.md": "33ae18e7d8f3ea057ab937365ce44c96916afe6cc5f73d66db6b81116dd19e46",
+    "cases/manifest-reconcile/source/main.py": "db81c48d1fc42e61ab6b36fdfc386266d0aaa19db4a245c7a4bbdd9d4700aa22",
+    "cases/manifest-reconcile/source/manifest_tool/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "cases/manifest-reconcile/source/manifest_tool/api.py": "a0d86806163c16e2dfa9bad773324d53c2770573507bb002fcd34dba71694c7c",
+    "cases/manifest-reconcile/source/manifest_tool/cli.py": "49fce4a72e060504c66f7c0289bd0e9984a95d1c635b8de714d5a3fd65ef417d",
+    "cases/manifest-reconcile/source/manifest_tool/domain.py": "bdf404579b79c7e104f3b519e240fa28861227047cae9b2ae6c200a7e07cc801",
+    "cases/manifest-reconcile/source/manifest_tool/report.py": "6ee4168eec5864df1e0cd00469847d632440725c484503d5dc723f503f2b783b",
+    "cases/manifest-reconcile/source/manifest_tool/validation.py": "0f0811a4ae094d6e7124711c3004f5758f81b6b9bc08b9faa24358601766e151",
+    "cases/manifest-reconcile/task.json": "4b86eea588b19e05c8e50034715be6b84981a557bd3be1f58a41166598716f8b"
+  }
+}

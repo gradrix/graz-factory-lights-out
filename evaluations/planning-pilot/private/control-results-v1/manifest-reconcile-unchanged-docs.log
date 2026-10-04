@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/acceptance/check.py", line 34, in <module>
+    text=(project/'README.md').read_text();assert len(text.split())>=40 and text!='# Manifest tool\n\nRun `python main.py` with a JSON ping action on standard input.\n'
+                                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError

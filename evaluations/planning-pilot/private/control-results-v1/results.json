@@ -1,0 +1,189 @@
+{
+  "bindings": {
+    "python-stdlib": {
+      "id": "36cd138cbdc332246a2db473301200117f82404a4504c675db95966645348975",
+      "receipt_hash": "36cd138cbdc332246a2db473301200117f82404a4504c675db95966645348975",
+      "dependencies": "/home/gradrix/gflo-stage3-25f75c3/.gflo/stage3-preparation/environments/36cd138cbdc332246a2db473301200117f82404a4504c675db95966645348975/deps",
+      "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+      "profile": "python-stdlib",
+      "runtime": {
+        "capabilities": "0000000000000000",
+        "docker_socket": "absent",
+        "gpu_devices": "absent",
+        "machine": "x86_64",
+        "platform": "linux",
+        "python": "3.12.13",
+        "uid": "1000"
+      },
+      "store": "/home/gradrix/gflo-stage3-25f75c3/.gflo/stage3-preparation/environments"
+    },
+    "python-api": {
+      "id": "e591c2d6f97b02fc2a99ecef01848a4e74d743e499aeec3b4d4d7d6c6c400acb",
+      "receipt_hash": "e591c2d6f97b02fc2a99ecef01848a4e74d743e499aeec3b4d4d7d6c6c400acb",
+      "dependencies": "/home/gradrix/gflo-stage3-25f75c3/.gflo/stage3-preparation/environments/e591c2d6f97b02fc2a99ecef01848a4e74d743e499aeec3b4d4d7d6c6c400acb/deps",
+      "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+      "profile": "python-api",
+      "runtime": {
+        "capabilities": "0000000000000000",
+        "docker_socket": "absent",
+        "fastapi": "0.115.12",
+        "gpu_devices": "absent",
+        "httpx": "0.28.1",
+        "machine": "x86_64",
+        "platform": "linux",
+        "pydantic": "2.13.5",
+        "python": "3.12.13",
+        "setuptools": "78.1.0",
+        "uid": "1000",
+        "uvicorn": "0.34.2"
+      },
+      "store": "/home/gradrix/gflo-stage3-25f75c3/.gflo/stage3-preparation/environments"
+    }
+  },
+  "rows": [
+    {
+      "case": "manifest-reconcile",
+      "label": "manifest-reconcile-starter-milestone",
+      "phase": "milestone",
+      "expected_pass": false,
+      "exit": 1,
+      "elapsed_s": 0.39230496200070775,
+      "matched": true
+    },
+    {
+      "case": "manifest-reconcile",
+      "label": "manifest-reconcile-starter-full",
+      "phase": "full",
+      "expected_pass": false,
+      "exit": 1,
+      "elapsed_s": 0.3047435440003028,
+      "matched": true
+    },
+    {
+      "case": "manifest-reconcile",
+      "label": "manifest-reconcile-reference-milestone",
+      "phase": "milestone",
+      "expected_pass": true,
+      "exit": 0,
+      "elapsed_s": 0.340092533000643,
+      "matched": true
+    },
+    {
+      "case": "manifest-reconcile",
+      "label": "manifest-reconcile-reference-full",
+      "phase": "full",
+      "expected_pass": true,
+      "exit": 0,
+      "elapsed_s": 0.6145954750008968,
+      "matched": true
+    },
+    {
+      "case": "config-preview",
+      "label": "config-preview-starter-milestone",
+      "phase": "milestone",
+      "expected_pass": false,
+      "exit": 1,
+      "elapsed_s": 0.9017146259993751,
+      "matched": true
+    },
+    {
+      "case": "config-preview",
+      "label": "config-preview-starter-full",
+      "phase": "full",
+      "expected_pass": false,
+      "exit": 1,
+      "elapsed_s": 0.9118467329990381,
+      "matched": true
+    },
+    {
+      "case": "config-preview",
+      "label": "config-preview-reference-milestone",
+      "phase": "milestone",
+      "expected_pass": true,
+      "exit": 0,
+      "elapsed_s": 0.8644341369999893,
+      "matched": true
+    },
+    {
+      "case": "config-preview",
+      "label": "config-preview-reference-full",
+      "phase": "full",
+      "expected_pass": true,
+      "exit": 0,
+      "elapsed_s": 2.2587549179988855,
+      "matched": true
+    },
+    {
+      "case": "manifest-reconcile",
+      "label": "bool-size",
+      "phase": "full",
+      "expected_pass": false,
+      "exit": 1,
+      "elapsed_s": 0.30701288800082693,
+      "matched": true
+    },
+    {
+      "case": "manifest-reconcile",
+      "label": "greedy-rename",
+      "phase": "full",
+      "expected_pass": false,
+      "exit": 1,
+      "elapsed_s": 0.302438054999584,
+      "matched": true
+    },
+    {
+      "case": "config-preview",
+      "label": "bool-test",
+      "phase": "full",
+      "expected_pass": false,
+      "exit": 1,
+      "elapsed_s": 0.8578056810001726,
+      "matched": true
+    },
+    {
+      "case": "config-preview",
+      "label": "mutates-input",
+      "phase": "full",
+      "expected_pass": false,
+      "exit": 1,
+      "elapsed_s": 0.8550086679988453,
+      "matched": true
+    },
+    {
+      "case": "manifest-reconcile",
+      "label": "manifest-reconcile-missing-tests",
+      "phase": "full",
+      "expected_pass": false,
+      "exit": 1,
+      "elapsed_s": 0.6050924890005263,
+      "matched": true
+    },
+    {
+      "case": "manifest-reconcile",
+      "label": "manifest-reconcile-unchanged-docs",
+      "phase": "full",
+      "expected_pass": false,
+      "exit": 1,
+      "elapsed_s": 0.613375482000265,
+      "matched": true
+    },
+    {
+      "case": "config-preview",
+      "label": "config-preview-missing-tests",
+      "phase": "full",
+      "expected_pass": false,
+      "exit": 1,
+      "elapsed_s": 1.7188887459997204,
+      "matched": true
+    },
+    {
+      "case": "config-preview",
+      "label": "config-preview-unchanged-docs",
+      "phase": "full",
+      "expected_pass": false,
+      "exit": 1,
+      "elapsed_s": 2.2481317069996294,
+      "matched": true
+    }
+  ]
+}

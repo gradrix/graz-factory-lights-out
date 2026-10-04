@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/acceptance/check.py", line 28, in <module>
+    x={'a':1};path=['x'];ev=event(0,'set',path,False,99,True,x);eq(ev,audit(0,'set',['x'],False,None,True,{'a':1}));x['a']=2;path.append('changed');eq(ev,audit(0,'set',['x'],False,None,True,{'a':1}))
+                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/tmpq07dvfo3/site/config_preview/audit.py", line 2, in event
+    raise NotImplementedError("audit event")
+NotImplementedError: audit event

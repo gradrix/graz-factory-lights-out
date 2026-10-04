@@ -1,0 +1,7 @@
+Traceback (most recent call last):
+  File "/acceptance/check.py", line 27, in <module>
+    eq(preview({},[]),{'document':{},'audit':[]})
+       ^^^^^^^^^^^^^^
+  File "/tmp/tmp5k4k6zn3/site/config_preview/domain.py", line 2, in preview
+    raise NotImplementedError("configuration preview")
+NotImplementedError: configuration preview

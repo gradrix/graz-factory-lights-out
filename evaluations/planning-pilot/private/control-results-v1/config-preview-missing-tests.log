@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/acceptance/check.py", line 73, in <module>
+    code="import unittest,sys;s=unittest.defaultTestLoader.discover(sys.argv[1]);r=unittest.TextTestRunner().run(s);assert r.testsRun>=3 and r.wasSuccessful()";r=subprocess.run([sys.executable,'-c',code,str(project)],cwd='/tmp',env=env,capture_output=True,text=True,timeout=15);assert r.returncode==0,r.stderr
+                                                                                                                                                                                                                                                                                             ^^^^^^^^^^^^^^^
+AssertionError: 
+----------------------------------------------------------------------
+Ran 0 tests in 0.000s
+
+NO TESTS RAN
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+AssertionError
+

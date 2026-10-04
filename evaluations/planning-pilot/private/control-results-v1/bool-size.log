@@ -1,0 +1,5 @@
+Traceback (most recent call last):
+  File "/acceptance/check.py", line 21, in <module>
+    else:raise AssertionError('Invalid manifest accepted')
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: Invalid manifest accepted
