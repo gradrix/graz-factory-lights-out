@@ -145,3 +145,11 @@ htmlcov/
 
 !.scratch/.sflo/07-autonomy-document-reliability/
 .scratch/.sflo/07-autonomy-document-reliability/*/
+
+!.scratch/.sflo/07-autonomy-document-reliability/rig-acquisition-1/
+!.scratch/.sflo/07-autonomy-document-reliability/rig-acquisition-1/*.json
+!.scratch/.sflo/07-autonomy-document-reliability/qa/
+!.scratch/.sflo/07-autonomy-document-reliability/qa/*.py
+!.scratch/.sflo/07-autonomy-document-reliability/qa/*.json
+!.scratch/.sflo/07-autonomy-document-reliability/qa/*.log
+!.scratch/.sflo/07-autonomy-document-reliability/qa/*.txt

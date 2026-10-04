@@ -1,0 +1,1 @@
+Initial private QA probe setup error: unbound DocumentsTests.executor missing timeout positional argument. No product answer was invoked. Fixed by binding fixture executor to an instance with its synthetic body; affected11-test run independently passed.
