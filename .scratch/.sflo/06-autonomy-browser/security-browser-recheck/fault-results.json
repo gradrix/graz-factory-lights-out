@@ -1,0 +1,162 @@
+[
+  {
+    "case": "control",
+    "observed": {
+      "returned_status": "passed",
+      "error": null,
+      "cancelled": false,
+      "prior_good": true,
+      "cleanup_fence": false,
+      "result_records": 2
+    }
+  },
+  {
+    "case": "sync-failure",
+    "observed": {
+      "returned_status": null,
+      "error": "OSError: controlled sync failure",
+      "cancelled": false,
+      "prior_good": true,
+      "cleanup_fence": false,
+      "result_records": 1
+    }
+  },
+  {
+    "case": "rename-failure",
+    "observed": {
+      "returned_status": null,
+      "error": "OSError: controlled rename error",
+      "cancelled": false,
+      "prior_good": true,
+      "cleanup_fence": false,
+      "result_records": 1
+    }
+  },
+  {
+    "case": "late-cancel",
+    "observed": {
+      "returned_status": null,
+      "error": "ValueError: Document operation cancelled before publication",
+      "cancelled": true,
+      "prior_good": true,
+      "cleanup_fence": false,
+      "result_records": 1
+    }
+  },
+  {
+    "case": "cleanup-uncertain",
+    "observed": {
+      "returned_status": null,
+      "error": "RuntimeError: Browser cleanup uncertain; failed diagnostics retained, explicit recovery required",
+      "cancelled": false,
+      "prior_good": true,
+      "cleanup_fence": true,
+      "result_records": 1
+    }
+  },
+  {
+    "case": "executor-exception",
+    "observed": {
+      "returned_status": null,
+      "error": "OSError: controlled guardian error",
+      "cancelled": false,
+      "prior_good": true,
+      "cleanup_fence": true,
+      "result_records": 1
+    }
+  },
+  {
+    "case": "transport-error",
+    "observed": {
+      "returned_status": "failed",
+      "error": null,
+      "cancelled": false,
+      "prior_good": true,
+      "cleanup_fence": false,
+      "result_records": 2
+    }
+  },
+  {
+    "case": "exit125",
+    "observed": {
+      "returned_status": "failed",
+      "error": null,
+      "cancelled": false,
+      "prior_good": true,
+      "cleanup_fence": false,
+      "result_records": 2
+    }
+  },
+  {
+    "case": "frame-control",
+    "observed": "passed"
+  },
+  {
+    "case": "trailing",
+    "error": "ValueError",
+    "message": "Trailing browser artifact bytes"
+  },
+  {
+    "case": "truncated",
+    "error": "ValueError",
+    "message": "Incomplete/corrupt browser artifact"
+  },
+  {
+    "case": "missing",
+    "error": "ValueError",
+    "message": "Passing browser check requires complete screenshot/trace/events"
+  },
+  {
+    "case": "traversal",
+    "error": "ValueError",
+    "message": "Unexpected browser artifact filename"
+  },
+  {
+    "case": "png-oversize",
+    "error": "ValueError",
+    "message": "Browser artifact byte limit"
+  },
+  {
+    "case": "events512",
+    "observed": "failed"
+  },
+  {
+    "case": "events513",
+    "error": "ValueError",
+    "message": "Browser event count limit"
+  },
+  {
+    "case": "metadata-oversize",
+    "error": "ValueError",
+    "message": "Browser artifact metadata limit/incomplete frame"
+  },
+  {
+    "case": "input-regular",
+    "observed": "35a95300f1bdd2caec0d942f10113389fb30d8b9737f8453b5c7d71da66a3c73"
+  },
+  {
+    "case": "input-symlink",
+    "error": "ValueError",
+    "message": "Browser inputs reject links and special files"
+  },
+  {
+    "case": "input-hardlink",
+    "error": "ValueError",
+    "message": "Browser inputs reject links and special files"
+  },
+  {
+    "case": "input-fifo",
+    "error": "ValueError",
+    "message": "Browser inputs reject links and special files"
+  },
+  {
+    "case": "input-deep",
+    "error": "ValueError",
+    "message": "Browser input path limit"
+  },
+  {
+    "case": "input-bytes",
+    "error": "ValueError",
+    "message": "Browser input byte limit"
+  }
+]

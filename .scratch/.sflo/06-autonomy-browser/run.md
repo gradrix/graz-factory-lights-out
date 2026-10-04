@@ -8,8 +8,8 @@ Contract: contract.md sha256 ab3ba1d7aa4d11237de3914f2a1ed40d3dcb47a680ee181465e
 
 Status: active
 Owner: /root coordinator; /root/cohort_c sole maintained-code builder
-Candidate: c201083d64810bc7767007e37a3fc8912e6d1c50; v2 manifest SHA256 44e94609e0174950894d2008649fe93a247abf9eacf4f7a3411144b011e9e0c3; not accepted
-Next: cohort_c repairs independent security findings on v2; freeze new candidate and independently recheck before actual rig qualification.
+Candidate: frozen v3 manifest SHA256 bbcd59aa9ba4223a022eb0c7d0915188b530b5a35308897384d3594fdfa04da3; source91b1e76; not accepted
+Next: repair independent SEC-B5 retained guardian facts permission mismatch, freeze v4 and recheck affected recovery before rig qualification.
 
 ## Checks and repairs
 
@@ -36,3 +36,11 @@ Working tree/source checked: c201083 remains unchanged; interrupted builder had 
 Agent chooses to reject all HTTP redirects and all WebSockets for the initial fixed browser profile. The contract requires external-origin redirect blocking and does not promise same-origin redirects; this explicit supported-app restriction provides a simple preventive boundary. Existing five qualification journeys do not redirect. New candidate must retain successful exact-origin HTTP behavior and demonstrate no second-origin contact.
 
 SEC-B4 repair refinement: classify create transport/nonzero outcomes without a returned ID conservatively, preserve ambiguous-create names, and refuse ordinary fence clearing. Agent authorized an explicit operator acknowledgement for exceptional recovery, durably recorded separately from measured cleanup; architecture record owns the choice. No new user permission is needed for this implementation decision.
+
+V3 freeze: nine manifest paths verified on continuation. Builder reports actual direct-origin control passes and redirect/WebSocket controls reject with zero side hits; logging disabled with attached diagnostics retained. Final full gate pending. Independent security recheck assigned to artifact_security; QA checks rig harness adapters against the frozen v3. V2 failures remain preserved, not overwritten.
+
+[Builder v3 gate](builder-repair-v3.md) completed:144 tests in137.128s,86% branch-aware coverage,exit0; nine frozen paths unchanged. Exact91b1e76 staged on MONSTER-GAMING-PC, CLI help and harness/manifest SHA256 readback matched. Independent security recheck remains pending before rig execution.
+
+Independent v3 recheck reopened recovery as SEC-B5: guardian facts created with inherited umask (0664 under002,0600 under077), while cleanup requires0644. Controlled retained-facts probe confirms refusal before acknowledgement; no actual daemon outage. Builder assigned narrow deterministic-permission repair and umask regressions. V3 remains preserved at91b1e76. Independent unaffected origin/logging probes continue on frozen v3 copy; no rig journey has run.
+
+[V3 independent recheck](security-browser-recheck.md) passes SEC-B1-B4 within measured scope:23 seam observations,9 guardian cases,6 recovery controls,11 actual owned pairs including readiness no-follow and disabled daemon logs with attached diagnostics. Three mode controls preserve SEC-B5 failures at002/077 and022 positive; source/private hashes unchanged, owned containers absent. V4 narrow writer/reader permission repair pending.

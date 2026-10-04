@@ -1,0 +1,20 @@
+[
+  {
+    "umask": "0o2",
+    "written_mode": "0o664",
+    "ack_recovery_error": "Document record file type/owner/mode/size changed",
+    "fence_remaining": true
+  },
+  {
+    "umask": "0o22",
+    "written_mode": "0o644",
+    "ack_recovery_error": null,
+    "fence_remaining": false
+  },
+  {
+    "umask": "0o77",
+    "written_mode": "0o600",
+    "ack_recovery_error": "Document record file type/owner/mode/size changed",
+    "fence_remaining": true
+  }
+]

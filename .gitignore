@@ -106,3 +106,9 @@ htmlcov/
 !.scratch/.sflo/06-autonomy-browser/security-browser/*.py
 !.scratch/.sflo/06-autonomy-browser/security-browser/*.json
 !.scratch/.sflo/06-autonomy-browser/security-browser/*.log
+
+!.scratch/.sflo/06-autonomy-browser/security-browser-recheck/
+.scratch/.sflo/06-autonomy-browser/security-browser-recheck/*
+!.scratch/.sflo/06-autonomy-browser/security-browser-recheck/*.py
+!.scratch/.sflo/06-autonomy-browser/security-browser-recheck/*.json
+!.scratch/.sflo/06-autonomy-browser/security-browser-recheck/*.log
