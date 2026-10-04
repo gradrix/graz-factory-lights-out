@@ -1,0 +1,84 @@
+{
+  "prototype_commit": "37b7f1d1416d5497ca38291b47b364882d2d44ef",
+  "cases": [
+    {
+      "case": "case-01",
+      "execution_status": "incomplete",
+      "requests": 5,
+      "commands": 6,
+      "work_s": 74.44410978499945,
+      "cleanup_s": 1.3313748210002814,
+      "review_decision": null,
+      "failure": "Expecting value: line 1 column 1 (char 0)",
+      "reported_usage": {
+        "prompt_tokens": 46255,
+        "completion_tokens": 2961,
+        "total_tokens": 49216
+      },
+      "cached_prompt_tokens": 37328,
+      "cleanup": true,
+      "idle": true
+    },
+    {
+      "case": "case-02",
+      "execution_status": "incomplete",
+      "requests": 2,
+      "commands": 2,
+      "work_s": 92.35788262299866,
+      "cleanup_s": 1.2713436530011677,
+      "review_decision": null,
+      "failure": "Malformed tool completion",
+      "reported_usage": {
+        "prompt_tokens": 18201,
+        "completion_tokens": 5208,
+        "total_tokens": 23409
+      },
+      "cached_prompt_tokens": 10154,
+      "cleanup": true,
+      "idle": true
+    },
+    {
+      "case": "case-03",
+      "execution_status": "incomplete",
+      "requests": 6,
+      "commands": 8,
+      "work_s": 89.75649795699974,
+      "cleanup_s": 1.359469105998869,
+      "review_decision": null,
+      "failure": "Expecting value: line 1 column 1 (char 0)",
+      "reported_usage": {
+        "prompt_tokens": 66023,
+        "completion_tokens": 4289,
+        "total_tokens": 70312
+      },
+      "cached_prompt_tokens": 56450,
+      "cleanup": true,
+      "idle": true
+    },
+    {
+      "case": "case-04",
+      "execution_status": "accepted",
+      "requests": 7,
+      "commands": 9,
+      "work_s": 107.42974765000145,
+      "cleanup_s": 1.3824217619985575,
+      "review_decision": "repair",
+      "failure": null,
+      "reported_usage": {
+        "prompt_tokens": 86914,
+        "completion_tokens": 4754,
+        "total_tokens": 91668
+      },
+      "cached_prompt_tokens": 76303,
+      "cleanup": true,
+      "idle": true
+    }
+  ],
+  "total_requests": 20,
+  "total_commands": 25,
+  "total_work_s": 363.9882380149993,
+  "gate": "failed; one independently correct valid repair, three incomplete reviews",
+  "interpretation": "Known-case discriminator, no reliability rate; incomplete outputs neverrescored from prose.",
+  "independent_semantics": "qa-trial-final.md",
+  "independent_accounting": "trial-accounting.md"
+}

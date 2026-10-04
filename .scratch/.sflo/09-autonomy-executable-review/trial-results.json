@@ -1,0 +1,227 @@
+[
+  {
+    "exit_code": 1,
+    "stop": null,
+    "work_elapsed_s": 74.44410978499945,
+    "work_finished_before_deadline": true,
+    "client_group_absent": true,
+    "cleanup": [
+      {
+        "name": "gflo-review-620d79ed2c19426d8ea07948",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-6b1885b51d964c128de7da66",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-2222481acec44f5eab5812f7",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-283de3a43a674c3faacb7eca",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-3387f402c5714382b7c32a92",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-7de9504e8f38424980a71e10",
+        "removed": [],
+        "confirmed_absent": true
+      }
+    ],
+    "cleanup_confirmed": true,
+    "idle_confirmed": true,
+    "cleanup_elapsed_s": 1.3313748210002814,
+    "case": "case-01",
+    "status": "incomplete",
+    "child": {
+      "status": "incomplete",
+      "error_type": "JSONDecodeError",
+      "error": "Expecting value: line 1 column 1 (char 0)"
+    },
+    "meaning": "Completed execution/valid verdict only; independent classification pending"
+  },
+  {
+    "exit_code": 1,
+    "stop": null,
+    "work_elapsed_s": 92.35788262299866,
+    "work_finished_before_deadline": true,
+    "client_group_absent": true,
+    "cleanup": [
+      {
+        "name": "gflo-review-b7108d29b9174984a2f00712",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-eb269d64fe0949d8b6711511",
+        "removed": [],
+        "confirmed_absent": true
+      }
+    ],
+    "cleanup_confirmed": true,
+    "idle_confirmed": true,
+    "cleanup_elapsed_s": 1.2713436530011677,
+    "case": "case-02",
+    "status": "incomplete",
+    "child": {
+      "status": "incomplete",
+      "error_type": "ValueError",
+      "error": "Malformed tool completion"
+    },
+    "meaning": "Completed execution/valid verdict only; independent classification pending"
+  },
+  {
+    "exit_code": 1,
+    "stop": null,
+    "work_elapsed_s": 89.75649795699974,
+    "work_finished_before_deadline": true,
+    "client_group_absent": true,
+    "cleanup": [
+      {
+        "name": "gflo-review-6cb40d3c6bc64e938665830f",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-d5bef63ad68f44ba9e16d08e",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-f0557dc45f4249c2b518fa8e",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-ac1b134155064023bd2ba940",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-763623330d3547ff85a820cb",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-1d96a2778c60414c99d9d0bf",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-f6e73c97a2d84505addbd71b",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-fead8b819fe94f0da99acb27",
+        "removed": [],
+        "confirmed_absent": true
+      }
+    ],
+    "cleanup_confirmed": true,
+    "idle_confirmed": true,
+    "cleanup_elapsed_s": 1.359469105998869,
+    "case": "case-03",
+    "status": "incomplete",
+    "child": {
+      "status": "incomplete",
+      "error_type": "JSONDecodeError",
+      "error": "Expecting value: line 1 column 1 (char 0)"
+    },
+    "meaning": "Completed execution/valid verdict only; independent classification pending"
+  },
+  {
+    "exit_code": 0,
+    "stop": null,
+    "work_elapsed_s": 107.42974765000145,
+    "work_finished_before_deadline": true,
+    "client_group_absent": true,
+    "cleanup": [
+      {
+        "name": "gflo-review-e71498112e184d41a1770458",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-67a227b0ca274677beb66e3f",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-6ebb8259c3d445699ca0361a",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-fd7071391f1b44998057aa2f",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-b9b3e2fa6d664489bec4dcb3",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-97c1aedb4fc64965a7ff2e15",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-e3795b46e32b44abb3c50610",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-b2dfd495421d4bfdb2fc89ac",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-994f0f93f10943ce97623392",
+        "removed": [],
+        "confirmed_absent": true
+      }
+    ],
+    "cleanup_confirmed": true,
+    "idle_confirmed": true,
+    "cleanup_elapsed_s": 1.3824217619985575,
+    "case": "case-04",
+    "status": "accepted",
+    "child": {
+      "status": "accepted",
+      "verdict": {
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "major",
+            "path": "README.md",
+            "line": 51,
+            "evidence": "The concrete compare request/response example (README.md lines 49-65) is not executable: its sha256 literals are 62 'a' characters and 60 'b' characters (verified by extracting the hex runs from README.md: lengths 62 and 60), so they violate the A1 rule 'sha256 is exactly 64 lowercase hex characters'. Running the documented heredoc through the CLI (python3 /candidate/main.py) prints {\"error\":\"invalid input\"} and exits 2, contradicting the documented success output and `$ echo $?` -> 0 shown at line 65. A6 requires a working concrete JSON request/response example.",
+            "repair": "Replace the four sha256 literals in the README example (lines 51-54) with exactly 64 lowercase hex characters each (e.g. 'a'*64 and 'b'*64). Verified: with 64-character hashes the CLI prints exactly {\"added\":[],\"modified\":[{\"after_size\":2,\"before_size\":1,\"path\":\"keep\"}],\"removed\":[],\"renamed\":[{\"from\":\"a/x\",\"to\":\"b/y\"}],\"summary\":{\"after_bytes\":5,\"before_bytes\":4,\"delta_bytes\":1},\"unchanged\":[]} and exits 0, matching the documented response."
+          },
+          {
+            "severity": "minor",
+            "path": "README.md",
+            "line": 43,
+            "evidence": "The console transcript shows `$ echo 2` after the failing CLI invocation, which merely prints the literal 2 rather than demonstrating the exit status; the intended command is `echo $?` (as used correctly at line 66).",
+            "repair": "Change `$ echo 2` to `$ echo $?` so the transcript demonstrates the exit code 2."
+          }
+        ],
+        "question": ""
+      },
+      "attested_commands": 9,
+      "candidate_sha256": "df1e964682cda0f6fb44fbd69a462262c3f14f303cf9099032390e9cc45f23d3"
+    },
+    "meaning": "Completed execution/valid verdict only; independent classification pending"
+  }
+]

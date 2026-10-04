@@ -15,3 +15,5 @@ An executable reviewer could still choose weak probes or misinterpret evidence. 
 Decision basis: [planning outcome](../../../docs/decisions/architecture/008-planning-pilot-outcome.md). Contract/delivery and precise limits must be frozen before implementation and real calls.
 
 [Delivery09](../delivery/09-executable-review.md) binds the frozen initial four-case discriminator and isolated execution.
+
+Initial trial completed with one correct valid repair and three incomplete reviews; raw evidence and independent audits remain in the initial run. The [protocol successor](../../.sflo/09-autonomy-executable-review-protocol/run.md) reserves a strict finalization request and one bounded truncation recovery under a new contract. This is an agent-defined repair, not a new user requirement or a reliability claim.

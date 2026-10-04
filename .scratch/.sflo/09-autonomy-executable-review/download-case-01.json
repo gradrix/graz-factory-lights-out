@@ -1,0 +1,56 @@
+{
+  "case": "case-01",
+  "archive_bytes": 532480,
+  "archive_sha256": "21575764a89c3958229b6895f75eaf8a1ad0c6e362ddcf925a098ae119f49872",
+  "local_copy": ".gflo/executable-review-trial-1/case-01",
+  "result": {
+    "exit_code": 1,
+    "stop": null,
+    "work_elapsed_s": 74.44410978499945,
+    "work_finished_before_deadline": true,
+    "client_group_absent": true,
+    "cleanup": [
+      {
+        "name": "gflo-review-620d79ed2c19426d8ea07948",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-6b1885b51d964c128de7da66",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-2222481acec44f5eab5812f7",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-283de3a43a674c3faacb7eca",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-3387f402c5714382b7c32a92",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-7de9504e8f38424980a71e10",
+        "removed": [],
+        "confirmed_absent": true
+      }
+    ],
+    "cleanup_confirmed": true,
+    "idle_confirmed": true,
+    "cleanup_elapsed_s": 1.3313748210002814,
+    "case": "case-01",
+    "status": "incomplete",
+    "child": {
+      "status": "incomplete",
+      "error_type": "JSONDecodeError",
+      "error": "Expecting value: line 1 column 1 (char 0)"
+    },
+    "meaning": "Completed execution/valid verdict only; independent classification pending"
+  }
+}

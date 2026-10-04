@@ -1,0 +1,36 @@
+{
+  "case": "case-02",
+  "archive_bytes": 266240,
+  "archive_sha256": "b4cdcf61c3a051ed7b364055bbaacf7687c5eb86e4898355064ebd081393def9",
+  "local_copy": ".gflo/executable-review-trial-1/case-02",
+  "result": {
+    "exit_code": 1,
+    "stop": null,
+    "work_elapsed_s": 92.35788262299866,
+    "work_finished_before_deadline": true,
+    "client_group_absent": true,
+    "cleanup": [
+      {
+        "name": "gflo-review-b7108d29b9174984a2f00712",
+        "removed": [],
+        "confirmed_absent": true
+      },
+      {
+        "name": "gflo-review-eb269d64fe0949d8b6711511",
+        "removed": [],
+        "confirmed_absent": true
+      }
+    ],
+    "cleanup_confirmed": true,
+    "idle_confirmed": true,
+    "cleanup_elapsed_s": 1.2713436530011677,
+    "case": "case-02",
+    "status": "incomplete",
+    "child": {
+      "status": "incomplete",
+      "error_type": "ValueError",
+      "error": "Malformed tool completion"
+    },
+    "meaning": "Completed execution/valid verdict only; independent classification pending"
+  }
+}

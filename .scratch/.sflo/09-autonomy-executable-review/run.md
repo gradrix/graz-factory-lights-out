@@ -6,10 +6,10 @@ Contract: contract.md sha256 1fe3c4763dd4e1ee6d3b280619dcbce4ac1814d7253dbbba5c1
 
 ## Execution
 
-Status: active
+Status: waiting
 Owner: /root coordinator; /root/cohort_c isolated mechanism; /root/qa_resume fixtures/QA; /root/artifact_security boundary review
 Candidate: prototype37b7f1d1416d5497ca38291b47b364882d2d44ef, mechanismede30d388c75b1c69c683dbd4c61cae408afc73cd5d35f84c1748d0ab281ecaa; maintained92deaab unchanged
-Next: monitor admitted real four-case trial1; preserve all outputs and obtain independent defect/control scoring. No other model client or silent retry.
+Next: initial experiment closed with failed quality gate; successor protocol run owns further work. No replay or rescoring of these outputs.
 
 ## Binding and claim
 
@@ -24,3 +24,7 @@ Independent fixtures frozen in prototype8ee1212: publicmanifest05de766048d962168
 Prototype37b7f1d passes31combined controls (builder6, QA7, security18); reports [builder](builder.md), [independent QA](qa-harness.md), [security](security.md). Actualrig synthetic vertical passed once: two charged synthetic completions, one real attested read-only command, positive start proof, Python3.12.13 uid1000, blocked sourcewrite, unchanged inputs and owned absence. No real inference in that gate. All32carriedsource/assets unchanged; knownfixture identities retained.
 
 [Staging](staging.json) validates81files/26directories, no private expectations, tests/synthetic driver, modelconfig/key. Fresh strictGETprobe18:28:18Z confirms sameidentity idle. Root [admission](trial-1-admission.json) SHA60881da16b029f2336d82ac6defa8d7f7aeab957c4494c9d1d58bfee2df4747d dispatched once at18:29:13Z; controllerPID44634, output /home/gradrix/gflo-review-37b7f1d/trial-1. [Process receipt](trial-1-process.json). Sharedlease serializes fourcases at8requests/300s work each,150scleanup. Treat internal accepted status as completed review only; independent correctness remains pending.
+
+## Completed failed discriminator
+
+Independent [semantic QA](qa-trial-final.md) confirms one correct valid repair and three incomplete outputs. [Accounting](trial-accounting.md) verifies all325 artifacts,20 requests,25 commands and cleanup/idle. No maintained changes. [Successor](../09-autonomy-executable-review-protocol/run.md) changes the protocol under a new contract; originals remain frozen.

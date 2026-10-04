@@ -22,4 +22,4 @@ Later acceptance-bearing stages are in [the roadmap](../../docs/roadmap.md). The
 
 - [Direct versus two-task planning pilot](delivery/08-planning-pilot.md) — accepted discovery; four arms and independent checks complete, no independently complete increment. Planning stays advisory; [closure](../.sflo/08-autonomy-planning-pilot/acceptance.md).
 
-- [Read-only executable local-review discriminator](delivery/09-executable-review.md) — active isolated known-case experiment; four defect/control reviews, no maintained promotion.
+- [Read-only executable local-review discriminator](delivery/09-executable-review.md) — initial trial failed (three incomplete, one correct repair); isolated protocol successor active, no maintained promotion.

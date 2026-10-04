@@ -1,0 +1,7 @@
+{
+  "manifest_sha256": "05de766048d96216865b8e5d0c817166ac1635391a6ed496b9ce6c3b0b6bdb37",
+  "files": 44,
+  "modes": 60,
+  "source": "frozen predecessor fixtures; full permission modes restored after git worktree creation",
+  "unchanged_bytes": true
+}

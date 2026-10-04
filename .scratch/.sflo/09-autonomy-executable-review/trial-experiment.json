@@ -1,0 +1,24 @@
+{
+  "manifest_sha256": "05de766048d96216865b8e5d0c817166ac1635391a6ed496b9ce6c3b0b6bdb37",
+  "cases": [
+    "case-01",
+    "case-02",
+    "case-03",
+    "case-04"
+  ],
+  "request_limit": 8,
+  "command_limit": 12,
+  "work_seconds": 300,
+  "cleanup_seconds": 150,
+  "profile": {
+    "model": "flash-next-coder",
+    "temperature": 0,
+    "max_tokens": 4096,
+    "reasoning_effort": "medium",
+    "thinking_budget_tokens": 1024,
+    "chat_template_kwargs": {
+      "enable_thinking": true
+    }
+  },
+  "completion_status": "accepted means structurally completed review, not independently correct classification"
+}

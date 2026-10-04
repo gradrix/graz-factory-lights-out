@@ -1,0 +1,228 @@
+{
+  "outcome": "PASS accounting/lifetime audit; discriminator quality gate is separate and failed overall",
+  "prototype_commit": "37b7f1d1416d5497ca38291b47b364882d2d44ef",
+  "admission_sha256": "60881da16b029f2336d82ac6defa8d7f7aeab957c4494c9d1d58bfee2df4747d",
+  "download_manifest_sha256": "48726e1f0149ee9a9b08f96a4bb0f6ba6e759dbe7df98cf8e9e8cee449564e4f",
+  "manifest_entries_verified": 325,
+  "all_artifacts_unchanged": true,
+  "cases": [
+    {
+      "case": "case-01",
+      "status": "incomplete",
+      "terminal_error": "JSONDecodeError",
+      "terminal_finish_reason": "stop",
+      "requests": 5,
+      "commands": 6,
+      "usage": {
+        "prompt_tokens": 46255,
+        "completion_tokens": 2961,
+        "total_tokens": 49216,
+        "cached_prompt_tokens": 37328,
+        "missing_usage_records": 0
+      },
+      "request_elapsed_s_sum": 71.44305131200053,
+      "request_latency_s": {
+        "min": 6.102781261000928,
+        "median": 8.709111137999571,
+        "max": 37.163065751999966
+      },
+      "work_elapsed_s": 74.44410978499945,
+      "cleanup_elapsed_s": 1.3313748210002814,
+      "command_elapsed_s_sum": 2.558501495999735,
+      "command_exit_codes": {
+        "0": 4,
+        "2": 1,
+        "1": 1
+      },
+      "finish_reasons": {
+        "tool_calls": 4,
+        "stop": 1
+      },
+      "max_raw_request_bytes": 43214,
+      "max_raw_response_bytes": 4563,
+      "idle_pair_gaps_s": [
+        1.117803,
+        1.11702
+      ],
+      "copied_modes_match_recorded": true,
+      "source_file_count": 10,
+      "candidate_facts_sha256": "aa44ee038ad76ec4b571fd7d282d1f5a7a8d798a0733d448acaab35921ef01e8",
+      "cleanup_and_idle_confirmed": true,
+      "remaining_credits": 3,
+      "unexecuted_terminal_tool_calls": 0
+    },
+    {
+      "case": "case-02",
+      "status": "incomplete",
+      "terminal_error": "ValueError",
+      "terminal_finish_reason": "length",
+      "requests": 2,
+      "commands": 2,
+      "usage": {
+        "prompt_tokens": 18201,
+        "completion_tokens": 5208,
+        "total_tokens": 23409,
+        "cached_prompt_tokens": 10154,
+        "missing_usage_records": 0
+      },
+      "request_elapsed_s_sum": 91.16588096800115,
+      "request_latency_s": {
+        "min": 35.66733407000174,
+        "median": 45.582940484000574,
+        "max": 55.498546897999404
+      },
+      "work_elapsed_s": 92.35788262299866,
+      "cleanup_elapsed_s": 1.2713436530011677,
+      "command_elapsed_s_sum": 1.0030981260006229,
+      "command_exit_codes": {
+        "0": 2
+      },
+      "finish_reasons": {
+        "tool_calls": 1,
+        "length": 1
+      },
+      "max_raw_request_bytes": 40728,
+      "max_raw_response_bytes": 12163,
+      "idle_pair_gaps_s": [
+        1.117469,
+        1.117502
+      ],
+      "copied_modes_match_recorded": true,
+      "source_file_count": 10,
+      "candidate_facts_sha256": "54b38b1bfb5136242322c7908a0b1c71319218e4f9ab12d864a363df40ef4b00",
+      "cleanup_and_idle_confirmed": true,
+      "remaining_credits": 6,
+      "unexecuted_terminal_tool_calls": 2
+    },
+    {
+      "case": "case-03",
+      "status": "incomplete",
+      "terminal_error": "JSONDecodeError",
+      "terminal_finish_reason": "stop",
+      "requests": 6,
+      "commands": 8,
+      "usage": {
+        "prompt_tokens": 66023,
+        "completion_tokens": 4289,
+        "total_tokens": 70312,
+        "cached_prompt_tokens": 56450,
+        "missing_usage_records": 0
+      },
+      "request_elapsed_s_sum": 85.70723386600002,
+      "request_latency_s": {
+        "min": 5.459357268000531,
+        "median": 10.535504530000253,
+        "max": 34.268371526999545
+      },
+      "work_elapsed_s": 89.75649795699974,
+      "cleanup_elapsed_s": 1.359469105998869,
+      "command_elapsed_s_sum": 3.5117784770009166,
+      "command_exit_codes": {
+        "0": 8
+      },
+      "finish_reasons": {
+        "tool_calls": 5,
+        "stop": 1
+      },
+      "max_raw_request_bytes": 50377,
+      "max_raw_response_bytes": 5359,
+      "idle_pair_gaps_s": [
+        1.118022,
+        1.11691
+      ],
+      "copied_modes_match_recorded": true,
+      "source_file_count": 10,
+      "candidate_facts_sha256": "cf886777b01db8ea5869d74293647942450e329599590592277a27061e6739a8",
+      "cleanup_and_idle_confirmed": true,
+      "remaining_credits": 2,
+      "unexecuted_terminal_tool_calls": 0
+    },
+    {
+      "case": "case-04",
+      "status": "accepted",
+      "terminal_error": null,
+      "terminal_finish_reason": "stop",
+      "requests": 7,
+      "commands": 9,
+      "usage": {
+        "prompt_tokens": 86914,
+        "completion_tokens": 4754,
+        "total_tokens": 91668,
+        "cached_prompt_tokens": 76303,
+        "missing_usage_records": 0
+      },
+      "request_elapsed_s_sum": 103.15648295100254,
+      "request_latency_s": {
+        "min": 6.580486337001275,
+        "median": 10.097322015999453,
+        "max": 39.68666023100013
+      },
+      "work_elapsed_s": 107.42974765000145,
+      "cleanup_elapsed_s": 1.3824217619985575,
+      "command_elapsed_s_sum": 3.6624118059971806,
+      "command_exit_codes": {
+        "0": 9
+      },
+      "finish_reasons": {
+        "tool_calls": 6,
+        "stop": 1
+      },
+      "max_raw_request_bytes": 63129,
+      "max_raw_response_bytes": 6451,
+      "idle_pair_gaps_s": [
+        1.117689,
+        1.117896
+      ],
+      "copied_modes_match_recorded": true,
+      "source_file_count": 10,
+      "candidate_facts_sha256": "df1e964682cda0f6fb44fbd69a462262c3f14f303cf9099032390e9cc45f23d3",
+      "cleanup_and_idle_confirmed": true,
+      "remaining_credits": 1,
+      "unexecuted_terminal_tool_calls": 0
+    }
+  ],
+  "totals": {
+    "requests": 20,
+    "commands": 25,
+    "completed_reviews": 1,
+    "incomplete_reviews": 3,
+    "usage": {
+      "prompt_tokens": 217393,
+      "completion_tokens": 17212,
+      "total_tokens": 234605,
+      "cached_prompt_tokens": 180235,
+      "missing_usage_records": 0
+    },
+    "work_elapsed_s_sum": 363.9882380149993,
+    "cleanup_elapsed_s_sum": 5.344609341998876,
+    "request_elapsed_s_sum": 351.47264909700425,
+    "command_elapsed_s_sum": 10.735789904998455
+  },
+  "serving_identity": {
+    "id": "2cac4229053dac00fdbcadb1952db80f0a9da3fd07b8f40bce1ba8cd3114f6e0",
+    "image": "sha256:249ed60fdd67b96db472e16f945af5aaba565b20159d192ba378035b6d136a1c",
+    "started_at": "2026-10-04T14:20:09.194925789Z",
+    "running": true,
+    "owner": "model-service",
+    "context": "98304",
+    "parallel": "1",
+    "cache_k": "q4_0",
+    "cache_v": "q4_0",
+    "model": "flash-next-coder",
+    "ports": {
+      "8000/tcp": [
+        {
+          "HostIp": "127.0.0.1",
+          "HostPort": "18000"
+        }
+      ]
+    },
+    "offline": true,
+    "runtime_entrypoint": [
+      "/model/runtime/llama-b11284/llama-server"
+    ],
+    "host": "0.0.0.0",
+    "port": "8000"
+  },
+  "observed_scope": "Persisted receipts and frozen controller/transport logic; no live query, candidate execution or independent packet capture. Local copied artifacts cannot prove absence of unrelated serving clients. No unrecorded retries in this admitted controller trajectory."
+}
