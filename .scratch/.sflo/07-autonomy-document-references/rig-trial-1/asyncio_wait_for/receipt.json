@@ -1,0 +1,91 @@
+{
+  "id": "b6f060a6919accf72ab0a600e26fc9d705071bf82cde5eff480d0023718f8d6e",
+  "receipt": {
+    "answer": {
+      "claims": [
+        {
+          "citations": [
+            {
+              "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+              "excerpt": "If a timeout occurs, it cancels the task and raises TimeoutError.",
+              "span": 231
+            }
+          ],
+          "text": "When asyncio.wait_for times out, it cancels the awaited task and raises TimeoutError."
+        },
+        {
+          "citations": [
+            {
+              "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+              "excerpt": "The function will wait until the future is actually cancelled, so the total wait time may exceed the timeout. If an exception happens during cancellation, it is propagated.",
+              "span": 233
+            },
+            {
+              "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+              "excerpt": "Changed in version 3.7: When aw is cancelled due to a timeout, wait_for waits for aw to be cancelled. Previously, it raised TimeoutError immediately.",
+              "span": 237
+            }
+          ],
+          "text": "The total wait time may exceed the timeout because wait_for waits until the future is actually cancelled; if an exception happens during cancellation, it is propagated."
+        }
+      ],
+      "reason": "",
+      "status": "supported"
+    },
+    "attempts": [
+      {
+        "error": "Supported reference answer requires 1\u20138 claims and empty reason",
+        "number": 1,
+        "request_sha256": "e4124244508cebff8b3ee4f004db88d595aedc3cece1fe654af94c3ab2262a2c",
+        "response_sha256": "9e1295125e10fbaf82b90e444b76dbfe724263aaa26dfdbfd6acfdf975fc5ecd",
+        "response_size": 3279,
+        "validation": "invalid"
+      },
+      {
+        "error": "",
+        "number": 2,
+        "request_sha256": "adbe50e69b721f81c5508a28044ad4125774f90f3c245a616daaee6b7298eef1",
+        "response_sha256": "8829f80b442356de0ea86f085c4c1e89f4d98362c63cb3c893d2afc71b27dbdd",
+        "response_size": 1904,
+        "validation": "valid"
+      }
+    ],
+    "config": {
+      "endpoint": "http://127.0.0.1:18000",
+      "model": "flash-next-coder"
+    },
+    "created_utc": "2026-10-04T16:17:01.851306+00:00",
+    "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+    "format": 3,
+    "kind": "answer",
+    "model": "flash-next-coder",
+    "profile": {
+      "chat_template_kwargs": {
+        "enable_thinking": true
+      },
+      "max_tokens": 2048,
+      "model": "flash-next-coder",
+      "reasoning_effort": "medium",
+      "temperature": 0,
+      "thinking_budget_tokens": 512
+    },
+    "protocol": {
+      "catalog_sha256": "0bd0324850c5ccfbe3f4b193ac37710c563fd985f92a9ec13d9c46d9793817e5",
+      "limits": {
+        "answer_bytes": 49152,
+        "claim_encoded_bytes": 1024,
+        "claims": 8,
+        "metadata_bytes": 12288,
+        "reason_encoded_bytes": 2048,
+        "reference_occurrences": 16,
+        "span_encoded_bytes": 2048,
+        "span_utf8_bytes": 4096,
+        "spans_per_claim": 4
+      },
+      "name": "span-ref-v1"
+    },
+    "question": "When asyncio.wait_for times out, what happens to its awaited task, which exception is raised, and why can the total wait exceed the timeout?",
+    "question_sha256": "374aa798879f00b5772b1cb3d019036b4402581898fbe175966b1c32196dc152",
+    "verdict": "citation_provenance_valid_not_semantic_entailment"
+  }
+}

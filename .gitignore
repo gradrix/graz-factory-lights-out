@@ -180,3 +180,10 @@ htmlcov/
 !.scratch/.sflo/07-autonomy-document-references/security/*.py
 !.scratch/.sflo/07-autonomy-document-references/security/*.json
 !.scratch/.sflo/07-autonomy-document-references/security/*.log
+
+!.scratch/.sflo/07-autonomy-document-references/rig-trial-1/
+!.scratch/.sflo/07-autonomy-document-references/rig-trial-1/**/
+!.scratch/.sflo/07-autonomy-document-references/rig-trial-1/**/*.json
+
+!.scratch/.sflo/07-autonomy-document-references/qa/replay/
+!.scratch/.sflo/07-autonomy-document-references/qa/replay/*.json

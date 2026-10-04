@@ -1,7 +1,7 @@
 # Broader documentation reliability
 
 Type: task/prototype
-Status: resolved for bounded repair implementation; linked delivery unit07 active.
+Status: resolved; bounded reference successor92deaab accepted and installed.
 Question: how should bounded document extraction and local citation output handle common larger official pages and quote-copy errors without weakening honest acceptance?
 
 Accepted first slice2049361 remains two correctly answered frozen questions plus offline replay. The separately frozen eight-question extension at38820cf produced three structurally valid saved answers, one rejected citation, and four questions never inferred because their source exceeded the extractor HTML event limit. Original outputs and failed admission are preserved; this is not eight successful answers.
@@ -27,3 +27,5 @@ Decision: [bounded validation repair](../../../docs/decisions/architecture/006-d
 ## Actual repair failure and successor
 
 Exact-quote candidate2fe870d passed structural/lifecycle tests but actual ten-question trial produced8accepted/2failed outcomes. Independent QA found punctuation copying failed in both attempts of gather/shield despite correct facts; all13responses retained. [Trial QA](../../.sflo/07-autonomy-document-reliability/qa-rig-documents.md). Agent supersedes the new-answer protocol via [ADR007](../../../docs/decisions/architecture/007-bounded-document-references.md): bounded whole-span IDs, controller-derived exactexcerpts, format3 with unchanged oldreaders. [Boundary analysis](../document-reference-boundary.md) addresses earlier expansion/long-span failures; current source maxima1117encodedbytes fit2048bound. [Successor run](../../.sflo/07-autonomy-document-references/run.md) owns implementation. No failed trial is rescored or installed.
+
+Successor accepted after13/13boundedsemanticoutcomes and25cross-versionofflinechecks; [acceptance](../../.sflo/07-autonomy-document-references/acceptance.md). Originalfailedtrials remainunchanged.

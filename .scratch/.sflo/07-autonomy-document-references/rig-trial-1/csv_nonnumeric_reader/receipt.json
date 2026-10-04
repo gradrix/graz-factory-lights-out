@@ -1,0 +1,106 @@
+{
+  "id": "816318ebd8e3f490f33dcb3ae70794fb3918aa192123385485cdb0de2d32c3a0",
+  "receipt": {
+    "answer": {
+      "claims": [
+        {
+          "citations": [
+            {
+              "evidence_id": "11ec4a87fbedc84645e333921f07f523b59ac102aa63547406e2e10df949460c",
+              "excerpt": "Each row read from the csv file is returned as a list of strings. No automatic data type conversion is performed unless the QUOTE_NONNUMERIC format option is specified (in which case unquoted fields are transformed into floats).",
+              "span": 40
+            }
+          ],
+          "text": "By default, csv.reader returns each row as a list of strings; no automatic data type conversion is performed."
+        },
+        {
+          "citations": [
+            {
+              "evidence_id": "11ec4a87fbedc84645e333921f07f523b59ac102aa63547406e2e10df949460c",
+              "excerpt": "Each row read from the csv file is returned as a list of strings. No automatic data type conversion is performed unless the QUOTE_NONNUMERIC format option is specified (in which case unquoted fields are transformed into floats).",
+              "span": 40
+            },
+            {
+              "evidence_id": "11ec4a87fbedc84645e333921f07f523b59ac102aa63547406e2e10df949460c",
+              "excerpt": "Instructs reader objects to convert all non-quoted fields to type float.",
+              "span": 106
+            }
+          ],
+          "text": "With quoting=csv.QUOTE_NONNUMERIC, unquoted fields are transformed into floats."
+        },
+        {
+          "citations": [
+            {
+              "evidence_id": "11ec4a87fbedc84645e333921f07f523b59ac102aa63547406e2e10df949460c",
+              "excerpt": "Each row read from the csv file is returned as a list of strings. No automatic data type conversion is performed unless the QUOTE_NONNUMERIC format option is specified (in which case unquoted fields are transformed into floats).",
+              "span": 40
+            },
+            {
+              "evidence_id": "11ec4a87fbedc84645e333921f07f523b59ac102aa63547406e2e10df949460c",
+              "excerpt": "Instructs reader objects to convert all non-quoted fields to type float.",
+              "span": 106
+            }
+          ],
+          "text": "Quoted numeric-looking fields are not converted to floats; only non-quoted fields are converted."
+        }
+      ],
+      "reason": "",
+      "status": "supported"
+    },
+    "attempts": [
+      {
+        "error": "Supported reference answer requires 1\u20138 claims and empty reason",
+        "number": 1,
+        "request_sha256": "61c09f98c8509f284e4162f0c5033e4f958ba1934db8c288cd8d88a3f4641143",
+        "response_sha256": "b0c26dd2ef5ed0af9ca3cc789630c3d57b010b5b638efe65881d7673ae445346",
+        "response_size": 3613,
+        "validation": "invalid"
+      },
+      {
+        "error": "",
+        "number": 2,
+        "request_sha256": "891ee8978aa4367154516ddb38a35800f016e26d56dc5f3b644dcdb39c3ca830",
+        "response_sha256": "a07a54d08e28d726c3f6e96581c5debd9914950f6f3fa6ed8b276b1ae234b798",
+        "response_size": 2328,
+        "validation": "valid"
+      }
+    ],
+    "config": {
+      "endpoint": "http://127.0.0.1:18000",
+      "model": "flash-next-coder"
+    },
+    "created_utc": "2026-10-04T16:21:31.490138+00:00",
+    "evidence_id": "11ec4a87fbedc84645e333921f07f523b59ac102aa63547406e2e10df949460c",
+    "format": 3,
+    "kind": "answer",
+    "model": "flash-next-coder",
+    "profile": {
+      "chat_template_kwargs": {
+        "enable_thinking": true
+      },
+      "max_tokens": 2048,
+      "model": "flash-next-coder",
+      "reasoning_effort": "medium",
+      "temperature": 0,
+      "thinking_budget_tokens": 512
+    },
+    "protocol": {
+      "catalog_sha256": "6f040148a8ba0b936d042bea7945180b3a9ef77f49ca528fc55b63bde6e16179",
+      "limits": {
+        "answer_bytes": 49152,
+        "claim_encoded_bytes": 1024,
+        "claims": 8,
+        "metadata_bytes": 12288,
+        "reason_encoded_bytes": 2048,
+        "reference_occurrences": 16,
+        "span_encoded_bytes": 2048,
+        "span_utf8_bytes": 4096,
+        "spans_per_claim": 4
+      },
+      "name": "span-ref-v1"
+    },
+    "question": "When csv.reader reads numeric-looking fields, what type does it return by default? With quoting=csv.QUOTE_NONNUMERIC, how are unquoted numeric fields converted, and are quoted numeric-looking fields converted too?",
+    "question_sha256": "c995ee3487e98ab57157fcb84ec947480ae4955162e4e5a23c04ddc28c5ad38b",
+    "verdict": "citation_provenance_valid_not_semantic_entailment"
+  }
+}

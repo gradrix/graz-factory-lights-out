@@ -1,0 +1,36 @@
+{
+  "id": "c408222602e6f411b6f3e0fe7236f13eb6ac4cda4f70b887f3eda87c19f512f0",
+  "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+  "answer": {
+    "status": "supported",
+    "claims": [
+      {
+        "text": "With return_exceptions=False, the first raised exception is immediately propagated to the task that awaits on gather().",
+        "citations": [
+          {
+            "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+            "span": 152,
+            "excerpt": "If return_exceptions is False (default), the first raised exception is immediately propagated to the task that awaits on gather(). Other awaitables in the aws sequence won\u2019t be cancelled and will continue to run."
+          }
+        ]
+      },
+      {
+        "text": "Other awaitables in the aws sequence won't be cancelled and will continue to run.",
+        "citations": [
+          {
+            "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+            "span": 152,
+            "excerpt": "If return_exceptions is False (default), the first raised exception is immediately propagated to the task that awaits on gather(). Other awaitables in the aws sequence won\u2019t be cancelled and will continue to run."
+          }
+        ]
+      }
+    ],
+    "reason": ""
+  },
+  "source_url": "https://docs.python.org/3.12/library/asyncio-task.html",
+  "source_version": "Python3.12 historical documentation snapshot; floating series URL, not exact runtime patch",
+  "retrieved_utc": "2026-10-04T16:03:50.347320+00:00",
+  "age_seconds": 791,
+  "freshness": "historical snapshot; current accuracy is not established",
+  "verdict": "citation_provenance_valid_not_semantic_entailment"
+}

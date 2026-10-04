@@ -1,0 +1,57 @@
+{
+  "id": "ea92f175be930325a46c480579ee9526064508c36543a1a7dc4f39e56d257774",
+  "receipt": {
+    "answer": {
+      "claims": [],
+      "reason": "The evidence is from Python 3.12 documentation and contains no mention of Python 3.16 or any planned change to csv.DictReader's restval default to an empty string. No date for such a change is present in the supplied spans.",
+      "status": "insufficient_evidence"
+    },
+    "attempts": [
+      {
+        "error": "",
+        "number": 1,
+        "request_sha256": "6a4ea5a257cf3803685daf42bd9207c2761d4b30a32be66eb717f832ebc5c27f",
+        "response_sha256": "c90cb81fc40b723a6520338031d48b6f9dfc6b29ae7ef30c814e03e563070cf1",
+        "response_size": 2061,
+        "validation": "valid"
+      }
+    ],
+    "config": {
+      "endpoint": "http://127.0.0.1:18000",
+      "model": "flash-next-coder"
+    },
+    "created_utc": "2026-10-04T16:19:41.418023+00:00",
+    "evidence_id": "11ec4a87fbedc84645e333921f07f523b59ac102aa63547406e2e10df949460c",
+    "format": 3,
+    "kind": "answer",
+    "model": "flash-next-coder",
+    "profile": {
+      "chat_template_kwargs": {
+        "enable_thinking": true
+      },
+      "max_tokens": 2048,
+      "model": "flash-next-coder",
+      "reasoning_effort": "medium",
+      "temperature": 0,
+      "thinking_budget_tokens": 512
+    },
+    "protocol": {
+      "catalog_sha256": "6f040148a8ba0b936d042bea7945180b3a9ef77f49ca528fc55b63bde6e16179",
+      "limits": {
+        "answer_bytes": 49152,
+        "claim_encoded_bytes": 1024,
+        "claims": 8,
+        "metadata_bytes": 12288,
+        "reason_encoded_bytes": 2048,
+        "reference_occurrences": 16,
+        "span_encoded_bytes": 2048,
+        "span_utf8_bytes": 4096,
+        "spans_per_claim": 4
+      },
+      "name": "span-ref-v1"
+    },
+    "question": "What exact date will Python 3.16 change the default csv.DictReader restval to an empty string?",
+    "question_sha256": "1327daaa4da5b6a6eff46af8410e53da214a3a73140f3de6ba4e5e1b06e59f8e",
+    "verdict": "citation_provenance_valid_not_semantic_entailment"
+  }
+}

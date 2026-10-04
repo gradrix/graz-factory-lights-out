@@ -1,0 +1,15 @@
+{
+  "id": "ea92f175be930325a46c480579ee9526064508c36543a1a7dc4f39e56d257774",
+  "evidence_id": "11ec4a87fbedc84645e333921f07f523b59ac102aa63547406e2e10df949460c",
+  "answer": {
+    "status": "insufficient_evidence",
+    "claims": [],
+    "reason": "The evidence is from Python 3.12 documentation and contains no mention of Python 3.16 or any planned change to csv.DictReader's restval default to an empty string. No date for such a change is present in the supplied spans."
+  },
+  "source_url": "https://docs.python.org/3.12/library/csv.html",
+  "source_version": "Python3.12 historical documentation snapshot; floating series URL, not exact runtime patch",
+  "retrieved_utc": "2026-10-04T16:03:47.891303+00:00",
+  "age_seconds": 993,
+  "freshness": "historical snapshot; current accuracy is not established",
+  "verdict": "citation_provenance_valid_not_semantic_entailment"
+}

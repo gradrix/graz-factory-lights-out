@@ -1,0 +1,96 @@
+{
+  "id": "7079e4a7009d1163502a0128fca460888db10c81ffe340692da40627a67dcd07",
+  "receipt": {
+    "answer": {
+      "claims": [
+        {
+          "citations": [
+            {
+              "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+              "excerpt": "skipkeys (bool) \u2013 If True, keys that are not of a basic type (str, int, float, bool, None) will be skipped instead of raising a TypeError. Default False.",
+              "span": 67
+            },
+            {
+              "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+              "excerpt": "If skipkeys is false (the default), a TypeError will be raised when trying to encode keys that are not str, int, float, bool or None. If skipkeys is true, such items are simply skipped.",
+              "span": 166
+            }
+          ],
+          "text": "By default (skipkeys=False), a TypeError is raised when trying to encode dictionary keys that are not str, int, float, bool, or None."
+        },
+        {
+          "citations": [
+            {
+              "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+              "excerpt": "skipkeys (bool) \u2013 If True, keys that are not of a basic type (str, int, float, bool, None) will be skipped instead of raising a TypeError. Default False.",
+              "span": 67
+            },
+            {
+              "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+              "excerpt": "If skipkeys is false (the default), a TypeError will be raised when trying to encode keys that are not str, int, float, bool or None. If skipkeys is true, such items are simply skipped.",
+              "span": 166
+            }
+          ],
+          "text": "With skipkeys=True, keys not of a basic type (str, int, float, bool, None) are simply skipped instead of raising a TypeError."
+        }
+      ],
+      "reason": "",
+      "status": "supported"
+    },
+    "attempts": [
+      {
+        "error": "Supported reference answer requires 1\u20138 claims and empty reason",
+        "number": 1,
+        "request_sha256": "15d013e985e00686d421b63a54c6262ac5dd9ffd94ab912b421334982c261477",
+        "response_sha256": "1ab19b5ff340889802a65268817ae6f1feabebce893deadd9310c93ef28fe237",
+        "response_size": 2733,
+        "validation": "invalid"
+      },
+      {
+        "error": "",
+        "number": 2,
+        "request_sha256": "404c74ff8b5bbb5ec02db42b01a59ed92c0c21d37c77aa154de06757929436f5",
+        "response_sha256": "f8f271b0ce9321d6aea578c4758f13b1b4d59ddde58e16f793f638d22dad2e70",
+        "response_size": 1959,
+        "validation": "valid"
+      }
+    ],
+    "config": {
+      "endpoint": "http://127.0.0.1:18000",
+      "model": "flash-next-coder"
+    },
+    "created_utc": "2026-10-04T16:13:21.995198+00:00",
+    "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+    "format": 3,
+    "kind": "answer",
+    "model": "flash-next-coder",
+    "profile": {
+      "chat_template_kwargs": {
+        "enable_thinking": true
+      },
+      "max_tokens": 2048,
+      "model": "flash-next-coder",
+      "reasoning_effort": "medium",
+      "temperature": 0,
+      "thinking_budget_tokens": 512
+    },
+    "protocol": {
+      "catalog_sha256": "8f5ed2e09b91fdf9e794af59ca79e17f1c04365c9cd20528f21b5d86632eddc0",
+      "limits": {
+        "answer_bytes": 49152,
+        "claim_encoded_bytes": 1024,
+        "claims": 8,
+        "metadata_bytes": 12288,
+        "reason_encoded_bytes": 2048,
+        "reference_occurrences": 16,
+        "span_encoded_bytes": 2048,
+        "span_utf8_bytes": 4096,
+        "spans_per_claim": 4
+      },
+      "name": "span-ref-v1"
+    },
+    "question": "With json.dump, what happens by default to dictionary keys outside str, int, float, bool and None, and what happens with skipkeys=True?",
+    "question_sha256": "3e02e08fd4fb03c320ac16398e70f544d244ff557a1ac14582b89751f7891368",
+    "verdict": "citation_provenance_valid_not_semantic_entailment"
+  }
+}

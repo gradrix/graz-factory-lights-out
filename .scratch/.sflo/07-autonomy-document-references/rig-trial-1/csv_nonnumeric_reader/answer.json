@@ -1,0 +1,56 @@
+{
+  "id": "816318ebd8e3f490f33dcb3ae70794fb3918aa192123385485cdb0de2d32c3a0",
+  "evidence_id": "11ec4a87fbedc84645e333921f07f523b59ac102aa63547406e2e10df949460c",
+  "answer": {
+    "status": "supported",
+    "claims": [
+      {
+        "text": "By default, csv.reader returns each row as a list of strings; no automatic data type conversion is performed.",
+        "citations": [
+          {
+            "evidence_id": "11ec4a87fbedc84645e333921f07f523b59ac102aa63547406e2e10df949460c",
+            "span": 40,
+            "excerpt": "Each row read from the csv file is returned as a list of strings. No automatic data type conversion is performed unless the QUOTE_NONNUMERIC format option is specified (in which case unquoted fields are transformed into floats)."
+          }
+        ]
+      },
+      {
+        "text": "With quoting=csv.QUOTE_NONNUMERIC, unquoted fields are transformed into floats.",
+        "citations": [
+          {
+            "evidence_id": "11ec4a87fbedc84645e333921f07f523b59ac102aa63547406e2e10df949460c",
+            "span": 40,
+            "excerpt": "Each row read from the csv file is returned as a list of strings. No automatic data type conversion is performed unless the QUOTE_NONNUMERIC format option is specified (in which case unquoted fields are transformed into floats)."
+          },
+          {
+            "evidence_id": "11ec4a87fbedc84645e333921f07f523b59ac102aa63547406e2e10df949460c",
+            "span": 106,
+            "excerpt": "Instructs reader objects to convert all non-quoted fields to type float."
+          }
+        ]
+      },
+      {
+        "text": "Quoted numeric-looking fields are not converted to floats; only non-quoted fields are converted.",
+        "citations": [
+          {
+            "evidence_id": "11ec4a87fbedc84645e333921f07f523b59ac102aa63547406e2e10df949460c",
+            "span": 40,
+            "excerpt": "Each row read from the csv file is returned as a list of strings. No automatic data type conversion is performed unless the QUOTE_NONNUMERIC format option is specified (in which case unquoted fields are transformed into floats)."
+          },
+          {
+            "evidence_id": "11ec4a87fbedc84645e333921f07f523b59ac102aa63547406e2e10df949460c",
+            "span": 106,
+            "excerpt": "Instructs reader objects to convert all non-quoted fields to type float."
+          }
+        ]
+      }
+    ],
+    "reason": ""
+  },
+  "source_url": "https://docs.python.org/3.12/library/csv.html",
+  "source_version": "Python3.12 historical documentation snapshot; floating series URL, not exact runtime patch",
+  "retrieved_utc": "2026-10-04T16:03:47.891303+00:00",
+  "age_seconds": 1114,
+  "freshness": "historical snapshot; current accuracy is not established",
+  "verdict": "citation_provenance_valid_not_semantic_entailment"
+}

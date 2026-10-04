@@ -1,0 +1,61 @@
+{
+  "id": "2d76a6fe481c04a087bfd52e85c9ad38c82b72bea3d261fc46d861114dc5daf8",
+  "evidence_id": "11ec4a87fbedc84645e333921f07f523b59ac102aa63547406e2e10df949460c",
+  "answer": {
+    "status": "supported",
+    "claims": [
+      {
+        "text": "If newline='' is not specified, newlines embedded inside quoted fields will not be interpreted correctly.",
+        "citations": [
+          {
+            "evidence_id": "11ec4a87fbedc84645e333921f07f523b59ac102aa63547406e2e10df949460c",
+            "span": 192,
+            "excerpt": "If newline='' is not specified, newlines embedded inside quoted fields will not be interpreted correctly, and on platforms that use \\r\\n linendings on write an extra \\r will be added. It should always be safe to specify newline='', since the csv module does its own (universal) newline handling."
+          }
+        ]
+      },
+      {
+        "text": "On platforms that use \\r\\n line endings, an extra \\r will be added on write.",
+        "citations": [
+          {
+            "evidence_id": "11ec4a87fbedc84645e333921f07f523b59ac102aa63547406e2e10df949460c",
+            "span": 192,
+            "excerpt": "If newline='' is not specified, newlines embedded inside quoted fields will not be interpreted correctly, and on platforms that use \\r\\n linendings on write an extra \\r will be added. It should always be safe to specify newline='', since the csv module does its own (universal) newline handling."
+          }
+        ]
+      },
+      {
+        "text": "It should always be safe to specify newline='', since the csv module does its own universal newline handling.",
+        "citations": [
+          {
+            "evidence_id": "11ec4a87fbedc84645e333921f07f523b59ac102aa63547406e2e10df949460c",
+            "span": 192,
+            "excerpt": "If newline='' is not specified, newlines embedded inside quoted fields will not be interpreted correctly, and on platforms that use \\r\\n linendings on write an extra \\r will be added. It should always be safe to specify newline='', since the csv module does its own (universal) newline handling."
+          }
+        ]
+      },
+      {
+        "text": "Both csv.reader and csv.writer require that if csvfile is a file object, it should be opened with newline=''.",
+        "citations": [
+          {
+            "evidence_id": "11ec4a87fbedc84645e333921f07f523b59ac102aa63547406e2e10df949460c",
+            "span": 39,
+            "excerpt": "Return a reader object that will process lines from the given csvfile. A csvfile must be an iterable of strings, each in the reader\u2019s defined csv format. A csvfile is most commonly a file-like object or list. If csvfile is a file object, it should be opened with newline=''. [1] An optional dialect parameter can be given which is used to define a set of parameters specific to a particular CSV dialect. It may be an instance of a subclass of the Dialect class or one of the strings returned by the list_dialects() function. The other optional fmtparams keyword arguments can be given to override individual formatting parameters in the current dialect. For full details about the dialect and formatting parameters, see section Dialects and Formatting Parameters."
+          },
+          {
+            "evidence_id": "11ec4a87fbedc84645e333921f07f523b59ac102aa63547406e2e10df949460c",
+            "span": 44,
+            "excerpt": "Return a writer object responsible for converting the user\u2019s data into delimited strings on the given file-like object. csvfile can be any object with a write() method. If csvfile is a file object, it should be opened with newline='' [1]. An optional dialect parameter can be given which is used to define a set of parameters specific to a particular CSV dialect. It may be an instance of a subclass of the Dialect class or one of the strings returned by the list_dialects() function. The other optional fmtparams keyword arguments can be given to override individual formatting parameters in the current dialect. For full details about dialects and formatting parameters, see the Dialects and Formatting Parameters section. To make it as easy as possible to interface with modules which implement the DB API, the value None is written as the empty string. While this isn\u2019t a reversible transformation, it makes it easier to dump SQL NULL data values to CSV files without preprocessing the data returned from a cursor.fetch* call. All other non-string data are stringified with str() before being written."
+          }
+        ]
+      }
+    ],
+    "reason": ""
+  },
+  "source_url": "https://docs.python.org/3.12/library/csv.html",
+  "source_version": "Python3.12 historical documentation snapshot; floating series URL, not exact runtime patch",
+  "retrieved_utc": "2026-10-04T16:03:47.891303+00:00",
+  "age_seconds": 574,
+  "freshness": "historical snapshot; current accuracy is not established",
+  "verdict": "citation_provenance_valid_not_semantic_entailment"
+}

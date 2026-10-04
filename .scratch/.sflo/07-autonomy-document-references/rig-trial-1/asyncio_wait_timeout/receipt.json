@@ -1,0 +1,101 @@
+{
+  "id": "9a9f4395f5eece664d147eb618b428e6d6246df7837422b74a9bc452c963e964",
+  "receipt": {
+    "answer": {
+      "claims": [
+        {
+          "citations": [
+            {
+              "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+              "excerpt": "Note that this function does not raise TimeoutError. Futures or Tasks that aren\u2019t done when the timeout occurs are simply returned in the second set.",
+              "span": 248
+            },
+            {
+              "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+              "excerpt": "Returns two sets of Tasks/Futures: (done, pending).",
+              "span": 244
+            }
+          ],
+          "text": "asyncio.wait does not raise TimeoutError when its timeout expires; unfinished Tasks/Futures are simply returned in the second set."
+        },
+        {
+          "citations": [
+            {
+              "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+              "excerpt": "Returns two sets of Tasks/Futures: (done, pending).",
+              "span": 244
+            }
+          ],
+          "text": "asyncio.wait returns two sets of Tasks/Futures: (done, pending)."
+        },
+        {
+          "citations": [
+            {
+              "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+              "excerpt": "Unlike wait_for(), wait() does not cancel the futures when a timeout occurs.",
+              "span": 258
+            }
+          ],
+          "text": "Unlike wait_for(), wait() does not cancel the futures when a timeout occurs."
+        }
+      ],
+      "reason": "",
+      "status": "supported"
+    },
+    "attempts": [
+      {
+        "error": "Supported reference answer requires 1\u20138 claims and empty reason",
+        "number": 1,
+        "request_sha256": "7cacba9aa1e95ce6464bade1341dd0a63010c23f3030a01d4c4124b399d5c885",
+        "response_sha256": "163808b13044afc19ebfd74c3fc0af56263fc03829716df49d48e31f802003e8",
+        "response_size": 3236,
+        "validation": "invalid"
+      },
+      {
+        "error": "",
+        "number": 2,
+        "request_sha256": "ba778de6dec4b9fe9702f52e1d6ec50c368b7550721becf54b37b24de30c7c84",
+        "response_sha256": "a5b42755b0b6ecdcf9d08ac257aec28e126365fe0e36f1ea72ee01e2e7777ea1",
+        "response_size": 2139,
+        "validation": "valid"
+      }
+    ],
+    "config": {
+      "endpoint": "http://127.0.0.1:18000",
+      "model": "flash-next-coder"
+    },
+    "created_utc": "2026-10-04T16:23:21.203066+00:00",
+    "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+    "format": 3,
+    "kind": "answer",
+    "model": "flash-next-coder",
+    "profile": {
+      "chat_template_kwargs": {
+        "enable_thinking": true
+      },
+      "max_tokens": 2048,
+      "model": "flash-next-coder",
+      "reasoning_effort": "medium",
+      "temperature": 0,
+      "thinking_budget_tokens": 512
+    },
+    "protocol": {
+      "catalog_sha256": "0bd0324850c5ccfbe3f4b193ac37710c563fd985f92a9ec13d9c46d9793817e5",
+      "limits": {
+        "answer_bytes": 49152,
+        "claim_encoded_bytes": 1024,
+        "claims": 8,
+        "metadata_bytes": 12288,
+        "reason_encoded_bytes": 2048,
+        "reference_occurrences": 16,
+        "span_encoded_bytes": 2048,
+        "span_utf8_bytes": 4096,
+        "spans_per_claim": 4
+      },
+      "name": "span-ref-v1"
+    },
+    "question": "In Python3.12, when asyncio.wait is given a nonempty set of Tasks/Futures and its timeout expires while some remain unfinished, does it raise TimeoutError, what sets does it return, where are the unfinished tasks placed, and does wait itself cancel them?",
+    "question_sha256": "299269b3d3877c1e6d33604a88993ab8e59c811b8c31a95919f967300512baa5",
+    "verdict": "citation_provenance_valid_not_semantic_entailment"
+  }
+}

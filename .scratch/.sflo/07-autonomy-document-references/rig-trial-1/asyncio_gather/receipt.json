@@ -1,0 +1,86 @@
+{
+  "id": "c408222602e6f411b6f3e0fe7236f13eb6ac4cda4f70b887f3eda87c19f512f0",
+  "receipt": {
+    "answer": {
+      "claims": [
+        {
+          "citations": [
+            {
+              "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+              "excerpt": "If return_exceptions is False (default), the first raised exception is immediately propagated to the task that awaits on gather(). Other awaitables in the aws sequence won\u2019t be cancelled and will continue to run.",
+              "span": 152
+            }
+          ],
+          "text": "With return_exceptions=False, the first raised exception is immediately propagated to the task that awaits on gather()."
+        },
+        {
+          "citations": [
+            {
+              "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+              "excerpt": "If return_exceptions is False (default), the first raised exception is immediately propagated to the task that awaits on gather(). Other awaitables in the aws sequence won\u2019t be cancelled and will continue to run.",
+              "span": 152
+            }
+          ],
+          "text": "Other awaitables in the aws sequence won't be cancelled and will continue to run."
+        }
+      ],
+      "reason": "",
+      "status": "supported"
+    },
+    "attempts": [
+      {
+        "error": "Supported reference answer requires 1\u20138 claims and empty reason",
+        "number": 1,
+        "request_sha256": "86f581a2d3258e9055d05f22c681e28bc7a3d872fe9be87eac7fcc8c94e7bea3",
+        "response_sha256": "fd03d5b17041e8efd0b67ede59910d52f7add00431f605c3bf187fe8d2fc18e1",
+        "response_size": 2041,
+        "validation": "invalid"
+      },
+      {
+        "error": "",
+        "number": 2,
+        "request_sha256": "a40a04807058f4a8cb3f7dcf5700cdc4e904df5b3abf54950c189665eea97fd0",
+        "response_sha256": "52c4e68a36b38e9d9817121021eb41e472925377deaa55e049fa0000207fd195",
+        "response_size": 1290,
+        "validation": "valid"
+      }
+    ],
+    "config": {
+      "endpoint": "http://127.0.0.1:18000",
+      "model": "flash-next-coder"
+    },
+    "created_utc": "2026-10-04T16:15:46.518572+00:00",
+    "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+    "format": 3,
+    "kind": "answer",
+    "model": "flash-next-coder",
+    "profile": {
+      "chat_template_kwargs": {
+        "enable_thinking": true
+      },
+      "max_tokens": 2048,
+      "model": "flash-next-coder",
+      "reasoning_effort": "medium",
+      "temperature": 0,
+      "thinking_budget_tokens": 512
+    },
+    "protocol": {
+      "catalog_sha256": "0bd0324850c5ccfbe3f4b193ac37710c563fd985f92a9ec13d9c46d9793817e5",
+      "limits": {
+        "answer_bytes": 49152,
+        "claim_encoded_bytes": 1024,
+        "claims": 8,
+        "metadata_bytes": 12288,
+        "reason_encoded_bytes": 2048,
+        "reference_occurrences": 16,
+        "span_encoded_bytes": 2048,
+        "span_utf8_bytes": 4096,
+        "spans_per_claim": 4
+      },
+      "name": "span-ref-v1"
+    },
+    "question": "With asyncio.gather(return_exceptions=False), one awaitable raises ValueError. When and to whom is the first exception propagated, and do the other awaitables automatically get cancelled or continue?",
+    "question_sha256": "f597922be2db24521aeeec5e34d5fe2291a451d274c9d619143b194c9f941c9e",
+    "verdict": "citation_provenance_valid_not_semantic_entailment"
+  }
+}

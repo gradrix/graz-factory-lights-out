@@ -1,0 +1,96 @@
+{
+  "id": "adb4d92dc981d0bf1d06389a77ec188549395f33cc5cdd8f86364a67765b59ad",
+  "receipt": {
+    "answer": {
+      "claims": [
+        {
+          "citations": [
+            {
+              "evidence_id": "11ec4a87fbedc84645e333921f07f523b59ac102aa63547406e2e10df949460c",
+              "excerpt": "If a row has more fields than fieldnames, the remaining data is put in a list and stored with the fieldname specified by restkey (which defaults to None). If a non-blank row has fewer fields than fieldnames, the missing values are filled-in with the value of restval (which defaults to None).",
+              "span": 61
+            }
+          ],
+          "text": "In csv.DictReader with default restkey (None), extra fields beyond fieldnames are stored in a list under the key None."
+        },
+        {
+          "citations": [
+            {
+              "evidence_id": "11ec4a87fbedc84645e333921f07f523b59ac102aa63547406e2e10df949460c",
+              "excerpt": "If a row has more fields than fieldnames, the remaining data is put in a list and stored with the fieldname specified by restkey (which defaults to None). If a non-blank row has fewer fields than fieldnames, the missing values are filled-in with the value of restval (which defaults to None).",
+              "span": 61
+            }
+          ],
+          "text": "In csv.DictReader with default restval (None), missing fields in a non-blank row are filled with None."
+        },
+        {
+          "citations": [
+            {
+              "evidence_id": "11ec4a87fbedc84645e333921f07f523b59ac102aa63547406e2e10df949460c",
+              "excerpt": "Return a writer object responsible for converting the user\u2019s data into delimited strings on the given file-like object. csvfile can be any object with a write() method. If csvfile is a file object, it should be opened with newline='' [1]. An optional dialect parameter can be given which is used to define a set of parameters specific to a particular CSV dialect. It may be an instance of a subclass of the Dialect class or one of the strings returned by the list_dialects() function. The other optional fmtparams keyword arguments can be given to override individual formatting parameters in the current dialect. For full details about dialects and formatting parameters, see the Dialects and Formatting Parameters section. To make it as easy as possible to interface with modules which implement the DB API, the value None is written as the empty string. While this isn\u2019t a reversible transformation, it makes it easier to dump SQL NULL data values to CSV files without preprocessing the data returned from a cursor.fetch* call. All other non-string data are stringified with str() before being written.",
+              "span": 44
+            }
+          ],
+          "text": "Default csv.writer writes the value None as the empty string, so its output does not distinguish None from an empty string."
+        }
+      ],
+      "reason": "",
+      "status": "supported"
+    },
+    "attempts": [
+      {
+        "error": "Supported reference answer requires 1\u20138 claims and empty reason",
+        "number": 1,
+        "request_sha256": "f7ee34008840fbf885bb755c638fb7dd19a8338016fd750c91e1fc6bceaed842",
+        "response_sha256": "da833908c13c549709711ffba63996aad0586a97c2ee3abb8a893ff674665266",
+        "response_size": 3609,
+        "validation": "invalid"
+      },
+      {
+        "error": "",
+        "number": 2,
+        "request_sha256": "1feeb9f5db5e080c94a8a44f73ced6cdc607ee5b21581349cf7936a7f899cb90",
+        "response_sha256": "292ac9f903bd018bd8189077c37da78d2f1e59cf25d75b5501d8a0093115b6b9",
+        "response_size": 2946,
+        "validation": "valid"
+      }
+    ],
+    "config": {
+      "endpoint": "http://127.0.0.1:18000",
+      "model": "flash-next-coder"
+    },
+    "created_utc": "2026-10-04T16:10:32.845041+00:00",
+    "evidence_id": "11ec4a87fbedc84645e333921f07f523b59ac102aa63547406e2e10df949460c",
+    "format": 3,
+    "kind": "answer",
+    "model": "flash-next-coder",
+    "profile": {
+      "chat_template_kwargs": {
+        "enable_thinking": true
+      },
+      "max_tokens": 2048,
+      "model": "flash-next-coder",
+      "reasoning_effort": "medium",
+      "temperature": 0,
+      "thinking_budget_tokens": 512
+    },
+    "protocol": {
+      "catalog_sha256": "6f040148a8ba0b936d042bea7945180b3a9ef77f49ca528fc55b63bde6e16179",
+      "limits": {
+        "answer_bytes": 49152,
+        "claim_encoded_bytes": 1024,
+        "claims": 8,
+        "metadata_bytes": 12288,
+        "reason_encoded_bytes": 2048,
+        "reference_occurrences": 16,
+        "span_encoded_bytes": 2048,
+        "span_utf8_bytes": 4096,
+        "spans_per_claim": 4
+      },
+      "name": "span-ref-v1"
+    },
+    "question": "Using default csv.DictReader restkey/restval and default csv.writer quoting, how are extra and missing fields handled, and does writer output distinguish None from an empty string? Limit the writer answer to default behavior.",
+    "question_sha256": "b646cea0dd0f3206c40289d188507e2aec2e0139c0a812e6c6d246baece3e9d2",
+    "verdict": "citation_provenance_valid_not_semantic_entailment"
+  }
+}

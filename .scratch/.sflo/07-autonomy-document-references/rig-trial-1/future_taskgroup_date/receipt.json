@@ -1,0 +1,57 @@
+{
+  "id": "7ac0bd5d8f22ebcc0e811e6f77d4dfcbbd9a27a03cf00ecce118f66a8a77d508",
+  "receipt": {
+    "answer": {
+      "claims": [],
+      "reason": "The evidence is a Python 3.12 documentation snapshot and contains no information about Python 3.16 or any planned date for changing TaskGroup behavior regarding ValueError and sibling task cancellation.",
+      "status": "insufficient_evidence"
+    },
+    "attempts": [
+      {
+        "error": "",
+        "number": 1,
+        "request_sha256": "a605fc72a78c3eac6279d8c88a3f5f97510e6f455d1d13ebf2396d86721797cc",
+        "response_sha256": "d021d73a940e5fe1b7d4346472e28d285483b07ddeb44afd159c2e9193ba0049",
+        "response_size": 1725,
+        "validation": "valid"
+      }
+    ],
+    "config": {
+      "endpoint": "http://127.0.0.1:18000",
+      "model": "flash-next-coder"
+    },
+    "created_utc": "2026-10-04T16:20:21.582755+00:00",
+    "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+    "format": 3,
+    "kind": "answer",
+    "model": "flash-next-coder",
+    "profile": {
+      "chat_template_kwargs": {
+        "enable_thinking": true
+      },
+      "max_tokens": 2048,
+      "model": "flash-next-coder",
+      "reasoning_effort": "medium",
+      "temperature": 0,
+      "thinking_budget_tokens": 512
+    },
+    "protocol": {
+      "catalog_sha256": "0bd0324850c5ccfbe3f4b193ac37710c563fd985f92a9ec13d9c46d9793817e5",
+      "limits": {
+        "answer_bytes": 49152,
+        "claim_encoded_bytes": 1024,
+        "claims": 8,
+        "metadata_bytes": 12288,
+        "reason_encoded_bytes": 2048,
+        "reference_occurrences": 16,
+        "span_encoded_bytes": 2048,
+        "span_utf8_bytes": 4096,
+        "spans_per_claim": 4
+      },
+      "name": "span-ref-v1"
+    },
+    "question": "What exact date will Python 3.16 change TaskGroup so a child ValueError never cancels its sibling tasks?",
+    "question_sha256": "191ab943295d073327006e089a54373b990d9fe55f089c85ad227e85f3e6e62c",
+    "verdict": "citation_provenance_valid_not_semantic_entailment"
+  }
+}

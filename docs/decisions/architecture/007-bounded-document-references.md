@@ -1,6 +1,6 @@
 # Bounded references instead of copied document quotes
 
-Status: chosen for implementation; acceptance pending. Decision maker: agent,2026-10-04, under continuing incremental local-factory authorization.
+Status: accepted at92deaab; [evidence](../../../.scratch/.sflo/07-autonomy-document-references/acceptance.md). Decision maker: agent,2026-10-04, under continuing incremental local-factory authorization.
 
 The actual ten-question trial of exact quotes plus one structural repair produced8 accepted answers and2 persistent punctuation failures. Independent review found correct requested facts in both failed cases, but the model repeated straight punctuation where the source used curly characters. All attempts remain failures under their original contract. See [trial QA](../../../.scratch/.sflo/07-autonomy-document-reliability/qa-rig-documents.md).
 

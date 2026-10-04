@@ -1,0 +1,101 @@
+{
+  "id": "41af64c6fc4a7443268015a3ac84e16767ef4662bd9e59ccade7751c7ded1fa4",
+  "receipt": {
+    "answer": {
+      "claims": [
+        {
+          "citations": [
+            {
+              "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+              "excerpt": "Decode a JSON document from s (a str beginning with a JSON document) and return a 2-tuple of the Python representation and the index in s where the document ended.",
+              "span": 143
+            },
+            {
+              "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+              "excerpt": "This can be used to decode a JSON document from a string that may have extraneous data at the end.",
+              "span": 144
+            }
+          ],
+          "text": "raw_decode can decode a JSON document from a string that may have extraneous data at the end."
+        },
+        {
+          "citations": [
+            {
+              "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+              "excerpt": "Decode a JSON document from s (a str beginning with a JSON document) and return a 2-tuple of the Python representation and the index in s where the document ended.",
+              "span": 143
+            }
+          ],
+          "text": "It returns a 2-tuple of the Python representation and the index in s where the document ended."
+        },
+        {
+          "citations": [
+            {
+              "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+              "excerpt": "Decode a JSON document from s (a str beginning with a JSON document) and return a 2-tuple of the Python representation and the index in s where the document ended.",
+              "span": 143
+            }
+          ],
+          "text": "The returned index identifies where the JSON document ended in s."
+        }
+      ],
+      "reason": "",
+      "status": "supported"
+    },
+    "attempts": [
+      {
+        "error": "Supported reference answer requires 1\u20138 claims and empty reason",
+        "number": 1,
+        "request_sha256": "506229373c10cdbc382a21d13a435c819b75969529f11261762b61ae3db6c51d",
+        "response_sha256": "99460d6fd393454c598a201a7f48ee1f2eb8579fecd7f12249b1028d51d16379",
+        "response_size": 2690,
+        "validation": "invalid"
+      },
+      {
+        "error": "",
+        "number": 2,
+        "request_sha256": "662d0f9641d8cc2c72d6d4d058f53094cd8419b438daa4270358d5bed8b7a4b7",
+        "response_sha256": "4bded9de706aebc854ed72ba7cc0a80650043f3f808d41f0426ef4d744d93111",
+        "response_size": 2331,
+        "validation": "valid"
+      }
+    ],
+    "config": {
+      "endpoint": "http://127.0.0.1:18000",
+      "model": "flash-next-coder"
+    },
+    "created_utc": "2026-10-04T16:22:21.999987+00:00",
+    "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+    "format": 3,
+    "kind": "answer",
+    "model": "flash-next-coder",
+    "profile": {
+      "chat_template_kwargs": {
+        "enable_thinking": true
+      },
+      "max_tokens": 2048,
+      "model": "flash-next-coder",
+      "reasoning_effort": "medium",
+      "temperature": 0,
+      "thinking_budget_tokens": 512
+    },
+    "protocol": {
+      "catalog_sha256": "8f5ed2e09b91fdf9e794af59ca79e17f1c04365c9cd20528f21b5d86632eddc0",
+      "limits": {
+        "answer_bytes": 49152,
+        "claim_encoded_bytes": 1024,
+        "claims": 8,
+        "metadata_bytes": 12288,
+        "reason_encoded_bytes": 2048,
+        "reference_occurrences": 16,
+        "span_encoded_bytes": 2048,
+        "span_utf8_bytes": 4096,
+        "spans_per_claim": 4
+      },
+      "name": "span-ref-v1"
+    },
+    "question": "For JSONDecoder.raw_decode(s), where s begins with a valid JSON document followed by extraneous data, can it decode the initial document, and what two values does it return? Explain what the returned index identifies.",
+    "question_sha256": "068dd2898e79fb497ae96d562ea0e3a4f6fb6dce66fbc1f47d41c8a92e392b5a",
+    "verdict": "citation_provenance_valid_not_semantic_entailment"
+  }
+}

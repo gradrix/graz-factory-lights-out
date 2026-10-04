@@ -7,10 +7,10 @@ Predecessor: ../07-autonomy-document-reliability/run.md
 
 ## Execution
 
-Status: active
+Status: accepted
 Owner: /root coordinator; /root/cohort_c sole maintained-code builder
-Candidate: source92deaab; manifestacd723171fe9b3f5ce9b90b2dc8aea29dbb5e57d41854cf322798690556bc698; notaccepted
-Next: actual13question modeltrial running; independent complete semantics and25case cross-version rigoffline replay beforeacceptance.
+Candidate: accepted source92deaab; manifestacd723171fe9b3f5ce9b90b2dc8aea29dbb5e57d41854cf322798690556bc698
+Next: separate planning/delegation discovery; no remaining unit07 work.
 
 ## Evidence and decisions
 
@@ -25,3 +25,7 @@ Frozen successor92deaab:15hashes verified.169tests140.571s/86%;50affected1.404s.
 Actual92deaab rig acquisition1 succeededall3 with exactbaselinebodyhashes and unchanged96K/Q4 servingidentity. [Binding](rig-acquisition-1/binding.json). Independent [functional QA](qa-functional.md) passed publicformat3repair/requestidentity,7focusedtests and16actualoldrecords. Sourcealignment13cases underway; security checks explicitmetadataedge beforeverdict. No successor inference yet.
 
 Security PASS63controls plus18actualoldrecords; noopenfinding. Independent13case sourcealignment passed. Rootauthorized separate gatee6856dc86febe89b35357334397b9317b1c1c540072a143a359fead8693cfbe8 preserving reviewerfalsegate. Actual13question trialstarted at /home/gradrix/gflo-documents-92deaab/.gflo/qualification-1, onepublicinvocationpercase, productmaxone repair/noexternalretry. IndependentQA owns allclaims/citations and25case actualoffline replay aftercompletion.
+
+Trial progress: all10repeated diagnostics produced saved structurallyvalid finalanswers in17calls; gather/shield priorfailures nowhavevalid exactcanonicalcitations. Threefreshquestions stillrunning. No acceptance inferred before completeindependentsemantics/replay. Repeated structuralrepair cost remains visible.
+
+Closure: [Acceptance](acceptance.md) binds fullsuite/independentfunctional/security/source/13questionsemantic/25caseoffline evidence. Installedcomplete30-file runtime92deaab; configunchanged/doctorready98304context; installedCLIreplay matchesqualifiedfreshanswer. Contract/unit/run links verified atclosure.23calls850.939s,10reason-onlyrepairs retainedaslimitation. Original8/10trial remainsfailed.

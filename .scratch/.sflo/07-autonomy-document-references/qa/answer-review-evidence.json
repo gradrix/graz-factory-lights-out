@@ -1,0 +1,746 @@
+[
+  {
+    "name": "row_shape_defaults",
+    "group": "repeated_diagnostics",
+    "status": "supported",
+    "elapsed_s": 49.508765258000494,
+    "attempts": [
+      {
+        "number": 1,
+        "validation": "invalid",
+        "error": "Supported reference answer requires 1\u20138 claims and empty reason",
+        "raw_content": "{\"status\":\"supported\",\"claims\":[{\"text\":\"In csv.DictReader with default restkey (None), extra fields beyond fieldnames are stored in a list under the key None.\",\"spans\":[61]},{\"text\":\"In csv.DictReader with default restval (None), missing fields in a non-blank row are filled with None.\",\"spans\":[61]},{\"text\":\"Default csv.writer writes the value None as the empty string, so its output does not distinguish None from an empty string.\",\"spans\":[44]}],\"reason\":\"Span 61 states restkey defaults to None and restval defaults to None with their respective behaviors. Span 44 states the value None is written as the empty string by the writer, confirming no distinction in output.\"}",
+        "canonical": null,
+        "completion_tokens": 671,
+        "finish_reason": "stop"
+      },
+      {
+        "number": 2,
+        "validation": "valid",
+        "error": "",
+        "raw_content": "{\"status\":\"supported\",\"claims\":[{\"text\":\"In csv.DictReader with default restkey (None), extra fields beyond fieldnames are stored in a list under the key None.\",\"spans\":[61]},{\"text\":\"In csv.DictReader with default restval (None), missing fields in a non-blank row are filled with None.\",\"spans\":[61]},{\"text\":\"Default csv.writer writes the value None as the empty string, so its output does not distinguish None from an empty string.\",\"spans\":[44]}],\"reason\":\"\"}",
+        "canonical": {
+          "status": "supported",
+          "claims": [
+            {
+              "text": "In csv.DictReader with default restkey (None), extra fields beyond fieldnames are stored in a list under the key None.",
+              "citations": [
+                {
+                  "evidence_id": "11ec4a87fbedc84645e333921f07f523b59ac102aa63547406e2e10df949460c",
+                  "span": 61,
+                  "excerpt": "If a row has more fields than fieldnames, the remaining data is put in a list and stored with the fieldname specified by restkey (which defaults to None). If a non-blank row has fewer fields than fieldnames, the missing values are filled-in with the value of restval (which defaults to None)."
+                }
+              ]
+            },
+            {
+              "text": "In csv.DictReader with default restval (None), missing fields in a non-blank row are filled with None.",
+              "citations": [
+                {
+                  "evidence_id": "11ec4a87fbedc84645e333921f07f523b59ac102aa63547406e2e10df949460c",
+                  "span": 61,
+                  "excerpt": "If a row has more fields than fieldnames, the remaining data is put in a list and stored with the fieldname specified by restkey (which defaults to None). If a non-blank row has fewer fields than fieldnames, the missing values are filled-in with the value of restval (which defaults to None)."
+                }
+              ]
+            },
+            {
+              "text": "Default csv.writer writes the value None as the empty string, so its output does not distinguish None from an empty string.",
+              "citations": [
+                {
+                  "evidence_id": "11ec4a87fbedc84645e333921f07f523b59ac102aa63547406e2e10df949460c",
+                  "span": 44,
+                  "excerpt": "Return a writer object responsible for converting the user\u2019s data into delimited strings on the given file-like object. csvfile can be any object with a write() method. If csvfile is a file object, it should be opened with newline='' [1]. An optional dialect parameter can be given which is used to define a set of parameters specific to a particular CSV dialect. It may be an instance of a subclass of the Dialect class or one of the strings returned by the list_dialects() function. The other optional fmtparams keyword arguments can be given to override individual formatting parameters in the current dialect. For full details about dialects and formatting parameters, see the Dialects and Formatting Parameters section. To make it as easy as possible to interface with modules which implement the DB API, the value None is written as the empty string. While this isn\u2019t a reversible transformation, it makes it easier to dump SQL NULL data values to CSV files without preprocessing the data returned from a cursor.fetch* call. All other non-string data are stringified with str() before being written."
+                }
+              ]
+            }
+          ],
+          "reason": ""
+        },
+        "completion_tokens": 528,
+        "finish_reason": "stop"
+      }
+    ]
+  },
+  {
+    "name": "json_hooks",
+    "group": "repeated_diagnostics",
+    "status": "supported",
+    "elapsed_s": 64.13650345199949,
+    "attempts": [
+      {
+        "number": 1,
+        "validation": "invalid",
+        "error": "Supported reference answer requires 1\u20138 claims and empty reason",
+        "raw_content": "{\"status\":\"supported\",\"claims\":[{\"text\":\"When both object_hook and object_pairs_hook are set, object_pairs_hook takes priority.\",\"spans\":[89,131]},{\"text\":\"object_pairs_hook is called with the result of any object literal decoded with an ordered list of pairs.\",\"spans\":[89,131]},{\"text\":\"The return value of object_pairs_hook is used instead of the dict.\",\"spans\":[89,131]}],\"reason\":\"Spans 89 and 131 both state that object_pairs_hook takes priority over object_hook, receives an ordered list of pairs from decoded object literals, and its return value replaces the dict.\"}",
+        "canonical": null,
+        "completion_tokens": 656,
+        "finish_reason": "stop"
+      },
+      {
+        "number": 2,
+        "validation": "valid",
+        "error": "",
+        "raw_content": "{\"status\":\"supported\",\"claims\":[{\"text\":\"When both object_hook and object_pairs_hook are set, object_pairs_hook takes priority.\",\"spans\":[89,131]},{\"text\":\"object_pairs_hook is called with the result of any object literal decoded with an ordered list of pairs.\",\"spans\":[89,131]},{\"text\":\"The return value of object_pairs_hook is used instead of the dict.\",\"spans\":[89,131]}],\"reason\":\"\"}",
+        "canonical": {
+          "status": "supported",
+          "claims": [
+            {
+              "text": "When both object_hook and object_pairs_hook are set, object_pairs_hook takes priority.",
+              "citations": [
+                {
+                  "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+                  "span": 89,
+                  "excerpt": "object_pairs_hook (callable | None) \u2013 If set, a function that is called with the result of any object literal decoded with an ordered list of pairs. The return value of this function will be used instead of the dict. This feature can be used to implement custom decoders. If object_hook is also set, object_pairs_hook takes priority. Default None."
+                },
+                {
+                  "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+                  "span": 131,
+                  "excerpt": "object_pairs_hook is an optional function that will be called with the result of every JSON object decoded with an ordered list of pairs. The return value of object_pairs_hook will be used instead of the dict. This feature can be used to implement custom decoders. If object_hook is also defined, the object_pairs_hook takes priority."
+                }
+              ]
+            },
+            {
+              "text": "object_pairs_hook is called with the result of any object literal decoded with an ordered list of pairs.",
+              "citations": [
+                {
+                  "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+                  "span": 89,
+                  "excerpt": "object_pairs_hook (callable | None) \u2013 If set, a function that is called with the result of any object literal decoded with an ordered list of pairs. The return value of this function will be used instead of the dict. This feature can be used to implement custom decoders. If object_hook is also set, object_pairs_hook takes priority. Default None."
+                },
+                {
+                  "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+                  "span": 131,
+                  "excerpt": "object_pairs_hook is an optional function that will be called with the result of every JSON object decoded with an ordered list of pairs. The return value of object_pairs_hook will be used instead of the dict. This feature can be used to implement custom decoders. If object_hook is also defined, the object_pairs_hook takes priority."
+                }
+              ]
+            },
+            {
+              "text": "The return value of object_pairs_hook is used instead of the dict.",
+              "citations": [
+                {
+                  "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+                  "span": 89,
+                  "excerpt": "object_pairs_hook (callable | None) \u2013 If set, a function that is called with the result of any object literal decoded with an ordered list of pairs. The return value of this function will be used instead of the dict. This feature can be used to implement custom decoders. If object_hook is also set, object_pairs_hook takes priority. Default None."
+                },
+                {
+                  "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+                  "span": 131,
+                  "excerpt": "object_pairs_hook is an optional function that will be called with the result of every JSON object decoded with an ordered list of pairs. The return value of object_pairs_hook will be used instead of the dict. This feature can be used to implement custom decoders. If object_hook is also defined, the object_pairs_hook takes priority."
+                }
+              ]
+            }
+          ],
+          "reason": ""
+        },
+        "completion_tokens": 511,
+        "finish_reason": "stop"
+      }
+    ]
+  },
+  {
+    "name": "csv_newlines",
+    "group": "repeated_diagnostics",
+    "status": "supported",
+    "elapsed_s": 55.449414617,
+    "attempts": [
+      {
+        "number": 1,
+        "validation": "invalid",
+        "error": "Supported reference answer requires 1\u20138 claims and empty reason",
+        "raw_content": "{\"status\":\"supported\",\"claims\":[{\"text\":\"If newline='' is not specified, newlines embedded inside quoted fields will not be interpreted correctly.\",\"spans\":[192]},{\"text\":\"On platforms that use \\\\r\\\\n line endings, an extra \\\\r will be added on write.\",\"spans\":[192]},{\"text\":\"It should always be safe to specify newline='', since the csv module does its own universal newline handling.\",\"spans\":[192]},{\"text\":\"Both csv.reader and csv.writer require that if csvfile is a file object, it should be opened with newline=''.\",\"spans\":[39,44]}],\"reason\":\"The footnote [1] (span 192) directly explains the consequences of omitting newline='': embedded quoted newlines are misinterpreted and an extra carriage return is inserted on CRLF platforms. Spans 39 and 44 confirm the requirement applies to both reading and writing.\"}",
+        "canonical": null,
+        "completion_tokens": 711,
+        "finish_reason": "stop"
+      },
+      {
+        "number": 2,
+        "validation": "valid",
+        "error": "",
+        "raw_content": "{\"status\":\"supported\",\"claims\":[{\"text\":\"If newline='' is not specified, newlines embedded inside quoted fields will not be interpreted correctly.\",\"spans\":[192]},{\"text\":\"On platforms that use \\\\r\\\\n line endings, an extra \\\\r will be added on write.\",\"spans\":[192]},{\"text\":\"It should always be safe to specify newline='', since the csv module does its own universal newline handling.\",\"spans\":[192]},{\"text\":\"Both csv.reader and csv.writer require that if csvfile is a file object, it should be opened with newline=''.\",\"spans\":[39,44]}],\"reason\":\"\"}",
+        "canonical": {
+          "status": "supported",
+          "claims": [
+            {
+              "text": "If newline='' is not specified, newlines embedded inside quoted fields will not be interpreted correctly.",
+              "citations": [
+                {
+                  "evidence_id": "11ec4a87fbedc84645e333921f07f523b59ac102aa63547406e2e10df949460c",
+                  "span": 192,
+                  "excerpt": "If newline='' is not specified, newlines embedded inside quoted fields will not be interpreted correctly, and on platforms that use \\r\\n linendings on write an extra \\r will be added. It should always be safe to specify newline='', since the csv module does its own (universal) newline handling."
+                }
+              ]
+            },
+            {
+              "text": "On platforms that use \\r\\n line endings, an extra \\r will be added on write.",
+              "citations": [
+                {
+                  "evidence_id": "11ec4a87fbedc84645e333921f07f523b59ac102aa63547406e2e10df949460c",
+                  "span": 192,
+                  "excerpt": "If newline='' is not specified, newlines embedded inside quoted fields will not be interpreted correctly, and on platforms that use \\r\\n linendings on write an extra \\r will be added. It should always be safe to specify newline='', since the csv module does its own (universal) newline handling."
+                }
+              ]
+            },
+            {
+              "text": "It should always be safe to specify newline='', since the csv module does its own universal newline handling.",
+              "citations": [
+                {
+                  "evidence_id": "11ec4a87fbedc84645e333921f07f523b59ac102aa63547406e2e10df949460c",
+                  "span": 192,
+                  "excerpt": "If newline='' is not specified, newlines embedded inside quoted fields will not be interpreted correctly, and on platforms that use \\r\\n linendings on write an extra \\r will be added. It should always be safe to specify newline='', since the csv module does its own (universal) newline handling."
+                }
+              ]
+            },
+            {
+              "text": "Both csv.reader and csv.writer require that if csvfile is a file object, it should be opened with newline=''.",
+              "citations": [
+                {
+                  "evidence_id": "11ec4a87fbedc84645e333921f07f523b59ac102aa63547406e2e10df949460c",
+                  "span": 39,
+                  "excerpt": "Return a reader object that will process lines from the given csvfile. A csvfile must be an iterable of strings, each in the reader\u2019s defined csv format. A csvfile is most commonly a file-like object or list. If csvfile is a file object, it should be opened with newline=''. [1] An optional dialect parameter can be given which is used to define a set of parameters specific to a particular CSV dialect. It may be an instance of a subclass of the Dialect class or one of the strings returned by the list_dialects() function. The other optional fmtparams keyword arguments can be given to override individual formatting parameters in the current dialect. For full details about the dialect and formatting parameters, see section Dialects and Formatting Parameters."
+                },
+                {
+                  "evidence_id": "11ec4a87fbedc84645e333921f07f523b59ac102aa63547406e2e10df949460c",
+                  "span": 44,
+                  "excerpt": "Return a writer object responsible for converting the user\u2019s data into delimited strings on the given file-like object. csvfile can be any object with a write() method. If csvfile is a file object, it should be opened with newline='' [1]. An optional dialect parameter can be given which is used to define a set of parameters specific to a particular CSV dialect. It may be an instance of a subclass of the Dialect class or one of the strings returned by the list_dialects() function. The other optional fmtparams keyword arguments can be given to override individual formatting parameters in the current dialect. For full details about dialects and formatting parameters, see the Dialects and Formatting Parameters section. To make it as easy as possible to interface with modules which implement the DB API, the value None is written as the empty string. While this isn\u2019t a reversible transformation, it makes it easier to dump SQL NULL data values to CSV files without preprocessing the data returned from a cursor.fetch* call. All other non-string data are stringified with str() before being written."
+                }
+              ]
+            }
+          ],
+          "reason": ""
+        },
+        "completion_tokens": 475,
+        "finish_reason": "stop"
+      }
+    ]
+  },
+  {
+    "name": "json_skipkeys",
+    "group": "repeated_diagnostics",
+    "status": "supported",
+    "elapsed_s": 61.37978624900006,
+    "attempts": [
+      {
+        "number": 1,
+        "validation": "invalid",
+        "error": "Supported reference answer requires 1\u20138 claims and empty reason",
+        "raw_content": "{\"status\":\"supported\",\"claims\":[{\"text\":\"By default (skipkeys=False), a TypeError is raised when trying to encode dictionary keys that are not str, int, float, bool, or None.\",\"spans\":[67,166]},{\"text\":\"With skipkeys=True, keys not of a basic type (str, int, float, bool, None) are simply skipped instead of raising a TypeError.\",\"spans\":[67,166]}],\"reason\":\"Span 67 describes the skipkeys parameter for json.dump, and span 166 describes the same behavior for JSONEncoder, both confirming default TypeError and skipkeys=True skipping behavior.\"}",
+        "canonical": null,
+        "completion_tokens": 543,
+        "finish_reason": "stop"
+      },
+      {
+        "number": 2,
+        "validation": "valid",
+        "error": "",
+        "raw_content": "{\"status\":\"supported\",\"claims\":[{\"text\":\"By default (skipkeys=False), a TypeError is raised when trying to encode dictionary keys that are not str, int, float, bool, or None.\",\"spans\":[67,166]},{\"text\":\"With skipkeys=True, keys not of a basic type (str, int, float, bool, None) are simply skipped instead of raising a TypeError.\",\"spans\":[67,166]}],\"reason\":\"\"}",
+        "canonical": {
+          "status": "supported",
+          "claims": [
+            {
+              "text": "By default (skipkeys=False), a TypeError is raised when trying to encode dictionary keys that are not str, int, float, bool, or None.",
+              "citations": [
+                {
+                  "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+                  "span": 67,
+                  "excerpt": "skipkeys (bool) \u2013 If True, keys that are not of a basic type (str, int, float, bool, None) will be skipped instead of raising a TypeError. Default False."
+                },
+                {
+                  "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+                  "span": 166,
+                  "excerpt": "If skipkeys is false (the default), a TypeError will be raised when trying to encode keys that are not str, int, float, bool or None. If skipkeys is true, such items are simply skipped."
+                }
+              ]
+            },
+            {
+              "text": "With skipkeys=True, keys not of a basic type (str, int, float, bool, None) are simply skipped instead of raising a TypeError.",
+              "citations": [
+                {
+                  "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+                  "span": 67,
+                  "excerpt": "skipkeys (bool) \u2013 If True, keys that are not of a basic type (str, int, float, bool, None) will be skipped instead of raising a TypeError. Default False."
+                },
+                {
+                  "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+                  "span": 166,
+                  "excerpt": "If skipkeys is false (the default), a TypeError will be raised when trying to encode keys that are not str, int, float, bool or None. If skipkeys is true, such items are simply skipped."
+                }
+              ]
+            }
+          ],
+          "reason": ""
+        },
+        "completion_tokens": 314,
+        "finish_reason": "stop"
+      }
+    ]
+  },
+  {
+    "name": "asyncio_taskgroup",
+    "group": "repeated_diagnostics",
+    "status": "supported",
+    "elapsed_s": 83.10421271500036,
+    "attempts": [
+      {
+        "number": 1,
+        "validation": "invalid",
+        "error": "Supported reference answer requires 1\u20138 claims and empty reason",
+        "raw_content": "{\"status\":\"supported\",\"claims\":[{\"text\":\"When a TaskGroup child raises ValueError (an exception other than asyncio.CancelledError), the remaining tasks in the group are cancelled.\",\"spans\":[129]},{\"text\":\"The async with statement waits for all tasks in the group to finish before exiting.\",\"spans\":[128,129]},{\"text\":\"Once all tasks have finished, non-cancellation exceptions (like ValueError) are combined in an ExceptionGroup or BaseExceptionGroup which is then raised.\",\"spans\":[130]}],\"reason\":\"Span 129 states that the first non-CancelledError failure cancels remaining tasks. Span 128 confirms the async with waits for all tasks. Span 130 confirms that once all tasks finish, non-cancellation exceptions are grouped into an ExceptionGroup/BaseExceptionGroup and raised.\"}",
+        "canonical": null,
+        "completion_tokens": 692,
+        "finish_reason": "stop"
+      },
+      {
+        "number": 2,
+        "validation": "valid",
+        "error": "",
+        "raw_content": "{\"status\":\"supported\",\"claims\":[{\"text\":\"When a TaskGroup child raises ValueError (an exception other than asyncio.CancelledError), the remaining tasks in the group are cancelled.\",\"spans\":[129]},{\"text\":\"The async with statement waits for all tasks in the group to finish before exiting.\",\"spans\":[128,129]},{\"text\":\"Once all tasks have finished, non-cancellation exceptions (like ValueError) are combined in an ExceptionGroup or BaseExceptionGroup which is then raised.\",\"spans\":[130]}],\"reason\":\"\"}",
+        "canonical": {
+          "status": "supported",
+          "claims": [
+            {
+              "text": "When a TaskGroup child raises ValueError (an exception other than asyncio.CancelledError), the remaining tasks in the group are cancelled.",
+              "citations": [
+                {
+                  "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+                  "span": 129,
+                  "excerpt": "The first time any of the tasks belonging to the group fails with an exception other than asyncio.CancelledError, the remaining tasks in the group are cancelled. No further tasks can then be added to the group. At this point, if the body of the async with statement is still active (i.e., __aexit__() hasn\u2019t been called yet), the task directly containing the async with statement is also cancelled. The resulting asyncio.CancelledError will interrupt an await, but it will not bubble out of the containing async with statement."
+                }
+              ]
+            },
+            {
+              "text": "The async with statement waits for all tasks in the group to finish before exiting.",
+              "citations": [
+                {
+                  "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+                  "span": 128,
+                  "excerpt": "The async with statement will wait for all tasks in the group to finish. While waiting, new tasks may still be added to the group (for example, by passing tg into one of the coroutines and calling tg.create_task() in that coroutine). Once the last task has finished and the async with block is exited, no new tasks may be added to the group."
+                },
+                {
+                  "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+                  "span": 129,
+                  "excerpt": "The first time any of the tasks belonging to the group fails with an exception other than asyncio.CancelledError, the remaining tasks in the group are cancelled. No further tasks can then be added to the group. At this point, if the body of the async with statement is still active (i.e., __aexit__() hasn\u2019t been called yet), the task directly containing the async with statement is also cancelled. The resulting asyncio.CancelledError will interrupt an await, but it will not bubble out of the containing async with statement."
+                }
+              ]
+            },
+            {
+              "text": "Once all tasks have finished, non-cancellation exceptions (like ValueError) are combined in an ExceptionGroup or BaseExceptionGroup which is then raised.",
+              "citations": [
+                {
+                  "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+                  "span": 130,
+                  "excerpt": "Once all tasks have finished, if any tasks have failed with an exception other than asyncio.CancelledError, those exceptions are combined in an ExceptionGroup or BaseExceptionGroup (as appropriate; see their documentation) which is then raised."
+                }
+              ]
+            }
+          ],
+          "reason": ""
+        },
+        "completion_tokens": 438,
+        "finish_reason": "stop"
+      }
+    ]
+  },
+  {
+    "name": "asyncio_gather",
+    "group": "repeated_diagnostics",
+    "status": "supported",
+    "elapsed_s": 75.31292124599986,
+    "attempts": [
+      {
+        "number": 1,
+        "validation": "invalid",
+        "error": "Supported reference answer requires 1\u20138 claims and empty reason",
+        "raw_content": "{\"status\":\"supported\",\"claims\":[{\"text\":\"With return_exceptions=False, the first raised exception is immediately propagated to the task that awaits on gather().\",\"spans\":[152]},{\"text\":\"Other awaitables in the aws sequence won't be cancelled and will continue to run.\",\"spans\":[152]}],\"reason\":\"Span 152 directly states both behaviors for gather with return_exceptions=False: the first exception propagates to the awaiting task, and other awaitables are not cancelled and continue running.\"}",
+        "canonical": null,
+        "completion_tokens": 287,
+        "finish_reason": "stop"
+      },
+      {
+        "number": 2,
+        "validation": "valid",
+        "error": "",
+        "raw_content": "{\"status\":\"supported\",\"claims\":[{\"text\":\"With return_exceptions=False, the first raised exception is immediately propagated to the task that awaits on gather().\",\"spans\":[152]},{\"text\":\"Other awaitables in the aws sequence won't be cancelled and will continue to run.\",\"spans\":[152]}],\"reason\":\"\"}",
+        "canonical": {
+          "status": "supported",
+          "claims": [
+            {
+              "text": "With return_exceptions=False, the first raised exception is immediately propagated to the task that awaits on gather().",
+              "citations": [
+                {
+                  "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+                  "span": 152,
+                  "excerpt": "If return_exceptions is False (default), the first raised exception is immediately propagated to the task that awaits on gather(). Other awaitables in the aws sequence won\u2019t be cancelled and will continue to run."
+                }
+              ]
+            },
+            {
+              "text": "Other awaitables in the aws sequence won't be cancelled and will continue to run.",
+              "citations": [
+                {
+                  "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+                  "span": 152,
+                  "excerpt": "If return_exceptions is False (default), the first raised exception is immediately propagated to the task that awaits on gather(). Other awaitables in the aws sequence won\u2019t be cancelled and will continue to run."
+                }
+              ]
+            }
+          ],
+          "reason": ""
+        },
+        "completion_tokens": 130,
+        "finish_reason": "stop"
+      }
+    ]
+  },
+  {
+    "name": "asyncio_wait_for",
+    "group": "repeated_diagnostics",
+    "status": "supported",
+    "elapsed_s": 80.67886624499988,
+    "attempts": [
+      {
+        "number": 1,
+        "validation": "invalid",
+        "error": "Supported reference answer requires 1\u20138 claims and empty reason",
+        "raw_content": "{\"status\":\"supported\",\"claims\":[{\"text\":\"When asyncio.wait_for times out, it cancels the awaited task and raises TimeoutError.\",\"spans\":[231]},{\"text\":\"The total wait time may exceed the timeout because wait_for waits until the future is actually cancelled; if an exception happens during cancellation, it is propagated.\",\"spans\":[233,237]}],\"reason\":\"Span 231 states the timeout cancels the task and raises TimeoutError. Spans 233 and 237 explain that wait_for waits for actual cancellation of the future, which can cause total wait to exceed the timeout.\"}",
+        "canonical": null,
+        "completion_tokens": 647,
+        "finish_reason": "stop"
+      },
+      {
+        "number": 2,
+        "validation": "valid",
+        "error": "",
+        "raw_content": "{\"status\":\"supported\",\"claims\":[{\"text\":\"When asyncio.wait_for times out, it cancels the awaited task and raises TimeoutError.\",\"spans\":[231]},{\"text\":\"The total wait time may exceed the timeout because wait_for waits until the future is actually cancelled; if an exception happens during cancellation, it is propagated.\",\"spans\":[233,237]}],\"reason\":\"\"}",
+        "canonical": {
+          "status": "supported",
+          "claims": [
+            {
+              "text": "When asyncio.wait_for times out, it cancels the awaited task and raises TimeoutError.",
+              "citations": [
+                {
+                  "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+                  "span": 231,
+                  "excerpt": "If a timeout occurs, it cancels the task and raises TimeoutError."
+                }
+              ]
+            },
+            {
+              "text": "The total wait time may exceed the timeout because wait_for waits until the future is actually cancelled; if an exception happens during cancellation, it is propagated.",
+              "citations": [
+                {
+                  "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+                  "span": 233,
+                  "excerpt": "The function will wait until the future is actually cancelled, so the total wait time may exceed the timeout. If an exception happens during cancellation, it is propagated."
+                },
+                {
+                  "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+                  "span": 237,
+                  "excerpt": "Changed in version 3.7: When aw is cancelled due to a timeout, wait_for waits for aw to be cancelled. Previously, it raised TimeoutError immediately."
+                }
+              ]
+            }
+          ],
+          "reason": ""
+        },
+        "completion_tokens": 278,
+        "finish_reason": "stop"
+      }
+    ]
+  },
+  {
+    "name": "asyncio_shield",
+    "group": "repeated_diagnostics",
+    "status": "supported",
+    "elapsed_s": 78.84795086000031,
+    "attempts": [
+      {
+        "number": 1,
+        "validation": "valid",
+        "error": "",
+        "raw_content": "{\"status\":\"supported\",\"claims\":[{\"text\":\"The inner task is not cancelled by the caller cancellation; from the inner task's perspective the cancellation did not happen.\",\"spans\":[186]},{\"text\":\"The caller is still cancelled, so the await expression still raises CancelledError.\",\"spans\":[186]},{\"text\":\"A strong reference to task should be retained because the event loop only keeps weak references to tasks, and an unreferenced task may be garbage collected mid-execution even before it is done.\",\"spans\":[191]}],\"reason\":\"\"}",
+        "canonical": {
+          "status": "supported",
+          "claims": [
+            {
+              "text": "The inner task is not cancelled by the caller cancellation; from the inner task's perspective the cancellation did not happen.",
+              "citations": [
+                {
+                  "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+                  "span": 186,
+                  "excerpt": "except that if the coroutine containing it is cancelled, the Task running in something() is not cancelled. From the point of view of something(), the cancellation did not happen. Although its caller is still cancelled, so the \u201cawait\u201d expression still raises a CancelledError."
+                }
+              ]
+            },
+            {
+              "text": "The caller is still cancelled, so the await expression still raises CancelledError.",
+              "citations": [
+                {
+                  "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+                  "span": 186,
+                  "excerpt": "except that if the coroutine containing it is cancelled, the Task running in something() is not cancelled. From the point of view of something(), the cancellation did not happen. Although its caller is still cancelled, so the \u201cawait\u201d expression still raises a CancelledError."
+                }
+              ]
+            },
+            {
+              "text": "A strong reference to task should be retained because the event loop only keeps weak references to tasks, and an unreferenced task may be garbage collected mid-execution even before it is done.",
+              "citations": [
+                {
+                  "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+                  "span": 191,
+                  "excerpt": "Save a reference to tasks passed to this function, to avoid a task disappearing mid-execution. The event loop only keeps weak references to tasks. A task that isn\u2019t referenced elsewhere may get garbage collected at any time, even before it\u2019s done."
+                }
+              ]
+            }
+          ],
+          "reason": ""
+        },
+        "completion_tokens": 632,
+        "finish_reason": "stop"
+      }
+    ]
+  },
+  {
+    "name": "future_csv_date",
+    "group": "repeated_diagnostics",
+    "status": "insufficient_evidence",
+    "elapsed_s": 40.14529269800005,
+    "attempts": [
+      {
+        "number": 1,
+        "validation": "valid",
+        "error": "",
+        "raw_content": "{\"status\":\"insufficient_evidence\",\"claims\":[],\"reason\":\"The evidence is from Python 3.12 documentation and contains no mention of Python 3.16 or any planned change to csv.DictReader's restval default to an empty string. No date for such a change is present in the supplied spans.\"}",
+        "canonical": {
+          "status": "insufficient_evidence",
+          "claims": [],
+          "reason": "The evidence is from Python 3.12 documentation and contains no mention of Python 3.16 or any planned change to csv.DictReader's restval default to an empty string. No date for such a change is present in the supplied spans."
+        },
+        "completion_tokens": 342,
+        "finish_reason": "stop"
+      }
+    ]
+  },
+  {
+    "name": "future_taskgroup_date",
+    "group": "repeated_diagnostics",
+    "status": "insufficient_evidence",
+    "elapsed_s": 69.89055662400006,
+    "attempts": [
+      {
+        "number": 1,
+        "validation": "valid",
+        "error": "",
+        "raw_content": "{\"status\":\"insufficient_evidence\",\"claims\":[],\"reason\":\"The evidence is a Python 3.12 documentation snapshot and contains no information about Python 3.16 or any planned date for changing TaskGroup behavior regarding ValueError and sibling task cancellation.\"}",
+        "canonical": {
+          "status": "insufficient_evidence",
+          "claims": [],
+          "reason": "The evidence is a Python 3.12 documentation snapshot and contains no information about Python 3.16 or any planned date for changing TaskGroup behavior regarding ValueError and sibling task cancellation."
+        },
+        "completion_tokens": 233,
+        "finish_reason": "stop"
+      }
+    ]
+  },
+  {
+    "name": "csv_nonnumeric_reader",
+    "group": "fresh_transfer",
+    "status": "supported",
+    "elapsed_s": 50.4915536819999,
+    "attempts": [
+      {
+        "number": 1,
+        "validation": "invalid",
+        "error": "Supported reference answer requires 1\u20138 claims and empty reason",
+        "raw_content": "{\"status\":\"supported\",\"claims\":[{\"text\":\"By default, csv.reader returns each row as a list of strings; no automatic data type conversion is performed.\",\"spans\":[40]},{\"text\":\"With quoting=csv.QUOTE_NONNUMERIC, unquoted fields are transformed into floats.\",\"spans\":[40,106]},{\"text\":\"Quoted numeric-looking fields are not converted to floats; only non-quoted fields are converted.\",\"spans\":[40,106]}],\"reason\":\"Span 40 states rows are returned as a list of strings by default and that QUOTE_NONNUMERIC transforms unquoted fields into floats. Span 106 confirms reader objects convert all non-quoted fields to type float, implying quoted fields are excluded from conversion.\"}",
+        "canonical": null,
+        "completion_tokens": 674,
+        "finish_reason": "stop"
+      },
+      {
+        "number": 2,
+        "validation": "valid",
+        "error": "",
+        "raw_content": "{\"status\":\"supported\",\"claims\":[{\"text\":\"By default, csv.reader returns each row as a list of strings; no automatic data type conversion is performed.\",\"spans\":[40]},{\"text\":\"With quoting=csv.QUOTE_NONNUMERIC, unquoted fields are transformed into floats.\",\"spans\":[40,106]},{\"text\":\"Quoted numeric-looking fields are not converted to floats; only non-quoted fields are converted.\",\"spans\":[40,106]}],\"reason\":\"\"}",
+        "canonical": {
+          "status": "supported",
+          "claims": [
+            {
+              "text": "By default, csv.reader returns each row as a list of strings; no automatic data type conversion is performed.",
+              "citations": [
+                {
+                  "evidence_id": "11ec4a87fbedc84645e333921f07f523b59ac102aa63547406e2e10df949460c",
+                  "span": 40,
+                  "excerpt": "Each row read from the csv file is returned as a list of strings. No automatic data type conversion is performed unless the QUOTE_NONNUMERIC format option is specified (in which case unquoted fields are transformed into floats)."
+                }
+              ]
+            },
+            {
+              "text": "With quoting=csv.QUOTE_NONNUMERIC, unquoted fields are transformed into floats.",
+              "citations": [
+                {
+                  "evidence_id": "11ec4a87fbedc84645e333921f07f523b59ac102aa63547406e2e10df949460c",
+                  "span": 40,
+                  "excerpt": "Each row read from the csv file is returned as a list of strings. No automatic data type conversion is performed unless the QUOTE_NONNUMERIC format option is specified (in which case unquoted fields are transformed into floats)."
+                },
+                {
+                  "evidence_id": "11ec4a87fbedc84645e333921f07f523b59ac102aa63547406e2e10df949460c",
+                  "span": 106,
+                  "excerpt": "Instructs reader objects to convert all non-quoted fields to type float."
+                }
+              ]
+            },
+            {
+              "text": "Quoted numeric-looking fields are not converted to floats; only non-quoted fields are converted.",
+              "citations": [
+                {
+                  "evidence_id": "11ec4a87fbedc84645e333921f07f523b59ac102aa63547406e2e10df949460c",
+                  "span": 40,
+                  "excerpt": "Each row read from the csv file is returned as a list of strings. No automatic data type conversion is performed unless the QUOTE_NONNUMERIC format option is specified (in which case unquoted fields are transformed into floats)."
+                },
+                {
+                  "evidence_id": "11ec4a87fbedc84645e333921f07f523b59ac102aa63547406e2e10df949460c",
+                  "span": 106,
+                  "excerpt": "Instructs reader objects to convert all non-quoted fields to type float."
+                }
+              ]
+            }
+          ],
+          "reason": ""
+        },
+        "completion_tokens": 413,
+        "finish_reason": "stop"
+      }
+    ]
+  },
+  {
+    "name": "json_raw_decode_suffix",
+    "group": "fresh_transfer",
+    "status": "supported",
+    "elapsed_s": 59.185814942000434,
+    "attempts": [
+      {
+        "number": 1,
+        "validation": "invalid",
+        "error": "Supported reference answer requires 1\u20138 claims and empty reason",
+        "raw_content": "{\"status\":\"supported\",\"claims\":[{\"text\":\"raw_decode can decode a JSON document from a string that may have extraneous data at the end.\",\"spans\":[143,144]},{\"text\":\"It returns a 2-tuple of the Python representation and the index in s where the document ended.\",\"spans\":[143]},{\"text\":\"The returned index identifies where the JSON document ended in s.\",\"spans\":[143]}],\"reason\":\"Spans 143 and 144 directly describe raw_decode's behavior with extraneous trailing data, its return tuple, and the meaning of the index.\"}",
+        "canonical": null,
+        "completion_tokens": 530,
+        "finish_reason": "stop"
+      },
+      {
+        "number": 2,
+        "validation": "valid",
+        "error": "",
+        "raw_content": "{\"status\":\"supported\",\"claims\":[{\"text\":\"raw_decode can decode a JSON document from a string that may have extraneous data at the end.\",\"spans\":[143,144]},{\"text\":\"It returns a 2-tuple of the Python representation and the index in s where the document ended.\",\"spans\":[143]},{\"text\":\"The returned index identifies where the JSON document ended in s.\",\"spans\":[143]}],\"reason\":\"\"}",
+        "canonical": {
+          "status": "supported",
+          "claims": [
+            {
+              "text": "raw_decode can decode a JSON document from a string that may have extraneous data at the end.",
+              "citations": [
+                {
+                  "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+                  "span": 143,
+                  "excerpt": "Decode a JSON document from s (a str beginning with a JSON document) and return a 2-tuple of the Python representation and the index in s where the document ended."
+                },
+                {
+                  "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+                  "span": 144,
+                  "excerpt": "This can be used to decode a JSON document from a string that may have extraneous data at the end."
+                }
+              ]
+            },
+            {
+              "text": "It returns a 2-tuple of the Python representation and the index in s where the document ended.",
+              "citations": [
+                {
+                  "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+                  "span": 143,
+                  "excerpt": "Decode a JSON document from s (a str beginning with a JSON document) and return a 2-tuple of the Python representation and the index in s where the document ended."
+                }
+              ]
+            },
+            {
+              "text": "The returned index identifies where the JSON document ended in s.",
+              "citations": [
+                {
+                  "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+                  "span": 143,
+                  "excerpt": "Decode a JSON document from s (a str beginning with a JSON document) and return a 2-tuple of the Python representation and the index in s where the document ended."
+                }
+              ]
+            }
+          ],
+          "reason": ""
+        },
+        "completion_tokens": 429,
+        "finish_reason": "stop"
+      }
+    ]
+  },
+  {
+    "name": "asyncio_wait_timeout",
+    "group": "fresh_transfer",
+    "status": "supported",
+    "elapsed_s": 82.80749359400033,
+    "attempts": [
+      {
+        "number": 1,
+        "validation": "invalid",
+        "error": "Supported reference answer requires 1\u20138 claims and empty reason",
+        "raw_content": "{\"status\":\"supported\",\"claims\":[{\"text\":\"asyncio.wait does not raise TimeoutError when its timeout expires; unfinished Tasks/Futures are simply returned in the second set.\",\"spans\":[248,244]},{\"text\":\"asyncio.wait returns two sets of Tasks/Futures: (done, pending).\",\"spans\":[244]},{\"text\":\"Unlike wait_for(), wait() does not cancel the futures when a timeout occurs.\",\"spans\":[258]}],\"reason\":\"Spans 248, 244, and 258 directly state that wait does not raise TimeoutError, returns (done, pending) sets, places unfinished tasks in the second set, and does not cancel them on timeout.\"}",
+        "canonical": null,
+        "completion_tokens": 668,
+        "finish_reason": "stop"
+      },
+      {
+        "number": 2,
+        "validation": "valid",
+        "error": "",
+        "raw_content": "{\"status\":\"supported\",\"claims\":[{\"text\":\"asyncio.wait does not raise TimeoutError when its timeout expires; unfinished Tasks/Futures are simply returned in the second set.\",\"spans\":[248,244]},{\"text\":\"asyncio.wait returns two sets of Tasks/Futures: (done, pending).\",\"spans\":[244]},{\"text\":\"Unlike wait_for(), wait() does not cancel the futures when a timeout occurs.\",\"spans\":[258]}],\"reason\":\"\"}",
+        "canonical": {
+          "status": "supported",
+          "claims": [
+            {
+              "text": "asyncio.wait does not raise TimeoutError when its timeout expires; unfinished Tasks/Futures are simply returned in the second set.",
+              "citations": [
+                {
+                  "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+                  "span": 248,
+                  "excerpt": "Note that this function does not raise TimeoutError. Futures or Tasks that aren\u2019t done when the timeout occurs are simply returned in the second set."
+                },
+                {
+                  "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+                  "span": 244,
+                  "excerpt": "Returns two sets of Tasks/Futures: (done, pending)."
+                }
+              ]
+            },
+            {
+              "text": "asyncio.wait returns two sets of Tasks/Futures: (done, pending).",
+              "citations": [
+                {
+                  "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+                  "span": 244,
+                  "excerpt": "Returns two sets of Tasks/Futures: (done, pending)."
+                }
+              ]
+            },
+            {
+              "text": "Unlike wait_for(), wait() does not cancel the futures when a timeout occurs.",
+              "citations": [
+                {
+                  "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+                  "span": 258,
+                  "excerpt": "Unlike wait_for(), wait() does not cancel the futures when a timeout occurs."
+                }
+              ]
+            }
+          ],
+          "reason": ""
+        },
+        "completion_tokens": 366,
+        "finish_reason": "stop"
+      }
+    ]
+  }
+]

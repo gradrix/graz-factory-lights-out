@@ -1,0 +1,88 @@
+{
+  "id": "7a583c9844fdf6a66f154faa4b8198ddb7f769d565f8f8e9815ca75335ac5acf",
+  "receipt": {
+    "answer": {
+      "claims": [
+        {
+          "citations": [
+            {
+              "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+              "excerpt": "except that if the coroutine containing it is cancelled, the Task running in something() is not cancelled. From the point of view of something(), the cancellation did not happen. Although its caller is still cancelled, so the \u201cawait\u201d expression still raises a CancelledError.",
+              "span": 186
+            }
+          ],
+          "text": "The inner task is not cancelled by the caller cancellation; from the inner task's perspective the cancellation did not happen."
+        },
+        {
+          "citations": [
+            {
+              "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+              "excerpt": "except that if the coroutine containing it is cancelled, the Task running in something() is not cancelled. From the point of view of something(), the cancellation did not happen. Although its caller is still cancelled, so the \u201cawait\u201d expression still raises a CancelledError.",
+              "span": 186
+            }
+          ],
+          "text": "The caller is still cancelled, so the await expression still raises CancelledError."
+        },
+        {
+          "citations": [
+            {
+              "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+              "excerpt": "Save a reference to tasks passed to this function, to avoid a task disappearing mid-execution. The event loop only keeps weak references to tasks. A task that isn\u2019t referenced elsewhere may get garbage collected at any time, even before it\u2019s done.",
+              "span": 191
+            }
+          ],
+          "text": "A strong reference to task should be retained because the event loop only keeps weak references to tasks, and an unreferenced task may be garbage collected mid-execution even before it is done."
+        }
+      ],
+      "reason": "",
+      "status": "supported"
+    },
+    "attempts": [
+      {
+        "error": "",
+        "number": 1,
+        "request_sha256": "2a884e68431f50955ede16621772433df86dc3b3f7fef929c3152599e9e8ccfb",
+        "response_sha256": "0da4ad4865830346d46278ecf57d16de8657e665a41208664be41d9b4501bb0d",
+        "response_size": 3520,
+        "validation": "valid"
+      }
+    ],
+    "config": {
+      "endpoint": "http://127.0.0.1:18000",
+      "model": "flash-next-coder"
+    },
+    "created_utc": "2026-10-04T16:18:22.551644+00:00",
+    "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+    "format": 3,
+    "kind": "answer",
+    "model": "flash-next-coder",
+    "profile": {
+      "chat_template_kwargs": {
+        "enable_thinking": true
+      },
+      "max_tokens": 2048,
+      "model": "flash-next-coder",
+      "reasoning_effort": "medium",
+      "temperature": 0,
+      "thinking_budget_tokens": 512
+    },
+    "protocol": {
+      "catalog_sha256": "0bd0324850c5ccfbe3f4b193ac37710c563fd985f92a9ec13d9c46d9793817e5",
+      "limits": {
+        "answer_bytes": 49152,
+        "claim_encoded_bytes": 1024,
+        "claims": 8,
+        "metadata_bytes": 12288,
+        "reason_encoded_bytes": 2048,
+        "reference_occurrences": 16,
+        "span_encoded_bytes": 2048,
+        "span_utf8_bytes": 4096,
+        "spans_per_claim": 4
+      },
+      "name": "span-ref-v1"
+    },
+    "question": "If the caller awaiting asyncio.shield(task) is cancelled, is the inner task cancelled by that caller cancellation, what exception does the caller still receive, and why should a strong reference to task be retained?",
+    "question_sha256": "5c4c7ecdadd03cc8bde0772d2884578eb83e948e05c606b3970e0e2fbf0b89f7",
+    "verdict": "citation_provenance_valid_not_semantic_entailment"
+  }
+}

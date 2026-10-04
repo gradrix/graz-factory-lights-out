@@ -55,7 +55,7 @@ Use an existing environment ID for registry-independent execution. Automatic pre
 
 ## Approved documentation
 
-`documents.py` owns bounded historical snapshots, checked citations and offline saved answers. Fixed fetch and inert extraction helpers run in separate restricted containers; only fetch has network access. Local inference receives source text as untrusted data with no tools. The controller approves the URL/question and validates citations; semantic entailment remains separately assessed. See [usage and limits](document-evidence.md). Search, public browsing and automatic research delegation remain later units.
+`documents.py` owns bounded historical snapshots, checked citations and offline saved answers. Fixed fetch and inert extraction helpers run in separate restricted containers; only fetch has network access. Local inference receives source text as untrusted data with no tools. The controller approves the URL/question. `document_references.py` owns the bounded format3 span-selection protocol and exact citation materialization; formats1/2 retain their original readers. One structural repair preserves every returned attempt, and failed diagnostics cannot replay as successful answers. Semantic entailment remains separately assessed. See [usage and limits](document-evidence.md). Search, public browsing and automatic research delegation remain later units.
 
 ## Supervised application browser
 

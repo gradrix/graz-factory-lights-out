@@ -1,0 +1,17 @@
+{
+  "repaired_cases": [
+    "row_shape_defaults",
+    "json_hooks",
+    "csv_newlines",
+    "json_skipkeys",
+    "asyncio_taskgroup",
+    "asyncio_gather",
+    "asyncio_wait_for",
+    "csv_nonnumeric_reader",
+    "json_raw_decode_suffix",
+    "asyncio_wait_timeout"
+  ],
+  "all_repairs_only_clear_reason": true,
+  "calls": 23,
+  "total_answer_seconds": 850.9391321820012
+}

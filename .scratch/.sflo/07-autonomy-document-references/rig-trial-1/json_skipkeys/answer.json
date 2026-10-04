@@ -1,0 +1,46 @@
+{
+  "id": "7079e4a7009d1163502a0128fca460888db10c81ffe340692da40627a67dcd07",
+  "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+  "answer": {
+    "status": "supported",
+    "claims": [
+      {
+        "text": "By default (skipkeys=False), a TypeError is raised when trying to encode dictionary keys that are not str, int, float, bool, or None.",
+        "citations": [
+          {
+            "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+            "span": 67,
+            "excerpt": "skipkeys (bool) \u2013 If True, keys that are not of a basic type (str, int, float, bool, None) will be skipped instead of raising a TypeError. Default False."
+          },
+          {
+            "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+            "span": 166,
+            "excerpt": "If skipkeys is false (the default), a TypeError will be raised when trying to encode keys that are not str, int, float, bool or None. If skipkeys is true, such items are simply skipped."
+          }
+        ]
+      },
+      {
+        "text": "With skipkeys=True, keys not of a basic type (str, int, float, bool, None) are simply skipped instead of raising a TypeError.",
+        "citations": [
+          {
+            "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+            "span": 67,
+            "excerpt": "skipkeys (bool) \u2013 If True, keys that are not of a basic type (str, int, float, bool, None) will be skipped instead of raising a TypeError. Default False."
+          },
+          {
+            "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+            "span": 166,
+            "excerpt": "If skipkeys is false (the default), a TypeError will be raised when trying to encode keys that are not str, int, float, bool or None. If skipkeys is true, such items are simply skipped."
+          }
+        ]
+      }
+    ],
+    "reason": ""
+  },
+  "source_url": "https://docs.python.org/3.12/library/json.html",
+  "source_version": "Python3.12 historical documentation snapshot; floating series URL, not exact runtime patch",
+  "retrieved_utc": "2026-10-04T16:03:49.119417+00:00",
+  "age_seconds": 634,
+  "freshness": "historical snapshot; current accuracy is not established",
+  "verdict": "citation_provenance_valid_not_semantic_entailment"
+}

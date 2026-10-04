@@ -1,0 +1,101 @@
+{
+  "id": "23b459b0f0afd1c0a468f7e33cd18def786a84ef2708d0ea820cada9f891141e",
+  "receipt": {
+    "answer": {
+      "claims": [
+        {
+          "citations": [
+            {
+              "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+              "excerpt": "The first time any of the tasks belonging to the group fails with an exception other than asyncio.CancelledError, the remaining tasks in the group are cancelled. No further tasks can then be added to the group. At this point, if the body of the async with statement is still active (i.e., __aexit__() hasn\u2019t been called yet), the task directly containing the async with statement is also cancelled. The resulting asyncio.CancelledError will interrupt an await, but it will not bubble out of the containing async with statement.",
+              "span": 129
+            }
+          ],
+          "text": "When a TaskGroup child raises ValueError (an exception other than asyncio.CancelledError), the remaining tasks in the group are cancelled."
+        },
+        {
+          "citations": [
+            {
+              "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+              "excerpt": "The async with statement will wait for all tasks in the group to finish. While waiting, new tasks may still be added to the group (for example, by passing tg into one of the coroutines and calling tg.create_task() in that coroutine). Once the last task has finished and the async with block is exited, no new tasks may be added to the group.",
+              "span": 128
+            },
+            {
+              "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+              "excerpt": "The first time any of the tasks belonging to the group fails with an exception other than asyncio.CancelledError, the remaining tasks in the group are cancelled. No further tasks can then be added to the group. At this point, if the body of the async with statement is still active (i.e., __aexit__() hasn\u2019t been called yet), the task directly containing the async with statement is also cancelled. The resulting asyncio.CancelledError will interrupt an await, but it will not bubble out of the containing async with statement.",
+              "span": 129
+            }
+          ],
+          "text": "The async with statement waits for all tasks in the group to finish before exiting."
+        },
+        {
+          "citations": [
+            {
+              "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+              "excerpt": "Once all tasks have finished, if any tasks have failed with an exception other than asyncio.CancelledError, those exceptions are combined in an ExceptionGroup or BaseExceptionGroup (as appropriate; see their documentation) which is then raised.",
+              "span": 130
+            }
+          ],
+          "text": "Once all tasks have finished, non-cancellation exceptions (like ValueError) are combined in an ExceptionGroup or BaseExceptionGroup which is then raised."
+        }
+      ],
+      "reason": "",
+      "status": "supported"
+    },
+    "attempts": [
+      {
+        "error": "Supported reference answer requires 1\u20138 claims and empty reason",
+        "number": 1,
+        "request_sha256": "3a3d205dfed17c96fa1e2bf7779c63d7e23e1af134ef223de1daf9c38c4de3f5",
+        "response_sha256": "d4f7a69f107bac295326d5ff67a0027b91173922e91369651e1e04150bb47230",
+        "response_size": 3830,
+        "validation": "invalid"
+      },
+      {
+        "error": "",
+        "number": 2,
+        "request_sha256": "a83b7e17fdb6aa15f3a442071ee442769d0e7c7c5b1f6e366c765aa8253a4d03",
+        "response_sha256": "0d166fa12eecc5522be7cec8a226e6b52546b88777439caee4bef447119c7a88",
+        "response_size": 2562,
+        "validation": "valid"
+      }
+    ],
+    "config": {
+      "endpoint": "http://127.0.0.1:18000",
+      "model": "flash-next-coder"
+    },
+    "created_utc": "2026-10-04T16:14:23.394764+00:00",
+    "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+    "format": 3,
+    "kind": "answer",
+    "model": "flash-next-coder",
+    "profile": {
+      "chat_template_kwargs": {
+        "enable_thinking": true
+      },
+      "max_tokens": 2048,
+      "model": "flash-next-coder",
+      "reasoning_effort": "medium",
+      "temperature": 0,
+      "thinking_budget_tokens": 512
+    },
+    "protocol": {
+      "catalog_sha256": "0bd0324850c5ccfbe3f4b193ac37710c563fd985f92a9ec13d9c46d9793817e5",
+      "limits": {
+        "answer_bytes": 49152,
+        "claim_encoded_bytes": 1024,
+        "claims": 8,
+        "metadata_bytes": 12288,
+        "reason_encoded_bytes": 2048,
+        "reference_occurrences": 16,
+        "span_encoded_bytes": 2048,
+        "span_utf8_bytes": 4096,
+        "spans_per_claim": 4
+      },
+      "name": "span-ref-v1"
+    },
+    "question": "In Python 3.12, if a TaskGroup child raises ValueError, are remaining tasks cancelled, does group exit wait for them, and how are non-cancellation failures reported once they finish?",
+    "question_sha256": "aec85a7a4db51985f7a76340d88aecf342e5ee24b511de8c2f786be3c5f854af",
+    "verdict": "citation_provenance_valid_not_semantic_entailment"
+  }
+}

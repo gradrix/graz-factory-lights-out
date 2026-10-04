@@ -1,0 +1,51 @@
+{
+  "id": "9a9f4395f5eece664d147eb618b428e6d6246df7837422b74a9bc452c963e964",
+  "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+  "answer": {
+    "claims": [
+      {
+        "citations": [
+          {
+            "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+            "excerpt": "Note that this function does not raise TimeoutError. Futures or Tasks that aren\u2019t done when the timeout occurs are simply returned in the second set.",
+            "span": 248
+          },
+          {
+            "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+            "excerpt": "Returns two sets of Tasks/Futures: (done, pending).",
+            "span": 244
+          }
+        ],
+        "text": "asyncio.wait does not raise TimeoutError when its timeout expires; unfinished Tasks/Futures are simply returned in the second set."
+      },
+      {
+        "citations": [
+          {
+            "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+            "excerpt": "Returns two sets of Tasks/Futures: (done, pending).",
+            "span": 244
+          }
+        ],
+        "text": "asyncio.wait returns two sets of Tasks/Futures: (done, pending)."
+      },
+      {
+        "citations": [
+          {
+            "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+            "excerpt": "Unlike wait_for(), wait() does not cancel the futures when a timeout occurs.",
+            "span": 258
+          }
+        ],
+        "text": "Unlike wait_for(), wait() does not cancel the futures when a timeout occurs."
+      }
+    ],
+    "reason": "",
+    "status": "supported"
+  },
+  "source_url": "https://docs.python.org/3.12/library/asyncio-task.html",
+  "source_version": "Python3.12 historical documentation snapshot; floating series URL, not exact runtime patch",
+  "retrieved_utc": "2026-10-04T16:03:50.347320+00:00",
+  "age_seconds": 1460,
+  "freshness": "historical snapshot; current accuracy is not established",
+  "verdict": "citation_provenance_valid_not_semantic_entailment"
+}

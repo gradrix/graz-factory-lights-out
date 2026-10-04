@@ -1,0 +1,61 @@
+{
+  "id": "c2d238eaf432785ec6392c38b6ec6e87adbb435aa81b70b746a0f629586f95aa",
+  "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+  "answer": {
+    "status": "supported",
+    "claims": [
+      {
+        "text": "When both object_hook and object_pairs_hook are set, object_pairs_hook takes priority.",
+        "citations": [
+          {
+            "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+            "span": 89,
+            "excerpt": "object_pairs_hook (callable | None) \u2013 If set, a function that is called with the result of any object literal decoded with an ordered list of pairs. The return value of this function will be used instead of the dict. This feature can be used to implement custom decoders. If object_hook is also set, object_pairs_hook takes priority. Default None."
+          },
+          {
+            "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+            "span": 131,
+            "excerpt": "object_pairs_hook is an optional function that will be called with the result of every JSON object decoded with an ordered list of pairs. The return value of object_pairs_hook will be used instead of the dict. This feature can be used to implement custom decoders. If object_hook is also defined, the object_pairs_hook takes priority."
+          }
+        ]
+      },
+      {
+        "text": "object_pairs_hook is called with the result of any object literal decoded with an ordered list of pairs.",
+        "citations": [
+          {
+            "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+            "span": 89,
+            "excerpt": "object_pairs_hook (callable | None) \u2013 If set, a function that is called with the result of any object literal decoded with an ordered list of pairs. The return value of this function will be used instead of the dict. This feature can be used to implement custom decoders. If object_hook is also set, object_pairs_hook takes priority. Default None."
+          },
+          {
+            "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+            "span": 131,
+            "excerpt": "object_pairs_hook is an optional function that will be called with the result of every JSON object decoded with an ordered list of pairs. The return value of object_pairs_hook will be used instead of the dict. This feature can be used to implement custom decoders. If object_hook is also defined, the object_pairs_hook takes priority."
+          }
+        ]
+      },
+      {
+        "text": "The return value of object_pairs_hook is used instead of the dict.",
+        "citations": [
+          {
+            "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+            "span": 89,
+            "excerpt": "object_pairs_hook (callable | None) \u2013 If set, a function that is called with the result of any object literal decoded with an ordered list of pairs. The return value of this function will be used instead of the dict. This feature can be used to implement custom decoders. If object_hook is also set, object_pairs_hook takes priority. Default None."
+          },
+          {
+            "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+            "span": 131,
+            "excerpt": "object_pairs_hook is an optional function that will be called with the result of every JSON object decoded with an ordered list of pairs. The return value of object_pairs_hook will be used instead of the dict. This feature can be used to implement custom decoders. If object_hook is also defined, the object_pairs_hook takes priority."
+          }
+        ]
+      }
+    ],
+    "reason": ""
+  },
+  "source_url": "https://docs.python.org/3.12/library/json.html",
+  "source_version": "Python3.12 historical documentation snapshot; floating series URL, not exact runtime patch",
+  "retrieved_utc": "2026-10-04T16:03:49.119417+00:00",
+  "age_seconds": 517,
+  "freshness": "historical snapshot; current accuracy is not established",
+  "verdict": "citation_provenance_valid_not_semantic_entailment"
+}

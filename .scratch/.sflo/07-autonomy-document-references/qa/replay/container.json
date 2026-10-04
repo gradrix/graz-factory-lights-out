@@ -1,0 +1,204 @@
+{
+  "id": "518798248fca908904159c65e331c74e973056c752b1ad8cad9609a7d16c1dbb",
+  "image": "sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc",
+  "host": {
+    "Binds": null,
+    "ContainerIDFile": "",
+    "LogConfig": {
+      "Type": "json-file",
+      "Config": {}
+    },
+    "NetworkMode": "none",
+    "PortBindings": {},
+    "RestartPolicy": {
+      "Name": "no",
+      "MaximumRetryCount": 0
+    },
+    "AutoRemove": false,
+    "VolumeDriver": "",
+    "VolumesFrom": null,
+    "ConsoleSize": [
+      0,
+      0
+    ],
+    "CapAdd": null,
+    "CapDrop": [
+      "ALL"
+    ],
+    "CgroupnsMode": "private",
+    "Dns": [],
+    "DnsOptions": [],
+    "DnsSearch": [],
+    "ExtraHosts": null,
+    "GroupAdd": null,
+    "IpcMode": "private",
+    "Cgroup": "",
+    "Links": null,
+    "OomScoreAdj": 0,
+    "PidMode": "",
+    "Privileged": false,
+    "PublishAllPorts": false,
+    "ReadonlyRootfs": true,
+    "SecurityOpt": [
+      "no-new-privileges"
+    ],
+    "Tmpfs": {
+      "/tmp": "rw,nosuid,nodev,size=16m"
+    },
+    "UTSMode": "",
+    "UsernsMode": "",
+    "ShmSize": 67108864,
+    "Runtime": "runc",
+    "Isolation": "",
+    "CpuShares": 0,
+    "Memory": 268435456,
+    "NanoCpus": 1000000000,
+    "CgroupParent": "",
+    "BlkioWeight": 0,
+    "BlkioWeightDevice": [],
+    "BlkioDeviceReadBps": [],
+    "BlkioDeviceWriteBps": [],
+    "BlkioDeviceReadIOps": [],
+    "BlkioDeviceWriteIOps": [],
+    "CpuPeriod": 0,
+    "CpuQuota": 0,
+    "CpuRealtimePeriod": 0,
+    "CpuRealtimeRuntime": 0,
+    "CpusetCpus": "",
+    "CpusetMems": "",
+    "Devices": [],
+    "DeviceCgroupRules": null,
+    "DeviceRequests": null,
+    "MemoryReservation": 0,
+    "MemorySwap": 268435456,
+    "MemorySwappiness": null,
+    "OomKillDisable": false,
+    "PidsLimit": 64,
+    "Ulimits": [],
+    "CpuCount": 0,
+    "CpuPercent": 0,
+    "IOMaximumIOps": 0,
+    "IOMaximumBandwidth": 0,
+    "Mounts": [
+      {
+        "Type": "bind",
+        "Source": "/home/gradrix/gflo-documents-92deaab/gflo",
+        "Target": "/source/gflo",
+        "ReadOnly": true
+      },
+      {
+        "Type": "bind",
+        "Source": "/home/gradrix/gflo-documents-92deaab/.gflo/qualification-1/independent-offline-replay/child.py",
+        "Target": "/probe.py",
+        "ReadOnly": true
+      },
+      {
+        "Type": "bind",
+        "Source": "/home/gradrix/gflo-documents-92deaab/.gflo/qualification-1/independent-offline-replay/cases.json",
+        "Target": "/cases.json",
+        "ReadOnly": true
+      },
+      {
+        "Type": "bind",
+        "Source": "/home/gradrix/gflo-documents-92deaab/.gflo/qualification-1/independent-offline-replay/new-store",
+        "Target": "/new-store"
+      },
+      {
+        "Type": "bind",
+        "Source": "/home/gradrix/gflo-documents-92deaab/.gflo/qualification-1/independent-offline-replay/format2-store",
+        "Target": "/format2-store"
+      },
+      {
+        "Type": "bind",
+        "Source": "/home/gradrix/gflo-documents-92deaab/.gflo/qualification-1/independent-offline-replay/legacy-store",
+        "Target": "/legacy-store"
+      }
+    ],
+    "MaskedPaths": [
+      "/proc/asound",
+      "/proc/acpi",
+      "/proc/interrupts",
+      "/proc/kcore",
+      "/proc/keys",
+      "/proc/latency_stats",
+      "/proc/timer_list",
+      "/proc/timer_stats",
+      "/proc/sched_debug",
+      "/proc/scsi",
+      "/sys/firmware",
+      "/sys/devices/virtual/powercap"
+    ],
+    "ReadonlyPaths": [
+      "/proc/bus",
+      "/proc/fs",
+      "/proc/irq",
+      "/proc/sys",
+      "/proc/sysrq-trigger"
+    ]
+  },
+  "mounts": [
+    {
+      "Type": "bind",
+      "Source": "/home/gradrix/gflo-documents-92deaab/.gflo/qualification-1/independent-offline-replay/cases.json",
+      "Destination": "/cases.json",
+      "Mode": "",
+      "RW": false,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "bind",
+      "Source": "/home/gradrix/gflo-documents-92deaab/.gflo/qualification-1/independent-offline-replay/new-store",
+      "Destination": "/new-store",
+      "Mode": "",
+      "RW": true,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "bind",
+      "Source": "/home/gradrix/gflo-documents-92deaab/.gflo/qualification-1/independent-offline-replay/format2-store",
+      "Destination": "/format2-store",
+      "Mode": "",
+      "RW": true,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "bind",
+      "Source": "/home/gradrix/gflo-documents-92deaab/.gflo/qualification-1/independent-offline-replay/legacy-store",
+      "Destination": "/legacy-store",
+      "Mode": "",
+      "RW": true,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "bind",
+      "Source": "/home/gradrix/gflo-documents-92deaab/gflo",
+      "Destination": "/source/gflo",
+      "Mode": "",
+      "RW": false,
+      "Propagation": "rprivate"
+    },
+    {
+      "Type": "bind",
+      "Source": "/home/gradrix/gflo-documents-92deaab/.gflo/qualification-1/independent-offline-replay/child.py",
+      "Destination": "/probe.py",
+      "Mode": "",
+      "RW": false,
+      "Propagation": "rprivate"
+    }
+  ],
+  "config": {
+    "User": "1000:1000",
+    "Cmd": [
+      "python",
+      "/probe.py"
+    ],
+    "Env": [
+      "PYTHONDONTWRITEBYTECODE=1",
+      "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+      "LANG=C.UTF-8",
+      "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+      "PYTHON_VERSION=3.12.13",
+      "PYTHON_SHA256=c08bc65a81971c1dd5783182826503369466c7e67374d1646519adf05207b684"
+    ]
+  }
+}

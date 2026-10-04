@@ -1,0 +1,51 @@
+{
+  "id": "41af64c6fc4a7443268015a3ac84e16767ef4662bd9e59ccade7751c7ded1fa4",
+  "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+  "answer": {
+    "status": "supported",
+    "claims": [
+      {
+        "text": "raw_decode can decode a JSON document from a string that may have extraneous data at the end.",
+        "citations": [
+          {
+            "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+            "span": 143,
+            "excerpt": "Decode a JSON document from s (a str beginning with a JSON document) and return a 2-tuple of the Python representation and the index in s where the document ended."
+          },
+          {
+            "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+            "span": 144,
+            "excerpt": "This can be used to decode a JSON document from a string that may have extraneous data at the end."
+          }
+        ]
+      },
+      {
+        "text": "It returns a 2-tuple of the Python representation and the index in s where the document ended.",
+        "citations": [
+          {
+            "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+            "span": 143,
+            "excerpt": "Decode a JSON document from s (a str beginning with a JSON document) and return a 2-tuple of the Python representation and the index in s where the document ended."
+          }
+        ]
+      },
+      {
+        "text": "The returned index identifies where the JSON document ended in s.",
+        "citations": [
+          {
+            "evidence_id": "9077ec150988ee4c69767189b5cb5a968763338b3d43e1e5946bdc4daf0d20dc",
+            "span": 143,
+            "excerpt": "Decode a JSON document from s (a str beginning with a JSON document) and return a 2-tuple of the Python representation and the index in s where the document ended."
+          }
+        ]
+      }
+    ],
+    "reason": ""
+  },
+  "source_url": "https://docs.python.org/3.12/library/json.html",
+  "source_version": "Python3.12 historical documentation snapshot; floating series URL, not exact runtime patch",
+  "retrieved_utc": "2026-10-04T16:03:49.119417+00:00",
+  "age_seconds": 1172,
+  "freshness": "historical snapshot; current accuracy is not established",
+  "verdict": "citation_provenance_valid_not_semantic_entailment"
+}

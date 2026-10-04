@@ -1,0 +1,46 @@
+{
+  "id": "7a583c9844fdf6a66f154faa4b8198ddb7f769d565f8f8e9815ca75335ac5acf",
+  "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+  "answer": {
+    "status": "supported",
+    "claims": [
+      {
+        "text": "The inner task is not cancelled by the caller cancellation; from the inner task's perspective the cancellation did not happen.",
+        "citations": [
+          {
+            "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+            "span": 186,
+            "excerpt": "except that if the coroutine containing it is cancelled, the Task running in something() is not cancelled. From the point of view of something(), the cancellation did not happen. Although its caller is still cancelled, so the \u201cawait\u201d expression still raises a CancelledError."
+          }
+        ]
+      },
+      {
+        "text": "The caller is still cancelled, so the await expression still raises CancelledError.",
+        "citations": [
+          {
+            "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+            "span": 186,
+            "excerpt": "except that if the coroutine containing it is cancelled, the Task running in something() is not cancelled. From the point of view of something(), the cancellation did not happen. Although its caller is still cancelled, so the \u201cawait\u201d expression still raises a CancelledError."
+          }
+        ]
+      },
+      {
+        "text": "A strong reference to task should be retained because the event loop only keeps weak references to tasks, and an unreferenced task may be garbage collected mid-execution even before it is done.",
+        "citations": [
+          {
+            "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+            "span": 191,
+            "excerpt": "Save a reference to tasks passed to this function, to avoid a task disappearing mid-execution. The event loop only keeps weak references to tasks. A task that isn\u2019t referenced elsewhere may get garbage collected at any time, even before it\u2019s done."
+          }
+        ]
+      }
+    ],
+    "reason": ""
+  },
+  "source_url": "https://docs.python.org/3.12/library/asyncio-task.html",
+  "source_version": "Python3.12 historical documentation snapshot; floating series URL, not exact runtime patch",
+  "retrieved_utc": "2026-10-04T16:03:50.347320+00:00",
+  "age_seconds": 951,
+  "freshness": "historical snapshot; current accuracy is not established",
+  "verdict": "citation_provenance_valid_not_semantic_entailment"
+}

@@ -1,0 +1,41 @@
+{
+  "id": "b6f060a6919accf72ab0a600e26fc9d705071bf82cde5eff480d0023718f8d6e",
+  "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+  "answer": {
+    "status": "supported",
+    "claims": [
+      {
+        "text": "When asyncio.wait_for times out, it cancels the awaited task and raises TimeoutError.",
+        "citations": [
+          {
+            "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+            "span": 231,
+            "excerpt": "If a timeout occurs, it cancels the task and raises TimeoutError."
+          }
+        ]
+      },
+      {
+        "text": "The total wait time may exceed the timeout because wait_for waits until the future is actually cancelled; if an exception happens during cancellation, it is propagated.",
+        "citations": [
+          {
+            "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+            "span": 233,
+            "excerpt": "The function will wait until the future is actually cancelled, so the total wait time may exceed the timeout. If an exception happens during cancellation, it is propagated."
+          },
+          {
+            "evidence_id": "fd644b0b41d94d9a50f396a2ea4da31f9314e47a3c7f7b0d9c0c40e28c8539a4",
+            "span": 237,
+            "excerpt": "Changed in version 3.7: When aw is cancelled due to a timeout, wait_for waits for aw to be cancelled. Previously, it raised TimeoutError immediately."
+          }
+        ]
+      }
+    ],
+    "reason": ""
+  },
+  "source_url": "https://docs.python.org/3.12/library/asyncio-task.html",
+  "source_version": "Python3.12 historical documentation snapshot; floating series URL, not exact runtime patch",
+  "retrieved_utc": "2026-10-04T16:03:50.347320+00:00",
+  "age_seconds": 872,
+  "freshness": "historical snapshot; current accuracy is not established",
+  "verdict": "citation_provenance_valid_not_semantic_entailment"
+}

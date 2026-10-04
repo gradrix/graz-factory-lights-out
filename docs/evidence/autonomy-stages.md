@@ -82,11 +82,11 @@ This is two questions against one historical official page, not general research
 
 [Usage](../document-evidence.md), [semantic QA](../../.scratch/.sflo/05-autonomy-documents/qa-rig-documents.md), [security recheck](../../.scratch/.sflo/05-autonomy-documents/security-documents-recheck.md), [raw trial](../../.scratch/.sflo/05-autonomy-documents/rig-trial/receipt.json).
 
-### Broader documentation extension — incomplete
+### Broader documentation extension — preserved failed trial
 
 Eight additional questions were frozen before further inference. Three answers were saved, one was rejected for changing a quoted curly apostrophe to ASCII, and four asyncio questions never reached inference after source acquisition failed. A separate actual diagnostic reproduced the extractor's10,000-event ceiling on the ordinary official asyncio page.
 
-Independent QA found all three saved answers address their actual questions. One frozen expected-facts list also demanded an unasked return-value fact; this oracle overconstraint is preserved separately from model quality. The original two accepted answers remain unchanged. The larger research gate is unaccepted; [full assessment](../../.scratch/.sflo/05-autonomy-documents/qa-research-cohort.md) and [next reliability work](../../.scratch/autonomy/issues/07-document-reliability.md) retain failures and proposed experiments.
+Independent QA found all three saved answers address their actual questions. One frozen expected-facts list also demanded an unasked return-value fact; this oracle overconstraint is preserved separately from model quality. The original two accepted answers remain unchanged. The larger research gate was unaccepted in that trial; [full assessment](../../.scratch/.sflo/05-autonomy-documents/qa-research-cohort.md) and [next reliability work](../../.scratch/autonomy/issues/07-document-reliability.md) retain failures and proposed experiments.
 
 ## Supervised local browser — accepted
 
@@ -95,3 +95,11 @@ Source **596ecb6**,2026-10-04. Five stock-reservation flows passed on MONSTER-GA
 Independent reviews found and repaired origin, cancellation, logging, creation-uncertainty, permissions and seed-atime defects. The first rig failure and later test-harness dispatch error remain preserved; unfinished tests were continued without rerunning passed cases. Full regression gate before the last two narrow repairs:144tests/86%; final seed change:31affected tests pass. Complete29-file runtime and offline browser support are installed, with state/config retained.
 
 This qualifies a supervised verifier for frozen Node apps, not generated web-app quality, public browsing, automatic tool delegation or fullStage4. [Acceptance and evidence](../../.scratch/.sflo/06-autonomy-browser/acceptance.md), [usage](../local-browser.md).
+
+## Bounded document references — accepted
+
+Source **92deaab**, 2026-10-04. The 40,000-event extractor acquired three official Python 3.12 pages within unchanged runtime limits. New format 3 answers select bounded span IDs; the controller supplies exact whole-span citations. Format 1 and 2 records remain unchanged. **169 tests, 86% branch-aware coverage**, independent functional/security review and 63 security controls passed.
+
+Actual 5090 qualification at unchanged 96K/Q4: **10/10 repeated diagnostics plus 3/3 fresh questions** were independently complete and source-supported. The trial used 23 model calls and 850.939 seconds. Ten repairs only removed invalid nonempty reason fields, leaving claims and references unchanged. This added cost and weak first-call schema adherence remain explicit. The preceding exact-quote 8/10 trial stays failed; no repeats are relabeled unseen.
+
+Actual network-none replay passed 25 checks in 0.684 seconds: 13 format 3, eight format 2 and two format 1 successful answers, plus two old failed-diagnostic refusals. All record hashes stayed unchanged. The complete 30-file runtime is installed at `~/gflo-runtime`; config and model were preserved, doctor reports ready, and installed CLI replay matched. Long selected spans fail explicitly; semantic support is separate from literal provenance. Search, public browsing, delegation and full Stage 4 remain pending. [Acceptance](../../.scratch/.sflo/07-autonomy-document-references/acceptance.md), [semantic and replay QA](../../.scratch/.sflo/07-autonomy-document-references/qa-rig-documents.md).
