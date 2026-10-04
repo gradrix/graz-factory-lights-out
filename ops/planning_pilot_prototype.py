@@ -731,6 +731,23 @@ def wait_idle(config, identity, deadline, record, cancelled=lambda: False):
             return False
 
 
+def publish_result(path, result, deadline, cancelled):
+    """Fence success after fallible preparation, immediately before publication."""
+    path = Path(path)
+    temporary = path.with_suffix('.pending')
+    result = copy.deepcopy(result)
+    def prepare():
+        with temporary.open('w') as stream:
+            json.dump(result, stream, indent=2)
+            stream.write('\n'); stream.flush(); os.fsync(stream.fileno())
+    prepare()
+    if result['status'] == 'accepted' and (cancelled() or time.monotonic() >= deadline):
+        result.update(status='failed', publication_refused='Cancellation or shared deadline before publication')
+        prepare()
+    temporary.replace(path)
+    return result
+
+
 def run_pilot(args):
     manifest = check_manifest(args.manifest, args.manifest_sha256)
     root = Path(args.output).resolve()
@@ -775,7 +792,8 @@ def run_pilot(args):
             accepted = (not cancelled and not result['stop'] and result['client_group_absent'] and result['exit_code'] == 0 and result['work_finished_before_deadline'] and
                         time.monotonic() < deadline and result['cleanup_confirmed'] and result['idle_confirmed'] and result['integrity_confirmed'])
             result.update(arm=arm.name, status='accepted' if accepted else 'failed', child=child)
-            save(arm / 'result.json', result); outcomes.append(result)
+            result = publish_result(arm / 'result.json', result, deadline, lambda: bool(cancelled))
+            outcomes.append(result)
             save(root / 'results.json', outcomes)
             if cancelled or result['stop'] == 'cancelled' or not result['client_group_absent'] or not result['cleanup_confirmed'] or not result['idle_confirmed']:
                 break
