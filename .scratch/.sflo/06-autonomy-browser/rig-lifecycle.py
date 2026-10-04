@@ -7,7 +7,7 @@ def main():
  p=argparse.ArgumentParser(description=__doc__)
  for n in ['repo','support-store','prior-store','output']:p.add_argument('--'+n,type=pathlib.Path,required=True)
  p.add_argument('--support-id',required=True);p.add_argument('--run',action='store_true');p.add_argument('--child',choices=['owner-startup','owner-artifact']);a=p.parse_args()
- assert a.run;sys.path.insert(0,str(a.repo));from gflo.browser import BrowserStore,RECIPE
+ assert a.run;os.chdir(a.repo);os.environ['PYTHONPATH']=str(a.repo);sys.path.insert(0,str(a.repo));from gflo.browser import BrowserStore,RECIPE
  from gflo.browser_pair import run
  if a.child:
   def executor(spec,stream,**kw):
@@ -44,17 +44,36 @@ def main():
      time.sleep(.05)
    finally:
     owner.kill() if owner.poll() is None else None;owner.wait(timeout=10)
-  killed=time.monotonic();deadline=killed+35;remaining=[]
+  killed=time.monotonic();deadline=killed+145;remaining=[]
   while time.monotonic()<deadline:
    remaining=subprocess.check_output(['docker','ps','-aq','--filter','label=gflo.browser='+store.label],text=True,timeout=5).split()
-   if not remaining:break
+   facts_paths=list(store.root.glob('.work-*/facts.json'));guardian_finished=False
+   for facts_path in facts_paths:
+    try:guardian_finished=isinstance(json.loads(facts_path.read_text()).get('cleanup'),dict)
+    except (ValueError,OSError):pass
+   if not remaining and guardian_finished:break
    time.sleep(.1)
   candidates=[]
   for path in store.root.iterdir():
    if path.is_dir() and path.name not in [a.support_id,prior.name] and (path/'receipt.json').exists():candidates.append(path.name)
-  row={'mode':mode,'observed_phase':seen,'owner_exit':owner.returncode,'remaining':remaining,'removal_s':time.monotonic()-killed,'new_receipts':candidates,'prior_unchanged':before==digest(store.root/prior.name),'fault':'actual SIGKILL; copied helper barrier only for artifact phase'}
+  row={'mode':mode,'observed_phase':seen,'owner_exit':owner.returncode,'remaining':remaining,'guardian_readback_wait_s':time.monotonic()-killed,'guardian_finished':guardian_finished,'new_receipts':candidates,'prior_unchanged':before==digest(store.root/prior.name),'fault':'actual SIGKILL; copied helper barrier only for artifact phase'}
   (root/'before-cleanup.json').write_text(json.dumps(row,indent=2));rows.append(row);(a.output/'results.json').write_text(json.dumps(rows,indent=2))
   assert seen and owner.returncode==-9 and not remaining and not candidates and row['prior_unchanged'],row
-  store.cleanup();store.inspect(prior.name);assert before==digest(store.root/prior.name)
- print('PASS owner startup/artifact removal and preserved prior result')
+  try:
+   store.cleanup();row['recovery']='ordinary cleanup completed'
+  except ValueError as error:
+   if 'Create completion remains uncertain' not in str(error):raise
+   row['recovery']='refused; coordinator acknowledgment required';row['recovery_refusal']=str(error)
+   assert (store.root/'.cleanup-required').exists(),'Recovery fence must remain'
+   # Current absence cannot prove that an interrupted create has completed.
+   # Never automatically acknowledge this uncertainty or erase original evidence.
+  store.inspect(prior.name);assert before==digest(store.root/prior.name)
+  recovery=[]
+  for path in store.root.iterdir():
+   if path.is_dir() and (path/'receipt.json').exists():
+    rec=json.loads((path/'receipt.json').read_text())
+    if rec.get('kind')=='recovery':recovery.append({'id':path.name,'receipt':rec})
+  row['recovery_receipts']=recovery
+  (root/'after-cleanup.json').write_text(json.dumps(row,indent=2));(a.output/'results.json').write_text(json.dumps(rows,indent=2))
+ print('Owner lifecycle assertions complete; inspect recovery fields for any retained acknowledgment gate')
 if __name__=='__main__':main()

@@ -15,6 +15,7 @@ def main():
   assert sha((fixture/'manifest.json').read_bytes())==a.fixture_sha256
   for n,h in json.loads((fixture/'manifest.json').read_text())['files'].items():assert sha((fixture/n).read_bytes())==h,n
  def save():(out/'supplemental.json').write_text(json.dumps({'candidate':a.candidate_sha256,'rows':rows},indent=2)+'\n')
+ os.chdir(repo);os.environ['PYTHONPATH']=str(repo)
  frozen();assert sha(a.original_seccomp.read_bytes())=='cc3e61cabda6bbc1e53e54d27ba4d55a9d3be829b6dd1a596f4a7b31b1cc7849'
  command=[sys.executable,str(repo/'.scratch/autonomy/qualify-browser.py'),'--repo',str(repo),'--candidate',str(a.candidate.resolve()),'--candidate-sha256',a.candidate_sha256,'--fixture',str(fixture),'--fixture-sha256',a.fixture_sha256,'--support-store',str(a.support_store.resolve()),'--support-id',a.support_id,'--output',str(out/'five-flows'),'--run']
  with (out/'five-flows.log').open('w') as log:subprocess.run(command,stdout=log,stderr=subprocess.STDOUT,timeout=1500,check=True,cwd=repo)
@@ -89,7 +90,9 @@ def main():
   for renderer in renderers:
    assert '--no-sandbox' not in renderer['command'] and '--disable-dev-shm-usage' not in renderer['command'];assert renderer['namespaces']['user']!=rt['isolation']['reporter']['user'];assert any(x.startswith('Seccomp:') and x.split(':')[1].strip()=='2' for x in renderer['status'])
   facts.append({'case':rec['approved']['case'],'shm':rt['shm'],'network':rt['network'],'isolation':rt['isolation']})
+ frozen()
  lifecycle=[sys.executable,str(Path(__file__).with_name('rig-lifecycle.py')),'--repo',str(repo),'--support-store',str(a.support_store.resolve()),'--support-id',a.support_id,'--prior-store',str(out/'five-flows/store'),'--output',str(out/'lifecycle'),'--run']
- with (out/'lifecycle.log').open('w') as log:subprocess.run(lifecycle,stdout=log,stderr=subprocess.STDOUT,timeout=400,check=True)
+ with (out/'lifecycle.log').open('w') as log:subprocess.run(lifecycle,stdout=log,stderr=subprocess.STDOUT,timeout=500,check=True)
+ recovery_rows=json.loads((out/'lifecycle/results.json').read_text());assert all('refused' not in r['recovery'] for r in recovery_rows),'Lifecycle fence preserved; coordinator must review acknowledgment before acceptance'
  (out/'sandbox-shm.json').write_text(json.dumps(facts,indent=2));frozen();assert all(r['expected_confirmed'] for r in rows);print('PASS bounded rig controls; separate security repair gate remains required')
 if __name__=='__main__':main()

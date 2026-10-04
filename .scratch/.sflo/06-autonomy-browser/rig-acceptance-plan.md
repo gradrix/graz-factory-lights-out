@@ -45,3 +45,9 @@ The final security review must separately bind B1 final-publication cancellation
 The coordinator should stop on any unexpected outcome, preserve output, and return to the builder. No source edits or silent fixture revisions during qualification.
 
 Prepared script SHA256: `rig-acceptance.py` = `93a04830328aacb3ff49e7b24e1189dc4c9a53d04607ca00e866434082c2f81d`; `rig-lifecycle.py` = `92b010d8c243a323d8293e785f689fc69955dbe842da3ae089dbec731525f4e5`.
+
+## V3 adapter preflight
+
+Verified frozen manifest `bbcd59aa9ba4223a022eb0c7d0915188b530b5a35308897384d3594fdfa04da3` and every bound source hash. All copied-helper anchors still match. Owner-death polling now waits up to 145 seconds for both container absence and parseable guardian completion facts (cleanup budget is 130 seconds); absence alone is insufficient. Ordinary cleanup is attempted without acknowledgment. If v3 refuses because creation remains uncertain, the harness saves the refusal and retained fence, keeps the prior good result intact, and the top-level qualification stops pending coordinator review. It never automatically supplies acknowledgment. A normal recovery receipt is recorded separately from successful result receipts. Child module import paths are fixed to the frozen checkout. Syntax compilation passed; no container or rig execution.
+
+Superseding harness hashes: `rig-acceptance.py` = `b94be6c9cddd52f6bc5ed5f4f194ae113d4a4313b0a52ac8e52da67c040cf3b5`, `rig-lifecycle.py` = `f674ec06ced6a682344c8fd99c6772e63c9776e5ed4fadf75c13c4e6bb487cc2`.
