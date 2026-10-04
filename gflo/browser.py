@@ -379,7 +379,7 @@ class BrowserStore:
                 if not facts.exists():
                     uncertain.append('guardian completion not recorded')
                 else:
-                    raw=checked_file(facts,65536,0o644)
+                    raw=checked_file(facts,65536,0o600)
                     value=json.loads(raw)
                     if len(evidence)>=8:raise ValueError('Recovery evidence count limit')
                     evidence[path.name+'/facts.json']={'sha256':digest(raw),'value':value}

@@ -110,3 +110,39 @@ http.createServer((q,r)=>{if(q.url==='/health')return r.end('ok');if(q.url==='/h
             self.assertIn('readiness deadline',result['outcome']['failure']['message'])
             self.assertNotIn('UNAPPROVED_HEALTH_CONTACT',result['executor']['diagnostics'])
             self.assertTrue(result['executor']['facts']['cleanup']['confirmed'])
+
+    def test_owner_death_recovery_has_private_facts_under_common_umasks(self):
+        import os,sys,stat
+        for mask in [0o002,0o077]:
+            with self.subTest(umask=oct(mask)),tempfile.TemporaryDirectory() as root:
+                root=Path(root);store=BrowserStore(root/'store');support=store.prepare(self.archives)['id']
+                checks=root/'checks';checks.mkdir();(checks/'journey.cjs').write_text('module.exports=async()=>{await new Promise(()=>{})}')
+                approval={'app':str(ROOT/'evaluations/local-browser/app'),'checks':str(checks),'seed':str(ROOT/'evaluations/local-browser/journeys/create-reload/seed.json'),'case':'owner-umask','support':support}
+                script="import os,json,sys; from gflo.browser import BrowserStore; os.umask(int(sys.argv[1])); BrowserStore(sys.argv[2]).check(json.loads(sys.argv[3]))"
+                owner=subprocess.Popen([sys.executable,'-c',script,str(mask),str(store.root),json.dumps(approval)],stdout=subprocess.DEVNULL,stderr=subprocess.PIPE)
+                try:
+                    deadline=time.monotonic()+20
+                    while time.monotonic()<deadline:
+                        running=subprocess.check_output(['docker','ps','-q','--filter','label=gflo.browser='+store.label],text=True).split()
+                        if len(running)==2:break
+                        if owner.poll() is not None:self.fail(owner.stderr.read().decode())
+                        time.sleep(.05)
+                    self.assertEqual(len(running),2)
+                    owner.kill();owner.wait(timeout=5)
+                    deadline=time.monotonic()+20
+                    while time.monotonic()<deadline:
+                        remaining=subprocess.check_output(['docker','ps','-aq','--filter','label=gflo.browser='+store.label],text=True).split()
+                        facts=list(store.root.glob('.work-*/facts.json'))
+                        if not remaining and facts:
+                            try:json.loads(facts[0].read_bytes());break
+                            except (json.JSONDecodeError,OSError):pass
+                        time.sleep(.05)
+                    self.assertFalse(remaining)
+                    self.assertEqual(len(facts),1)
+                    self.assertEqual(stat.S_IMODE(facts[0].stat().st_mode),0o600)
+                    store.cleanup()
+                    self.assertFalse((store.root/'.cleanup-required').exists())
+                    self.assertFalse(list(store.root.glob('.work-*')))
+                finally:
+                    if owner.poll() is None:owner.kill();owner.wait(timeout=5)
+                    owner.stderr.close()

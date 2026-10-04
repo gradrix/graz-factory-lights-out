@@ -131,7 +131,11 @@ def main():
         except Exception as error:
             facts['cleanup']={'confirmed':False,'errors':errors+[str(error)[:1024]],'uncertain_creates':uncertain_creates}
         facts['elapsed_s']=time.monotonic()-started
-        with open(spec['facts'],'x') as stream:json.dump(facts,stream)
+        fd=os.open(spec['facts'],os.O_WRONLY|os.O_CREAT|os.O_EXCL|os.O_NOFOLLOW,0o600)
+        with os.fdopen(fd,'w') as stream:
+            os.fchmod(stream.fileno(),0o600)
+            json.dump(facts,stream)
+            stream.flush();os.fsync(stream.fileno())
     return code if facts['cleanup']['confirmed'] else 125
 
 
