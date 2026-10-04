@@ -217,3 +217,11 @@ htmlcov/
 
 !.scratch/.sflo/09-autonomy-executable-review-protocol/
 .scratch/.sflo/09-autonomy-executable-review-protocol/*/
+
+!.scratch/.sflo/09-autonomy-executable-review-protocol/qa-harness/
+!.scratch/.sflo/09-autonomy-executable-review-protocol/qa-harness/*.txt
+!.scratch/.sflo/09-autonomy-executable-review-protocol/security/
+!.scratch/.sflo/09-autonomy-executable-review-protocol/security/*.txt
+!.scratch/.sflo/09-autonomy-executable-review-protocol/security/*.json
+!.scratch/.sflo/09-autonomy-executable-review-protocol/qa-rig-vertical/
+!.scratch/.sflo/09-autonomy-executable-review-protocol/qa-rig-vertical/**

@@ -1,0 +1,22 @@
+test_nonlist_tool_collection_terminal_before_length_recovery (test_executable_review_security.ProtocolSecurity) ... ERROR
+
+======================================================================
+ERROR: test_nonlist_tool_collection_terminal_before_length_recovery (test_executable_review_security.ProtocolSecurity)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/gradrix/repos/gflo-review-protocol-prototype/ops/test_executable_review_security.py", line 294, in test_nonlist_tool_collection_terminal_before_length_recovery
+    with self.assertRaises(ValueError):self.run_loop([invalid])
+  File "/home/gradrix/repos/gflo-review-protocol-prototype/ops/test_executable_review_security.py", line 259, in run_loop
+    return p.review_case(self.case,'controlled objective',self.source,p.ReviewClient(CONFIG,self.ledger,Transport()),Executor(),self.ledger)
+  File "/home/gradrix/repos/gflo-review-protocol-prototype/ops/executable_review_prototype.py", line 272, in review_case
+    response=client.complete(messages,phase='explore')
+  File "/home/gradrix/repos/gflo-review-protocol-prototype/ops/executable_review_prototype.py", line 141, in complete
+    response=self.transport.request('/v1/chat/completions',body,timeout=min(120,self.ledger.seconds()),max_response_bytes=RESPONSE_BYTES)
+  File "/home/gradrix/repos/gflo-review-protocol-prototype/ops/test_executable_review_security.py", line 249, in request
+    response=next(sequence)
+StopIteration
+
+----------------------------------------------------------------------
+Ran 1 test in 0.017s
+
+FAILED (errors=1)

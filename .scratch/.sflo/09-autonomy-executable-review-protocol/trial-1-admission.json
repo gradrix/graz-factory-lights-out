@@ -1,0 +1,54 @@
+{
+  "status": "admitted once by root under existing user authorization",
+  "utc": "2026-10-04T18:56:35.134756+00:00",
+  "prototype_commit": "847f90e9d4fe515e6c6eada9eb200008b6441fd2",
+  "mechanism_sha256": "c69e90f8359603b9bf6636fa02a6b0887a4ba2af38f9f481243f9c8e831530a8",
+  "contract_sha256": "f4381c22e730f53bd5bab1af93e4794aa4c83fe0ce31c2a1a2767fc9a51a076f",
+  "inventory_sha256": "05a753fe09c7a2a580734564d33b97b46aece24010300cebeb8923c020e622df",
+  "gates_sha256": {
+    "contract.md": "f4381c22e730f53bd5bab1af93e4794aa4c83fe0ce31c2a1a2767fc9a51a076f",
+    "builder-candidate.json": "c60ce98cb88a1b6461aa3f11fcc4bb6a5eeb6a0926082b80155b0e94fd89cb2c",
+    "fixture-review.md": "53afa12972e329823a37a930c44f8dbdbaecb53a94312cbba504be3b8c118905",
+    "qa-harness.md": "d9364247088af81e606aa0b630cc9c8063d1e2098268f410541ac5417ed969e0",
+    "security.md": "34f4847fac376155604e98f8295f411582a1b12cccc5d25d5fd3000ddbf40c3e",
+    "combined-controls.txt": "ac41fd159db00940b502f8c54645d30d19ba6483fd3b4f2eb264f1c46b6d4bd4",
+    "staging.json": "fb8995232b60df3a9689da96d3821f32b9608090260e1bf65c532259f3922834",
+    "qa-rig-vertical/qa-result.json": "27d450b6a8b778b48bdf75b703054d3d70e68d4c1638caa891c6155d46e7d1ed"
+  },
+  "limits_per_case": {
+    "requests": 8,
+    "commands": 12,
+    "work_s": 300,
+    "cleanup_s": 150,
+    "exploration_s": 180,
+    "exploration_attempts": 7,
+    "final_attempts": 1,
+    "length_recoveries": 1
+  },
+  "order": [
+    "case-01",
+    "case-02",
+    "case-03",
+    "case-04"
+  ],
+  "command": [
+    "python3",
+    "/home/gradrix/gflo-review-protocol-847f90e/ops/executable_review_prototype.py",
+    "run",
+    "--manifest",
+    "/home/gradrix/gflo-review-protocol-847f90e/evaluations/executable-review/manifest.json",
+    "--manifest-sha256",
+    "05de766048d96216865b8e5d0c817166ac1635391a6ed496b9ce6c3b0b6bdb37",
+    "--config",
+    "/home/gradrix/gflo-runtime/.gflo/config.json",
+    "--bindings",
+    "/home/gradrix/gflo-review-protocol-847f90e/inputs/environment-bindings.json",
+    "--identity",
+    "/home/gradrix/gflo-review-protocol-847f90e/inputs/expected-identity.json",
+    "--output",
+    "/home/gradrix/gflo-review-protocol-847f90e/trial-1",
+    "--lease",
+    "/home/gradrix/.local/state/gflo-planning-pilot/lease"
+  ],
+  "scope": "Known defect/control reviews only. No candidate repairs, human hints, uncontracted retries, maintained promotion or serving changes. One bounded length recovery and separately charged finalization under successor contract; initial trial remains failed."
+}

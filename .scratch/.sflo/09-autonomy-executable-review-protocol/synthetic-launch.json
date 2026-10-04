@@ -1,0 +1,16 @@
+{
+  "command": [
+    "env",
+    "PYTHONPATH=/home/gradrix/gflo-review-protocol-847f90e-controls",
+    "PYTHONDONTWRITEBYTECODE=1",
+    "python3",
+    "/home/gradrix/gflo-review-protocol-847f90e-controls/ops/executable_review_vertical_qa.py",
+    "--bindings",
+    "/home/gradrix/gflo-review-protocol-847f90e-controls/inputs/environment-bindings.json",
+    "--output",
+    "/home/gradrix/gflo-review-protocol-847f90e-controls/qa-rig-vertical"
+  ],
+  "exit": 0,
+  "stdout": "{\"status\": \"accepted\", \"verdict\": {\"decision\": \"pass\", \"findings\": [], \"question\": \"\"}, \"attested_commands\": 1, \"candidate_sha256\": \"54b38b1bfb5136242322c7908a0b1c71319218e4f9ab12d864a363df40ef4b00\"}\n",
+  "stderr": ""
+}

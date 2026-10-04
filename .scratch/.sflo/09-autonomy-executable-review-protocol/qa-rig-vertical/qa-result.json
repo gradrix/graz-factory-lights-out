@@ -1,0 +1,32 @@
+{
+  "synthetic_only": true,
+  "result": {
+    "status": "accepted",
+    "verdict": {
+      "decision": "pass",
+      "findings": [],
+      "question": ""
+    },
+    "attested_commands": 1,
+    "candidate_sha256": "54b38b1bfb5136242322c7908a0b1c71319218e4f9ab12d864a363df40ef4b00"
+  },
+  "cleanup": [
+    {
+      "name": "gflo-review-2cb21a0612644873b702f966",
+      "removed": [],
+      "confirmed_absent": true
+    }
+  ],
+  "transport_calls": 3,
+  "feedback": {
+    "command": "python - <<'PYCODE'\nimport pathlib,sys,json,os\np=pathlib.Path('/candidate/main.py')\ntry:p.write_text('forbidden')\nexcept OSError:blocked=True\nelse:blocked=False\nassert blocked and not pathlib.Path('/workspace').exists() and os.getuid()!=0\nprint(json.dumps({'python':sys.version,'write_blocked':blocked,'cwd':os.getcwd(),'uid':os.getuid()}))\nPYCODE",
+    "exit_code": 0,
+    "timed_out": false,
+    "elapsed_s": 0.4013618740027596,
+    "output": "{\"python\": \"3.12.13 (main, Mar 16 2026, 23:06:54) [GCC 14.2.0]\", \"write_blocked\": true, \"cwd\": \"/candidate\", \"uid\": 1000}\n",
+    "output_limited": false
+  },
+  "driver_sha256": "2721efe4b87e031dab0e69835ac74ff61195a95bc96a1ae3c1f616c65b6c430b",
+  "mechanism_sha256": "c69e90f8359603b9bf6636fa02a6b0887a4ba2af38f9f481243f9c8e831530a8",
+  "manifest_sha256": "05de766048d96216865b8e5d0c817166ac1635391a6ed496b9ce6c3b0b6bdb37"
+}

@@ -1,0 +1,65 @@
+{
+  "source": "/home/gradrix/gflo-review-protocol-847f90e-controls/evaluations/executable-review/public/case-02/source",
+  "facts": {
+    "README.md": {
+      "type": "file",
+      "mode": 436,
+      "sha256": "c69f30a573ec99c96a3a6f32bddadab6bcb9c25560d847d333a846b5d28d43c0"
+    },
+    "main.py": {
+      "type": "file",
+      "mode": 436,
+      "sha256": "db81c48d1fc42e61ab6b36fdfc386266d0aaa19db4a245c7a4bbdd9d4700aa22"
+    },
+    "manifest_tool": {
+      "type": "directory",
+      "mode": 509
+    },
+    "manifest_tool/__init__.py": {
+      "type": "file",
+      "mode": 436,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "manifest_tool/api.py": {
+      "type": "file",
+      "mode": 436,
+      "sha256": "42487c5301dfe964532744e5f1de798a044da0184a9d63542543331626eb1029"
+    },
+    "manifest_tool/cli.py": {
+      "type": "file",
+      "mode": 436,
+      "sha256": "338f0b18514d96245226ff6cf9ea00c6beb382e26245d9a691d0c4e8877064f2"
+    },
+    "manifest_tool/domain.py": {
+      "type": "file",
+      "mode": 436,
+      "sha256": "1bd325285b7168aa6c9631e663e4e7d106ca8c8ceeb35b8567343751e70173f8"
+    },
+    "manifest_tool/report.py": {
+      "type": "file",
+      "mode": 436,
+      "sha256": "d8d24d9183f3cc26f934b18669eb29def63fdaa40fd329704fa812d0a2498b32"
+    },
+    "manifest_tool/validation.py": {
+      "type": "file",
+      "mode": 436,
+      "sha256": "5fae250751d444fc378c9d5acc6ef316cfcabe4390d5af7f604659994350781a"
+    },
+    "tests": {
+      "type": "directory",
+      "mode": 493
+    },
+    "tests/__init__.py": {
+      "type": "file",
+      "mode": 420,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "tests/test_manifest_tool.py": {
+      "type": "file",
+      "mode": 420,
+      "sha256": "6f1b44a8c34497cb312d7f7b3bae507faebe0bb82f9b58a6671d04ee9bacbbfc"
+    }
+  },
+  "source_root_mode": 509,
+  "objective_sha256": "1c06ec381998c75d35598306e1cbe96adcd9558acd1f13d818a1bb70e9272d3d"
+}

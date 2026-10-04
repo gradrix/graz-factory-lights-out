@@ -1,0 +1,7 @@
+{
+  "manifest": "/home/gradrix/gflo-review-protocol-847f90e-controls/evaluations/executable-review/manifest.json",
+  "manifest_sha256": "05de766048d96216865b8e5d0c817166ac1635391a6ed496b9ce6c3b0b6bdb37",
+  "index": 1,
+  "bindings": "/home/gradrix/gflo-review-protocol-847f90e-controls/inputs/environment-bindings.json",
+  "config": "/home/gradrix/gflo-review-protocol-847f90e-controls/qa-rig-vertical/config.json"
+}

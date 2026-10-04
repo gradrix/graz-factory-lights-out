@@ -1,0 +1,66 @@
+test_eight_debits_survive_failure_and_reconstruction (test_executable_review_builder.LedgerBehavior) ... ok
+test_invalid_or_no_command_verdict_is_incomplete (test_executable_review_builder.LedgerBehavior) ... ok
+test_length_recovery_survives_reconstruction (test_executable_review_builder.LedgerBehavior) ... ok
+test_reserved_final_is_separate_and_single_after_failure (test_executable_review_builder.LedgerBehavior) ... ok
+test_tool_authority_and_arguments (test_executable_review_builder.LedgerBehavior) ... ok
+test_tool_bound_and_expired_work_refuse (test_executable_review_builder.LedgerBehavior) ... ok
+test_actual_local_readonly_relocated_command (test_executable_review_builder.ReviewLoopBehavior) ... skipped 'Explicit local Docker slice only'
+test_tool_output_stays_untrusted_and_completed_verdict_is_grounded (test_executable_review_builder.ReviewLoopBehavior) ... ok
+test_entire_malformed_tool_batch_denied_before_execution (test_executable_review_qa.IndependentQA) ... ok
+test_frozen_manifest_public_only_and_mode_tamper (test_executable_review_qa.IndependentQA) ... ok
+test_grounded_verdict_and_no_execution_rejection (test_executable_review_qa.IndependentQA) ... ok
+test_ledger_cannot_reset_or_extend_deadline_implicitly (test_executable_review_qa.IndependentQA) ... ok
+test_request_and_command_debits_survive_reconstruction (test_executable_review_qa.IndependentQA) ... ok
+test_tool_authority_and_exact_command_limit (test_executable_review_qa.IndependentQA) ... ok
+test_tool_feedback_cannot_replace_system_or_source (test_executable_review_qa.IndependentQA) ... ok
+test_exploration_prose_then_separate_json_final (test_executable_review_qa.ProtocolQA) ... ok
+test_length_recovery_executes_no_partial_batch (test_executable_review_qa.ProtocolQA) ... ok
+test_no_attestation_and_malformed_final_terminal (test_executable_review_qa.ProtocolQA) ... ok
+test_phase_time_reservation_and_one_final_after_recreation (test_executable_review_qa.ProtocolQA) ... ok
+test_second_length_terminal (test_executable_review_qa.ProtocolQA) ... ok
+test_seven_exploration_reserves_final_eighth (test_executable_review_qa.ProtocolQA) ... ok
+test_executor_uncertainty_never_transitions_to_final (test_executable_review_security.ProtocolSecurity) ... ok
+test_explicit_unknown_tool_is_terminal_even_with_length (test_executable_review_security.ProtocolSecurity) ... ok
+test_exploratory_prose_never_becomes_verdict (test_executable_review_security.ProtocolSecurity) ... ok
+test_final_falsey_invalid_tool_field_is_terminal (test_executable_review_security.ProtocolSecurity) ... ok
+test_final_fenced_json_is_terminal_without_salvage (test_executable_review_security.ProtocolSecurity) ... ok
+test_final_length_is_terminal_without_retry (test_executable_review_security.ProtocolSecurity) ... ok
+test_final_tool_calls_terminal (test_executable_review_security.ProtocolSecurity) ... ok
+test_length_batch_executes_zero_then_one_recovery (test_executable_review_security.ProtocolSecurity) ... ok
+test_no_attestation_refuses_final_transport (test_executable_review_security.ProtocolSecurity) ... ok
+test_nontruncated_invalid_arguments_terminal (test_executable_review_security.ProtocolSecurity) ... ok
+test_nontruncated_unknown_batch_has_no_partial_dispatch (test_executable_review_security.ProtocolSecurity) ... ok
+test_overall_deadline_during_final_response_refuses_verdict (test_executable_review_security.ProtocolSecurity) ... ok
+test_phase_boundary_mid_batch_keeps_only_executed_history (test_executable_review_security.ProtocolSecurity) ... ok
+test_phase_deadline_prevents_new_command_after_late_response (test_executable_review_security.ProtocolSecurity) ... ok
+test_recovery_and_final_reservation_survive_reconstruction (test_executable_review_security.ProtocolSecurity) ... ok
+test_second_length_at_seventh_credit_is_terminal (test_executable_review_security.ProtocolSecurity) ... ok
+test_second_length_is_terminal_without_final_or_extra_execution (test_executable_review_security.ProtocolSecurity) ... ok
+test_seven_explorations_force_eighth_final (test_executable_review_security.ProtocolSecurity) ... ok
+test_transport_timeout_is_terminal_not_phase_recovery (test_executable_review_security.ProtocolSecurity) ... ok
+test_transport_timeouts_follow_phase_then_overall_deadline (test_executable_review_security.ProtocolSecurity) ... ok
+test_twelve_commands_force_final_without_more_exploration (test_executable_review_security.ProtocolSecurity) ... ok
+test_actual_signal_at_publication_fsync_refuses_success (test_executable_review_security.SecurityControls) ... ok
+test_actual_started_failure_is_valid_evidence_and_nonce_removed (test_executable_review_security.SecurityControls) ... ok
+test_candidate_links_and_special_types_rejected (test_executable_review_security.SecurityControls) ... ok
+test_cleanup_uncertainty_stops_next_case (test_executable_review_security.SecurityControls) ... ok
+test_command_timeout_is_shortened_to_exploration_remaining (test_executable_review_security.SecurityControls) ... ok
+test_conforming_completed_control_publishes (test_executable_review_security.SecurityControls) ... ok
+test_created_but_never_started_cannot_attest_execution (test_executable_review_security.SecurityControls) ... ok
+test_deadline_at_publication_fsync_refuses_success (test_executable_review_security.SecurityControls) ... ok
+test_expired_or_over_capacity_request_never_dispatches (test_executable_review_security.SecurityControls) ... ok
+test_failed_transport_is_debited_before_call_and_ninth_never_runs (test_executable_review_security.SecurityControls) ... ok
+test_malformed_transport_output_consumes_credit (test_executable_review_security.SecurityControls) ... ok
+test_missing_creation_is_sticky_even_after_empty_absence (test_executable_review_security.SecurityControls) ... ok
+test_missing_resource_limit_cannot_attest (test_executable_review_security.SecurityControls) ... ok
+test_no_command_verdict_refused_and_tool_data_not_policy (test_executable_review_security.SecurityControls) ... ok
+test_root_uid_refused_before_command_debit_or_dispatch (test_executable_review_security.SecurityControls) ... ok
+test_started_cleanup_uncertainty_cannot_attest (test_executable_review_security.SecurityControls) ... ok
+test_started_writable_mount_cannot_attest (test_executable_review_security.SecurityControls) ... ok
+test_unknown_idle_admission_prevents_case_dispatch (test_executable_review_security.SecurityControls) ... ok
+test_unknown_postcase_idle_prevents_next_case (test_executable_review_security.SecurityControls) ... ok
+
+----------------------------------------------------------------------
+Ran 61 tests in 1.315s
+
+OK (skipped=1)

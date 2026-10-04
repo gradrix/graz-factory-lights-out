@@ -1,0 +1,18 @@
+test_entire_malformed_tool_batch_denied_before_execution (__main__.IndependentQA) ... ok
+test_frozen_manifest_public_only_and_mode_tamper (__main__.IndependentQA) ... ok
+test_grounded_verdict_and_no_execution_rejection (__main__.IndependentQA) ... ok
+test_ledger_cannot_reset_or_extend_deadline_implicitly (__main__.IndependentQA) ... ok
+test_request_and_command_debits_survive_reconstruction (__main__.IndependentQA) ... ok
+test_tool_authority_and_exact_command_limit (__main__.IndependentQA) ... ok
+test_tool_feedback_cannot_replace_system_or_source (__main__.IndependentQA) ... ok
+test_exploration_prose_then_separate_json_final (__main__.ProtocolQA) ... ok
+test_length_recovery_executes_no_partial_batch (__main__.ProtocolQA) ... ok
+test_no_attestation_and_malformed_final_terminal (__main__.ProtocolQA) ... ok
+test_phase_time_reservation_and_one_final_after_recreation (__main__.ProtocolQA) ... ok
+test_second_length_terminal (__main__.ProtocolQA) ... ok
+test_seven_exploration_reserves_final_eighth (__main__.ProtocolQA) ... ok
+
+----------------------------------------------------------------------
+Ran 13 tests in 0.348s
+
+OK
