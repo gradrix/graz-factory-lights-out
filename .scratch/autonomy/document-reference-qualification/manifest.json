@@ -1,0 +1,11 @@
+{
+  "files": {
+    "contract.json": "a599bcc996801b25935d4ef8fc2dedb176f9afb35d792aac820d8f745622cb09",
+    "questions.json": "6806ab29ea23a17fc9a069aacfe96269098e693e0faf8e68683a0cd296b77809",
+    "oracle.json": "d295dd31964bd8fa9f1eb10e30c618c2152bb442eba505061b93aa408a03dedc"
+  },
+  "parent_manifests": {
+    ".scratch/autonomy/document-repair-qualification/manifest.json": "0fd8ecff10b17c584e049ae072eb9f31c67f6c33f4dc70beebfbc457e1394de1",
+    ".scratch/autonomy/document-reference-transfer/manifest.json": "50dedc21413e8f97b41c8cd8096d1507bc2f0830ac4c0ddeff542dd3a0404b2a"
+  }
+}

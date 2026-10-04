@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "purpose": "Three fresh transfer cases separate from ten repeated diagnostics; no model calls during preparation",
+  "successor_contract_path": ".scratch/.sflo/07-autonomy-document-references/contract.md",
+  "successor_contract_sha256": "4e1077bd1e2ef48f4a76375e79eb5c42dd9ce6ca0719ca6418474fe5e5ffd106",
+  "sources": {
+    "csv": {
+      "evidence_path": ".scratch/.sflo/07-autonomy-document-reliability/rig-acquisition-1/csv-evidence.json",
+      "evidence_sha256": "7d72d0ad145011eb92766594852506a9657fdcf1fc08212f715981bbd0e35e9a",
+      "evidence_id": "3682b91c75083bd469f0cfa8feb91ab769eb9e90aab874f6c28179e493e07e9b",
+      "body_sha256": "f56ff04a9bac6327b4eb086c854e4842b0b235d6e6135b737d1fc7723186f8c0",
+      "text_sha256": "7ddc76bb45617d0bdb12c392aceeaf4126239435bdedb22b1da596347d5c3979",
+      "source_url": "https://docs.python.org/3.12/library/csv.html",
+      "source_version": "Python3.12 historical documentation snapshot; floating series URL, not exact runtime patch",
+      "extractor": "document-text-v2"
+    },
+    "json": {
+      "evidence_path": ".scratch/.sflo/07-autonomy-document-reliability/rig-acquisition-1/json-evidence.json",
+      "evidence_sha256": "20df6d6d7e4c2882d19c0c172994e084ec166c7f43bbd5c00e886b4183f62334",
+      "evidence_id": "2668f4453bf6c506879eea16d39479694833db2875fef9f917dd519abd728a7a",
+      "body_sha256": "1a5e4ba18342b32f5f174d129f9c226a21a9445a89384f13a3f33ec327c2b68f",
+      "text_sha256": "b26d8280fabff440a600b3a79d548f777f31cbd57d281f4bd054354857c9356f",
+      "source_url": "https://docs.python.org/3.12/library/json.html",
+      "source_version": "Python3.12 historical documentation snapshot; floating series URL, not exact runtime patch",
+      "extractor": "document-text-v2"
+    },
+    "asyncio": {
+      "evidence_path": ".scratch/.sflo/07-autonomy-document-reliability/rig-acquisition-1/asyncio-evidence.json",
+      "evidence_sha256": "a0861c8c45d8ab409a74b1cdcd16cf2b552e8e5e5067dfbca2251d392e8542a3",
+      "evidence_id": "97e675c4f4c3eb568818f1b23eb70027e11062f22d7f4d586c3e004340676935",
+      "body_sha256": "b395cf62082c34beeebfdc8b7a5a34f997411f6499fa14cf66425bcd20ff1381",
+      "text_sha256": "14d4153f4ce19c76b10bf2f1acbcad5c284d655c0d5b7ebcae1dfefeb1f4177e",
+      "source_url": "https://docs.python.org/3.12/library/asyncio-task.html",
+      "source_version": "Python3.12 historical documentation snapshot; floating series URL, not exact runtime patch",
+      "extractor": "document-text-v2"
+    }
+  },
+  "case_order": [
+    "csv_nonnumeric_reader",
+    "json_raw_decode_suffix",
+    "asyncio_wait_timeout"
+  ],
+  "expected_supported": 3,
+  "exposure": "Fresh questions/target behaviors relative to inventoried stored prior questions; source pages already exposed. No model-training novelty claim.",
+  "model_prompt_policy": "Only questions.json and complete bound source evidence. oracle.json/novelty.json stay outside prompts.",
+  "acceptance": [
+    "All three requested-fact sets complete; every extra claim and citation independently entailed with correct source/version scope.",
+    "Reference span IDs are nonexclusive review aids; accept other truly entailing citations.",
+    "One public answer invocation per case; product owns maxone structural repair; no external retry.",
+    "Freeze candidate/model/profile bindings before calls. Use same96K/Q4/one slot,2048output/512thinking/medium,120s/call/260soperation as successorcontract.",
+    "Reuse these actualtrial1 content-addressed sources only after verifying evidence/extractor/runtimebindings; no fresh-acquisition claim.",
+    "Keep all raw attempts and failures; diagnostic failure is not semantic or citation success."
+  ]
+}

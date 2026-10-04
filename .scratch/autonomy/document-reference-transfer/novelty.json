@@ -1,0 +1,69 @@
+{
+  ".scratch/.sflo/05-autonomy-documents/research-cohort/manifest.json": {
+    "sha256": "754374e1644559cf37d405e30735b442e7691200ac183e4a49b0cbdfb9d3e797",
+    "questions": []
+  },
+  ".scratch/.sflo/05-autonomy-documents/research-cohort/json.json": {
+    "sha256": "6442f3e5ca00a563d6c55ea631a9c879a773cceb0c93d78623b08998a6aac7e5",
+    "questions": [
+      "What does allow_nan=False do for NaN and infinities during JSON serialization, and what happens by default?",
+      "If both object_hook and object_pairs_hook are supplied when decoding JSON, which takes priority and what does that hook receive?"
+    ]
+  },
+  ".scratch/.sflo/05-autonomy-documents/research-cohort/csv.json": {
+    "sha256": "18a040508ddc4d07d82fb11e7a56458f3bc4986e351af2e206f2523a51b53b4c",
+    "questions": [
+      "Why should CSV files be opened with newline=\"\" when reading and writing?",
+      "How does csv.DictReader handle extra or missing fields by default, and can csv.writer preserve a distinction between None and an empty string?"
+    ]
+  },
+  ".scratch/.sflo/05-autonomy-documents/research-cohort/asyncio-acquisition-diagnostic.json": {
+    "sha256": "c7a141837c95fda098ba31a19730e9bdcee9b5f96291ee3249cc749992331240",
+    "questions": []
+  },
+  ".scratch/.sflo/05-autonomy-documents/research-cohort/asyncio_groups.json": {
+    "sha256": "85d5ee366c4dab16fcda475578516b8b6300094be8233a17ac74b1a027b1e903",
+    "questions": [
+      "If a TaskGroup child raises ValueError, what happens to remaining tasks and how are failures reported when the group exits?",
+      "With gather(return_exceptions=False), one awaitable raises ValueError. Is the exception propagated, and are the other awaitables automatically cancelled?"
+    ]
+  },
+  ".scratch/.sflo/05-autonomy-documents/research-cohort/asyncio_timeouts.json": {
+    "sha256": "f40f50cc2f48d90aa651150151c7a95906e015a5904b3ef234990a69912ea45b",
+    "questions": [
+      "Is asyncio.wait_for a strict total wall-clock deadline, and what happens to the awaited task on timeout?",
+      "When a caller awaiting shield(task) is cancelled, what happens to the inner task and caller, and why keep a strong reference to the task?"
+    ]
+  },
+  ".scratch/.sflo/05-autonomy-documents/rig-trial-contract.json": {
+    "sha256": "41c257bcb0a2ed955dffa047c75b0dcef3712a88eab8fb1bd0a8a3a516fc846e",
+    "questions": [
+      "How do default separators differ when indent is None versus non-None, and which separators remove separator whitespace?",
+      "On what exact calendar date will Python 3.20.0 be released?"
+    ]
+  },
+  ".scratch/autonomy/document-citation-prototype/contract.json": {
+    "sha256": "03f51ebe72780e13df4435f50f5306ea3736d5e797f4c5ca4a1ff7b66206adf8",
+    "questions": [
+      "How does csv.DictReader handle extra or missing fields by default, and can csv.writer preserve a distinction between None and an empty string?",
+      "For csv.DictReader, what happens to the first row when fieldnames is omitted versus explicitly provided, and is the fieldnames order preserved?",
+      "When encoding a dictionary with json.dump, what happens to keys outside str, int, float, bool and None by default, and what changes with skipkeys=True?",
+      "What exact date will Python 3.16 change the default csv.DictReader restval to an empty string?"
+    ]
+  },
+  ".scratch/autonomy/document-repair-qualification/questions.json": {
+    "sha256": "68c29212efe96d8e0a036e37ef017508e0b332ad10db0778f961b031629eb7f3",
+    "questions": [
+      "Using default csv.DictReader restkey/restval and default csv.writer quoting, how are extra and missing fields handled, and does writer output distinguish None from an empty string? Limit the writer answer to default behavior.",
+      "When json.loads receives both object_hook and object_pairs_hook, which takes priority, what does object_pairs_hook receive, and what does its return value replace?",
+      "Why should text CSV files be opened with newline=\"\" for both reading and writing: what can otherwise happen to embedded quoted newlines and to output on platforms using CRLF?",
+      "With json.dump, what happens by default to dictionary keys outside str, int, float, bool and None, and what happens with skipkeys=True?",
+      "In Python 3.12, if a TaskGroup child raises ValueError, are remaining tasks cancelled, does group exit wait for them, and how are non-cancellation failures reported once they finish?",
+      "With asyncio.gather(return_exceptions=False), one awaitable raises ValueError. When and to whom is the first exception propagated, and do the other awaitables automatically get cancelled or continue?",
+      "When asyncio.wait_for times out, what happens to its awaited task, which exception is raised, and why can the total wait exceed the timeout?",
+      "If the caller awaiting asyncio.shield(task) is cancelled, is the inner task cancelled by that caller cancellation, what exception does the caller still receive, and why should a strong reference to task be retained?",
+      "What exact date will Python 3.16 change the default csv.DictReader restval to an empty string?",
+      "What exact date will Python 3.16 change TaskGroup so a child ValueError never cancels its sibling tasks?"
+    ]
+  }
+}

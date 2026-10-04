@@ -1,0 +1,103 @@
+{
+  "version": 2,
+  "purpose": "Bounded format3 references: ten repeated diagnostics and three fresh transfer cases",
+  "case_count": 13,
+  "expected_supported": 11,
+  "expected_insufficient": 2,
+  "sources": {
+    "csv": {
+      "evidence_path": ".scratch/.sflo/07-autonomy-document-reliability/rig-acquisition-1/csv-evidence.json",
+      "evidence_sha256": "7d72d0ad145011eb92766594852506a9657fdcf1fc08212f715981bbd0e35e9a",
+      "evidence_id": "3682b91c75083bd469f0cfa8feb91ab769eb9e90aab874f6c28179e493e07e9b",
+      "body_sha256": "f56ff04a9bac6327b4eb086c854e4842b0b235d6e6135b737d1fc7723186f8c0",
+      "text_sha256": "7ddc76bb45617d0bdb12c392aceeaf4126239435bdedb22b1da596347d5c3979",
+      "source_url": "https://docs.python.org/3.12/library/csv.html",
+      "source_version": "Python3.12 historical documentation snapshot; floating series URL, not exact runtime patch",
+      "extractor": "document-text-v2"
+    },
+    "json": {
+      "evidence_path": ".scratch/.sflo/07-autonomy-document-reliability/rig-acquisition-1/json-evidence.json",
+      "evidence_sha256": "20df6d6d7e4c2882d19c0c172994e084ec166c7f43bbd5c00e886b4183f62334",
+      "evidence_id": "2668f4453bf6c506879eea16d39479694833db2875fef9f917dd519abd728a7a",
+      "body_sha256": "1a5e4ba18342b32f5f174d129f9c226a21a9445a89384f13a3f33ec327c2b68f",
+      "text_sha256": "b26d8280fabff440a600b3a79d548f777f31cbd57d281f4bd054354857c9356f",
+      "source_url": "https://docs.python.org/3.12/library/json.html",
+      "source_version": "Python3.12 historical documentation snapshot; floating series URL, not exact runtime patch",
+      "extractor": "document-text-v2"
+    },
+    "asyncio": {
+      "evidence_path": ".scratch/.sflo/07-autonomy-document-reliability/rig-acquisition-1/asyncio-evidence.json",
+      "evidence_sha256": "a0861c8c45d8ab409a74b1cdcd16cf2b552e8e5e5067dfbca2251d392e8542a3",
+      "evidence_id": "97e675c4f4c3eb568818f1b23eb70027e11062f22d7f4d586c3e004340676935",
+      "body_sha256": "b395cf62082c34beeebfdc8b7a5a34f997411f6499fa14cf66425bcd20ff1381",
+      "text_sha256": "14d4153f4ce19c76b10bf2f1acbcad5c284d655c0d5b7ebcae1dfefeb1f4177e",
+      "source_url": "https://docs.python.org/3.12/library/asyncio-task.html",
+      "source_version": "Python3.12 historical documentation snapshot; floating series URL, not exact runtime patch",
+      "extractor": "document-text-v2"
+    }
+  },
+  "profile": {
+    "model": "flash-next-coder",
+    "context": 98304,
+    "cache_k": "q4_0",
+    "cache_v": "q4_0",
+    "temperature": 0,
+    "reasoning_effort": "medium",
+    "thinking_budget_tokens": 512,
+    "max_tokens_per_call": 2048,
+    "deadline_s_per_call": 120,
+    "response_bytes_per_call": 65536,
+    "max_calls_per_case": 2,
+    "repair": "At most one structural-validation repair; no semantic repair or transport retry"
+  },
+  "execution": [
+    "Freeze candidate manifest and serving identity separately before calls.",
+    "Model receives only source evidence plus questions.json fields; oracle.json and reference span IDs stay outside model input.",
+    "Source acquisition/extraction failure is not_attempted_source_failure, never model pass; preserve original4asyncio unattempted outcomes.",
+    "Cached source qualification is historical replay, not proof of fresh network acquisition. Any live acquisition must produce separately bound receipt/body/spans; changed body requires explicit new reviewed source version before model calls.",
+    "Every final answer receives independent requested-fact and all-extra-claim citation/entailment/version review. Structural validity alone cannot pass semantic gate.",
+    "Expected spans are nonexclusive review aids; accept other actually entailing citations.",
+    "Do not add unasked return/version/detail requirements.",
+    "Format3 bounded span IDs; controller materializes exact citations. No oracle facts or expected span IDs in prompts.",
+    "Report ten repeated diagnostics and three fresh questions separately. Source pages already exposed.",
+    "Root will acquire fresh sources through candidate public API and bind IDs/body/spans; independent alignment precedes inference. Baseline source IDs and oracle facts stay preserved."
+  ],
+  "case_order": [
+    "row_shape_defaults",
+    "json_hooks",
+    "csv_newlines",
+    "json_skipkeys",
+    "asyncio_taskgroup",
+    "asyncio_gather",
+    "asyncio_wait_for",
+    "asyncio_shield",
+    "future_csv_date",
+    "future_taskgroup_date",
+    "csv_nonnumeric_reader",
+    "json_raw_decode_suffix",
+    "asyncio_wait_timeout"
+  ],
+  "cohorts": {
+    "repeated_diagnostics": [
+      "row_shape_defaults",
+      "json_hooks",
+      "csv_newlines",
+      "json_skipkeys",
+      "asyncio_taskgroup",
+      "asyncio_gather",
+      "asyncio_wait_for",
+      "asyncio_shield",
+      "future_csv_date",
+      "future_taskgroup_date"
+    ],
+    "fresh_transfer": [
+      "csv_nonnumeric_reader",
+      "json_raw_decode_suffix",
+      "asyncio_wait_timeout"
+    ]
+  },
+  "parent_manifests": {
+    ".scratch/autonomy/document-repair-qualification/manifest.json": "0fd8ecff10b17c584e049ae072eb9f31c67f6c33f4dc70beebfbc457e1394de1",
+    ".scratch/autonomy/document-reference-transfer/manifest.json": "50dedc21413e8f97b41c8cd8096d1507bc2f0830ac4c0ddeff542dd3a0404b2a"
+  }
+}

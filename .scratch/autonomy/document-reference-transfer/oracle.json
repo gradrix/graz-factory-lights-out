@@ -1,0 +1,67 @@
+[
+  {
+    "name": "csv_nonnumeric_reader",
+    "source": "csv",
+    "question": "When csv.reader reads numeric-looking fields, what type does it return by default? With quoting=csv.QUOTE_NONNUMERIC, how are unquoted numeric fields converted, and are quoted numeric-looking fields converted too?",
+    "expected_status": "supported",
+    "semantic_facts": [
+      "Default fields are strings, without automatic type conversion.",
+      "QUOTE_NONNUMERIC converts unquoted numeric fields to float.",
+      "Quoted numeric-looking fields remain strings, because conversion applies only to unquoted fields."
+    ],
+    "reference_spans": [
+      40,
+      106
+    ],
+    "scope": "Reading only; no requirement to discuss writer quoting or invalid unquoted nonnumeric input.",
+    "source_passages": {
+      "40": "Each row read from the csv file is returned as a list of strings. No automatic data type conversion is performed unless the QUOTE_NONNUMERIC format option is specified (in which case unquoted fields are transformed into floats).",
+      "106": "Instructs reader objects to convert all non-quoted fields to type float."
+    }
+  },
+  {
+    "name": "json_raw_decode_suffix",
+    "source": "json",
+    "question": "For JSONDecoder.raw_decode(s), where s begins with a valid JSON document followed by extraneous data, can it decode the initial document, and what two values does it return? Explain what the returned index identifies.",
+    "expected_status": "supported",
+    "semantic_facts": [
+      "Can decode an initial JSON document from a string with extraneous trailing data.",
+      "Returns a2-tuple: Python representation of the decoded document and an index in s.",
+      "Index identifies where the decoded document ended."
+    ],
+    "reference_spans": [
+      143,
+      144
+    ],
+    "scope": "Input explicitly begins with JSON; no requirement about leading whitespace, later parsing, or ordinary loads behavior.",
+    "source_passages": {
+      "143": "Decode a JSON document from s (a str beginning with a JSON document) and return a 2-tuple of the Python representation and the index in s where the document ended.",
+      "144": "This can be used to decode a JSON document from a string that may have extraneous data at the end."
+    }
+  },
+  {
+    "name": "asyncio_wait_timeout",
+    "source": "asyncio",
+    "question": "In Python3.12, when asyncio.wait is given a nonempty set of Tasks/Futures and its timeout expires while some remain unfinished, does it raise TimeoutError, what sets does it return, where are the unfinished tasks placed, and does wait itself cancel them?",
+    "expected_status": "supported",
+    "semantic_facts": [
+      "Does not raise TimeoutError on timeout.",
+      "Returns the two sets (done,pending).",
+      "Unfinished Tasks/Futures are returned in pending.",
+      "wait does not cancel them on timeout."
+    ],
+    "reference_spans": [
+      244,
+      247,
+      248,
+      258
+    ],
+    "scope": "asyncio.wait, not wait_for; no requirement about return_when alternatives or raw coroutine acceptance.",
+    "source_passages": {
+      "244": "Returns two sets of Tasks/Futures: (done, pending).",
+      "247": "timeout (a float or int), if specified, can be used to control the maximum number of seconds to wait before returning.",
+      "248": "Note that this function does not raise TimeoutError. Futures or Tasks that aren\u2019t done when the timeout occurs are simply returned in the second set.",
+      "258": "Unlike wait_for(), wait() does not cancel the futures when a timeout occurs."
+    }
+  }
+]
