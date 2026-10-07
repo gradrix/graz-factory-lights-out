@@ -48,7 +48,7 @@ class Units(unittest.TestCase):
 
     def unit(self, fake, line=1, text='A1: tests pass.'):
         self.n += 1
-        return u.run_unit(self.tmp / str(self.n), payload(), line, text, CONFIG, time.monotonic() + 150, fake)
+        return u.run_unit(self.tmp / 'units' / f'{self.n:02d}', payload(), line, text, CONFIG, time.monotonic() + 150, fake)
 
     def test_units_skip_blank_lines_and_cap(self):
         self.assertEqual(u.units(payload()), [(1, 'A1: tests pass.'), (3, 'A2: docs exist.')])
@@ -80,7 +80,7 @@ class Units(unittest.TestCase):
         self.assertEqual(self.unit(Fake(json.dumps(diagnosis()), meter_error=RuntimeError('down')))['status'], 'invalid')
         failed = self.unit(Fake('', error=TimeoutError('slow')))
         self.assertEqual(failed['status'], 'failed')
-        ledger = json.loads((self.tmp / str(self.n) / 'ledger.json').read_bytes())
+        ledger = json.loads((self.tmp / 'units' / f'{self.n:02d}' / 'ledger.json').read_bytes())
         self.assertEqual([r['status'] for r in ledger['requests']], ['failed'])
 
     def test_findings_must_target_assigned_line(self):
@@ -115,6 +115,18 @@ class Units(unittest.TestCase):
             value = json.loads((out / case / 'payload.json').read_bytes())
             planned = u.units(value); self.assertEqual(len(planned), 7)
             for line, text in planned: u.prompt(value, line, text)
+
+    def test_controller_crash_stops_remaining_cases(self):
+        from unittest import mock
+        out = self.tmp / 'pkg'; e.prepare(REPO / 'evaluations/executable-review/manifest.json', TRIAL, out)
+        sha = e.digest((out / 'manifest.json').read_bytes())
+        args = mock.Mock(manifest=str(out / 'manifest.json'), manifest_sha256=sha, config=str(self.tmp / 'c.json'),
+                         identity=str(self.tmp / 'i.json'), output=str(self.tmp / 'run'), lease=str(self.tmp / 'lease'))
+        outcome = {'stop': None, 'exit_code': 1, 'client_group_absent': True, 'work_finished_before_deadline': True}
+        with mock.patch.object(u, 'wait_idle', return_value=True), \
+             mock.patch.object(u, 'supervise', side_effect=lambda *a, **k: dict(outcome, cleanup_deadline=time.monotonic() + 1)) as supervise:
+            results = u.batch(args)
+        self.assertEqual([r['status'] for r in results], ['incomplete']); self.assertEqual(supervise.call_count, 1)
 
 
 if __name__ == '__main__': unittest.main()

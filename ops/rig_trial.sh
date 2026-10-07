@@ -36,10 +36,11 @@ import review_evidence_prototype as p;p.verify_packages('packages/manifest.json'
   | tee "$local_root/staging-result.txt"
 
 # Admission record, then dispatch once.
-admission=$evidence/trial-1-admission.json
+n=1; while [ -e "$evidence/trial-$n-admission.json" ]; do n=$((n+1)); done; label=trial-$n
+admission=$evidence/$label-admission.json
 test ! -e "$admission"
 cat > "$admission" <<EOF
-{"status":"admitted once by rig_trial.sh","utc":"$(date -u +%FT%TZ)","prototype_commit":"$short",
+{"status":"admitted once by rig_trial.sh","label":"$label","utc":"$(date -u +%FT%TZ)","prototype_commit":"$short",
  "module":"$module","module_sha256":"$(git -C "$repo" show "$commit:ops/$module" | sha256sum | cut -d' ' -f1)",
  "contract_sha256":"$(sha256sum "$evidence/contract.md" | cut -d' ' -f1)",
  "stage_inventory_sha256":"$(sha256sum "$local_root/stage/inventory.sha256" | cut -d' ' -f1)",
@@ -59,12 +60,12 @@ done
 # Download, verify, score.
 ssh_rig "cd $remote && tar -c trial-1 trial-1-controller.log" | tar -x -C "$local_root"
 (cd "$local_root/trial-1" && jq -r 'to_entries[]|"\(.value)  \(.key)"' artifact-hashes.json | sha256sum -c --quiet)
-cp "$local_root/trial-1/results.json" "$evidence/trial-results.json"
-cp "$local_root/trial-1/artifact-hashes.json" "$evidence/trial-artifact-hashes.json"
-cp "$local_root/stage/inventory.sha256" "$evidence/stage-inventory.sha256"
-cp "$local_root/staging-result.txt" "$evidence/staging-result.txt"
+cp "$local_root/trial-1/results.json" "$evidence/$label-results.json"
+cp "$local_root/trial-1/artifact-hashes.json" "$evidence/$label-artifact-hashes.json"
+cp "$local_root/stage/inventory.sha256" "$evidence/$label-stage-inventory.sha256"
+cp "$local_root/staging-result.txt" "$evidence/$label-staging-result.txt"
 if grep -q "def score" "$repo/ops/$module"; then
   py "ops/$module" score --results "$local_root/trial-1/results.json" \
-     --expectations evaluations/executable-review/private/expectations.json | tee "$evidence/trial-score.json"
+     --expectations evaluations/executable-review/private/expectations.json | tee "$evidence/$label-score.json"
 fi
 echo "trial complete: $local_root/trial-1"

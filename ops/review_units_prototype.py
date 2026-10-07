@@ -78,7 +78,7 @@ def meter(transport, text):
 
 def run_unit(root, payload, line, text, config, deadline, transport=None):
     """Exactly one precharged completion; result is accepted, exhausted, invalid or failed."""
-    root = Path(root); root.mkdir(mode=0o700)
+    root = Path(root); root.parent.mkdir(mode=0o700, exist_ok=True); root.mkdir(mode=0o700)
     result = {'line': line, 'text': text}
     try:
         ledger = create_ledger(root, deadline); client = FinalClient(config, ledger, transport)
@@ -194,7 +194,8 @@ def batch(args):
                               decision=child.get('decision', 'incomplete'), child=child, kind='per-requirement-review-units')
                 result = publish_result(root / 'result.json', result, deadline, lambda: bool(cancelled)); results.append(result)
                 save(output / 'results.json', results)
-                if cancelled or result['stop'] == 'cancelled' or not result['client_group_absent'] or not result['idle_confirmed']:
+                if (cancelled or result['stop'] == 'cancelled' or not result['client_group_absent'] or not result['idle_confirmed']
+                        or result['exit_code'] != 0):
                     break
     finally:
         for n, handler in previous.items(): signal.signal(n, handler)
