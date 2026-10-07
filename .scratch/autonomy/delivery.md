@@ -22,4 +22,4 @@ Later acceptance-bearing stages are in [the roadmap](../../docs/roadmap.md). The
 
 - [Direct versus two-task planning pilot](delivery/08-planning-pilot.md) — accepted discovery; four arms and independent checks complete, no independently complete increment. Planning stays advisory; [closure](../.sflo/08-autonomy-planning-pilot/acceptance.md).
 
-- [Read-only executable local-review discriminator](delivery/09-executable-review.md) — per-requirement units (81fc4c8): 3/4, thinking cap no longer binding; case04 A6 ignored contradicting captured evidence. Successor needs evidence-coverage design and fresh cases; no maintained promotion.
+- [Read-only executable local-review discriminator](delivery/09-executable-review.md) — role ensemble qualified on fresh cohort: dev 8/8, holdout 8/8 (80b4956); judge consistency on test-coverage requirements is the open risk. No maintained promotion yet.

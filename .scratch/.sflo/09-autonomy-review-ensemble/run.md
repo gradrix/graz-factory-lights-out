@@ -63,3 +63,15 @@ d03 unit 1: the auditor exhausted both 8192 and 24576 classifying ~30 commands i
 ## Trial 5 binding — holdout, once
 
 80b4956 frozen with no change after dev. Holdout d04, d06, d07, d08, d09, d10, d11, d12 run once and reported whatever the outcome; no tuning on holdout results.
+
+## Trial 5 — holdout, once: 8/8
+
+80b4956 unchanged after dev, 2026-10-07T20:00Z–22:20Z. [Score](trial-5-score.json), [results](trial-5-results.json), [hashes](trial-5-artifact-hashes.json). All eight holdout cases correct and complete; 46/46 units accepted; 20–30 attested commands per case; 242 model requests, 3,525,283 tokens; ~17 min per case.
+
+Grounding (coordinator check): every seeded defect is cited at its seeded line with supporting captured observations — d06 `domain.py:8` (`>` tie-break keeps largest id; CLI output and failing shipped test), d09 `README.md:10` (`export_csv`; documented command exits 2 `unknown action`), d10 `domain.py:9` (`list(block)` unsorted; captured `['db','cache','mail']`, failing shipped test), d12 `domain.py:5` (in-place `sort`; captured `mutated? True` on success and null paths). Controls d04, d07, d08, d11: no blocking finding.
+
+Limitation found: d09 also received a second blocking finding claiming its three tests lack a "specified rejection" test. The objective allows "another boundary when no rejection is specified" and d09's tests cover normal, quoting-edge and empty boundaries, so this finding is at best debatable. Controls d02, d07, d08, d11 share the same three-test shape and were not flagged: judge rulings on test-coverage requirements are inconsistent. Here it only added to an already-correct repair; on a control it would be a false repair. Not counted as a pass of finding precision.
+
+## Closure
+
+Status: completed — dev 8/8 (trial 4), holdout 8/8 (trial 5) with grounded seeded-defect findings; one debatable secondary finding (d09). Decision record: [009](../../../docs/decisions/architecture/009-role-ensemble-review.md). No maintained promotion. Prototype branch prototype/review-evidence-20261004 at 80b4956.
