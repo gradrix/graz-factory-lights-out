@@ -55,3 +55,11 @@ d03 unit 1: the auditor exhausted both 8192 and 24576 classifying ~30 commands i
 ## Trial 4 binding — dev split rerun
 
 80b4956 (chunked audit) on the same eight dev cases. Holdout remains unrun.
+
+## Trial 4 — dev rerun, 8/8
+
+80b4956. [Score](trial-4-score.json), [results](trial-4-results.json), [hashes](trial-4-artifact-hashes.json). All eight dev cases correct and complete; 67/67 units accepted. Every blocking finding cites the seeded defect: k01 `tests/test_manifest_tool.py:178` (hardcoded `/workspace`, documented test command errors=1); k04 `README.md:51` (62/60-character digests, documented example exits 2); d01 `cli.py:6` (bare `raise`, exit 1 + traceback); d05 `domain.py:4` (`setdefault` keeps first occurrence, wrong digest output, shipped test fails). No control produced a blocking finding.
+
+## Trial 5 binding — holdout, once
+
+80b4956 frozen with no change after dev. Holdout d04, d06, d07, d08, d09, d10, d11, d12 run once and reported whatever the outcome; no tuning on holdout results.
