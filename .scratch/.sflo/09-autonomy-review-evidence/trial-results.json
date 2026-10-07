@@ -1,0 +1,118 @@
+[
+  {
+    "exit_code": 0,
+    "stop": null,
+    "work_elapsed_s": 42.32421015,
+    "work_finished_before_deadline": true,
+    "client_group_absent": true,
+    "idle_confirmed": true,
+    "cleanup_confirmed": true,
+    "case": "case-01",
+    "status": "accepted",
+    "child": {
+      "status": "accepted",
+      "diagnosis": {
+        "version": 1,
+        "decision": "repair",
+        "findings": [
+          {
+            "severity": "critical",
+            "source": {
+              "path": "tests/test_manifest_tool.py",
+              "line": 178
+            },
+            "requirements": [
+              11
+            ],
+            "observations": [
+              2,
+              3
+            ],
+            "inference": "The CliBehavior._run_cli helper hardcodes cwd='/workspace' (line 178). The unittest discover run (command 2) shows this test fails with FileNotFoundError because /workspace does not exist in the captured environment. Requirement A6 mandates tests pass offline when run with python -m unittest discover -s /path/to/project. The test cannot pass in any environment where /workspace is absent, violating the offline-pass constraint. The CLI itself works from arbitrary cwd (proven by commands 5 and 7 running from /tmp and /candidate), so the defect is in the test harness, not the implementation."
+          }
+        ],
+        "question": ""
+      },
+      "report_sha256": "aaf7b9d37122f4a685423dc02617b4bf8cdfcf9b5477ab2f3fa91d56312184fe",
+      "payload_sha256": "0d4d466be66cb7d1aff6c7be115a19964c2cfaf78107c2e7908e92c2186f79c3",
+      "message_sha256": "3c484ade9c11e96db57565046793e47d845cd205c6471ab1ecf2fbcb49d82e33",
+      "meaning": "Saved-evidence finalization; independent semantics pending"
+    },
+    "kind": "saved-evidence-finalization"
+  },
+  {
+    "exit_code": 0,
+    "stop": null,
+    "work_elapsed_s": 61.11737209200146,
+    "work_finished_before_deadline": true,
+    "client_group_absent": true,
+    "idle_confirmed": true,
+    "cleanup_confirmed": true,
+    "case": "case-02",
+    "status": "accepted",
+    "child": {
+      "status": "accepted",
+      "diagnosis": {
+        "version": 1,
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "report_sha256": "978a89164aba0af112ecd003377c030e66bf728bd35b437f7965199cb6e1bc28",
+      "payload_sha256": "301b68d3a05f5e92632ca089ec16b3877bfa9c9548f48056a6ada38541ecd45b",
+      "message_sha256": "1374c04b4d76b7ba9c145424a5f8637bdd647b56c22dd43d46dbe102755efdb5",
+      "meaning": "Saved-evidence finalization; independent semantics pending"
+    },
+    "kind": "saved-evidence-finalization"
+  },
+  {
+    "exit_code": 0,
+    "stop": null,
+    "work_elapsed_s": 59.53772947700054,
+    "work_finished_before_deadline": true,
+    "client_group_absent": true,
+    "idle_confirmed": true,
+    "cleanup_confirmed": true,
+    "case": "case-03",
+    "status": "accepted",
+    "child": {
+      "status": "accepted",
+      "diagnosis": {
+        "version": 1,
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "report_sha256": "e3e50879b7d3fff3548e3d7508f6e58875f2192f38847a8113cd1c64767506d5",
+      "payload_sha256": "6495627493dc67db51789fbe226fa4405ecf65b576f790e8121e476f460da829",
+      "message_sha256": "e73f7ed327860baa13aeda162a73dd0f20e8fbc38df3d8f575a276838d811e2f",
+      "meaning": "Saved-evidence finalization; independent semantics pending"
+    },
+    "kind": "saved-evidence-finalization"
+  },
+  {
+    "exit_code": 0,
+    "stop": null,
+    "work_elapsed_s": 77.4148784200006,
+    "work_finished_before_deadline": true,
+    "client_group_absent": true,
+    "idle_confirmed": true,
+    "cleanup_confirmed": true,
+    "case": "case-04",
+    "status": "accepted",
+    "child": {
+      "status": "accepted",
+      "diagnosis": {
+        "version": 1,
+        "decision": "pass",
+        "findings": [],
+        "question": ""
+      },
+      "report_sha256": "a53f16ec0488a2c5ba0bb118c20eebdab25aa050663a80aa3ab876fdc8ba705b",
+      "payload_sha256": "0af7f346098aff7423ef741e4c3a4e3ad7fb9f47b87c0429134dbd4effe22719",
+      "message_sha256": "ff38dc608e62c3f2811e0bfe580c2f93b908d6a5da0a7bfdabe1ba4f4217b794",
+      "meaning": "Saved-evidence finalization; independent semantics pending"
+    },
+    "kind": "saved-evidence-finalization"
+  }
+]

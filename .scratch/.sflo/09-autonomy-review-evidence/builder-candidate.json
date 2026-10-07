@@ -1,0 +1,14 @@
+{
+  "prototype_commit": "c3673ba",
+  "branch": "prototype/review-evidence-20261004",
+  "base_commit": "847f90e9d4fe515e6c6eada9eb200008b6441fd2",
+  "source_sha256": {
+    "ops/review_evidence_prototype.py": "40d1511c3419516b030e0cde3d365f9862cf34d8a0fee1e48e9b83373941fd72",
+    "ops/test_review_evidence_builder.py": "bad21ad47a028c57f6b2ee9263a910bace9a3021cdc5e9e96619eb9489707958",
+    "ops/test_review_evidence_qa.py": "bc0860300a608108d2e4ee32b13419361fb47aeff222ade0a5f152df49392126"
+  },
+  "reused_sources": "carry-forward.json: 37/37 unchanged",
+  "controls": "82 collected, 81 passed, 1 skipped (predecessor local Docker vertical); python:3.12-slim --network none",
+  "builder_choice": "Agent-authored: user message is a deterministic numbered view (objective_lines/source lines/catalog) of the hash-bound payload; message_sha256 recorded per case.",
+  "package_manifest_sha256": "303f7026f23884165fc438f3cd6031929615ea9f6395a89ef941f75ed2dbd0c8"
+}

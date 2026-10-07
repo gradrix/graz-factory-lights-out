@@ -22,4 +22,4 @@ Later acceptance-bearing stages are in [the roadmap](../../docs/roadmap.md). The
 
 - [Direct versus two-task planning pilot](delivery/08-planning-pilot.md) — accepted discovery; four arms and independent checks complete, no independently complete increment. Planning stays advisory; [closure](../.sflo/08-autonomy-planning-pilot/acceptance.md).
 
-- [Read-only executable local-review discriminator](delivery/09-executable-review.md) — initial completion failures repaired in known cohort; strict evidence-truth still fails. Isolated evidence-finalization experiment active, no maintained promotion.
+- [Read-only executable local-review discriminator](delivery/09-executable-review.md) — protocol repair fixed completion; evidence-finalization atom (c3673ba) failed 3/4 with case04 false acceptance after thinking-budget truncation. Successor route open, no maintained promotion.
