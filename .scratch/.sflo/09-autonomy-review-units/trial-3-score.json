@@ -1,0 +1,116 @@
+{
+  "matched": 3,
+  "cases": 4,
+  "rows": [
+    {
+      "case": "case-01",
+      "expected": "repair",
+      "decision": "repair",
+      "status": "accepted",
+      "match": true,
+      "units": 7,
+      "unit_status": [
+        "accepted",
+        "accepted",
+        "accepted",
+        "accepted",
+        "accepted",
+        "accepted",
+        "accepted"
+      ],
+      "repair_lines": [
+        11
+      ],
+      "reasoning_tokens": [
+        1669,
+        1705,
+        1200,
+        1658,
+        1742,
+        946,
+        517
+      ]
+    },
+    {
+      "case": "case-02",
+      "expected": "pass",
+      "decision": "pass",
+      "status": "accepted",
+      "match": true,
+      "units": 7,
+      "unit_status": [
+        "accepted",
+        "accepted",
+        "accepted",
+        "accepted",
+        "accepted",
+        "accepted",
+        "accepted"
+      ],
+      "repair_lines": [],
+      "reasoning_tokens": [
+        1442,
+        1781,
+        1829,
+        1288,
+        1534,
+        1024,
+        323
+      ]
+    },
+    {
+      "case": "case-03",
+      "expected": "pass",
+      "decision": "pass",
+      "status": "accepted",
+      "match": true,
+      "units": 7,
+      "unit_status": [
+        "accepted",
+        "accepted",
+        "accepted",
+        "accepted",
+        "accepted",
+        "accepted",
+        "accepted"
+      ],
+      "repair_lines": [],
+      "reasoning_tokens": [
+        2176,
+        1140,
+        1455,
+        1456,
+        1671,
+        1013,
+        446
+      ]
+    },
+    {
+      "case": "case-04",
+      "expected": "repair",
+      "decision": "incomplete",
+      "status": "incomplete",
+      "match": false,
+      "units": 7,
+      "unit_status": [
+        "accepted",
+        "accepted",
+        "accepted",
+        "accepted",
+        "exhausted",
+        "accepted",
+        "accepted"
+      ],
+      "repair_lines": [],
+      "reasoning_tokens": [
+        2418,
+        1712,
+        1084,
+        1671,
+        4096,
+        1426,
+        376
+      ]
+    }
+  ]
+}
