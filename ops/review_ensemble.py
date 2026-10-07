@@ -27,6 +27,10 @@ EXPLORER_SECONDS, EXPLORER_EXPLORATION = 900, 780
 EXPLORER_PROFILE = {**erp.PROFILE, 'thinking_budget_tokens': 3072, 'max_tokens': 6144}
 BATTERY_SECONDS = 300
 UNIT_BUDGET, UNIT_MAX_TOKENS, UNIT_HTTP, ROLE_SECONDS = 8192, 12288, 300, 420
+# One fresh, separately charged escalation for a role whose reasoning exhausted the first cap.
+ESCALATED_BUDGET, ESCALATED_MAX_TOKENS, ESCALATED_HTTP, ESCALATED_SECONDS = 24576, 28672, 600, 720
+LADDER = ((UNIT_BUDGET, UNIT_MAX_TOKENS, UNIT_HTTP, ROLE_SECONDS),
+          (ESCALATED_BUDGET, ESCALATED_MAX_TOKENS, ESCALATED_HTTP, ESCALATED_SECONDS))
 HEAD = TAIL = 3072
 EVIDENCE_BYTES = 240 * 1024
 UNIT_CHARS, MAX_UNITS, MAX_STATEMENTS = 400, 48, 96
@@ -255,23 +259,23 @@ def contested(audit, prosecutor, payload):
     return items
 
 
-def ask(root, config, prefix, assignment, deadline, transport=None):
+def ask(root, config, prefix, assignment, deadline, transport=None, step=LADDER[0]):
     """One precharged JSON-only request; returns (status, content, facts)."""
     root = Path(root); root.parent.mkdir(mode=0o700, parents=True, exist_ok=True); root.mkdir(mode=0o700)
-    facts = {}
+    facts = {'budget': step[0]}
     try:
         from review_evidence_prototype import create_ledger
         ledger = create_ledger(root, deadline)
-        client = UnitClient(config, ledger, transport, UNIT_BUDGET, UNIT_MAX_TOKENS, UNIT_HTTP)
+        client = UnitClient(config, ledger, transport, step[0], step[1], step[2])
         response = client.complete([{'role': 'system', 'content': POLICY}, {'role': 'user', 'content': prefix + '\n\nASSIGNMENT: ' + assignment}])
     except Exception as error:
-        return 'failed', None, {'error_type': type(error).__name__, 'error': redact(str(error))[:2048]}
+        return 'failed', None, {**facts, 'error_type': type(error).__name__, 'error': redact(str(error))[:2048]}
     facts.update(usage=response.get('usage'), timings=response.get('timings'))
     try:
         content, reasoning = final_message(response); facts['reasoning_tokens'] = meter(client.transport, reasoning)
     except Exception as error:
         return 'invalid', None, {**facts, 'error_type': type(error).__name__, 'error': redact(str(error))[:2048]}
-    if facts['reasoning_tokens'] >= UNIT_BUDGET: return 'exhausted', content, facts
+    if facts['reasoning_tokens'] >= step[0]: return 'exhausted', content, facts
     return 'returned', content, facts
 
 
@@ -279,9 +283,14 @@ def judge_unit(root, number, unit, view, payload, config, deadline, transport=No
     root = Path(root); result = {'unit': number, 'ids': unit['ids'], 'text': unit['text'], 'roles': {}}
     assigned = encoded({'statements': unit['ids'], 'text': unit['text']}).decode()
     def role(name, extra=''):
-        status, content, facts = ask(root / name, config, view, ROLE_ASSIGNMENT[name] + ' Assigned: ' + assigned + extra,
-                                     min(deadline, time.monotonic() + ROLE_SECONDS), transport)
-        record = {'status': status, **facts}
+        attempts = []
+        for level, step in enumerate(LADDER):
+            status, content, facts = ask(root / (name if level == 0 else f'{name}-escalated'), config, view,
+                                         ROLE_ASSIGNMENT[name] + ' Assigned: ' + assigned + extra,
+                                         min(deadline, time.monotonic() + step[3]), transport, step)
+            attempts.append({'status': status, **facts})
+            if status != 'exhausted': break
+        record = {'status': status, **facts, 'attempts': attempts}
         value = None
         if status == 'returned':
             try:
@@ -387,7 +396,7 @@ def reverify(child, catalog_value, source, objective):
         if result.get('ids') != unit['ids']: return False
         if result.get('status') != 'accepted': continue
         roles = result['roles']
-        if any(r.get('status') != 'returned' or r.get('reasoning_tokens', UNIT_BUDGET) >= UNIT_BUDGET for r in roles.values()): return False
+        if any(r.get('status') != 'returned' or r.get('reasoning_tokens', 1 << 30) >= r.get('budget', 0) for r in roles.values()): return False
         validate_audit(roles['audit']['value'], catalog_value); validate_unit(roles['prosecutor']['value'], payload, unit['ids'])
         disputes = contested(roles['audit']['value'], roles['prosecutor']['value'], payload)
         if not disputes and roles['prosecutor']['value']['decision'] == 'pass':
@@ -457,7 +466,7 @@ def batch(args):
                     healthy = False; outcome['reason'] = 'Serving idle unconfirmed'
                 if healthy:
                     count = len(units(statements(read_file(Path(args.manifest).parent / case['objective']).decode())))
-                    deadline = time.monotonic() + count * 3 * ROLE_SECONDS
+                    deadline = time.monotonic() + count * 3 * (ROLE_SECONDS + ESCALATED_SECONDS)
                     value = json.loads(read_file(root / 'catalog.json'))
                     result = phase(root / 'judging', 'judging', {**spec, 'catalog': str(root / 'catalog.json'),
                                    'catalog_sha256': digest(encoded(value)), 'deadline': deadline - 30}, deadline, stop)

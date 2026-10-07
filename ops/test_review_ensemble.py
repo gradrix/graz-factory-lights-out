@@ -43,7 +43,9 @@ class RoleFake:
         self.answers = answers; self.reasoning = reasoning; self.roles = []
     def request(self, path, body, timeout, max_response_bytes):
         if path == '/tokenize':
-            return {'tokens': [0] * (self.reasoning.get(self.roles[-1], 100) if isinstance(self.reasoning, dict) else self.reasoning)}
+            value = self.reasoning.get(self.roles[-1], 100) if isinstance(self.reasoning, dict) else self.reasoning
+            if isinstance(value, list): value = value.pop(0)
+            return {'tokens': [0] * value}
         text = body['messages'][1]['content'].split('ASSIGNMENT: ', 1)[1]
         role = 'audit' if text.startswith('Role: evidence auditor') else 'prosecutor' if text.startswith('Role: prosecutor') else 'judge'
         self.roles.append(role); self.last = body
@@ -116,11 +118,28 @@ class Roles(unittest.TestCase):
         self.assertEqual(self.run_unit(fake)['decision'], 'pass')
 
     def test_exhaustion_or_invalid_role_is_incomplete(self):
-        fake = RoleFake({'audit': audit(), 'prosecutor': unit_wire()}, reasoning={'audit': 100, 'prosecutor': 8192})
-        self.assertEqual(self.run_unit(fake, 'a')['status'], 'incomplete')
+        fake = RoleFake({'audit': audit(), 'prosecutor': unit_wire()}, reasoning={'audit': 100, 'prosecutor': [8192, 24576]})
+        result = self.run_unit(fake, 'a')
+        self.assertEqual((result['status'], fake.roles), ('incomplete', ['audit', 'prosecutor', 'prosecutor']))
+        self.assertEqual([a['budget'] for a in result['roles']['prosecutor']['attempts']], [8192, 24576])
+        self.assertEqual(fake.last['thinking_budget_tokens'], 24576)
         fake = RoleFake({'audit': {'version': 1, 'commands': []}, 'prosecutor': unit_wire()})
         result = self.run_unit(fake, 'b')
         self.assertEqual((result['status'], fake.roles), ('incomplete', ['audit']))
+
+    def test_escalation_recovers_exhausted_role(self):
+        fake = RoleFake({'audit': audit(), 'prosecutor': unit_wire()}, reasoning={'audit': [8192, 9000], 'prosecutor': 100})
+        result = self.run_unit(fake)
+        self.assertEqual((result['status'], result['decision'], fake.roles), ('accepted', 'pass', ['audit', 'audit', 'prosecutor']))
+        self.assertEqual(result['roles']['audit']['budget'], 24576)
+        self.assertTrue((self.tmp / 'u' / 'audit-escalated' / 'ledger.json').exists())
+        source = self.tmp / 'src'; source.mkdir(); (source / 'README.md').write_text('example\n')
+        objective = 'A1: Tests pass. README example works.\n'; planned = r.units(self.found)
+        child = {'units': [result], 'planned_units': len(planned), 'decision': 'pass',
+                 'view_sha256': r.digest(r.evidence_view(objective, {'README.md': 'example\n'}, self.found, self.payload['catalog']).encode())}
+        self.assertTrue(r.reverify(child, self.payload['catalog'], source, objective))
+        forged = copy.deepcopy(child); forged['units'][0]['roles']['audit']['budget'] = 8192
+        self.assertFalse(r.reverify(forged, self.payload['catalog'], source, objective))
 
     def test_reverify(self):
         fake = RoleFake({'audit': audit('contradicts'), 'prosecutor': unit_wire(), 'judge': unit_wire('repair')})
