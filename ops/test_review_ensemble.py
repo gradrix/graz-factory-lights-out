@@ -101,6 +101,11 @@ class Roles(unittest.TestCase):
     def run_unit(self, fake, name='u'):
         return r.judge_unit(self.tmp / name, 1, self.unit, self.view, self.payload, CONFIG, time.monotonic() + 600, fake)
 
+    def test_view_nests_segments_under_owning_command(self):
+        view = json.loads(self.view)
+        self.assertNotIn('catalog', view)
+        self.assertEqual([[x['id'] for x in c['segments']] for c in view['commands']], [[1], [2]])
+
     def test_clean_unit_skips_judge(self):
         fake = RoleFake({'audit': audit(), 'prosecutor': unit_wire()})
         result = self.run_unit(fake)
@@ -127,7 +132,7 @@ class Roles(unittest.TestCase):
         self.assertEqual(fake.last['thinking_budget_tokens'], 24576)
         fake = RoleFake({'audit': {'version': 1, 'commands': []}, 'prosecutor': unit_wire()})
         result = self.run_unit(fake, 'b')
-        self.assertEqual((result['status'], fake.roles), ('incomplete', ['audit', 'audit']))
+        self.assertEqual((result['status'], fake.roles), ('incomplete', ['audit', 'audit', 'audit']))
 
     def test_rejected_answer_gets_one_quoted_correction(self):
         wrong = {'version': 1, 'commands': [{'id': 1, 'bearing': 'supports', 'segments': [2]}, audit()['commands'][1]]}
