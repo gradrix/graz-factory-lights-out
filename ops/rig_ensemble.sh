@@ -19,7 +19,7 @@ ssh_rig() { ssh -o BatchMode=yes -o ConnectTimeout=10 "$rig" "$@"; }
 
 test -z "$(git -C "$repo" status --porcelain -- ops gflo $cohort)" || { echo "uncommitted prototype changes" >&2; exit 1; }
 test ! -e "$local_root"; mkdir -p "$local_root/stage/inputs"
-git -C "$repo" archive "$commit" gflo ops "$cohort/manifest.json" "$cohort/public" | tar -xp -C "$local_root/stage"
+git -C "$repo" -c tar.umask=022 archive "$commit" gflo ops "$cohort/manifest.json" "$cohort/public" | tar -xp -C "$local_root/stage"
 test ! -e "$local_root/stage/$cohort/private"
 cp "$gflo/.scratch/.sflo/08-autonomy-planning-pilot/environment-bindings.json" \
    "$gflo/.scratch/.sflo/08-autonomy-planning-pilot/serving-lifecycle/expected-identity.json" \
