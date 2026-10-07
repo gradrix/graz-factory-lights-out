@@ -1,0 +1,116 @@
+{
+  "summary": {
+    "dev": {
+      "cases": 8,
+      "matched": 4
+    }
+  },
+  "rows": [
+    {
+      "case": "k01",
+      "split": "dev",
+      "kind": "original",
+      "expected": "repair",
+      "decision": "repair",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [
+        9,
+        10
+      ],
+      "incomplete_units": []
+    },
+    {
+      "case": "k02",
+      "split": "dev",
+      "kind": "control",
+      "expected": "pass",
+      "decision": "incomplete",
+      "status": "incomplete",
+      "match": false,
+      "repair_units": [],
+      "incomplete_units": [
+        3,
+        4
+      ]
+    },
+    {
+      "case": "k03",
+      "split": "dev",
+      "kind": "control",
+      "expected": "pass",
+      "decision": "pass",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [],
+      "incomplete_units": []
+    },
+    {
+      "case": "k04",
+      "split": "dev",
+      "kind": "original",
+      "expected": "repair",
+      "decision": "incomplete",
+      "status": "incomplete",
+      "match": false,
+      "repair_units": [
+        9
+      ],
+      "incomplete_units": [
+        6
+      ]
+    },
+    {
+      "case": "d01",
+      "split": "dev",
+      "kind": "original",
+      "expected": "repair",
+      "decision": "incomplete",
+      "status": "incomplete",
+      "match": false,
+      "repair_units": [],
+      "incomplete_units": [
+        3,
+        4
+      ]
+    },
+    {
+      "case": "d02",
+      "split": "dev",
+      "kind": "control",
+      "expected": "pass",
+      "decision": "pass",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [],
+      "incomplete_units": []
+    },
+    {
+      "case": "d03",
+      "split": "dev",
+      "kind": "control",
+      "expected": "pass",
+      "decision": "pass",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [],
+      "incomplete_units": []
+    },
+    {
+      "case": "d05",
+      "split": "dev",
+      "kind": "original",
+      "expected": "repair",
+      "decision": "incomplete",
+      "status": "incomplete",
+      "match": false,
+      "repair_units": [],
+      "incomplete_units": [
+        1,
+        2,
+        5,
+        6
+      ]
+    }
+  ]
+}

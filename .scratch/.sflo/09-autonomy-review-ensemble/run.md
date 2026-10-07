@@ -28,3 +28,18 @@ Repair: one fresh, separately charged escalation to a 24576 thinking cap for an 
 ## Trial 2 binding — dev split
 
 062d682 on k01,k02,k03,k04,d01,d02,d03,d05.
+
+## Trial 2 — dev split, 4/8, zero wrong verdicts
+
+062d682 on k01–k04, d01, d02, d03, d05. [Score](trial-2-score.json), [results](trial-2-results.json), [hashes](trial-2-artifact-hashes.json).
+
+- Correct: k01 repair (units 9–10, A6), k03/d02/d03 pass. No control produced a repair; no defect case produced a pass.
+- Incomplete: k02 (units 3–4), k04 (unit 6; its seeded README defect again repaired in unit 9), d01 (units 3–4), d05 (units 1, 2, 5, 6). Every incomplete unit — 9 of 84 — is an auditor answer rejected for citing a segment owned by another command (or wrong segment count). No exhaustion; the escalation ladder never fired.
+- Evidence covers the fresh defects: d01 tester captured `exit=1` with a Python traceback for an invalid action (requirement: exit 2, no traceback); d05's own test run shows `FAIL: test_case_1`.
+- Docs explorer advisory verdicts sometimes fail their schema (k02); their attested commands still enter the catalog.
+
+Repairs (dev-only tuning): 2d8db9e one quoted correction attempt with specific validator messages; 80fbfd2 nests each command's segments in the view (ownership visible) and allows two corrections. 108 controls, 107 pass, 1 skipped.
+
+## Trial 3 binding — dev split rerun
+
+80fbfd2 on the same eight dev cases. Holdout remains unrun.
