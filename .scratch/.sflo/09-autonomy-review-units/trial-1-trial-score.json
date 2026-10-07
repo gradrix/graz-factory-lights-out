@@ -1,0 +1,50 @@
+{
+  "matched": 0,
+  "cases": 4,
+  "rows": [
+    {
+      "case": "case-01",
+      "expected": "repair",
+      "decision": "incomplete",
+      "status": "incomplete",
+      "match": false,
+      "units": 0,
+      "unit_status": [],
+      "repair_lines": [],
+      "reasoning_tokens": []
+    },
+    {
+      "case": "case-02",
+      "expected": "pass",
+      "decision": "incomplete",
+      "status": "incomplete",
+      "match": false,
+      "units": 0,
+      "unit_status": [],
+      "repair_lines": [],
+      "reasoning_tokens": []
+    },
+    {
+      "case": "case-03",
+      "expected": "pass",
+      "decision": "incomplete",
+      "status": "incomplete",
+      "match": false,
+      "units": 0,
+      "unit_status": [],
+      "repair_lines": [],
+      "reasoning_tokens": []
+    },
+    {
+      "case": "case-04",
+      "expected": "repair",
+      "decision": "incomplete",
+      "status": "incomplete",
+      "match": false,
+      "units": 0,
+      "unit_status": [],
+      "repair_lines": [],
+      "reasoning_tokens": []
+    }
+  ]
+}

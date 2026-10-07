@@ -1,0 +1,74 @@
+[
+  {
+    "exit_code": 1,
+    "stop": null,
+    "work_elapsed_s": 0.10059784199984279,
+    "work_finished_before_deadline": true,
+    "client_group_absent": true,
+    "idle_confirmed": true,
+    "cleanup_confirmed": true,
+    "case": "case-01",
+    "status": "incomplete",
+    "decision": "incomplete",
+    "child": {
+      "status": "incomplete",
+      "error_type": "FileNotFoundError",
+      "error": "[Errno 2] No such file or directory: '/home/gradrix/gflo-review-review_units-377f0b5/trial-1/case-01/units/01'"
+    },
+    "kind": "per-requirement-review-units"
+  },
+  {
+    "exit_code": 1,
+    "stop": null,
+    "work_elapsed_s": 0.10048635799466865,
+    "work_finished_before_deadline": true,
+    "client_group_absent": true,
+    "idle_confirmed": true,
+    "cleanup_confirmed": true,
+    "case": "case-02",
+    "status": "incomplete",
+    "decision": "incomplete",
+    "child": {
+      "status": "incomplete",
+      "error_type": "FileNotFoundError",
+      "error": "[Errno 2] No such file or directory: '/home/gradrix/gflo-review-review_units-377f0b5/trial-1/case-02/units/01'"
+    },
+    "kind": "per-requirement-review-units"
+  },
+  {
+    "exit_code": 1,
+    "stop": null,
+    "work_elapsed_s": 0.10062238800310297,
+    "work_finished_before_deadline": true,
+    "client_group_absent": true,
+    "idle_confirmed": true,
+    "cleanup_confirmed": true,
+    "case": "case-03",
+    "status": "incomplete",
+    "decision": "incomplete",
+    "child": {
+      "status": "incomplete",
+      "error_type": "FileNotFoundError",
+      "error": "[Errno 2] No such file or directory: '/home/gradrix/gflo-review-review_units-377f0b5/trial-1/case-03/units/01'"
+    },
+    "kind": "per-requirement-review-units"
+  },
+  {
+    "exit_code": 1,
+    "stop": null,
+    "work_elapsed_s": 0.10056092499871738,
+    "work_finished_before_deadline": true,
+    "client_group_absent": true,
+    "idle_confirmed": true,
+    "cleanup_confirmed": true,
+    "case": "case-04",
+    "status": "incomplete",
+    "decision": "incomplete",
+    "child": {
+      "status": "incomplete",
+      "error_type": "FileNotFoundError",
+      "error": "[Errno 2] No such file or directory: '/home/gradrix/gflo-review-review_units-377f0b5/trial-1/case-04/units/01'"
+    },
+    "kind": "per-requirement-review-units"
+  }
+]
