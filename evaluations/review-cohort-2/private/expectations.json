@@ -1,0 +1,130 @@
+[
+  {
+    "id": "k01",
+    "split": "dev",
+    "kind": "original",
+    "expected": "repair",
+    "required_finding": "A6 project-root unittest fails because test helper hardcodes /workspace",
+    "origin": "executable-review/case-01"
+  },
+  {
+    "id": "k02",
+    "split": "dev",
+    "kind": "control",
+    "expected": "pass",
+    "required_finding": null,
+    "origin": "executable-review/case-02"
+  },
+  {
+    "id": "k03",
+    "split": "dev",
+    "kind": "control",
+    "expected": "pass",
+    "required_finding": null,
+    "origin": "executable-review/case-03"
+  },
+  {
+    "id": "k04",
+    "split": "dev",
+    "kind": "original",
+    "expected": "repair",
+    "required_finding": "A6 README compare example has 62/60-character digests and cannot produce documented success",
+    "origin": "executable-review/case-04"
+  },
+  {
+    "id": "d01",
+    "split": "dev",
+    "kind": "original",
+    "expected": "repair",
+    "required_finding": "CLI ValueError path raises a traceback and exits 1 instead of exit 2 with stderr and no traceback",
+    "origin": "coding-d/01-contact-import"
+  },
+  {
+    "id": "d02",
+    "split": "dev",
+    "kind": "control",
+    "expected": "pass",
+    "required_finding": null,
+    "origin": "coding-d/02-access-report"
+  },
+  {
+    "id": "d03",
+    "split": "dev",
+    "kind": "control",
+    "expected": "pass",
+    "required_finding": null,
+    "origin": "coding-d/03-environment-template"
+  },
+  {
+    "id": "d04",
+    "split": "holdout",
+    "kind": "control",
+    "expected": "pass",
+    "required_finding": null,
+    "origin": "coding-d/04-sqlite-stock"
+  },
+  {
+    "id": "d05",
+    "split": "dev",
+    "kind": "original",
+    "expected": "repair",
+    "required_finding": "Deduplication retains the FIRST occurrence instead of the LAST",
+    "origin": "coding-d/05-release-digest"
+  },
+  {
+    "id": "d06",
+    "split": "holdout",
+    "kind": "original",
+    "expected": "repair",
+    "required_finding": "Identical-timestamp tie keeps the largest id instead of the smallest",
+    "origin": "coding-d/06-backup-retention"
+  },
+  {
+    "id": "d07",
+    "split": "holdout",
+    "kind": "control",
+    "expected": "pass",
+    "required_finding": null,
+    "origin": "coding-d/07-webhook-auth"
+  },
+  {
+    "id": "d08",
+    "split": "holdout",
+    "kind": "control",
+    "expected": "pass",
+    "required_finding": null,
+    "origin": "coding-d/08-markdown-index"
+  },
+  {
+    "id": "d09",
+    "split": "holdout",
+    "kind": "original",
+    "expected": "repair",
+    "required_finding": "README concrete CLI invocation uses a nonexistent action and fails",
+    "origin": "coding-d/09-invoice-csv"
+  },
+  {
+    "id": "d10",
+    "split": "holdout",
+    "kind": "original",
+    "expected": "repair",
+    "required_finding": "blockers are not sorted by Python string order",
+    "origin": "coding-d/10-service-readiness"
+  },
+  {
+    "id": "d11",
+    "split": "holdout",
+    "kind": "control",
+    "expected": "pass",
+    "required_finding": null,
+    "origin": "coding-d/11-support-redaction"
+  },
+  {
+    "id": "d12",
+    "split": "holdout",
+    "kind": "original",
+    "expected": "repair",
+    "required_finding": "select mutates the input artifacts list (sorts it in place)",
+    "origin": "coding-d/12-artifact-selector"
+  }
+]

@@ -1,0 +1,15 @@
+d01 acceptance_exit=1 own_tests=OK
+d02 acceptance_exit=0 own_tests=OK
+d03 acceptance_exit=0 own_tests=OK
+d04 acceptance_exit=0 own_tests=OK
+d05 acceptance_exit=1 own_tests=FAILED (failures=1)
+d06 acceptance_exit=1 own_tests=FAILED (failures=1)
+d07 acceptance_exit=0 own_tests=OK
+d08 acceptance_exit=0 own_tests=OK
+d09 acceptance_exit=0 own_tests=OK
+d10 acceptance_exit=1 own_tests=FAILED (failures=1)
+d11 acceptance_exit=0 own_tests=OK
+d12 acceptance_exit=1 own_tests=OK
+d09 README invocation:
+unknown action: export_csv
+rc=2
