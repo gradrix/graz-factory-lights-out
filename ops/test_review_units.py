@@ -69,12 +69,17 @@ class Units(unittest.TestCase):
         self.assertEqual([c[0] for c in fake.calls], ['/v1/chat/completions', '/tokenize'])
         body = fake.calls[0][1]
         self.assertEqual(body['response_format'], {'type': 'json_object'}); self.assertNotIn('tools', body)
+        self.assertEqual((body['thinking_budget_tokens'], body['max_tokens']), (4096, 8192))
+        self.assertEqual((body['model'], body['temperature'], body['reasoning_effort']), ('flash-next-coder', 0, 'medium'))
         self.assertTrue(body['messages'][1]['content'].endswith('ASSIGNMENT: {"line":1,"text":"A1: tests pass."}'))
 
     def test_exhaustion_fails_closed_even_for_valid_pass(self):
-        self.assertEqual(self.unit(Fake(json.dumps(diagnosis()), reasoning_tokens=1024))['status'], 'exhausted')
-        self.assertEqual(self.unit(Fake('not json', reasoning_tokens=1024))['status'], 'exhausted')
-        self.assertEqual(self.unit(Fake(json.dumps(diagnosis()), reasoning_tokens=1023))['status'], 'accepted')
+        budget = u.REASONING_BUDGET
+        self.assertEqual(self.unit(Fake(json.dumps(diagnosis()), reasoning_tokens=budget))['status'], 'exhausted')
+        self.assertEqual(self.unit(Fake('not json', reasoning_tokens=budget))['status'], 'exhausted')
+        self.assertEqual(self.unit(Fake(json.dumps(diagnosis()), reasoning_tokens=budget - 1))['status'], 'accepted')
+        # Contract-2: 1024 tokens is no longer exhaustion.
+        self.assertEqual(self.unit(Fake(json.dumps(diagnosis()), reasoning_tokens=1024))['status'], 'accepted')
 
     def test_metering_failure_and_transport_failure(self):
         self.assertEqual(self.unit(Fake(json.dumps(diagnosis()), meter_error=RuntimeError('down')))['status'], 'invalid')
@@ -101,13 +106,14 @@ class Units(unittest.TestCase):
         child = {'planned_units': 2, 'payload_sha256': e.digest(e.encoded(payload())), 'units': results, 'decision': 'repair'}
         self.assertTrue(u.reverify(child, payload()))
         self.assertFalse(u.reverify({**child, 'decision': 'pass'}, payload()))
-        forged = json.loads(json.dumps(child)); forged['units'][0]['reasoning_tokens'] = 1024
+        forged = json.loads(json.dumps(child)); forged['units'][0]['reasoning_tokens'] = u.REASONING_BUDGET
         self.assertFalse(u.reverify(forged, payload()))
 
-    def test_predecessor_calibration(self):
-        # Measured on the rig with /tokenize: all four predecessor responses used exactly 1024 reasoning tokens.
-        for measured in (1024, 1024, 1024, 1024):
-            self.assertGreaterEqual(measured, u.REASONING_BUDGET)
+    def test_cap_and_timeouts_match_contract_2(self):
+        # Rig /tokenize calibration: truncated responses measure exactly the requested cap (1024 in c3673ba/60aabe4).
+        self.assertEqual((u.REASONING_BUDGET, u.MAX_TOKENS, u.UNIT_SECONDS, u.HTTP_SECONDS), (4096, 8192, 300, 240))
+        fake = Fake(json.dumps(diagnosis())); self.unit(fake)
+        self.assertEqual(fake.calls[0][0], '/v1/chat/completions')
 
     def test_real_cases_fit_unit_capacity(self):
         out = self.tmp / 'pkg'; e.prepare(REPO / 'evaluations/executable-review/manifest.json', TRIAL, out)

@@ -9,20 +9,59 @@ import time
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from review_evidence_prototype import (CAPACITY, SYSTEM as EVIDENCE_SYSTEM, FinalClient, create_ledger, read_file,
+from executable_review_prototype import PROFILE, REQUEST_BYTES, RESPONSE_BYTES, ReviewClient
+from review_evidence_prototype import (CAPACITY, SYSTEM as EVIDENCE_SYSTEM, create_ledger, read_file,
                                        render, validate_diagnosis, verify_packages)
-from planning_pilot_prototype import digest, encoded, journal, pilot_lease, publish_result, supervise, wait_idle
+from planning_pilot_prototype import (CaptureOpener, digest, encoded, journal, pilot_lease, publish_result,
+                                      supervise, wait_idle)
 from gflo.runner import save
 from gflo.observe import redact
 
 MAX_UNITS = 32
-UNIT_SECONDS = 150
-REASONING_BUDGET = 1024
+UNIT_SECONDS = 300
+HTTP_SECONDS = 240
+REASONING_BUDGET = 4096
+MAX_TOKENS = 8192
 METER_BYTES = 4 * 1024 * 1024
 SYSTEM = EVIDENCE_SYSTEM + (' Assignment: judge only the single objective line named in the final ASSIGNMENT. '
     'Every finding must include that line number in requirements. pass means the captured evidence and source show '
     'no blocking violation of that line; repair means a blocking violation of that line with cited observations. '
     'Ignore other requirements; they are judged separately.')
+
+
+class UnitClient(ReviewClient):
+    """The qualified durable one-use final path with the contract-2 thinking cap."""
+    def __init__(self, config, ledger, transport=None):
+        if ledger.read()['phase'] != 'final': raise ValueError('Final phase required')
+        super().__init__(config, ledger, transport)
+
+    def complete(self, messages):
+        if self.ledger.read()['phase'] != 'final': raise ValueError('Request phase differs from durable ledger')
+        body = {**PROFILE, 'thinking_budget_tokens': REASONING_BUDGET, 'max_tokens': MAX_TOKENS,
+                'messages': messages, 'response_format': {'type': 'json_object'}}
+        raw = encoded(body)
+        if len(raw) > REQUEST_BYTES: raise ValueError('Request capacity before transport')
+        number = self.ledger.reserve('requests', {'request_sha256': digest(raw), 'role': 'unit-reviewer'})
+        target = self.ledger.root / 'requests' / f'{number:02d}'; target.mkdir(parents=True)
+        (target / 'request.json').write_bytes(raw)
+        original = getattr(self.transport, 'opener', None)
+        if original is not None: self.transport.opener = CaptureOpener(original, target)
+        started = time.monotonic()
+        try:
+            response = self.transport.request('/v1/chat/completions', body, timeout=min(HTTP_SECONDS, self.ledger.seconds()),
+                                              max_response_bytes=RESPONSE_BYTES)
+            raw = encoded(response)
+            if len(raw) > RESPONSE_BYTES: raise ValueError('Decoded response capacity')
+            (target / 'response.json').write_bytes(raw)
+            self.ledger.finish('requests', number, status='returned', response_sha256=digest(raw),
+                               usage=response.get('usage') if isinstance(response, dict) else None, elapsed_s=time.monotonic() - started)
+            return response
+        except BaseException as error:
+            self.ledger.finish('requests', number, status='failed', error_type=type(error).__name__,
+                               error=redact(str(error))[:2048], usage=None, elapsed_s=time.monotonic() - started)
+            raise
+        finally:
+            if original is not None: self.transport.opener = original
 
 
 def units(payload):
@@ -81,7 +120,7 @@ def run_unit(root, payload, line, text, config, deadline, transport=None):
     root = Path(root); root.parent.mkdir(mode=0o700, exist_ok=True); root.mkdir(mode=0o700)
     result = {'line': line, 'text': text}
     try:
-        ledger = create_ledger(root, deadline); client = FinalClient(config, ledger, transport)
+        ledger = create_ledger(root, deadline); client = UnitClient(config, ledger, transport)
         body = prompt(payload, line, text)
         result['prompt_sha256'] = digest(body.encode())
         response = client.complete([{'role': 'system', 'content': SYSTEM}, {'role': 'user', 'content': body}])
@@ -91,7 +130,7 @@ def run_unit(root, payload, line, text, config, deadline, transport=None):
     result['usage'] = response.get('usage'); result['timings'] = response.get('timings')
     try:
         content, reasoning = final_message(response)
-        count = meter(client.client.transport, reasoning)
+        count = meter(client.transport, reasoning)
         result['reasoning_tokens'] = count
         save(root / 'metering.json', {'reasoning_tokens': count, 'budget': REASONING_BUDGET,
                                       'reasoning_sha256': digest(reasoning.encode())})
