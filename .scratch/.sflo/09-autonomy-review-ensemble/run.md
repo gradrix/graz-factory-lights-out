@@ -43,3 +43,11 @@ Repairs (dev-only tuning): 2d8db9e one quoted correction attempt with specific v
 ## Trial 3 binding — dev split rerun
 
 80fbfd2 on the same eight dev cases. Holdout remains unrun.
+
+## Trial 3 — dev rerun, 7/8, zero wrong verdicts
+
+80fbfd2. [Score](trial-3-score.json), [results](trial-3-results.json), [hashes](trial-3-artifact-hashes.json). k01–k04, d01, d02, d05 correct and complete; d03 (control) incomplete on unit 1. The auditor-wire failures from trial 2 did not recur.
+
+Grounding (coordinator check): d01 unit 4 cites `cli.py:6` (`raise`) with four captured runs showing `exit=1` plus traceback against statement 15 (exit 2, no traceback) — the seeded defect. d05 units 1/2/5 cite `domain.py:4` (`last.setdefault`) with captured output `## Added\n- Old\n- Y` where last-occurrence semantics require `- Y` only, and the shipped test failure — the seeded defect. k01/k04 as in earlier trials. Some judge outputs append minor "statement satisfied" findings: noise, not wrong.
+
+d03 unit 1: the auditor exhausted both 8192 and 24576 classifying ~30 commands in one answer. Repair: auditing in chunks of 8 commands, merged and reverified per chunk (candidate below). 109 controls, 108 pass, 1 skipped.

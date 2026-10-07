@@ -1,0 +1,111 @@
+{
+  "summary": {
+    "dev": {
+      "cases": 8,
+      "matched": 7
+    }
+  },
+  "rows": [
+    {
+      "case": "k01",
+      "split": "dev",
+      "kind": "original",
+      "expected": "repair",
+      "decision": "repair",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [
+        9,
+        10
+      ],
+      "incomplete_units": []
+    },
+    {
+      "case": "k02",
+      "split": "dev",
+      "kind": "control",
+      "expected": "pass",
+      "decision": "pass",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [],
+      "incomplete_units": []
+    },
+    {
+      "case": "k03",
+      "split": "dev",
+      "kind": "control",
+      "expected": "pass",
+      "decision": "pass",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [],
+      "incomplete_units": []
+    },
+    {
+      "case": "k04",
+      "split": "dev",
+      "kind": "original",
+      "expected": "repair",
+      "decision": "repair",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [
+        9
+      ],
+      "incomplete_units": []
+    },
+    {
+      "case": "d01",
+      "split": "dev",
+      "kind": "original",
+      "expected": "repair",
+      "decision": "repair",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [
+        4
+      ],
+      "incomplete_units": []
+    },
+    {
+      "case": "d02",
+      "split": "dev",
+      "kind": "control",
+      "expected": "pass",
+      "decision": "pass",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [],
+      "incomplete_units": []
+    },
+    {
+      "case": "d03",
+      "split": "dev",
+      "kind": "control",
+      "expected": "pass",
+      "decision": "incomplete",
+      "status": "incomplete",
+      "match": false,
+      "repair_units": [],
+      "incomplete_units": [
+        1
+      ]
+    },
+    {
+      "case": "d05",
+      "split": "dev",
+      "kind": "original",
+      "expected": "repair",
+      "decision": "repair",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [
+        1,
+        2,
+        5
+      ],
+      "incomplete_units": []
+    }
+  ]
+}
