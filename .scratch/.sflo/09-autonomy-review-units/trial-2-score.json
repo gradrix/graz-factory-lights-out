@@ -1,0 +1,116 @@
+{
+  "matched": 0,
+  "cases": 4,
+  "rows": [
+    {
+      "case": "case-01",
+      "expected": "repair",
+      "decision": "incomplete",
+      "status": "incomplete",
+      "match": false,
+      "units": 7,
+      "unit_status": [
+        "exhausted",
+        "exhausted",
+        "exhausted",
+        "exhausted",
+        "exhausted",
+        "exhausted",
+        "accepted"
+      ],
+      "repair_lines": [
+        11
+      ],
+      "reasoning_tokens": [
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        607
+      ]
+    },
+    {
+      "case": "case-02",
+      "expected": "pass",
+      "decision": "incomplete",
+      "status": "incomplete",
+      "match": false,
+      "units": 7,
+      "unit_status": [
+        "exhausted",
+        "exhausted",
+        "exhausted",
+        "exhausted",
+        "exhausted",
+        "exhausted",
+        "accepted"
+      ],
+      "repair_lines": [],
+      "reasoning_tokens": [
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        1024,
+        394
+      ]
+    },
+    {
+      "case": "case-03",
+      "expected": "pass",
+      "decision": "incomplete",
+      "status": "incomplete",
+      "match": false,
+      "units": 7,
+      "unit_status": [
+        "exhausted",
+        "accepted",
+        "exhausted",
+        "exhausted",
+        "exhausted",
+        "exhausted",
+        "accepted"
+      ],
+      "repair_lines": [],
+      "reasoning_tokens": [
+        1024,
+        990,
+        1024,
+        1024,
+        1024,
+        1024,
+        272
+      ]
+    },
+    {
+      "case": "case-04",
+      "expected": "repair",
+      "decision": "incomplete",
+      "status": "incomplete",
+      "match": false,
+      "units": 7,
+      "unit_status": [
+        "accepted",
+        "accepted",
+        "exhausted",
+        "exhausted",
+        "exhausted",
+        "exhausted",
+        "accepted"
+      ],
+      "repair_lines": [],
+      "reasoning_tokens": [
+        1023,
+        857,
+        1024,
+        1024,
+        1024,
+        1024,
+        324
+      ]
+    }
+  ]
+}

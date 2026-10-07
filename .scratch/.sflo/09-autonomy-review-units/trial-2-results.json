@@ -1,0 +1,1030 @@
+[
+  {
+    "exit_code": 0,
+    "stop": null,
+    "work_elapsed_s": 166.37672877099976,
+    "work_finished_before_deadline": true,
+    "client_group_absent": true,
+    "idle_confirmed": true,
+    "cleanup_confirmed": true,
+    "case": "case-01",
+    "status": "incomplete",
+    "decision": "incomplete",
+    "child": {
+      "status": "incomplete",
+      "decision": "incomplete",
+      "units": [
+        {
+          "line": 1,
+          "text": "A1: Validate before/after as lists of at most100 entries, each exactly {path,size,sha256}. path is1..120ASCII characters split by / into nonempty segments matching [A-Za-z0-9_.-]+, excluding . and ..; no absolute, trailing, repeated slash or backslash. Paths unique within each list. size is strict int0..1000000 (not bool); sha256 is exactly64lowercase hex characters. Reject invalid input with ValueError; never mutate either input on success or failure.",
+          "prompt_sha256": "16a458ea69421b519bc3824d77a11592dae92c1a18461ddb11d5a5e048861fbc",
+          "usage": {
+            "completion_tokens": 1043,
+            "prompt_tokens": 15234,
+            "total_tokens": 16277,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            }
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 15234,
+            "prompt_ms": 56848.633,
+            "prompt_per_token_ms": 3.7316944335040043,
+            "prompt_per_second": 267.9747813812867,
+            "predicted_n": 1043,
+            "predicted_ms": 14326.789,
+            "predicted_per_token_ms": 13.749317658349328,
+            "predicted_per_second": 72.73088198618686
+          },
+          "reasoning_tokens": 1024,
+          "diagnosis": {
+            "version": 1,
+            "decision": "pass",
+            "findings": [],
+            "question": ""
+          },
+          "report_sha256": "5d94f83dfbd47acd529e5fec23a372f030467848ae7e50b04b9256044a2a56a0",
+          "status": "exhausted"
+        },
+        {
+          "line": 3,
+          "text": "A2: Expose manifest_tool.domain.compare(before,after). Compare shared paths first: unchanged when both size and sha256 equal, otherwise modified. Return exactly {added:[paths],removed:[paths],modified:[{path,before_size,after_size}],renamed:[{from,to}],unchanged:[paths]}. All path lists and modified sort ascending by path; renamed sorts by from. Empty inputs produce empty lists. Shared paths never participate in rename matching.",
+          "prompt_sha256": "6301d1ca2a8aa5a312ab19508697b3c3784161ef0230c580b87b70fb9f27be46",
+          "usage": {
+            "completion_tokens": 1043,
+            "prompt_tokens": 15207,
+            "total_tokens": 16250,
+            "prompt_tokens_details": {
+              "cached_tokens": 14722
+            }
+          },
+          "timings": {
+            "cache_n": 14722,
+            "prompt_n": 485,
+            "prompt_ms": 2112.702,
+            "prompt_per_token_ms": 4.356086597938145,
+            "prompt_per_second": 229.56384762261783,
+            "predicted_n": 1043,
+            "predicted_ms": 14643.923,
+            "predicted_per_token_ms": 14.053668905950097,
+            "predicted_per_second": 71.15579616199838
+          },
+          "reasoning_tokens": 1024,
+          "diagnosis": {
+            "version": 1,
+            "decision": "pass",
+            "findings": [],
+            "question": ""
+          },
+          "report_sha256": "5d94f83dfbd47acd529e5fec23a372f030467848ae7e50b04b9256044a2a56a0",
+          "status": "exhausted"
+        },
+        {
+          "line": 5,
+          "text": "A3: Among only paths absent from the opposite manifest, signature=(size,sha256). Recognize a rename only if exactly one unmatched old path AND exactly one unmatched new path have that signature; remove both from added/removed. Ambiguous signatures remain additions/removals, with no greedy pairing. Match based on the original unmatched sets, independent of input order.",
+          "prompt_sha256": "1073a9b77a4d9d8f0705c6a292700a0eb6255d09e465aef9a06bac58fad7c691",
+          "usage": {
+            "completion_tokens": 1043,
+            "prompt_tokens": 15187,
+            "total_tokens": 16230,
+            "prompt_tokens_details": {
+              "cached_tokens": 14722
+            }
+          },
+          "timings": {
+            "cache_n": 14722,
+            "prompt_n": 465,
+            "prompt_ms": 2157.271,
+            "prompt_per_token_ms": 4.63929247311828,
+            "prompt_per_second": 215.55010937429742,
+            "predicted_n": 1043,
+            "predicted_ms": 14342.595,
+            "predicted_per_token_ms": 13.764486564299423,
+            "predicted_per_second": 72.65073022001945
+          },
+          "reasoning_tokens": 1024,
+          "diagnosis": {
+            "version": 1,
+            "decision": "pass",
+            "findings": [],
+            "question": ""
+          },
+          "report_sha256": "5d94f83dfbd47acd529e5fec23a372f030467848ae7e50b04b9256044a2a56a0",
+          "status": "exhausted"
+        },
+        {
+          "line": 7,
+          "text": "A4: Expose manifest_tool.report.totals(before,after) for already validated entries: {before_bytes,after_bytes,delta_bytes}, summing ALL respective entry sizes, delta=after-before. Expose manifest_tool.api.run(payload): exactly {action:\"compare\",before,after} returns domain result plus summary=totals; unknown action/fields or malformed payload raises ValueError. Preserve run({action:\"ping\"})={ok:true}.",
+          "prompt_sha256": "7e8c3aa5c2287aaf751befbcb7fb07fb81b01314207c4b6f0a39140a719aef04",
+          "usage": {
+            "completion_tokens": 1043,
+            "prompt_tokens": 15203,
+            "total_tokens": 16246,
+            "prompt_tokens_details": {
+              "cached_tokens": 14722
+            }
+          },
+          "timings": {
+            "cache_n": 14722,
+            "prompt_n": 481,
+            "prompt_ms": 1593.323,
+            "prompt_per_token_ms": 3.3125218295218297,
+            "prompt_per_second": 301.884803018597,
+            "predicted_n": 1043,
+            "predicted_ms": 13873.189,
+            "predicted_per_token_ms": 13.3140009596929,
+            "predicted_per_second": 75.10890250251762
+          },
+          "reasoning_tokens": 1024,
+          "diagnosis": {
+            "version": 1,
+            "decision": "pass",
+            "findings": [],
+            "question": ""
+          },
+          "report_sha256": "5d94f83dfbd47acd529e5fec23a372f030467848ae7e50b04b9256044a2a56a0",
+          "status": "exhausted"
+        },
+        {
+          "line": 9,
+          "text": "A5: CLI python /path/to/project/main.py reads one JSON document from stdin. Success prints only its JSON result and exits0; malformed JSON or invalid action/payload prints exactly {\"error\":\"invalid input\"} as JSON and exits2, without traceback. It must work from arbitrary cwd; no filesystem reads/writes beyond stdin/stdout are part of comparison.",
+          "prompt_sha256": "a161046f6f77e2d663487839247c2a5ab8bbc9b5aa99c85990346ce11ae8ad15",
+          "usage": {
+            "completion_tokens": 1043,
+            "prompt_tokens": 15186,
+            "total_tokens": 16229,
+            "prompt_tokens_details": {
+              "cached_tokens": 14722
+            }
+          },
+          "timings": {
+            "cache_n": 14722,
+            "prompt_n": 464,
+            "prompt_ms": 2083.537,
+            "prompt_per_token_ms": 4.490381465517241,
+            "prompt_per_second": 222.6982290211309,
+            "predicted_n": 1043,
+            "predicted_ms": 14284.89,
+            "predicted_per_token_ms": 13.709107485604607,
+            "predicted_per_second": 72.94420888085243
+          },
+          "reasoning_tokens": 1024,
+          "diagnosis": {
+            "version": 1,
+            "decision": "pass",
+            "findings": [],
+            "question": ""
+          },
+          "report_sha256": "5d94f83dfbd47acd529e5fec23a372f030467848ae7e50b04b9256044a2a56a0",
+          "status": "exhausted"
+        },
+        {
+          "line": 11,
+          "text": "A6: Add at least three meaningful unittest test methods discoverable from the project root, covering ordinary behavior, an edge case, and rejection/nonmutation; tests must pass offline. Update README.md with at least40words explaining behavior and errors, a concrete JSON request/response example, and working run/server and unittest commands. Preserve baseline interfaces. No new dependencies. Semantic review will assess test/docs usefulness; a test count alone is not proof. For this stdlib project run tests with python -m unittest discover -s /path/to/project; use only Python3.12stdlib.",
+          "prompt_sha256": "5f27862eba2fb00768dca6139e13c1cd1cf4394f085fac5e6c4c4b2c22f05dfe",
+          "usage": {
+            "completion_tokens": 1231,
+            "prompt_tokens": 15230,
+            "total_tokens": 16461,
+            "prompt_tokens_details": {
+              "cached_tokens": 14722
+            }
+          },
+          "timings": {
+            "cache_n": 14722,
+            "prompt_n": 508,
+            "prompt_ms": 1974.014,
+            "prompt_per_token_ms": 3.885854330708661,
+            "prompt_per_second": 257.3436662556598,
+            "predicted_n": 1231,
+            "predicted_ms": 17257.847,
+            "predicted_per_token_ms": 14.030769918699189,
+            "predicted_per_second": 71.27192633009203
+          },
+          "reasoning_tokens": 1024,
+          "diagnosis": {
+            "version": 1,
+            "decision": "repair",
+            "findings": [
+              {
+                "severity": "critical",
+                "source": {
+                  "path": "tests/test_manifest_tool.py",
+                  "line": 178
+                },
+                "requirements": [
+                  11
+                ],
+                "observations": [
+                  2,
+                  3
+                ],
+                "inference": "The test_cli_success_and_errors method invokes subprocess.run with cwd='/workspace' (line 178). The captured evidence from command id 2 (segment 2) shows the unittest run reports 'FAILED (errors=1)' with a FileNotFoundError traceback: 'No such file or directory: /workspace' (segment 3). The objective line 11 requires that tests pass offline when run with python -m unittest discover -s /path/to/project. Because the test hardcodes a nonexistent working directory, it cannot pass in any environment where /workspace is absent, violating the 'tests must pass offline' clause. The test is otherwise meaningful (it checks CLI exit codes and output), but its cwd argument makes it environment-dependent rather than offline-portable."
+              }
+            ],
+            "question": ""
+          },
+          "report_sha256": "8f7f295af4e9e7cb25051cf6d0e5b8e060587eabb42d0a6d59f3bba2387d7fe5",
+          "status": "exhausted"
+        },
+        {
+          "line": 13,
+          "text": "Independent milestone checks cover A1,A2 on non-rename/non-test-operation cases; full acceptance covers ALL requirements. Both child contexts retain all requirements.",
+          "prompt_sha256": "022c57774b139cac1e1e82044e0f39007253f24aaf32aa28974022403a4dd602",
+          "usage": {
+            "completion_tokens": 626,
+            "prompt_tokens": 15142,
+            "total_tokens": 15768,
+            "prompt_tokens_details": {
+              "cached_tokens": 14722
+            }
+          },
+          "timings": {
+            "cache_n": 14722,
+            "prompt_n": 420,
+            "prompt_ms": 1428.072,
+            "prompt_per_token_ms": 3.4001714285714284,
+            "prompt_per_second": 294.10281834529354,
+            "predicted_n": 626,
+            "predicted_ms": 8405.627,
+            "predicted_per_token_ms": 13.4490032,
+            "predicted_per_second": 74.35495293807351
+          },
+          "reasoning_tokens": 607,
+          "diagnosis": {
+            "version": 1,
+            "decision": "pass",
+            "findings": [],
+            "question": ""
+          },
+          "report_sha256": "5d94f83dfbd47acd529e5fec23a372f030467848ae7e50b04b9256044a2a56a0",
+          "status": "accepted"
+        }
+      ],
+      "planned_units": 7,
+      "payload_sha256": "0d4d466be66cb7d1aff6c7be115a19964c2cfaf78107c2e7908e92c2186f79c3",
+      "meaning": "Saved-evidence per-requirement diagnosis; independent semantics pending"
+    },
+    "kind": "per-requirement-review-units"
+  },
+  {
+    "exit_code": 0,
+    "stop": null,
+    "work_elapsed_s": 169.52319285099657,
+    "work_finished_before_deadline": true,
+    "client_group_absent": true,
+    "idle_confirmed": true,
+    "cleanup_confirmed": true,
+    "case": "case-02",
+    "status": "incomplete",
+    "decision": "incomplete",
+    "child": {
+      "status": "incomplete",
+      "decision": "incomplete",
+      "units": [
+        {
+          "line": 1,
+          "text": "A1: Validate before/after as lists of at most100 entries, each exactly {path,size,sha256}. path is1..120ASCII characters split by / into nonempty segments matching [A-Za-z0-9_.-]+, excluding . and ..; no absolute, trailing, repeated slash or backslash. Paths unique within each list. size is strict int0..1000000 (not bool); sha256 is exactly64lowercase hex characters. Reject invalid input with ValueError; never mutate either input on success or failure.",
+          "prompt_sha256": "0eb3911ff48d6c936c90bac8036ae4ab67fc335e732d8ea161d136ecce9a60cd",
+          "usage": {
+            "completion_tokens": 1043,
+            "prompt_tokens": 17609,
+            "total_tokens": 18652,
+            "prompt_tokens_details": {
+              "cached_tokens": 370
+            }
+          },
+          "timings": {
+            "cache_n": 370,
+            "prompt_n": 17239,
+            "prompt_ms": 59673.635,
+            "prompt_per_token_ms": 3.4615485236962704,
+            "prompt_per_second": 288.8880491359375,
+            "predicted_n": 1043,
+            "predicted_ms": 15383.284,
+            "predicted_per_token_ms": 14.76322840690979,
+            "predicted_per_second": 67.73586186148549
+          },
+          "reasoning_tokens": 1024,
+          "diagnosis": {
+            "version": 1,
+            "decision": "pass",
+            "findings": [],
+            "question": ""
+          },
+          "report_sha256": "978a89164aba0af112ecd003377c030e66bf728bd35b437f7965199cb6e1bc28",
+          "status": "exhausted"
+        },
+        {
+          "line": 3,
+          "text": "A2: Expose manifest_tool.domain.compare(before,after). Compare shared paths first: unchanged when both size and sha256 equal, otherwise modified. Return exactly {added:[paths],removed:[paths],modified:[{path,before_size,after_size}],renamed:[{from,to}],unchanged:[paths]}. All path lists and modified sort ascending by path; renamed sorts by from. Empty inputs produce empty lists. Shared paths never participate in rename matching.",
+          "prompt_sha256": "612f38329b29c00252ec07074ec8f91fd38cafd78f41436a185477c540a0c1ab",
+          "usage": {
+            "completion_tokens": 1043,
+            "prompt_tokens": 17582,
+            "total_tokens": 18625,
+            "prompt_tokens_details": {
+              "cached_tokens": 17097
+            }
+          },
+          "timings": {
+            "cache_n": 17097,
+            "prompt_n": 485,
+            "prompt_ms": 1968.078,
+            "prompt_per_token_ms": 4.057892783505155,
+            "prompt_per_second": 246.43332225653657,
+            "predicted_n": 1043,
+            "predicted_ms": 15593.625,
+            "predicted_per_token_ms": 14.965091170825335,
+            "predicted_per_second": 66.82217893530209
+          },
+          "reasoning_tokens": 1024,
+          "diagnosis": {
+            "version": 1,
+            "decision": "pass",
+            "findings": [],
+            "question": ""
+          },
+          "report_sha256": "978a89164aba0af112ecd003377c030e66bf728bd35b437f7965199cb6e1bc28",
+          "status": "exhausted"
+        },
+        {
+          "line": 5,
+          "text": "A3: Among only paths absent from the opposite manifest, signature=(size,sha256). Recognize a rename only if exactly one unmatched old path AND exactly one unmatched new path have that signature; remove both from added/removed. Ambiguous signatures remain additions/removals, with no greedy pairing. Match based on the original unmatched sets, independent of input order.",
+          "prompt_sha256": "4eda2b76f54813d337c73b3358410c9f420308a580251ce7dc3429ddf7a817e4",
+          "usage": {
+            "completion_tokens": 1043,
+            "prompt_tokens": 17562,
+            "total_tokens": 18605,
+            "prompt_tokens_details": {
+              "cached_tokens": 17097
+            }
+          },
+          "timings": {
+            "cache_n": 17097,
+            "prompt_n": 465,
+            "prompt_ms": 1513.314,
+            "prompt_per_token_ms": 3.2544387096774194,
+            "prompt_per_second": 307.27264797656005,
+            "predicted_n": 1043,
+            "predicted_ms": 15039.362,
+            "predicted_per_token_ms": 14.433168905950096,
+            "predicted_per_second": 69.28485397186397
+          },
+          "reasoning_tokens": 1024,
+          "diagnosis": {
+            "version": 1,
+            "decision": "pass",
+            "findings": [],
+            "question": ""
+          },
+          "report_sha256": "978a89164aba0af112ecd003377c030e66bf728bd35b437f7965199cb6e1bc28",
+          "status": "exhausted"
+        },
+        {
+          "line": 7,
+          "text": "A4: Expose manifest_tool.report.totals(before,after) for already validated entries: {before_bytes,after_bytes,delta_bytes}, summing ALL respective entry sizes, delta=after-before. Expose manifest_tool.api.run(payload): exactly {action:\"compare\",before,after} returns domain result plus summary=totals; unknown action/fields or malformed payload raises ValueError. Preserve run({action:\"ping\"})={ok:true}.",
+          "prompt_sha256": "2b948031ce950979791e8f80906e07bb0f555925e2898f65999246e2eaf090f4",
+          "usage": {
+            "completion_tokens": 1043,
+            "prompt_tokens": 17578,
+            "total_tokens": 18621,
+            "prompt_tokens_details": {
+              "cached_tokens": 17097
+            }
+          },
+          "timings": {
+            "cache_n": 17097,
+            "prompt_n": 481,
+            "prompt_ms": 2109.551,
+            "prompt_per_token_ms": 4.3857609147609145,
+            "prompt_per_second": 228.01060510032704,
+            "predicted_n": 1043,
+            "predicted_ms": 15188.964,
+            "predicted_per_token_ms": 14.576740882917466,
+            "predicted_per_second": 68.60244056144974
+          },
+          "reasoning_tokens": 1024,
+          "diagnosis": {
+            "version": 1,
+            "decision": "pass",
+            "findings": [],
+            "question": ""
+          },
+          "report_sha256": "978a89164aba0af112ecd003377c030e66bf728bd35b437f7965199cb6e1bc28",
+          "status": "exhausted"
+        },
+        {
+          "line": 9,
+          "text": "A5: CLI python /path/to/project/main.py reads one JSON document from stdin. Success prints only its JSON result and exits0; malformed JSON or invalid action/payload prints exactly {\"error\":\"invalid input\"} as JSON and exits2, without traceback. It must work from arbitrary cwd; no filesystem reads/writes beyond stdin/stdout are part of comparison.",
+          "prompt_sha256": "2b90be95d1bfb916f66b238c99c4dfcdf266451841d682c8821c42c781a65274",
+          "usage": {
+            "completion_tokens": 1043,
+            "prompt_tokens": 17561,
+            "total_tokens": 18604,
+            "prompt_tokens_details": {
+              "cached_tokens": 17097
+            }
+          },
+          "timings": {
+            "cache_n": 17097,
+            "prompt_n": 464,
+            "prompt_ms": 1962.219,
+            "prompt_per_token_ms": 4.22892025862069,
+            "prompt_per_second": 236.46697947578735,
+            "predicted_n": 1043,
+            "predicted_ms": 15378.491,
+            "predicted_per_token_ms": 14.758628598848368,
+            "predicted_per_second": 67.75697303461048
+          },
+          "reasoning_tokens": 1024,
+          "diagnosis": {
+            "version": 1,
+            "decision": "pass",
+            "findings": [],
+            "question": ""
+          },
+          "report_sha256": "978a89164aba0af112ecd003377c030e66bf728bd35b437f7965199cb6e1bc28",
+          "status": "exhausted"
+        },
+        {
+          "line": 11,
+          "text": "A6: Add at least three meaningful unittest test methods discoverable from the project root, covering ordinary behavior, an edge case, and rejection/nonmutation; tests must pass offline. Update README.md with at least40words explaining behavior and errors, a concrete JSON request/response example, and working run/server and unittest commands. Preserve baseline interfaces. No new dependencies. Semantic review will assess test/docs usefulness; a test count alone is not proof. For this stdlib project run tests with python -m unittest discover -s /path/to/project; use only Python3.12stdlib.",
+          "prompt_sha256": "cd523761fa42632e25817d35634ad757d7dc59205d0f5c74255eb5ce59b69e01",
+          "usage": {
+            "completion_tokens": 1043,
+            "prompt_tokens": 17605,
+            "total_tokens": 18648,
+            "prompt_tokens_details": {
+              "cached_tokens": 17097
+            }
+          },
+          "timings": {
+            "cache_n": 17097,
+            "prompt_n": 508,
+            "prompt_ms": 1827.015,
+            "prompt_per_token_ms": 3.5964862204724413,
+            "prompt_per_second": 278.0491676313549,
+            "predicted_n": 1043,
+            "predicted_ms": 14859.277,
+            "predicted_per_token_ms": 14.260342610364683,
+            "predicted_per_second": 70.12454239866447
+          },
+          "reasoning_tokens": 1024,
+          "diagnosis": {
+            "version": 1,
+            "decision": "pass",
+            "findings": [],
+            "question": ""
+          },
+          "report_sha256": "978a89164aba0af112ecd003377c030e66bf728bd35b437f7965199cb6e1bc28",
+          "status": "exhausted"
+        },
+        {
+          "line": 13,
+          "text": "Independent milestone checks cover A1,A2 on non-rename/non-test-operation cases; full acceptance covers ALL requirements. Both child contexts retain all requirements.",
+          "prompt_sha256": "292e44bf931d09e1c80076c652482785ccaa8504b75420cece51f52d8e1e2e9a",
+          "usage": {
+            "completion_tokens": 413,
+            "prompt_tokens": 17517,
+            "total_tokens": 17930,
+            "prompt_tokens_details": {
+              "cached_tokens": 17097
+            }
+          },
+          "timings": {
+            "cache_n": 17097,
+            "prompt_n": 420,
+            "prompt_ms": 1808.87,
+            "prompt_per_token_ms": 4.3068333333333335,
+            "prompt_per_second": 232.18915676637903,
+            "predicted_n": 413,
+            "predicted_ms": 6258.226,
+            "predicted_per_token_ms": 15.189868932038834,
+            "predicted_per_second": 65.83335277441243
+          },
+          "reasoning_tokens": 394,
+          "diagnosis": {
+            "version": 1,
+            "decision": "pass",
+            "findings": [],
+            "question": ""
+          },
+          "report_sha256": "978a89164aba0af112ecd003377c030e66bf728bd35b437f7965199cb6e1bc28",
+          "status": "accepted"
+        }
+      ],
+      "planned_units": 7,
+      "payload_sha256": "301b68d3a05f5e92632ca089ec16b3877bfa9c9548f48056a6ada38541ecd45b",
+      "meaning": "Saved-evidence per-requirement diagnosis; independent semantics pending"
+    },
+    "kind": "per-requirement-review-units"
+  },
+  {
+    "exit_code": 0,
+    "stop": null,
+    "work_elapsed_s": 143.97922550400108,
+    "work_finished_before_deadline": true,
+    "client_group_absent": true,
+    "idle_confirmed": true,
+    "cleanup_confirmed": true,
+    "case": "case-03",
+    "status": "incomplete",
+    "decision": "incomplete",
+    "child": {
+      "status": "incomplete",
+      "decision": "incomplete",
+      "units": [
+        {
+          "line": 1,
+          "text": "A1: Validate before/after as lists of at most100 entries, each exactly {path,size,sha256}. path is1..120ASCII characters split by / into nonempty segments matching [A-Za-z0-9_.-]+, excluding . and ..; no absolute, trailing, repeated slash or backslash. Paths unique within each list. size is strict int0..1000000 (not bool); sha256 is exactly64lowercase hex characters. Reject invalid input with ValueError; never mutate either input on success or failure.",
+          "prompt_sha256": "57d0a011a5b019ad3f32d301649a36f15997a99ab7563082561a3a3ebe3a566b",
+          "usage": {
+            "completion_tokens": 1043,
+            "prompt_tokens": 13571,
+            "total_tokens": 14614,
+            "prompt_tokens_details": {
+              "cached_tokens": 370
+            }
+          },
+          "timings": {
+            "cache_n": 370,
+            "prompt_n": 13201,
+            "prompt_ms": 42760.478,
+            "prompt_per_token_ms": 3.2391847587303992,
+            "prompt_per_second": 308.71965463061474,
+            "predicted_n": 1043,
+            "predicted_ms": 14374.096,
+            "predicted_per_token_ms": 13.794717850287908,
+            "predicted_per_second": 72.49151529250953
+          },
+          "reasoning_tokens": 1024,
+          "diagnosis": {
+            "version": 1,
+            "decision": "pass",
+            "findings": [],
+            "question": ""
+          },
+          "report_sha256": "e3e50879b7d3fff3548e3d7508f6e58875f2192f38847a8113cd1c64767506d5",
+          "status": "exhausted"
+        },
+        {
+          "line": 3,
+          "text": "A2: Expose manifest_tool.domain.compare(before,after). Compare shared paths first: unchanged when both size and sha256 equal, otherwise modified. Return exactly {added:[paths],removed:[paths],modified:[{path,before_size,after_size}],renamed:[{from,to}],unchanged:[paths]}. All path lists and modified sort ascending by path; renamed sorts by from. Empty inputs produce empty lists. Shared paths never participate in rename matching.",
+          "prompt_sha256": "40df2cf38257d5c9eb0e4b700a1cb9965326696ca2a4311493e9d971b32c0c92",
+          "usage": {
+            "completion_tokens": 1009,
+            "prompt_tokens": 13544,
+            "total_tokens": 14553,
+            "prompt_tokens_details": {
+              "cached_tokens": 13059
+            }
+          },
+          "timings": {
+            "cache_n": 13059,
+            "prompt_n": 485,
+            "prompt_ms": 2151.11,
+            "prompt_per_token_ms": 4.435278350515464,
+            "prompt_per_second": 225.46499249224817,
+            "predicted_n": 1009,
+            "predicted_ms": 14270.903,
+            "predicted_per_token_ms": 14.157641865079365,
+            "predicted_per_second": 70.63323182842738
+          },
+          "reasoning_tokens": 990,
+          "diagnosis": {
+            "version": 1,
+            "decision": "pass",
+            "findings": [],
+            "question": ""
+          },
+          "report_sha256": "e3e50879b7d3fff3548e3d7508f6e58875f2192f38847a8113cd1c64767506d5",
+          "status": "accepted"
+        },
+        {
+          "line": 5,
+          "text": "A3: Among only paths absent from the opposite manifest, signature=(size,sha256). Recognize a rename only if exactly one unmatched old path AND exactly one unmatched new path have that signature; remove both from added/removed. Ambiguous signatures remain additions/removals, with no greedy pairing. Match based on the original unmatched sets, independent of input order.",
+          "prompt_sha256": "a2184f3997df8655c30bc29f23278fed29b7cf62cf0f0d87c6f17cc2e3370f62",
+          "usage": {
+            "completion_tokens": 1043,
+            "prompt_tokens": 13524,
+            "total_tokens": 14567,
+            "prompt_tokens_details": {
+              "cached_tokens": 13059
+            }
+          },
+          "timings": {
+            "cache_n": 13059,
+            "prompt_n": 465,
+            "prompt_ms": 1869.143,
+            "prompt_per_token_ms": 4.019662365591398,
+            "prompt_per_second": 248.777113361578,
+            "predicted_n": 1043,
+            "predicted_ms": 14189.691,
+            "predicted_per_token_ms": 13.617745681381958,
+            "predicted_per_second": 73.43359344470574
+          },
+          "reasoning_tokens": 1024,
+          "diagnosis": {
+            "version": 1,
+            "decision": "pass",
+            "findings": [],
+            "question": ""
+          },
+          "report_sha256": "e3e50879b7d3fff3548e3d7508f6e58875f2192f38847a8113cd1c64767506d5",
+          "status": "exhausted"
+        },
+        {
+          "line": 7,
+          "text": "A4: Expose manifest_tool.report.totals(before,after) for already validated entries: {before_bytes,after_bytes,delta_bytes}, summing ALL respective entry sizes, delta=after-before. Expose manifest_tool.api.run(payload): exactly {action:\"compare\",before,after} returns domain result plus summary=totals; unknown action/fields or malformed payload raises ValueError. Preserve run({action:\"ping\"})={ok:true}.",
+          "prompt_sha256": "dbba3520cd52f6701341969a58f12474e06498e401d26d3261c620a87b048656",
+          "usage": {
+            "completion_tokens": 1043,
+            "prompt_tokens": 13540,
+            "total_tokens": 14583,
+            "prompt_tokens_details": {
+              "cached_tokens": 13059
+            }
+          },
+          "timings": {
+            "cache_n": 13059,
+            "prompt_n": 481,
+            "prompt_ms": 2020.095,
+            "prompt_per_token_ms": 4.199781704781705,
+            "prompt_per_second": 238.10761375083845,
+            "predicted_n": 1043,
+            "predicted_ms": 14099.06,
+            "predicted_per_token_ms": 13.530767754318617,
+            "predicted_per_second": 73.90563626227565
+          },
+          "reasoning_tokens": 1024,
+          "diagnosis": {
+            "version": 1,
+            "decision": "pass",
+            "findings": [],
+            "question": ""
+          },
+          "report_sha256": "e3e50879b7d3fff3548e3d7508f6e58875f2192f38847a8113cd1c64767506d5",
+          "status": "exhausted"
+        },
+        {
+          "line": 9,
+          "text": "A5: CLI python /path/to/project/main.py reads one JSON document from stdin. Success prints only its JSON result and exits0; malformed JSON or invalid action/payload prints exactly {\"error\":\"invalid input\"} as JSON and exits2, without traceback. It must work from arbitrary cwd; no filesystem reads/writes beyond stdin/stdout are part of comparison.",
+          "prompt_sha256": "72baf9b40bb1f712eb03041cade306796b4d3fd2522c334e87e994fdde78b3da",
+          "usage": {
+            "completion_tokens": 1043,
+            "prompt_tokens": 13523,
+            "total_tokens": 14566,
+            "prompt_tokens_details": {
+              "cached_tokens": 13059
+            }
+          },
+          "timings": {
+            "cache_n": 13059,
+            "prompt_n": 464,
+            "prompt_ms": 1823.154,
+            "prompt_per_token_ms": 3.929211206896552,
+            "prompt_per_second": 254.50400788962423,
+            "predicted_n": 1043,
+            "predicted_ms": 13718.967,
+            "predicted_per_token_ms": 13.165995201535509,
+            "predicted_per_second": 75.9532405027288
+          },
+          "reasoning_tokens": 1024,
+          "diagnosis": {
+            "version": 1,
+            "decision": "pass",
+            "findings": [],
+            "question": ""
+          },
+          "report_sha256": "e3e50879b7d3fff3548e3d7508f6e58875f2192f38847a8113cd1c64767506d5",
+          "status": "exhausted"
+        },
+        {
+          "line": 11,
+          "text": "A6: Add at least three meaningful unittest test methods discoverable from the project root, covering ordinary behavior, an edge case, and rejection/nonmutation; tests must pass offline. Update README.md with at least40words explaining behavior and errors, a concrete JSON request/response example, and working run/server and unittest commands. Preserve baseline interfaces. No new dependencies. Semantic review will assess test/docs usefulness; a test count alone is not proof. For this stdlib project run tests with python -m unittest discover -s /path/to/project; use only Python3.12stdlib.",
+          "prompt_sha256": "da25320699c00a2b88ef8cfceb44e50ad88b13e0222daaa01b8ed3d854f3d285",
+          "usage": {
+            "completion_tokens": 1043,
+            "prompt_tokens": 13567,
+            "total_tokens": 14610,
+            "prompt_tokens_details": {
+              "cached_tokens": 13059
+            }
+          },
+          "timings": {
+            "cache_n": 13059,
+            "prompt_n": 508,
+            "prompt_ms": 2166.016,
+            "prompt_per_token_ms": 4.263811023622047,
+            "prompt_per_second": 234.5319702162865,
+            "predicted_n": 1043,
+            "predicted_ms": 13988.043,
+            "predicted_per_token_ms": 13.424225527831094,
+            "predicted_per_second": 74.49219308233468
+          },
+          "reasoning_tokens": 1024,
+          "diagnosis": {
+            "version": 1,
+            "decision": "pass",
+            "findings": [],
+            "question": ""
+          },
+          "report_sha256": "e3e50879b7d3fff3548e3d7508f6e58875f2192f38847a8113cd1c64767506d5",
+          "status": "exhausted"
+        },
+        {
+          "line": 13,
+          "text": "Independent milestone checks cover A1,A2 on non-rename/non-test-operation cases; full acceptance covers ALL requirements. Both child contexts retain all requirements.",
+          "prompt_sha256": "b74e10078a38ba46183a23aca7ee26a94ba3346b511a25118d2cb8ff5495eef6",
+          "usage": {
+            "completion_tokens": 291,
+            "prompt_tokens": 13479,
+            "total_tokens": 13770,
+            "prompt_tokens_details": {
+              "cached_tokens": 13059
+            }
+          },
+          "timings": {
+            "cache_n": 13059,
+            "prompt_n": 420,
+            "prompt_ms": 1984.879,
+            "prompt_per_token_ms": 4.72590238095238,
+            "prompt_per_second": 211.59980029009324,
+            "predicted_n": 291,
+            "predicted_ms": 3782.106,
+            "predicted_per_token_ms": 13.041744827586207,
+            "predicted_per_second": 76.67685675652665
+          },
+          "reasoning_tokens": 272,
+          "diagnosis": {
+            "version": 1,
+            "decision": "pass",
+            "findings": [],
+            "question": ""
+          },
+          "report_sha256": "e3e50879b7d3fff3548e3d7508f6e58875f2192f38847a8113cd1c64767506d5",
+          "status": "accepted"
+        }
+      ],
+      "planned_units": 7,
+      "payload_sha256": "6495627493dc67db51789fbe226fa4405ecf65b576f790e8121e476f460da829",
+      "meaning": "Saved-evidence per-requirement diagnosis; independent semantics pending"
+    },
+    "kind": "per-requirement-review-units"
+  },
+  {
+    "exit_code": 0,
+    "stop": null,
+    "work_elapsed_s": 164.39814831400145,
+    "work_finished_before_deadline": true,
+    "client_group_absent": true,
+    "idle_confirmed": true,
+    "cleanup_confirmed": true,
+    "case": "case-04",
+    "status": "incomplete",
+    "decision": "incomplete",
+    "child": {
+      "status": "incomplete",
+      "decision": "incomplete",
+      "units": [
+        {
+          "line": 1,
+          "text": "A1: Validate before/after as lists of at most100 entries, each exactly {path,size,sha256}. path is1..120ASCII characters split by / into nonempty segments matching [A-Za-z0-9_.-]+, excluding . and ..; no absolute, trailing, repeated slash or backslash. Paths unique within each list. size is strict int0..1000000 (not bool); sha256 is exactly64lowercase hex characters. Reject invalid input with ValueError; never mutate either input on success or failure.",
+          "prompt_sha256": "5117ced07ac382a42ca1b5e48cbef7f0c60ae57a644406fa9ae7fc5181a5ffa3",
+          "usage": {
+            "completion_tokens": 1043,
+            "prompt_tokens": 18895,
+            "total_tokens": 19938,
+            "prompt_tokens_details": {
+              "cached_tokens": 370
+            }
+          },
+          "timings": {
+            "cache_n": 370,
+            "prompt_n": 18525,
+            "prompt_ms": 58138.522,
+            "prompt_per_token_ms": 3.1383817543859647,
+            "prompt_per_second": 318.6355511411178,
+            "predicted_n": 1043,
+            "predicted_ms": 15149.426,
+            "predicted_per_token_ms": 14.538796545105566,
+            "predicted_per_second": 68.7814838661214
+          },
+          "reasoning_tokens": 1023,
+          "diagnosis": {
+            "version": 1,
+            "decision": "pass",
+            "findings": [],
+            "question": ""
+          },
+          "report_sha256": "a53f16ec0488a2c5ba0bb118c20eebdab25aa050663a80aa3ab876fdc8ba705b",
+          "status": "accepted"
+        },
+        {
+          "line": 3,
+          "text": "A2: Expose manifest_tool.domain.compare(before,after). Compare shared paths first: unchanged when both size and sha256 equal, otherwise modified. Return exactly {added:[paths],removed:[paths],modified:[{path,before_size,after_size}],renamed:[{from,to}],unchanged:[paths]}. All path lists and modified sort ascending by path; renamed sorts by from. Empty inputs produce empty lists. Shared paths never participate in rename matching.",
+          "prompt_sha256": "8aa6fd621b6010bbd224f845f096008e55873456412d2590898a016364919840",
+          "usage": {
+            "completion_tokens": 876,
+            "prompt_tokens": 18868,
+            "total_tokens": 19744,
+            "prompt_tokens_details": {
+              "cached_tokens": 18383
+            }
+          },
+          "timings": {
+            "cache_n": 18383,
+            "prompt_n": 485,
+            "prompt_ms": 2119.115,
+            "prompt_per_token_ms": 4.369309278350515,
+            "prompt_per_second": 228.86912697045705,
+            "predicted_n": 876,
+            "predicted_ms": 12769.869,
+            "predicted_per_token_ms": 14.594136,
+            "predicted_per_second": 68.52067159028803
+          },
+          "reasoning_tokens": 857,
+          "diagnosis": {
+            "version": 1,
+            "decision": "pass",
+            "findings": [],
+            "question": ""
+          },
+          "report_sha256": "a53f16ec0488a2c5ba0bb118c20eebdab25aa050663a80aa3ab876fdc8ba705b",
+          "status": "accepted"
+        },
+        {
+          "line": 5,
+          "text": "A3: Among only paths absent from the opposite manifest, signature=(size,sha256). Recognize a rename only if exactly one unmatched old path AND exactly one unmatched new path have that signature; remove both from added/removed. Ambiguous signatures remain additions/removals, with no greedy pairing. Match based on the original unmatched sets, independent of input order.",
+          "prompt_sha256": "8ebeb567b6d98bab5036bc5473b7ecd58778b7f428297adcdac2f295f75da75e",
+          "usage": {
+            "completion_tokens": 1043,
+            "prompt_tokens": 18848,
+            "total_tokens": 19891,
+            "prompt_tokens_details": {
+              "cached_tokens": 18383
+            }
+          },
+          "timings": {
+            "cache_n": 18383,
+            "prompt_n": 465,
+            "prompt_ms": 2132.973,
+            "prompt_per_token_ms": 4.58703870967742,
+            "prompt_per_second": 218.0055725037307,
+            "predicted_n": 1043,
+            "predicted_ms": 14986.541,
+            "predicted_per_token_ms": 14.38247696737044,
+            "predicted_per_second": 69.52905276808038
+          },
+          "reasoning_tokens": 1024,
+          "diagnosis": {
+            "version": 1,
+            "decision": "pass",
+            "findings": [],
+            "question": ""
+          },
+          "report_sha256": "a53f16ec0488a2c5ba0bb118c20eebdab25aa050663a80aa3ab876fdc8ba705b",
+          "status": "exhausted"
+        },
+        {
+          "line": 7,
+          "text": "A4: Expose manifest_tool.report.totals(before,after) for already validated entries: {before_bytes,after_bytes,delta_bytes}, summing ALL respective entry sizes, delta=after-before. Expose manifest_tool.api.run(payload): exactly {action:\"compare\",before,after} returns domain result plus summary=totals; unknown action/fields or malformed payload raises ValueError. Preserve run({action:\"ping\"})={ok:true}.",
+          "prompt_sha256": "e15f8c001a067d37882f812773a3d8e177c5633cb26a3e689cf1be205ca3cc00",
+          "usage": {
+            "completion_tokens": 1043,
+            "prompt_tokens": 18864,
+            "total_tokens": 19907,
+            "prompt_tokens_details": {
+              "cached_tokens": 18383
+            }
+          },
+          "timings": {
+            "cache_n": 18383,
+            "prompt_n": 481,
+            "prompt_ms": 2113.282,
+            "prompt_per_token_ms": 4.393517671517672,
+            "prompt_per_second": 227.60805230915702,
+            "predicted_n": 1043,
+            "predicted_ms": 14865.297,
+            "predicted_per_token_ms": 14.266119961612285,
+            "predicted_per_second": 70.09614405955023
+          },
+          "reasoning_tokens": 1024,
+          "diagnosis": {
+            "version": 1,
+            "decision": "pass",
+            "findings": [],
+            "question": ""
+          },
+          "report_sha256": "a53f16ec0488a2c5ba0bb118c20eebdab25aa050663a80aa3ab876fdc8ba705b",
+          "status": "exhausted"
+        },
+        {
+          "line": 9,
+          "text": "A5: CLI python /path/to/project/main.py reads one JSON document from stdin. Success prints only its JSON result and exits0; malformed JSON or invalid action/payload prints exactly {\"error\":\"invalid input\"} as JSON and exits2, without traceback. It must work from arbitrary cwd; no filesystem reads/writes beyond stdin/stdout are part of comparison.",
+          "prompt_sha256": "8cc12b85e82416583a10840470613fabff604fed01ff65e7baf491f3afce872f",
+          "usage": {
+            "completion_tokens": 1043,
+            "prompt_tokens": 18847,
+            "total_tokens": 19890,
+            "prompt_tokens_details": {
+              "cached_tokens": 18383
+            }
+          },
+          "timings": {
+            "cache_n": 18383,
+            "prompt_n": 464,
+            "prompt_ms": 2087.494,
+            "prompt_per_token_ms": 4.498909482758621,
+            "prompt_per_second": 222.27608797917503,
+            "predicted_n": 1043,
+            "predicted_ms": 15089.974,
+            "predicted_per_token_ms": 14.481740882917467,
+            "predicted_per_second": 69.05247152844665
+          },
+          "reasoning_tokens": 1024,
+          "diagnosis": {
+            "version": 1,
+            "decision": "pass",
+            "findings": [],
+            "question": ""
+          },
+          "report_sha256": "a53f16ec0488a2c5ba0bb118c20eebdab25aa050663a80aa3ab876fdc8ba705b",
+          "status": "exhausted"
+        },
+        {
+          "line": 11,
+          "text": "A6: Add at least three meaningful unittest test methods discoverable from the project root, covering ordinary behavior, an edge case, and rejection/nonmutation; tests must pass offline. Update README.md with at least40words explaining behavior and errors, a concrete JSON request/response example, and working run/server and unittest commands. Preserve baseline interfaces. No new dependencies. Semantic review will assess test/docs usefulness; a test count alone is not proof. For this stdlib project run tests with python -m unittest discover -s /path/to/project; use only Python3.12stdlib.",
+          "prompt_sha256": "9ab41e7967eaf50f117f5a4160a2f0d85a704c882d8f42a51f7242fe66f33738",
+          "usage": {
+            "completion_tokens": 1043,
+            "prompt_tokens": 18891,
+            "total_tokens": 19934,
+            "prompt_tokens_details": {
+              "cached_tokens": 18383
+            }
+          },
+          "timings": {
+            "cache_n": 18383,
+            "prompt_n": 508,
+            "prompt_ms": 2183.132,
+            "prompt_per_token_ms": 4.297503937007874,
+            "prompt_per_second": 232.69321323676257,
+            "predicted_n": 1043,
+            "predicted_ms": 15028.886,
+            "predicted_per_token_ms": 14.423115163147793,
+            "predicted_per_second": 69.33314950955113
+          },
+          "reasoning_tokens": 1024,
+          "diagnosis": {
+            "version": 1,
+            "decision": "pass",
+            "findings": [],
+            "question": ""
+          },
+          "report_sha256": "a53f16ec0488a2c5ba0bb118c20eebdab25aa050663a80aa3ab876fdc8ba705b",
+          "status": "exhausted"
+        },
+        {
+          "line": 13,
+          "text": "Independent milestone checks cover A1,A2 on non-rename/non-test-operation cases; full acceptance covers ALL requirements. Both child contexts retain all requirements.",
+          "prompt_sha256": "5aa35a50cd5e464c1a3bf833e35dc3fde544db0e449e108ea0d1ab860954a9d5",
+          "usage": {
+            "completion_tokens": 343,
+            "prompt_tokens": 18803,
+            "total_tokens": 19146,
+            "prompt_tokens_details": {
+              "cached_tokens": 18383
+            }
+          },
+          "timings": {
+            "cache_n": 18383,
+            "prompt_n": 420,
+            "prompt_ms": 1970.367,
+            "prompt_per_token_ms": 4.69135,
+            "prompt_per_second": 213.15825934965417,
+            "predicted_n": 343,
+            "predicted_ms": 5018.266,
+            "predicted_per_token_ms": 14.673292397660818,
+            "predicted_per_second": 68.15103065481185
+          },
+          "reasoning_tokens": 324,
+          "diagnosis": {
+            "version": 1,
+            "decision": "pass",
+            "findings": [],
+            "question": ""
+          },
+          "report_sha256": "a53f16ec0488a2c5ba0bb118c20eebdab25aa050663a80aa3ab876fdc8ba705b",
+          "status": "accepted"
+        }
+      ],
+      "planned_units": 7,
+      "payload_sha256": "0af7f346098aff7423ef741e4c3a4e3ad7fb9f47b87c0429134dbd4effe22719",
+      "meaning": "Saved-evidence per-requirement diagnosis; independent semantics pending"
+    },
+    "kind": "per-requirement-review-units"
+  }
+]
