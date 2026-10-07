@@ -49,7 +49,9 @@ class RoleFake:
         text = body['messages'][1]['content'].split('ASSIGNMENT: ', 1)[1]
         role = 'audit' if text.startswith('Role: evidence auditor') else 'prosecutor' if text.startswith('Role: prosecutor') else 'judge'
         self.roles.append(role); self.last = body
-        return {'choices': [{'finish_reason': 'stop', 'message': {'role': 'assistant', 'content': json.dumps(self.answers[role]),
+        answer = self.answers[role]
+        if isinstance(answer, list): answer = answer.pop(0) if len(answer) > 1 else answer[0]
+        return {'choices': [{'finish_reason': 'stop', 'message': {'role': 'assistant', 'content': json.dumps(answer),
                 'reasoning_content': 'r'}}], 'usage': {}, 'timings': {}}
 
 
@@ -125,7 +127,17 @@ class Roles(unittest.TestCase):
         self.assertEqual(fake.last['thinking_budget_tokens'], 24576)
         fake = RoleFake({'audit': {'version': 1, 'commands': []}, 'prosecutor': unit_wire()})
         result = self.run_unit(fake, 'b')
-        self.assertEqual((result['status'], fake.roles), ('incomplete', ['audit']))
+        self.assertEqual((result['status'], fake.roles), ('incomplete', ['audit', 'audit']))
+
+    def test_rejected_answer_gets_one_quoted_correction(self):
+        wrong = {'version': 1, 'commands': [{'id': 1, 'bearing': 'supports', 'segments': [2]}, audit()['commands'][1]]}
+        fake = RoleFake({'audit': [wrong, audit()], 'prosecutor': unit_wire()})
+        result = self.run_unit(fake)
+        self.assertEqual((result['status'], result['decision'], fake.roles), ('accepted', 'pass', ['audit', 'audit', 'prosecutor']))
+        attempts = result['roles']['audit']['attempts']
+        self.assertEqual([a['status'] for a in attempts], ['invalid', 'returned'])
+        self.assertIn('segment 2 does not belong to that command (its segments are [1])', attempts[0]['error'])
+        self.assertTrue((self.tmp / 'u' / 'audit-corrected1' / 'ledger.json').exists())
 
     def test_escalation_recovers_exhausted_role(self):
         fake = RoleFake({'audit': audit(), 'prosecutor': unit_wire()}, reasoning={'audit': [8192, 9000], 'prosecutor': 100})

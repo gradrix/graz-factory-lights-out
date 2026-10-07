@@ -29,6 +29,8 @@ BATTERY_SECONDS = 300
 UNIT_BUDGET, UNIT_MAX_TOKENS, UNIT_HTTP, ROLE_SECONDS = 8192, 12288, 300, 420
 # One fresh, separately charged escalation for a role whose reasoning exhausted the first cap.
 ESCALATED_BUDGET, ESCALATED_MAX_TOKENS, ESCALATED_HTTP, ESCALATED_SECONDS = 24576, 28672, 600, 720
+# One fresh correction attempt for a returned answer the controller rejected; the rejection reason is quoted.
+CORRECTIONS = 1
 LADDER = ((UNIT_BUDGET, UNIT_MAX_TOKENS, UNIT_HTTP, ROLE_SECONDS),
           (ESCALATED_BUDGET, ESCALATED_MAX_TOKENS, ESCALATED_HTTP, ESCALATED_SECONDS))
 HEAD = TAIL = 3072
@@ -236,14 +238,19 @@ def validate_audit(value, catalog_value):
     owner = {s['id']: s['command_id'] for s in catalog_value['segments']}
     rows = value['commands']
     if not isinstance(rows, list) or sorted(r.get('id') if isinstance(r, dict) else None for r in rows) != [c['id'] for c in catalog_value['commands']]:
-        raise ValueError('Audit must classify every command exactly once')
+        raise ValueError('Audit must classify every catalog command exactly once (ids ' + str([c['id'] for c in catalog_value['commands']]) + ')')
     for row in rows:
         if set(row) != {'id', 'bearing', 'segments'} or type(row['id']) is not int or row['bearing'] not in ('supports', 'contradicts', 'unrelated'):
             raise ValueError('Audit row')
         refs = row['segments']
-        if not isinstance(refs, list) or any(type(n) is not int or owner.get(n) != row['id'] for n in refs) or len(set(refs)) != len(refs):
-            raise ValueError('Audit segment reference')
-        if (row['bearing'] == 'unrelated') != (not refs) or len(refs) > 4: raise ValueError('Audit segment count')
+        if not isinstance(refs, list) or len(set(map(str, refs))) != len(refs):
+            raise ValueError(f"Audit command {row['id']}: segments must be a list of distinct integers")
+        for n in refs:
+            if type(n) is not int or owner.get(n) != row['id']:
+                raise ValueError(f"Audit command {row['id']}: segment {n!r} does not belong to that command "
+                                 f"(its segments are {[s for s, c in owner.items() if c == row['id']]})")
+        if (row['bearing'] == 'unrelated') != (not refs) or len(refs) > 4:
+            raise ValueError(f"Audit command {row['id']}: unrelated needs [] and supports/contradicts need 1-4 segments")
     return value
 
 
@@ -283,23 +290,28 @@ def judge_unit(root, number, unit, view, payload, config, deadline, transport=No
     root = Path(root); result = {'unit': number, 'ids': unit['ids'], 'text': unit['text'], 'roles': {}}
     assigned = encoded({'statements': unit['ids'], 'text': unit['text']}).decode()
     def role(name, extra=''):
-        attempts = []
-        for level, step in enumerate(LADDER):
-            status, content, facts = ask(root / (name if level == 0 else f'{name}-escalated'), config, view,
-                                         ROLE_ASSIGNMENT[name] + ' Assigned: ' + assigned + extra,
-                                         min(deadline, time.monotonic() + step[3]), transport, step)
-            attempts.append({'status': status, **facts})
-            if status != 'exhausted': break
-        record = {'status': status, **facts, 'attempts': attempts}
-        value = None
-        if status == 'returned':
+        attempts = []; feedback = ''; value = None
+        for correction in range(CORRECTIONS + 1):
+            for level, step in enumerate(LADDER):
+                label = name + ('-escalated' if level else '') + (f'-corrected{correction}' if correction else '')
+                status, content, facts = ask(root / label, config, view,
+                                             ROLE_ASSIGNMENT[name] + ' Assigned: ' + assigned + extra + feedback,
+                                             min(deadline, time.monotonic() + step[3]), transport, step)
+                attempts.append({'status': status, 'label': label, **facts})
+                if status != 'exhausted': break
+            record = {'status': status, **facts, 'attempts': attempts}
+            if status != 'returned': break
             try:
                 value = json.loads(content)
-                value = validate_audit(value, payload['catalog']) if name == 'audit' else value
-                if name != 'audit': validate_unit(value, payload, unit['ids'])
-                record['value'] = value
+                if name == 'audit': validate_audit(value, payload['catalog'])
+                else: validate_unit(value, payload, unit['ids'])
+                record['value'] = value; break
             except Exception as error:
-                record.update(status='invalid', error_type=type(error).__name__, error=redact(str(error))[:1024]); value = None
+                value = None; message = redact(str(error))[:1024]
+                record.update(status='invalid', error_type=type(error).__name__, error=message)
+                attempts[-1].update(status='invalid', error=message)
+                feedback = (' Controller rejection of a previous answer: ' + message +
+                            '. Redo the assignment from the evidence and return one complete, valid object.')
         result['roles'][name] = record
         return value
     audit = role('audit'); prosecutor = role('prosecutor') if audit is not None else None
