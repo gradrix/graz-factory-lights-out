@@ -228,3 +228,6 @@ htmlcov/
 
 !.scratch/.sflo/09-autonomy-review-evidence/
 .scratch/.sflo/09-autonomy-review-evidence/*/
+
+!.scratch/.sflo/09-autonomy-review-units/
+.scratch/.sflo/09-autonomy-review-units/*/

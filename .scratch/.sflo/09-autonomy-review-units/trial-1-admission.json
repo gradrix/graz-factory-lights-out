@@ -1,0 +1,5 @@
+{"status":"admitted once by rig_trial.sh","utc":"2026-10-07T08:24:11Z","prototype_commit":"377f0b5",
+ "module":"review_units_prototype.py","module_sha256":"d9684a34f57b0b79243166843c673375a378466dc214e8151698f8ad134df3bb",
+ "contract_sha256":"b795a7bd2ae763a3a2c2784b348b73280304507f799b27b690ce8398e15d0ff7",
+ "stage_inventory_sha256":"4de976cb67fe44dc8347abceab63401394f83fdcaa32409cb9e0757731313587",
+ "package_manifest_sha256":"303f7026f23884165fc438f3cd6031929615ea9f6395a89ef941f75ed2dbd0c8","rig":"monster-gaming-pc.lan","stage":"~/gflo-review-review_units-377f0b5"}
