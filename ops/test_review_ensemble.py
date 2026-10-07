@@ -51,6 +51,7 @@ class RoleFake:
         self.roles.append(role); self.last = body
         answer = self.answers[role]
         if isinstance(answer, list): answer = answer.pop(0) if len(answer) > 1 else answer[0]
+        if callable(answer): answer = answer(text)
         return {'choices': [{'finish_reason': 'stop', 'message': {'role': 'assistant', 'content': json.dumps(answer),
                 'reasoning_content': 'r'}}], 'usage': {}, 'timings': {}}
 
@@ -106,6 +107,21 @@ class Roles(unittest.TestCase):
         self.assertNotIn('catalog', view)
         self.assertEqual([[x['id'] for x in c['segments']] for c in view['commands']], [[1], [2]])
 
+    def test_audit_is_chunked_and_merged(self):
+        many = {'commands': [{'id': i, 'role': 'tester', 'command': f'c{i}'} for i in range(1, 11)],
+                'segments': [{'id': i, 'command_id': i, 'text': f'out{i}'} for i in range(1, 11)]}
+        payload = r.judge_payload(self.found, self.payload['files'], many)
+        view = r.evidence_view('A1: Tests pass. README example works.\n', payload['files'], self.found, many)
+        def chunk_answer(text):
+            ids = json.loads(text.split('Classify ONLY these command IDs (other commands are audited separately): ', 1)[1].split(']', 1)[0] + ']')
+            return {'version': 1, 'commands': [{'id': i, 'bearing': 'unrelated', 'segments': []} for i in ids]}
+        fake = RoleFake({'audit': chunk_answer, 'prosecutor': unit_wire()})
+        result = r.judge_unit(self.tmp / 'chunks', 1, self.unit, view, payload, CONFIG, time.monotonic() + 600, fake)
+        self.assertEqual((result['status'], fake.roles), ('accepted', ['audit', 'audit', 'prosecutor']))
+        self.assertEqual([row['id'] for row in result['audit']['commands']], list(range(1, 11)))
+        self.assertEqual(sorted(k for k in result['roles'] if k.startswith('audit')), ['audit-1', 'audit-2'])
+        with self.assertRaises(ValueError): r.validate_audit(chunk_answer('Classify ONLY these command IDs (other commands are audited separately): [1, 2]'), many, [1, 2, 3])
+
     def test_clean_unit_skips_judge(self):
         fake = RoleFake({'audit': audit(), 'prosecutor': unit_wire()})
         result = self.run_unit(fake)
@@ -139,23 +155,23 @@ class Roles(unittest.TestCase):
         fake = RoleFake({'audit': [wrong, audit()], 'prosecutor': unit_wire()})
         result = self.run_unit(fake)
         self.assertEqual((result['status'], result['decision'], fake.roles), ('accepted', 'pass', ['audit', 'audit', 'prosecutor']))
-        attempts = result['roles']['audit']['attempts']
+        attempts = result['roles']['audit-1']['attempts']
         self.assertEqual([a['status'] for a in attempts], ['invalid', 'returned'])
         self.assertIn('segment 2 does not belong to that command (its segments are [1])', attempts[0]['error'])
-        self.assertTrue((self.tmp / 'u' / 'audit-corrected1' / 'ledger.json').exists())
+        self.assertTrue((self.tmp / 'u' / 'audit-1-corrected1' / 'ledger.json').exists())
 
     def test_escalation_recovers_exhausted_role(self):
         fake = RoleFake({'audit': audit(), 'prosecutor': unit_wire()}, reasoning={'audit': [8192, 9000], 'prosecutor': 100})
         result = self.run_unit(fake)
         self.assertEqual((result['status'], result['decision'], fake.roles), ('accepted', 'pass', ['audit', 'audit', 'prosecutor']))
-        self.assertEqual(result['roles']['audit']['budget'], 24576)
-        self.assertTrue((self.tmp / 'u' / 'audit-escalated' / 'ledger.json').exists())
+        self.assertEqual(result['roles']['audit-1']['budget'], 24576)
+        self.assertTrue((self.tmp / 'u' / 'audit-1-escalated' / 'ledger.json').exists())
         source = self.tmp / 'src'; source.mkdir(); (source / 'README.md').write_text('example\n')
         objective = 'A1: Tests pass. README example works.\n'; planned = r.units(self.found)
         child = {'units': [result], 'planned_units': len(planned), 'decision': 'pass',
                  'view_sha256': r.digest(r.evidence_view(objective, {'README.md': 'example\n'}, self.found, self.payload['catalog']).encode())}
         self.assertTrue(r.reverify(child, self.payload['catalog'], source, objective))
-        forged = copy.deepcopy(child); forged['units'][0]['roles']['audit']['budget'] = 8192
+        forged = copy.deepcopy(child); forged['units'][0]['roles']['audit-1']['budget'] = 8192
         self.assertFalse(r.reverify(forged, self.payload['catalog'], source, objective))
 
     def test_reverify(self):

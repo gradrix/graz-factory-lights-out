@@ -31,6 +31,8 @@ UNIT_BUDGET, UNIT_MAX_TOKENS, UNIT_HTTP, ROLE_SECONDS = 8192, 12288, 300, 420
 ESCALATED_BUDGET, ESCALATED_MAX_TOKENS, ESCALATED_HTTP, ESCALATED_SECONDS = 24576, 28672, 600, 720
 # One fresh correction attempt for a returned answer the controller rejected; the rejection reason is quoted.
 CORRECTIONS = 2
+# Auditor workload is bounded per request: commands are audited in fixed-size chunks and merged.
+AUDIT_CHUNK = 8
 LADDER = ((UNIT_BUDGET, UNIT_MAX_TOKENS, UNIT_HTTP, ROLE_SECONDS),
           (ESCALATED_BUDGET, ESCALATED_MAX_TOKENS, ESCALATED_HTTP, ESCALATED_SECONDS))
 HEAD = TAIL = 3072
@@ -233,13 +235,24 @@ def validate_unit(value, payload, ids):
     return report
 
 
-def validate_audit(value, catalog_value):
+def audit_chunks(catalog_value):
+    ids = [c['id'] for c in catalog_value['commands']]
+    return [ids[i:i + AUDIT_CHUNK] for i in range(0, len(ids), AUDIT_CHUNK)]
+
+
+def merge_audits(values):
+    return {'version': 1, 'commands': sorted((row for v in values for row in v['commands']), key=lambda row: row['id'])}
+
+
+def validate_audit(value, catalog_value, ids=None):
     if not isinstance(value, dict) or set(value) != {'version', 'commands'} or type(value['version']) is not int or value['version'] != 1:
         raise ValueError('Audit shape')
     owner = {s['id']: s['command_id'] for s in catalog_value['segments']}
     rows = value['commands']
-    if not isinstance(rows, list) or sorted(r.get('id') if isinstance(r, dict) else None for r in rows) != [c['id'] for c in catalog_value['commands']]:
-        raise ValueError('Audit must classify every catalog command exactly once (ids ' + str([c['id'] for c in catalog_value['commands']]) + ')')
+    ids = ids if ids is not None else [c['id'] for c in catalog_value['commands']]
+    row_ids = [r.get('id') if isinstance(r, dict) else None for r in rows] if isinstance(rows, list) else [None]
+    if any(type(i) is not int for i in row_ids) or sorted(row_ids) != sorted(ids):
+        raise ValueError('Audit must classify exactly the assigned commands, each once (ids ' + str(ids) + ')')
     for row in rows:
         if set(row) != {'id', 'bearing', 'segments'} or type(row['id']) is not int or row['bearing'] not in ('supports', 'contradicts', 'unrelated'):
             raise ValueError('Audit row')
@@ -290,13 +303,13 @@ def ask(root, config, prefix, assignment, deadline, transport=None, step=LADDER[
 def judge_unit(root, number, unit, view, payload, config, deadline, transport=None):
     root = Path(root); result = {'unit': number, 'ids': unit['ids'], 'text': unit['text'], 'roles': {}}
     assigned = encoded({'statements': unit['ids'], 'text': unit['text']}).decode()
-    def role(name, extra=''):
+    def role(name, extra='', ids=None):
         attempts = []; feedback = ''; value = None
         for correction in range(CORRECTIONS + 1):
             for level, step in enumerate(LADDER):
                 label = name + ('-escalated' if level else '') + (f'-corrected{correction}' if correction else '')
                 status, content, facts = ask(root / label, config, view,
-                                             ROLE_ASSIGNMENT[name] + ' Assigned: ' + assigned + extra + feedback,
+                                             ROLE_ASSIGNMENT[name.split('-')[0]] + ' Assigned: ' + assigned + extra + feedback,
                                              min(deadline, time.monotonic() + step[3]), transport, step)
                 attempts.append({'status': status, 'label': label, **facts})
                 if status != 'exhausted': break
@@ -304,7 +317,7 @@ def judge_unit(root, number, unit, view, payload, config, deadline, transport=No
             if status != 'returned': break
             try:
                 value = json.loads(content)
-                if name == 'audit': validate_audit(value, payload['catalog'])
+                if name.startswith('audit'): validate_audit(value, payload['catalog'], ids)
                 else: validate_unit(value, payload, unit['ids'])
                 record['value'] = value; break
             except Exception as error:
@@ -315,7 +328,14 @@ def judge_unit(root, number, unit, view, payload, config, deadline, transport=No
                             '. Redo the assignment from the evidence and return one complete, valid object.')
         result['roles'][name] = record
         return value
-    audit = role('audit'); prosecutor = role('prosecutor') if audit is not None else None
+    chunks = audit_chunks(payload['catalog']); parts = []
+    for index, ids in enumerate(chunks, 1):
+        part = role(f'audit-{index}', ' Classify ONLY these command IDs (other commands are audited separately): ' + str(ids), ids)
+        if part is None: break
+        parts.append(part)
+    audit = merge_audits(parts) if len(parts) == len(chunks) else None
+    if audit is not None: result['audit'] = audit
+    prosecutor = role('prosecutor') if audit is not None else None
     if audit is None or prosecutor is None:
         result['status'] = 'incomplete'; return result
     disputes = contested(audit, prosecutor, payload)
@@ -410,8 +430,11 @@ def reverify(child, catalog_value, source, objective):
         if result.get('status') != 'accepted': continue
         roles = result['roles']
         if any(r.get('status') != 'returned' or r.get('reasoning_tokens', 1 << 30) >= r.get('budget', 0) for r in roles.values()): return False
-        validate_audit(roles['audit']['value'], catalog_value); validate_unit(roles['prosecutor']['value'], payload, unit['ids'])
-        disputes = contested(roles['audit']['value'], roles['prosecutor']['value'], payload)
+        chunks = audit_chunks(catalog_value)
+        for index, ids in enumerate(chunks, 1): validate_audit(roles[f'audit-{index}']['value'], catalog_value, ids)
+        audit = merge_audits([roles[f'audit-{index}']['value'] for index in range(1, len(chunks) + 1)])
+        validate_audit(audit, catalog_value); validate_unit(roles['prosecutor']['value'], payload, unit['ids'])
+        disputes = contested(audit, roles['prosecutor']['value'], payload)
         if not disputes and roles['prosecutor']['value']['decision'] == 'pass':
             if result['decision'] != 'pass' or 'judge' in roles: return False
         else:
