@@ -27,3 +27,7 @@ Next: semantic grounding assessment of trial output; closure.
 - Scale measurements: first unit per case 57–75 s (13–18.5K prompt tokens uncached); later units 5–19 s with 13–18K tokens served from prompt cache (`cache_n`), only ~420–510 new prompt tokens each.
 
 Conclusion: narrowing the assignment does not bring a requirement's reasoning under 1024 tokens; the frozen thinking cap itself is binding. Successor: [contract-2](contract-2.md).
+
+## Trial 3 binding
+
+Contract-2 sha256 9ab40af0eaac839a6fbd5bdc3b8a6144898db6e40e2e758edb29ed131c7e0c4d. Candidate 81fc4c8 (UnitClient: thinking 4096, max_tokens 8192, unit 300 s, HTTP ≤240 s). 93 controls, 92 pass, 1 skipped. Driver: `ops/rig_trial.sh 81fc4c8 review_units_prototype.py <this dir>`.
