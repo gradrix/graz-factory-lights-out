@@ -1,0 +1,174 @@
+review-cohort-3 verification
+image sha256:fb1118f126b507965df3c46fdfc52312dfd5262e7b6652ef510bd9298f69a6bc (Python 3.12.13)
+manifest sha256 ed15c759117e2aefb5563d8bde180ccc7b3707cd4450d1af38bc8cb13340d15d
+manifest files/modes match disk: True | files 144 | entries 192
+
+=== b01 kind=original expected=repair origin=coding-b/01-dependency-order
+acceptance: exit 1 | AssertionError
+own tests: exit 0 | Ran 5 tests in 0.000s OK 
+README example: printf '%s\n' '{"action": "order", "nodes": [{"id": "app", "deps": ["lib"]}, {"id": "lib", "deps": []}]}' | python cli.py ["lib", "app"] exit 0 
+demo: order a->b, b, c: ['b', 'c', 'a'] (objective requires earliest eligible node each step: [b, a, c]) DEMONSTRATED 
+demo on unseeded variant: exit 1 | order a->b, b, c: ['b', 'a', 'c'] (objective requires earliest eligible node each step: [b, a, c]) NOT DEMONSTRATED 
+VERDICT: seeded defect verified (acceptance fails; demo demonstrated)
+
+=== b02 kind=control expected=pass origin=coding-b/02-rate-window
+acceptance: exit 0 | 
+own tests: exit 0 | Ran 5 tests in 0.000s OK 
+README example: printf '%s\n' '{"action": "admit", "history": [5, 5], "now": 10, "window": 10, "limit": 2}' | python cli.py {"allowed": false, "history": [5, 5], "retry_at": 15} exit 0 
+VERDICT: control verified (acceptance, own tests and README example pass)
+
+=== b03 kind=original expected=repair origin=coding-b/03-retry-schedule
+acceptance: exit 1 | AssertionError: (1, 'unknown action: not-an-action\n')
+own tests: exit 0 | Ran 4 tests in 0.000s OK 
+README example: printf '%s\n' '{"action": "schedule", "now": 100, "attempt": 2, "base": 3, "cap": 10, "max_attempts": 5, "outcome": "transient", "retry_after": null}' | python cli.py {"retry": true, "at": 106, "delay": 6} exit 0 
+demo: CLI invalid attempt: exit 1 stderr 'bounds' (objective requires exit 2) DEMONSTRATED 
+demo on unseeded variant: exit 1 | CLI invalid attempt: exit 2 stderr 'bounds' (objective requires exit 2) NOT DEMONSTRATED 
+VERDICT: seeded defect verified (acceptance fails; demo demonstrated)
+
+=== b04 kind=original expected=repair origin=coding-b/04-config-precedence
+acceptance: exit 1 | AssertionError: input mutated
+own tests: exit 0 | Ran 3 tests in 0.000s OK 
+README example: printf '%s\n' '{"action": "resolve", "defaults": {"db": {"host": "localhost", "port": 5432}, "debug": false}, "layers": [{"db": {"port": null}}, {"debug": true}], "required": ["db"]}' | python cli.py {"db": {"host": "localhost"}, "debug": true} exit 0 
+demo: result {'n': {'y': 2}} ; defaults before {'n': {'x': 1, 'y': 2}} after {'n': {'y': 2}} DEMONSTRATED 
+demo on unseeded variant: exit 1 | result {'n': {'y': 2}} ; defaults before {'n': {'x': 1, 'y': 2}} after {'n': {'x': 1, 'y': 2}} NOT DEMONSTRATED 
+VERDICT: seeded defect verified (acceptance fails; demo demonstrated)
+
+=== b05 kind=control expected=pass origin=coding-b/05-escaped-log-fields
+acceptance: exit 0 | 
+own tests: exit 0 | Ran 3 tests in 0.000s OK 
+README example: printf '%s\n' '{"action": "encode", "fields": {"msg": "a\tb", "level": "info"}}' | python cli.py "level=info\tmsg=a\\tb" exit 0 
+VERDICT: control verified (acceptance, own tests and README example pass)
+
+=== b06 kind=original expected=repair origin=coding-b/06-archive-manifest
+acceptance: exit 1 | ValueError: size limit
+own tests: exit 1 | Ran 4 tests in 0.001s FAILED (errors=1) 
+README example: printf '%s\n' '{"action": "validate", "entries": [{"path": "./docs//b.txt", "size": 3}, {"path": "a.txt", "size": 2}], "max_total": 10}' | python cli.py {"files": [{"path": "a.txt", "size": 2}, {"path": "docs/b.txt", "size": 3}], "total": 5} exit 0 
+demo: total 5 with max_total 5: raised ValueError: size limit (objective allows equality) DEMONSTRATED 
+demo on unseeded variant: exit 1 | total 5 with max_total 5: returned {'files': [{'path': 'a', 'size': 5}], 'total': 5} (objective allows equality) NOT DEMONSTRATED 
+VERDICT: seeded defect verified (acceptance fails; demo demonstrated)
+
+=== b07 kind=control expected=pass origin=coding-b/07-optimistic-version
+acceptance: exit 0 | 
+own tests: exit 0 | Ran 4 tests in 0.000s OK 
+README example: printf '%s\n' '{"action": "update", "records": {"r1": {"version": 1, "data": {"a": 1}}}, "id": "r1", "expected": 1, "patch": {"b": 2}}' | python cli.py {"applied": true, "records": {"r1": {"version": 2, "data": {"a": 1, "b": 2}}}, "record": {"version": 2, "data": {"a": 1, "b": 2}}} exit 0 
+VERDICT: control verified (acceptance, own tests and README example pass)
+
+=== b08 kind=control expected=pass origin=coding-b/08-batch-grouping
+acceptance: exit 0 | 
+own tests: exit 0 | Ran 3 tests in 0.000s OK 
+README example: printf '%s\n' '{"action": "group", "requested": ["a", "b", "c"], "responses": [{"id": "c", "ok": false, "error": "timeout"}, {"id": "a", "ok": true, "value": 0}]}' | python cli.py {"successes": [{"id": "a", "value": 0}], "failures": [{"id": "c", "error": "timeout"}], "missing": ["b"]} exit 0 
+VERDICT: control verified (acceptance, own tests and README example pass)
+
+=== b09 kind=control expected=pass origin=coding-b/09-revision-migration
+acceptance: exit 0 | 
+own tests: exit 0 | Ran 3 tests in 0.000s OK 
+README example: printf '%s\n' '{"action": "migrate", "document": {"revision": 1, "title": "Team", "users": [{"id": "u1", "name": "Ann", "active": true}]}}' | python cli.py {"revision": 3, "title": "Team", "accounts": {"u1": {"profile": {"name": "Ann"}, "enabled": true}}, "order": ["u1"]} exit 0 
+VERDICT: control verified (acceptance, own tests and README example pass)
+
+=== b10 kind=control expected=pass origin=coding-b/10-weighted-lru
+acceptance: exit 0 | 
+own tests: exit 0 | Ran 3 tests in 0.000s OK 
+README example: printf '%s\n' '{"action": "cache", "capacity": 4, "operations": [{"op": "put", "key": "a", "value": 1, "weight": 2}, {"op": "put", "key": "b", "value": 2, "weight": 2}, {"op": "get", "key": "a"}, {"op": "put", "key": "c", "value": 3, "weight": 1}]}' | python cli.py {"results": [{"stored": true, "evicted": []}, {"stored": true, "evicted": []}, {"hit": true, "value": 1}, {"stored": true, "evicted": 
+VERDICT: control verified (acceptance, own tests and README example pass)
+
+=== b11 kind=original expected=repair origin=coding-b/11-event-watermarks
+acceptance: exit 1 | ValueError: conflicting event
+own tests: exit 0 | Ran 3 tests in 0.000s OK 
+README example: printf '%s\n' '{"action": "ingest", "watermarks": {"a": 1}, "events": [{"source": "a", "seq": 3, "data": "x"}, {"source": "a", "seq": 2, "data": "y"}, {"source": "b", "seq": 2, "data": "z"}]}' | python cli.py {"watermarks": {"a": 3, "b": 0}, "released": [{"source": "a", "seq": 2, "data": "y"}, {"source": "a", "seq": 3, "data": "x"}], "pending": [{"source": "b", "seq": 2, "data": "z"}]} exit 0 
+demo: conflicting events at or below watermark 2: raised ValueError: conflicting event (objective: conflicts among ignored old events do not matter) DEMONSTRATED 
+demo on unseeded variant: exit 1 | conflicting events at or below watermark 2: returned {'watermarks': {'a': 2}, 'released': [], 'pending': []} (objective: conflicts among ignored old events do not matter) NOT DEMONSTRATED 
+VERDICT: seeded defect verified (acceptance fails; demo demonstrated)
+
+=== b12 kind=control expected=pass origin=coding-b/12-unicode-index
+acceptance: exit 0 | 
+own tests: exit 0 | Ran 3 tests in 0.000s OK 
+README example: printf '%s\n' '{"action": "index", "text": "aé😀", "byte_offsets": [0, 3, 7]}' | python cli.py {"byte_length": 7, "char_to_byte": [0, 1, 3, 7], "byte_to_char": [0, 2, 3]} exit 0 
+VERDICT: control verified (acceptance, own tests and README example pass)
+
+=== c01 kind=control expected=pass origin=coding-c/01-seat-allocation
+acceptance: exit 0 | PASS
+own tests: exit 0 | Ran 4 tests in 0.000s OK 
+README example: printf '%s\n' '{"action": "allocate", "weights": [1, 1, 1], "seats": 2}' | python cli.py [1, 1, 0] exit 0 
+VERDICT: control verified (acceptance, own tests and README example pass)
+
+=== c02 kind=control expected=pass origin=coding-c/02-grid-distance
+acceptance: exit 0 | PASS
+own tests: exit 0 | Ran 3 tests in 0.000s OK 
+README example: printf '%s\n' '{"action": "distance", "grid": ["...", "##.", "..."], "start": [0, 0], "end": [2, 0]}' | python cli.py 6 exit 0 
+VERDICT: control verified (acceptance, own tests and README example pass)
+
+=== c03 kind=original expected=repair origin=coding-c/03-bit-fields
+acceptance: exit 1 | OverflowError: overflow
+own tests: exit 0 | Ran 4 tests in 0.000s OK 
+README example: printf '%s\n' '{"action": "pack", "fields": [{"width": 3, "value": 5}, {"width": 4, "value": 2}]}' | python cli.py {"value": 82, "bits": 7} exit 0 
+demo: pack overflow: raised OverflowError: overflow ; CLI exit 1 traceback DEMONSTRATED 
+demo on unseeded variant: exit 1 | pack overflow: raised ValueError: overflow ; CLI exit 2 no traceback NOT DEMONSTRATED 
+VERDICT: seeded defect verified (acceptance fails; demo demonstrated)
+
+=== c04 kind=original expected=repair origin=coding-c/04-polynomial
+acceptance: exit 1 | AssertionError: ({'action': 'evaluate', 'coefficients': [2, 3, 4], 'x': 2}, 'wrong result')
+own tests: exit 0 | Ran 3 tests in 0.000s OK 
+README example: printf '%s\n' '{"action": "evaluate", "coefficients": [2, 3, 4], "x": 2}' | python cli.py {"value": 24, "derivative": 19.0} exit 0 
+demo: x=2: returned {'value': 24, 'derivative': 19.0} ; x=0: raised ZeroDivisionError: 0.0 cannot be raised to a negative power (objective: exact integers, derivative at 0 is 2) DEMONSTRATED 
+demo on unseeded variant: exit 1 | x=2: returned {'value': 24, 'derivative': 19} ; x=0: returned {'value': 1, 'derivative': 2} (objective: exact integers, derivative at 0 is 2) NOT DEMONSTRATED 
+VERDICT: seeded defect verified (acceptance fails; demo demonstrated)
+
+=== c05 kind=original expected=repair origin=coding-c/05-paragraph-wrap
+acceptance: exit 1 | AssertionError: ({'action': 'wrap', 'text': 'é é\t猫', 'width': 3}, 'wrong result')
+own tests: exit 0 | Ran 3 tests in 0.000s OK 
+README example: printf '%s\n' '{"action": "wrap", "text": "one two three", "width": 7}' | python cli.py ["one two", "three"] exit 0 
+demo: wrap 'ab\tcd ef' width 5: ['ab\tcd', 'ef'] (objective: split on whitespace -> ['ab cd', 'ef']) DEMONSTRATED 
+demo on unseeded variant: exit 1 | wrap 'ab\tcd ef' width 5: ['ab cd', 'ef'] (objective: split on whitespace -> ['ab cd', 'ef']) NOT DEMONSTRATED 
+VERDICT: seeded defect verified (acceptance fails; demo demonstrated)
+
+=== c06 kind=original expected=repair origin=coding-c/06-luhn-check
+acceptance: exit 0 | PASS
+own tests: exit 0 | Ran 4 tests in 0.000s OK 
+README example: printf '%s\n' '{"action": "check", "value": "7992 7398-713"}' | python cli.py 'number' exit 2 
+demo: README example: printf '%s\n' '{"action": "check", "value": "7992 7398-713"}' | python cli.py -> exit 2 stdout '' stderr "'number'" DEMONSTRATED 
+demo on unseeded variant: exit 1 | README example: printf '%s\n' '{"action": "check", "number": "7992 7398-713"}' | python cli.py -> exit 0 stdout 'true' stderr '' NOT DEMONSTRATED 
+VERDICT: seeded defect verified (acceptance passes; demo demonstrated)
+
+=== c07 kind=control expected=pass origin=coding-c/07-monthly-calendar
+acceptance: exit 0 | PASS
+own tests: exit 0 | Ran 3 tests in 0.006s OK 
+README example: printf '%s\n' '{"action": "occurrences", "start": "2024-01-31", "day": 31, "count": 3}' | python cli.py ["2024-01-31", "2024-02-29", "2024-03-31"] exit 0 
+VERDICT: control verified (acceptance, own tests and README example pass)
+
+=== c08 kind=control expected=pass origin=coding-c/08-resource-matching
+acceptance: exit 0 | PASS
+own tests: exit 0 | Ran 3 tests in 0.000s OK 
+README example: printf '%s\n' '{"action": "match", "choices": [["a", "b"], ["a"]]}' | python cli.py 2 exit 0 
+VERDICT: control verified (acceptance, own tests and README example pass)
+
+=== c09 kind=original expected=repair origin=coding-c/09-duration-language
+acceptance: exit 0 | PASS
+own tests: exit 0 | Ran 4 tests in 0.000s OK 
+README example: printf '%s\n' '{"action": "seconds", "text": "1h2m3s"}' | python cli.py 3723 exit 0 
+demo: tests: 4 assertRaises present: False ; suite passes with all ValueErrors suppressed: True ; real code on 1m1h: raised ValueError: unit order DEMONSTRATED 
+demo on unseeded variant: exit 1 | tests: 4 assertRaises present: True ; suite passes with all ValueErrors suppressed: False ; real code on 1m1h: raised ValueError: unit order NOT DEMONSTRATED 
+VERDICT: seeded defect verified (acceptance passes; demo demonstrated)
+
+=== c10 kind=original expected=repair origin=coding-c/10-approval-ballots
+acceptance: exit 1 | AssertionError: ({'action': 'tally', 'candidates': ['b', 'a', 'c'], 'ballots': [['a', 'a'], ['b'], []]}, 'wrong result')
+own tests: exit 1 | Ran 4 tests in 0.001s FAILED (failures=1) 
+README example: printf '%s\n' '{"action": "tally", "candidates": ["b", "a", "c"], "ballots": [["a", "a"], ["b"], []]}' | python cli.py [{"candidate": "a", "votes": 2}, {"candidate": "b", "votes": 1}, {"candidate": "c", "votes": 0}] exit 0 
+demo: tally ballots [['a','a'],['b']]: [{'candidate': 'a', 'votes': 2}, {'candidate': 'b', 'votes': 1}] (objective: one approval per ballot -> a 1, b 1) DEMONSTRATED 
+demo on unseeded variant: exit 1 | tally ballots [['a','a'],['b']]: [{'candidate': 'a', 'votes': 1}, {'candidate': 'b', 'votes': 1}] (objective: one approval per ballot -> a 1, b 1) NOT DEMONSTRATED 
+VERDICT: seeded defect verified (acceptance fails; demo demonstrated)
+
+=== c11 kind=control expected=pass origin=coding-c/11-run-length-codec
+acceptance: exit 0 | PASS
+own tests: exit 0 | Ran 4 tests in 0.000s OK 
+README example: printf '%s\n' '{"action": "encode", "values": [1, 1, 2, 1, 1]}' | python cli.py [[1, 2], [2, 1], [1, 2]] exit 0 
+VERDICT: control verified (acceptance, own tests and README example pass)
+
+=== c12 kind=original expected=repair origin=coding-c/12-form-query
+acceptance: exit 1 | AssertionError: expected ValueError
+own tests: exit 0 | Ran 4 tests in 0.018s OK 
+README example: printf '%s\n' '{"action": "parse", "query": "a=1&a=2&empty&=x&&"}' | python cli.py [["a", "1"], ["a", "2"], ["empty", ""], ["", "x"]] exit 0 
+demo: parse 'a=%FF': returned [['a', '�']] (objective: invalid UTF-8 raises ValueError) DEMONSTRATED 
+demo on unseeded variant: exit 1 | parse 'a=%FF': raised UnicodeDecodeError (a ValueError, as required) NOT DEMONSTRATED 
+VERDICT: seeded defect verified (acceptance fails; demo demonstrated)
+
+OVERALL: ALL CASES VERIFIED
