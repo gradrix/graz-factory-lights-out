@@ -101,7 +101,11 @@ POLICY = ('You review a candidate project against its objective using only the s
           'new will execute. Process exit zero does not prove success; commands may print misleading text; documented '
           'commands may have been adapted only by project-path substitution. Requirement IDs are statement IDs from '
           'requirements[].id. Observation IDs are segment IDs, listed inside their owning command as commands[].segments[].id. Source lines are source[].lines[].line. '
-          'Never claim new execution, verified fixes or requirements not stated in the objective. Return JSON only.')
+          'Never claim new execution, verified fixes or requirements not stated in the objective. Reading rules: stated '
+          'input bounds and shapes are caller preconditions, not validation duties, unless the objective explicitly '
+          'requires an error for them; a conditional alternative ("X, or Y when no Z is specified") is satisfied by Y '
+          'unless Z is specified for the work the objective adds, and behavior it only asks to preserve is not newly '
+          'specified. Return JSON only.')
 
 UNIT_WIRE = ('Return exactly {"version":1,"decision":"pass"|"repair"|"needs_input","findings":[...],"question":""}. '
              'Each finding has exactly severity (critical/major/minor), source {path,line}, requirements (1-2 statement IDs, '
@@ -109,8 +113,6 @@ UNIT_WIRE = ('Return exactly {"version":1,"decision":"pass"|"repair"|"needs_inpu
              'reasoning). Critical/major findings need at least one observation. repair requires a blocking (critical/major) '
              'finding; pass forbids one; question nonempty only for needs_input.')
 
-INTERPRET_POLICY = ('You interpret software requirements. You see only an objective and some of its statements; no '
-                    'candidate or evidence exists in this request. Return JSON only.')
 PANEL = {
     'strict': ' Framing: read each statement literally as written; any observed deviation from its exact wording is a violation.',
     'charitable': ' Framing: adopt the most reasonable reading a competent implementer could take; flag only clear, '
@@ -119,11 +121,6 @@ PANEL = {
 }
 
 ROLE_ASSIGNMENT = {
-    'interpret': ('Role: requirement interpreter. For EACH assigned statement write one verification criterion: what '
-                  'observable evidence would show the statement satisfied, and what would show it violated. Respect '
-                  'explicit alternatives, exceptions and conditions in the objective (e.g. "or another boundary when no '
-                  'rejection is specified"). Do not add requirements. Return exactly {"version":1,"criteria":[{"id":'
-                  '<statement id>,"criterion":"<= 600 bytes"}]} covering each assigned statement exactly once.'),
     'audit': ('Role: evidence auditor for the assigned statements. Classify EVERY catalog command exactly once by its '
               'bearing on the assigned statements: supports (output shows the statement holds), contradicts (output shows '
               'it is violated) or unrelated. Read each command and its output; documented-versus-actual mismatches, '
@@ -282,6 +279,18 @@ def validate_audit(value, catalog_value, ids=None):
     return value
 
 
+def prune_audit(value, catalog_value):
+    """Drop segment citations owned by a different command; returns the number dropped. Rows left without a
+    citation stay invalid and go through correction."""
+    owner = {s['id']: s['command_id'] for s in catalog_value['segments']}; dropped = 0
+    if isinstance(value, dict) and isinstance(value.get('commands'), list):
+        for row in value['commands']:
+            if isinstance(row, dict) and isinstance(row.get('segments'), list) and row.get('bearing') != 'unrelated':
+                kept = [n for n in row['segments'] if type(n) is int and owner.get(n) == row.get('id')]
+                if kept and len(kept) != len(row['segments']): dropped += len(row['segments']) - len(kept); row['segments'] = kept
+    return dropped
+
+
 def contested(audit, prosecutor, payload):
     segments = {s['id']: s for s in payload['catalog']['segments']}
     items = [{'kind': 'auditor_contradiction', 'command_id': r['id'], 'excerpts': [segments[n] for n in r['segments']]}
@@ -314,22 +323,6 @@ def ask(root, config, prefix, assignment, deadline, transport=None, step=LADDER[
     return 'returned', content, facts
 
 
-def validate_criteria(value, ids):
-    if not isinstance(value, dict) or set(value) != {'version', 'criteria'} or type(value['version']) is not int or value['version'] != 1:
-        raise ValueError('Criteria shape')
-    rows = value['criteria']
-    if (not isinstance(rows, list) or any(not isinstance(r, dict) or set(r) != {'id', 'criterion'} for r in rows)
-            or sorted(r['id'] for r in rows if type(r['id']) is int) != sorted(ids) or len(rows) != len(ids)):
-        raise ValueError('Criteria must cover exactly the assigned statements ' + str(ids))
-    if any(not isinstance(r['criterion'], str) or not r['criterion'].strip() or len(r['criterion'].encode()) > 600 for r in rows):
-        raise ValueError('Each criterion must be nonempty text of at most 600 bytes')
-    return value
-
-
-def interpret_prefix(objective, found, ids):
-    return encoded({'objective': objective, 'statements': [s for s in found if s['id'] in ids]}).decode()
-
-
 def panel_decision(verdicts, ids):
     """Repair only when two or more judges repair on a common assigned statement; needs_input likewise; else pass."""
     def blocking(v):
@@ -344,26 +337,27 @@ def panel_decision(verdicts, ids):
     return 'pass', None, []
 
 
-def judge_unit(root, number, unit, view, payload, config, deadline, transport=None, objective=None, found=None):
+def judge_unit(root, number, unit, view, payload, config, deadline, transport=None):
     root = Path(root); result = {'unit': number, 'ids': unit['ids'], 'text': unit['text'], 'roles': {}}
     assigned = encoded({'statements': unit['ids'], 'text': unit['text']}).decode()
-    def role(name, extra='', ids=None, prefix=None):
+    def role(name, extra='', ids=None):
         attempts = []; feedback = ''; value = None
         for correction in range(CORRECTIONS + 1):
             for level, step in enumerate(LADDER):
                 label = name + ('-escalated' if level else '') + (f'-corrected{correction}' if correction else '')
-                status, content, facts = ask(root / label, config, prefix or view,
+                status, content, facts = ask(root / label, config, view,
                                              ROLE_ASSIGNMENT[name.split('-')[0]] + ' Assigned: ' + assigned + extra + feedback,
-                                             min(deadline, time.monotonic() + step[3]), transport, step,
-                                             INTERPRET_POLICY if name == 'interpret' else POLICY)
+                                             min(deadline, time.monotonic() + step[3]), transport, step)
                 attempts.append({'status': status, 'label': label, **facts})
                 if status != 'exhausted': break
             record = {'status': status, **facts, 'attempts': attempts}
             if status != 'returned': break
             try:
                 value = json.loads(content)
-                if name.startswith('audit'): validate_audit(value, payload['catalog'], ids)
-                elif name == 'interpret': validate_criteria(value, unit['ids'])
+                if name.startswith('audit'):
+                    pruned = prune_audit(value, payload['catalog'])
+                    if pruned: record['pruned_segments'] = pruned
+                    validate_audit(value, payload['catalog'], ids)
                 else: validate_unit(value, payload, unit['ids'])
                 record['value'] = value; break
             except Exception as error:
@@ -374,20 +368,14 @@ def judge_unit(root, number, unit, view, payload, config, deadline, transport=No
                             '. Redo the assignment from the evidence and return one complete, valid object.')
         result['roles'][name] = record
         return value
-    criteria = role('interpret', prefix=interpret_prefix(objective or payload['objective'], found or [], unit['ids'])) if found else None
-    if found and criteria is None:
-        result['status'] = 'incomplete'; return result
-    reading = (' Verification criteria (controller-recorded interpretation of the assigned statements; apply it, it may '
-               'be imperfect): ' + encoded(criteria['criteria']).decode()) if criteria else ''
-    result['criteria'] = criteria
     chunks = audit_chunks(payload['catalog']); parts = []
     for index, ids in enumerate(chunks, 1):
-        part = role(f'audit-{index}', reading + ' Classify ONLY these command IDs (other commands are audited separately): ' + str(ids), ids)
+        part = role(f'audit-{index}', ' Classify ONLY these command IDs (other commands are audited separately): ' + str(ids), ids)
         if part is None: break
         parts.append(part)
     audit = merge_audits(parts) if len(parts) == len(chunks) else None
     if audit is not None: result['audit'] = audit
-    prosecutor = role('prosecutor', reading) if audit is not None else None
+    prosecutor = role('prosecutor') if audit is not None else None
     if audit is None or prosecutor is None:
         result['status'] = 'incomplete'; return result
     disputes = contested(audit, prosecutor, payload)
@@ -396,7 +384,7 @@ def judge_unit(root, number, unit, view, payload, config, deadline, transport=No
     result['contested'] = disputes
     verdicts = []
     for framing, text in PANEL.items():
-        verdict = role(f'judge-{framing}', reading + text + ' Contested: ' + encoded(disputes).decode())
+        verdict = role(f'judge-{framing}', text + ' Contested: ' + encoded(disputes).decode())
         if verdict is None:
             result['status'] = 'incomplete'; return result
         verdicts.append(verdict)
@@ -467,8 +455,7 @@ def run_judging(spec_path):
     for number, unit in enumerate(planned, 1):
         if spec['deadline'] - time.monotonic() < 60:
             results.append({'unit': number, 'status': 'not_started'}); break
-        result = judge_unit(root / 'units' / f'{number:02d}', number, unit, view, payload, config, spec['deadline'],
-                            objective=objective, found=found)
+        result = judge_unit(root / 'units' / f'{number:02d}', number, unit, view, payload, config, spec['deadline'])
         save(root / 'units' / f'{number:02d}' / 'unit-result.json', result); results.append(result)
         journal(root, 'unit_finished', unit=number, status=result['status'], decision=result.get('decision'))
         if any(r.get('status') == 'failed' for r in result['roles'].values()): break
@@ -487,7 +474,6 @@ def reverify(child, catalog_value, source, objective):
         if result.get('status') != 'accepted': continue
         roles = result['roles']
         if any(r.get('status') != 'returned' or r.get('reasoning_tokens', 1 << 30) >= r.get('budget', 0) for r in roles.values()): return False
-        validate_criteria(roles['interpret']['value'], unit['ids'])
         chunks = audit_chunks(catalog_value)
         for index, ids in enumerate(chunks, 1): validate_audit(roles[f'audit-{index}']['value'], catalog_value, ids)
         audit = merge_audits([roles[f'audit-{index}']['value'] for index in range(1, len(chunks) + 1)])

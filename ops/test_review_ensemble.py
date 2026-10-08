@@ -39,11 +39,6 @@ def audit(bearing='unrelated'):
             {'id': 2, 'bearing': bearing, 'segments': [] if bearing == 'unrelated' else [2]}]}
 
 
-def interpret_answer(text):
-    ids = json.loads(text.split(' Assigned: ', 1)[1].split('}', 1)[0] + '}')['statements']
-    return {'version': 1, 'criteria': [{'id': i, 'criterion': f'statement {i} holds'} for i in ids]}
-
-
 class RoleFake:
     def __init__(self, answers, reasoning=100):
         self.answers = answers; self.reasoning = reasoning; self.roles = []
@@ -53,13 +48,12 @@ class RoleFake:
             if isinstance(value, list): value = value.pop(0)
             return {'tokens': [0] * value}
         text = body['messages'][1]['content'].split('ASSIGNMENT: ', 1)[1]
-        role = ('audit' if text.startswith('Role: evidence auditor') else 'prosecutor' if text.startswith('Role: prosecutor')
-                else 'interpret' if text.startswith('Role: requirement interpreter') else 'judge')
+        role = 'audit' if text.startswith('Role: evidence auditor') else 'prosecutor' if text.startswith('Role: prosecutor') else 'judge'
         if role == 'judge':
             role = next((f'judge-{f}' for f in ('strict', 'charitable') if r.PANEL[f] in text), 'judge-neutral')
         self.bodies = getattr(self, 'bodies', []) + [body]
         self.roles.append(role); self.last = body
-        answer = self.answers.get(role, self.answers.get(role.split('-')[0], interpret_answer if role == 'interpret' else None))
+        answer = self.answers.get(role, self.answers.get(role.split('-')[0]))
         if isinstance(answer, list): answer = answer.pop(0) if len(answer) > 1 else answer[0]
         if callable(answer): answer = answer(text)
         return {'choices': [{'finish_reason': 'stop', 'message': {'role': 'assistant', 'content': json.dumps(answer),
@@ -110,8 +104,7 @@ class Roles(unittest.TestCase):
         self.view = r.evidence_view('A1: Tests pass. README example works.\n', self.payload['files'], self.found, self.payload['catalog'])
 
     def run_unit(self, fake, name='u'):
-        return r.judge_unit(self.tmp / name, 1, self.unit, self.view, self.payload, CONFIG, time.monotonic() + 600, fake,
-                            objective=OBJECTIVE, found=self.found)
+        return r.judge_unit(self.tmp / name, 1, self.unit, self.view, self.payload, CONFIG, time.monotonic() + 600, fake)
 
     def test_view_nests_segments_under_owning_command(self):
         view = json.loads(self.view)
@@ -127,8 +120,8 @@ class Roles(unittest.TestCase):
             ids = json.loads(text.split('Classify ONLY these command IDs (other commands are audited separately): ', 1)[1].split(']', 1)[0] + ']')
             return {'version': 1, 'commands': [{'id': i, 'bearing': 'unrelated', 'segments': []} for i in ids]}
         fake = RoleFake({'audit': chunk_answer, 'prosecutor': unit_wire()})
-        result = r.judge_unit(self.tmp / 'chunks', 1, self.unit, view, payload, CONFIG, time.monotonic() + 600, fake, objective=OBJECTIVE, found=self.found)
-        self.assertEqual((result['status'], fake.roles), ('accepted', ['interpret', 'audit', 'audit', 'prosecutor']))
+        result = r.judge_unit(self.tmp / 'chunks', 1, self.unit, view, payload, CONFIG, time.monotonic() + 600, fake)
+        self.assertEqual((result['status'], fake.roles), ('accepted', ['audit', 'audit', 'prosecutor']))
         self.assertEqual([row['id'] for row in result['audit']['commands']], list(range(1, 11)))
         self.assertEqual(sorted(k for k in result['roles'] if k.startswith('audit')), ['audit-1', 'audit-2'])
         with self.assertRaises(ValueError): r.validate_audit(chunk_answer('Classify ONLY these command IDs (other commands are audited separately): [1, 2]'), many, [1, 2, 3])
@@ -136,7 +129,7 @@ class Roles(unittest.TestCase):
     def test_clean_unit_skips_judge(self):
         fake = RoleFake({'audit': audit(), 'prosecutor': unit_wire()})
         result = self.run_unit(fake)
-        self.assertEqual((result['status'], result['decision'], fake.roles), ('accepted', 'pass', ['interpret', 'audit', 'prosecutor']))
+        self.assertEqual((result['status'], result['decision'], fake.roles), ('accepted', 'pass', ['audit', 'prosecutor']))
         body = fake.last
         self.assertEqual((body['thinking_budget_tokens'], body['max_tokens']), (8192, 12288))
         self.assertEqual(body['response_format'], {'type': 'json_object'}); self.assertNotIn('tools', body)
@@ -144,7 +137,7 @@ class Roles(unittest.TestCase):
     def test_contradiction_invokes_judge_with_exact_excerpts(self):
         fake = RoleFake({'audit': audit('contradicts'), 'prosecutor': unit_wire(), 'judge': unit_wire('repair')})
         result = self.run_unit(fake)
-        self.assertEqual((result['decision'], result['basis'], fake.roles), ('repair', 'judge panel', ['interpret', 'audit', 'prosecutor', 'judge-strict', 'judge-charitable', 'judge-neutral']))
+        self.assertEqual((result['decision'], result['basis'], fake.roles), ('repair', 'judge panel', ['audit', 'prosecutor', 'judge-strict', 'judge-charitable', 'judge-neutral']))
         self.assertIn('ACTUAL EXIT: 2', fake.last['messages'][1]['content'].split('Contested: ', 1)[1])
 
     def test_panel_needs_two_judges_on_a_common_statement(self):
@@ -157,10 +150,8 @@ class Roles(unittest.TestCase):
                          'judge-strict': one, 'judge-charitable': unit_wire(), 'judge-neutral': one})
         result = self.run_unit(fake, 'agree')
         self.assertEqual((result['decision'], result['panel_statement']), ('repair', 2))
-        self.assertTrue(any('Verification criteria' in b['messages'][1]['content'] for b in fake.bodies))
-        interp = next(b for b in fake.bodies if 'Role: requirement interpreter' in b['messages'][1]['content'])
-        self.assertNotIn('catalog', interp['messages'][1]['content']); self.assertNotIn('commands', interp['messages'][1]['content'].split('ASSIGNMENT')[0])
-        self.assertTrue(interp['messages'][0]['content'].startswith('You interpret software requirements'))
+        self.assertTrue(all('Reading rules: stated input bounds' in b['messages'][0]['content'] for b in fake.bodies))
+        self.assertFalse(any('Verification criteria' in b['messages'][1]['content'] for b in fake.bodies))
 
     def test_judge_can_reject_prosecutor(self):
         fake = RoleFake({'audit': audit(), 'prosecutor': unit_wire('repair'), 'judge': unit_wire()})
@@ -169,27 +160,34 @@ class Roles(unittest.TestCase):
     def test_exhaustion_or_invalid_role_is_incomplete(self):
         fake = RoleFake({'audit': audit(), 'prosecutor': unit_wire()}, reasoning={'audit': 100, 'prosecutor': [8192, 24576]})
         result = self.run_unit(fake, 'a')
-        self.assertEqual((result['status'], fake.roles), ('incomplete', ['interpret', 'audit', 'prosecutor', 'prosecutor']))
+        self.assertEqual((result['status'], fake.roles), ('incomplete', ['audit', 'prosecutor', 'prosecutor']))
         self.assertEqual([a['budget'] for a in result['roles']['prosecutor']['attempts']], [8192, 24576])
         self.assertEqual(fake.last['thinking_budget_tokens'], 24576)
         fake = RoleFake({'audit': {'version': 1, 'commands': []}, 'prosecutor': unit_wire()})
         result = self.run_unit(fake, 'b')
-        self.assertEqual((result['status'], fake.roles), ('incomplete', ['interpret', 'audit', 'audit', 'audit']))
+        self.assertEqual((result['status'], fake.roles), ('incomplete', ['audit', 'audit', 'audit']))
 
     def test_rejected_answer_gets_one_quoted_correction(self):
         wrong = {'version': 1, 'commands': [{'id': 1, 'bearing': 'supports', 'segments': [2]}, audit()['commands'][1]]}
         fake = RoleFake({'audit': [wrong, audit()], 'prosecutor': unit_wire()})
         result = self.run_unit(fake)
-        self.assertEqual((result['status'], result['decision'], fake.roles), ('accepted', 'pass', ['interpret', 'audit', 'audit', 'prosecutor']))
+        self.assertEqual((result['status'], result['decision'], fake.roles), ('accepted', 'pass', ['audit', 'audit', 'prosecutor']))
         attempts = result['roles']['audit-1']['attempts']
         self.assertEqual([a['status'] for a in attempts], ['invalid', 'returned'])
         self.assertIn('segment 2 does not belong to that command (its segments are [1])', attempts[0]['error'])
         self.assertTrue((self.tmp / 'u' / 'audit-1-corrected1' / 'ledger.json').exists())
 
+    def test_foreign_citation_is_pruned_when_an_owned_one_remains(self):
+        mixed = {'version': 1, 'commands': [{'id': 1, 'bearing': 'supports', 'segments': [1, 2]}, audit()['commands'][1]]}
+        fake = RoleFake({'audit': mixed, 'prosecutor': unit_wire()})
+        result = self.run_unit(fake)
+        self.assertEqual((result['status'], result['decision'], fake.roles), ('accepted', 'pass', ['audit', 'prosecutor']))
+        self.assertEqual((result['roles']['audit-1']['pruned_segments'], result['audit']['commands'][0]['segments']), (1, [1]))
+
     def test_escalation_recovers_exhausted_role(self):
         fake = RoleFake({'audit': audit(), 'prosecutor': unit_wire()}, reasoning={'audit': [8192, 9000], 'prosecutor': 100})
         result = self.run_unit(fake)
-        self.assertEqual((result['status'], result['decision'], fake.roles), ('accepted', 'pass', ['interpret', 'audit', 'audit', 'prosecutor']))
+        self.assertEqual((result['status'], result['decision'], fake.roles), ('accepted', 'pass', ['audit', 'audit', 'prosecutor']))
         self.assertEqual(result['roles']['audit-1']['budget'], 24576)
         self.assertTrue((self.tmp / 'u' / 'audit-1-escalated' / 'ledger.json').exists())
         source = self.tmp / 'src'; source.mkdir(); (source / 'README.md').write_text('example\n')
