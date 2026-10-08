@@ -109,7 +109,21 @@ UNIT_WIRE = ('Return exactly {"version":1,"decision":"pass"|"repair"|"needs_inpu
              'reasoning). Critical/major findings need at least one observation. repair requires a blocking (critical/major) '
              'finding; pass forbids one; question nonempty only for needs_input.')
 
+INTERPRET_POLICY = ('You interpret software requirements. You see only an objective and some of its statements; no '
+                    'candidate or evidence exists in this request. Return JSON only.')
+PANEL = {
+    'strict': ' Framing: read each statement literally as written; any observed deviation from its exact wording is a violation.',
+    'charitable': ' Framing: adopt the most reasonable reading a competent implementer could take; flag only clear, '
+                  'evidenced violations, and treat explicitly permitted alternatives as satisfying the statement.',
+    'neutral': '',
+}
+
 ROLE_ASSIGNMENT = {
+    'interpret': ('Role: requirement interpreter. For EACH assigned statement write one verification criterion: what '
+                  'observable evidence would show the statement satisfied, and what would show it violated. Respect '
+                  'explicit alternatives, exceptions and conditions in the objective (e.g. "or another boundary when no '
+                  'rejection is specified"). Do not add requirements. Return exactly {"version":1,"criteria":[{"id":'
+                  '<statement id>,"criterion":"<= 600 bytes"}]} covering each assigned statement exactly once.'),
     'audit': ('Role: evidence auditor for the assigned statements. Classify EVERY catalog command exactly once by its '
               'bearing on the assigned statements: supports (output shows the statement holds), contradicts (output shows '
               'it is violated) or unrelated. Read each command and its output; documented-versus-actual mismatches, '
@@ -280,7 +294,7 @@ def contested(audit, prosecutor, payload):
     return items
 
 
-def ask(root, config, prefix, assignment, deadline, transport=None, step=LADDER[0]):
+def ask(root, config, prefix, assignment, deadline, transport=None, step=LADDER[0], system=POLICY):
     """One precharged JSON-only request; returns (status, content, facts)."""
     root = Path(root); root.parent.mkdir(mode=0o700, parents=True, exist_ok=True); root.mkdir(mode=0o700)
     facts = {'budget': step[0]}
@@ -288,7 +302,7 @@ def ask(root, config, prefix, assignment, deadline, transport=None, step=LADDER[
         from review_evidence_prototype import create_ledger
         ledger = create_ledger(root, deadline)
         client = UnitClient(config, ledger, transport, step[0], step[1], step[2])
-        response = client.complete([{'role': 'system', 'content': POLICY}, {'role': 'user', 'content': prefix + '\n\nASSIGNMENT: ' + assignment}])
+        response = client.complete([{'role': 'system', 'content': system}, {'role': 'user', 'content': prefix + '\n\nASSIGNMENT: ' + assignment}])
     except Exception as error:
         return 'failed', None, {**facts, 'error_type': type(error).__name__, 'error': redact(str(error))[:2048]}
     facts.update(usage=response.get('usage'), timings=response.get('timings'))
@@ -300,17 +314,48 @@ def ask(root, config, prefix, assignment, deadline, transport=None, step=LADDER[
     return 'returned', content, facts
 
 
-def judge_unit(root, number, unit, view, payload, config, deadline, transport=None):
+def validate_criteria(value, ids):
+    if not isinstance(value, dict) or set(value) != {'version', 'criteria'} or type(value['version']) is not int or value['version'] != 1:
+        raise ValueError('Criteria shape')
+    rows = value['criteria']
+    if (not isinstance(rows, list) or any(not isinstance(r, dict) or set(r) != {'id', 'criterion'} for r in rows)
+            or sorted(r['id'] for r in rows if type(r['id']) is int) != sorted(ids) or len(rows) != len(ids)):
+        raise ValueError('Criteria must cover exactly the assigned statements ' + str(ids))
+    if any(not isinstance(r['criterion'], str) or not r['criterion'].strip() or len(r['criterion'].encode()) > 600 for r in rows):
+        raise ValueError('Each criterion must be nonempty text of at most 600 bytes')
+    return value
+
+
+def interpret_prefix(objective, found, ids):
+    return encoded({'objective': objective, 'statements': [s for s in found if s['id'] in ids]}).decode()
+
+
+def panel_decision(verdicts, ids):
+    """Repair only when two or more judges repair on a common assigned statement; needs_input likewise; else pass."""
+    def blocking(v):
+        return {n for f in v['findings'] if f['severity'] in ('critical', 'major') for n in f['requirements'] if n in ids}
+    repairs = [v for v in verdicts if v['decision'] == 'repair']
+    for statement in sorted(ids):
+        backing = [v for v in repairs if statement in blocking(v)]
+        if len(backing) >= 2:
+            findings = [f for v in backing for f in v['findings'] if f['severity'] in ('critical', 'major') and statement in f['requirements']]
+            return 'repair', statement, findings
+    if sum(v['decision'] == 'needs_input' for v in verdicts) >= 2: return 'needs_input', None, []
+    return 'pass', None, []
+
+
+def judge_unit(root, number, unit, view, payload, config, deadline, transport=None, objective=None, found=None):
     root = Path(root); result = {'unit': number, 'ids': unit['ids'], 'text': unit['text'], 'roles': {}}
     assigned = encoded({'statements': unit['ids'], 'text': unit['text']}).decode()
-    def role(name, extra='', ids=None):
+    def role(name, extra='', ids=None, prefix=None):
         attempts = []; feedback = ''; value = None
         for correction in range(CORRECTIONS + 1):
             for level, step in enumerate(LADDER):
                 label = name + ('-escalated' if level else '') + (f'-corrected{correction}' if correction else '')
-                status, content, facts = ask(root / label, config, view,
+                status, content, facts = ask(root / label, config, prefix or view,
                                              ROLE_ASSIGNMENT[name.split('-')[0]] + ' Assigned: ' + assigned + extra + feedback,
-                                             min(deadline, time.monotonic() + step[3]), transport, step)
+                                             min(deadline, time.monotonic() + step[3]), transport, step,
+                                             INTERPRET_POLICY if name == 'interpret' else POLICY)
                 attempts.append({'status': status, 'label': label, **facts})
                 if status != 'exhausted': break
             record = {'status': status, **facts, 'attempts': attempts}
@@ -318,6 +363,7 @@ def judge_unit(root, number, unit, view, payload, config, deadline, transport=No
             try:
                 value = json.loads(content)
                 if name.startswith('audit'): validate_audit(value, payload['catalog'], ids)
+                elif name == 'interpret': validate_criteria(value, unit['ids'])
                 else: validate_unit(value, payload, unit['ids'])
                 record['value'] = value; break
             except Exception as error:
@@ -328,24 +374,34 @@ def judge_unit(root, number, unit, view, payload, config, deadline, transport=No
                             '. Redo the assignment from the evidence and return one complete, valid object.')
         result['roles'][name] = record
         return value
+    criteria = role('interpret', prefix=interpret_prefix(objective or payload['objective'], found or [], unit['ids'])) if found else None
+    if found and criteria is None:
+        result['status'] = 'incomplete'; return result
+    reading = (' Verification criteria (controller-recorded interpretation of the assigned statements; apply it, it may '
+               'be imperfect): ' + encoded(criteria['criteria']).decode()) if criteria else ''
+    result['criteria'] = criteria
     chunks = audit_chunks(payload['catalog']); parts = []
     for index, ids in enumerate(chunks, 1):
-        part = role(f'audit-{index}', ' Classify ONLY these command IDs (other commands are audited separately): ' + str(ids), ids)
+        part = role(f'audit-{index}', reading + ' Classify ONLY these command IDs (other commands are audited separately): ' + str(ids), ids)
         if part is None: break
         parts.append(part)
     audit = merge_audits(parts) if len(parts) == len(chunks) else None
     if audit is not None: result['audit'] = audit
-    prosecutor = role('prosecutor') if audit is not None else None
+    prosecutor = role('prosecutor', reading) if audit is not None else None
     if audit is None or prosecutor is None:
         result['status'] = 'incomplete'; return result
     disputes = contested(audit, prosecutor, payload)
     if not disputes and prosecutor['decision'] == 'pass':
         result.update(status='accepted', decision='pass', basis='auditor and prosecutor clean'); return result
     result['contested'] = disputes
-    verdict = role('judge', ' Contested: ' + encoded(disputes).decode())
-    if verdict is None:
-        result['status'] = 'incomplete'; return result
-    result.update(status='accepted', decision=verdict['decision'], basis='judge', findings=verdict['findings'])
+    verdicts = []
+    for framing, text in PANEL.items():
+        verdict = role(f'judge-{framing}', reading + text + ' Contested: ' + encoded(disputes).decode())
+        if verdict is None:
+            result['status'] = 'incomplete'; return result
+        verdicts.append(verdict)
+    decision, statement, findings = panel_decision(verdicts, unit['ids'])
+    result.update(status='accepted', decision=decision, basis='judge panel', panel_statement=statement, findings=findings)
     return result
 
 
@@ -411,7 +467,8 @@ def run_judging(spec_path):
     for number, unit in enumerate(planned, 1):
         if spec['deadline'] - time.monotonic() < 60:
             results.append({'unit': number, 'status': 'not_started'}); break
-        result = judge_unit(root / 'units' / f'{number:02d}', number, unit, view, payload, config, spec['deadline'])
+        result = judge_unit(root / 'units' / f'{number:02d}', number, unit, view, payload, config, spec['deadline'],
+                            objective=objective, found=found)
         save(root / 'units' / f'{number:02d}' / 'unit-result.json', result); results.append(result)
         journal(root, 'unit_finished', unit=number, status=result['status'], decision=result.get('decision'))
         if any(r.get('status') == 'failed' for r in result['roles'].values()): break
@@ -430,16 +487,18 @@ def reverify(child, catalog_value, source, objective):
         if result.get('status') != 'accepted': continue
         roles = result['roles']
         if any(r.get('status') != 'returned' or r.get('reasoning_tokens', 1 << 30) >= r.get('budget', 0) for r in roles.values()): return False
+        validate_criteria(roles['interpret']['value'], unit['ids'])
         chunks = audit_chunks(catalog_value)
         for index, ids in enumerate(chunks, 1): validate_audit(roles[f'audit-{index}']['value'], catalog_value, ids)
         audit = merge_audits([roles[f'audit-{index}']['value'] for index in range(1, len(chunks) + 1)])
         validate_audit(audit, catalog_value); validate_unit(roles['prosecutor']['value'], payload, unit['ids'])
         disputes = contested(audit, roles['prosecutor']['value'], payload)
         if not disputes and roles['prosecutor']['value']['decision'] == 'pass':
-            if result['decision'] != 'pass' or 'judge' in roles: return False
+            if result['decision'] != 'pass' or any(k.startswith('judge') for k in roles): return False
         else:
-            validate_unit(roles['judge']['value'], payload, unit['ids'])
-            if result['decision'] != roles['judge']['value']['decision']: return False
+            verdicts = [roles[f'judge-{framing}']['value'] for framing in PANEL]
+            for verdict in verdicts: validate_unit(verdict, payload, unit['ids'])
+            if result['decision'] != panel_decision(verdicts, unit['ids'])[0]: return False
     return aggregate(child.get('units', []), len(planned)) == child.get('decision')
 
 
