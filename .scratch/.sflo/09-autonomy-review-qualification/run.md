@@ -10,7 +10,7 @@ Predecessor: ../09-autonomy-review-ensemble/run.md
 Status: active — gate 1 rerun (consistency, dev) on candidate 2
 Owner: Claude Code coordinator; independent seeding agent for cohort 3 (no pipeline access, private expectations unread by coordinator until scoring)
 Candidate: prototype ee8f2a4 (candidate 2: panel kept, interpreter removed, reading rules, audit citation pruning); candidate 1 5bf552c failed gate 1
-Controls: 111 collected, 110 pass, 1 skipped
+Controls: candidate 2 review suites 49/49 (Docker); candidate 1 had 111 collected, 110 pass, 1 skipped
 Driver: ops/rig_ensemble.sh ee8f2a4 <this dir> <all 16 cohort-2 ids>
 
 ## Gate 1 binding
