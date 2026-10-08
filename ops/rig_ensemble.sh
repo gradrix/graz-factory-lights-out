@@ -12,7 +12,7 @@ n=1; while [ -e "$evidence/trial-$n-admission.json" ]; do n=$((n+1)); done; labe
 name=gflo-review-ensemble-$short-$label
 local_root=$gflo/.gflo/$name
 remote='~'/$name
-cohort=evaluations/review-cohort-2
+cohort=evaluations/${GFLO_COHORT:-review-cohort-2}
 py() { docker run --rm --user "$(id -u):$(id -g)" --network none -v /home/gradrix/repos:/home/gradrix/repos \
        -w "$repo" -e PYTHONPATH="$repo" -e PYTHONDONTWRITEBYTECODE=1 python:3.12-slim python "$@"; }
 ssh_rig() { ssh -o BatchMode=yes -o ConnectTimeout=10 "$rig" "$@"; }

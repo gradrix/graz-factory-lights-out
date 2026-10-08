@@ -601,7 +601,7 @@ def score(results_path, expectations_path):
                      'repair_units': [u['unit'] for u in r.get('units', []) if u.get('decision') == 'repair'],
                      'incomplete_units': [u['unit'] for u in r.get('units', []) if u.get('status') != 'accepted']})
     summary = {}
-    for split in ('dev', 'holdout'):
+    for split in sorted({r['split'] for r in rows}):
         part = [r for r in rows if r['split'] == split]
         if part: summary[split] = {'cases': len(part), 'matched': sum(r['match'] for r in part)}
     return {'summary': summary, 'rows': rows}
