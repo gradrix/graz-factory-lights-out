@@ -7,11 +7,11 @@ Predecessor: ../09-autonomy-review-ensemble/run.md
 
 ## Execution
 
-Status: active — gate 1 rerun (consistency, dev) on candidate 2
+Status: active — gate 1 trial 3 (consistency, dev) on candidate 3
 Owner: Claude Code coordinator; independent seeding agent for cohort 3 (no pipeline access, private expectations unread by coordinator until scoring)
-Candidate: prototype ee8f2a4 (candidate 2: panel kept, interpreter removed, reading rules, audit citation pruning); candidate 1 5bf552c failed gate 1
-Controls: candidate 2 review suites 49/49 (Docker); candidate 1 had 111 collected, 110 pass, 1 skipped
-Driver: ops/rig_ensemble.sh ee8f2a4 <this dir> <all 16 cohort-2 ids>
+Candidate: prototype 6920218 (candidate 3: candidate 2 plus concrete specified-rejection rule and deep 65536 rung); candidate 1 5bf552c and candidate 2 ee8f2a4 failed gate 1
+Controls: candidates 2 and 3 review suites 49/49 (Docker); candidate 1 had 111 collected, 110 pass, 1 skipped
+Driver: ops/rig_ensemble.sh 6920218 <this dir> <all 16 cohort-2 ids>
 
 ## Gate 1 binding
 
@@ -48,3 +48,16 @@ Changes from 5bf552c, tuned on cohort 2 only (cohort 3 still unread):
 - Controls: review suites 49/49 in Docker (python:3.12-slim). The full discover run shows 10 errors only in planning-pilot git suites because the slim image has no git; unrelated to this change.
 
 Gate 1 rerun launched 2026-10-08 18:04 as trial 2 on all 16 cases. Scoring note: originals (k01, k04, d-seeded) may carry additional grounded real defects; for controls any blocking finding fails the gate.
+
+## Gate 1 trial 2 — candidate 2 (ee8f2a4): FAILED 13/16
+
+Evidence: `trial-2-*.json`, `trial-2-stage-inventory.sha256`; rig `~/gflo-review-ensemble-ee8f2a4-trial-2/`. No interpreter incompletes and no audit invalidity remained; every seeded and original defect case returned repair, and controls k02, k03, d03, d04, d07 passed.
+
+- d02 u4 (strict + neutral repair, charitable pass) and d11 u5 (charitable + neutral repair, strict pass): still read the preserved unknown-action `ValueError` as "the specified rejection" despite the abstract reading rule. The judges in the minority each cited the right reason (the error belongs to existing routing; the added action specifies none). This one boilerplate sentence is the ambiguity in the factory's own objective template.
+- d08 u3: the prosecutor exhausted both 8192 and 24576 reasoning tokens on the anchor-uniqueness statement (prompt 13335 tokens), so the unit stayed incomplete.
+
+## Candidate 3 (6920218)
+
+- The reading rule now names the factory boilerplate concretely: for tests that must cover "a specified rejection (or another boundary when no rejection is specified)", only an error specified for the newly added behavior counts; preserved routing errors and CLI exit handling do not. Cohort 3 contains a seeded `tests-miss-required-category` defect, so gate 2 checks that this rule does not excuse a real gap.
+- A third escalation rung at 65536 reasoning / 69632 max tokens (HTTP 1500 s, role 1620 s); the case judging deadline includes it.
+- Controls: review suites 49/49 in Docker. Gate 1 trial 3 launched 2026-10-09 on all 16 cases.

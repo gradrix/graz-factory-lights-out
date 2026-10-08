@@ -1,0 +1,218 @@
+{
+  "summary": {
+    "dev": {
+      "cases": 8,
+      "matched": 7
+    },
+    "holdout": {
+      "cases": 8,
+      "matched": 6
+    }
+  },
+  "rows": [
+    {
+      "case": "k01",
+      "split": "dev",
+      "kind": "original",
+      "expected": "repair",
+      "decision": "repair",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [
+        9,
+        10
+      ],
+      "incomplete_units": []
+    },
+    {
+      "case": "k02",
+      "split": "dev",
+      "kind": "control",
+      "expected": "pass",
+      "decision": "pass",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [],
+      "incomplete_units": []
+    },
+    {
+      "case": "k03",
+      "split": "dev",
+      "kind": "control",
+      "expected": "pass",
+      "decision": "pass",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [],
+      "incomplete_units": []
+    },
+    {
+      "case": "k04",
+      "split": "dev",
+      "kind": "original",
+      "expected": "repair",
+      "decision": "repair",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [
+        9,
+        10
+      ],
+      "incomplete_units": []
+    },
+    {
+      "case": "d01",
+      "split": "dev",
+      "kind": "original",
+      "expected": "repair",
+      "decision": "repair",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [
+        4
+      ],
+      "incomplete_units": []
+    },
+    {
+      "case": "d02",
+      "split": "dev",
+      "kind": "control",
+      "expected": "pass",
+      "decision": "repair",
+      "status": "accepted",
+      "match": false,
+      "repair_units": [
+        4
+      ],
+      "incomplete_units": []
+    },
+    {
+      "case": "d03",
+      "split": "dev",
+      "kind": "control",
+      "expected": "pass",
+      "decision": "pass",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [],
+      "incomplete_units": []
+    },
+    {
+      "case": "d04",
+      "split": "holdout",
+      "kind": "control",
+      "expected": "pass",
+      "decision": "pass",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [],
+      "incomplete_units": []
+    },
+    {
+      "case": "d05",
+      "split": "dev",
+      "kind": "original",
+      "expected": "repair",
+      "decision": "repair",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [
+        1,
+        5
+      ],
+      "incomplete_units": []
+    },
+    {
+      "case": "d06",
+      "split": "holdout",
+      "kind": "original",
+      "expected": "repair",
+      "decision": "repair",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [
+        2,
+        5
+      ],
+      "incomplete_units": []
+    },
+    {
+      "case": "d07",
+      "split": "holdout",
+      "kind": "control",
+      "expected": "pass",
+      "decision": "pass",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [],
+      "incomplete_units": []
+    },
+    {
+      "case": "d08",
+      "split": "holdout",
+      "kind": "control",
+      "expected": "pass",
+      "decision": "incomplete",
+      "status": "incomplete",
+      "match": false,
+      "repair_units": [],
+      "incomplete_units": [
+        3
+      ]
+    },
+    {
+      "case": "d09",
+      "split": "holdout",
+      "kind": "original",
+      "expected": "repair",
+      "decision": "repair",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [
+        6
+      ],
+      "incomplete_units": []
+    },
+    {
+      "case": "d10",
+      "split": "holdout",
+      "kind": "original",
+      "expected": "repair",
+      "decision": "repair",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [
+        2,
+        5
+      ],
+      "incomplete_units": []
+    },
+    {
+      "case": "d11",
+      "split": "holdout",
+      "kind": "control",
+      "expected": "pass",
+      "decision": "repair",
+      "status": "accepted",
+      "match": false,
+      "repair_units": [
+        5
+      ],
+      "incomplete_units": []
+    },
+    {
+      "case": "d12",
+      "split": "holdout",
+      "kind": "original",
+      "expected": "repair",
+      "decision": "repair",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [
+        2,
+        3
+      ],
+      "incomplete_units": []
+    }
+  ]
+}
