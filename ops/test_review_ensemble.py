@@ -150,7 +150,8 @@ class Roles(unittest.TestCase):
                          'judge-strict': one, 'judge-charitable': unit_wire(), 'judge-neutral': one})
         result = self.run_unit(fake, 'agree')
         self.assertEqual((result['decision'], result['panel_statement']), ('repair', 2))
-        self.assertTrue(all('Reading rules: stated input bounds' in b['messages'][0]['content'] for b in fake.bodies))
+        self.assertTrue(all('Reading rules: stated input bounds' in b['messages'][0]['content'] and
+                            'only an error the objective specifies for the newly added behavior counts' in b['messages'][0]['content'] for b in fake.bodies))
         self.assertFalse(any('Verification criteria' in b['messages'][1]['content'] for b in fake.bodies))
 
     def test_judge_can_reject_prosecutor(self):
@@ -158,11 +159,12 @@ class Roles(unittest.TestCase):
         self.assertEqual(self.run_unit(fake)['decision'], 'pass')
 
     def test_exhaustion_or_invalid_role_is_incomplete(self):
-        fake = RoleFake({'audit': audit(), 'prosecutor': unit_wire()}, reasoning={'audit': 100, 'prosecutor': [8192, 24576]})
+        fake = RoleFake({'audit': audit(), 'prosecutor': unit_wire()}, reasoning={'audit': 100, 'prosecutor': [8192, 24576, 65536]})
         result = self.run_unit(fake, 'a')
-        self.assertEqual((result['status'], fake.roles), ('incomplete', ['audit', 'prosecutor', 'prosecutor']))
-        self.assertEqual([a['budget'] for a in result['roles']['prosecutor']['attempts']], [8192, 24576])
-        self.assertEqual(fake.last['thinking_budget_tokens'], 24576)
+        self.assertEqual((result['status'], fake.roles), ('incomplete', ['audit', 'prosecutor', 'prosecutor', 'prosecutor']))
+        self.assertEqual([a['budget'] for a in result['roles']['prosecutor']['attempts']], [8192, 24576, 65536])
+        self.assertEqual((fake.last['thinking_budget_tokens'], fake.last['max_tokens']), (65536, 69632))
+        self.assertTrue((self.tmp / 'a' / 'prosecutor-deep' / 'ledger.json').exists())
         fake = RoleFake({'audit': {'version': 1, 'commands': []}, 'prosecutor': unit_wire()})
         result = self.run_unit(fake, 'b')
         self.assertEqual((result['status'], fake.roles), ('incomplete', ['audit', 'audit', 'audit']))

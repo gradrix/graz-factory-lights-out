@@ -29,12 +29,15 @@ BATTERY_SECONDS = 300
 UNIT_BUDGET, UNIT_MAX_TOKENS, UNIT_HTTP, ROLE_SECONDS = 8192, 12288, 300, 420
 # One fresh, separately charged escalation for a role whose reasoning exhausted the first cap.
 ESCALATED_BUDGET, ESCALATED_MAX_TOKENS, ESCALATED_HTTP, ESCALATED_SECONDS = 24576, 28672, 600, 720
+# A last, deep rung for reasoning that still exhausted 24576; prompt plus answer stays inside the 98304-token context.
+DEEP_BUDGET, DEEP_MAX_TOKENS, DEEP_HTTP, DEEP_SECONDS = 65536, 69632, 1500, 1620
 # One fresh correction attempt for a returned answer the controller rejected; the rejection reason is quoted.
 CORRECTIONS = 2
 # Auditor workload is bounded per request: commands are audited in fixed-size chunks and merged.
 AUDIT_CHUNK = 8
 LADDER = ((UNIT_BUDGET, UNIT_MAX_TOKENS, UNIT_HTTP, ROLE_SECONDS),
-          (ESCALATED_BUDGET, ESCALATED_MAX_TOKENS, ESCALATED_HTTP, ESCALATED_SECONDS))
+          (ESCALATED_BUDGET, ESCALATED_MAX_TOKENS, ESCALATED_HTTP, ESCALATED_SECONDS),
+          (DEEP_BUDGET, DEEP_MAX_TOKENS, DEEP_HTTP, DEEP_SECONDS))
 HEAD = TAIL = 3072
 EVIDENCE_BYTES = 240 * 1024
 UNIT_CHARS, MAX_UNITS, MAX_STATEMENTS = 400, 48, 96
@@ -105,7 +108,11 @@ POLICY = ('You review a candidate project against its objective using only the s
           'input bounds and shapes are caller preconditions, not validation duties, unless the objective explicitly '
           'requires an error for them; a conditional alternative ("X, or Y when no Z is specified") is satisfied by Y '
           'unless Z is specified for the work the objective adds, and behavior it only asks to preserve is not newly '
-          'specified. Return JSON only.')
+          'specified. In particular, for tests that must cover "a specified rejection (or another boundary when no '
+          'rejection is specified)", only an error the objective specifies for the newly added behavior counts; errors '
+          'it only asks to preserve (such as existing unknown-action ValueError routing or CLI exit 2 handling) do not, '
+          'so a normal case plus two distinct boundaries satisfies it when the added behavior specifies no error. '
+          'Return JSON only.')
 
 UNIT_WIRE = ('Return exactly {"version":1,"decision":"pass"|"repair"|"needs_input","findings":[...],"question":""}. '
              'Each finding has exactly severity (critical/major/minor), source {path,line}, requirements (1-2 statement IDs, '
@@ -344,7 +351,7 @@ def judge_unit(root, number, unit, view, payload, config, deadline, transport=No
         attempts = []; feedback = ''; value = None
         for correction in range(CORRECTIONS + 1):
             for level, step in enumerate(LADDER):
-                label = name + ('-escalated' if level else '') + (f'-corrected{correction}' if correction else '')
+                label = name + ('', '-escalated', '-deep')[level] + (f'-corrected{correction}' if correction else '')
                 status, content, facts = ask(root / label, config, view,
                                              ROLE_ASSIGNMENT[name.split('-')[0]] + ' Assigned: ' + assigned + extra + feedback,
                                              min(deadline, time.monotonic() + step[3]), transport, step)
@@ -547,7 +554,7 @@ def batch(args):
                     healthy = False; outcome['reason'] = 'Serving idle unconfirmed'
                 if healthy:
                     count = len(units(statements(read_file(Path(args.manifest).parent / case['objective']).decode())))
-                    deadline = time.monotonic() + count * 3 * (ROLE_SECONDS + ESCALATED_SECONDS)
+                    deadline = time.monotonic() + count * 3 * (ROLE_SECONDS + ESCALATED_SECONDS + DEEP_SECONDS)
                     value = json.loads(read_file(root / 'catalog.json'))
                     result = phase(root / 'judging', 'judging', {**spec, 'catalog': str(root / 'catalog.json'),
                                    'catalog_sha256': digest(encoded(value)), 'deadline': deadline - 30}, deadline, stop)
