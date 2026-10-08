@@ -234,3 +234,6 @@ htmlcov/
 
 !.scratch/.sflo/09-autonomy-review-ensemble/
 .scratch/.sflo/09-autonomy-review-ensemble/*/
+
+!.scratch/.sflo/09-autonomy-review-qualification/
+.scratch/.sflo/09-autonomy-review-qualification/*/

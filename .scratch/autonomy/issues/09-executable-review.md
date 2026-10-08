@@ -27,3 +27,5 @@ User decision 2026-10-07: take the recommended per-requirement route and make re
 User direction 2026-10-07: build new cases and make review more robust; tokens, time and many role agents are acceptable because local inference cost is electricity only. [Role ensemble with fresh cohort](../../.sflo/09-autonomy-review-ensemble/contract.md): 16-case cohort (dev/holdout split, coding-d seeded defects verified by private acceptance checks), deterministic evidence battery, three role explorers, per-unit auditor/prosecutor/judge.
 
 Resolved for this discovery stage: [decision 009](../../../docs/decisions/architecture/009-role-ensemble-review.md). Role ensemble passed dev 8/8 and an untuned holdout 8/8. Graduated questions: broader fresh qualification with repeated runs; judge consistency on requirement interpretation; maintained integration and serving parallelism.
+
+User decision 2026-10-08: do all three next steps — judge consistency, blind broader qualification with repeated runs, then maintained integration. [Contract](../../.sflo/09-autonomy-review-qualification/contract.md). Push remains unauthorized.
