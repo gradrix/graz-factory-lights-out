@@ -7,9 +7,9 @@ Branch: integration/ensemble-review (not merged to main until promotion)
 
 ## Execution
 
-Status: active — QA repair d2e687a under independent re-QA; rig suite clean versus main; vertical after blind run 2
+Status: active — product code accepted by independent re-QA (d2e687a, only the vertical driver needed repair, fixed at d8fb7a2); vertical after blind run 2
 Owner: Claude Code coordinator
-Candidate: integration/ensemble-review d2e687a (repair of 0c91359 after independent QA)
+Candidate: integration/ensemble-review d8fb7a2 (repairs of 0c91359 and d2e687a after independent QA)
 
 ## Evidence so far
 
@@ -19,3 +19,4 @@ Candidate: integration/ensemble-review d2e687a (repair of 0c91359 after independ
 4. Rig suite (Python 3.13, Docker available) for 0c91359: 175 tests, failures=2, skipped=1. Both failures are the `same-size` and `restore-mtime` subtests of `test_browser` seed-reader mid-read rewrite detection; main a073fd2 on the rig fails identically (163 tests, failures=2, skipped=1). Cause is ~4 ms timestamp granularity on the rig kernel, unrelated to this change; tracked as main issue `.scratch/autonomy/issues/10-seed-read-timestamp-granularity.md`. Every Docker-dependent test that could not run in the container passes on the rig, including all 12 ensemble tests.
 5. Independent QA of 0c91359 (fresh reviewer, s-qa with security and slop lenses): verdict repair. Blocking B1: the battery's documented-command runner had been rewritten during integration and dropped heredoc and `$ `-prompt examples (a correct README example could be recorded as failing); the 40/40 replay could not catch this because it re-judges stored prototype evidence. Non-blocking: runtime-context lines became judged statements (N1); 256 KiB expanded-report rejection not ported (N2); decision 010 overclaimed what the replay shows (N3); missing opt-in wiring tests and a discover-only import (N4); vertical polling ended on one ssh failure and had no deadline (N5); review mode validated only after environment preparation (N6). Read-only mount, fail-closed interruption and the repair path to `previous.review` were confirmed.
 6. Repair d2e687a (s-dev, test first): qualified runner ported verbatim with a heredoc/`$ ` test; objective-only judging; wiring and early-validation tests; done-marker polling with retries and a 24 h deadline; N2 recorded as a deviation; docs corrected. test_ensemble 16/16 (Docker); rig full suite 179 tests, only the two pre-existing seed-reader failures. Next: fresh re-QA of d2e687a, then the vertical after blind run 2.
+7. Independent re-QA of d2e687a: B1 and N1–N6 resolved (new tests fail against 0c91359; DOC_RUNNER byte-equal to the prototype after the path change; N2 reasoning accepted: with a 240 KiB catalog cap a valid answer could exceed 256 KiB). One blocking driver bug present since 0c91359: the launch backgrounded `cd && setsid …`, so `echo $! > vertical.pid` ran in the rig home and the driver exited before polling. Also: a runner death without the done marker exited 0; new test classes sat after `unittest.main()`; decision 010 counts. Fixed at d8fb7a2; builder probe confirms pid, log and done marker land in the run directory; 16/16 under both invocations. The driver repair's acceptance evidence is the rig vertical itself, the first real execution of the script.
