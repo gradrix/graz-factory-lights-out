@@ -26,6 +26,9 @@ UNIT_CHARS, MAX_UNITS, MAX_STATEMENTS = 400, 48, 96
 AUDIT_CHUNK, CORRECTIONS = 8, 2
 # (thinking budget, max tokens, HTTP seconds): fresh, separately charged escalation when reasoning exhausts a cap.
 LADDER = ((8192, 12288, 300), (24576, 28672, 600), (65536, 69632, 1500))
+# Escalations sample (temperature 0.6, seed = rung) instead of replaying the first request's greedy path: a
+# temperature-0 retry over the same cached prompt repeated one reasoning loop through every rung (blind run 2, b06).
+RETRY_TEMPERATURE = 0.6
 RESPONSE_BYTES = 1024 * 1024
 ROLES = ('tester', 'adversary', 'docs')
 
@@ -436,12 +439,13 @@ class EnsembleReviewer:
         return rows
 
     # ----- judging -----
-    def ask(self, label, view, assignment, step):
+    def ask(self, label, view, assignment, step, level=0):
         budget, max_tokens, seconds = step
         body = {'model': self.client.config['model'], 'temperature': 0, 'reasoning_effort': 'medium',
                 'chat_template_kwargs': {'enable_thinking': True}, 'thinking_budget_tokens': budget, 'max_tokens': max_tokens,
                 'messages': [{'role': 'system', 'content': POLICY}, {'role': 'user', 'content': view + '\n\nASSIGNMENT: ' + assignment}],
                 'response_format': {'type': 'json_object'}}
+        if level: body.update(temperature=RETRY_TEMPERATURE, seed=level)
         facts = {'budget': budget}
         try:
             response = self.recorder.request(self.client, label, body, seconds)
@@ -467,7 +471,7 @@ class EnsembleReviewer:
             for correction in range(CORRECTIONS + 1):
                 for level, step in enumerate(LADDER):
                     label = f'u{number:02d}-{name}' + ('', '-escalated', '-deep')[level] + (f'-corrected{correction}' if correction else '')
-                    status, content, facts = self.ask(label, view, ROLE_ASSIGNMENT[name.split('-')[0]] + ' Assigned: ' + assigned + extra + feedback, step)
+                    status, content, facts = self.ask(label, view, ROLE_ASSIGNMENT[name.split('-')[0]] + ' Assigned: ' + assigned + extra + feedback, step, level)
                     attempts.append({'status': status, 'label': label, **facts})
                     if status != 'exhausted': break
                 record = {'status': status, **facts, 'attempts': attempts}

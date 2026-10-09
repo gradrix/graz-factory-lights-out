@@ -135,6 +135,8 @@ class EnsembleTests(unittest.TestCase):
         budgets = [b['thinking_budget_tokens'] for b in client.bodies if 'tools' not in b][-3:]
         self.assertEqual(budgets, [8192, 24576, 65536])
         self.assertEqual(client.bodies[-1]['max_tokens'], 69632)
+        sampling = [(b['temperature'], b.get('seed')) for b in client.bodies if 'tools' not in b][-3:]
+        self.assertEqual(sampling, [(0, None), (0.6, 1), (0.6, 2)])  # escalations cannot replay a greedy loop
 
     def test_rejected_answer_gets_quoted_correction(self):
         wrong = {'version': 1, 'commands': [{'id': 1, 'bearing': 'supports', 'segments': [2]}, {'id': 2, 'bearing': 'unrelated', 'segments': []}]}
