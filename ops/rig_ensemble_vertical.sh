@@ -30,7 +30,7 @@ JSON
 if k and not k.startswith(\"/\"): import os;c[\"api_key_file\"]=os.path.join(os.path.dirname(sys.argv[1]),k)
 json.dump(c,open(\"config.json\",\"w\"),indent=2)' ~/gflo-runtime/.gflo/config.json
   for t in ${list[*]}; do git -C \$t/source init -q 2>/dev/null || true; done; echo staged"
-ssh_rig "cd $remote && setsid nohup sh -c 'for t in ${list[*]}; do echo \"== \$t \$(date -u +%FT%TZ)\"; \
+ssh_rig "cd $remote || exit 1; setsid nohup sh -c 'for t in ${list[*]}; do echo \"== \$t \$(date -u +%FT%TZ)\"; \
   (cd \$t/source && git add -A && git -c user.name=gflo -c user.email=gflo@local commit -qm base) || true; \
   PYTHONPATH=\$PWD PYTHONDONTWRITEBYTECODE=1 python3 -m gflo --config config.json --state runs run --environment-store ${GFLO_ENV_STORE:-/home/gradrix/gflo-stage3-25f75c3/.gflo/stage3-preparation/environments} --environment ${GFLO_ENV_ID:-36cd138cbdc332246a2db473301200117f82404a4504c675db95966645348975} \$t/task.json; echo \"exit=\$? \$(date -u +%FT%TZ)\"; done; echo finished > vertical.done' > vertical.log 2>&1 < /dev/null & echo \$! > vertical.pid"
 pid=$(ssh_rig "cat $remote/vertical.pid")
@@ -45,3 +45,5 @@ done
 ssh_rig "cd $remote && tar -c --exclude='*/workspace/*' runs vertical.log config.json" | tar -x -C "$local_root"
 cp "$local_root/vertical.log" "$evidence/$label.log"
 echo "vertical $state: $local_root"
+# A runner that died before writing the done marker is a failed vertical, not a completed one.
+[ "$state" = done ] || exit 4

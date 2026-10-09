@@ -200,9 +200,6 @@ class ConfigTests(unittest.TestCase):
             self.assertIn('review must be', ''.join(c.args[0] for c in stderr.write.call_args_list))
 
 
-if __name__ == '__main__':
-    unittest.main()
-
 
 class DocRunnerTests(unittest.TestCase):
     def test_heredoc_and_console_prompt_examples_run_like_the_qualified_runner(self):
@@ -259,3 +256,7 @@ class WiringTests(unittest.TestCase):
                 self.assertEqual(entry.main(['--config', str(config), '--state', directory, 'run',
                                              '--environment-store', directory, str(Path(directory) / 'task.json')]), 1)
             store.assert_not_called()
+
+
+if __name__ == '__main__':
+    unittest.main()
