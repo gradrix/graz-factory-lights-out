@@ -28,7 +28,7 @@ User direction, 2026-10-02: push the first version, delete previous implementati
 
 Route check, 2026-10-09 (agent assessment answering the user's drift question): review qualification stops after blind run 2; no further review-only cohorts. The unmeasured question that decides whether the local model is sufficient is end-to-end delivery — worker plus ensemble review plus repair reaching a privately verified correct increment, and how often. The integration vertical (coding-d 05, 09) is the first measurement; a broader end-to-end delivery-rate cohort is the next unit.
 
-Pending user choice, 2026-10-09: review gate 2 failed on candidate 3 (blind run 2 b06 incomplete; temperature-0 reasoning loop replayed by every escalation). Candidate 4 samples on escalation; two cohort-3 runs on it are running. Open: rerun gate 1 too (strict, about 5 h more before the factory vertical) or not (recommended: candidate 4 changes only escalation sampling, which gate 1 barely exercises). See [qualification run](../.sflo/09-autonomy-review-qualification/run.md).
+User decision, 2026-10-10 ("Rerun it too", chosen over the agent's recommendation to skip): candidate 4 (sampled escalations, after gate 2 failed on candidate 3 at blind run 2 b06) requalifies fully: blind run A, gate 1 on cohort 2, blind run B, all before the factory vertical. See [qualification run](../.sflo/09-autonomy-review-qualification/run.md).
 
 [Seed reader timestamp granularity](issues/10-seed-read-timestamp-granularity.md): rig suite shows same-size mid-read rewrites go undetected on coarse (~4 ms) timestamps; open task, independent of review work.
 
