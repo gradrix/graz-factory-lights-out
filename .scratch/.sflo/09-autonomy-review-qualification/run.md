@@ -7,9 +7,9 @@ Predecessor: ../09-autonomy-review-ensemble/run.md
 
 ## Execution
 
-Status: active — gate 1 PASSED (trial 3); gate 2 FAILED: blind run 1 24/24 (trial 4), blind run 2 23/24 with b06 incomplete (trial 5); loop-escape repair under way
+Status: active — gate 2 FAILED on candidate 3 (run 2 b06 incomplete); candidate 4 blind run A (trial 6) running
 Owner: Claude Code coordinator; independent seeding agent for cohort 3 (no pipeline access, private expectations unread by coordinator until scoring)
-Candidate: prototype 6920218 (candidate 3, frozen for gate 2); candidate 1 5bf552c and candidate 2 ee8f2a4 failed gate 1
+Candidate: prototype d0de00c (candidate 4: candidate 3 plus sampled escalations); candidate 3 6920218 passed gate 1 and failed gate 2 run 2; candidates 1 5bf552c and 2 ee8f2a4 failed gate 1
 Controls: candidates 2 and 3 review suites 49/49 (Docker); candidate 1 had 111 collected, 110 pass, 1 skipped
 Driver: ops/rig_ensemble.sh 6920218 <this dir> <all 16 cohort-2 ids>
 
@@ -114,3 +114,9 @@ Evidence: `trial-5-*.json`, `trial-5-stage-inventory.sha256`; rig `~/gflo-review
 Run-to-run agreement with trial 4: case decisions 23/24 (b06 repair → incomplete); identical repair-unit sets 21/24 (b06, c04 [1] → [1,2], c12 [1] → [1,4]); no cited defect differs.
 
 Cause of b06 u2: the first audit chunk exhausted 8192, 24576 and 65536 reasoning tokens. The deep attempt's reasoning (188 KB) is a degenerate repetition loop: seven probe lines repeated about 250 times each until the budget ended (1304 s for that request alone). Every request runs at temperature 0 with an identical prompt, so escalation replays the same greedy path with more room and cannot escape a loop. Across trials 3–5 (about 1780 role calls), 11 first attempts exhausted; 10 were rescued by escalation, this loop was not, and exhausted attempts cost 776 s, 582 s and 2393 s per trial. At roughly 25–30 role calls per factory review this is a few percent of reviews interrupted, each after a long stall.
+
+## Candidate 4 (d0de00c)
+
+Repair, on the measured cause only: ladder rungs after the first send temperature 0.6 with seed equal to the rung; first requests stay byte-identical to candidate 3 (temperature 0, no seed). Probe on the rig (`~/gflo-loop-probe`, the looping b06 escalated request replayed): temperature-0 control 82 s, 3174 completion tokens, no loop, valid; four seeded temperature-0.6 runs 22–38 s, all valid. So the loop is rare and state-dependent, and the escalations failed only because they replayed it. Review suites 49/49 (Docker).
+
+Requalification: two fresh blind runs of cohort 3 on candidate 4 (trials 6 and 7) under the same gate 2 rule. Inference boundary: the coordinator has read cohort 3's private expectations since run 1's scoring, so cohort 3 is no longer blind to the coordinator. The repair is generic sampling, not tuned on any case content, but these runs measure stability and the escalation path, not blind generalisation. Whether gate 1 also reruns is a pending user choice (recorded in the map). The maintained branch carries the same change at 60472ae; its vertical waits for that choice.
