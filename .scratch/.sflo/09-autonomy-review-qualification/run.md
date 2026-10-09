@@ -105,3 +105,4 @@ Grounding (cohort-3 `private/expectations.json` first read at this scoring step)
 | c12 | strict-decoding | `unquote_plus` replaces invalid UTF-8 | u1 (4) `domain.py:9` |
 
 The c09 result matters for candidate 3's reading rule: the rule excuses a missing rejection test only when no rejection is specified for the added behavior, and here it correctly did not.
+- 2026-10-09: after blind run 2 (trial 5) was admitted, `contract.md` changed only in its first paragraph to record the user's later push authorisation (commit 67cce2a); trial 5's admission keeps the prior hash, and gates, cases and acceptance are unchanged.
