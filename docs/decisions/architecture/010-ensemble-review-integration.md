@@ -18,8 +18,10 @@ Status: proposed, 2026-10-09 — pending blind run 2, the rig test suite and the
 ## Limits and remaining assumptions
 
 - The reading rules were derived on dev cases; the blind cohort is evidence that they generalise to the same objective template, not to arbitrary objective styles.
-- Python projects only (node-ts is refused). Cost per review is roughly 17–31 minutes and ~0.4M local tokens on one serving slot; units are independent, so serving parallelism is the scaling lever, measured and decided separately.
-- Explorer command outputs use the maintained sandbox's bounded tail; explorers make no advisory final request. Neither changes judging, which the replay confirms.
+- Python projects only (node-ts is refused). Cost per review is roughly 17–31 minutes per review and ~0.4M local tokens on one serving slot; units are independent, so serving parallelism is the scaling lever, measured and decided separately.
+- Explorer command outputs use the maintained sandbox's bounded tail, explorers make no advisory final request, and their system prompt no longer demands at least one command. The replay shows the judging code is unchanged; it re-judges the prototype's stored evidence, so it cannot show that evidence gathered by the maintained code is equivalent. The deterministic battery is the qualified one verbatim (independent QA found and a test now pins an earlier rewritten documented-command runner that dropped heredocs and `$ ` prompts); live equivalence of explorers rests on the rig vertical.
+- The judged objective is the task objective only, as in qualification; the runtime-context lines given to the worker are not split into judged statements.
+- The prototype's 256 KiB expanded-report rejection is not carried over: it could only reject an otherwise valid answer because the catalog was near its own size cap.
 
 ## Consequences
 

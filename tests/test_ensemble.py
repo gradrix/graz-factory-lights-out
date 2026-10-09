@@ -173,7 +173,7 @@ class EnsembleTests(unittest.TestCase):
             reviewer(self.workspace, {'objective': OBJECTIVE})
 
     def test_runner_repair_loop_receives_ensemble_findings(self):
-        import test_runner
+        import sys; sys.path.insert(0, str(Path(__file__).parent)); import test_runner
         from gflo.runner import Factory
         fixture = test_runner.RunnerTests(); fixture.setUp(); self.addCleanup(fixture.doCleanups)
         seen = []
@@ -202,3 +202,60 @@ class ConfigTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
+
+class DocRunnerTests(unittest.TestCase):
+    def test_heredoc_and_console_prompt_examples_run_like_the_qualified_runner(self):
+        import subprocess
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory) / 'source'; source.mkdir(); scratch = Path(directory) / 'p'
+            (source / 'cli.py').write_text('import json, sys\nprint(json.dumps({"result": len(json.load(sys.stdin)["changes"])}))\n')
+            (source / 'sample.json').write_text('{"changes": []}\n')
+            (source / 'README.md').write_text(
+                "```bash\npython3 cli.py <<'JSON'\n{\"changes\": [1]}\nJSON\n```\n\n"
+                "```console\n$ PYTHONPATH=. python3 cli.py < sample.json\n{\"result\": 0}\n```\n\n"
+                "```json\n{\"not\": \"a command\"}\n```\n")
+            script = e.DOC_RUNNER.replace('/tmp/p', str(scratch)).replace('/workspace', str(source))
+            output = subprocess.run(['sh', '-c', script], capture_output=True, text=True, timeout=60).stdout
+        self.assertEqual(output.count('ACTUAL EXIT: 0'), 2, output)
+        self.assertIn('ACTUAL OUTPUT: {"result": 1}', output)
+        self.assertIn('DOCUMENTED OUTPUT: {"result": 0}', output)
+        self.assertNotIn('a command', output)
+
+
+class WiringTests(unittest.TestCase):
+    def reviewer_for(self, review):
+        import gflo.__main__ as entry
+        seen = {}
+        def factory(*args, **kwargs):
+            seen['reviewer'] = kwargs['reviewer']; raise ValueError('stop')
+        with tempfile.TemporaryDirectory() as directory:
+            config = {'endpoint': 'http://127.0.0.1:1', 'model': 'm'}
+            if review is not None: config['review'] = review
+            (Path(directory) / 'c.json').write_text(json.dumps(config))
+            with mock.patch.object(entry, 'Factory', side_effect=factory), mock.patch('sys.stderr'):
+                entry.main(['--config', str(Path(directory) / 'c.json'), '--state', directory, 'resume', 'x'])
+        return type(seen['reviewer'])
+
+    def test_single_is_default_and_ensemble_is_opt_in(self):
+        from gflo.review import Reviewer
+        self.assertIs(self.reviewer_for(None), Reviewer)
+        self.assertIs(self.reviewer_for('single'), Reviewer)
+        self.assertIs(self.reviewer_for('ensemble'), e.EnsembleReviewer)
+
+    def test_judged_objective_excludes_runtime_context(self):
+        reviewer = e.EnsembleReviewer(mock.Mock(), Sandbox())
+        with mock.patch.object(reviewer, 'review', return_value='r') as review:
+            reviewer('/w', {'objective': OBJECTIVE, 'environment': {'profile': 'python-stdlib', 'image': 'i', 'runtime': {}}})
+        review.assert_called_once_with('/w', OBJECTIVE)
+
+    def test_invalid_review_fails_before_environment_preparation(self):
+        import gflo.__main__ as entry
+        with tempfile.TemporaryDirectory() as directory:
+            config = Path(directory) / 'config.json'
+            config.write_text(json.dumps({'endpoint': 'http://127.0.0.1:1', 'model': 'm', 'review': 'bogus'}))
+            (Path(directory) / 'task.json').write_text(json.dumps({'repo': 'source', 'objective': 'o', 'checks': []}))
+            with mock.patch.object(entry, 'EnvironmentStore') as store, mock.patch('sys.stderr'):
+                self.assertEqual(entry.main(['--config', str(config), '--state', directory, 'run',
+                                             '--environment-store', directory, str(Path(directory) / 'task.json')]), 1)
+            store.assert_not_called()

@@ -32,9 +32,16 @@ json.dump(c,open(\"config.json\",\"w\"),indent=2)' ~/gflo-runtime/.gflo/config.j
   for t in ${list[*]}; do git -C \$t/source init -q 2>/dev/null || true; done; echo staged"
 ssh_rig "cd $remote && setsid nohup sh -c 'for t in ${list[*]}; do echo \"== \$t \$(date -u +%FT%TZ)\"; \
   (cd \$t/source && git add -A && git -c user.name=gflo -c user.email=gflo@local commit -qm base) || true; \
-  PYTHONPATH=\$PWD PYTHONDONTWRITEBYTECODE=1 python3 -m gflo --config config.json --state runs run --environment-store ${GFLO_ENV_STORE:-/home/gradrix/gflo-stage3-25f75c3/.gflo/stage3-preparation/environments} --environment ${GFLO_ENV_ID:-36cd138cbdc332246a2db473301200117f82404a4504c675db95966645348975} \$t/task.json; echo \"exit=\$? \$(date -u +%FT%TZ)\"; done' > vertical.log 2>&1 < /dev/null & echo \$! > vertical.pid"
+  PYTHONPATH=\$PWD PYTHONDONTWRITEBYTECODE=1 python3 -m gflo --config config.json --state runs run --environment-store ${GFLO_ENV_STORE:-/home/gradrix/gflo-stage3-25f75c3/.gflo/stage3-preparation/environments} --environment ${GFLO_ENV_ID:-36cd138cbdc332246a2db473301200117f82404a4504c675db95966645348975} \$t/task.json; echo \"exit=\$? \$(date -u +%FT%TZ)\"; done; echo finished > vertical.done' > vertical.log 2>&1 < /dev/null & echo \$! > vertical.pid"
 pid=$(ssh_rig "cat $remote/vertical.pid")
-while ssh_rig "kill -0 $pid 2>/dev/null"; do echo "$(date +%T) $(ssh_rig "grep -c '^== ' $remote/vertical.log" || true) tasks started"; sleep 120; done
+# Completion is the remote done marker, or the runner process having exited; an ssh failure only retries.
+deadline=$(( $(date +%s) + ${GFLO_VERTICAL_HOURS:-24} * 3600 ))
+while :; do
+  state=$(ssh_rig "if test -e $remote/vertical.done; then echo done; elif kill -0 $pid 2>/dev/null; then echo running; else echo exited; fi" || echo unreachable)
+  case $state in done|exited) break;; esac
+  if [ "$(date +%s)" -ge "$deadline" ]; then echo "vertical still $state after ${GFLO_VERTICAL_HOURS:-24}h; leaving it running at $remote" >&2; exit 3; fi
+  echo "$(date +%T) $state $(ssh_rig "grep -c '^== ' $remote/vertical.log" 2>/dev/null || echo '?') tasks started"; sleep 120
+done
 ssh_rig "cd $remote && tar -c --exclude='*/workspace/*' runs vertical.log config.json" | tar -x -C "$local_root"
 cp "$local_root/vertical.log" "$evidence/$label.log"
-echo "vertical complete: $local_root"
+echo "vertical $state: $local_root"

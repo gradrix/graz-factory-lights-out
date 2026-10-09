@@ -150,6 +150,9 @@ def main(argv=None):
         config = json.loads(config_path.read_text())
         if config.get('api_key_file'):
             config['api_key_file'] = str((config_path.parent / config['api_key_file']).resolve())
+        review_mode = config.get('review', 'single')
+        if review_mode not in ('single', 'ensemble'):
+            raise ValueError('config review must be "single" or "ensemble"')
         sandbox = Sandbox(config.get('image', DEFAULT_IMAGE))
         worker = ModelWorker(config, sandbox)
         if args.command == 'documents':
@@ -183,9 +186,6 @@ def main(argv=None):
             validate_project(store, profile, project)
             if environment is None:
                 environment = prepare(store, profile)
-        review_mode = config.get('review', 'single')
-        if review_mode not in ('single', 'ensemble'):
-            raise ValueError('config review must be "single" or "ensemble"')
         reviewer = EnsembleReviewer(worker, sandbox) if review_mode == 'ensemble' else Reviewer(worker)
         factory = Factory(args.state, worker, sandbox.verify, cleanup=sandbox.cleanup, reviewer=reviewer,
                           environment=environment, bind_environment=sandbox.bind)

@@ -60,21 +60,30 @@ TOOLS = [{'type': 'function', 'function': {
 
 DOC_RUNNER = r'''rm -rf /tmp/p && cp -r /workspace /tmp/p && cd /tmp/p && python3 - <<'GFLO_PY'
 import pathlib, re, subprocess
-docs = sorted(p for p in pathlib.Path('.').rglob('*.md') if '.git' not in p.parts)
-if not docs: print('NO MARKDOWN DOCUMENTATION FOUND')
-for doc in docs:
+for doc in sorted(pathlib.Path('.').rglob('*.md')):
     text = doc.read_text(errors='replace')
-    for block_number, block in enumerate(re.findall(r'```[^\n]*\n(.*?)```', text, re.S), 1):
-        commands, current = [], None
-        for line in block.splitlines():
-            stripped = line.strip()
-            if stripped.startswith('$ '): stripped = stripped[2:]
-            if re.match(r'(python3?|echo|printf|cat|sh|bash|\./)\b', stripped) or stripped.startswith(('python', 'echo', 'printf')):
-                current = [stripped, []]; commands.append(current)
-            elif current is not None and stripped:
-                current[1].append(stripped)
-        commands = [(c, '\n'.join(o)) for c, o in commands]
-        if not commands: continue
+    for block_number, match in enumerate(re.finditer(r'```([^\n`]*)\n(.*?)```', text, re.S), 1):
+        lang = match.group(1).strip().lower(); body = match.group(2).split('\n')
+        dollar = any(line.startswith('$ ') for line in body)
+        if not dollar and lang not in ('sh', 'bash', 'shell', 'console', 'zsh'):
+            continue
+        commands = []; i = 0
+        while i < len(body):
+            line = body[i]
+            if dollar and not line.startswith('$ ') or not dollar and (not line.strip() or line.lstrip().startswith('#')):
+                i += 1; continue
+            command = line[2:] if dollar else line; i += 1
+            heredoc = re.search(r"<<-?\s*['\"]?(\w+)['\"]?", command)
+            if heredoc:
+                while i < len(body) and body[i].strip() != heredoc.group(1):
+                    command += '\n' + body[i]; i += 1
+                command += '\n' + heredoc.group(1); i += 1
+            expected = []
+            while dollar and i < len(body) and not body[i].startswith('$ '):
+                expected.append(body[i]); i += 1
+            commands.append((command, '\n'.join(expected).strip()))
+        if not commands:
+            continue
         script = ''
         for n, (command, _) in enumerate(commands):
             script += ("printf '\\n@@GFLO_DOC_%d@@\\n'\n( exit ${GFLO_RC:-0} )\n" % n
@@ -506,11 +515,10 @@ class EnsembleReviewer:
 
     # ----- seam -----
     def __call__(self, workspace, task):
-        from .environment import runtime_context
         environment = getattr(self.sandbox, 'environment', None)
         if environment is not None and environment.profile == 'node-ts':
             raise ValueError('Ensemble review is qualified only for Python projects; use review "single" for node-ts')
-        return self.review(workspace, task['objective'] + '\n' + runtime_context(task))
+        return self.review(workspace, task['objective'])
 
     def review(self, workspace, objective):
         workspace = Path(workspace).resolve(); files = load_files(workspace); before = tree_identity(workspace)
