@@ -22,4 +22,6 @@ Later acceptance-bearing stages are in [the roadmap](../../docs/roadmap.md). The
 
 - [Direct versus two-task planning pilot](delivery/08-planning-pilot.md) — accepted discovery; four arms and independent checks complete, no independently complete increment. Planning stays advisory; [closure](../.sflo/08-autonomy-planning-pilot/acceptance.md).
 
-- [Read-only executable local-review discriminator](delivery/09-executable-review.md) — role ensemble qualified on fresh cohort: dev 8/8, holdout 8/8 (80b4956); judge consistency on test-coverage requirements is the open risk. No maintained promotion yet.
+- [Read-only executable local-review discriminator](delivery/09-executable-review.md) — role ensemble qualified (80b4956, 8/8 + 8/8); consistency candidate 6920218 passed gate 1 16/16 grounded and blind run 1 24/24 grounded on an independent cohort; blind run 2 pending. [Qualification](../.sflo/09-autonomy-review-qualification/run.md).
+
+- Maintained ensemble review integration — opt-in `gflo/ensemble.py` on branch `integration/ensemble-review`; offline controls 12/12 and 40/40 replay equivalence; awaiting blind run 2, rig suite and rig vertical before merge. Contract and run record on that branch under `.scratch/.sflo/10-autonomy-ensemble-integration/`.

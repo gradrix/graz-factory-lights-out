@@ -1,6 +1,6 @@
 # Review consistency, blind qualification and integration
 
-Decision: user, 2026-10-08 — "shall we do all of 3 things?" in reply to the proposed next steps after [decision 009](../../../docs/decisions/architecture/009-role-ensemble-review.md): (1) judge consistency, (2) broader qualification with repeated runs and defects not seeded by the pipeline author, (3) maintained-factory integration. Pushing was not answered and stays unauthorized. Sequencing and design are agent-authored.
+Decision: user, 2026-10-08 — "shall we do all of 3 things?" in reply to the proposed next steps after [decision 009](../../../docs/decisions/architecture/009-role-ensemble-review.md): (1) judge consistency, (2) broader qualification with repeated runs and defects not seeded by the pipeline author, (3) maintained-factory integration. Pushing was not answered at that point; the user then authorised it (2026-10-08: "push to master as frequent as possible (please do if we can)"; default branch is main), so milestones are pushed. Sequencing and design are agent-authored.
 
 ## Order and gates
 
