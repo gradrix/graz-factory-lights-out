@@ -191,6 +191,7 @@ class Roles(unittest.TestCase):
         result = self.run_unit(fake)
         self.assertEqual((result['status'], result['decision'], fake.roles), ('accepted', 'pass', ['audit', 'audit', 'prosecutor']))
         self.assertEqual(result['roles']['audit-1']['budget'], 24576)
+        self.assertEqual([(b['temperature'], b.get('seed')) for b in fake.bodies], [(0, None), (0.6, 1), (0, None)])
         self.assertTrue((self.tmp / 'u' / 'audit-1-escalated' / 'ledger.json').exists())
         source = self.tmp / 'src'; source.mkdir(); (source / 'README.md').write_text('example\n')
         objective = 'A1: Tests pass. README example works.\n'; planned = r.units(self.found)

@@ -31,16 +31,16 @@ SYSTEM = EVIDENCE_SYSTEM + (' Assignment: judge only the single objective line n
 
 class UnitClient(ReviewClient):
     """The qualified durable one-use final path with the contract-2 thinking cap."""
-    def __init__(self, config, ledger, transport=None, budget=None, max_tokens=None, http_seconds=None):
+    def __init__(self, config, ledger, transport=None, budget=None, max_tokens=None, http_seconds=None, sampling=None):
         if ledger.read()['phase'] != 'final': raise ValueError('Final phase required')
         super().__init__(config, ledger, transport)
         self.budget = budget or REASONING_BUDGET; self.max_tokens = max_tokens or MAX_TOKENS
-        self.http_seconds = http_seconds or HTTP_SECONDS
+        self.http_seconds = http_seconds or HTTP_SECONDS; self.sampling = dict(sampling or {})
 
     def complete(self, messages):
         if self.ledger.read()['phase'] != 'final': raise ValueError('Request phase differs from durable ledger')
         body = {**PROFILE, 'thinking_budget_tokens': self.budget, 'max_tokens': self.max_tokens,
-                'messages': messages, 'response_format': {'type': 'json_object'}}
+                'messages': messages, 'response_format': {'type': 'json_object'}, **self.sampling}
         raw = encoded(body)
         if len(raw) > REQUEST_BYTES: raise ValueError('Request capacity before transport')
         number = self.ledger.reserve('requests', {'request_sha256': digest(raw), 'role': 'unit-reviewer'})

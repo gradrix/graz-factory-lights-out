@@ -38,6 +38,9 @@ AUDIT_CHUNK = 8
 LADDER = ((UNIT_BUDGET, UNIT_MAX_TOKENS, UNIT_HTTP, ROLE_SECONDS),
           (ESCALATED_BUDGET, ESCALATED_MAX_TOKENS, ESCALATED_HTTP, ESCALATED_SECONDS),
           (DEEP_BUDGET, DEEP_MAX_TOKENS, DEEP_HTTP, DEEP_SECONDS))
+# Escalations sample (temperature 0.6, seed = rung) instead of replaying the first request's greedy path: a
+# temperature-0 retry over the same cached prompt repeated one reasoning loop through every rung (blind run 2, b06).
+RETRY_TEMPERATURE = 0.6
 HEAD = TAIL = 3072
 EVIDENCE_BYTES = 240 * 1024
 UNIT_CHARS, MAX_UNITS, MAX_STATEMENTS = 400, 48, 96
@@ -310,14 +313,15 @@ def contested(audit, prosecutor, payload):
     return items
 
 
-def ask(root, config, prefix, assignment, deadline, transport=None, step=LADDER[0], system=POLICY):
+def ask(root, config, prefix, assignment, deadline, transport=None, step=LADDER[0], system=POLICY, level=0):
     """One precharged JSON-only request; returns (status, content, facts)."""
     root = Path(root); root.parent.mkdir(mode=0o700, parents=True, exist_ok=True); root.mkdir(mode=0o700)
     facts = {'budget': step[0]}
     try:
         from review_evidence_prototype import create_ledger
         ledger = create_ledger(root, deadline)
-        client = UnitClient(config, ledger, transport, step[0], step[1], step[2])
+        client = UnitClient(config, ledger, transport, step[0], step[1], step[2],
+                            {'temperature': RETRY_TEMPERATURE, 'seed': level} if level else None)
         response = client.complete([{'role': 'system', 'content': system}, {'role': 'user', 'content': prefix + '\n\nASSIGNMENT: ' + assignment}])
     except Exception as error:
         return 'failed', None, {**facts, 'error_type': type(error).__name__, 'error': redact(str(error))[:2048]}
@@ -354,7 +358,7 @@ def judge_unit(root, number, unit, view, payload, config, deadline, transport=No
                 label = name + ('', '-escalated', '-deep')[level] + (f'-corrected{correction}' if correction else '')
                 status, content, facts = ask(root / label, config, view,
                                              ROLE_ASSIGNMENT[name.split('-')[0]] + ' Assigned: ' + assigned + extra + feedback,
-                                             min(deadline, time.monotonic() + step[3]), transport, step)
+                                             min(deadline, time.monotonic() + step[3]), transport, step, level=level)
                 attempts.append({'status': status, 'label': label, **facts})
                 if status != 'exhausted': break
             record = {'status': status, **facts, 'attempts': attempts}
