@@ -7,9 +7,9 @@ Predecessor: ../09-autonomy-review-ensemble/run.md
 
 ## Execution
 
-Status: active — gate 1 trial 3 (consistency, dev) on candidate 3
+Status: active — gate 1 PASSED (trial 3); gate 2 blind run 1 on candidate 3
 Owner: Claude Code coordinator; independent seeding agent for cohort 3 (no pipeline access, private expectations unread by coordinator until scoring)
-Candidate: prototype 6920218 (candidate 3: candidate 2 plus concrete specified-rejection rule and deep 65536 rung); candidate 1 5bf552c and candidate 2 ee8f2a4 failed gate 1
+Candidate: prototype 6920218 (candidate 3, frozen for gate 2); candidate 1 5bf552c and candidate 2 ee8f2a4 failed gate 1
 Controls: candidates 2 and 3 review suites 49/49 (Docker); candidate 1 had 111 collected, 110 pass, 1 skipped
 Driver: ops/rig_ensemble.sh 6920218 <this dir> <all 16 cohort-2 ids>
 
@@ -61,3 +61,22 @@ Evidence: `trial-2-*.json`, `trial-2-stage-inventory.sha256`; rig `~/gflo-review
 - The reading rule now names the factory boilerplate concretely: for tests that must cover "a specified rejection (or another boundary when no rejection is specified)", only an error specified for the newly added behavior counts; preserved routing errors and CLI exit handling do not. Cohort 3 contains a seeded `tests-miss-required-category` defect, so gate 2 checks that this rule does not excuse a real gap.
 - A third escalation rung at 65536 reasoning / 69632 max tokens (HTTP 1500 s, role 1620 s); the case judging deadline includes it.
 - Controls: review suites 49/49 in Docker. Gate 1 trial 3 launched 2026-10-09 on all 16 cases.
+
+## Gate 1 trial 3 — candidate 3 (6920218): PASSED 16/16
+
+Evidence: `trial-3-*.json`, `trial-3-stage-inventory.sha256`; rig `~/gflo-review-ensemble-6920218-trial-3/`. All 16 cases correct and complete (dev 8/8, holdout 8/8); all seven controls pass with no blocking finding.
+
+Grounding check against `review-cohort-2/private/expectations.json` (dev cohort, readable): every one of the 19 repair units cites its case's required defect at the defect's source line; none raises anything else.
+
+| Case | Required defect | Repair units (statement, source) |
+|---|---|---|
+| k01 | test hardcodes `/workspace` | u9 (20), u10 (24): `tests/test_manifest_tool.py:178` |
+| k04 | README digests 62/60 chars | u9 (21), u10 (24): `README.md:51` |
+| d01 | CLI ValueError traceback, exit 1 | u4 (15) `cli.py:6`; u7 (23, preserve CLI error contract) `cli.py:5` |
+| d05 | dedup keeps first not last | u1 (2), u2 (5) `domain.py:4`; u5 (tests pass) `test_behavior.py:12` failing on it |
+| d06 | tie keeps largest id | u2 (4), u5 (15) `domain.py:8`; u4 (tests pass) failing on it |
+| d09 | README uses nonexistent action | u6 (15) `README.md:10` |
+| d10 | blockers unsorted | u2 (5), u5 (15) `domain.py:9` |
+| d12 | input list sorted in place | u2 (8), u3 (12) `domain.py:5` |
+
+The d09 "tests miss rejection" extra from the ensemble holdout did not recur. Candidate 3 is frozen for gate 2; blind run 1 launched on all 24 cohort-3 cases with `GFLO_COHORT=review-cohort-3`.
