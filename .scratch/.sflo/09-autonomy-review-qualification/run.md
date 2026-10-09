@@ -7,7 +7,7 @@ Predecessor: ../09-autonomy-review-ensemble/run.md
 
 ## Execution
 
-Status: active — gate 1 PASSED (trial 3); gate 2 blind run 1 on candidate 3
+Status: active — gate 1 PASSED (trial 3); gate 2 blind run 1 PASSED 24/24 (trial 4); blind run 2 running (trial 5)
 Owner: Claude Code coordinator; independent seeding agent for cohort 3 (no pipeline access, private expectations unread by coordinator until scoring)
 Candidate: prototype 6920218 (candidate 3, frozen for gate 2); candidate 1 5bf552c and candidate 2 ee8f2a4 failed gate 1
 Controls: candidates 2 and 3 review suites 49/49 (Docker); candidate 1 had 111 collected, 110 pass, 1 skipped
@@ -80,3 +80,28 @@ Grounding check against `review-cohort-2/private/expectations.json` (dev cohort,
 | d12 | input list sorted in place | u2 (8), u3 (12) `domain.py:5` |
 
 The d09 "tests miss rejection" extra from the ensemble holdout did not recur. Candidate 3 is frozen for gate 2; blind run 1 launched on all 24 cohort-3 cases with `GFLO_COHORT=review-cohort-3`.
+
+## Gate 2 blind run 1 — candidate 3 (6920218), trial 4: 24/24, all grounded
+
+Evidence: `trial-4-*.json`, `trial-4-stage-inventory.sha256`; rig `~/gflo-review-ensemble-6920218-trial-4/`. Blind run 2 (trial 5, same frozen candidate) was launched before this run's score was read, so nothing seen here could influence it.
+
+Verdicts: 24/24 correct and complete; 12/12 controls pass with no blocking finding; 12/12 seeded cases repair.
+
+Grounding (cohort-3 `private/expectations.json` first read at this scoring step): every repair unit cites the seeded defect at its source line with reproducing evidence.
+
+| Case | Class | Required defect | Repair units (statement → source) |
+|---|---|---|---|
+| b01 | ordering-tie-rule | FIFO queue lets later eligible nodes outrank newly eligible earlier ones | u2 (5) `domain.py:15` |
+| b03 | cli-exit-code | `sys.exit(message)` exits 1 not 2 | u3 (11) `cli.py:8` |
+| b04 | input-mutation | shallow copy, nested defaults mutated | u4 (14) `domain.py:15` |
+| b06 | off-by-one-bound | `>=` rejects total == max_total | u2 (8) `domain.py:16` |
+| b11 | rejects-valid-input | conflict check before old-event filter | u2 (3), u6 (17, framed as invented validation) `domain.py:11` |
+| c03 | error-type-contract | OverflowError instead of ValueError | u1 (3) `domain.py:9` |
+| c04 | numeric-exactness | `x**(i-1)` at i=0: floats, ZeroDivisionError at x=0 | u1 (4) `domain.py:7` |
+| c05 | whitespace-handling | `split(' ')` ignores tabs | u1 (3), u2 (6) `domain.py:7` |
+| c06 | readme-example-broken | README sends `value` not `number` | u5 (13) `README.md:8` |
+| c09 | tests-miss-required-category | no rejected-input test though rejections specified | u4 (13) `test_behavior.py:11` |
+| c10 | dedup-rule | repeated names counted per occurrence | u1 (1) `domain.py:7`; u4 (12) `domain.py:7`, `test_behavior.py:5` |
+| c12 | strict-decoding | `unquote_plus` replaces invalid UTF-8 | u1 (4) `domain.py:9` |
+
+The c09 result matters for candidate 3's reading rule: the rule excuses a missing rejection test only when no rejection is specified for the added behavior, and here it correctly did not.
