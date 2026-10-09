@@ -18,6 +18,7 @@ from .runner import Factory
 from .sandbox import DEFAULT_IMAGE, Sandbox
 from .worker import ModelWorker
 from .review import Reviewer
+from .ensemble import EnsembleReviewer
 
 
 def main(argv=None):
@@ -182,7 +183,11 @@ def main(argv=None):
             validate_project(store, profile, project)
             if environment is None:
                 environment = prepare(store, profile)
-        factory = Factory(args.state, worker, sandbox.verify, cleanup=sandbox.cleanup, reviewer=Reviewer(worker),
+        review_mode = config.get('review', 'single')
+        if review_mode not in ('single', 'ensemble'):
+            raise ValueError('config review must be "single" or "ensemble"')
+        reviewer = EnsembleReviewer(worker, sandbox) if review_mode == 'ensemble' else Reviewer(worker)
+        factory = Factory(args.state, worker, sandbox.verify, cleanup=sandbox.cleanup, reviewer=reviewer,
                           environment=environment, bind_environment=sandbox.bind)
         run_id = factory.create(args.task) if args.command == 'run' else args.id
         print('Run: ' + run_id, flush=True)
