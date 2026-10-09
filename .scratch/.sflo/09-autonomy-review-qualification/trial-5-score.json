@@ -1,0 +1,305 @@
+{
+  "summary": {
+    "blind": {
+      "cases": 24,
+      "matched": 23
+    }
+  },
+  "rows": [
+    {
+      "case": "b01",
+      "split": "blind",
+      "kind": "original",
+      "expected": "repair",
+      "decision": "repair",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [
+        2
+      ],
+      "incomplete_units": []
+    },
+    {
+      "case": "b02",
+      "split": "blind",
+      "kind": "control",
+      "expected": "pass",
+      "decision": "pass",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [],
+      "incomplete_units": []
+    },
+    {
+      "case": "b03",
+      "split": "blind",
+      "kind": "original",
+      "expected": "repair",
+      "decision": "repair",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [
+        3
+      ],
+      "incomplete_units": []
+    },
+    {
+      "case": "b04",
+      "split": "blind",
+      "kind": "original",
+      "expected": "repair",
+      "decision": "repair",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [
+        4
+      ],
+      "incomplete_units": []
+    },
+    {
+      "case": "b05",
+      "split": "blind",
+      "kind": "control",
+      "expected": "pass",
+      "decision": "pass",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [],
+      "incomplete_units": []
+    },
+    {
+      "case": "b06",
+      "split": "blind",
+      "kind": "original",
+      "expected": "repair",
+      "decision": "incomplete",
+      "status": "incomplete",
+      "match": false,
+      "repair_units": [
+        5
+      ],
+      "incomplete_units": [
+        2
+      ]
+    },
+    {
+      "case": "b07",
+      "split": "blind",
+      "kind": "control",
+      "expected": "pass",
+      "decision": "pass",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [],
+      "incomplete_units": []
+    },
+    {
+      "case": "b08",
+      "split": "blind",
+      "kind": "control",
+      "expected": "pass",
+      "decision": "pass",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [],
+      "incomplete_units": []
+    },
+    {
+      "case": "b09",
+      "split": "blind",
+      "kind": "control",
+      "expected": "pass",
+      "decision": "pass",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [],
+      "incomplete_units": []
+    },
+    {
+      "case": "b10",
+      "split": "blind",
+      "kind": "control",
+      "expected": "pass",
+      "decision": "pass",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [],
+      "incomplete_units": []
+    },
+    {
+      "case": "b11",
+      "split": "blind",
+      "kind": "original",
+      "expected": "repair",
+      "decision": "repair",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [
+        2,
+        6
+      ],
+      "incomplete_units": []
+    },
+    {
+      "case": "b12",
+      "split": "blind",
+      "kind": "control",
+      "expected": "pass",
+      "decision": "pass",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [],
+      "incomplete_units": []
+    },
+    {
+      "case": "c01",
+      "split": "blind",
+      "kind": "control",
+      "expected": "pass",
+      "decision": "pass",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [],
+      "incomplete_units": []
+    },
+    {
+      "case": "c02",
+      "split": "blind",
+      "kind": "control",
+      "expected": "pass",
+      "decision": "pass",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [],
+      "incomplete_units": []
+    },
+    {
+      "case": "c03",
+      "split": "blind",
+      "kind": "original",
+      "expected": "repair",
+      "decision": "repair",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [
+        1
+      ],
+      "incomplete_units": []
+    },
+    {
+      "case": "c04",
+      "split": "blind",
+      "kind": "original",
+      "expected": "repair",
+      "decision": "repair",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [
+        1,
+        2
+      ],
+      "incomplete_units": []
+    },
+    {
+      "case": "c05",
+      "split": "blind",
+      "kind": "original",
+      "expected": "repair",
+      "decision": "repair",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [
+        1,
+        2
+      ],
+      "incomplete_units": []
+    },
+    {
+      "case": "c06",
+      "split": "blind",
+      "kind": "original",
+      "expected": "repair",
+      "decision": "repair",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [
+        5
+      ],
+      "incomplete_units": []
+    },
+    {
+      "case": "c07",
+      "split": "blind",
+      "kind": "control",
+      "expected": "pass",
+      "decision": "pass",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [],
+      "incomplete_units": []
+    },
+    {
+      "case": "c08",
+      "split": "blind",
+      "kind": "control",
+      "expected": "pass",
+      "decision": "pass",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [],
+      "incomplete_units": []
+    },
+    {
+      "case": "c09",
+      "split": "blind",
+      "kind": "original",
+      "expected": "repair",
+      "decision": "repair",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [
+        4
+      ],
+      "incomplete_units": []
+    },
+    {
+      "case": "c10",
+      "split": "blind",
+      "kind": "original",
+      "expected": "repair",
+      "decision": "repair",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [
+        1,
+        4
+      ],
+      "incomplete_units": []
+    },
+    {
+      "case": "c11",
+      "split": "blind",
+      "kind": "control",
+      "expected": "pass",
+      "decision": "pass",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [],
+      "incomplete_units": []
+    },
+    {
+      "case": "c12",
+      "split": "blind",
+      "kind": "original",
+      "expected": "repair",
+      "decision": "repair",
+      "status": "accepted",
+      "match": true,
+      "repair_units": [
+        1,
+        4
+      ],
+      "incomplete_units": []
+    }
+  ]
+}

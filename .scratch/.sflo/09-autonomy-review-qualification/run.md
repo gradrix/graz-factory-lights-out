@@ -7,7 +7,7 @@ Predecessor: ../09-autonomy-review-ensemble/run.md
 
 ## Execution
 
-Status: active — gate 1 PASSED (trial 3); gate 2 blind run 1 PASSED 24/24 (trial 4); blind run 2 running (trial 5)
+Status: active — gate 1 PASSED (trial 3); gate 2 FAILED: blind run 1 24/24 (trial 4), blind run 2 23/24 with b06 incomplete (trial 5); loop-escape repair under way
 Owner: Claude Code coordinator; independent seeding agent for cohort 3 (no pipeline access, private expectations unread by coordinator until scoring)
 Candidate: prototype 6920218 (candidate 3, frozen for gate 2); candidate 1 5bf552c and candidate 2 ee8f2a4 failed gate 1
 Controls: candidates 2 and 3 review suites 49/49 (Docker); candidate 1 had 111 collected, 110 pass, 1 skipped
@@ -106,3 +106,11 @@ Grounding (cohort-3 `private/expectations.json` first read at this scoring step)
 
 The c09 result matters for candidate 3's reading rule: the rule excuses a missing rejection test only when no rejection is specified for the added behavior, and here it correctly did not.
 - 2026-10-09: after blind run 2 (trial 5) was admitted, `contract.md` changed only in its first paragraph to record the user's later push authorisation (commit 67cce2a); trial 5's admission keeps the prior hash, and gates, cases and acceptance are unchanged.
+
+## Gate 2 blind run 2 — candidate 3 (6920218), trial 5: 23/24, FAILED (b06 incomplete)
+
+Evidence: `trial-5-*.json`, `trial-5-stage-inventory.sha256`; rig `~/gflo-review-ensemble-6920218-trial-5/`. 12/12 controls pass with no blocking finding; 11/12 seeded cases repair; b06 (off-by-one-bound) is incomplete although its unit 5 repaired on the seeded defect at `domain.py:16`. Every repair unit in this run is grounded at its seeded defect line (c04 u2 and c12 u4 add a second unit on the same defect line). Gate 2 requires both runs complete, so gate 2 fails and the integration vertical (chained to start after this run) was stopped before it launched.
+
+Run-to-run agreement with trial 4: case decisions 23/24 (b06 repair → incomplete); identical repair-unit sets 21/24 (b06, c04 [1] → [1,2], c12 [1] → [1,4]); no cited defect differs.
+
+Cause of b06 u2: the first audit chunk exhausted 8192, 24576 and 65536 reasoning tokens. The deep attempt's reasoning (188 KB) is a degenerate repetition loop: seven probe lines repeated about 250 times each until the budget ended (1304 s for that request alone). Every request runs at temperature 0 with an identical prompt, so escalation replays the same greedy path with more room and cannot escape a loop. Across trials 3–5 (about 1780 role calls), 11 first attempts exhausted; 10 were rescued by escalation, this loop was not, and exhausted attempts cost 776 s, 582 s and 2393 s per trial. At roughly 25–30 role calls per factory review this is a few percent of reviews interrupted, each after a long stall.
