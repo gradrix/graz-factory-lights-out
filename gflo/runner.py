@@ -6,6 +6,7 @@ import io
 import json
 import logging
 import os
+import re
 from pathlib import Path
 import shutil
 import signal
@@ -355,7 +356,8 @@ class Factory:
                     self._index(root, workspace)
                     base_tree = json.loads((root / 'base.json').read_text())['tree']
                     changed = self._snapshot_git(root, 'diff', '--cached', '--name-only', '--no-renames', base_tree, '--')
-                    review_task = dict(task, changed_paths=changed.decode().splitlines())
+                    hunks = self._snapshot_git(root, 'diff', '--cached', '-U0', '--no-renames', '--no-color', base_tree, '--')
+                    review_task = dict(task, changed_paths=changed.decode().splitlines(), changed_lines=changed_lines(hunks))
                     try:
                         files, _ = review_scope(workspace, review_task)
                     except CandidateContentError as error:
@@ -385,3 +387,17 @@ class Factory:
                 raise
         self._state(run_id, 'exhausted', 'Acceptance failed or work interrupted within the attempt budget')
         return self.status(run_id)
+
+
+def changed_lines(diff):
+    """{path: [[first, last], ...]} of new-file line ranges touched by a unified -U0 diff."""
+    ranges, current = {}, None
+    for line in diff.decode(errors='replace').splitlines():
+        if line.startswith('+++ '):
+            current = line[6:] if line.startswith('+++ b/') else None
+        elif line.startswith('@@') and current is not None:
+            match = re.match(r'@@ -\d+(?:,\d+)? \+(\d+)(?:,(\d+))? @@', line)
+            if match:
+                start, count = int(match.group(1)), int(match.group(2) if match.group(2) is not None else 1)
+                ranges.setdefault(current, []).append([max(1, start), max(start, start + count - 1)])
+    return ranges

@@ -90,23 +90,51 @@ def review_scope(workspace, task):
             count += 1
     if changed is None or (total <= REVIEW_BYTES and count < REVIEW_FILES):
         return load_files(workspace), ''
-    files, total = {}, 0
+    ranges = task.get('changed_lines') or {}
+    files = {}
     for name in sorted(changed):
         path = workspace / name
         if path.is_symlink():
             raise CandidateContentError('Independent review cannot inspect symlink: ' + name)
         if not path.is_file():
             continue  # deleted by the candidate; the patch records it
-        total += path.stat().st_size
-        if total > REVIEW_BYTES or len(files) >= REVIEW_FILES:
-            raise CandidateContentError('Changed files exceed independent review bounds; split the task explicitly')
         try:
             files[name] = path.read_text()
         except UnicodeDecodeError:
             files[name] = f'<binary file changed, {path.stat().st_size} bytes, not shown>'
     if not files:
         raise CandidateContentError('Independent review needs changed source files')
+    if sum(len(text.encode()) for text in files.values()) > REVIEW_BYTES or len(files) >= REVIEW_FILES:
+        # Large real files: show the changed hunks with context and blank the rest, keeping line numbers exact.
+        files = {name: focus(text, ranges.get(name)) for name, text in files.items()}
+        if sum(len(text.encode()) for text in files.values()) > REVIEW_BYTES or len(files) >= REVIEW_FILES:
+            raise CandidateContentError('Changed hunks exceed independent review bounds; split the task explicitly')
+        return files, SCOPE_NOTE + ' ' + HUNK_NOTE
     return files, SCOPE_NOTE
+
+
+HUNK_CONTEXT = 40
+HUNK_NOTE = ('Large changed files show only the changed lines with surrounding context; other lines are blank and '
+             'unchanged, and line numbers are exact.')
+
+
+def focus(text, changed):
+    """Keep lines within HUNK_CONTEXT of a changed line (1-based inclusive ranges); blank the others."""
+    if changed is None:
+        return text
+    lines = text.split('\n')
+    keep = set()
+    for start, end in changed:
+        keep.update(range(max(1, start - HUNK_CONTEXT), min(len(lines), end + HUNK_CONTEXT) + 1))
+    shown, elided = [], False
+    for number, line in enumerate(lines, 1):
+        if number in keep:
+            shown.append(line)
+            elided = False
+        else:
+            shown.append('' if elided else '# ... unchanged lines not shown ...')
+            elided = True
+    return '\n'.join(shown)
 
 
 QUESTION_SYSTEM = """You assess whether a proposed question actually requires a human product decision.
