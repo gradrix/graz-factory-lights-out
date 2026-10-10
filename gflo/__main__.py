@@ -16,6 +16,7 @@ from .web import server
 
 from .runner import Factory
 from .sandbox import DEFAULT_IMAGE, Sandbox
+from .mini_worker import MiniSweWorker
 from .worker import ModelWorker
 from .review import Reviewer
 from .ensemble import EnsembleReviewer
@@ -170,7 +171,10 @@ def main(argv=None):
         if review_mode not in ('single', 'ensemble'):
             raise ValueError('config review must be "single" or "ensemble"')
         sandbox = Sandbox(config.get('image', DEFAULT_IMAGE))
-        worker = ModelWorker(config, sandbox)
+        harness = config.get('worker', 'gflo')
+        if harness not in ('gflo', 'mini-swe-agent'):
+            raise ValueError('config worker must be "gflo" or "mini-swe-agent"')
+        worker = (MiniSweWorker if harness == 'mini-swe-agent' else ModelWorker)(config, sandbox)
         if args.command == 'documents':
             print(json.dumps(document_store.answer(args.id, worker, question=args.question), indent=2))
             return 0
