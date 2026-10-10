@@ -1,4 +1,5 @@
 import ast
+import hashlib
 import importlib.util
 import json
 from pathlib import Path
@@ -150,6 +151,36 @@ class AcceptanceTests(unittest.TestCase):
         self.assertEqual(acceptance.main(*self.project(STRONG, extra={'pkg/test_utils.py': 'X = 1\n'})), 1)
         config, workspace = self.project(STRONG, base_tests={'tests/test_old.py': 'def test_old():\n    assert 1 == 1\n'},
                                          extra={'tests/test_old.py': None})
+        self.assertEqual(acceptance.main(config, workspace), 1)
+
+    def test_tests_on_ast_or_bytecode_are_rejected(self):
+        probe = ('import ast, hashlib, unittest\n\nclass T(unittest.TestCase):\n    def test_tree(self):\n'
+                 '        tree = ast.dump(ast.parse(open("calc.py").read()))\n'
+                 '        self.assertEqual(hashlib.sha256(tree.encode()).hexdigest(), %r)\n'
+                 % hashlib.sha256(ast.dump(ast.parse(SOURCE)).encode()).hexdigest())
+        self.assertEqual(acceptance.main(*self.project(probe)), 1)
+        self.assertNotEqual(ast.dump(ast.parse(acceptance.equivalent(SOURCE))), ast.dump(ast.parse(SOURCE)))
+
+    def test_test_support_cannot_silence_existing_tests(self):
+        copied = STRONG.replace('class ClampTests', 'class Copied').replace('def test_', 'def test_copied_')
+        silencer = 'import os, sys\nif any("test_old" in a for a in sys.argv):\n    os._exit(0)\n'
+        config, workspace = self.project(base_tests={'tests/test_old.py': STRONG},
+                                         extra={'tests/test_new.py': copied, 'tests/__init__.py': silencer})
+        self.assertEqual(acceptance.main(config, workspace), 1)  # changed support file
+        config, workspace = self.project(base_tests={'tests/test_old.py': STRONG},
+                                         extra={'tests/test_new.py': copied, 'tests/conftest.py': silencer})
+        self.assertEqual(acceptance.main(config, workspace), 1)  # new support file
+        config, workspace = self.project(base_tests={'tests/test_old.py': STRONG}, extra={'tests/test_new.py': copied})
+        self.assertEqual(acceptance.main(config, workspace), 1)  # copied strength earns nothing
+
+    def test_failing_existing_tests_do_not_count_as_kills(self):
+        failing = 'import unittest\nimport calc\n\nclass Old(unittest.TestCase):\n    def test_broken(self):\n        self.assertEqual(calc.clamp(1, 0, 2), 2)\n'
+        config, workspace = self.project(STRONG, base_tests={'tests/test_old.py': failing})
+        self.assertEqual(acceptance.main(config, workspace), 0)
+
+    def test_removing_existing_test_functions_is_rejected(self):
+        config, workspace = self.project(base_tests={'tests/test_calc.py': WEAK})
+        (workspace / 'tests' / 'test_calc.py').write_text(STRONG)
         self.assertEqual(acceptance.main(config, workspace), 1)
 
     def test_only_new_test_functions_are_smell_checked(self):

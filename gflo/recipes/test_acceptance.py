@@ -135,32 +135,75 @@ def test_functions(source):
     return found
 
 
+CACHES = ('__pycache__', '.pytest_cache', '.mypy_cache', '.ruff_cache', '.coverage')
+CONFIG_SUFFIXES = ('.py', '.ini', '.cfg', '.toml', '.pth')
+
+
+def files(root):
+    return {path.relative_to(root).as_posix() for path in Path(root).rglob('*')
+            if path.is_file() and not any(part.startswith(CACHES) for part in path.relative_to(root).parts)}
+
+
+def equivalent(source):
+    """Same behaviour, different text, AST and bytecode: a `pass` opens every function body (after its docstring)."""
+    tree = ast.parse(source)
+    for node in ast.walk(tree):
+        if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
+            docstring = isinstance(node.body[0], ast.Expr) and isinstance(getattr(node.body[0], 'value', None), ast.Constant) \
+                and isinstance(node.body[0].value.value, str)
+            node.body.insert(1 if docstring else 0, ast.Pass())
+    return ast.unparse(ast.fix_missing_locations(tree)) + '\n'
+
+
+def module_name(target):
+    parts = list(Path(target).with_suffix('').parts)
+    return '.'.join(parts[:-1] if parts[-1] == '__init__' else parts)
+
+
+def imports_target(source, names):
+    """Whether a test module imports one of the target modules (directly or as `from package import module`)."""
+    for node in ast.walk(ast.parse(source)):
+        if isinstance(node, ast.Import) and any(alias.name in names for alias in node.names):
+            return True
+        if isinstance(node, ast.ImportFrom) and node.module and (
+                node.module in names or any(f'{node.module}.{alias.name}' in names for alias in node.names)):
+            return True
+    return False
+
+
 def main(config_path='/acceptance/test_task.json', workspace=WORKSPACE):
     config_path = Path(config_path)
     config = json.loads(config_path.read_text())
     base_tests = config_path.parent / 'base_tests'
     workspace = Path(workspace)
+    started = time.monotonic()
     problems = []
     for path, expected in config['base'].items():
         current = workspace / path
         if not current.is_file() or digest(current) != expected:
             problems.append(f'non-test file changed or removed: {path}')
-    for path in config['base_tests']:
-        if not (workspace / path).is_file():
-            problems.append(f'existing test file removed: {path}')
-    for path in (item for item in workspace.rglob('*') if item.is_file() and '__pycache__' not in item.parts):
-        relative = path.relative_to(workspace).as_posix()
-        if not is_test(relative) and relative not in config['base']:
+    present = files(workspace)
+    for relative in sorted(present):
+        if relative in config['base'] or relative in config['base_tests']:
+            continue
+        if not is_test(relative):
             problems.append(f'new file outside the test directories: {relative}')
-    changed = sorted(path.relative_to(workspace).as_posix() for path in workspace.rglob('test_*.py')
-                     if is_test(path.relative_to(workspace).as_posix())
-                     and config['base_tests'].get(path.relative_to(workspace).as_posix()) != digest(path))
+        elif not Path(relative).name.startswith('test_') and relative.endswith(CONFIG_SUFFIXES):
+            problems.append(f'new test-support or configuration file (only test_*.py modules and data may be added): {relative}')
+    for path, expected in config['base_tests'].items():
+        if path not in present:
+            problems.append(f'existing test file removed: {path}')
+        elif not Path(path).name.startswith('test_') and digest(workspace / path) != expected:
+            problems.append(f'existing test-support file changed: {path}')
+    changed = sorted(relative for relative in present if is_test(relative) and Path(relative).name.startswith('test_')
+                     and relative.endswith('.py') and config['base_tests'].get(relative) != digest(workspace / relative))
     added = 0
     for path in changed:
         old = test_functions((base_tests / path).read_text()) if (base_tests / path).is_file() else {}
         new = test_functions((workspace / path).read_text())
         fresh = {name for name, text in new.items() if old.get(name) != text}
         added += len(set(new) - set(old))
+        problems += [f'{path}: existing test removed: {name}' for name in sorted(set(old) - set(new))]
         problems += [problem for problem in smells(workspace / path) if problem.rsplit('::', 1)[1].split(' ')[0] in
                      {name.rsplit('.', 1)[-1] for name in fresh}]
     if not changed or not added:
@@ -168,40 +211,50 @@ def main(config_path='/acceptance/test_task.json', workspace=WORKSPACE):
     if problems:
         print('\n'.join(problems))
         return 1
+    budget = config.get('budget_seconds', 600)
     with tempfile.TemporaryDirectory() as directory:
         copy, base = Path(directory) / 'project', Path(directory) / 'base'
-        shutil.copytree(workspace, copy, ignore=shutil.ignore_patterns('__pycache__', '.git'))
-        shutil.copytree(copy, base)
-        # What the existing suite already kills: base versions of changed modules plus existing test modules that
-        # mention a target module, so copying existing strength into a new module earns nothing.
-        base_suite = []
-        for path in changed:
-            if (base_tests / path).is_file():
-                shutil.copy2(base_tests / path, base / path)
-                base_suite.append(path)
-            else:
-                (base / path).unlink()
-        stems = {Path(target).stem for target in config['targets']}
-        base_suite += sorted(path for path in config['base_tests'] if Path(path).name.startswith('test_')
-                               and path not in base_suite and any(stem in (base_tests / path).read_text() for stem in stems))
+        shutil.copytree(workspace, copy, ignore=shutil.ignore_patterns(*CACHES, '.git'))
+        # The base project: candidate files outside the tests (unchanged, checked above) plus the pristine base
+        # test tree, so nothing the candidate added under tests/ can influence what the existing tests kill.
+        base.mkdir()
+        for name in os.listdir(copy):
+            if name not in ('tests', 'test'):
+                source = copy / name
+                (shutil.copytree if source.is_dir() else shutil.copy2)(source, base / name)
+        if base_tests.is_dir():
+            for name in os.listdir(base_tests):
+                shutil.copytree(base_tests / name, base / name, dirs_exist_ok=True)
         elapsed = 0.0
         for attempt in range(config.get('runs', 3)):
-            code, seconds = run(config['runner'], changed, copy, 300)
+            code, seconds = run(config['runner'], changed, copy, max(5.0, budget / 4))
             elapsed = max(elapsed, seconds)
             if code != 0:
                 print(f'new tests failed on the unmodified code (run {attempt + 1}: exit {code})')
                 return 1
         limit = max(5.0, 5 * elapsed)  # a mutant that loops is killed, a merely slow test is not
-        # Tests must check behaviour, not source text: they must pass on a reformatted, equivalent target.
+        # Tests must check behaviour, not source text: they must pass on an equivalent rewrite of each target.
         for target in config['targets']:
             original = (copy / target).read_text()
-            (copy / target).write_text(ast.unparse(ast.parse(original)) + '\n# equivalent reformatting\n')
+            (copy / target).write_text(equivalent(original))
             code, _ = run(config['runner'], changed, copy, limit)
             (copy / target).write_text(original)
             if code != 0:
-                print(f'new tests fail on a behaviour-preserving reformatting of {target}: they depend on its source text')
+                print(f'new tests fail on a behaviour-preserving rewrite of {target}: they depend on its source text '
+                      'or structure, not its behaviour')
                 return 1
-        deadline = time.monotonic() + config.get('budget_seconds', 600)
+        # Existing tests that import a target (as of the base): what they already kill earns nothing.
+        names = {module_name(target) for target in config['targets']}
+        related = sorted(path for path in config['base_tests'] if Path(path).name.startswith('test_') and path.endswith('.py')
+                         and imports_target((base_tests / path).read_text(), names))
+        base_limit = None
+        if related:
+            code, seconds = run(config['runner'], related, base, max(5.0, budget / 4))
+            if code == 0:
+                base_limit = max(5.0, 5 * seconds)
+            else:
+                related = []  # they already fail unmodified; they cannot tell us what is killed
+        deadline = started + budget
         new_kills, eligible, base_kills, survivors = 0, 0, 0, []
         per_target = max(1, config.get('max_mutants', 30) // len(config['targets']))
         for target in config['targets']:
@@ -211,13 +264,11 @@ def main(config_path='/acceptance/test_task.json', workspace=WORKSPACE):
                     break
                 (copy / target).write_text(source)
                 (base / target).write_text(source)
-                killed = run(config['runner'], changed, copy, limit)[0] != 0
-                already = bool(base_suite) and run(config['runner'], base_suite, base, limit)[0] != 0
-                if already:
+                if related and run(config['runner'], related, base, base_limit)[0] != 0:
                     base_kills += 1
                     continue
                 eligible += 1
-                if killed:
+                if run(config['runner'], changed, copy, limit)[0] != 0:
                     new_kills += 1
                 else:
                     line = getattr(list(ast.walk(ast.parse(original)))[site[1]], 'lineno', '?')
@@ -225,8 +276,9 @@ def main(config_path='/acceptance/test_task.json', workspace=WORKSPACE):
             (copy / target).write_text(original)
             (base / target).write_text(original)
     score = new_kills / eligible if eligible else 0.0
-    print(f'tests: {", ".join(changed)}; {added} new test functions; mutants the existing versions already kill: '
-          f'{base_kills}; of the rest the new tests kill {new_kills}/{eligible} = {score:.2f} (required {config["threshold"]})')
+    print(f'tests: {", ".join(changed)}; {added} new test functions; existing related tests: {len(related)} modules, '
+          f'already killing {base_kills} mutants; of the rest the new tests kill {new_kills}/{eligible} = {score:.2f} '
+          f'(required {config["threshold"]})')
     if not eligible:
         print('the existing tests already kill every sampled mutant; choose a less tested target')
     for line in survivors[:15]:
