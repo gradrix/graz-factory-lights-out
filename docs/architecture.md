@@ -39,6 +39,8 @@ The filesystem is not quota-managed. Keep task inputs and generated output bound
 
 These callables also enable deterministic fault injection in tests. Production uses one implementation of each. The implemented profiles cover Python stdlib, packaged Python APIs and CommonJS TypeScript. Each profile supplies pinned inputs, actual runtime context and offline checks; the three-profile paths have passed bounded rig qualification, with failed original trials retained in the evidence. Unsupported dependencies require a new approved recipe. Symlink-containing input repositories and Git submodules are rejected explicitly.
 
+Test-writing tasks reuse this whole loop: `testfactory.py` only writes a task whose operator check is the controller-owned `recipes/test_acceptance.py` (unchanged non-test source, assertion smells, repeated passes, mutation score of the new tests). The worker never sees or edits that check.
+
 Automatic planning/delegation is a later stage. First accumulate real-task completion, repair, interruption and regression evidence. SFLO inspired explicit acceptance/repair stages; Gas City inspired work state that survives disposable sessions. Neither is a runtime dependency. The new [roadmap](roadmap.md) describes the staged autonomy work; the [feasibility research](research/autonomy-feasibility.md) supplies current primary sources.
 
 ## Execution observation

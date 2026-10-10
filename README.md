@@ -66,6 +66,10 @@ git -C /path/to/repository apply /absolute/path/to/change.patch
 
 GFLO never pushes, merges or deploys generated changes. Full prompts and tool output are retained locally in run artifacts; treat them with the same privacy as the source code.
 
+## Generate tests
+
+`gflo tests init REPO TARGET... --out DIR` writes a test-writing task for tracked Python files. The worker adds tests; acceptance is mechanical and controller-owned ([test_acceptance.py](gflo/recipes/test_acceptance.py)): non-test source must be unchanged, the new tests need real assertions, must pass three runs in a row and must kill at least `--threshold` (default 60%) of up to `--max-mutants` sampled mutants of the targets (flipped comparisons and operators, changed constants, dropped negations, returns replaced by `None`). Equivalent mutants exist, so 100% is not expected. Use `--env K=V` when the project's tests need environment variables, then run the task as usual with `python3 -m gflo run DIR/task.json`.
+
 ## Use approved documentation
 
 The [document CLI](docs/document-evidence.md) fetches an explicitly approved official page, stores a historical snapshot and asks the local model for cited answers. New answers select bounded source spans; the controller supplies exact excerpts and retains any repair attempt. Saved answers replay offline. Initial acquisition needs Internet access; the model gets no browsing or tool authority.

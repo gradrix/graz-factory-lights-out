@@ -53,6 +53,16 @@ def main(argv=None):
     checking = actions.add_parser('check')
     checking.add_argument('id')
     checking.add_argument('--repeat', type=int, choices=range(1, 4), default=1)
+    tests_command = sub.add_parser('tests', help='Create a test-writing task with mutation-score acceptance')
+    tests_actions = tests_command.add_subparsers(dest='tests_action', required=True)
+    tests_init = tests_actions.add_parser('init')
+    tests_init.add_argument('repo', help='Clean git repository at the intended base commit')
+    tests_init.add_argument('targets', nargs='+', help='Tracked non-test Python files to test')
+    tests_init.add_argument('--out', required=True, help='New task directory')
+    tests_init.add_argument('--threshold', type=float, default=0.6, help='Required share of mutants the new tests kill')
+    tests_init.add_argument('--max-mutants', type=int, default=30)
+    tests_init.add_argument('--env', action='append', default=[], help='K=V set when running tests (repeatable)')
+    tests_init.add_argument('--profile', default='python-project', choices=['python-project', 'python-stdlib'])
     documents = sub.add_parser('documents', help='Approved historical document evidence and saved local answers')
     documents.add_argument('--store', default='.gflo/documents')
     document_actions = documents.add_subparsers(dest='document_action', required=True)
@@ -90,6 +100,12 @@ def main(argv=None):
                 result = {'cleaned': True}
             print(json.dumps(result, indent=2))
             return 1 if result.get('receipt', {}).get('outcome', {}).get('status') == 'failed' else 0
+        if args.command == 'tests':
+            from .testfactory import build as build_tests_task
+            task = build_tests_task(args.repo, args.targets, args.out, threshold=args.threshold, max_mutants=args.max_mutants,
+                                    profile=args.profile, checks_env=(['env', *args.env] if args.env else []))
+            print(json.dumps({'task': str(task)}, indent=2))
+            return 0
         if args.command == 'documents':
             document_store = DocumentStore(args.store)
             if args.document_action != 'answer':

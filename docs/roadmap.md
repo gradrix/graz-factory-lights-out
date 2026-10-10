@@ -31,6 +31,8 @@ Compare the gflo worker against a standard agent harness (mini-swe-agent first) 
 
 ### 3. Test factory
 
+Status: `gflo tests init` and its mutation-score acceptance are implemented (2026-10-10); real-repository trials follow the phase 1 cohort.
+
 `gflo tests <repo> <target>`: the worker writes tests for existing code. Acceptance is mechanical: tests pass on the base, are not flaky across three runs, raise coverage, and kill a required share of mutants of the target. A static test-smell check replaces most model review. An overnight queue walks modules and produces a morning report. **Accept** on the share of generated test patches the user would merge unchanged.
 
 ### 4. Queue, decomposition and integration
