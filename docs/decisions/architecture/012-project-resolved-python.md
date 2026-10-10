@@ -4,7 +4,7 @@ Status: accepted, 2026-10-10. Decision maker: agent, under the user's direction 
 
 ## Choice
 
-Add an explicit `python-project` profile beside the three fixed ones. It resolves the project's **own** declarations (`pyproject.toml` runtime and optional dependencies, root `requirements*.txt`, root `constraints*.txt` as pip constraints) plus pytest from PyPI, once, in a network-enabled preparation container. The installed tree, with the resolved lock `gflo-lock.json` (name, version, URL, archive hashes from pip's install report), becomes an immutable receipt like any other profile. The worker, acceptance and resume stay offline against that receipt; the manifests are frozen into the task and changes invalidate it. Generated tests run with `python -m pytest`.
+Add an explicit `python-project` profile beside the three fixed ones. It resolves the project's **own** declarations (`pyproject.toml` runtime and optional dependencies, root `requirements*.txt`, root `constraints*.txt` and the registry packages of a root `uv.lock` as pip constraints) plus pytest from PyPI, once, in a network-enabled preparation container. The installed tree, with the resolved lock `gflo-lock.json` (name, version, URL, archive hashes from pip's install report), becomes an immutable receipt like any other profile. The worker, acceptance and resume stay offline against that receipt; the manifests are frozen into the task and changes invalidate it. Generated tests run with `python -m pytest`.
 
 The profile is never inferred: a task or `environment prepare` names it. The fixed profiles and their stricter boundary are unchanged.
 
@@ -16,7 +16,7 @@ The profile is never inferred: a task or `environment prepare` names it. The fix
 - Preparation briefly needs up to about three times the tree size on the store filesystem (archive, validation spool, extracted tree).
 - Only named PyPI requirements are accepted; URLs, paths, editable installs, includes and any option (also mid-line, such as `--hash`) are refused before any network use. A `pyproject.toml` without a `[project]` table (for example Poetry-only) is refused unless `requirements*.txt` declares the dependencies; PEP 735 `[dependency-groups]` are not read. pytest is added unpinned unless a requirement names it; constraints choose its version.
 - A run refuses a receipt whose recorded manifests differ from the commit's, and verification fails when a dependency manifest is changed or added after freezing. Project test commands get 900 s per check.
-- Bounds: 3 GiB transport and extracted tree, 200,000 paths.
+- Bounds: 3 GiB transport and extracted tree, 200,000 paths; declaration files 64 KiB, `uv.lock` 4 MiB.
 
 ## Evidence
 

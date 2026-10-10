@@ -63,11 +63,17 @@ def requirements(root):
 
 
 def constraints(root):
-    """Root constraints*.txt files pin versions the way the project's own builds do (pip -c)."""
+    """Version pins the project's own builds use: root constraints*.txt (pip -c) and uv.lock registry packages."""
     found = []
     for path in sorted(Path(root).glob('constraints*.txt')):
         for line in path.read_text().splitlines():
             found.append(requirement(line, path.name))
+    lock = Path(root) / 'uv.lock'
+    if lock.is_file():
+        for package in tomllib.loads(lock.read_text()).get('package', []):
+            source = package.get('source', {})
+            if 'registry' in source and isinstance(package.get('version'), str):
+                found.append(requirement(f"{package['name']}=={package['version']}", 'uv.lock'))
     return sorted({item for item in found if item})
 
 

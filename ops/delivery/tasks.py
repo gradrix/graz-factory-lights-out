@@ -1,6 +1,6 @@
 """Turn validated mined records into factory tasks, and score finished runs against hidden tests (rig).
 
-  tasks.py build MINED OBJECTIVES TASKS     # one task dir per valid record that has an objective
+  tasks.py build MINED OBJECTIVES TASKS STORE  # one task dir per valid record that has an objective
   tasks.py score MINED TASKS RUN_STATE STORE COMMIT RUN_ID   # prints and saves the score JSON
 
 The worker only sees the base commit and the objective. Scoring overlays the commit's test files
@@ -18,7 +18,7 @@ from ops.delivery.env_exec import pytest_outcomes  # noqa: E402
 
 
 
-def build(mined, objectives, tasks):
+def build(mined, objectives, tasks, store):
     objectives = json.loads(Path(objectives).read_text())
     built = []
     for record_path in sorted(Path(mined).glob('*/record.json')):
@@ -35,12 +35,25 @@ def build(mined, objectives, tasks):
         subprocess.run(['git', '-C', str(repo), 'add', '-A'], check=True)
         subprocess.run(['git', '-C', str(repo), '-c', 'user.name=gflo', '-c', 'user.email=gflo@local',
                         'commit', '-qm', f'base of {commit}'], check=True)
+        # What already fails on the base (an operator would know this): only new failures reject.
+        baseline = record_path.parent / 'baseline_failures.json'
+        if not baseline.exists():
+            seen, _ = pytest_outcomes(store, record['environment'], record_path.parent / 'base', record['test_command'])
+            baseline.write_text(json.dumps(sorted(key for key, passed in seen.items() if not passed), indent=1) + '\n')
         acceptance = root / 'acceptance'
         acceptance.mkdir()
-        (acceptance / 'README.md').write_text('Acceptance is the project suite (checks); hidden tests are scored separately.\n')
+        shutil.copy2(baseline, acceptance / 'baseline_failures.json')
+        shutil.copy2(Path(__file__).with_name('acceptance_check.py'), acceptance / 'check.py')
+        command = record['test_command']
+        python = command.index('python')
+        check = command[:python] + ['python', '/acceptance/check.py'] + command[python + 3:]  # drop "-m pytest"
+        targeted = ' '.join(command[:-1]) + ' tests/<test file>'
+        footer = (f"\n\nHow to run tests in this project: {targeted} (quote the -m expression in a shell). "
+                  "The full suite has pre-existing failures (tests that need PostgreSQL but are not marked db); "
+                  "acceptance (check) runs the whole suite and rejects only new failures.")
         task = {'repo': 'repo', 'acceptance': 'acceptance', 'profile': 'python-project',
-                'objective': objectives[commit], 'checks': [record['test_command']],
-                'test_command': record['test_command'], 'max_attempts': 3, 'max_turns': 40}
+                'objective': objectives[commit] + footer, 'checks': [check],
+                'test_command': check, 'max_attempts': 3, 'max_turns': 40}
         (root / 'task.json').write_text(json.dumps(task, indent=1) + '\n')
         built.append(commit)
     return built
@@ -79,7 +92,7 @@ def score(mined, tasks, state, store, commit, run_id):
 
 if __name__ == '__main__':
     if sys.argv[1] == 'build':
-        print(json.dumps(build(*sys.argv[2:5])))
+        print(json.dumps(build(*sys.argv[2:6])))
     elif sys.argv[1] == 'score':
         value = score(*sys.argv[2:8])
         print(json.dumps({k: v for k, v in value.items() if k != 'tail'}))

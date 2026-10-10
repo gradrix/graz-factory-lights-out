@@ -88,12 +88,12 @@ class Sandbox:
     def verify(self, workspace, task, acceptance):
         self.cleanup(workspace)
         if self.environment is not None:
+            from .prepare import manifest_limit, manifest_names  # local: prepare imports this module
             for name, digest in task.get('environment_inputs', {}).items():
                 path = Path(workspace) / name
-                if path.is_symlink() or not path.is_file() or path.stat().st_size > 65536 or hashlib.sha256(path.read_bytes()).hexdigest() != digest:
+                if path.is_symlink() or not path.is_file() or path.stat().st_size > manifest_limit(name) or hashlib.sha256(path.read_bytes()).hexdigest() != digest:
                     return {'passed': False, 'checks': [{'exit_code': 1, 'output': 'Frozen environment manifest changed: ' + name}]}
             if self.environment.profile == 'python-project':
-                from .prepare import manifest_names
                 added = sorted(set(manifest_names(workspace)) - set(task.get('environment_inputs', {})))
                 if added:
                     return {'passed': False, 'checks': [{'exit_code': 1, 'output': 'Dependency manifest added after the environment was frozen: ' + ', '.join(added)}]}

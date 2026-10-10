@@ -43,6 +43,14 @@ class ResolverParsingTests(unittest.TestCase):
         named = self.project({'requirements.txt': 'PyTest==8.4.2\n'})
         self.assertEqual(resolver.requested(named), ['PyTest==8.4.2'])
 
+    def test_uv_lock_registry_packages_become_constraints(self):
+        root = self.project({'pyproject.toml': '[project]\nname = "app"\ndependencies = ["sqlalchemy>=2"]\n',
+                             'uv.lock': 'version = 1\n[[package]]\nname = "sqlalchemy"\nversion = "2.0.36"\n'
+                                        'source = { registry = "https://pypi.org/simple" }\n'
+                                        '[[package]]\nname = "app"\nversion = "0.1.0"\nsource = { editable = "." }\n'})
+        self.assertEqual(resolver.constraints(root), ['sqlalchemy==2.0.36'])
+        self.assertEqual(resolver.requested(root), ['sqlalchemy>=2', 'pytest'])
+
     def test_markers_and_normalized_self_reference(self):
         root = self.project({'pyproject.toml': '[project]\nname = "a.b"\ndependencies = ["tomli; python_version < \\"3.11\\""]\n'
                                                '[project.optional-dependencies]\nall = ["A_B[x]", "a-b>=1"]\n'})

@@ -26,7 +26,7 @@ from ops.delivery.env_exec import pytest_outcomes  # noqa: E402
 
 
 HIDDEN = re.compile(r'^(tests/|test_support/|conftest\.py$)')
-MANIFESTS = re.compile(r'^(pyproject\.toml|requirements[^/]*\.txt|constraints[^/]*\.txt)$')
+MANIFESTS = re.compile(r'^(pyproject\.toml|uv\.lock|requirements[^/]*\.txt|constraints[^/]*\.txt)$')
 
 
 def git(source, *args):

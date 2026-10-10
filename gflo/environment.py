@@ -270,7 +270,8 @@ def runtime_context(task):
              'python-api': 'Dependencies are at /opt/deps via PYTHONPATH. Build your project wheel with pip wheel --no-index --no-deps --no-build-isolation; install it with pip install --no-index --no-deps --target /tmp/installed and include that path in PYTHONPATH for tests. Acceptance builds a separate offline wheel.',
              'node-ts': 'Dependencies are at /node_modules. Invoke node /node_modules/typescript/bin/tsc explicitly; no npm download or install is needed.',
              'python-project': 'Project dependencies resolved from its manifests, plus pytest, are at /opt/deps via PYTHONPATH. Run tests with python -m pytest -p no:cacheprovider. Nothing can be installed; do not add dependencies. Shell commands here have 300 seconds: run the specific test files you touch; check runs the full project suite (it may take minutes), so do not try to run the whole suite yourself.'}
-    project = ('\nProject test command (also run by acceptance): ' + json.dumps(task['test_command'])) if task.get('test_command') else ''
+    shown = task.get('test_command') and list(task['test_command']) not in [list(c) for c in task.get('checks', [])]
+    project = ('\nProject test command (also run by acceptance): ' + json.dumps(task['test_command'])) if shown else ''
     return usage[value['profile']] + project + '\nFrozen execution environment: ' + json.dumps(
         {key: value[key] for key in ('profile', 'image', 'runtime')}, sort_keys=True)
 

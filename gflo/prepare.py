@@ -221,7 +221,12 @@ def manifest_names(project):
     """Root dependency declarations a python-project receipt is resolved from."""
     project = Path(project)
     return sorted([path.name for path in project.iterdir()
-                   if path.name == 'pyproject.toml' or re.fullmatch(r'(requirements|constraints)[^/]*\.txt', path.name)])
+                   if path.name in ('pyproject.toml', 'uv.lock') or re.fullmatch(r'(requirements|constraints)[^/]*\.txt', path.name)])
+
+
+def manifest_limit(name):
+    """Declarations stay small; generated lock files are larger."""
+    return 4 * 1024 * 1024 if name == 'uv.lock' else 65536
 
 
 def project_manifests(project, work):
@@ -235,11 +240,11 @@ def project_manifests(project, work):
     hashes = {}
     for name in names:
         source = project / name
-        if source.is_symlink() or not source.is_file() or source.stat().st_size > 65536:
+        if source.is_symlink() or not source.is_file() or source.stat().st_size > manifest_limit(name):
             raise ValueError('Linked or oversized dependency manifest: ' + name)
         data = source.read_bytes()
-        if len(data) > 65536:
-            raise ValueError('Dependency manifest grew beyond 64 KiB: ' + name)
+        if len(data) > manifest_limit(name):
+            raise ValueError('Dependency manifest grew beyond its limit: ' + name)
         (inputs / name).write_bytes(data)
         hashes[name] = hashlib.sha256(data).hexdigest()
     return inputs, hashes
@@ -310,10 +315,10 @@ def validate_project(store, profile, project):
         hashes = {}
         for name in names:
             source = project / name
-            if source.is_symlink() or not source.is_file() or source.stat().st_size > 65536:
+            if source.is_symlink() or not source.is_file() or source.stat().st_size > manifest_limit(name):
                 raise ValueError('Missing, linked or oversized required manifest: ' + name)
             data = source.read_bytes()
-            if len(data) > 65536:
+            if len(data) > manifest_limit(name):
                 raise ValueError('Manifest grew beyond 64 KiB: ' + name)
             (inputs / name).write_bytes(data)
             hashes[name] = hashlib.sha256(data).hexdigest()
