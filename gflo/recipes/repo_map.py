@@ -66,13 +66,17 @@ def source(node):
         return '...'
 
 
+LINE = 300  # one pathological definition must not crowd out the rest of the answer
+
+
 def signature(node):
     if isinstance(node, ast.ClassDef):
         bases = ', '.join(source(base) for base in node.bases)
         return f'class {node.name}({bases})' if bases else f'class {node.name}'
     prefix = 'async def' if isinstance(node, ast.AsyncFunctionDef) else 'def'
     returns = f' -> {source(node.returns)}' if node.returns else ''
-    return f'{prefix} {node.name}({source(node.args)}){returns}'
+    text = f'{prefix} {node.name}({source(node.args)}){returns}'
+    return text if len(text) <= LINE else text[:LINE] + ' ...'
 
 
 def summary(node):

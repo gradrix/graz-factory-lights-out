@@ -87,6 +87,11 @@ class RepoMapTests(unittest.TestCase):
         (self.root / 'deep.py').write_text('def clamp(value=' + '+'.join(['1'] * 3000) + '): pass\n')
         text = self.output('clamp')
         self.assertIn('deep.py:1: def clamp(...)', text)
+        (self.root / 'wide.py').write_text('def clamp(' + ', '.join(f'a{n}' for n in range(5000)) + '): pass\n')
+        text = self.output('clamp')  # one huge signature is cut, other definitions and usages remain
+        self.assertIn('wide.py:1: def clamp(a0, a1', text)
+        self.assertIn('usages', text)
+        self.assertNotIn('truncated', text)
         self.assertIn('pkg/core.py:8: def clamp(value, low=0)', text)
 
     def test_output_is_bounded(self):

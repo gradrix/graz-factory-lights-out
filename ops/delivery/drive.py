@@ -1,6 +1,6 @@
 """Run a delivery-rate cohort on the rig: each task once per reviewer arm, then score against hidden tests.
 
-usage: drive.py TASKS MINED STORE STATE CONFIG RESULTS --commits C1,C2 [--arms single,ensemble,notes,plan,map,nav] [--timeout S]
+usage: drive.py TASKS MINED STORE STATE CONFIG RESULTS --commits C1,C2 [--arms single,ensemble,notes,plan,map,nav,mini] [--timeout S]
 
 One factory run at a time (one model slot). Results append to RESULTS (JSON lines); finished
 (commit, arm) pairs are skipped, so an interrupted cohort resumes where it stopped.
@@ -25,6 +25,7 @@ ARMS = {
     'plan': {'review': 'single', 'navigation': {'checkpoint': 12, 'max_turns': 60}},
     'map': {'review': 'single', 'navigation': {'map': True}},
     'nav': {'review': 'single', 'navigation': {'handoff': True, 'checkpoint': 12, 'max_turns': 60, 'map': True, 'stale_tests': True}},
+    'mini': {'review': 'single', 'worker': 'mini-swe-agent'},  # needs mini-swe-agent on PYTHONPATH
 }
 
 
