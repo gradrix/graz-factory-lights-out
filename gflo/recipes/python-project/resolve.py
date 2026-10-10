@@ -70,10 +70,17 @@ def constraints(root):
             found.append(requirement(line, path.name))
     lock = Path(root) / 'uv.lock'
     if lock.is_file():
+        from pip._vendor.packaging.markers import Marker
+        versions = {}
         for package in tomllib.loads(lock.read_text()).get('package', []):
-            source = package.get('source', {})
-            if 'registry' in source and isinstance(package.get('version'), str):
-                found.append(requirement(f"{package['name']}=={package['version']}", 'uv.lock'))
+            if 'registry' in package.get('source', {}) and isinstance(package.get('version'), str):
+                markers = package.get('resolution-markers') or []
+                # One lock can hold a version per interpreter range; keep the one for this interpreter.
+                if not markers or any(Marker(marker).evaluate() for marker in markers):
+                    versions.setdefault(package['name'], set()).add(package['version'])
+        for name, found_versions in versions.items():
+            if len(found_versions) == 1:
+                found.append(requirement(f'{name}=={found_versions.pop()}', 'uv.lock'))
     return sorted({item for item in found if item})
 
 
@@ -84,6 +91,26 @@ def requested(root):
     return found if "pytest" in names else found + [TEST_RUNNER]
 
 
+def effective_constraints(root):
+    """Constraints minus lock pins that contradict a declared requirement (a stale lock; uv would relock)."""
+    from pip._vendor.packaging.requirements import Requirement
+    declared = {}
+    for item in requested(root):
+        parsed = Requirement(item)
+        declared.setdefault(normalized(parsed.name), []).append(parsed.specifier)
+    kept, dropped = [], []
+    for item in constraints(root):
+        parsed = Requirement(item)
+        pinned = next(iter(parsed.specifier), None)
+        specifiers = declared.get(normalized(parsed.name), [])
+        if pinned is not None and pinned.operator == '==' and any(
+                not specifier.contains(pinned.version, prereleases=True) for specifier in specifiers):
+            dropped.append(item)
+        else:
+            kept.append(item)
+    return kept, dropped
+
+
 def resolve(root):
     work = Path('/work')
     deps, tmp = work / 'deps', work / 'tmp'
@@ -92,7 +119,8 @@ def resolve(root):
     listed = work / 'requirements.txt'
     listed.write_text('\n'.join(requested(root)) + '\n')
     pinned = work / 'constraints.txt'
-    pinned.write_text(''.join(item + '\n' for item in constraints(root)))
+    kept, dropped = effective_constraints(root)
+    pinned.write_text(''.join(item + '\n' for item in kept))
     subprocess.run([sys.executable, '-m', 'pip', 'install', '--isolated', '--no-cache-dir', '--no-compile',
                     '--disable-pip-version-check', '--progress-bar', 'off', '--prefer-binary',
                     '--index-url', 'https://pypi.org/simple', '--target', str(deps),
@@ -103,7 +131,7 @@ def resolve(root):
                     'url': item['download_info']['url'],
                     'hashes': item['download_info'].get('archive_info', {}).get('hashes', {})}
                    for item in report['install']), key=lambda item: item['name'].lower())
-    (deps / 'gflo-lock.json').write_text(json.dumps({'requested': requested(root), 'constraints': constraints(root), 'resolved': lock},
+    (deps / 'gflo-lock.json').write_text(json.dumps({'requested': requested(root), 'constraints': kept, 'dropped_constraints': dropped, 'resolved': lock},
                                                     indent=1, sort_keys=True) + '\n')
     with tarfile.open(fileobj=sys.stdout.buffer, mode='w|', format=tarfile.USTAR_FORMAT) as archive:
         for path in sorted(deps.rglob('*')):
