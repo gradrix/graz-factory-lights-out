@@ -1,6 +1,6 @@
 """Run a delivery-rate cohort on the rig: each task once per reviewer arm, then score against hidden tests.
 
-usage: drive.py TASKS MINED STORE STATE CONFIG RESULTS --commits C1,C2 [--arms single,ensemble] [--timeout S]
+usage: drive.py TASKS MINED STORE STATE CONFIG RESULTS --commits C1,C2 [--arms single,ensemble,notes,plan,map,nav] [--timeout S]
 
 One factory run at a time (one model slot). Results append to RESULTS (JSON lines); finished
 (commit, arm) pairs are skipped, so an interrupted cohort resumes where it stopped.
@@ -17,6 +17,17 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from ops.delivery.tasks import score  # noqa: E402
 
 
+# Reviewer and worker-navigation arms (roadmap phases 1-2); each overlays the base factory config.
+ARMS = {
+    'single': {'review': 'single'},
+    'ensemble': {'review': 'ensemble'},
+    'notes': {'review': 'single', 'navigation': {'handoff': True}},
+    'plan': {'review': 'single', 'navigation': {'checkpoint': 12, 'max_turns': 60}},
+    'map': {'review': 'single', 'navigation': {'map': True}},
+    'nav': {'review': 'single', 'navigation': {'handoff': True, 'checkpoint': 12, 'max_turns': 60, 'map': True, 'stale_tests': True}},
+}
+
+
 def done(results):
     if not Path(results).exists():
         return set()
@@ -26,7 +37,7 @@ def done(results):
 def run(args, commit, arm):
     config = Path(args.state) / f'config-{arm}.json'
     config.parent.mkdir(parents=True, exist_ok=True)
-    config.write_text(json.dumps(dict(json.loads(Path(args.config).read_text()), review=arm)))
+    config.write_text(json.dumps(dict(json.loads(Path(args.config).read_text()), **ARMS[arm])))
     state = Path(args.state) / arm
     command = [sys.executable, '-m', 'gflo', '--state', str(state), '--config', str(config), 'run',
                str(Path(args.tasks) / commit / 'task.json'), '--environment', (Path(args.tasks) / commit / 'environment.txt').read_text().strip(),
@@ -63,6 +74,9 @@ if __name__ == '__main__':
     parser.add_argument('--arms', default='single,ensemble')
     parser.add_argument('--timeout', type=int, default=4 * 3600)
     args = parser.parse_args()
+    unknown = set(args.arms.split(',')) - set(ARMS)
+    if unknown:
+        parser.error('unknown arms: ' + ', '.join(sorted(unknown)) + '; known: ' + ', '.join(ARMS))
     finished = done(args.results)
     for arm in args.arms.split(','):
         for commit in args.commits.split(','):

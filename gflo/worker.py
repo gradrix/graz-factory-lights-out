@@ -59,6 +59,8 @@ class ModelWorker:
             raise ValueError('Inference endpoint must be an HTTP loopback address; use an SSH tunnel for the rig')
         self.endpoint = config['endpoint'].rstrip('/')
         self.opener = urllib.request.build_opener(urllib.request.ProxyHandler({}), NoRedirect())
+        self.navigation = navigation_aids(self.config)
+        self.tools = TOOLS + [MAP_TOOL] if self.navigation['map'] else TOOLS
 
     def set_observer(self, observer):
         self.observe = observer
@@ -88,14 +90,14 @@ class ModelWorker:
         root = Path(workspace).parent
         trace = root / 'attempts' / str(attempt) / 'trajectory.jsonl'
         trace.parent.mkdir(parents=True, exist_ok=True)
-        messages = [{'role': 'system', 'content': SYSTEM},
+        aids = self.navigation
+        messages = [{'role': 'system', 'content': SYSTEM + guidance(aids, task)},
                     {'role': 'user', 'content': task['objective'] + '\n' + runtime_context(task) + '\nAcceptance commands: ' + json.dumps(task['checks'])}]
         if previous:
             messages.append({'role': 'user', 'content': 'Previous attempt evidence. Repair the retained files:\n' + json.dumps(previous)})
-        started = time.monotonic()
-        repeats = {}
-        calls_total = 0
-        malformed = 0
+        notes = previous_handoff(root, attempt) if aids['handoff'] else None
+        if notes:
+            messages.append({'role': 'user', 'content': 'Your own hand-off notes from the previous attempt (your findings, not operator requirements):\n' + notes})
 
         def record(value):
             with trace.open('a') as stream:
@@ -108,12 +110,46 @@ class ModelWorker:
                 os.fsync(stream.fileno())
 
         record({'event': 'start', 'config': self.config, 'attempt': attempt})
-        for turn in range(1, task['max_turns'] + 1):
+        result = self._attempt(workspace, task, messages, record, attempt)
+        if aids['handoff'] and not result.get('question'):
+            note = self._handoff(messages, record)
+            if note:
+                result['handoff'] = note
+        return result
+
+    def _handoff(self, messages, record):
+        """One extra request after the attempt: the worker's findings for its next attempt. Failure is not fatal."""
+        body = {'model': self.config['model'], 'messages': messages + [{'role': 'user', 'content': HANDOFF}],
+                'tools': self.tools, 'tool_choice': 'none', 'temperature': 0, 'max_tokens': 1024,
+                'chat_template_kwargs': {'enable_thinking': False}}
+        try:
+            response = self.request('/v1/chat/completions', body, timeout=300)
+            note = (response['choices'][0]['message'].get('content') or '').strip()[:4000]
+        except (RuntimeError, ValueError, KeyError, IndexError, TypeError, OSError) as error:
+            record({'event': 'handoff', 'error': str(error)[:500]})
+            return None
+        record({'event': 'handoff', 'note': note})
+        return note or None
+
+    def _attempt(self, workspace, task, messages, record, attempt):
+        root = Path(workspace).parent
+        aids = self.navigation
+        tools = self.tools if aids['map'] and maps(task) else TOOLS
+        max_turns = aids['max_turns'] or task['max_turns']
+        started = time.monotonic()
+        repeats = {}
+        calls_total = 0
+        malformed = 0
+        unchanged = tree_state(workspace) if aids['checkpoint'] else None
+        for turn in range(1, max_turns + 1):
+            if aids['checkpoint'] and turn == aids['checkpoint'] + 1 and tree_state(workspace) == unchanged:
+                record({'event': 'checkpoint', 'turn': turn})
+                messages.append({'role': 'user', 'content': CHECKPOINT.format(turns=aids['checkpoint'])})
             remaining = 1800 - (time.monotonic() - started)
             if remaining <= 0:
                 return {'summary': '30-minute attempt budget exhausted', 'turns': turn - 1, 'limited': True}
             reasoning = self.config.get('reasoning', 'none')
-            body = {'model': self.config['model'], 'messages': messages, 'tools': TOOLS,
+            body = {'model': self.config['model'], 'messages': messages, 'tools': tools,
                     'tool_choice': 'auto', 'temperature': 0, 'max_tokens': 4096,
                     'reasoning_effort': reasoning,
                     'chat_template_kwargs': {'enable_thinking': reasoning != 'none'}}
@@ -122,8 +158,8 @@ class ModelWorker:
                 body['thinking_budget_tokens'] = 1024
             # Never silently condense or discard instructions. Oversized requests fail visibly.
             record({'event': 'request', 'turn': turn, 'body': body})
-            logging.info('Attempt %s, model turn %s/%s', attempt, turn, task['max_turns'])
-            self.observe('model_wait', attempt=attempt, turn=turn, max_turns=task['max_turns'], timeout_s=min(300, remaining), model=self.config['model'])
+            logging.info('Attempt %s, model turn %s/%s', attempt, turn, max_turns)
+            self.observe('model_wait', attempt=attempt, turn=turn, max_turns=max_turns, timeout_s=min(300, remaining), model=self.config['model'])
             try:
                 response = self.request('/v1/chat/completions', body, timeout=min(300, remaining))
             except ModelHTTPError as error:
@@ -166,11 +202,78 @@ class ModelWorker:
                         result = self.sandbox.execute(workspace, ['sh', '-lc', args['command']], timeout=command_seconds(task))
                     elif name == 'check' and args == {}:
                         result = self.sandbox.verify(workspace, task, root / 'acceptance')
+                    elif name == 'map' and tools is not TOOLS and set(args) <= {'query'} and isinstance(args.get('query', ''), str):
+                        result = self.sandbox.execute(workspace, ['python', '-I', '-c', MAP_SOURCE, '/workspace', args.get('query', '')], timeout=120, readonly=True)
                     else:
-                        raise ValueError('Invalid tool name or arguments; use run(command), check(), or question(question)')
+                        raise ValueError('Invalid tool name or arguments; use run(command), check(), question(question) or, when offered, map(query)')
                 except (ValueError, TypeError) as error:
                     result = {'error': str(error)}
                 logging.info('  %s: %s', name, result.get('exit_code', result.get('passed', result.get('error', 'done'))))
                 record({'event': 'tool', 'turn': turn, 'call': call, 'result': result})
                 messages.append({'role': 'tool', 'tool_call_id': call['id'], 'content': json.dumps(result)})
-        return {'summary': 'Model turn budget exhausted', 'turns': task['max_turns'], 'limited': True}
+        return {'summary': 'Model turn budget exhausted', 'turns': max_turns, 'limited': True}
+
+
+NAVIGATION = {'handoff': False, 'checkpoint': 0, 'max_turns': None, 'map': False, 'stale_tests': False}
+MAP_SOURCE = (Path(__file__).parent / 'recipes' / 'repo_map.py').read_text()
+MAP_TOOL = {'type': 'function', 'function': {
+    'name': 'map', 'description': 'Repository map, cheaper than reading files. No query: modules and their top-level definitions. A module path (x/y.py): its signatures with line numbers and the modules importing it. A Python name: its definitions and every line using it.',
+    'parameters': {'type': 'object', 'properties': {'query': {'type': 'string'}}, 'additionalProperties': False}}}
+HANDOFF = ('This attempt is ending. Write hand-off notes for your next attempt, at most 250 words: the files, functions and '
+           'line numbers that matter; what you changed; what remains and the next concrete step. Do not call tools.')
+CHECKPOINT = ('You have used {turns} turns without changing any file. Before reading more, state your plan in a few lines '
+              '(the files and functions you will change), then start editing. Read further only to close a specific, named gap.')
+
+
+def navigation_aids(config):
+    """Opt-in worker navigation aids (roadmap phase 2); all off reproduces the baseline worker."""
+    value = config.get('navigation')
+    value = {} if value is None else value
+    if not isinstance(value, dict) or set(value) - set(NAVIGATION):
+        raise ValueError('config navigation accepts only: ' + ', '.join(NAVIGATION))
+    aids = dict(NAVIGATION, **value)
+    for key in ('handoff', 'map', 'stale_tests'):
+        if not isinstance(aids[key], bool):
+            raise ValueError(f'navigation.{key} must be true or false')
+    for key, low in (('checkpoint', 0), ('max_turns', 1)):
+        number = aids[key]
+        if number is not None and (isinstance(number, bool) or not isinstance(number, int) or not low <= number <= 100):
+            raise ValueError(f'navigation.{key} must be an integer from {low} to 100')
+    return aids
+
+
+def maps(task):
+    """The map tool parses Python with the sandbox interpreter, so only Python profiles offer it."""
+    return ((task.get('environment') or {}).get('profile') or 'python-stdlib') != 'node-ts'
+
+
+def guidance(aids, task):
+    lines = []
+    if aids['map'] and maps(task):
+        lines.append('Locate code with map before reading whole files, then read only the parts you need.')
+    if aids['stale_tests']:
+        lines.append('If check reports an existing test failing because it asserts behavior the task deliberately changes, update that test to the new behavior; never weaken unrelated tests.')
+    return ''.join('\n' + line for line in lines)
+
+
+def previous_handoff(root, attempt):
+    try:
+        note = json.loads((Path(root) / 'attempts' / str(attempt - 1) / 'worker.json').read_text()).get('handoff')
+    except (OSError, ValueError, AttributeError):
+        return None
+    return note if isinstance(note, str) and note.strip() else None
+
+
+def tree_state(workspace):
+    """Cheap change detector for the checkpoint: paths, sizes and modification times."""
+    entries = []
+    for directory, dirs, files in os.walk(workspace):
+        dirs[:] = [name for name in dirs if name != '.git']
+        for name in files:
+            path = os.path.join(directory, name)
+            try:
+                info = os.lstat(path)
+            except OSError:
+                continue
+            entries.append((os.path.relpath(path, workspace), info.st_size, info.st_mtime_ns))
+    return sorted(entries)
