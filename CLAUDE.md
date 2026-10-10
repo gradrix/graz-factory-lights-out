@@ -5,8 +5,8 @@ Local software factory: task + repo + acceptance checks → sandboxed local-mode
 ## Where things are
 
 - Route and phase gates: `docs/roadmap.md`; current frontier: `.scratch/autonomy/delivery.md`; decisions index: `.scratch/autonomy/map.md`, records in `docs/decisions/`.
-- Core loop: `gflo/runner.py` (state, acceptance), `gflo/worker.py` (model/tool loop), `gflo/sandbox.py` (Docker execution), `gflo/__main__.py` (CLI). Reviewers: `gflo/review.py` (default), `gflo/ensemble.py` (opt-in). Environments: `gflo/prepare.py`, `gflo/environment.py`, recipes in `gflo/recipes/`.
-- Rig operations, model serving, rollback: `docs/operations.md`, `ops/`.
+- Core loop: `gflo/runner.py` (state, acceptance), `gflo/worker.py` (model/tool loop), `gflo/sandbox.py` (Docker execution), `gflo/__main__.py` (CLI). Reviewers: `gflo/review.py` (default), `gflo/ensemble.py` (opt-in). Environments: `gflo/prepare.py`, `gflo/environment.py`, recipes in `gflo/recipes/` (`python-project/resolve.py` resolves real repositories).
+- Rig operations, model serving, rollback: `docs/operations.md`, `ops/`. Delivery-rate tooling: `ops/delivery/`.
 
 ## Checks
 

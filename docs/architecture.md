@@ -53,7 +53,7 @@ Automatic planning/delegation is a later stage. First accumulate real-task compl
 
 `prepare.py` separates trusted, hash-checked registry acquisition from offline assembly and smoke tests. `artifacts.py` validates complete bounded archives before extraction. `environment.py` publishes immutable receipts binding the base image, dependency tree, recipe, locks and runtime facts. New task contracts bind the receipt before inference; resume and each executor resolve it again. Changed receipts, dependency bytes or frozen project manifests cannot silently change an accepted task. Legacy tasks remain explicitly unbound.
 
-Use an existing environment ID for registry-independent execution. Automatic preparation can fetch approved packages, so initial setup requires network access and preprovisioned base images. See [environment use and measured limits](environments.md).
+`python-project` resolves a named project's own declared dependencies instead of a fixed lock ([decision 012](decisions/architecture/012-project-resolved-python.md)). Use an existing environment ID for registry-independent execution. Automatic preparation can fetch approved packages, so initial setup requires network access and preprovisioned base images. See [environment use and measured limits](environments.md).
 
 ## Approved documentation
 

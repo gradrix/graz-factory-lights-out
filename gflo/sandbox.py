@@ -98,6 +98,8 @@ class Sandbox:
         if (self.environment is None or self.environment.profile != 'node-ts') and (Path(workspace) / 'tests').is_dir():
             if self.environment is not None and self.environment.profile == 'python-api':
                 commands.append(['python', '-B', '-c', PACKAGE_TESTS])
+            elif self.environment is not None and self.environment.profile == 'python-project':
+                commands.append(['python', '-B', '-m', 'pytest', '-q', '-p', 'no:cacheprovider', 'tests'])
             else:
                 commands.append(['python', '-B', '-m', 'unittest', 'discover', '-s', 'tests'])
         results = [self.execute(workspace, command, acceptance=acceptance, timeout=120)

@@ -10,7 +10,7 @@ import tempfile
 import time
 import uuid
 
-from .environment import EnvironmentStore, discard, encoded
+from .environment import EnvironmentStore, PROFILES, PROJECT_LIMITS, discard, encoded
 from .artifacts import unpack_archive
 from .guard import run
 from .sandbox import DEFAULT_IMAGE
@@ -66,18 +66,20 @@ def preparation(store):
 
 
 def execute(image, command, work, *, dependencies=None, output=None, timeout=60, cancelled=lambda: False,
-            profile="python-stdlib", helper=None, approved=None, artifacts=None, inputs=None, online=False):
+            profile="python-stdlib", helper=None, approved=None, artifacts=None, inputs=None, online=False,
+            limits=None):
     if cancelled():
         raise ValueError('Environment preparation cancelled')
+    limits = {**RECIPE['limits'], **(limits or {})}
     name = 'gflo-prepare-' + uuid.uuid4().hex[:16]
     inspection = work / (name + '.json')
     args = ['docker', 'run', '--rm', '--pull', 'never', '--name', name,
             '--runtime', 'runc', '--network', 'bridge' if online else 'none', '--read-only',
             '--cap-drop', 'ALL', '--security-opt', 'no-new-privileges',
-            '--memory', '1g', '--memory-swap', '1g', '--cpus', '1',
-            '--pids-limit', '128', '--shm-size', '16m',
+            '--memory', limits['memory'], '--memory-swap', limits['memory'], '--cpus', limits['cpus'],
+            '--pids-limit', limits['pids'], '--shm-size', '16m',
             '--user', f'{os.getuid()}:{os.getgid()}', '--init',
-            '--tmpfs', '/work:rw,nosuid,nodev,size=480m,mode=1777',
+            '--tmpfs', f"/work:rw,nosuid,nodev,size={limits['work']},mode=1777",
             '--tmpfs', '/tmp:rw,nosuid,nodev,size=16m,mode=1777',
             '--workdir', '/work', '--env', 'HOME=/tmp',
             '--env', 'PYTHONDONTWRITEBYTECODE=1', '--env', 'PYTHONPATH=/opt/deps',
@@ -89,7 +91,7 @@ def execute(image, command, work, *, dependencies=None, output=None, timeout=60,
         if source is not None:
             args += ['--mount', f'type=bind,src={Path(source).absolute()},dst={target},readonly']
     args += [image, *command]
-    result = run(args, name, timeout, output=output, max_output_bytes=128 * 1024 * 1024,
+    result = run(args, name, timeout, output=output, max_output_bytes=limits.get('output_bytes', 128 * 1024 * 1024),
                  cancelled=cancelled, inspect_path=inspection)
     if result['exit_code']:
         raise ValueError(f"Environment container failed ({result['exit_code']}): {result['output']}")
@@ -124,6 +126,8 @@ def smoke(image, dependencies, work, *, profile='python-stdlib', timeout=60, can
         code = PYTHON_SMOKE
         if profile == 'python-api':
             code += "import importlib.metadata as m; runtime.update({p:m.version(p) for p in ['fastapi','uvicorn','pydantic','httpx','setuptools']})\n"
+        elif profile == 'python-project':
+            code += "import importlib.metadata as m, pytest; runtime['pytest'] = m.version('pytest')\n"
         code += "print(json.dumps(runtime))\n"
         command = ['python', '-B', '-c', code]
     result, actual = execute(image, command, work, profile=profile, helper=helper,
@@ -134,10 +138,14 @@ def smoke(image, dependencies, work, *, profile='python-stdlib', timeout=60, can
     return {'passed': True, 'runtime': runtime, 'executor': actual}
 
 
-def prepare(store, profile, *, timeout=180, cancelled=lambda: False):
-    if profile not in ('python-stdlib', 'python-api', 'node-ts'):
-        raise ValueError('Unsupported environment profile; choose python-stdlib, python-api or node-ts')
-    deadline = time.monotonic() + timeout
+def prepare(store, profile, *, project=None, timeout=None, cancelled=lambda: False):
+    if profile not in PROFILES:
+        raise ValueError('Unsupported environment profile; choose ' + ', '.join(PROFILES))
+    if profile == 'python-project':
+        if project is None:
+            raise ValueError('The python-project profile resolves a specific project; pass its repository')
+        return prepare_project(store, project, timeout=timeout or 1200, cancelled=cancelled)
+    deadline = time.monotonic() + (timeout or 180)
     def remaining():
         left = deadline - time.monotonic()
         if left <= 0:
@@ -202,9 +210,85 @@ def prepare(store, profile, *, timeout=180, cancelled=lambda: False):
                 cancelled=lambda: cancelled() or time.monotonic() >= deadline)
 
 
+PROJECT_RECIPE = RECIPES / 'python-project' / 'resolve.py'
+# Real dependency sets need room to download, unpack and build; tmpfs counts toward memory.
+PROJECT_PREPARATION = {'memory': '8g', 'cpus': '4', 'pids': '512', 'work': '6g',
+                       'output_bytes': PROJECT_LIMITS.transport_bytes}
+
+
+def project_manifests(project, work):
+    """Copy the project's bounded dependency declarations; the project is never built."""
+    project = Path(project).resolve()
+    names = sorted(['pyproject.toml'] * (project / 'pyproject.toml').exists() +
+                   [path.name for path in project.glob('requirements*.txt')] +
+                   [path.name for path in project.glob('constraints*.txt')])
+    if not names:
+        raise ValueError('python-project needs pyproject.toml or requirements*.txt in the repository root')
+    inputs = work / 'inputs'
+    inputs.mkdir()
+    hashes = {}
+    for name in names:
+        source = project / name
+        if source.is_symlink() or not source.is_file() or source.stat().st_size > 65536:
+            raise ValueError('Linked or oversized dependency manifest: ' + name)
+        data = source.read_bytes()
+        (inputs / name).write_bytes(data)
+        hashes[name] = hashlib.sha256(data).hexdigest()
+    return inputs, hashes
+
+
+def prepare_project(store, project, *, timeout, cancelled):
+    """Resolve the project's declared dependencies online once; every later use is offline."""
+    deadline = time.monotonic() + timeout
+    def remaining():
+        left = deadline - time.monotonic()
+        if left <= 0:
+            raise ValueError('Environment preparation deadline exceeded')
+        return left
+    installed = subprocess.run(['docker', 'image', 'inspect', DEFAULT_IMAGE, '--format', '{{.Id}}'],
+                               capture_output=True, text=True, timeout=20)
+    if installed.returncode or installed.stdout.strip() != DEFAULT_IMAGE:
+        raise ValueError('Approved base image is missing; provision it before preparation: ' + DEFAULT_IMAGE)
+    with preparation(store) as (work, cleanup):
+        inputs, hashes = project_manifests(project, work)
+        recipe = {'version': 1, 'image': DEFAULT_IMAGE, 'resolver_sha256': hashlib.sha256(PROJECT_RECIPE.read_bytes()).hexdigest(),
+                  'preparer_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest()}
+        metadata = {'profile': 'python-project', 'image': DEFAULT_IMAGE, 'platform': 'linux/amd64',
+                    'recipe_sha256': hashlib.sha256(encoded(recipe)).hexdigest(), 'inputs': hashes}
+        with tempfile.TemporaryFile(dir=work) as archive:
+            _, resolver = execute(DEFAULT_IMAGE, ['python', '-B', '/recipe', 'resolve'], work, helper=PROJECT_RECIPE,
+                                  inputs=inputs, online=True, output=archive, timeout=remaining(),
+                                  cancelled=cancelled, limits=PROJECT_PREPARATION)
+            archive.seek(0)
+            dependencies = unpack_archive(archive, work / 'probe-deps', PROJECT_LIMITS)
+            lock = dependencies / 'gflo-lock.json'
+            if lock.is_symlink() or not lock.is_file():
+                raise ValueError('Resolver did not record its dependency lock')
+            metadata['locks'] = {'gflo-lock.json': hashlib.sha256(lock.read_bytes()).hexdigest()}
+            initial = smoke(DEFAULT_IMAGE, dependencies, work, profile='python-project',
+                            timeout=min(120, remaining()), cancelled=cancelled)
+            metadata['runtime'] = initial['runtime']
+            discard(dependencies)
+            archive.seek(0)
+            def verify(dependencies):
+                result = smoke(DEFAULT_IMAGE, dependencies, work, profile='python-project',
+                               timeout=min(120, remaining()), cancelled=cancelled)
+                result['preparation'] = {'resolver_executor': resolver, 'network': 'preparation only'}
+                archive.close()
+                cleanup()
+                return result
+            return store.publish(archive, metadata, verify,
+                cancelled=lambda: cancelled() or time.monotonic() >= deadline)
+
+
 def validate_project(store, profile, project):
     """Copy and parse only bounded manifest inputs in the approved interpreter."""
     project = Path(project).resolve()
+    if profile == 'python-project':
+        with preparation(store) as (work, cleanup):
+            inputs, hashes = project_manifests(project, work)
+            execute(DEFAULT_IMAGE, ['python', '-B', '/recipe', 'check'], work, helper=PROJECT_RECIPE, inputs=inputs)
+            return hashes
     if profile == 'python-stdlib':
         if any((project / name).exists() for name in ('pyproject.toml', 'requirements.txt', 'package.json', 'setup.py', 'setup.cfg')):
             raise ValueError('The stdlib profile supports projects without package declarations; choose a supported packaged profile')

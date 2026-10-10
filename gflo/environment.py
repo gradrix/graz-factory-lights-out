@@ -15,7 +15,13 @@ from .artifacts import ArchiveLimits, unpack_archive
 
 
 HEX = re.compile(r'[0-9a-f]{64}')
-PROFILES = ('python-stdlib', 'python-api', 'node-ts')
+PROFILES = ('python-stdlib', 'python-api', 'node-ts', 'python-project')
+# Project-resolved dependency trees (pandas, SQLAlchemy, ...) exceed the fixed profiles' bounds.
+PROJECT_LIMITS = ArchiveLimits(transport_bytes=3 * 1024 ** 3, entries=200000, expanded_bytes=3 * 1024 ** 3, path_bytes=240)
+
+
+def limits_for(profile):
+    return PROJECT_LIMITS if profile == 'python-project' else ArchiveLimits()
 
 
 def encoded(value):
@@ -142,18 +148,19 @@ class EnvironmentStore:
             stage = Path(tempfile.mkdtemp(prefix='.prepare-', dir=self.root))
             published, committed = None, False
             try:
-                dependencies = unpack_archive(stream, stage / 'deps')
+                limits = limits_for(metadata['profile'])
+                dependencies = unpack_archive(stream, stage / 'deps', limits)
                 for path in dependencies.rglob('*'):
                     if path.is_dir():
                         path.chmod(0o555)
                 dependencies.chmod(0o555)
-                before = tree_hash(dependencies)
+                before = tree_hash(dependencies, limits)
                 active()
                 checks = verify(dependencies)
                 active()
                 if not isinstance(checks, dict) or checks.get('passed') is not True:
                     raise ValueError('Environment offline smoke checks failed')
-                if tree_hash(dependencies) != before:
+                if tree_hash(dependencies, limits) != before:
                     raise ValueError('Environment dependencies changed during smoke checks')
                 receipt = encoded({'format': 1, 'metadata': metadata,
                                    'tree_sha256': before, 'checks': checks})
@@ -226,7 +233,7 @@ class EnvironmentStore:
             metadata = metadata_checked(value['metadata'])
             if type(value['format']) is not int or value['format'] != 1 or value['checks']['passed'] is not True:
                 raise ValueError('Environment receipt did not pass checks')
-            if tree_hash(root / 'deps') != value['tree_sha256']:
+            if tree_hash(root / 'deps', limits_for(metadata['profile'])) != value['tree_sha256']:
                 raise ValueError('Environment dependency tree changed')
         except (KeyError, TypeError, OSError, json.JSONDecodeError) as error:
             raise ValueError('Environment receipt or tree is invalid') from error
@@ -260,6 +267,7 @@ def runtime_context(task):
         return 'Execution environment: legacy-unbound (runtime was not frozen).'
     usage = {'python-stdlib': 'Python standard library only.',
              'python-api': 'Dependencies are at /opt/deps via PYTHONPATH. Build your project wheel with pip wheel --no-index --no-deps --no-build-isolation; install it with pip install --no-index --no-deps --target /tmp/installed and include that path in PYTHONPATH for tests. Acceptance builds a separate offline wheel.',
-             'node-ts': 'Dependencies are at /node_modules. Invoke node /node_modules/typescript/bin/tsc explicitly; no npm download or install is needed.'}
+             'node-ts': 'Dependencies are at /node_modules. Invoke node /node_modules/typescript/bin/tsc explicitly; no npm download or install is needed.',
+             'python-project': 'Project dependencies resolved from its manifests, plus pytest, are at /opt/deps via PYTHONPATH. Run tests with python -m pytest -p no:cacheprovider. Nothing can be installed; do not add dependencies.'}
     return usage[value['profile']] + '\nFrozen execution environment: ' + json.dumps(
         {key: value[key] for key in ('profile', 'image', 'runtime')}, sort_keys=True)

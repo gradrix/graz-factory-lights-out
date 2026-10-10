@@ -46,7 +46,7 @@ def main(argv=None):
     environment.add_argument('--store', default='.gflo/environments')
     actions = environment.add_subparsers(dest='environment_action', required=True)
     preparation = actions.add_parser('prepare')
-    preparation.add_argument('profile', choices=['python-stdlib', 'python-api', 'node-ts'])
+    preparation.add_argument('profile', choices=['python-stdlib', 'python-api', 'node-ts', 'python-project'])
     preparation.add_argument('--project', help='Validate repository package declarations before acquiring dependencies')
     inspection = actions.add_parser('inspect')
     inspection.add_argument('id')
@@ -113,7 +113,7 @@ def main(argv=None):
             if args.environment_action == 'prepare':
                 if args.project:
                     validate_project(store, args.profile, args.project)
-                prepared = prepare(store, args.profile)
+                prepared = prepare(store, args.profile, project=args.project)
                 result = {'id': prepared.id, 'profile': prepared.profile, 'runtime': prepared.runtime}
             else:
                 prepared = store.resolve(args.id)
@@ -185,7 +185,7 @@ def main(argv=None):
                 profile = environment.profile
             validate_project(store, profile, project)
             if environment is None:
-                environment = prepare(store, profile)
+                environment = prepare(store, profile, project=project)
         reviewer = EnsembleReviewer(worker, sandbox) if review_mode == 'ensemble' else Reviewer(worker)
         factory = Factory(args.state, worker, sandbox.verify, cleanup=sandbox.cleanup, reviewer=reviewer,
                           environment=environment, bind_environment=sandbox.bind)

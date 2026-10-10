@@ -26,6 +26,8 @@ User direction, 2026-10-02: push the first version, delete previous implementati
 
 - [Delivery-rate route](../../docs/decisions/architecture/011-delivery-rate-route.md): user chose (2026-10-10) to stop review requalification and measure end-to-end delivery on tasks mined from their own repositories; [roadmap](../../docs/roadmap.md) replaced by five gated phases.
 
+- [Project-resolved Python](../../docs/decisions/architecture/012-project-resolved-python.md): explicit `python-project` profile resolves a repository's own dependencies once online; worker stays offline.
+
 ## Not yet specified
 
 [Broader document reliability](issues/07-document-reliability.md) initial exact-quote repair trial failed8/10 on persistent punctuation mismatches. [Bounded source references](../../docs/decisions/architecture/007-bounded-document-references.md) now selects format3 with explicit expansion limits and unchanged old readers; [delivery07](delivery/07-document-reliability.md) is accepted at92deaab and installed. Ten repeated diagnostics and three fresh questions passed independent semantics;25cross-versionoffline checks passed. [Small planning prototype route](planning-prototype-route.md) is resolved by [the actual four-arm pilot](issues/08-planning-value.md): no complete increment and no planning benefit established. [Executable-review discovery](issues/09-executable-review.md) qualified a role ensemble (decision 009); open: broader repeated qualification, judge consistency, maintained integration.

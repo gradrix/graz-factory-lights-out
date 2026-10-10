@@ -9,8 +9,9 @@ GFLO prepares a pinned base image plus a read-only dependency snapshot. A task r
 | `python-stdlib` | CPython 3.12.13 standard library | No package declarations |
 | `python-api` | CPython 3.12.13; FastAPI 0.115.12, Uvicorn 0.34.2, HTTPX 0.28.1, Pydantic 2.13.5, setuptools 78.1.0; complete transitive lock | `pyproject.toml` with the approved runtime/build dependencies and Python range |
 | `node-ts` | Node 22.23.3, npm 10.9.9, TypeScript 5.8.3, Node types 22.15.3, undici types 6.21.0 | CommonJS `package.json` and the approved complete `package-lock.json` |
+| `python-project` | CPython 3.12.13; the project's own declared dependencies resolved from PyPI at preparation, plus pytest; lock recorded as `gflo-lock.json` | `pyproject.toml` and/or root `requirements*.txt`, optional root `constraints*.txt`; named only explicitly ([decision 012](decisions/architecture/012-project-resolved-python.md)) |
 
-The exact recipes and artifact hashes are under `gflo/recipes/`. These are deliberately constrained profiles. Unsupported dependency versions, custom build backends, Node workspaces/overrides/scripts and mixed projects without an explicit profile produce errors. They require a separately tested recipe change.
+The exact recipes and artifact hashes are under `gflo/recipes/`. The three fixed profiles are deliberately constrained; `python-project` trades their pre-approved hash list for running real repositories. Unsupported dependency versions, custom build backends, Node workspaces/overrides/scripts and mixed projects without an explicit profile produce errors. They require a separately tested recipe change.
 
 ## Prepare once, execute offline
 
@@ -33,6 +34,8 @@ Python dependencies are mounted at `/opt/deps` through `PYTHONPATH`. API accepta
 ## Preparation boundary
 
 A trusted client downloads only the fixed, hash-pinned artifacts from the approved HTTPS registries. It checks public IPv4 destinations and TLS hostnames, rejects redirects/proxies and bounds response bytes. This is a client policy, not a network firewall. No project or fetched package code runs in the online container. Offline assembly uses immutable approved inputs, empty disposable package caches and disabled package scripts.
+
+`python-project` differs: pip resolves the project's declarations from PyPI and may build source distributions in the online container, so fetched build code can run there (no host mounts besides read-only manifests, no credentials). It uses 8 GiB memory, 4 CPUs, 512 PIDs and 6 GiB scratch, and trees up to 3 GiB / 200,000 paths, with a 1200-second deadline. See [decision 012](decisions/architecture/012-project-resolved-python.md).
 
 Containers use runc, a nonroot user, a read-only root, no capabilities and no-new-privileges. Preparation limits are 1 GiB memory/swap, one CPU, 128 PIDs, 16 MiB shared memory, 480 MiB work scratch and 16 MiB temporary scratch. Binary output is capped at 128 MiB; extracted dependency trees are capped at 96 MiB and 16,384 paths. The default preparation deadline is 180 seconds plus bounded cleanup time. There are no host writable mounts, Docker socket, model credentials or GPU devices in the preparation recipe.
 
