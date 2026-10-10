@@ -4,6 +4,7 @@ import fcntl
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import subprocess
 import tempfile
@@ -216,12 +217,17 @@ PROJECT_PREPARATION = {'memory': '8g', 'cpus': '4', 'pids': '512', 'work': '6g',
                        'output_bytes': PROJECT_LIMITS.transport_bytes}
 
 
+def manifest_names(project):
+    """Root dependency declarations a python-project receipt is resolved from."""
+    project = Path(project)
+    return sorted([path.name for path in project.iterdir()
+                   if path.name == 'pyproject.toml' or re.fullmatch(r'(requirements|constraints)[^/]*\.txt', path.name)])
+
+
 def project_manifests(project, work):
     """Copy the project's bounded dependency declarations; the project is never built."""
     project = Path(project).resolve()
-    names = sorted(['pyproject.toml'] * (project / 'pyproject.toml').exists() +
-                   [path.name for path in project.glob('requirements*.txt')] +
-                   [path.name for path in project.glob('constraints*.txt')])
+    names = manifest_names(project)
     if not names:
         raise ValueError('python-project needs pyproject.toml or requirements*.txt in the repository root')
     inputs = work / 'inputs'
@@ -232,6 +238,8 @@ def project_manifests(project, work):
         if source.is_symlink() or not source.is_file() or source.stat().st_size > 65536:
             raise ValueError('Linked or oversized dependency manifest: ' + name)
         data = source.read_bytes()
+        if len(data) > 65536:
+            raise ValueError('Dependency manifest grew beyond 64 KiB: ' + name)
         (inputs / name).write_bytes(data)
         hashes[name] = hashlib.sha256(data).hexdigest()
     return inputs, hashes
@@ -246,7 +254,7 @@ def prepare_project(store, project, *, timeout, cancelled):
             raise ValueError('Environment preparation deadline exceeded')
         return left
     installed = subprocess.run(['docker', 'image', 'inspect', DEFAULT_IMAGE, '--format', '{{.Id}}'],
-                               capture_output=True, text=True, timeout=20)
+                               capture_output=True, text=True, timeout=min(20, remaining()))
     if installed.returncode or installed.stdout.strip() != DEFAULT_IMAGE:
         raise ValueError('Approved base image is missing; provision it before preparation: ' + DEFAULT_IMAGE)
     with preparation(store) as (work, cleanup):

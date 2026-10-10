@@ -92,6 +92,11 @@ class Sandbox:
                 path = Path(workspace) / name
                 if path.is_symlink() or not path.is_file() or path.stat().st_size > 65536 or hashlib.sha256(path.read_bytes()).hexdigest() != digest:
                     return {'passed': False, 'checks': [{'exit_code': 1, 'output': 'Frozen environment manifest changed: ' + name}]}
+            if self.environment.profile == 'python-project':
+                from .prepare import manifest_names
+                added = sorted(set(manifest_names(workspace)) - set(task.get('environment_inputs', {})))
+                if added:
+                    return {'passed': False, 'checks': [{'exit_code': 1, 'output': 'Dependency manifest added after the environment was frozen: ' + ', '.join(added)}]}
         commands = list(task['checks'])
         # The current profile is Python stdlib. Generated regressions supplement
         # the immutable external checks and must not be silently left unexecuted.
@@ -105,6 +110,8 @@ class Sandbox:
                 commands.append(['python', '-B', '-m', 'pytest', '-q', '-p', 'no:cacheprovider', 'tests'])
             else:
                 commands.append(['python', '-B', '-m', 'unittest', 'discover', '-s', 'tests'])
-        results = [self.execute(workspace, command, acceptance=acceptance, timeout=120)
+        # Real project suites (python-project) need longer than the bounded fixture checks.
+        timeout = 900 if self.environment is not None and self.environment.profile == 'python-project' else 120
+        results = [self.execute(workspace, command, acceptance=acceptance, timeout=timeout)
                    for command in commands]
         return {'passed': bool(results) and all(r['exit_code'] == 0 for r in results), 'checks': results}

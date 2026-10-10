@@ -172,6 +172,9 @@ class Factory:
             from .prepare import validate_project
             from .environment import EnvironmentStore
             task['environment_inputs'] = validate_project(EnvironmentStore(self.environment.store), self.environment.profile, workspace)
+            if self.environment.profile == 'python-project' and task['environment_inputs'] != self.environment.inputs:
+                raise ValueError('The prepared environment was resolved from different dependency manifests than this '
+                                 'commit; prepare python-project again for this repository state')
         task.update(repo=str(repo), base_commit=commit,
                     acceptance_hash=fingerprint(root / 'acceptance'))
         save(root / 'task.json', task)

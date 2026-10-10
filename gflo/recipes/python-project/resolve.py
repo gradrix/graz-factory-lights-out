@@ -1,7 +1,7 @@
 """Resolve a project's own declared dependencies plus pytest into a disposable tree.
 
-Runs in the preparation container: manifests at /inputs, network only for package
-download. `check` parses the manifests without network; `resolve` installs and writes
+Runs in the preparation container: manifests at /inputs, network enabled for the whole
+resolution (sdist builds included). `check` parses the manifests offline; `resolve` installs and writes
 a tar of the tree (with the resolved lock as gflo-lock.json) to stdout.
 """
 import json
@@ -13,12 +13,18 @@ import sys
 import tarfile
 import tomllib
 
-TEST_RUNNER = 'pytest==8.4.2'
+TEST_RUNNER = 'pytest'  # unpinned: the project's constraints or plugins choose the version
 NAME = re.compile(r'[A-Za-z0-9][A-Za-z0-9._-]*(\[[A-Za-z0-9._,\s-]+\])?')
-DENIED = re.compile(r'(://|@|^\s*-|^\s*\.|^\s*/|\\)')
+DENIED = re.compile(r'(://|@|^\s*-|\s-|^\s*\.|^\s*/|\\)')
+
+
+def normalized(name):
+    return re.sub(r'[-_.]+', '-', name).lower()
 
 
 def requirement(line, source):
+    if not isinstance(line, str):
+        raise ValueError(f'{source}: dependency entries must be strings')
     line = line.split('#', 1)[0].strip()
     if not line:
         return None
@@ -30,26 +36,29 @@ def requirement(line, source):
 def requirements(root):
     """Declared runtime and optional dependencies; the project itself is never built."""
     root = Path(root)
-    found, declared = [], False
+    found = []
     pyproject = root / 'pyproject.toml'
+    texts = sorted(root.glob('requirements*.txt'))
     if pyproject.is_file():
         value = tomllib.loads(pyproject.read_text())
-        project = value.get('project', {})
+        project = value.get('project')
+        if project is None and not texts:
+            raise ValueError('pyproject.toml has no [project] table (Poetry and dependency-groups are unsupported); add requirements*.txt')
+        project = project or {}
         if 'dependencies' in project.get('dynamic', []):
             raise ValueError('pyproject.toml: dynamic dependencies are not supported')
+        own = normalized(str(project.get('name', '')))
         groups = [project.get('dependencies', [])] + list(project.get('optional-dependencies', {}).values())
         for group in groups:
             for item in group:
-                if isinstance(item, str) and item.split('[', 1)[0].strip().lower().replace('_', '-') == str(project.get('name', '')).lower().replace('_', '-'):
+                if isinstance(item, str) and own and normalized(re.split(r'[\[<>=!~;\s]', item, maxsplit=1)[0]) == own:
                     continue  # self-referencing extra such as "pkg[dev]"
                 found.append(requirement(item, 'pyproject.toml'))
-        declared = True
-    for path in sorted(root.glob('requirements*.txt')):
-        declared = True
+    elif not texts:
+        raise ValueError('python-project needs pyproject.toml or requirements*.txt')
+    for path in texts:
         for line in path.read_text().splitlines():
             found.append(requirement(line, path.name))
-    if not declared:
-        raise ValueError('python-project needs pyproject.toml or requirements*.txt')
     return sorted({item for item in found if item})
 
 
@@ -63,10 +72,10 @@ def constraints(root):
 
 
 def requested(root):
-    """Declared requirements plus a test runner, unless the project already names pytest."""
+    """Declared requirements plus pytest unless a requirement names it; constraints only choose versions."""
     found = requirements(root)
-    names = {re.split(r'[<>=!~;\[ ]', item, maxsplit=1)[0].lower() for item in found + constraints(root)}
-    return found if 'pytest' in names else found + [TEST_RUNNER]
+    names = {normalized(re.split(r"[\[<>=!~;\s]", item, maxsplit=1)[0]) for item in found}
+    return found if "pytest" in names else found + [TEST_RUNNER]
 
 
 def resolve(root):

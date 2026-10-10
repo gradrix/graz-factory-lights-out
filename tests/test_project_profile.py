@@ -33,16 +33,32 @@ class ResolverParsingTests(unittest.TestCase):
                              'requirements-test.txt': 'pytest==8.*\nrequests==2.32.3\n'})
         self.assertEqual(resolver.requirements(root), ['pytest==8.*', 'requests==2.32.3'])
 
-    def test_constraints_pin_versions_and_project_pytest_replaces_default_runner(self):
+    def test_constraints_choose_versions_and_pytest_is_always_installed(self):
         root = self.project({'pyproject.toml': '[project]\nname = "x"\ndependencies = ["sqlalchemy>=2,<3"]\n',
                              'constraints-runtime.txt': 'sqlalchemy==2.0.49\npytest==8.3.5\n'})
         self.assertEqual(resolver.constraints(root), ['pytest==8.3.5', 'sqlalchemy==2.0.49'])
-        self.assertEqual(resolver.requested(root), ['sqlalchemy>=2,<3'])
+        self.assertEqual(resolver.requested(root), ['sqlalchemy>=2,<3', 'pytest'])  # constraint pins it
         plain = self.project({'requirements.txt': 'pytest-asyncio==0.26.0\n'})
-        self.assertEqual(resolver.requested(plain), ['pytest-asyncio==0.26.0', resolver.TEST_RUNNER])
+        self.assertEqual(resolver.requested(plain), ['pytest-asyncio==0.26.0', 'pytest'])
+        named = self.project({'requirements.txt': 'PyTest==8.4.2\n'})
+        self.assertEqual(resolver.requested(named), ['PyTest==8.4.2'])
+
+    def test_markers_and_normalized_self_reference(self):
+        root = self.project({'pyproject.toml': '[project]\nname = "a.b"\ndependencies = ["tomli; python_version < \\"3.11\\""]\n'
+                                               '[project.optional-dependencies]\nall = ["A_B[x]", "a-b>=1"]\n'})
+        self.assertEqual(resolver.requirements(root), ['tomli; python_version < "3.11"'])
+
+    def test_unsupported_declarations_fail_instead_of_resolving_nothing(self):
+        with self.assertRaisesRegex(ValueError, r'no \[project\] table'):
+            resolver.requirements(self.project({'pyproject.toml': '[tool.poetry.dependencies]\nrequests = "^2"\n'}))
+        with self.assertRaisesRegex(ValueError, 'must be strings'):
+            resolver.requirements(self.project({'pyproject.toml': '[project]\nname="x"\ndependencies=[{name="requests"}]\n'}))
+        poetry_with_text = self.project({'pyproject.toml': '[tool.poetry]\n', 'requirements.txt': 'requests==2.32.3\n'})
+        self.assertEqual(resolver.requirements(poetry_with_text), ['requests==2.32.3'])
 
     def test_urls_paths_options_and_includes_are_rejected(self):
         for line in ['git+https://example.com/x.git', 'pkg @ https://example.com/p.whl', '-e .', '-r other.txt',
+                     'requests==2.32.3 --hash=sha256:abc', 'pkg --config-settings x=y', 'pkg --trusted-host evil',
                      '--index-url https://mirror/simple', './local', '/abs/path', 'C:\\pkg']:
             with self.subTest(line=line), self.assertRaisesRegex(ValueError, 'only named PyPI requirements'):
                 resolver.requirements(self.project({'requirements.txt': line + '\n'}))
@@ -88,7 +104,7 @@ class ProjectProfileTests(unittest.TestCase):
             self.assertEqual(sorted(hashes), ['requirements.txt'])
             environment = prepare(store, 'python-project', project=project)
             self.assertEqual(environment.profile, 'python-project')
-            self.assertTrue(environment.runtime['pytest'].startswith('8.'))
+            self.assertRegex(environment.runtime['pytest'], r'^\d+\.')  # unpinned unless the project pins it
             lock = json.loads((environment.dependencies / 'gflo-lock.json').read_text())
             self.assertIn('iniconfig', {item['name'] for item in lock['resolved']})
             receipt = json.loads((environment.dependencies.parent / 'receipt.json').read_text())
@@ -105,8 +121,26 @@ class ProjectProfileTests(unittest.TestCase):
             result = sandbox.verify(project, custom, acceptance)
             self.assertFalse(result['passed'])  # pytest exits 5 when the operator command selects no tests
             self.assertEqual(result['checks'][-1]['command'], custom['test_command'])
+            (project / 'constraints.txt').write_text('iniconfig==2.1.0\n')
+            added = sandbox.verify(project, task, acceptance)
+            self.assertFalse(added['passed'])
+            self.assertIn('added after the environment was frozen: constraints.txt', added['checks'][0]['output'])
+            (project / 'constraints.txt').unlink()
             (project / 'requirements.txt').write_text('iniconfig==2.0.0\n')
             self.assertFalse(sandbox.verify(project, task, acceptance)['passed'])
+            # A receipt resolved from other manifests cannot bind a run of this commit.
+            import subprocess
+            from gflo.runner import Factory
+            subprocess.run(['git', 'init', '-q', str(project)], check=True)
+            subprocess.run(['git', '-C', str(project), 'add', '.'], check=True)
+            subprocess.run(['git', '-C', str(project), '-c', 'user.name=T', '-c', 'user.email=t@local', 'commit', '-qm', 'base'], check=True)
+            (acceptance / 'check.py').write_text('pass\n')
+            task_file = root / 'task.json'
+            task_file.write_text(json.dumps({'repo': str(project), 'objective': 'x', 'acceptance': str(acceptance),
+                                             'checks': [['python', '/acceptance/check.py']], 'profile': 'python-project'}))
+            factory = Factory(root / 'state', lambda *a: {}, sandbox.verify, environment=environment, bind_environment=sandbox.bind)
+            with self.assertRaisesRegex(ValueError, 'different dependency manifests'):
+                factory.create(task_file)
 
 
 if __name__ == '__main__':

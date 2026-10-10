@@ -1,6 +1,6 @@
 """Controller-owned immutable environment snapshots and their checked receipts."""
 from contextlib import contextmanager
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import fcntl
 import hashlib
 import json
@@ -108,6 +108,7 @@ class Environment:
     profile: str
     runtime: dict
     store: Path
+    inputs: dict = field(default_factory=dict)  # manifest hashes a python-project receipt was resolved from
 
 
 class EnvironmentStore:
@@ -238,7 +239,7 @@ class EnvironmentStore:
         except (KeyError, TypeError, OSError, json.JSONDecodeError) as error:
             raise ValueError('Environment receipt or tree is invalid') from error
         return Environment(identifier, digest, root / 'deps', metadata['image'],
-                           metadata['profile'], metadata['runtime'], self.root)
+                           metadata['profile'], metadata['runtime'], self.root, dict(metadata.get('inputs', {})))
 
 
 def binding(environment):
