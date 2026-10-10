@@ -45,7 +45,8 @@ class Reviewer:
 
     def __call__(self, workspace, task):
         from .environment import runtime_context
-        return self.review_files(task['objective'] + '\n' + runtime_context(task), load_files(workspace))
+        files, note = review_scope(workspace, task)
+        return self.review_files(task['objective'] + '\n' + runtime_context(task) + ('\n' + note if note else ''), files)
 
 
 class CandidateContentError(ValueError):
@@ -61,7 +62,7 @@ def load_files(workspace):
         if not path.is_file():
             continue
         total += path.stat().st_size
-        if total > 200000 or len(files) >= 1000:
+        if total > REVIEW_BYTES or len(files) >= REVIEW_FILES:
             raise CandidateContentError('Independent review input too large; split task explicitly')
         try:
             files[str(path.relative_to(workspace))] = path.read_text()
@@ -70,6 +71,41 @@ def load_files(workspace):
     if not files:
         raise CandidateContentError('Independent review needs source files')
     return files
+
+
+REVIEW_BYTES, REVIEW_FILES = 200000, 1000
+SCOPE_NOTE = ('Review scope: this project exceeds whole-project review bounds, so only the files changed from the base '
+              'are shown. Unchanged project files exist and behave as before; do not report them as missing.')
+
+
+def review_scope(workspace, task):
+    """Files for review and a scope note: the whole project when it fits, else the controller's changed paths."""
+    workspace = Path(workspace)
+    changed = task.get('changed_paths')
+    total = count = 0
+    for path in workspace.rglob('*'):
+        if path.is_file() and not path.is_symlink():
+            total += path.stat().st_size
+            count += 1
+    if changed is None or (total <= REVIEW_BYTES and count < REVIEW_FILES):
+        return load_files(workspace), ''
+    files, total = {}, 0
+    for name in sorted(changed):
+        path = workspace / name
+        if path.is_symlink():
+            raise CandidateContentError('Independent review cannot inspect symlink: ' + name)
+        if not path.is_file():
+            continue  # deleted by the candidate; the patch records it
+        total += path.stat().st_size
+        if total > REVIEW_BYTES or len(files) >= REVIEW_FILES:
+            raise CandidateContentError('Changed files exceed independent review bounds; split the task explicitly')
+        try:
+            files[name] = path.read_text()
+        except UnicodeDecodeError:
+            files[name] = f'<binary file changed, {path.stat().st_size} bytes, not shown>'
+    if not files:
+        raise CandidateContentError('Independent review needs changed source files')
+    return files, SCOPE_NOTE
 
 
 QUESTION_SYSTEM = """You assess whether a proposed question actually requires a human product decision.

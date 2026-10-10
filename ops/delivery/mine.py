@@ -22,9 +22,9 @@ import tarfile
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from gflo.environment import EnvironmentStore  # noqa: E402
 from gflo.prepare import prepare  # noqa: E402
-from ops.delivery.env_exec import execute  # noqa: E402
+from ops.delivery.env_exec import pytest_outcomes  # noqa: E402
 
-RESULT = re.compile(r'^(PASSED|FAILED|ERROR) (\S+)', re.M)
+
 HIDDEN = re.compile(r'^(tests/|test_support/|conftest\.py$)')
 MANIFESTS = re.compile(r'^(pyproject\.toml|requirements[^/]*\.txt|constraints[^/]*\.txt)$')
 
@@ -47,11 +47,6 @@ def changed(source, commit, subdir):
     return [(line.split('\t')[0], line.split('\t')[1][len(subdir) + 1:]) for line in lines]
 
 
-def outcomes(output):
-    found = {}
-    for status, node in RESULT.findall(output):
-        found[node] = 'passed' if status == 'PASSED' else 'failed'
-    return found
 
 
 def manifest_hash(root):
@@ -69,10 +64,9 @@ def environment_for(store, root, cache):
     return cache[key]
 
 
-def pytest(store, environment, workspace, env, marker, targets, timeout=1200):
-    command = ['env', *env, 'python', '-m', 'pytest', '-q', '-rA', '-p', 'no:cacheprovider', '-m', marker, *targets]
-    result = execute(store, environment, workspace, command, timeout=timeout, readonly=True)
-    return outcomes(result['output']), result
+def pytest(store, environment, workspace, env, marker, targets, timeout=1500):
+    command = ['env', *env, 'python', '-m', 'pytest', '-q', '-p', 'no:cacheprovider', '-m', marker, *targets]
+    return pytest_outcomes(store, environment, workspace, command, timeout)
 
 
 def mine(source, subdir, out, store, commit, env, marker, cache):
@@ -106,14 +100,14 @@ def mine(source, subdir, out, store, commit, env, marker, cache):
         return record
     at_commit, _ = pytest(store, environment, after, env, marker, targets)
     at_base, base_run = pytest(store, environment, overlay, env, marker, targets)
-    f2p = sorted(node for node, state in at_commit.items() if state == 'passed' and at_base.get(node) != 'passed')
+    f2p = sorted(node for node, passed in at_commit.items() if passed and not at_base.get(node))
     record['f2p'] = f2p
-    record['hidden_p2p'] = sorted(node for node, state in at_commit.items() if state == 'passed' and at_base.get(node) == 'passed')
+    record['hidden_p2p'] = sorted(node for node, passed in at_commit.items() if passed and at_base.get(node))
     record['base_hidden_tail'] = base_run['output'][-1500:]
     suite_base, _ = pytest(store, environment, base, env, marker, ['tests'])
     suite_commit, _ = pytest(store, environment, after, env, marker, ['tests'])
-    record['suite_p2p'] = sorted(node for node, state in suite_base.items()
-                                 if state == 'passed' and suite_commit.get(node) == 'passed')
+    record['suite_p2p'] = sorted(node for node, passed in suite_base.items()
+                                 if passed and suite_commit.get(node))
     record['valid'] = bool(f2p) and not record['manifests_changed']
     record['reason'] = 'ok' if record['valid'] else ('manifests changed' if f2p else 'no fail-to-pass tests')
     shutil.rmtree(overlay)

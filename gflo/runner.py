@@ -16,7 +16,7 @@ import uuid
 
 from .environment import binding, resolve_binding
 from .observe import Execution, event, identity, redact, schema
-from .review import CandidateContentError, load_files, validate
+from .review import CandidateContentError, review_scope, validate
 
 
 def save(path, value):
@@ -173,6 +173,7 @@ class Factory:
             from .environment import EnvironmentStore
             task['environment_inputs'] = validate_project(EnvironmentStore(self.environment.store), self.environment.profile, workspace)
             if self.environment.profile == 'python-project' and task['environment_inputs'] != self.environment.inputs:
+                shutil.rmtree(root)  # nothing durable refers to this run yet
                 raise ValueError('The prepared environment was resolved from different dependency manifests than this '
                                  'commit; prepare python-project again for this repository state')
         task.update(repo=str(repo), base_commit=commit,
@@ -351,12 +352,16 @@ class Factory:
                 verdict = self.verifier(workspace, task, root / 'acceptance')
                 if verdict.get('passed') is True and task.get('review_required'):
                     self.report('reviewing', attempt=number)
+                    self._index(root, workspace)
+                    base_tree = json.loads((root / 'base.json').read_text())['tree']
+                    changed = self._snapshot_git(root, 'diff', '--cached', '--name-only', '--no-renames', base_tree, '--')
+                    review_task = dict(task, changed_paths=changed.decode().splitlines())
                     try:
-                        files = load_files(workspace)
+                        files, _ = review_scope(workspace, review_task)
                     except CandidateContentError as error:
                         verdict.update(passed=False, reviewability={'passed':False, 'error':str(error)})
                     else:
-                        review = self.reviewer(workspace, task)
+                        review = self.reviewer(workspace, review_task)
                         validate(review, files)
                         save(attempt / 'review.json', review)
                         verdict['review'] = review

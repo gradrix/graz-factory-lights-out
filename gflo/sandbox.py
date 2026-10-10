@@ -100,7 +100,9 @@ class Sandbox:
         commands = list(task['checks'])
         # The current profile is Python stdlib. Generated regressions supplement
         # the immutable external checks and must not be silently left unexecuted.
-        if task.get('test_command'):
+        if task.get('test_command') and list(task['test_command']) in commands:
+            pass  # the operator's checks already run the project's tests
+        elif task.get('test_command'):
             # The operator names how this project runs its own and generated tests.
             commands.append(list(task['test_command']))
         elif (self.environment is None or self.environment.profile != 'node-ts') and (Path(workspace) / 'tests').is_dir():

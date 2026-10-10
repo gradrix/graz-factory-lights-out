@@ -244,9 +244,12 @@ class WiringTests(unittest.TestCase):
 
     def test_judged_objective_excludes_runtime_context(self):
         reviewer = e.EnsembleReviewer(mock.Mock(), Sandbox())
-        with mock.patch.object(reviewer, 'review', return_value='r') as review:
-            reviewer('/w', {'objective': OBJECTIVE, 'environment': {'profile': 'python-stdlib', 'image': 'i', 'runtime': {}}})
-        review.assert_called_once_with('/w', OBJECTIVE)
+        with mock.patch.object(reviewer, 'review', return_value='r') as review, \
+                mock.patch.object(e, 'review_scope', return_value=({'a.py': 'x'}, '')) as scope:
+            task = {'objective': OBJECTIVE, 'environment': {'profile': 'python-stdlib', 'image': 'i', 'runtime': {}}}
+            reviewer('/w', task)
+        scope.assert_called_once_with('/w', task)
+        review.assert_called_once_with('/w', OBJECTIVE, None, {'a.py': 'x'})
 
     def test_invalid_review_fails_before_environment_preparation(self):
         import gflo.__main__ as entry

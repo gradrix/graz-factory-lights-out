@@ -121,6 +121,10 @@ class ProjectProfileTests(unittest.TestCase):
             result = sandbox.verify(project, custom, acceptance)
             self.assertFalse(result['passed'])  # pytest exits 5 when the operator command selects no tests
             self.assertEqual(result['checks'][-1]['command'], custom['test_command'])
+            suite = ['python', '-m', 'pytest', '-q', '-p', 'no:cacheprovider', 'tests']
+            once = sandbox.verify(project, dict(task, checks=[suite], test_command=suite), acceptance)
+            self.assertTrue(once['passed'], once)
+            self.assertEqual([check['command'] for check in once['checks']], [suite])  # not run twice
             (project / 'constraints.txt').write_text('iniconfig==2.1.0\n')
             added = sandbox.verify(project, task, acceptance)
             self.assertFalse(added['passed'])
@@ -141,6 +145,7 @@ class ProjectProfileTests(unittest.TestCase):
             factory = Factory(root / 'state', lambda *a: {}, sandbox.verify, environment=environment, bind_environment=sandbox.bind)
             with self.assertRaisesRegex(ValueError, 'different dependency manifests'):
                 factory.create(task_file)
+            self.assertEqual([path for path in (root / 'state').iterdir() if path.is_dir()], [])  # no orphan run
 
 
 if __name__ == '__main__':

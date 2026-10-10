@@ -22,6 +22,25 @@ def execute(store, environment, workspace, command, *, timeout=600, readonly=Fal
         sandbox.cleanup(workspace)
 
 
+def pytest_outcomes(store, environment, workspace, command, timeout=1500):
+    """Run a pytest command in a writable workspace and read every outcome from JUnit XML.
+
+    Console output is bounded by the sandbox, so per-test results come from the report file.
+    Keys are 'module.Class::test[param]'; True means passed.
+    """
+    import xml.etree.ElementTree as ElementTree
+    report = Path(workspace) / '.gflo-junit.xml'
+    report.unlink(missing_ok=True)
+    result = execute(store, environment, workspace, [*command, '--junitxml=/workspace/.gflo-junit.xml'], timeout=timeout)
+    outcomes = {}
+    if report.exists():
+        for case in ElementTree.parse(report).iter('testcase'):
+            key = case.get('classname', '') + '::' + case.get('name', '')
+            outcomes[key] = not any(child.tag in ('failure', 'error', 'skipped') for child in case)
+        report.unlink()
+    return outcomes, result
+
+
 if __name__ == '__main__':
     if '--' not in sys.argv:
         raise SystemExit(__doc__)
