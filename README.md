@@ -68,7 +68,7 @@ GFLO never pushes, merges or deploys generated changes. Full prompts and tool ou
 
 ## Generate tests
 
-`gflo tests init REPO TARGET... --out DIR` writes a test-writing task for tracked Python files. The worker adds tests; acceptance is mechanical and controller-owned ([test_acceptance.py](gflo/recipes/test_acceptance.py)): non-test source must be unchanged, the new tests need real assertions, must pass three runs in a row and must kill at least `--threshold` (default 60%) of up to `--max-mutants` sampled mutants of the targets (flipped comparisons and operators, changed constants, dropped negations, returns replaced by `None`). Equivalent mutants exist, so 100% is not expected. Use `--env K=V` when the project's tests need environment variables, then run the task as usual with `python3 -m gflo run DIR/task.json`.
+`gflo tests init REPO TARGET... --out DIR` writes a test-writing task for tracked Python files. The worker adds test functions under `tests/`; acceptance is mechanical and controller-owned ([test_acceptance.py](gflo/recipes/test_acceptance.py)): every file outside `tests/`/`test/` stays unchanged and existing tests stay, new test functions need real assertions, must pass three runs in a row and on a behaviour-preserving reformatting of each target (so tests of source text fail), and must kill at least `--threshold` (default 60%) of the sampled mutants (flipped comparisons and operators, changed constants, dropped negations, returns replaced by `None`) that the existing related tests do not already kill. Equivalent mutants exist, so 100% is not expected. Use `--env K=V` when the project's tests need environment variables, then run the task as usual with `python3 -m gflo run DIR/task.json`.
 
 ## Use approved documentation
 

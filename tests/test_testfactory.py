@@ -90,23 +90,32 @@ class MutationTests(unittest.TestCase):
 
 
 class AcceptanceTests(unittest.TestCase):
-    def project(self, tests=None, source=SOURCE):
+    def project(self, tests=None, source=SOURCE, base_tests=None, extra=None):
+        """Config path and candidate workspace; base_tests are test modules already at the base commit."""
         directory = tempfile.TemporaryDirectory()
         self.addCleanup(directory.cleanup)
         root = Path(directory.name)
         workspace = root / 'workspace'
-        (workspace / 'tests').mkdir(parents=True)
-        (workspace / 'calc.py').write_text(SOURCE)
-        (workspace / 'tests' / '__init__.py').write_text('')
-        config = {'targets': ['calc.py'], 'threshold': 0.6, 'max_mutants': 30, 'runs': 2,
+        base_files = {'tests/__init__.py': '', **(base_tests or {})}
+        for name, text in {'calc.py': SOURCE, **base_files}.items():
+            for place in (workspace, root / 'base_tests') if name != 'calc.py' else (workspace,):
+                (place / name).parent.mkdir(parents=True, exist_ok=True)
+                (place / name).write_text(text)
+        config = {'targets': ['calc.py'], 'threshold': 0.6, 'max_mutants': 30, 'runs': 2, 'budget_seconds': 120,
                   'runner': [sys.executable, '-m', 'unittest', '{tests}'],
                   'base': {'calc.py': acceptance.digest(workspace / 'calc.py')},
-                  'base_tests': {'tests/__init__.py': acceptance.digest(workspace / 'tests' / '__init__.py')}}
-        (root / 'config.json').write_text(json.dumps(config))
+                  'base_tests': {name: acceptance.digest(workspace / name) for name in base_files}}
+        (root / 'test_task.json').write_text(json.dumps(config))
         (workspace / 'calc.py').write_text(source)
         if tests is not None:
             (workspace / 'tests' / 'test_calc.py').write_text(tests)
-        return str(root / 'config.json'), workspace
+        for name, text in (extra or {}).items():
+            (workspace / name).parent.mkdir(parents=True, exist_ok=True)
+            if text is None:
+                (workspace / name).unlink()
+            else:
+                (workspace / name).write_text(text)
+        return str(root / 'test_task.json'), workspace
 
     def test_strong_new_tests_pass(self):
         self.assertEqual(acceptance.main(*self.project(STRONG)), 0)
@@ -120,6 +129,34 @@ class AcceptanceTests(unittest.TestCase):
 
     def test_failing_new_tests_fail(self):
         self.assertEqual(acceptance.main(*self.project(STRONG.replace('clamp(5, 1, 10), 5', 'clamp(5, 1, 10), 6'))), 1)
+
+    def test_tests_on_source_text_are_rejected(self):
+        hashing = ('import hashlib, unittest\n\nclass T(unittest.TestCase):\n    def test_source(self):\n'
+                   '        text = open("calc.py").read()\n        self.assertEqual(len(text), %d)\n' % len(SOURCE))
+        self.assertEqual(acceptance.main(*self.project(hashing)), 1)
+
+    def test_touching_existing_strong_tests_earns_nothing(self):
+        config, workspace = self.project(base_tests={'tests/test_calc.py': STRONG})
+        (workspace / 'tests' / 'test_calc.py').write_text(STRONG + '\n# touched\n')
+        self.assertEqual(acceptance.main(config, workspace), 1)
+
+    def test_existing_strong_tests_leave_nothing_to_earn(self):
+        extra = STRONG.replace('class ClampTests', 'class MoreTests').replace('def test_names', 'def test_more_names')
+        config, workspace = self.project(base_tests={'tests/test_calc.py': STRONG}, extra={'tests/test_more.py': extra})
+        self.assertEqual(acceptance.main(config, workspace), 1)
+
+    def test_files_outside_tests_and_base_tests_are_protected(self):
+        self.assertEqual(acceptance.main(*self.project(STRONG, extra={'pytest.ini': '[pytest]\naddopts = -p no:x\n'})), 1)
+        self.assertEqual(acceptance.main(*self.project(STRONG, extra={'pkg/test_utils.py': 'X = 1\n'})), 1)
+        config, workspace = self.project(STRONG, base_tests={'tests/test_old.py': 'def test_old():\n    assert 1 == 1\n'},
+                                         extra={'tests/test_old.py': None})
+        self.assertEqual(acceptance.main(config, workspace), 1)
+
+    def test_only_new_test_functions_are_smell_checked(self):
+        smoke = 'import unittest\nfrom calc import clamp\n\nclass Smoke(unittest.TestCase):\n    def test_smoke(self):\n        clamp(1, 0, 2)\n'
+        config, workspace = self.project(base_tests={'tests/test_calc.py': smoke})
+        (workspace / 'tests' / 'test_calc.py').write_text(smoke + '\n\n' + STRONG.replace('import unittest\n', ''))
+        self.assertEqual(acceptance.main(config, workspace), 0)
 
 
 class BuildTests(unittest.TestCase):
@@ -135,11 +172,14 @@ class BuildTests(unittest.TestCase):
             task = json.loads(build(repo, ['calc.py'], Path(directory) / 'out', profile='python-stdlib').read_text())
             config = json.loads((Path(directory) / 'out' / 'acceptance' / 'test_task.json').read_text())
             self.assertEqual(task['checks'], [['python', '/acceptance/test_acceptance.py']])
-            self.assertIn('60% of those mutants', task['objective'])
+            self.assertIn('at least 60% of the mutants the existing tests miss', task['objective'])
             self.assertEqual(sorted(config['base']), ['calc.py'])
             self.assertEqual(sorted(config['base_tests']), ['tests/test_old.py'])
             self.assertEqual(config['runner'], ['python', '-m', 'unittest', '{tests}'])
-            with self.assertRaisesRegex(ValueError, 'tracked non-test'):
+            self.assertTrue((Path(directory) / 'out' / 'acceptance' / 'base_tests' / 'tests' / 'test_old.py').is_file())
+            with self.assertRaisesRegex(ValueError, 'max_mutants'):
+                build(repo, ['calc.py'], Path(directory) / 'out3', max_mutants=0)
+            with self.assertRaisesRegex(ValueError, 'outside tests'):
                 build(repo, ['tests/test_old.py'], Path(directory) / 'out2')
 
 
