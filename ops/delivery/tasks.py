@@ -43,6 +43,9 @@ def build(mined, objectives, tasks, store):
         if not record.get('valid') or commit not in objectives:
             continue
         root = Path(tasks) / commit
+        if (root / 'task.json').exists():
+            built.append(commit)
+            continue  # never rebuild a task a run may be using; delete its directory to rebuild
         if root.exists():
             shutil.rmtree(root)
         repo = root / 'repo'
@@ -67,7 +70,8 @@ def build(mined, objectives, tasks, store):
         check = command[:python] + ['python', '/acceptance/check.py'] + command[python + 3:]  # drop "-m pytest"
         targeted = ' '.join(command[:-1]) + ' tests/<test file>'
         footer = (f"\n\nHow to run tests in this project: {targeted} (quote the -m expression in a shell). "
-                  "The full suite has pre-existing failures (tests that need PostgreSQL but are not marked db); "
+                  "The full suite has pre-existing failures on the base commit (for example tests that need services "
+                  "or tools this sandbox lacks); "
                   "acceptance (check) runs the whole suite and rejects only new failures.")
         task = {'repo': 'repo', 'acceptance': 'acceptance', 'profile': 'python-project',
                 'objective': objectives[commit] + footer, 'checks': [check],
