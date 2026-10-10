@@ -7,7 +7,7 @@ Predecessor: ../09-autonomy-review-ensemble/run.md
 
 ## Execution
 
-Status: active — gate 2 FAILED on candidate 3; candidate 4 full requalification running: blind run A (trial 6), then gate 1 (trial 7), then blind run B (trial 8)
+Status: active — candidate 4 full requalification: blind run A PASSED 24/24 (trial 6); gate 1 (trial 7) running; then blind run B (trial 8)
 Owner: Claude Code coordinator; independent seeding agent for cohort 3 (no pipeline access, private expectations unread by coordinator until scoring)
 Candidate: prototype d0de00c (candidate 4: candidate 3 plus sampled escalations); candidate 3 6920218 passed gate 1 and failed gate 2 run 2; candidates 1 5bf552c and 2 ee8f2a4 failed gate 1
 Controls: candidates 2 and 3 review suites 49/49 (Docker); candidate 1 had 111 collected, 110 pass, 1 skipped
@@ -120,3 +120,7 @@ Cause of b06 u2: the first audit chunk exhausted 8192, 24576 and 65536 reasoning
 Repair, on the measured cause only: ladder rungs after the first send temperature 0.6 with seed equal to the rung; first requests stay byte-identical to candidate 3 (temperature 0, no seed). Probe on the rig (`~/gflo-loop-probe`, the looping b06 escalated request replayed): temperature-0 control 82 s, 3174 completion tokens, no loop, valid; four seeded temperature-0.6 runs 22–38 s, all valid. So the loop is rare and state-dependent, and the escalations failed only because they replayed it. Review suites 49/49 (Docker).
 
 Requalification: two fresh blind runs of cohort 3 on candidate 4 (trials 6 and 7) under the same gate 2 rule. Inference boundary: the coordinator has read cohort 3's private expectations since run 1's scoring, so cohort 3 is no longer blind to the coordinator. The repair is generic sampling, not tuned on any case content, but these runs measure stability and the escalation path, not blind generalisation. User decision 2026-10-10: gate 1 also reruns on candidate 4 ("Rerun it too"; the agent had recommended skipping it). Order: blind run A (trial 6, launched 2026-10-09 21:27), gate 1 (trial 7), blind run B (trial 8), chained; the vertical follows only if all pass. The maintained branch carries the same change at 60472ae; its vertical waits for that choice.
+
+## Candidate 4 blind run A (d0de00c), trial 6: 24/24, all grounded
+
+Evidence: `trial-6-*.json`, `trial-6-stage-inventory.sha256`; rig `~/gflo-review-ensemble-d0de00c-trial-6/`. 24/24 correct and complete: 12/12 controls pass with no blocking finding, 12/12 seeded cases repair, every repair unit cites the seeded defect (b06 now repairs on u2 and u5 at `domain.py:16`; c03 adds u3 and c04 u2 on the same lines; c09 u4 cites the test file). Escalation path: 7 of 614 first attempts exhausted, all 7 rescued (813 s on exhausted attempts). Agreement with trial 4 (candidate 3 run 1): decisions 24/24, identical repair-unit sets 21/24 (b06 [2]→[2,5], c03 [1]→[1,3], c04 [1]→[1,2]).

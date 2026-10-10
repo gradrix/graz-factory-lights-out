@@ -1,0 +1,2346 @@
+[
+  {
+    "case": "b01",
+    "phases": {
+      "battery": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "tester": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "adversary": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "docs": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      }
+    },
+    "catalog": {
+      "commands": 22,
+      "segments": 22
+    },
+    "decision": "repair",
+    "status": "accepted",
+    "idle_confirmed": true,
+    "units": [
+      {
+        "unit": 1,
+        "ids": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 2,
+        "ids": [
+          5,
+          6,
+          7,
+          8
+        ],
+        "status": "accepted",
+        "decision": "repair",
+        "basis": "judge panel"
+      },
+      {
+        "unit": 3,
+        "ids": [
+          9,
+          10
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 4,
+        "ids": [
+          11,
+          12,
+          13,
+          14
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 5,
+        "ids": [
+          15,
+          16,
+          17
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      }
+    ]
+  },
+  {
+    "case": "b02",
+    "phases": {
+      "battery": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "tester": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "adversary": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "docs": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      }
+    },
+    "catalog": {
+      "commands": 25,
+      "segments": 27
+    },
+    "decision": "pass",
+    "status": "accepted",
+    "idle_confirmed": true,
+    "units": [
+      {
+        "unit": 1,
+        "ids": [
+          1,
+          2
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 2,
+        "ids": [
+          3,
+          4,
+          5
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 3,
+        "ids": [
+          6,
+          7,
+          8
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 4,
+        "ids": [
+          9,
+          10
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 5,
+        "ids": [
+          11,
+          12,
+          13,
+          14,
+          15,
+          16
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      }
+    ]
+  },
+  {
+    "case": "b03",
+    "phases": {
+      "battery": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "tester": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "adversary": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "docs": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      }
+    },
+    "catalog": {
+      "commands": 29,
+      "segments": 29
+    },
+    "decision": "repair",
+    "status": "accepted",
+    "idle_confirmed": true,
+    "units": [
+      {
+        "unit": 1,
+        "ids": [
+          1,
+          2
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 2,
+        "ids": [
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 3,
+        "ids": [
+          10,
+          11
+        ],
+        "status": "accepted",
+        "decision": "repair",
+        "basis": "judge panel"
+      },
+      {
+        "unit": 4,
+        "ids": [
+          12,
+          13,
+          14,
+          15,
+          16,
+          17
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      }
+    ]
+  },
+  {
+    "case": "b04",
+    "phases": {
+      "battery": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "tester": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "adversary": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "docs": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      }
+    },
+    "catalog": {
+      "commands": 25,
+      "segments": 25
+    },
+    "decision": "repair",
+    "status": "accepted",
+    "idle_confirmed": true,
+    "units": [
+      {
+        "unit": 1,
+        "ids": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 2,
+        "ids": [
+          5,
+          6,
+          7,
+          8
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 3,
+        "ids": [
+          9,
+          10,
+          11,
+          12
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 4,
+        "ids": [
+          13,
+          14,
+          15,
+          16
+        ],
+        "status": "accepted",
+        "decision": "repair",
+        "basis": "judge panel"
+      },
+      {
+        "unit": 5,
+        "ids": [
+          17,
+          18,
+          19
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      }
+    ]
+  },
+  {
+    "case": "b05",
+    "phases": {
+      "battery": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "tester": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "adversary": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "docs": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      }
+    },
+    "catalog": {
+      "commands": 26,
+      "segments": 28
+    },
+    "decision": "pass",
+    "status": "accepted",
+    "idle_confirmed": true,
+    "units": [
+      {
+        "unit": 1,
+        "ids": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 2,
+        "ids": [
+          6,
+          7,
+          8,
+          9,
+          10,
+          11
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 3,
+        "ids": [
+          12,
+          13,
+          14
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 4,
+        "ids": [
+          15,
+          16,
+          17,
+          18,
+          19,
+          20
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      }
+    ]
+  },
+  {
+    "case": "b06",
+    "phases": {
+      "battery": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "tester": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "adversary": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "docs": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      }
+    },
+    "catalog": {
+      "commands": 21,
+      "segments": 21
+    },
+    "decision": "repair",
+    "status": "accepted",
+    "idle_confirmed": true,
+    "units": [
+      {
+        "unit": 1,
+        "ids": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 2,
+        "ids": [
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "status": "accepted",
+        "decision": "repair",
+        "basis": "judge panel"
+      },
+      {
+        "unit": 3,
+        "ids": [
+          10,
+          11,
+          12
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 4,
+        "ids": [
+          13,
+          14,
+          15,
+          16
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 5,
+        "ids": [
+          17,
+          18,
+          19
+        ],
+        "status": "accepted",
+        "decision": "repair",
+        "basis": "judge panel"
+      }
+    ]
+  },
+  {
+    "case": "b07",
+    "phases": {
+      "battery": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "tester": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "adversary": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "docs": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      }
+    },
+    "catalog": {
+      "commands": 27,
+      "segments": 27
+    },
+    "decision": "pass",
+    "status": "accepted",
+    "idle_confirmed": true,
+    "units": [
+      {
+        "unit": 1,
+        "ids": [
+          1,
+          2,
+          3
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 2,
+        "ids": [
+          4,
+          5,
+          6
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 3,
+        "ids": [
+          7,
+          8,
+          9
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 4,
+        "ids": [
+          10,
+          11
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "judge panel"
+      },
+      {
+        "unit": 5,
+        "ids": [
+          12,
+          13,
+          14,
+          15,
+          16,
+          17
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      }
+    ]
+  },
+  {
+    "case": "b08",
+    "phases": {
+      "battery": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "tester": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "adversary": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "docs": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      }
+    },
+    "catalog": {
+      "commands": 29,
+      "segments": 27
+    },
+    "decision": "pass",
+    "status": "accepted",
+    "idle_confirmed": true,
+    "units": [
+      {
+        "unit": 1,
+        "ids": [
+          1,
+          2,
+          3
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 2,
+        "ids": [
+          4,
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 3,
+        "ids": [
+          10,
+          11
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 4,
+        "ids": [
+          12,
+          13,
+          14,
+          15,
+          16,
+          17
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      }
+    ]
+  },
+  {
+    "case": "b09",
+    "phases": {
+      "battery": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "tester": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "adversary": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "docs": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      }
+    },
+    "catalog": {
+      "commands": 19,
+      "segments": 20
+    },
+    "decision": "pass",
+    "status": "accepted",
+    "idle_confirmed": true,
+    "units": [
+      {
+        "unit": 1,
+        "ids": [
+          1,
+          2
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 2,
+        "ids": [
+          3,
+          4,
+          5,
+          6
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 3,
+        "ids": [
+          7,
+          8,
+          9,
+          10,
+          11
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 4,
+        "ids": [
+          12,
+          13
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 5,
+        "ids": [
+          14,
+          15,
+          16,
+          17,
+          18,
+          19
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      }
+    ]
+  },
+  {
+    "case": "b10",
+    "phases": {
+      "battery": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "tester": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "adversary": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "docs": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      }
+    },
+    "catalog": {
+      "commands": 19,
+      "segments": 19
+    },
+    "decision": "pass",
+    "status": "accepted",
+    "idle_confirmed": true,
+    "units": [
+      {
+        "unit": 1,
+        "ids": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 2,
+        "ids": [
+          6,
+          7,
+          8
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 3,
+        "ids": [
+          9,
+          10,
+          11,
+          12,
+          13
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 4,
+        "ids": [
+          14,
+          15
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 5,
+        "ids": [
+          16,
+          17,
+          18,
+          19,
+          20,
+          21
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "judge panel"
+      }
+    ]
+  },
+  {
+    "case": "b11",
+    "phases": {
+      "battery": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "tester": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "adversary": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "docs": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      }
+    },
+    "catalog": {
+      "commands": 25,
+      "segments": 25
+    },
+    "decision": "repair",
+    "status": "accepted",
+    "idle_confirmed": true,
+    "units": [
+      {
+        "unit": 1,
+        "ids": [
+          1,
+          2
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 2,
+        "ids": [
+          3,
+          4,
+          5
+        ],
+        "status": "accepted",
+        "decision": "repair",
+        "basis": "judge panel"
+      },
+      {
+        "unit": 3,
+        "ids": [
+          6,
+          7,
+          8
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 4,
+        "ids": [
+          9,
+          10,
+          11,
+          12
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 5,
+        "ids": [
+          13,
+          14,
+          15,
+          16
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 6,
+        "ids": [
+          17,
+          18,
+          19
+        ],
+        "status": "accepted",
+        "decision": "repair",
+        "basis": "judge panel"
+      }
+    ]
+  },
+  {
+    "case": "b12",
+    "phases": {
+      "battery": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "tester": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "adversary": {
+        "exit_code": 1,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "incomplete"
+      },
+      "docs": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      }
+    },
+    "catalog": {
+      "commands": 30,
+      "segments": 30
+    },
+    "decision": "pass",
+    "status": "accepted",
+    "idle_confirmed": true,
+    "units": [
+      {
+        "unit": 1,
+        "ids": [
+          1,
+          2
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 2,
+        "ids": [
+          3,
+          4
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 3,
+        "ids": [
+          5,
+          6,
+          7,
+          8,
+          9
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 4,
+        "ids": [
+          10,
+          11,
+          12,
+          13
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 5,
+        "ids": [
+          14,
+          15,
+          16
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      }
+    ]
+  },
+  {
+    "case": "c01",
+    "phases": {
+      "battery": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "tester": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "adversary": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "docs": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      }
+    },
+    "catalog": {
+      "commands": 20,
+      "segments": 21
+    },
+    "decision": "pass",
+    "status": "accepted",
+    "idle_confirmed": true,
+    "units": [
+      {
+        "unit": 1,
+        "ids": [
+          1,
+          2,
+          3
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 2,
+        "ids": [
+          4,
+          5,
+          6
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 3,
+        "ids": [
+          7,
+          8,
+          9
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "judge panel"
+      },
+      {
+        "unit": 4,
+        "ids": [
+          10,
+          11,
+          12
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 5,
+        "ids": [
+          13
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      }
+    ]
+  },
+  {
+    "case": "c02",
+    "phases": {
+      "battery": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "tester": {
+        "exit_code": 1,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "incomplete"
+      },
+      "adversary": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "docs": {
+        "exit_code": 1,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "incomplete"
+      }
+    },
+    "catalog": {
+      "commands": 28,
+      "segments": 28
+    },
+    "decision": "pass",
+    "status": "accepted",
+    "idle_confirmed": true,
+    "units": [
+      {
+        "unit": 1,
+        "ids": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 2,
+        "ids": [
+          5,
+          6
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 3,
+        "ids": [
+          7,
+          8,
+          9
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 4,
+        "ids": [
+          10,
+          11,
+          12
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 5,
+        "ids": [
+          13
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      }
+    ]
+  },
+  {
+    "case": "c03",
+    "phases": {
+      "battery": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "tester": {
+        "exit_code": 1,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "incomplete"
+      },
+      "adversary": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "docs": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      }
+    },
+    "catalog": {
+      "commands": 23,
+      "segments": 24
+    },
+    "decision": "repair",
+    "status": "accepted",
+    "idle_confirmed": true,
+    "units": [
+      {
+        "unit": 1,
+        "ids": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "status": "accepted",
+        "decision": "repair",
+        "basis": "judge panel"
+      },
+      {
+        "unit": 2,
+        "ids": [
+          6,
+          7,
+          8
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "judge panel"
+      },
+      {
+        "unit": 3,
+        "ids": [
+          9,
+          10,
+          11
+        ],
+        "status": "accepted",
+        "decision": "repair",
+        "basis": "judge panel"
+      },
+      {
+        "unit": 4,
+        "ids": [
+          12,
+          13,
+          14
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 5,
+        "ids": [
+          15,
+          16
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      }
+    ]
+  },
+  {
+    "case": "c04",
+    "phases": {
+      "battery": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "tester": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "adversary": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "docs": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      }
+    },
+    "catalog": {
+      "commands": 23,
+      "segments": 23
+    },
+    "decision": "repair",
+    "status": "accepted",
+    "idle_confirmed": true,
+    "units": [
+      {
+        "unit": 1,
+        "ids": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "status": "accepted",
+        "decision": "repair",
+        "basis": "judge panel"
+      },
+      {
+        "unit": 2,
+        "ids": [
+          6,
+          7
+        ],
+        "status": "accepted",
+        "decision": "repair",
+        "basis": "judge panel"
+      },
+      {
+        "unit": 3,
+        "ids": [
+          8,
+          9,
+          10
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 4,
+        "ids": [
+          11,
+          12,
+          13
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 5,
+        "ids": [
+          14
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      }
+    ]
+  },
+  {
+    "case": "c05",
+    "phases": {
+      "battery": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "tester": {
+        "exit_code": 1,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "incomplete"
+      },
+      "adversary": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "docs": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      }
+    },
+    "catalog": {
+      "commands": 20,
+      "segments": 22
+    },
+    "decision": "repair",
+    "status": "accepted",
+    "idle_confirmed": true,
+    "units": [
+      {
+        "unit": 1,
+        "ids": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "status": "accepted",
+        "decision": "repair",
+        "basis": "judge panel"
+      },
+      {
+        "unit": 2,
+        "ids": [
+          6,
+          7,
+          8
+        ],
+        "status": "accepted",
+        "decision": "repair",
+        "basis": "judge panel"
+      },
+      {
+        "unit": 3,
+        "ids": [
+          9,
+          10,
+          11
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 4,
+        "ids": [
+          12,
+          13,
+          14
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 5,
+        "ids": [
+          15,
+          16
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "judge panel"
+      }
+    ]
+  },
+  {
+    "case": "c06",
+    "phases": {
+      "battery": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "tester": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "adversary": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "docs": {
+        "exit_code": 1,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "incomplete"
+      }
+    },
+    "catalog": {
+      "commands": 20,
+      "segments": 20
+    },
+    "decision": "repair",
+    "status": "accepted",
+    "idle_confirmed": true,
+    "units": [
+      {
+        "unit": 1,
+        "ids": [
+          1,
+          2,
+          3
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "judge panel"
+      },
+      {
+        "unit": 2,
+        "ids": [
+          4,
+          5,
+          6
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "judge panel"
+      },
+      {
+        "unit": 3,
+        "ids": [
+          7,
+          8,
+          9
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "judge panel"
+      },
+      {
+        "unit": 4,
+        "ids": [
+          10,
+          11,
+          12
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 5,
+        "ids": [
+          13,
+          14
+        ],
+        "status": "accepted",
+        "decision": "repair",
+        "basis": "judge panel"
+      }
+    ]
+  },
+  {
+    "case": "c07",
+    "phases": {
+      "battery": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "tester": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "adversary": {
+        "exit_code": 1,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "incomplete"
+      },
+      "docs": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      }
+    },
+    "catalog": {
+      "commands": 21,
+      "segments": 22
+    },
+    "decision": "pass",
+    "status": "accepted",
+    "idle_confirmed": true,
+    "units": [
+      {
+        "unit": 1,
+        "ids": [
+          1,
+          2
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 2,
+        "ids": [
+          3,
+          4,
+          5
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 3,
+        "ids": [
+          6,
+          7,
+          8
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 4,
+        "ids": [
+          9,
+          10,
+          11
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 5,
+        "ids": [
+          12
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      }
+    ]
+  },
+  {
+    "case": "c08",
+    "phases": {
+      "battery": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "tester": {
+        "exit_code": 1,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "incomplete"
+      },
+      "adversary": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "docs": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      }
+    },
+    "catalog": {
+      "commands": 33,
+      "segments": 34
+    },
+    "decision": "pass",
+    "status": "accepted",
+    "idle_confirmed": true,
+    "units": [
+      {
+        "unit": 1,
+        "ids": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "judge panel"
+      },
+      {
+        "unit": 2,
+        "ids": [
+          7,
+          8
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 3,
+        "ids": [
+          9,
+          10,
+          11
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 4,
+        "ids": [
+          12,
+          13,
+          14
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "judge panel"
+      },
+      {
+        "unit": 5,
+        "ids": [
+          15
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      }
+    ]
+  },
+  {
+    "case": "c09",
+    "phases": {
+      "battery": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "tester": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "adversary": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "docs": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      }
+    },
+    "catalog": {
+      "commands": 18,
+      "segments": 18
+    },
+    "decision": "repair",
+    "status": "accepted",
+    "idle_confirmed": true,
+    "units": [
+      {
+        "unit": 1,
+        "ids": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 2,
+        "ids": [
+          6,
+          7,
+          8
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 3,
+        "ids": [
+          9,
+          10,
+          11
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 4,
+        "ids": [
+          12,
+          13,
+          14
+        ],
+        "status": "accepted",
+        "decision": "repair",
+        "basis": "judge panel"
+      },
+      {
+        "unit": 5,
+        "ids": [
+          15,
+          16
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      }
+    ]
+  },
+  {
+    "case": "c10",
+    "phases": {
+      "battery": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "tester": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "adversary": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "docs": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      }
+    },
+    "catalog": {
+      "commands": 18,
+      "segments": 18
+    },
+    "decision": "repair",
+    "status": "accepted",
+    "idle_confirmed": true,
+    "units": [
+      {
+        "unit": 1,
+        "ids": [
+          1,
+          2,
+          3,
+          4
+        ],
+        "status": "accepted",
+        "decision": "repair",
+        "basis": "judge panel"
+      },
+      {
+        "unit": 2,
+        "ids": [
+          5,
+          6,
+          7
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 3,
+        "ids": [
+          8,
+          9,
+          10
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 4,
+        "ids": [
+          11,
+          12,
+          13
+        ],
+        "status": "accepted",
+        "decision": "repair",
+        "basis": "judge panel"
+      },
+      {
+        "unit": 5,
+        "ids": [
+          14
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      }
+    ]
+  },
+  {
+    "case": "c11",
+    "phases": {
+      "battery": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "tester": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "adversary": {
+        "exit_code": 1,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "incomplete"
+      },
+      "docs": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      }
+    },
+    "catalog": {
+      "commands": 19,
+      "segments": 22
+    },
+    "decision": "pass",
+    "status": "accepted",
+    "idle_confirmed": true,
+    "units": [
+      {
+        "unit": 1,
+        "ids": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 2,
+        "ids": [
+          8,
+          9
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 3,
+        "ids": [
+          10,
+          11,
+          12
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 4,
+        "ids": [
+          13,
+          14,
+          15
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 5,
+        "ids": [
+          16
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      }
+    ]
+  },
+  {
+    "case": "c12",
+    "phases": {
+      "battery": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "tester": {
+        "exit_code": 0,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "accepted"
+      },
+      "adversary": {
+        "exit_code": 1,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "incomplete"
+      },
+      "docs": {
+        "exit_code": 1,
+        "stop": null,
+        "cleanup_confirmed": true,
+        "work_finished_before_deadline": true,
+        "child_status": "incomplete"
+      }
+    },
+    "catalog": {
+      "commands": 27,
+      "segments": 29
+    },
+    "decision": "repair",
+    "status": "accepted",
+    "idle_confirmed": true,
+    "units": [
+      {
+        "unit": 1,
+        "ids": [
+          1,
+          2,
+          3,
+          4,
+          5
+        ],
+        "status": "accepted",
+        "decision": "repair",
+        "basis": "judge panel"
+      },
+      {
+        "unit": 2,
+        "ids": [
+          6,
+          7,
+          8
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 3,
+        "ids": [
+          9,
+          10,
+          11
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 4,
+        "ids": [
+          12,
+          13,
+          14
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      },
+      {
+        "unit": 5,
+        "ids": [
+          15,
+          16
+        ],
+        "status": "accepted",
+        "decision": "pass",
+        "basis": "auditor and prosecutor clean"
+      }
+    ]
+  }
+]
