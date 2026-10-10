@@ -4,6 +4,8 @@ import subprocess
 import tempfile
 import unittest
 
+from docker_support import requires_docker
+
 from gflo.runner import Factory
 
 
@@ -151,6 +153,7 @@ class RunnerTests(unittest.TestCase):
         Path(result['patch']).write_text('changed patch')
         self.assertEqual(factory.status(run_id)['status'], 'invalidated')
 
+    @requires_docker
     def test_cli_run_resume_and_status_without_source_mutation(self):
         from gflo.__main__ import main
         from unittest.mock import patch
@@ -169,6 +172,7 @@ class RunnerTests(unittest.TestCase):
             self.assertEqual(main(prefix + ['status', run_id]), 0)
             self.assertEqual(worker.return_value.call_count, 1)
 
+    @requires_docker
     def test_environment_binding_survives_restart_and_rejects_changed_dependencies(self):
         from gflo.environment import EnvironmentStore
         from gflo.prepare import prepare
@@ -190,6 +194,7 @@ class RunnerTests(unittest.TestCase):
             reopened.resume(run_id)
         self.assertEqual(len(bound), 1)
 
+    @requires_docker
     def test_accepted_environment_tampering_invalidates_status_and_resume(self):
         from gflo.environment import EnvironmentStore
         from gflo.prepare import prepare

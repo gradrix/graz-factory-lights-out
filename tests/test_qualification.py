@@ -3,6 +3,8 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+
+from docker_support import requires_docker
 from unittest.mock import patch
 
 from ops.qualify_coding import environment_check, main
@@ -10,6 +12,7 @@ from gflo.sandbox import DEFAULT_IMAGE, Sandbox
 
 
 class QualificationTests(unittest.TestCase):
+    @requires_docker
     def test_executed_runtime_can_match_and_wrong_image_identity_cannot(self):
         sandbox = Sandbox()
         first = environment_check(sandbox)
@@ -33,6 +36,7 @@ class QualificationTests(unittest.TestCase):
                 probe.assert_not_called()
             self.assertEqual(saved.read_text(), '{"preserve":true}')
 
+    @requires_docker
     def test_runtime_mismatch_is_recorded_before_any_model_or_task_creation(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

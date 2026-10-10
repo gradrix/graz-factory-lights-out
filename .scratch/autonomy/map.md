@@ -22,13 +22,17 @@ User direction, 2026-10-02: push the first version, delete previous implementati
 
 - [Role-ensemble executable review](../../docs/decisions/architecture/009-role-ensemble-review.md): evidence battery + role explorers + per-unit auditor/prosecutor/judge passed a fresh holdout 8/8; still isolated.
 
+- [Ensemble review integration](../../docs/decisions/architecture/010-ensemble-review-integration.md): merged to `main` as opt-in `"review": "ensemble"`.
+
+- [Delivery-rate route](../../docs/decisions/architecture/011-delivery-rate-route.md): user chose (2026-10-10) to stop review requalification and measure end-to-end delivery on tasks mined from their own repositories; [roadmap](../../docs/roadmap.md) replaced by five gated phases.
+
 ## Not yet specified
 
 [Broader document reliability](issues/07-document-reliability.md) initial exact-quote repair trial failed8/10 on persistent punctuation mismatches. [Bounded source references](../../docs/decisions/architecture/007-bounded-document-references.md) now selects format3 with explicit expansion limits and unchanged old readers; [delivery07](delivery/07-document-reliability.md) is accepted at92deaab and installed. Ten repeated diagnostics and three fresh questions passed independent semantics;25cross-versionoffline checks passed. [Small planning prototype route](planning-prototype-route.md) is resolved by [the actual four-arm pilot](issues/08-planning-value.md): no complete increment and no planning benefit established. [Executable-review discovery](issues/09-executable-review.md) qualified a role ensemble (decision 009); open: broader repeated qualification, judge consistency, maintained integration.
 
 Route check, 2026-10-09 (agent assessment answering the user's drift question): review qualification stops after blind run 2; no further review-only cohorts. The unmeasured question that decides whether the local model is sufficient is end-to-end delivery — worker plus ensemble review plus repair reaching a privately verified correct increment, and how often. The integration vertical (coding-d 05, 09) is the first measurement; a broader end-to-end delivery-rate cohort is the next unit.
 
-User decision, 2026-10-10 ("Rerun it too", chosen over the agent's recommendation to skip): candidate 4 (sampled escalations, after gate 2 failed on candidate 3 at blind run 2 b06) requalifies fully: blind run A, gate 1 on cohort 2, blind run B, all before the factory vertical. See [qualification run](../.sflo/09-autonomy-review-qualification/run.md).
+User decision, 2026-10-10 ("Rerun it too", chosen over the agent's recommendation to skip): candidate 4 (sampled escalations, after gate 2 failed on candidate 3 at blind run 2 b06) requalifies fully: blind run A, gate 1 on cohort 2, blind run B, all before the factory vertical. See [qualification run](../.sflo/09-autonomy-review-qualification/run.md). Superseded the same day by decision 011 (user: "take over the task and implement all these recommendations"): trial 7 stopped, trial 8 not run.
 
 [Seed reader timestamp granularity](issues/10-seed-read-timestamp-granularity.md): rig suite shows same-size mid-read rewrites go undetected on coarse (~4 ms) timestamps; open task, independent of review work.
 

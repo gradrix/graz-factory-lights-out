@@ -1,6 +1,8 @@
 import io
 import os
 import unittest
+
+from docker_support import requires_docker
 import tempfile
 import json
 from pathlib import Path
@@ -21,6 +23,7 @@ class PreparationTransportTests(unittest.TestCase):
                 DEFAULT_IMAGE, 'python', '-c', code]
         return name, args
 
+    @requires_docker
     def test_binary_output_is_separate_from_bounded_diagnostics(self):
         name, args = self.command('import sys;sys.stdout.buffer.write(bytes(range(256)));print("diagnostic",file=sys.stderr)')
         output = io.BytesIO()
@@ -36,6 +39,7 @@ class PreparationTransportTests(unittest.TestCase):
         self.assertEqual(output.getvalue(), bytes(range(256)))
         self.assertIn('diagnostic', result['output'])
 
+    @requires_docker
     def test_transport_overflow_cannot_be_reported_as_success(self):
         name, args = self.command('import sys;sys.stdout.buffer.write(b"x"*65536)')
         output = io.BytesIO()

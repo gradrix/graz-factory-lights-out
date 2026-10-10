@@ -3,11 +3,14 @@ from pathlib import Path
 import tempfile
 import unittest
 
+from docker_support import requires_docker
+
 from gflo.environment import EnvironmentStore
 from gflo.prepare import prepare, check
 
 
 class PrepareTests(unittest.TestCase):
+    @requires_docker
     def test_stdlib_preparation_records_actual_runtime_and_rechecks_offline(self):
         with tempfile.TemporaryDirectory() as directory:
             store = EnvironmentStore(Path(directory) / 'store')
@@ -25,6 +28,7 @@ class PrepareTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'Unsupported'):
                 prepare(EnvironmentStore(Path(directory) / 'store'), 'arbitrary')
 
+    @requires_docker
     def test_cli_prepares_inspects_and_checks_without_model_configuration(self):
         from contextlib import redirect_stdout
         import io
@@ -41,6 +45,7 @@ class PrepareTests(unittest.TestCase):
                 self.assertEqual(main(args + ['check', identity, '--repeat', '2']), 0)
                 self.assertEqual(len(json.loads(output.getvalue())['checks']), 2)
 
+    @requires_docker
     def test_bound_sandbox_uses_frozen_image_and_rejects_tampering(self):
         from gflo.sandbox import Sandbox
         with tempfile.TemporaryDirectory() as directory:
@@ -59,6 +64,7 @@ class PrepareTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'root changed'):
                 sandbox.execute(workspace, ['true'])
 
+    @requires_docker
     def test_python_api_prepares_locked_wheels_and_imports_offline(self):
         from gflo.sandbox import Sandbox
         with tempfile.TemporaryDirectory() as directory:
@@ -81,6 +87,7 @@ class PrepareTests(unittest.TestCase):
             verdict = sandbox.verify(workspace, {'checks': [['python', '/acceptance/check.py']]}, acceptance)
             self.assertTrue(verdict['passed'], verdict)
 
+    @requires_docker
     def test_node_typescript_prepares_locked_packages_and_compiles_offline(self):
         with tempfile.TemporaryDirectory() as directory:
             environment = prepare(EnvironmentStore(Path(directory) / 'store'), 'node-ts')
@@ -90,6 +97,7 @@ class PrepareTests(unittest.TestCase):
             receipt = json.loads((environment.dependencies.parent / 'receipt.json').read_text())
             self.assertEqual(len(receipt['metadata']['artifacts']), 3)
 
+    @requires_docker
     def test_project_manifests_must_match_supported_recipe(self):
         from gflo.prepare import validate_project
         import shutil
@@ -107,11 +115,13 @@ class PrepareTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'stdlib'):
                 validate_project(store, 'python-stdlib', project)
 
+    @requires_docker
     def test_profile_selection_uses_manifest_kind(self):
         from gflo.prepare import infer_profile
         for profile in ('python-stdlib', 'python-api', 'node-ts'):
             self.assertEqual(infer_profile(Path('evaluations/environment-coding') / profile / 'source'), profile)
 
+    @requires_docker
     def test_failed_outer_cleanup_leaves_no_reusable_environment(self):
         from unittest.mock import patch
         with tempfile.TemporaryDirectory() as directory:

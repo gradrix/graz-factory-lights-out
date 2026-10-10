@@ -1,0 +1,5 @@
+#!/bin/sh
+# Run the fast container suite when code or tests change. Enable with: git config core.hooksPath .githooks
+if git diff --cached --name-only | grep -qE '^(gflo|tests|ops)/.*\.py$'; then
+  exec "$(git rev-parse --show-toplevel)/ops/check.sh"
+fi

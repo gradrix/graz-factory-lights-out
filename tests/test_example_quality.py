@@ -2,10 +2,13 @@ from pathlib import Path
 import shutil
 import tempfile
 import unittest
+
+from docker_support import requires_docker
 from gflo.sandbox import Sandbox
 
 
 class ExampleQualityTests(unittest.TestCase):
+    @requires_docker
     def test_zero_tests_and_scratch_files_fail_against_passing_control(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

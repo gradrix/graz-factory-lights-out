@@ -49,7 +49,7 @@ class Sandbox:
         if ids:
             subprocess.run(['docker', 'rm', '-f', *ids], capture_output=True, timeout=30, check=True)
 
-    def execute(self, workspace, command, *, acceptance=None, timeout=60):
+    def execute(self, workspace, command, *, acceptance=None, timeout=60, readonly=False):
         workspace = Path(workspace).resolve()
         environment = self.environment
         if environment is not None:
@@ -65,7 +65,7 @@ class Sandbox:
                 '--user', f'{os.getuid()}:{os.getgid()}', '--init',
                 '--tmpfs', '/tmp:rw,nosuid,nodev,size=128m',
                 '--env', 'PYTHONDONTWRITEBYTECODE=1', '--env', 'HOME=/tmp',
-                '--mount', f'type=bind,src={workspace},dst=/workspace' + (',readonly' if acceptance else ''),
+                '--mount', f'type=bind,src={workspace},dst=/workspace' + (',readonly' if acceptance or readonly else ''),
                 '--workdir', '/workspace']
         if acceptance:
             args += ['--mount', f'type=bind,src={Path(acceptance).resolve()},dst=/acceptance,readonly']
@@ -75,7 +75,7 @@ class Sandbox:
             if environment.profile != 'node-ts':
                 args += ['--env', 'PYTHONPATH=/opt/deps']
         args += [image, *command]
-        self.observe('container_running', name=name, timeout_s=timeout, readonly=bool(acceptance))
+        self.observe('container_running', name=name, timeout_s=timeout, readonly=bool(acceptance or readonly))
         result = None
         try:
             result = guarded_run(args, name, timeout)

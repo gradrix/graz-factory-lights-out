@@ -2,10 +2,13 @@ import tempfile
 from pathlib import Path
 import unittest
 
+from docker_support import requires_docker
+
 from gflo.sandbox import Sandbox, DEFAULT_IMAGE
 
 
 class SandboxTests(unittest.TestCase):
+    @requires_docker
     def test_real_offline_sandbox_and_readonly_verification(self):
         with tempfile.TemporaryDirectory() as directory:
             workspace = Path(directory) / 'workspace'
@@ -23,6 +26,7 @@ class SandboxTests(unittest.TestCase):
             result = sandbox.execute(workspace, ['sh', '-c', 'sleep 20'], timeout=1)
             self.assertTrue(result['timed_out'])
 
+    @requires_docker
     def test_killed_owner_does_not_leave_container_writer(self):
         import subprocess
         import sys
@@ -48,6 +52,7 @@ Sandbox().execute(sys.argv[1], ['sh','-c','while true; do echo x >> ticks; sleep
                 if owner.poll() is None: owner.kill(); owner.wait()
                 Sandbox().cleanup(workspace)
 
+    @requires_docker
     def test_closed_owner_pipe_never_starts_a_new_writer(self):
         import json
         import subprocess
@@ -64,11 +69,13 @@ Sandbox().execute(sys.argv[1], ['sh','-c','while true; do echo x >> ticks; sleep
             self.assertFalse((Path(directory) / 'started').exists())
             self.assertNotEqual(subprocess.run(['docker', 'inspect', name], capture_output=True).returncode, 0)
 
+    @requires_docker
     def test_worker_arguments_are_not_rewritten_as_docker_flags(self):
         with tempfile.TemporaryDirectory() as directory:
             result = Sandbox().execute(Path(directory), ['python', '-c', "import sys; assert sys.argv[1:] == ['--rm', '--keep']", '--rm', '--keep'])
             self.assertEqual(result['exit_code'], 0, result)
 
+    @requires_docker
     def test_generated_regression_failure_blocks_passing_acceptance(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

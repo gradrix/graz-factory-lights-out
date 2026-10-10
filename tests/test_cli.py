@@ -4,6 +4,8 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+
+from docker_support import requires_docker
 from unittest.mock import patch
 
 from gflo.__main__ import main
@@ -20,6 +22,7 @@ class CliTests(unittest.TestCase):
             self.assertEqual(main(['--config', '/nonexistent/config.json', 'doctor']), 1)
             self.assertIn('config.example.json', output.getvalue())
 
+    @requires_docker
     def test_doctor_checks_image_and_model(self):
         with tempfile.TemporaryDirectory() as directory:
             config = Path(directory) / 'config.json'

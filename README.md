@@ -4,7 +4,7 @@ A small local software factory: give it a repository, a task and executable acce
 
 **Works today:** bounded Python and TypeScript tasks using prepared dependencies, durable progress visibility and controlled recovery. [Incremental acceptance evidence](docs/evidence/autonomy-stages.md).
 
-**Destination:** end-to-end autonomous local delivery, introduced through measured stages: visibility, independent review, environment preparation, research/browser tools, planning and integration. See the [roadmap](docs/roadmap.md) and [feasibility research](docs/research/autonomy-feasibility.md). Visibility and controlled recovery are implemented and qualified on the rig. Independent local review has passed the bounded qualification (12/12 fresh tasks, with documented quality limitations); three fixed environment profiles have passed bounded rig qualification, including an automatic repair. Approved-document fetch and cited local answers passed ten repeated and three fresh questions, with cross-version offline replay. Five supervised local-app browser journeys have passed rig qualification. Search, public browsing, decomposition and merging remain planned. The model trials retain failed outcomes and do not qualify unattended large projects. See [environment preparation and offline use](docs/environments.md).
+**Destination:** end-to-end autonomous local delivery, introduced through measured stages: visibility, independent review, environment preparation, research/browser tools, planning and integration. See the [roadmap](docs/roadmap.md) and [feasibility research](docs/research/autonomy-feasibility.md). Visibility and controlled recovery are implemented and qualified on the rig. Independent local review has passed the bounded qualification (12/12 fresh tasks, with documented quality limitations); three fixed environment profiles have passed bounded rig qualification, including an automatic repair. Approved-document fetch and cited local answers passed ten repeated and three fresh questions, with cross-version offline replay. Five supervised local-app browser journeys have passed rig qualification. Search, public browsing, decomposition and merging remain planned. Current priority: measuring end-to-end delivery on tasks from real repositories ([decision 011](docs/decisions/architecture/011-delivery-rate-route.md)). The model trials retain failed outcomes and do not qualify unattended large projects. See [environment preparation and offline use](docs/environments.md).
 
 ## Run on MONSTER-GAMING-PC
 
@@ -53,7 +53,7 @@ Exit codes: `0` accepted/read-only command success, `2` not accepted (including 
 
 ## Inspect the result
 
-`.gflo/runs/RUN_ID/` contains the frozen task, acceptance files, candidate workspace, per-attempt conversation and verification results, and `change.patch`. New CLI runs require the configured checks, discovered Python regression tests and a fresh local review to pass. Acceptance remains limited by the quality of those checks and review; inspect the qualification evidence before relying on unattended results.
+`.gflo/runs/RUN_ID/` contains the frozen task, acceptance files, candidate workspace, per-attempt conversation and verification results, and `change.patch`. New CLI runs require the configured checks, discovered Python regression tests and a fresh local review to pass. Set `"review": "ensemble"` in the config to use the slower executable role-ensemble review for Python projects (roughly 17–31 minutes per review on one serving slot; see [decision 010](docs/decisions/architecture/010-ensemble-review-integration.md)); the default is `"single"`. Acceptance remains limited by the quality of those checks and review; inspect the qualification evidence before relying on unattended results.
 
 Review the patch before applying it to the source repository at the recorded base commit:
 
@@ -80,6 +80,8 @@ python3 -m gflo browser check .gflo/browser-example.json
 ## Develop and extend
 
 ```sh
+make check        # container suite, no host Python
+make rig-check    # full suite incl. Docker sandbox tests, on the rig
 make test
 python3 -m venv .venv
 .venv/bin/pip install -r requirements-dev.txt

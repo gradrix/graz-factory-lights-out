@@ -1,0 +1,4 @@
+{"status":"admitted once by rig_ensemble.sh","label":"trial-7","hint":"cand4-gate1","utc":"2026-10-10T01:43:39Z",
+ "prototype_commit":"d0de00c","module_sha256":"cdd4a206c6498318673f66e4746db5d3711d94db8d7eb6d1bbfd66275dd00d74",
+ "contract_sha256":"2e043169074c5d36f3b95545e5c17be9f0046ea694c2689712c5e8f9a0be8a08","cohort_manifest_sha256":"06b6fc2a2ef036f5e59fae8e721ff2e2d85a1d5dad224658ab6d1cdfdd64a972",
+ "stage_inventory_sha256":"6a83f660d57efcc840d0bbded99f730477276d12d024c4795263140745813e83","cases":"k01,k02,k03,k04,d01,d02,d03,d04,d05,d06,d07,d08,d09,d10,d11,d12","rig":"monster-gaming-pc.lan","stage":"~/gflo-review-ensemble-d0de00c-trial-7"}
