@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 import tempfile
 import unittest
@@ -65,6 +66,25 @@ class RunnerReviewScopeTests(unittest.TestCase):
         result = factory.resume(factory.create(self.task))
         self.assertEqual(result['status'], 'accepted')
         self.assertEqual(seen, [['app.py', 'tests/test_app.py']])
+
+
+    def test_review_timeout_fails_the_attempt_instead_of_stopping_the_run(self):
+        calls = []
+        def worker(workspace, task, previous, attempt):
+            (workspace / 'app.py').write_text(f'value = {attempt}\n')
+            return {}
+        def reviewer(workspace, task):
+            calls.append(1)
+            if len(calls) == 1:
+                raise TimeoutError('timed out')
+            return {'decision': 'pass', 'findings': [], 'question': ''}
+        factory = Factory(self.root / 'state', worker, lambda *a: {'passed': True}, reviewer=reviewer)
+        run = factory.create(self.task)
+        result = factory.resume(run)
+        self.assertEqual(result['status'], 'accepted')
+        self.assertEqual(result['attempts'], 2)
+        first = json.loads((factory.state / run / 'attempts/1/verification.json').read_text())
+        self.assertIn('review timed out', first['reviewability']['error'])
 
 
 if __name__ == '__main__':

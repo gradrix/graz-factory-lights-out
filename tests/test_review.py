@@ -94,7 +94,7 @@ class ReviewTests(unittest.TestCase):
                 self.assertEqual(body['thinking_budget_tokens'], 1024)
                 self.assertEqual(body['max_tokens'], 4096)
                 self.assertTrue(body['chat_template_kwargs']['enable_thinking'])
-                self.assertEqual(timeout, 120)
+                self.assertEqual(timeout, 600)  # real-repository review payloads
                 self.assertNotIn('tools', body)
                 return {'choices':[{'message':{'content':'{"decision":"pass","findings":[],"question":""}'}}]}
         self.assertEqual(Reviewer(Client()).review_files('Keep value', {'app.py':'value=1\n'})['decision'], 'pass')

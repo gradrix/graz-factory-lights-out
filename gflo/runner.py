@@ -361,11 +361,15 @@ class Factory:
                     except CandidateContentError as error:
                         verdict.update(passed=False, reviewability={'passed':False, 'error':str(error)})
                     else:
-                        review = self.reviewer(workspace, review_task)
-                        validate(review, files)
-                        save(attempt / 'review.json', review)
-                        verdict['review'] = review
-                        verdict['passed'] = review['decision'] == 'pass'
+                        try:
+                            review = self.reviewer(workspace, review_task)
+                        except TimeoutError as error:  # a slow review is a failed check, not a stopped run
+                            verdict.update(passed=False, reviewability={'passed': False, 'error': f'review timed out: {error}'})
+                        else:
+                            validate(review, files)
+                            save(attempt / 'review.json', review)
+                            verdict['review'] = review
+                            verdict['passed'] = review['decision'] == 'pass'
                 verdict['candidate'] = fingerprint(workspace)
                 save(attempt / 'verification.json', verdict)
                 if self._finish(root, run_id, number, verdict):
