@@ -7,7 +7,7 @@ Predecessor: ../09-autonomy-review-ensemble/run.md
 
 ## Execution
 
-Status: active — candidate 4 full requalification: blind run A PASSED 24/24 (trial 6); gate 1 (trial 7) running; then blind run B (trial 8)
+Status: closed 2026-10-10 (decision 011) — candidate 4 blind run A PASSED 24/24 (trial 6); gate 1 (trial 7) stopped at 14/16 cases; blind run B (trial 8) not run. See the closing section.
 Owner: Claude Code coordinator; independent seeding agent for cohort 3 (no pipeline access, private expectations unread by coordinator until scoring)
 Candidate: prototype d0de00c (candidate 4: candidate 3 plus sampled escalations); candidate 3 6920218 passed gate 1 and failed gate 2 run 2; candidates 1 5bf552c and 2 ee8f2a4 failed gate 1
 Controls: candidates 2 and 3 review suites 49/49 (Docker); candidate 1 had 111 collected, 110 pass, 1 skipped

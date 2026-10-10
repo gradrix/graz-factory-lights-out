@@ -3,11 +3,11 @@
 Executor: markdown
 Contract: contract.md
 Predecessor: ../09-autonomy-review-qualification/run.md
-Branch: integration/ensemble-review (not merged to main until promotion)
+Branch: integration/ensemble-review, merged to main at cf8bd5d (Phase 0, decision 011)
 
 ## Execution
 
-Status: active — product code accepted by independent re-QA (d2e687a, only the vertical driver needed repair, fixed at d8fb7a2); vertical after blind run 2
+Status: closed 2026-10-10 — product code accepted by independent re-QA (d2e687a; driver fix d8fb7a2) and merged opt-in; the rig vertical was superseded by the phase-1 delivery-rate measurement (decision 011)
 Owner: Claude Code coordinator
 Candidate: integration/ensemble-review d8fb7a2 (repairs of 0c91359 and d2e687a after independent QA)
 

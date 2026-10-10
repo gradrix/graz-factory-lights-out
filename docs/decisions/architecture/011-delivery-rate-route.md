@@ -11,7 +11,7 @@ Status: accepted, 2026-10-10. Decision maker: the user ("take over the task and 
 
 ## Rationale
 
-- The maintained runtime had not changed for six days (last `gflo/` commit 92deaab, 2026-10-04) while about sixty commits recorded review trials on 24 agent-written ~95-line fixtures.
+- The runtime on `main` had not changed for six days (last `gflo/` commit 92deaab, 2026-10-04) while about 37 commits on `main` recorded review experiments on agent-written ~95-line fixtures (the integration branch added 12 more, which did change `gflo/`).
 - The review ensemble already passed 16/16 and 24/24 (candidate 3) and 24/24 (candidate 4, blind run A). Its remaining failure was one temperature-0 loop, repaired by sampled escalation (60472ae).
 - The bottleneck is upstream: the planning pilot (decision 008) produced no complete multi-file increment, and the API arms exhausted their budgets. A stronger reviewer can only reject such output more reliably.
 - Review costs 17–31 minutes and ~0.4M tokens per ~95-line project, so its scaling to real repositories is itself unmeasured.
@@ -23,4 +23,4 @@ Status: accepted, 2026-10-10. Decision maker: the user ("take over the task and 
 
 ## Evidence
 
-Retrospective of session 39c48ab7 and repository state at 831c9ef; candidate-4 results in `.scratch/.sflo/09-autonomy-review-qualification/run.md`; merged suite on the rig: 179 tests, only the two known issue-10 subtests fail.
+Retrospective of session 39c48ab7 and repository state at 831c9ef; candidate-4 results in `.scratch/.sflo/09-autonomy-review-qualification/run.md`; the Phase 0 code tree (identical code to cf8bd5d) ran 179 tests on the rig with only the two known issue-10 subtests failing.

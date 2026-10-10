@@ -82,7 +82,7 @@ python3 -m gflo browser check .gflo/browser-example.json
 ```sh
 make check        # container suite, no host Python
 make rig-check    # full suite incl. Docker sandbox tests, on the rig
-make test
+make test         # host Python, rig only
 python3 -m venv .venv
 .venv/bin/pip install -r requirements-dev.txt
 make coverage

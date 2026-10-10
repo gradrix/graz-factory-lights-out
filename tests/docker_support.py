@@ -2,4 +2,4 @@
 import shutil
 import unittest
 
-requires_docker = unittest.skipUnless(shutil.which('docker'), 'needs Docker and the pinned sandbox image; run on the rig')
+requires_docker = unittest.skipUnless(shutil.which('docker'), 'needs a Docker CLI (and on the rig, the pinned sandbox image); run make rig-check')

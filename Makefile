@@ -1,6 +1,6 @@
 .PHONY: test check rig-check coverage doctor
 
-test:
+test:  # host Python: rig/runtime only; use `make check` on the development machine
 	python3 -m unittest discover -s tests -v
 
 check:

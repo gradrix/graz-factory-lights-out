@@ -12,7 +12,7 @@ Status: accepted as opt-in, 2026-10-10. Blind run 2 failed 23/24 on a temperatur
 ## Evidence
 
 - Gate 1 (consistency, 16 cohort-2 cases): candidate 1 with the interpreter scored 3/16 (over-long criteria left 14 units incomplete; its misreadings produced three false control repairs). Candidate 2 without it scored 13/16 (two controls still misread "specified rejection"; one prosecutor exhausted 24576). Candidate 3 (prototype 6920218) scored 16/16, with each of 19 repair units citing its case's required defect at its source line.
-- Gate 2 (blind, 24 cohort-3 cases built by an independent agent; expectations unread until scoring): run 1 24/24, all 12 seeded defects across 12 classes cited at their lines, no blocking finding on 12 controls; the seeded `tests-miss-required-category` defect was still caught under the new reading rule. Run 2: pending.
+- Gate 2 (blind, 24 cohort-3 cases built by an independent agent; expectations unread until scoring): run 1 24/24, all 12 seeded defects across 12 classes cited at their lines, no blocking finding on 12 controls; the seeded `tests-miss-required-category` defect was still caught under the new reading rule. Run 2: 23/24 (b06 incomplete on a temperature-0 loop). Candidate 4 (sampled escalation) blind run A: 24/24.
 - Integration: offline controls 16/16; replaying the stored role answers of gate 1 trial 3 and gate 2 run 1 through the maintained judging code reproduces 40/40 case decisions and every unit decision.
 
 ## Limits and remaining assumptions

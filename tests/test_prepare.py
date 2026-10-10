@@ -115,7 +115,6 @@ class PrepareTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'stdlib'):
                 validate_project(store, 'python-stdlib', project)
 
-    @requires_docker
     def test_profile_selection_uses_manifest_kind(self):
         from gflo.prepare import infer_profile
         for profile in ('python-stdlib', 'python-api', 'node-ts'):
