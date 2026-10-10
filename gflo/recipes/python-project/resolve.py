@@ -63,7 +63,7 @@ def requirements(root):
 
 
 def constraints(root):
-    """Version pins the project's own builds use: root constraints*.txt (pip -c) and uv.lock registry packages."""
+    """Version pins the project's own builds use: root constraints*.txt (pip -c), then uv.lock for packages they omit."""
     found = []
     for path in sorted(Path(root).glob('constraints*.txt')):
         for line in path.read_text().splitlines():
@@ -78,7 +78,10 @@ def constraints(root):
                 # One lock can hold a version per interpreter range; keep the one for this interpreter.
                 if not markers or any(Marker(marker).evaluate() for marker in markers):
                     versions.setdefault(package['name'], set()).add(package['version'])
+        explicit = {normalized(re.split(r'[\[<>=!~;\s]', item, maxsplit=1)[0]) for item in found if item}
         for name, found_versions in versions.items():
+            if normalized(name) in explicit:
+                continue  # constraints*.txt is what the project's own builds install with
             if len(found_versions) == 1:
                 found.append(requirement(f'{name}=={found_versions.pop()}', 'uv.lock'))
     return sorted({item for item in found if item})

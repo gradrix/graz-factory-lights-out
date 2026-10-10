@@ -7,6 +7,7 @@ The worker only sees the base commit and the objective. Scoring overlays the com
 on the run's final workspace and requires every fail-to-pass test and every suite pass-to-pass
 test to pass. "delivered" additionally requires the factory to have accepted the run.
 """
+import hashlib
 import json
 from pathlib import Path
 import shutil
@@ -16,6 +17,21 @@ import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from ops.delivery.env_exec import pytest_outcomes  # noqa: E402
 
+
+
+def task_environment(store, repo, cache_path):
+    """A receipt prepared by the current code for this repository's manifests (cached per manifest set)."""
+    from gflo.environment import EnvironmentStore
+    from gflo.prepare import manifest_names, prepare
+    digest = hashlib.sha256()
+    for name in manifest_names(repo):
+        digest.update(name.encode() + b'\0' + (Path(repo) / name).read_bytes())
+    cache = json.loads(cache_path.read_text()) if cache_path.exists() else {}
+    key = digest.hexdigest()
+    if key not in cache:
+        cache[key] = prepare(EnvironmentStore(store), 'python-project', project=repo).id
+        cache_path.write_text(json.dumps(cache, indent=1) + '\n')
+    return cache[key]
 
 
 def build(mined, objectives, tasks, store):
@@ -35,10 +51,12 @@ def build(mined, objectives, tasks, store):
         subprocess.run(['git', '-C', str(repo), 'add', '-A'], check=True)
         subprocess.run(['git', '-C', str(repo), '-c', 'user.name=gflo', '-c', 'user.email=gflo@local',
                         'commit', '-qm', f'base of {commit}'], check=True)
+        environment = task_environment(store, repo, Path(tasks) / 'environments.json')
+        (root / 'environment.txt').write_text(environment + '\n')
         # What already fails on the base (an operator would know this): only new failures reject.
         baseline = record_path.parent / 'baseline_failures.json'
         if not baseline.exists():
-            seen, _ = pytest_outcomes(store, record['environment'], record_path.parent / 'base', record['test_command'])
+            seen, _ = pytest_outcomes(store, environment, record_path.parent / 'base', record['test_command'])
             baseline.write_text(json.dumps(sorted(key for key, passed in seen.items() if not passed), indent=1) + '\n')
         acceptance = root / 'acceptance'
         acceptance.mkdir()
@@ -76,7 +94,8 @@ def score(mined, tasks, state, store, commit, run_id):
         else:
             target.parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(after / path, target)
-    seen, result = pytest_outcomes(store, record['environment'], work, record['test_command'], timeout=1500)
+    environment = (Path(tasks) / commit / 'environment.txt').read_text().strip()
+    seen, result = pytest_outcomes(store, environment, work, record['test_command'], timeout=1500)
     f2p_failed = [node for node in record['f2p'] if not seen.get(node)]
     p2p_failed = [node for node in record['suite_p2p'] + record['hidden_p2p'] if not seen.get(node)]
     value = {'commit': commit, 'run': run_id, 'factory_status': status.get('status'), 'attempts': status.get('attempts'),

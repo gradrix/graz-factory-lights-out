@@ -58,6 +58,12 @@ class ResolverParsingTests(unittest.TestCase):
                              + entry.format('2.5.2', '"python_full_version >= \'3.13\'", "python_full_version == \'3.12.*\'"')})
         self.assertEqual(resolver.constraints(root), ['numpy==2.5.2'])  # the check container is CPython 3.12
 
+    def test_constraints_file_wins_over_uv_lock(self):
+        lock = ''.join(f'[[package]]\nname = "{name}"\nversion = "{version}"\nsource = {{ registry = "https://pypi.org/simple" }}\n'
+                       for name, version in [('alembic', '1.19.1'), ('mako', '1.3.10')])
+        root = self.project({'requirements.txt': 'alembic>=1.13,<2\n', 'constraints-runtime.txt': 'alembic==1.20.0\n', 'uv.lock': lock})
+        self.assertEqual(resolver.constraints(root), ['alembic==1.20.0', 'mako==1.3.10'])
+
     def test_stale_lock_pin_yields_to_the_declared_requirement(self):
         root = self.project({'pyproject.toml': '[project]\nname = "app"\ndependencies = ["garminconnect==0.3.13", "sqlalchemy>=2,<3"]\n',
                              'uv.lock': ''.join(f'[[package]]\nname = "{name}"\nversion = "{version}"\n'

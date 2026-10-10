@@ -24,13 +24,12 @@ def done(results):
 
 
 def run(args, commit, arm):
-    record = json.loads((Path(args.mined) / commit / 'record.json').read_text())
     config = Path(args.state) / f'config-{arm}.json'
     config.parent.mkdir(parents=True, exist_ok=True)
     config.write_text(json.dumps(dict(json.loads(Path(args.config).read_text()), review=arm)))
     state = Path(args.state) / arm
     command = [sys.executable, '-m', 'gflo', '--state', str(state), '--config', str(config), 'run',
-               str(Path(args.tasks) / commit / 'task.json'), '--environment', record['environment'],
+               str(Path(args.tasks) / commit / 'task.json'), '--environment', (Path(args.tasks) / commit / 'environment.txt').read_text().strip(),
                '--environment-store', args.store]
     started = time.monotonic()
     log = Path(args.state) / 'logs' / f'{commit}-{arm}.log'
