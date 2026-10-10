@@ -83,3 +83,15 @@ Results: pending.
 Task selection rule (SWE-bench Verified practice): a mined task is kept only when an operator-style objective can
 state everything its hidden tests check without dictating the patch. Excluded so far: two copy-rewrite commits
 whose many hidden assertions pin exact new wording, and commits whose tests need PostgreSQL only.
+
+## Worker observations for phase 2 (from the exploratory trajectories)
+
+- 14 of 25 worker attempts used the full 40-turn budget, including two delivered tasks (f20a4e2, 0937b55) that
+  finished on the last turn. Peak request size reached ~80K of the 98K-token context.
+- 57271fe (no edit in 120 turns): the repository already ships a ~31 KB layout overview in its CLAUDE.md and the
+  worker read it; most turns went to tests and to the fitparse library's FIT message definitions, which no repository
+  map covers. Attempts 2 and 3 received only "review needs changed source files" and re-read everything from zero.
+- 3612b5f: not navigation; the check named the two stale tests and the worker never edited them.
+- User question (2026-10-10): should the worker see a system overview / module graph and work on parts instead of
+  reading the whole system? Agent recommendation: yes to a map as a tool and to retained findings across attempts;
+  no to a worker blind outside its module for now (roadmap phase 2 navigation arms).

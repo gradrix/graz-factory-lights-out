@@ -27,7 +27,7 @@ Each phase ends with a measured run on real repositories, merges to `main`, and 
 
 ### 2. Worker capability
 
-Compare the gflo worker against a standard agent harness (mini-swe-agent first) on the phase-1 tasks with the same local model, and test repository navigation aids and a second local model. Keep gflo as the controller (sandbox, budgets, evidence, acceptance) whichever worker wins. **Kill criterion:** if no worker/model reaches about 30% delivered on real tasks, autonomous feature delivery is model-limited; narrow the product to phase 3 and human-reviewed patch proposals.
+Compare the gflo worker against a standard agent harness (mini-swe-agent first) on the phase-1 tasks with the same local model, and test repository navigation aids and a second local model. Navigation arms, cheapest first, each measured on the frozen phase-1 tasks: carry the worker's findings into the next attempt (today a repair attempt restarts from zero), a turn budget above 40 with a plan-before-editing checkpoint, and a generated repository map offered as a tool (modules, symbols, signatures, import graph). A module-scoped worker hierarchy stays in phase 4: decision 008 measured decomposition failing on multi-file increments, and the observed misses were cross-module. Keep gflo as the controller (sandbox, budgets, evidence, acceptance) whichever worker wins. **Kill criterion:** if no worker/model reaches about 30% delivered on real tasks, autonomous feature delivery is model-limited; narrow the product to phase 3 and human-reviewed patch proposals.
 
 ### 3. Test factory
 
