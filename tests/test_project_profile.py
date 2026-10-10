@@ -105,6 +105,27 @@ class ProjectProfileTests(unittest.TestCase):
         self.assertEqual(command_seconds({'environment': {'profile': 'python-stdlib'}}), 60)
         self.assertEqual(command_seconds({'environment': None}), 60)
 
+    def test_store_readers_wait_for_a_publication_instead_of_failing(self):
+        import threading, time
+        with tempfile.TemporaryDirectory() as directory:
+            store = EnvironmentStore(Path(directory) / 'store')
+            held = threading.Event()
+            def publisher():
+                with store.locked():
+                    held.set()
+                    time.sleep(1.5)
+            thread = threading.Thread(target=publisher)
+            thread.start()
+            held.wait()
+            started = time.monotonic()
+            with store.locked(shared=True):
+                waited = time.monotonic() - started
+            thread.join()
+            self.assertGreater(waited, 1.0)
+            with store.locked(), self.assertRaisesRegex(ValueError, 'owns this store'):
+                with EnvironmentStore(store.root).locked(shared=True, wait=0):
+                    pass
+
     def test_preparation_requires_the_project(self):
         with tempfile.TemporaryDirectory() as directory:
             with self.assertRaisesRegex(ValueError, 'pass its repository'):

@@ -102,7 +102,7 @@ class EnvironmentStoreTests(unittest.TestCase):
         good = self.publish()
         def check(path):
             with self.assertRaisesRegex(ValueError, 'preparation'):
-                self.store.resolve(good.id)
+                self.store.resolve(good.id, wait=0)
             return {'passed': True}
         self.store.publish(archive(b'next'), self.metadata, check)
 

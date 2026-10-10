@@ -47,10 +47,15 @@ RECIPE = {'profile': 'python-stdlib', 'version': 1, 'image': DEFAULT_IMAGE,
 def preparation(store):
     """Own full preparation lifetime, separate from the publication lease."""
     with (store.root / '.preparation.lock').open('a') as lock:
-        try:
-            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        except BlockingIOError:
-            raise ValueError('Another environment preparation owns this store') from None
+        deadline = time.monotonic() + 1500  # one project resolution may run up to its 1200 s deadline
+        while True:
+            try:
+                fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                break
+            except BlockingIOError:
+                if time.monotonic() >= deadline:
+                    raise ValueError('Another environment preparation owns this store') from None
+                time.sleep(1)
         for stale in store.root.glob('.work-*'):
             discard(stale)
         work = Path(tempfile.mkdtemp(prefix='.work-', dir=store.root))

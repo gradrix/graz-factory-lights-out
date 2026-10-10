@@ -10,6 +10,7 @@ import re
 import shutil
 import stat
 import tempfile
+import time
 
 from .artifacts import ArchiveLimits, unpack_archive
 
@@ -121,12 +122,19 @@ class EnvironmentStore:
             raise ValueError('Environment store must be controller-owned with mode 0700')
 
     @contextmanager
-    def locked(self, *, shared=False):
+    def locked(self, *, shared=False, wait=900):
+        # A publication of a real dependency tree takes minutes; readers and later publishers wait for it
+        # (bounded) instead of failing a running task.
+        deadline = time.monotonic() + wait
         with (self.root / '.lock').open('a') as lock:
-            try:
-                fcntl.flock(lock, (fcntl.LOCK_SH if shared else fcntl.LOCK_EX) | fcntl.LOCK_NB)
-            except BlockingIOError:
-                raise ValueError('Another environment preparation owns this store') from None
+            while True:
+                try:
+                    fcntl.flock(lock, (fcntl.LOCK_SH if shared else fcntl.LOCK_EX) | fcntl.LOCK_NB)
+                    break
+                except BlockingIOError:
+                    if time.monotonic() >= deadline:
+                        raise ValueError('Another environment preparation owns this store') from None
+                    time.sleep(1)
             yield
 
     def remove_private_staging(self):
@@ -208,8 +216,8 @@ class EnvironmentStore:
         finally:
             os.close(descriptor)
 
-    def resolve(self, identifier, expected_hash=None):
-        with self.locked(shared=True):
+    def resolve(self, identifier, expected_hash=None, *, wait=900):
+        with self.locked(shared=True, wait=wait):
             return self._resolve(identifier, expected_hash)
 
     def _resolve(self, identifier, expected_hash=None, *, allow_pending=False):
