@@ -58,7 +58,7 @@ The configured local image ID works after that transfer. Use a newly pinned prep
 
 ## Recovery and retention
 
-Run `status` first, then `resume RUN_ID`. Pending model requests are not replayed as trusted results. An interrupted attempt consumes its allowance, leftover workspace containers are stopped, and a new attempt receives the retained files and interruption evidence. A completed saved verdict is reconciled only when candidate identity matches.
+Run `status` first, then `resume RUN_ID`. Pending model requests are not replayed as trusted results. An interrupted attempt consumes its allowance, leftover workspace containers are stopped, and a new attempt receives the retained files and interruption evidence. A completed saved verdict is reconciled only when candidate identity matches. A model response the server cannot parse as a tool call (a truncated or self-repeating call; llama.cpp answers HTTP 500 "Failed to parse tool call") is not an interruption: the worker asks for a shorter call, and after two more such responses it ends the attempt, which then fails verification as usual. A review timeout likewise fails the attempt. Other model server errors still interrupt the run.
 
 Keep `.gflo/runs` together: SQLite, acceptance snapshots, private Git snapshots and artifacts form one recoverable set. Do not edit an active run. To change the requirement or exhausted budget, create a new task/run. No automatic cleanup removes old evidence; archive old run directories and their database together when desired.
 

@@ -126,6 +126,34 @@ class WorkerTests(unittest.TestCase):
             self.assertEqual(result['turns'], 5)
             self.assertIn('old failure', (workspace.parent / 'attempts/1/trajectory.jsonl').read_text())
 
+    def test_unparseable_model_tool_calls_are_retried_then_end_the_attempt(self):
+        from gflo.worker import ModelHTTPError
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = Path(directory) / 'workspace'
+            workspace.mkdir()
+            worker = ModelWorker({'endpoint': 'http://127.0.0.1:18000', 'model': 'test'}, FakeSandbox())
+            seen = []
+            def malformed(path, body, **kwargs):
+                seen.append(body['messages'][-1]['content'])
+                raise ModelHTTPError(500, 'Failed to parse tool call arguments as JSON: missing closing quote')
+            worker.request = malformed
+            result = worker(workspace, {'objective': 'Fix', 'max_turns': 8, 'checks': []}, None, 1)
+            self.assertTrue(result['limited'])
+            self.assertIn('malformed', result['summary'])
+            self.assertEqual(len(seen), 3)
+            self.assertIn('shorter', seen[1])
+            replies = iter([ModelHTTPError(500, 'Failed to parse tool call arguments as JSON'), {'choices': [{'message': {'role': 'assistant', 'content': 'Done'}}]}])
+            def recovers(*args, **kwargs):
+                reply = next(replies)
+                if isinstance(reply, Exception):
+                    raise reply
+                return reply
+            worker.request = recovers
+            self.assertEqual(worker(workspace, {'objective': 'Fix', 'max_turns': 8, 'checks': []}, None, 2)['summary'], 'Done')
+            worker.request = lambda *a, **k: (_ for _ in ()).throw(ModelHTTPError(500, 'out of memory'))
+            with self.assertRaisesRegex(RuntimeError, 'HTTP 500: out of memory'):  # other server errors still stop the run
+                worker(workspace, {'objective': 'Fix', 'max_turns': 8, 'checks': []}, None, 3)
+
     def test_turn_budget_and_redirect_rejection(self):
         from gflo.worker import NoRedirect
         with self.assertRaisesRegex(ValueError, 'redirects'):
