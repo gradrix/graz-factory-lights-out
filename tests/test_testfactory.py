@@ -183,6 +183,30 @@ class AcceptanceTests(unittest.TestCase):
         (workspace / 'tests' / 'test_calc.py').write_text(STRONG)
         self.assertEqual(acceptance.main(config, workspace), 1)
 
+    def test_existing_tests_reaching_the_target_through_a_package_still_count(self):
+        directory = tempfile.TemporaryDirectory()
+        self.addCleanup(directory.cleanup)
+        root = Path(directory.name)
+        workspace = root / 'workspace'
+        strong = STRONG.replace('from calc import clamp, is_valid', 'from pkg import clamp, is_valid')
+        base = {'tests/__init__.py': '', 'tests/test_core.py': strong}
+        for name, text in {'pkg/__init__.py': 'from .core import *\n', 'pkg/core.py': SOURCE, **base}.items():
+            (workspace / name).parent.mkdir(parents=True, exist_ok=True)
+            (workspace / name).write_text(text)
+        for name, text in base.items():
+            (root / 'base_tests' / name).parent.mkdir(parents=True, exist_ok=True)
+            (root / 'base_tests' / name).write_text(text)
+        config = {'targets': ['pkg/core.py'], 'threshold': 0.6, 'max_mutants': 30, 'runs': 1, 'budget_seconds': 120,
+                  'runner': [sys.executable, '-m', 'unittest', '{tests}'],
+                  'base': {name: acceptance.digest(workspace / name) for name in ('pkg/__init__.py', 'pkg/core.py')},
+                  'base_tests': {name: acceptance.digest(workspace / name) for name in base}}
+        (root / 'test_task.json').write_text(json.dumps(config))
+        (workspace / 'tests' / 'test_core.py').write_text(
+            strong + '\n\nclass Extra(unittest.TestCase):\n    def test_extra(self):\n        self.assertEqual(clamp(2, 1, 3), 2)\n')
+        self.assertEqual(acceptance.main(str(root / 'test_task.json'), workspace), 1)
+        self.assertEqual(acceptance.module_name('src/pkg/core.py'), 'pkg.core')
+        self.assertTrue(acceptance.imports_target('from pkg import clamp\n', {'pkg.core'}))
+
     def test_only_new_test_functions_are_smell_checked(self):
         smoke = 'import unittest\nfrom calc import clamp\n\nclass Smoke(unittest.TestCase):\n    def test_smoke(self):\n        clamp(1, 0, 2)\n'
         config, workspace = self.project(base_tests={'tests/test_calc.py': smoke})

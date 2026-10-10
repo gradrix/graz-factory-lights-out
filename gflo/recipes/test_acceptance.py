@@ -141,7 +141,7 @@ CONFIG_SUFFIXES = ('.py', '.ini', '.cfg', '.toml', '.pth')
 
 def files(root):
     return {path.relative_to(root).as_posix() for path in Path(root).rglob('*')
-            if path.is_file() and not any(part.startswith(CACHES) for part in path.relative_to(root).parts)}
+            if path.is_file() and not any(part in CACHES for part in path.relative_to(root).parts)}
 
 
 def equivalent(source):
@@ -157,16 +157,19 @@ def equivalent(source):
 
 def module_name(target):
     parts = list(Path(target).with_suffix('').parts)
+    parts = parts[1:] if parts[0] == 'src' and len(parts) > 1 else parts
     return '.'.join(parts[:-1] if parts[-1] == '__init__' else parts)
 
 
 def imports_target(source, names):
-    """Whether a test module imports one of the target modules (directly or as `from package import module`)."""
+    """Whether a test module imports a target module or a package containing it (re-exports count)."""
+    packages = {name.rsplit('.', depth)[0] for name in names for depth in range(1, name.count('.') + 1)}
+    reachable = set(names) | packages
     for node in ast.walk(ast.parse(source)):
-        if isinstance(node, ast.Import) and any(alias.name in names for alias in node.names):
+        if isinstance(node, ast.Import) and any(alias.name in reachable for alias in node.names):
             return True
         if isinstance(node, ast.ImportFrom) and node.module and (
-                node.module in names or any(f'{node.module}.{alias.name}' in names for alias in node.names)):
+                node.module in reachable or any(f'{node.module}.{alias.name}' in names for alias in node.names)):
             return True
     return False
 
@@ -245,15 +248,17 @@ def main(config_path='/acceptance/test_task.json', workspace=WORKSPACE):
                 return 1
         # Existing tests that import a target (as of the base): what they already kill earns nothing.
         names = {module_name(target) for target in config['targets']}
+        # Base versions of every changed existing module always count, whatever route they take to the target.
         related = sorted(path for path in config['base_tests'] if Path(path).name.startswith('test_') and path.endswith('.py')
-                         and imports_target((base_tests / path).read_text(), names))
-        base_limit = None
-        if related:
-            code, seconds = run(config['runner'], related, base, max(5.0, budget / 4))
+                         and (path in changed or imports_target((base_tests / path).read_text(), names)))
+        passing, total = [], 0.0
+        for path in related:  # a module that already fails unmodified cannot tell us what is killed
+            code, seconds = run(config['runner'], [path], base, max(5.0, budget / 8))
             if code == 0:
-                base_limit = max(5.0, 5 * seconds)
-            else:
-                related = []  # they already fail unmodified; they cannot tell us what is killed
+                passing.append(path)
+                total += seconds
+        related = passing
+        base_limit = max(5.0, 5 * total)
         deadline = started + budget
         new_kills, eligible, base_kills, survivors = 0, 0, 0, []
         per_target = max(1, config.get('max_mutants', 30) // len(config['targets']))
@@ -280,7 +285,8 @@ def main(config_path='/acceptance/test_task.json', workspace=WORKSPACE):
           f'already killing {base_kills} mutants; of the rest the new tests kill {new_kills}/{eligible} = {score:.2f} '
           f'(required {config["threshold"]})')
     if not eligible:
-        print('the existing tests already kill every sampled mutant; choose a less tested target')
+        print('no mutant was left to score: either the existing tests already kill every sampled mutant (choose a less '
+              'tested target) or the time budget ran out before mutants could be evaluated')
     for line in survivors[:15]:
         print('SURVIVED', line)
     return 0 if eligible and score >= config['threshold'] else 1
