@@ -125,6 +125,10 @@ class Factory:
             for c in checks
         ):
             raise ValueError('checks must be a nonempty list of command argument lists')
+        test_command = task.get('test_command')
+        if test_command is not None and (not isinstance(test_command, list) or not test_command
+                                         or any(not isinstance(x, str) for x in test_command)):
+            raise ValueError('test_command must be a nonempty command argument list')
         for key, default, upper in [('max_attempts', 3, 10), ('max_turns', 24, 100)]:
             task.setdefault(key, default)
             if type(task[key]) is not int or not 1 <= task[key] <= upper:

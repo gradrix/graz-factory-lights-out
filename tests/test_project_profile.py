@@ -69,6 +69,10 @@ class ProjectProfileTests(unittest.TestCase):
         context = runtime_context({'environment': {'profile': 'python-project', 'image': 'sha256:' + '0' * 64, 'runtime': {}}})
         self.assertIn('python -m pytest', context)
         self.assertIn('Nothing can be installed', context)
+        self.assertNotIn('Project test command', context)
+        context = runtime_context({'environment': {'profile': 'python-project', 'image': 'sha256:' + '0' * 64, 'runtime': {}},
+                                   'test_command': ['env', 'X=1', 'python', '-m', 'pytest', 'tests']})
+        self.assertIn('Project test command (also run by acceptance): ["env", "X=1", "python", "-m", "pytest", "tests"]', context)
 
     @requires_docker
     def test_resolved_project_runs_pytest_offline_and_binds_manifests(self):
@@ -97,6 +101,10 @@ class ProjectProfileTests(unittest.TestCase):
             result = sandbox.verify(project, task, acceptance)
             self.assertTrue(result['passed'], result)
             self.assertIn('pytest', result['checks'][-1]['command'])
+            custom = dict(task, test_command=['env', 'MARK=1', 'python', '-m', 'pytest', '-q', '-p', 'no:cacheprovider', '-k', 'nothing_matches'])
+            result = sandbox.verify(project, custom, acceptance)
+            self.assertFalse(result['passed'])  # pytest exits 5 when the operator command selects no tests
+            self.assertEqual(result['checks'][-1]['command'], custom['test_command'])
             (project / 'requirements.txt').write_text('iniconfig==2.0.0\n')
             self.assertFalse(sandbox.verify(project, task, acceptance)['passed'])
 

@@ -26,6 +26,19 @@ class RunnerTests(unittest.TestCase):
         self.task = self.root / 'task.json'
         self.task.write_text(json.dumps({'repo': str(self.repo), 'objective': 'Set value to 2', 'acceptance': str(self.acceptance), 'checks': [['python', '-I', '/acceptance/check.py']], 'max_attempts': 2}))
 
+    def test_test_command_must_be_an_argument_list(self):
+        factory = Factory(self.root / 'state', lambda *a: {}, lambda *a: {'passed': True, 'checks': []})
+        task = json.loads(self.task.read_text())
+        for value in ['pytest -q', [], ['pytest', 3]]:
+            with self.subTest(value=value):
+                self.task.write_text(json.dumps({**task, 'test_command': value}))
+                with self.assertRaisesRegex(ValueError, 'test_command'):
+                    factory.create(self.task)
+        self.task.write_text(json.dumps({**task, 'test_command': ['python', '-m', 'pytest', '-q']}))
+        run_id = factory.create(self.task)
+        saved = json.loads((factory.state / run_id / 'task.json').read_text())
+        self.assertEqual(saved['test_command'], ['python', '-m', 'pytest', '-q'])
+
     def test_failure_evidence_drives_repair_and_source_is_unchanged(self):
         feedback = []
         def worker(workspace, task, previous, attempt):

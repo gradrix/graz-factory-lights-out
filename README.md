@@ -37,6 +37,8 @@ Commit the intended input in a clean Git repository. Create an acceptance direct
 }
 ```
 
+For an existing project with its own dependencies, set `"profile": "python-project"` ([decision 012](docs/decisions/architecture/012-project-resolved-python.md)) and, when its tests need flags or environment variables, `"test_command"` (an argument list such as `["env", "APP_TEST=1", "python", "-m", "pytest", "-q", "-p", "no:cacheprovider", "tests"]`); acceptance runs it in place of the default generated-test command and the worker is told about it.
+
 Paths are relative to the task file. Checks are argument lists, not shell expressions. They run in `/workspace` with the candidate and `/acceptance` mounted read-only. Use `/tmp` for test databases and other temporary output. New runs freeze a prepared environment receipt. The checkout can infer and validate an approved profile from manifests; use an existing receipt ID to run without registry access. See [supported profiles](docs/environments.md).
 
 Acceptance checks are trusted operator code. Make them test observable requirements and fail on missing tests, not just print a success message. The [examples](examples/) demonstrate behavior checks and a separate quality check requiring discoverable tests, documentation and removal of scratch files.
