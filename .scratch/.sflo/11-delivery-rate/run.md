@@ -39,6 +39,18 @@ pyproject); the resolver now reads it the way uv does (44ae332).
 Source 1: home-lab `services/running-coach`, 36 bounded candidate commits (2–137 changed source lines), non-database
 tests only. Mining started on the rig 2026-10-10.
 
+### Exploratory pass (default reviewer), code changing between tasks
+
+| Task | Factory | Hidden tests | Cause when not delivered | Repair |
+|---|---|---|---|---|
+| cde2e00 (pilot 4) | accepted, 1 attempt, 640 s | pass | — | — |
+| 8331398 | accepted, 618 s | pass | — | — |
+| 3e6e4bd | interrupted | pass | 120 s review request limit on a 77K-token review | 73f8fed |
+| 06ba3e9 | exhausted (3) | pass | attempt 1 broke an existing test (correct rejection, repaired); attempts 2–3 review refused: changed files > 200 KB | 8cf9671 |
+
+Every patch so far is correct by the hidden tests; the losses are factory limits sized for ~95-line fixtures.
+The headline rate will come from a rerun of all tasks at one frozen revision after this pass.
+
 Results: pending.
 
 Task selection rule (SWE-bench Verified practice): a mined task is kept only when an operator-style objective can
