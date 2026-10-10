@@ -80,17 +80,26 @@ class RepoMapTests(unittest.TestCase):
         self.assertNotIn('.hidden', text)
         self.assertIn('No definition or usage', self.output('missing_name'))
 
+    def test_missing_paths_and_pathological_expressions_do_not_break_the_map(self):
+        self.assertIn('no such module', self.output('pkg/missing.py'))
+        (self.root / 'dir.py').mkdir()
+        self.assertIn('no such module', self.output('dir.py'))
+        (self.root / 'deep.py').write_text('def clamp(value=' + '+'.join(['1'] * 3000) + '): pass\n')
+        text = self.output('clamp')
+        self.assertIn('deep.py:1: def clamp(...)', text)
+        self.assertIn('pkg/core.py:8: def clamp(value, low=0)', text)
+
     def test_output_is_bounded(self):
         for index in range(200):
             (self.root / f'module_with_a_long_descriptive_name_{index}.py').write_text('"""Doc."""\n' + '\n'.join(f'def function_{n}(): pass' for n in range(20)))
         text = self.output()  # names and docstrings are dropped first, so every module is still listed
         self.assertIn('module_with_a_long_descriptive_name_199.py', text)
         self.assertNotIn('Doc.', text)
-        self.assertLessEqual(len(text), repo_map.LIMIT)
-        for index in range(200, 1200):
-            (self.root / f'module_with_a_long_descriptive_name_{index}.py').write_text('x = 1\n')
+        self.assertLessEqual(len(text.encode()), repo_map.LIMIT)
+        for index in range(200, 1200):  # non-ASCII names: the bound is in bytes, as the sandbox counts them
+            (self.root / f'модуль_{index}.py').write_text('x = 1\n')
         text = self.output()
-        self.assertLessEqual(len(text), repo_map.LIMIT + 100)
+        self.assertLessEqual(len(text.encode()), repo_map.LIMIT)
         self.assertTrue(text.endswith('query a narrower module path or name.'))
 
 
@@ -121,12 +130,14 @@ class NavigationWorkerTests(unittest.TestCase):
                 navigation_aids({'navigation': bad})
 
     def test_baseline_worker_is_unchanged_when_aids_are_off(self):
-        worker, _ = self.worker({}, [{'role': 'assistant', 'content': 'Done'}])
+        worker, _ = self.worker({}, [call('map', '{}'), {'role': 'assistant', 'content': 'Done'}])
         result = worker(self.workspace, self.task, None, 1)
         self.assertNotIn('handoff', result)
         self.assertEqual(self.bodies[0]['tools'], TOOLS)
         self.assertEqual(self.bodies[0]['messages'][0]['content'], SYSTEM)
-        self.assertEqual(len(self.bodies), 1)
+        self.assertEqual(len(self.bodies), 2)
+        self.assertEqual(self.bodies[1]['messages'][-1]['content'], json.dumps({'error': 'Invalid tool name or arguments; use run(command), check(), or question(question)'}))
+        self.assertEqual(self.bodies[1]['tools'], TOOLS)
 
     def test_map_tool_runs_read_only_in_the_sandbox_and_only_when_offered(self):
         worker, sandbox = self.worker({'map': True}, [call('map', '{"query":"clamp"}'), {'role': 'assistant', 'content': 'Done'}])
@@ -137,6 +148,10 @@ class NavigationWorkerTests(unittest.TestCase):
         self.assertEqual(command[:3], ['python', '-I', '-c'])
         self.assertEqual(command[-2:], ['/workspace', 'clamp'])
         self.assertTrue(options['readonly'])
+        worker, sandbox = self.worker({'map': True}, [call('map', '[]'), call('map', '["query"]', '2'), {'role': 'assistant', 'content': 'Done'}])
+        worker(self.workspace, self.task, None, 1)  # malformed map arguments are a tool error, not a crash
+        self.assertEqual(sandbox.commands, [])
+        self.assertIn('or map(query)', self.bodies[1]['messages'][-1]['content'])
         worker, sandbox = self.worker({}, [call('map', '{}'), {'role': 'assistant', 'content': 'Done'}])
         worker(self.workspace, self.task, None, 1)
         self.assertEqual(sandbox.commands, [])
@@ -166,6 +181,10 @@ class NavigationWorkerTests(unittest.TestCase):
         self.assertEqual(len(self.bodies), 3)
         self.assertIn('without changing any file', self.bodies[2]['messages'][-1]['content'])
         self.assertNotIn('without changing any file', json.dumps(self.bodies[1]))
+        worker, _ = self.worker({'checkpoint': 2, 'max_turns': 3}, reads)
+        worker.sandbox.execute = lambda *a, **k: ((self.workspace / '.pytest_cache').mkdir(exist_ok=True), (self.workspace / '.pytest_cache' / 'v').write_text('1'), {'exit_code': 0, 'output': ''})[2]
+        worker(self.workspace, self.task, None, 1)  # a test run's cache is not an edit
+        self.assertIn('without changing any file', self.bodies[2]['messages'][-1]['content'])
         worker, _ = self.worker({'checkpoint': 2}, reads[:2] + [{'role': 'assistant', 'content': 'Done'}])
         worker.sandbox.execute = lambda *a, **k: ((self.workspace / 'new.py').write_text('x = 1\n'), {'exit_code': 0, 'output': ''})[1]
         worker(self.workspace, self.task, None, 1)

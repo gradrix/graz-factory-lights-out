@@ -123,7 +123,7 @@ class ModelWorker:
                 'tools': self.tools, 'tool_choice': 'none', 'temperature': 0, 'max_tokens': 1024,
                 'chat_template_kwargs': {'enable_thinking': False}}
         try:
-            response = self.request('/v1/chat/completions', body, timeout=300)
+            response = self.request('/v1/chat/completions', body, timeout=HANDOFF_SECONDS)
             note = (response['choices'][0]['message'].get('content') or '').strip()[:4000]
         except (RuntimeError, ValueError, KeyError, IndexError, TypeError, OSError) as error:
             record({'event': 'handoff', 'error': str(error)[:500]})
@@ -202,10 +202,10 @@ class ModelWorker:
                         result = self.sandbox.execute(workspace, ['sh', '-lc', args['command']], timeout=command_seconds(task))
                     elif name == 'check' and args == {}:
                         result = self.sandbox.verify(workspace, task, root / 'acceptance')
-                    elif name == 'map' and tools is not TOOLS and set(args) <= {'query'} and isinstance(args.get('query', ''), str):
+                    elif name == 'map' and tools is not TOOLS and isinstance(args, dict) and set(args) <= {'query'} and isinstance(args.get('query', ''), str):
                         result = self.sandbox.execute(workspace, ['python', '-I', '-c', MAP_SOURCE, '/workspace', args.get('query', '')], timeout=120, readonly=True)
                     else:
-                        raise ValueError('Invalid tool name or arguments; use run(command), check(), question(question) or, when offered, map(query)')
+                        raise ValueError('Invalid tool name or arguments; use run(command), check(), question(question) or map(query)' if tools is not TOOLS else 'Invalid tool name or arguments; use run(command), check(), or question(question)')
                 except (ValueError, TypeError) as error:
                     result = {'error': str(error)}
                 logging.info('  %s: %s', name, result.get('exit_code', result.get('passed', result.get('error', 'done'))))
@@ -221,6 +221,8 @@ MAP_TOOL = {'type': 'function', 'function': {
     'parameters': {'type': 'object', 'properties': {'query': {'type': 'string'}}, 'additionalProperties': False}}}
 HANDOFF = ('This attempt is ending. Write hand-off notes for your next attempt, at most 250 words: the files, functions and '
            'line numbers that matter; what you changed; what remains and the next concrete step. Do not call tools.')
+HANDOFF_SECONDS = 120  # the hand-off may extend an attempt past its 30-minute budget by at most this
+CACHES = {'__pycache__', '.pytest_cache', '.mypy_cache', '.ruff_cache', '.hypothesis'}
 CHECKPOINT = ('You have used {turns} turns without changing any file. Before reading more, state your plan in a few lines '
               '(the files and functions you will change), then start editing. Read further only to close a specific, named gap.')
 
@@ -265,11 +267,13 @@ def previous_handoff(root, attempt):
 
 
 def tree_state(workspace):
-    """Cheap change detector for the checkpoint: paths, sizes and modification times."""
+    """Cheap change detector for the checkpoint: paths, sizes and modification times, ignoring test-run caches."""
     entries = []
     for directory, dirs, files in os.walk(workspace):
-        dirs[:] = [name for name in dirs if name != '.git']
+        dirs[:] = [name for name in dirs if name != '.git' and name not in CACHES]
         for name in files:
+            if name.endswith('.pyc'):
+                continue
             path = os.path.join(directory, name)
             try:
                 info = os.lstat(path)

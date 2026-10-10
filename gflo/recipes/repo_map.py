@@ -30,7 +30,7 @@ def parse(root, rel):
         with open(os.path.join(root, rel), encoding='utf-8', errors='replace') as stream:
             source = stream.read()
         return ast.parse(source), source.splitlines()
-    except (SyntaxError, ValueError, RecursionError, MemoryError):
+    except (OSError, SyntaxError, ValueError, RecursionError, MemoryError):
         return None, []
 
 
@@ -59,13 +59,20 @@ def imported(rel, node):
     return [base] + [f'{base}.{alias.name}' if base else alias.name for alias in node.names]
 
 
+def source(node):
+    try:
+        return ast.unparse(node)
+    except (RecursionError, ValueError):
+        return '...'
+
+
 def signature(node):
     if isinstance(node, ast.ClassDef):
-        bases = ', '.join(ast.unparse(base) for base in node.bases)
+        bases = ', '.join(source(base) for base in node.bases)
         return f'class {node.name}({bases})' if bases else f'class {node.name}'
     prefix = 'async def' if isinstance(node, ast.AsyncFunctionDef) else 'def'
-    returns = f' -> {ast.unparse(node.returns)}' if node.returns else ''
-    return f'{prefix} {node.name}({ast.unparse(node.args)}){returns}'
+    returns = f' -> {source(node.returns)}' if node.returns else ''
+    return f'{prefix} {node.name}({source(node.args)}){returns}'
 
 
 def summary(node):
@@ -107,6 +114,8 @@ def overview(root, names_shown=6, docs=True):
 
 
 def module_detail(root, rel):
+    if not os.path.isfile(os.path.join(root, rel)) or os.path.islink(os.path.join(root, rel)):
+        return [f'{rel}: no such module; map() lists the modules']
     tree, _ = parse(root, rel)
     if tree is None:
         return [f'{rel}: not found or does not parse']
@@ -167,7 +176,7 @@ def main(argv):
     if not query:
         lines = overview(root)
         for names_shown, docs in ((6, False), (3, False), (0, False)):  # list every module before detail
-            if len('\n'.join(lines)) <= LIMIT:
+            if len('\n'.join(lines).encode()) <= LIMIT:
                 break
             lines = overview(root, names_shown, docs)
     elif query.endswith('.py'):
@@ -175,8 +184,10 @@ def main(argv):
     else:
         lines = name_detail(root, query)
     text = '\n'.join(lines)
-    if len(text) > LIMIT:
-        text = text[:LIMIT].rsplit('\n', 1)[0] + '\n... map output truncated; query a narrower module path or name.'
+    notice = '\n... map output truncated; query a narrower module path or name.'
+    if len(text.encode()) > LIMIT:
+        head = text.encode()[:LIMIT - len(notice.encode())].decode(errors='ignore')
+        text = head.rsplit('\n', 1)[0] + notice
     print(text)
     return 0
 
