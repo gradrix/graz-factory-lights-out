@@ -54,6 +54,7 @@ tests only. Mining started on the rig 2026-10-10.
 | 3612b5f | exhausted (3) | pass | worker kept two visible tests that assert the behaviour the objective removes; the check named them each attempt (worker miss) | — |
 | 156422b | accepted, 2 attempts, 1,032 s | pass | — | — |
 | cde2e00 (rerun) | interrupted, 206 s | fail (unfinished) | model emitted a self-repeating tool call; llama.cpp HTTP 500 stopped the run | 7cedc3c |
+| 57271fe | exhausted (3), 1,608 s | fail (no patch) | all 3 attempts spent the 40-turn budget reading code across 4 modules without editing (worker miss; multi-file feature, cf. decision 008) | phase 2 |
 
 Source 2: gflo itself (public), 5 tasks.
 
@@ -61,8 +62,20 @@ Source 2: gflo itself (public), 5 tasks.
 |---|---|---|---|---|
 | 89d66ea | accepted, 2 attempts, 1,044 s | pass | — | — |
 | 0c9c7c8 | accepted, 279 s | pass | — | — |
+| 6dd3556 | accepted, 315 s | pass | — | — |
+| edc7d71 | accepted, 157 s | pass | — | — |
+| 6ea52be | accepted, 2 attempts, 692 s | pass | — | — |
 
-After 13 exploratory runs (12 tasks): 8 delivered, 0 false accepts, and all 12 runs that produced a patch pass the hidden tests. Of the 5 losses, 4 were factory gaps, now repaired: three review limits sized for ~95-line fixtures and one model-error path that stopped the run. The fifth was a worker miss (3612b5f).
+Exploratory default-reviewer pass, 17 runs over 16 tasks: 11 delivered, 0 false accepts; every run that produced a patch passes the hidden tests. Of the 6 losses, 4 were factory gaps, now repaired (three review limits sized for ~95-line fixtures, one model-error path that stopped the run) and 2 were worker misses (3612b5f stale visible tests, 57271fe never started editing).
+
+The rig code is frozen at 7cedc3c from here: the ensemble arm and a full default-reviewer rerun (`chain-frozen.sh`, after the test-factory trials) both run on it.
+
+### Ensemble arm (frozen 7cedc3c)
+
+| Task | Factory | Hidden tests | Single reviewer, same task |
+|---|---|---|---|
+| 8331398 | accepted, 1 attempt, 2,646 s | pass | accepted, 618 s |
+
 The headline rate will come from a rerun of all tasks at one frozen revision after this pass.
 
 Results: pending.
