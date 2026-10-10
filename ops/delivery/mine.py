@@ -34,7 +34,7 @@ def git(source, *args):
 
 
 def export(source, commit, subdir, destination):
-    data = git(source, 'archive', '--format=tar', f'{commit}:{subdir}')
+    data = git(source, 'archive', '--format=tar', f'{commit}:{subdir}' if subdir not in ('', '.') else commit)
     destination.mkdir(parents=True)
     with tarfile.open(fileobj=io.BytesIO(data)) as archive:
         archive.extractall(destination, filter='data')
@@ -43,8 +43,9 @@ def export(source, commit, subdir, destination):
 def changed(source, commit, subdir):
     """(status, path relative to subdir) for every file the commit touched under subdir."""
     lines = git(source, 'diff-tree', '--no-commit-id', '-r', '--name-status', '--no-renames',
-                f'{commit}^', commit, '--', subdir).decode().splitlines()
-    return [(line.split('\t')[0], line.split('\t')[1][len(subdir) + 1:]) for line in lines]
+                f'{commit}^', commit, '--', subdir or '.').decode().splitlines()
+    strip = 0 if subdir in ('', '.') else len(subdir) + 1
+    return [(line.split('\t')[0], line.split('\t')[1][strip:]) for line in lines]
 
 
 

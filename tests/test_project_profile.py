@@ -6,7 +6,7 @@ import unittest
 
 from docker_support import requires_docker
 
-from gflo.environment import EnvironmentStore, PROJECT_LIMITS, limits_for, runtime_context
+from gflo.environment import EnvironmentStore, PROJECT_LIMITS, command_seconds, limits_for, runtime_context
 from gflo.prepare import prepare, validate_project
 from gflo.sandbox import Sandbox
 
@@ -75,6 +75,11 @@ class ProjectProfileTests(unittest.TestCase):
         self.assertIs(limits_for('python-project'), PROJECT_LIMITS)
         self.assertEqual(limits_for('python-api').entries, 16384)
         self.assertGreater(PROJECT_LIMITS.expanded_bytes, limits_for('python-stdlib').expanded_bytes)
+
+    def test_project_commands_get_longer_than_fixture_commands(self):
+        self.assertEqual(command_seconds({'environment': {'profile': 'python-project'}}), 300)
+        self.assertEqual(command_seconds({'environment': {'profile': 'python-stdlib'}}), 60)
+        self.assertEqual(command_seconds({'environment': None}), 60)
 
     def test_preparation_requires_the_project(self):
         with tempfile.TemporaryDirectory() as directory:
