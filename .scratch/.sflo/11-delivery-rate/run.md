@@ -75,6 +75,11 @@ The rig code is frozen at 7cedc3c from here: the ensemble arm and a full default
 | Task | Factory | Hidden tests | Single reviewer, same task |
 |---|---|---|---|
 | 8331398 | accepted, 1 attempt, 2,646 s | pass | accepted, 618 s |
+| 3e6e4bd | accepted, 2 attempts, 3,234 s | pass | interrupted (review timeout, since repaired) |
+| 06ba3e9 | interrupted | pass | exhausted (review size, since repaired) |
+| dcd2e78 | interrupted | pass | exhausted (review size, since repaired) |
+
+Both ensemble interruptions: the unit audit request reached ~120K tokens against the 98K context ("could not reach a validated decision"). The ensemble sends audit roles the reviewed files plus the exploration catalog, which real repositories overflow. Not repaired during the frozen arm.
 
 The headline rate will come from a rerun of all tasks at one frozen revision after this pass.
 
@@ -95,3 +100,10 @@ whose many hidden assertions pin exact new wording, and commits whose tests need
 - User question (2026-10-10): should the worker see a system overview / module graph and work on parts instead of
   reading the whole system? Agent recommendation: yes to a map as a tool and to retained findings across attempts;
   no to a worker blind outside its module for now (roadmap phase 2 navigation arms).
+
+## Phase 2 staged (2026-10-10)
+
+Code 8123102 in `~/gflo-p2` on the rig; `chain-phase2.sh` starts after `FROZEN DONE`. Arms on all 16 tasks:
+`mini` (mini-swe-agent 2.4.6 worker, same model and sandbox, SWE-bench observation template), `nav` (all
+navigation aids), then `notes`, `plan`, `map` alone. Navigation aids passed independent QA (one repair round;
+baseline worker byte-identical to the parent commit).
