@@ -27,7 +27,7 @@ class OvernightTests(unittest.TestCase):
         self.addCleanup(directory.cleanup)
         self.root = Path(directory.name)
         self.repo = self.root / 'repo'
-        files = {'app/__init__.py': '', 'app/grades.py': BIG, 'app/tested.py': BIG, 'app/small.py': SMALL,
+        files = {'app/__init__.py': '', 'app/grades.py': BIG, 'app/tested.py': BIG, 'app/small.py': SMALL, 'app/tests/test_inner.py': BIG, 'app/grades_test.py': BIG, 'test_root.py': BIG,
                  'setup.py': BIG, 'tests/test_tested.py': 'from app.tested import grade\n', 'tests/test_pkg.py': 'import app\n'}
         for name, text in files.items():
             (self.repo / name).parent.mkdir(parents=True, exist_ok=True)
@@ -73,6 +73,31 @@ class OvernightTests(unittest.TestCase):
         other.mkdir()
         with self.assertRaisesRegex(ValueError, 'another repository'):
             night(other, self.root / 'queue', state=self.root / 'state', config=self.root / 'c', environment_store=self.root / 'e')
+
+    def test_runs_that_could_not_start_are_retried_and_interrupts_still_write_the_report(self):
+        down = [sys.executable, '-c', 'import sys; print("GFLO: model endpoint unreachable", file=sys.stderr); sys.exit(1)']
+        report = night(self.repo, self.root / 'queue', state=self.root / 'state', config=self.root / 'c',
+                       environment_store=self.root / 'e', command=down, limit=1)
+        self.assertIn('| `app/grades.py` | 0 | not started | 0 s | GFLO: model endpoint unreachable | — |', report.read_text())
+        self.night(limit=1)  # the rig is back: the module runs instead of staying "done"
+        queue = json.loads((self.root / 'queue' / 'queue.json').read_text())
+        self.assertEqual(queue['done']['app/grades.py']['status'], 'accepted')
+        def interrupted(run):
+            raise KeyboardInterrupt
+        (self.root / 'queue' / 'report.md').unlink()
+        with self.assertRaises(KeyboardInterrupt):
+            night(self.repo, self.root / 'queue', state=self.root / 'state', config=self.root / 'c', environment_store=self.root / 'e',
+                  command=[sys.executable, '-c', FAKE_RUN], status=interrupted)
+        self.assertIn('app/grades.py', (self.root / 'queue' / 'report.md').read_text())
+
+    def test_dirty_repository_and_unbuildable_modules(self):
+        (self.repo / 'app' / 'grades.py').write_text(BIG + '# edit\n')
+        with self.assertRaisesRegex(ValueError, 'must be clean'):
+            self.night()
+        subprocess.run(['git', '-C', str(self.repo), 'checkout', '-q', '.'], check=True)
+        (self.root / 'queue' / 'app-grades' / 'acceptance').mkdir(parents=True)  # left by an interrupted build
+        self.night(limit=1)
+        self.assertEqual(json.loads((self.root / 'queue' / 'queue.json').read_text())['done']['app/grades.py']['status'], 'accepted')
 
     def test_report_shows_runs_that_did_not_start(self):
         text = morning_report({'repo': '/r', 'planned': [{'target': 'a.py', 'tested_by': 0}],
