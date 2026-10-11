@@ -185,3 +185,15 @@ Same 16 tasks, frozen 7cedc3c, default reviewer; only the objective changes. Eac
 drops implementation steps and enumerated cases, as SWE-bench Verified requires of issue text. Mean length: running-coach
 984 → 427 characters, gflo 720 → 381. Task directories differ from the headline ones only in the objective (checked on
 8331398). `chain-terse.sh` runs after the overnight trial and rescores with e5fbb82. Results: pending.
+
+### Merge-unchanged judgement on the two running-coach test patches (2026-10-11)
+
+The user delegated the judgement ("if it is good enough, we could merge them unchanged"); this verdict is the agent's.
+The merge itself stays the user's (standing rule: generated changes are never applied to the user's other repositories).
+
+| Patch | Verdict | Notes |
+|---|---|---|
+| `performance_recovery_mode.py`, 21 tests | merge unchanged | Boundary tests (cadence 140/139, coverage 90/89%, mode share 90%), exact caveat texts, reason routing; public interface only. Nit: one identity assertion (`returned is metrics`). |
+| `plan_formatter.py`, 14 tests | merge unchanged, with a caveat | Exact-output snapshot tests of defaults and omitted sections. They also pin odd current output (`**S** () ` with a trailing space, `() --  -- 0km`), so a later formatting cleanup must update them. Some `not in` assertions repeat what exact equality already checks. |
+
+Phase 3 share merged unchanged: 2/2 (n = 2).
