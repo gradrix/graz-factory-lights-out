@@ -64,6 +64,16 @@ def main(argv=None):
     tests_init.add_argument('--max-mutants', type=int, default=30)
     tests_init.add_argument('--env', action='append', default=[], help='K=V set when running tests (repeatable)')
     tests_init.add_argument('--profile', default='python-project', choices=['python-project', 'python-stdlib'])
+    overnight = tests_actions.add_parser('overnight', help='Queue one test-writing run per module, then write report.md')
+    overnight.add_argument('repo', help='Clean git repository at the intended base commit')
+    overnight.add_argument('--out', required=True, help='Queue directory (rerun the same command to continue)')
+    overnight.add_argument('--limit', type=int, help='At most this many modules, least tested first')
+    overnight.add_argument('--hours', type=float, default=8.0, help='Start no new run after this many hours')
+    overnight.add_argument('--threshold', type=float, default=0.6)
+    overnight.add_argument('--env', action='append', default=[], help='K=V set when running tests (repeatable)')
+    overnight.add_argument('--profile', default='python-project', choices=['python-project', 'python-stdlib'])
+    overnight.add_argument('--environment', help='Prepared environment ID passed to each run')
+    overnight.add_argument('--environment-store', default='.gflo/environments')
     documents = sub.add_parser('documents', help='Approved historical document evidence and saved local answers')
     documents.add_argument('--store', default='.gflo/documents')
     document_actions = documents.add_subparsers(dest='document_action', required=True)
@@ -101,6 +111,14 @@ def main(argv=None):
                 result = {'cleaned': True}
             print(json.dumps(result, indent=2))
             return 1 if result.get('receipt', {}).get('outcome', {}).get('status') == 'failed' else 0
+        if args.command == 'tests' and args.tests_action == 'overnight':
+            from .overnight import night
+            report = night(args.repo, args.out, state=Path(args.state).resolve(), config=Path(args.config).resolve(),
+                           environment_store=Path(args.environment_store).resolve(), environment=args.environment,
+                           limit=args.limit, hours=args.hours, threshold=args.threshold, profile=args.profile,
+                           checks_env=(['env', *args.env] if args.env else []))
+            print(json.dumps({'report': str(report)}, indent=2))
+            return 0
         if args.command == 'tests':
             from .testfactory import build as build_tests_task
             task = build_tests_task(args.repo, args.targets, args.out, threshold=args.threshold, max_mutants=args.max_mutants,
