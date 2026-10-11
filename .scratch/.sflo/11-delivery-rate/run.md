@@ -103,9 +103,47 @@ is restored before scoring, as SWE-bench does). Rescoring all 32 cohort runs wit
 Decision (agent, per the 2-round qualification cap): the ensemble stays opt-in and is not recommended for real
 repositories on this rig; it is not repaired further. The default single reviewer is the factory's reviewer.
 
-The headline rate will come from a rerun of all tasks at one frozen revision after this pass.
+### Headline: default reviewer, all 16 tasks at frozen 7cedc3c (2026-10-11)
 
-Results: pending.
+| Task | Factory | Time | Hidden tests (rescored, e5fbb82) |
+|---|---|---|---|
+| 8331398 | accepted, 1 attempt | 494 s | pass |
+| 3e6e4bd | accepted, 3 attempts | 2,528 s | pass |
+| 06ba3e9 | accepted, 2 attempts | 1,450 s | pass |
+| dcd2e78 | accepted, 1 attempt | 947 s | pass |
+| 366e6ca | accepted, 1 attempt | 463 s | pass |
+| f20a4e2 | accepted, 1 attempt | 764 s | pass |
+| 0937b55 | accepted, 1 attempt | 720 s | pass |
+| 3612b5f | exhausted, 3 attempts | 1,838 s | fail: stale visible tests again (worker miss) |
+| 156422b | accepted, 1 attempt | 501 s | pass (the old scorer reported a false accept: a renamed existing test) |
+| cde2e00 | accepted, 1 attempt | 517 s | pass |
+| 57271fe | accepted, 3 attempts | 1,836 s | **fail: false accept** (below) |
+| 89d66ea | accepted, 1 attempt | 791 s | pass |
+| 0c9c7c8 | accepted, 1 attempt | 269 s | pass |
+| 6dd3556 | accepted, 1 attempt | 282 s | pass |
+| edc7d71 | accepted, 1 attempt | 182 s | pass |
+| 6ea52be | accepted, 1 attempt | 452 s | pass |
+
+**Delivered 14/16 (87.5%)**: running-coach 9/11, gflo 5/5. 1 false accept (6%), 1 exhausted. 12 of 16 accepted on the first attempt,
+median wall time ≈ 620 s, longest 42 minutes. Both earlier worker misses moved: 57271fe now produces a patch (on attempt
+3), 3612b5f still does not edit the stale tests.
+
+57271fe false accept: the objective said "duration_step = index of the first repeated step". The worker read it as a
+list position; the hidden test uses FIT `message_index` numbering (5, 6, 7), which is the FIT convention. The worker's
+own tests encoded its reading, so the factory's checks and review could not see the gap. The objective was ambiguous
+on exactly the point the hidden test pins (a task-selection miss), and a domain-aware worker would have chosen the
+FIT reading. It stays counted as a false accept.
+
+Limits of this rate:
+- 16 tasks, not the planned 20; two repositories, one of them gflo itself.
+- Objectives were written by the agent from the reference commit, naming functions, fields and formulas (SWE-bench
+  Verified "well specified" practice, but more detailed than a typical user brief). The rate measures delivery of
+  precisely specified, bounded changes (2–137 changed source lines), not of terse feature requests.
+- Each task ran once; temperature-0 serving keeps runs close to repeatable but not identical (3e6e4bd needed 3
+  attempts here, 1 in the ensemble arm).
+
+Roadmap consequence: above the ~50% phase 4 gate and far above the ~30% kill criterion. Whether phase 4 starts on
+this evidence, or after a terse-objective arm tests how much the rate depends on objective detail, is the user's call.
 
 Task selection rule (SWE-bench Verified practice): a mined task is kept only when an operator-style objective can
 state everything its hidden tests check without dictating the patch. Excluded so far: two copy-rewrite commits

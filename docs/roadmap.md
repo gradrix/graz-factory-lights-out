@@ -25,6 +25,8 @@ Each phase ends with a measured run on real repositories, merges to `main`, and 
 - **Scoring harness**: run the factory, apply the hidden tests to its patch, record delivered / failed / stopped, wall time and failure category.
 - **Accept**: 20 tasks from at least two of the user's repositories, default reviewer and ensemble reviewer arms. The resulting rate decides phase 2.
 
+Result (2026-10-11, frozen 7cedc3c, default reviewer): **14/16 delivered (87.5%)**, 1 false accept (an objective ambiguous on the point its hidden test pins), 1 worker miss; 16 tasks from running-coach and gflo, short of the planned 20. Objectives were detailed operator briefs written from the reference commits, so the rate is for precisely specified bounded changes. The ensemble arm delivered 7/16 (decision 010 update). Run note: `.scratch/.sflo/11-delivery-rate/run.md`.
+
 ### 2. Worker capability
 
 Status: navigation aids (`navigation` config) and the mini-swe-agent worker (`worker: "mini-swe-agent"`) are implemented (2026-10-10); arms run after the frozen phase-1 rerun.
