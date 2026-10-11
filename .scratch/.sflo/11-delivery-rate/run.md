@@ -206,3 +206,30 @@ Phase 3 share merged unchanged: 2/2 (n = 2).
 - mini 06ba3e9 interrupted after attempt 1 verified: the default single reviewer returned a finding with an invalid
   source location, which stopped the run (not a worker failure). Repaired in 8b33c5e (one corrected retry), but kept
   out of `~/gflo-p2` until phase 2 ends so all worker arms share one reviewer. Counted as not delivered for this arm.
+
+### Mini arm result (code 8123102 + 0bbe9a9, default reviewer)
+
+15/16 delivered, 0 false accepts (running-coach 10/11, gflo 5/5); median 471 s (frozen gflo worker: 14/16, about
+620 s). The only loss is 06ba3e9 (reviewer stop above, not the worker). mini delivered both tasks the frozen gflo worker
+lost: 57271fe (the frozen arm's false accept) in 2 attempts, 1316 s, and 3612b5f (exhausted there) in 2 attempts, 1218 s.
+Caveat: one run per task, and the frozen arm ran on 7cedc3c, so the gap (1 task each way of 16) is within noise; the
+harness decision waits for the nav, notes, plan and map arms on the same 8123102 code.
+
+| commit | status | attempts | delivered | seconds |
+|---|---|---|---|---|
+| 89d66ea | accepted | 1 | yes | 611 |
+| 0c9c7c8 | accepted | 1 | yes | 196 |
+| 6dd3556 | accepted | 1 | yes | 247 |
+| edc7d71 | accepted | 1 | yes | 111 |
+| 6ea52be | accepted | 1 | yes | 187 |
+| 8331398 | accepted | 1 | yes | 485 |
+| 3e6e4bd | accepted | 1 | yes | 716 |
+| 06ba3e9 | interrupted (reviewer) | 1 | no | 765 |
+| dcd2e78 | accepted | 1 | yes | 683 |
+| 366e6ca | accepted | 1 | yes | 251 |
+| f20a4e2 | accepted | 1 | yes | 456 |
+| 0937b55 | accepted | 1 | yes | 443 |
+| 3612b5f | accepted | 2 | yes | 1218 |
+| 156422b | accepted | 1 | yes | 500 |
+| cde2e00 | accepted | 1 | yes | 251 |
+| 57271fe | accepted | 2 | yes | 1316 |
