@@ -17,7 +17,7 @@ RECIPE = Path(__file__).parent / 'recipes' / 'suite_acceptance.py'
 PYTEST = ['python', '-m', 'pytest', '-q', '-p', 'no:cacheprovider']
 CHECK_SECONDS = 900  # sandbox.verify's per-check limit for python-project; the base run must leave room for changes
 FOOTER = ('\n\nHow to run tests in this project: {targeted} (narrow it to one test file while working). Acceptance (check) runs the '
-          'whole suite and rejects only new failures; {failing} tests already fail on the base commit.')
+          'whole suite and rejects only new failures; tests already failing on the base commit: {failing}.')
 
 
 def base_outcomes(sandbox, repo, command, clock=time.monotonic):
@@ -35,7 +35,8 @@ def base_outcomes(sandbox, repo, command, clock=time.monotonic):
             sandbox.cleanup(workspace)
         seconds = clock() - started
         if not report.exists():
-            raise ValueError('The test command produced no report on the base commit; check --pytest-args and --env. '
+            reason = f'timed out after {CHECK_SECONDS} s' if result.get('timed_out') else 'produced no report'
+            raise ValueError(f'The test command {reason} on the base commit; check --pytest-args and --env. '
                              'Output tail: ' + (result.get('output') or '')[-1500:])
         outcomes = {}
         for case in ElementTree.parse(report).iter('testcase'):

@@ -58,7 +58,7 @@ class TaskInitTests(unittest.TestCase):
         self.assertEqual(task['test_command'], task['checks'][0])
         self.assertTrue(task['objective'].startswith('Make ok() return 2.\n\nHow to run tests in this project: env APP_TEST=1 python -m pytest'))
         self.assertIn("-m 'not db' tests", task['objective'])
-        self.assertIn('1 tests already fail on the base commit', task['objective'])
+        self.assertIn('tests already failing on the base commit: 1.', task['objective'])
         self.assertEqual(json.loads((self.root / 'task' / 'acceptance' / 'baseline_failures.json').read_text()),
                          ['tests.test_app::test_needs_db', 'tests.test_app::test_skipped'])
         self.assertIn('new failures', (self.root / 'task' / 'acceptance' / 'check.py').read_text())
@@ -74,8 +74,8 @@ class TaskInitTests(unittest.TestCase):
         self.assertFalse((self.root / 'b').exists() or (self.root / 'c').exists())
         sandbox = Sandbox()
         (self.root / 'exists').mkdir()
-        for out, env in ((self.root / 'exists', ()), (self.root / 'e', ['NOEQUALS'])):
-            with self.assertRaisesRegex(ValueError, 'already exists|NAME=VALUE'):
+        for out, env, message in ((self.root / 'exists', (), 'already exists'), (self.root / 'e', ['NOEQUALS'], 'NAME=VALUE')):
+            with self.assertRaisesRegex(ValueError, message):
                 build(self.repo, 'x', out, sandbox, env=env)
         self.assertEqual(sandbox.commands, [])  # refused before the slow base run
         ticks = iter([0, 800])
