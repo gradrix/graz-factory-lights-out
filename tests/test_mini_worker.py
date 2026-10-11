@@ -103,6 +103,10 @@ class MiniWorkerTests(unittest.TestCase):
         self.assertEqual(kwargs['reasoning_effort'], 'medium')
         self.assertEqual(kwargs['extra_body'], {'chat_template_kwargs': {'enable_thinking': True}, 'thinking_budget_tokens': 1024})
         self.assertEqual(model_kwargs({'endpoint': 'http://127.0.0.1:1/'})['extra_body'], {'chat_template_kwargs': {'enable_thinking': False}})
+        key = self.workspace.parent / 'key'
+        key.write_text('secret\n')  # the served model requires the configured key, as for the gflo worker
+        self.assertEqual(model_kwargs(dict(self.config, api_key_file=str(key)))['api_key'], 'secret')
+        self.assertEqual(kwargs['api_key'], 'local')
 
 
 if __name__ == '__main__':

@@ -91,7 +91,8 @@ def model_kwargs(config):
     extra = {'chat_template_kwargs': {'enable_thinking': reasoning != 'none'}}
     if reasoning != 'none':
         extra['thinking_budget_tokens'] = 1024
-    return {'api_base': config['endpoint'].rstrip('/') + '/v1', 'api_key': 'local', 'temperature': 0,
+    key = Path(config['api_key_file']).expanduser().read_text().strip() if config.get('api_key_file') else 'local'
+    return {'api_base': config['endpoint'].rstrip('/') + '/v1', 'api_key': key, 'temperature': 0,
             'max_tokens': 4096, 'reasoning_effort': reasoning, 'extra_body': extra}
 
 
