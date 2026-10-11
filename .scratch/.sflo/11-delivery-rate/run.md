@@ -197,3 +197,12 @@ The merge itself stays the user's (standing rule: generated changes are never ap
 | `plan_formatter.py`, 14 tests | merge unchanged, with a caveat | Exact-output snapshot tests of defaults and omitted sections. They also pin odd current output (`**S** () ` with a trailing space, `() --  -- 0km`), so a later formatting cleanup must update them. Some `not in` assertions repeat what exact equality already checks. |
 
 Phase 3 share merged unchanged: 2/2 (n = 2).
+
+## Phase 2 notes (running, 2026-10-11)
+
+- The first mini arm failed every task in about 5 s with a litellm authentication error: the mini worker sent a dummy
+  key while the rig's server needs the configured `api_key_file`. Repaired in 0bbe9a9, deployed to `~/gflo-p2`; the
+  failed rows are kept in `~/gflo-pp/phase2/failed-auth/` and the arm restarted.
+- mini 06ba3e9 interrupted after attempt 1 verified: the default single reviewer returned a finding with an invalid
+  source location, which stopped the run (not a worker failure). Repaired in 8b33c5e (one corrected retry), but kept
+  out of `~/gflo-p2` until phase 2 ends so all worker arms share one reviewer. Counted as not delivered for this arm.
