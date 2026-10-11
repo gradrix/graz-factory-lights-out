@@ -141,6 +141,31 @@ class ReviewTests(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, 'assessment'):
             worker(workspace, {'objective':'Undecided policy','checks':[],'max_turns':2}, None, 1)
 
+    def test_invalid_review_answer_is_retried_once_with_the_rejection(self):
+        from gflo.review import Reviewer
+        bad = {'decision': 'repair', 'question': '', 'findings': [
+            {'severity': 'major', 'path': 'other.py', 'line': 1, 'evidence': 'e', 'repair': 'r'}]}
+        good = {'decision': 'pass', 'findings': [], 'question': ''}
+        class Client:
+            config = {'model': 'local'}
+            def __init__(self, answers):
+                self.answers, self.systems, self.events = iter(answers), [], []
+            def observe(self, phase, **fields):
+                self.events.append((phase, fields))
+            def request(self, path, body, **kw):
+                self.systems.append(body['messages'][0]['content'])
+                return {'choices': [{'message': {'content': next(self.answers)}}]}
+        client = Client([json.dumps(bad), json.dumps(good)])
+        self.assertEqual(Reviewer(client).review_files('Objective', {'app.py': 'x = 1\n'})['decision'], 'pass')
+        self.assertNotIn('rejected', client.systems[0])
+        self.assertIn('rejected by the controller: Review finding needs a valid source location', client.systems[1])
+        invalid = [fields for phase, fields in client.events if phase == 'review_invalid']
+        self.assertIn('other.py', invalid[0]['answer'])
+        client = Client(['not json', json.dumps(bad)])  # a malformed answer is retried too; a second failure stops
+        with self.assertRaisesRegex(ValueError, 'valid source location'):
+            Reviewer(client).review_files('Objective', {'app.py': 'x = 1\n'})
+        self.assertEqual(len(client.systems), 2)
+
     def test_empty_assessment_response_has_a_useful_failure(self):
         from gflo.review import assess_question
         class Client:

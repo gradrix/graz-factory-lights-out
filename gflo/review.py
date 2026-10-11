@@ -39,8 +39,19 @@ class Reviewer:
         if len(payload.encode()) > 262144:
             raise ValueError('Independent review input exceeds 256 KiB; split the task explicitly')
         # Real-repository reviews carry large changed files; fixture-sized reviews finish far sooner.
-        response = complete(self.client, SYSTEM, payload, 'review_wait', timeout=600)
-        result = validate(response, files)
+        system = SYSTEM
+        for attempt in (1, 2):  # one corrected retry: an invalid answer otherwise stops a run whose candidate passed
+            response = None
+            try:
+                response = complete(self.client, system, payload, 'review_wait', timeout=600)
+                result = validate(response, files)
+                break
+            except (ValueError, MalformedVerdict) as error:
+                if attempt == 2:
+                    raise
+                self.client.observe('review_invalid', error=str(error)[:500], answer=json.dumps(response)[:2000])
+                system = (SYSTEM + ' Your previous answer was rejected by the controller: ' + str(error)[:500] +
+                          '. Paths must be keys of the files object and lines must exist in that file. Return one complete, valid object.')
         self.client.observe('review_result', decision=result['decision'], findings=len(result['findings']))
         return result
 
@@ -48,6 +59,10 @@ class Reviewer:
         from .environment import runtime_context
         files, note = review_scope(workspace, task)
         return self.review_files(task['objective'] + '\n' + runtime_context(task) + ('\n' + note if note else ''), files)
+
+
+class MalformedVerdict(RuntimeError):
+    """The model's answer was not one JSON object."""
 
 
 class CandidateContentError(ValueError):
@@ -154,7 +169,7 @@ def complete(client, system, payload, phase, timeout=120):
     try:
         return json.loads(response['choices'][0]['message']['content'])
     except (ValueError, TypeError, KeyError, IndexError) as error:
-        raise RuntimeError('Local assessment returned a malformed JSON verdict') from error
+        raise MalformedVerdict('Local assessment returned a malformed JSON verdict') from error
 
 
 def assess_question(client, objective, question):
