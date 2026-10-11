@@ -51,14 +51,17 @@ def importers(tests_sources, name):
     return count
 
 
-def candidates(repo, limit=None):
-    """Tracked non-test modules with at least MIN_SITES mutation sites: least directly tested first, then largest."""
+def candidates(repo, limit=None, include=()):
+    """Tracked non-test modules (under an INCLUDE prefix, if given) with at least MIN_SITES mutation sites:
+    least directly tested first, then largest."""
     tests = recipe()
     repo = Path(repo)
     files = tracked(repo)
     sources = [(repo / name).read_text(errors='replace') for name in files if tests.is_test(name) and name.endswith('.py')]
     ranked = []
     for name in files:
+        if include and not name.startswith(tuple(include)):
+            continue
         if not name.endswith('.py') or tests.is_test(name) or test_like(name) or Path(name).name in SKIP or (repo / name).is_symlink():
             continue
         try:
@@ -95,7 +98,7 @@ def outcome(state, log, status=None):
     return result
 
 
-def night(repo, out, *, state, config, environment_store, environment=None, limit=None, hours=8.0,
+def night(repo, out, *, state, config, environment_store, environment=None, limit=None, include=(), hours=8.0,
           threshold=0.6, checks_env=(), profile='python-project', command=None, clock=time.monotonic, status=None):
     """Run the queue; returns the path of the morning report."""
     out = Path(out).resolve()
@@ -106,7 +109,7 @@ def night(repo, out, *, state, config, environment_store, environment=None, limi
         raise ValueError(f'{queue_path} belongs to another repository: {queue["repo"]}')
     if subprocess.run(['git', '-C', str(repo), 'status', '--porcelain'], check=True, capture_output=True, text=True).stdout.strip():
         raise ValueError('Repository must be clean; commit the intended base first')
-    planned = candidates(repo, limit)
+    planned = candidates(repo, limit, include)
     queue['planned'] = planned
     command = command or [sys.executable, '-m', 'gflo']
     deadline = clock() + hours * 3600

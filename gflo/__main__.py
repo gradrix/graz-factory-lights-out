@@ -68,6 +68,7 @@ def main(argv=None):
     overnight.add_argument('repo', help='Clean git repository at the intended base commit')
     overnight.add_argument('--out', required=True, help='Queue directory (rerun the same command to continue)')
     overnight.add_argument('--limit', type=int, help='At most this many modules, least tested first')
+    overnight.add_argument('--include', action='append', default=[], help='Only modules under this path prefix (repeatable)')
     overnight.add_argument('--hours', type=float, default=8.0, help='Start no new run after this many hours')
     overnight.add_argument('--threshold', type=float, default=0.6)
     overnight.add_argument('--env', action='append', default=[], help='K=V set when running tests (repeatable)')
@@ -115,7 +116,7 @@ def main(argv=None):
             from .overnight import night
             report = night(args.repo, args.out, state=Path(args.state).resolve(), config=Path(args.config).resolve(),
                            environment_store=Path(args.environment_store).resolve(), environment=args.environment,
-                           limit=args.limit, hours=args.hours, threshold=args.threshold, profile=args.profile,
+                           limit=args.limit, include=args.include, hours=args.hours, threshold=args.threshold, profile=args.profile,
                            checks_env=(['env', *args.env] if args.env else []))
             print(json.dumps({'report': str(report)}, indent=2))
             return 0

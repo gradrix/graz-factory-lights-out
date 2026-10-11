@@ -42,6 +42,7 @@ class OvernightTests(unittest.TestCase):
         self.assertFalse(test_like('gflo/recipes/test_acceptance.py'))  # source named test_* outside tests/ stays a target
         self.assertEqual([item['tested_by'] for item in ranked], [0, 1])  # a package import does not count
         self.assertEqual(len(candidates(self.repo, 1)), 1)
+        self.assertEqual([item['target'] for item in candidates(self.repo, include=['app/t'])], ['app/tested.py'])
 
     def night(self, **kwargs):
         statuses = self.__dict__.setdefault('statuses', {})  # first run accepted, later ones exhausted
