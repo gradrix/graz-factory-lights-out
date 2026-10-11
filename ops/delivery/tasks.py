@@ -2,8 +2,9 @@
 
   tasks.py build MINED OBJECTIVES TASKS STORE  # one task dir per valid record that has an objective
   tasks.py score MINED TASKS RUN_STATE STORE COMMIT RUN_ID   # prints and saves the score JSON
+  tasks.py rescore MINED TASKS STORE RESULTS STATE_ROOT OUT   # rescore every run row of RESULTS into OUT
 
-The worker only sees the base commit and the objective. Scoring overlays the commit's test files
+The worker only sees the base commit and the objective. Scoring restores every test file of the commit
 on the run's final workspace and requires every fail-to-pass test and every suite pass-to-pass
 test to pass. "delivered" additionally requires the factory to have accepted the run.
 """
@@ -16,6 +17,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 from ops.delivery.env_exec import pytest_outcomes  # noqa: E402
+from ops.delivery.mine import HIDDEN  # noqa: E402
 
 
 
@@ -92,12 +94,16 @@ def score(mined, tasks, state, store, commit, run_id):
     shutil.copytree(run / 'workspace', work)
     after = Path(mined) / commit / 'commit'
     for change, path in record['hidden']:
-        target = work / path
         if change == 'D':
-            target.unlink(missing_ok=True)
-        else:
+            (work / path).unlink(missing_ok=True)
+    # Every reference test file, as SWE-bench resets the test files: a worker that renames or rewrites an existing
+    # test is scored against the reference version, not reported as missing pass-to-pass tests. Its new files stay.
+    for source in after.rglob('*'):
+        path = source.relative_to(after).as_posix()
+        if source.is_file() and not source.is_symlink() and HIDDEN.match(path):
+            target = work / path
             target.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(after / path, target)
+            shutil.copy2(source, target)
     environment = (Path(tasks) / commit / 'environment.txt').read_text().strip()
     seen, result = pytest_outcomes(store, environment, work, record['test_command'], timeout=1500)
     f2p_failed = [node for node in record['f2p'] if not seen.get(node)]
@@ -119,5 +125,14 @@ if __name__ == '__main__':
     elif sys.argv[1] == 'score':
         value = score(*sys.argv[2:8])
         print(json.dumps({k: v for k, v in value.items() if k != 'tail'}))
+    elif sys.argv[1] == 'rescore':
+        mined, tasks, store, results, root, out = sys.argv[2:8]
+        with open(out, 'a') as stream:
+            for line in Path(results).read_text().splitlines():
+                row = json.loads(line)
+                if row.get('run'):
+                    row.update(score(mined, tasks, Path(root) / row['arm'], store, row['commit'], row['run']))
+                    row.pop('tail', None)
+                print(json.dumps(row), file=stream, flush=True)
     else:
         raise SystemExit(__doc__)
