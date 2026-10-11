@@ -1,11 +1,44 @@
 # GFLO
 
-A small local software factory: give it a repository, a task and executable acceptance checks. It edits an isolated copy, checks the result and repairs failures within a fixed budget. Your source repository stays unchanged. An accepted run produces a patch and its evidence.
+GFLO is a software factory that runs entirely on your own machine. You give it a Git repository and a precisely described change; a local model makes the change in an offline Docker sandbox, the project's tests and a fresh model review check it, and you get a patch with its evidence. Your repository is never modified, and GFLO never pushes, merges or deploys. There is no cloud API, no subscription and no hosted fallback.
 
-**Works today:** bounded Python and TypeScript tasks using prepared dependencies, durable progress visibility and controlled recovery. [Incremental acceptance evidence](docs/evidence/autonomy-stages.md).
+## What it does today
 
-**Destination:** end-to-end autonomous local delivery, introduced through measured stages: visibility, independent review, environment preparation, research/browser tools, planning and integration. See the [roadmap](docs/roadmap.md) and [feasibility research](docs/research/autonomy-feasibility.md). Visibility and controlled recovery are implemented and qualified on the rig. Independent local review has passed the bounded qualification (12/12 fresh tasks, with documented quality limitations); three fixed environment profiles have passed bounded rig qualification, including an automatic repair. Approved-document fetch and cited local answers passed ten repeated and three fresh questions, with cross-version offline replay. Five supervised local-app browser journeys have passed rig qualification. Search, public browsing, decomposition and merging remain planned. Current priority: measuring end-to-end delivery on tasks from real repositories ([decision 011](docs/decisions/architecture/011-delivery-rate-route.md)). The model trials retain failed outcomes and do not qualify unattended large projects. See [environment preparation and offline use](docs/environments.md).
+Measured on the author's rig (one RTX 5090 serving a pruned Flash-Next Coder GGUF through llama.cpp with a 96K context; [operations](docs/operations.md)), with failures kept in the record:
 
+| Job | How | Measured | Typical time |
+|---|---|---|---|
+| Fix a bug or make a bounded change in a Python project that has a pytest suite | `gflo task init` + `gflo run` | 14 of 16 real tasks delivered, judged against the project's own later tests ([run note](.scratch/.sflo/11-delivery-rate/run.md)); 1 accepted patch was wrong | ~10 min, up to 45 |
+| Write tests for existing modules | `gflo tests init`, or `gflo tests overnight` for a queue | 2 of 2 modules accepted on a real project; on one, the new tests caught 17 of the 18 code mutations the existing tests missed | ~12 min per module |
+| Build a small program from a written spec, with your own acceptance checks | `gflo run` | 12 of 12 small single-module tasks ([evidence](docs/evidence/autonomy-stages.md)) | minutes |
+
+These numbers come from changes of 2–137 source lines, with objectives that name the functions involved and the exact behaviour wanted. Whether it works as well from a one-line request is being measured now.
+
+**Not yet:**
+- features that span several modules ([decision 008](docs/decisions/architecture/008-planning-pilot-outcome.md));
+- vague requests;
+- non-Python projects (TypeScript only in prepared fixtures);
+- applying, merging or publishing its own patches.
+
+Every accepted patch still needs your review.
+
+## Change an existing Python project
+
+```sh
+python3 -m gflo task init path/to/repo --out .gflo/tasks/fix-1 \
+  --objective "parse_duration() in app/time.py rejects '1h30m'; it should return 5400. Add regression tests."
+python3 -m gflo run .gflo/tasks/fix-1/task.json --environment ENV_ID   # the exact command is printed by task init
+```
+
+`task init` prepares the project's dependencies once (from `pyproject.toml` / `requirements*.txt`; the only online step) and runs the project's suite on the clean base commit. It records which tests already fail there. Acceptance then needs no hand-written checks: the full suite may gain no new failures, new regression tests must exist, and a fresh model review must pass. Use `--pytest-args` (default `tests`) and `--env K=V` when the suite needs markers or environment variables, as in `--pytest-args "-m 'not db' tests" --env APP_TEST=1`. When the run is accepted, review `change.patch` and apply it yourself (see [Inspect the result](#inspect-the-result)).
+
+A good objective is one a careful colleague could implement without asking questions. These rules come from what went wrong on real tasks:
+
+- **Name the public function, class or module** that should change, and how it is called.
+- **State exact outputs** wherever a test will compare them: strings, numbers, error types. "Return 5400" works; "handle hours" does not.
+- **Spell out any term with two plausible readings.** One wrong delivery came from "index of the first step": the worker took a list position, the project meant the file format's own step numbering.
+- **Say what must not change.** If behaviour changes on purpose, say which existing tests should change with it; the worker is reluctant to edit tests it did not write.
+- **Leave out how to implement it** unless the approach matters.
 ## Run on MONSTER-GAMING-PC
 
 The prepared installation is `/home/gradrix/gflo-runtime`. The model and sandbox image are already on disk. Once installed, these commands need no Internet connection:
@@ -22,9 +55,9 @@ python3 -m gflo status
 
 To use this checkout with the rig's model, see [local setup](docs/operations.md). Python 3.10+, Git and Docker are required. The runtime uses only Python's standard library; no agent subscription, hosted API or cloud fallback is involved.
 
-## Bring a task
+## Bring your own acceptance checks
 
-Commit the intended input in a clean Git repository. Create an acceptance directory outside the worker repository and a task JSON file:
+For new projects, non-pytest projects or stricter acceptance, write the checks yourself. Commit the intended input in a clean Git repository. Create an acceptance directory outside the worker repository and a task JSON file:
 
 ```json
 {

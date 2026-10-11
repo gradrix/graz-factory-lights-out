@@ -1,4 +1,4 @@
-"""Acceptance for a mined task: the project suite may not gain failures over the base commit.
+"""No-new-failures acceptance: the project suite may not gain failures over the base commit (gflo task init, delivery cohort).
 
 Runs inside the verification sandbox: python /acceptance/check.py PYTEST_ARGS...
 /acceptance/baseline_failures.json lists tests already failing on the base commit (for example

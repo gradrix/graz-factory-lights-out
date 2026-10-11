@@ -177,3 +177,11 @@ baseline worker byte-identical to the parent commit).
 | gflo `document_references.py`, `web.py` | not run: the trial script archived a missing `main` ref | — | — | queued again after phase 2 (`chain-tests2.sh`) |
 
 The patches stay on the rig (`~/gflo-pp/tf/runs/*/change.patch`, private repository). Acceptance for phase 3 is the user's merge-unchanged judgement on them.
+
+## Terse-objective arm (user choice 2026-10-11: option A before phase 4)
+
+Same 16 tasks, frozen 7cedc3c, default reviewer; only the objective changes. Each terse objective (in
+`~/gflo-pp/terse-*.json` on the rig, private) keeps the public interfaces and exact outputs the hidden tests pin and
+drops implementation steps and enumerated cases, as SWE-bench Verified requires of issue text. Mean length: running-coach
+984 → 427 characters, gflo 720 → 381. Task directories differ from the headline ones only in the objective (checked on
+8331398). `chain-terse.sh` runs after the overnight trial and rescores with e5fbb82. Results: pending.

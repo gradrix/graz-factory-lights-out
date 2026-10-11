@@ -66,7 +66,7 @@ def build(mined, objectives, tasks, store):
         acceptance = root / 'acceptance'
         acceptance.mkdir()
         shutil.copy2(baseline, acceptance / 'baseline_failures.json')
-        shutil.copy2(Path(__file__).with_name('acceptance_check.py'), acceptance / 'check.py')
+        shutil.copy2(Path(__file__).resolve().parents[2] / 'gflo' / 'recipes' / 'suite_acceptance.py', acceptance / 'check.py')
         command = record['test_command']
         python = command.index('python')
         check = command[:python] + ['python', '/acceptance/check.py'] + command[python + 3:]  # drop "-m pytest"

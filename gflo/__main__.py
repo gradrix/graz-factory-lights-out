@@ -54,6 +54,18 @@ def main(argv=None):
     checking = actions.add_parser('check')
     checking.add_argument('id')
     checking.add_argument('--repeat', type=int, choices=range(1, 4), default=1)
+    task_command = sub.add_parser('task', help='Create a change task for a Python project: its own suite must gain no failures')
+    task_actions = task_command.add_subparsers(dest='task_action', required=True)
+    task_init = task_actions.add_parser('init')
+    task_init.add_argument('repo', help='Clean git repository at the intended base commit')
+    objective = task_init.add_mutually_exclusive_group(required=True)
+    objective.add_argument('--objective', help='What must change, naming the public interfaces involved')
+    objective.add_argument('--objective-file', help='Read the objective from this file')
+    task_init.add_argument('--out', required=True, help='New task directory')
+    task_init.add_argument('--pytest-args', default='tests', help='Arguments after "pytest -q -p no:cacheprovider" (default: tests)')
+    task_init.add_argument('--env', action='append', default=[], help='K=V set when running tests (repeatable)')
+    task_init.add_argument('--environment', help='Prepared environment ID; otherwise prepare one from the project manifests')
+    task_init.add_argument('--environment-store', default='.gflo/environments')
     tests_command = sub.add_parser('tests', help='Create a test-writing task with mutation-score acceptance')
     tests_actions = tests_command.add_subparsers(dest='tests_action', required=True)
     tests_init = tests_actions.add_parser('init')
@@ -112,6 +124,26 @@ def main(argv=None):
                 result = {'cleaned': True}
             print(json.dumps(result, indent=2))
             return 1 if result.get('receipt', {}).get('outcome', {}).get('status') == 'failed' else 0
+        if args.command == 'task':
+            from .taskinit import build as build_change_task
+            store = EnvironmentStore(args.environment_store)
+            if args.environment:
+                prepared = store.resolve(args.environment)
+            else:
+                validate_project(store, 'python-project', args.repo)
+                prepared = prepare(store, 'python-project', project=args.repo)
+            config_path = Path(args.config)
+            image = json.loads(config_path.read_text()).get('image', DEFAULT_IMAGE) if config_path.exists() else DEFAULT_IMAGE
+            sandbox = Sandbox(image)
+            sandbox.bind(prepared)
+            text = Path(args.objective_file).read_text() if args.objective_file else args.objective
+            result = build_change_task(args.repo, text, args.out, sandbox, pytest_args=args.pytest_args,
+                                       env=args.env)
+            result['environment'] = prepared.id
+            result['next'] = (f'python3 -m gflo run {result["task"]} --environment {prepared.id} '
+                              f'--environment-store {args.environment_store}')
+            print(json.dumps(result, indent=2))
+            return 0
         if args.command == 'tests' and args.tests_action == 'overnight':
             from .overnight import night
             report = night(args.repo, args.out, state=Path(args.state).resolve(), config=Path(args.config).resolve(),

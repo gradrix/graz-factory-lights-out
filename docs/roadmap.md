@@ -27,6 +27,8 @@ Each phase ends with a measured run on real repositories, merges to `main`, and 
 
 Result (2026-10-11, frozen 7cedc3c, default reviewer): **14/16 delivered (87.5%)**, 1 false accept (an objective ambiguous on the point its hidden test pins), 1 worker miss; 16 tasks from running-coach and gflo, short of the planned 20. Objectives were detailed operator briefs written from the reference commits, so the rate is for precisely specified bounded changes. The ensemble arm delivered 7/16 (decision 010 update). Run note: `.scratch/.sflo/11-delivery-rate/run.md`.
 
+Follow-ups (user choice, 2026-10-11): (1) a terse-objective arm reruns the 16 tasks with objectives cut to about half their length, keeping only the public interfaces and exact outputs the hidden tests need, on the same frozen code, before phase 4 is decided. (2) The measured acceptance became a product command, `gflo task init` (the project suite gains no new failures over the base), and the README now leads with the measured use cases and objective-writing guidance.
+
 ### 2. Worker capability
 
 Status: navigation aids (`navigation` config) and the mini-swe-agent worker (`worker: "mini-swe-agent"`) are implemented (2026-10-10); arms run after the frozen phase-1 rerun.
