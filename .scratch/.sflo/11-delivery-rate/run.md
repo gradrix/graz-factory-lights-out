@@ -129,3 +129,13 @@ Code 8123102 in `~/gflo-p2` on the rig; `chain-phase2.sh` starts after `FROZEN D
 `mini` (mini-swe-agent 2.4.6 worker, same model and sandbox, SWE-bench observation template), `nav` (all
 navigation aids), then `notes`, `plan`, `map` alone. Navigation aids passed independent QA (one repair round;
 baseline worker byte-identical to the parent commit).
+
+## Test-factory trials (phase 3, frozen 7cedc3c, 2026-10-11)
+
+| Target | Factory | Time | New tests | Mutants the existing tests miss, killed by the new tests |
+|---|---|---|---|---|
+| running-coach `plan_formatter.py` | accepted, 1 attempt | 740 s | 14 | 1/1 (existing tests already kill 8/9) |
+| running-coach `performance_recovery_mode.py` | accepted, 1 attempt | 763 s | 21 | 17/18 |
+| gflo `document_references.py`, `web.py` | not run: the trial script archived a missing `main` ref | — | — | queued again after phase 2 (`chain-tests2.sh`) |
+
+The patches stay on the rig (`~/gflo-pp/tf/runs/*/change.patch`, private repository). Acceptance for phase 3 is the user's merge-unchanged judgement on them.
