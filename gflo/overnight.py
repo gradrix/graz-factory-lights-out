@@ -21,9 +21,10 @@ FINAL = {'accepted', 'exhausted', 'needs_input', 'cancelled'}
 
 
 def test_like(name):
-    """Test files the factory's acceptance would treat as source: colocated tests/ dirs, test_*.py, *_test.py."""
+    """Test files the factory's acceptance would treat as source: colocated tests/ dirs, root test_*.py, *_test.py."""
     parts = Path(name).parts
-    return any(part in ('tests', 'test') for part in parts[:-1]) or bool(re.fullmatch(r'test_.*\.py|.*_test\.py', parts[-1]))
+    return (any(part in ('tests', 'test') for part in parts[:-1]) or bool(re.fullmatch(r'.*_test\.py', parts[-1]))
+            or (len(parts) == 1 and parts[0].startswith('test_')))
 
 
 def recipe():

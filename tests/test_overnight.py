@@ -5,7 +5,7 @@ import sys
 import tempfile
 import unittest
 
-from gflo.overnight import candidates, morning_report, night
+from gflo.overnight import candidates, morning_report, night, test_like
 
 BIG = 'def grade(score):\n    if score >= 90:\n        return "A"\n    if score >= 80:\n        return "B"\n    if score > 0 and not score > 100:\n        return "C"\n    return None\n'
 SMALL = 'def one():\n    return 1\n'
@@ -39,6 +39,7 @@ class OvernightTests(unittest.TestCase):
     def test_candidates_put_untested_modules_first_and_skip_small_and_setup_files(self):
         ranked = candidates(self.repo)
         self.assertEqual([item['target'] for item in ranked], ['app/grades.py', 'app/tested.py'])
+        self.assertFalse(test_like('gflo/recipes/test_acceptance.py'))  # source named test_* outside tests/ stays a target
         self.assertEqual([item['tested_by'] for item in ranked], [0, 1])  # a package import does not count
         self.assertEqual(len(candidates(self.repo, 1)), 1)
 
