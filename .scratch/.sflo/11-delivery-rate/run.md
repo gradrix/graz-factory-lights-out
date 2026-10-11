@@ -75,7 +75,7 @@ The rig code is frozen at 7cedc3c from here: the ensemble arm and a full default
 | Task | Ensemble | Hidden tests | Ensemble stop cause | Default reviewer, exploratory pass |
 |---|---|---|---|---|
 | 8331398 | accepted, 1 attempt, 2,646 s | pass | — | accepted, 618 s |
-| 3e6e4bd | accepted, 2 attempts, 3,234 s | see note | — | interrupted (review timeout, since repaired) |
+| 3e6e4bd | accepted, 2 attempts, 3,234 s | pass (rescored) | — | interrupted (review timeout, since repaired) |
 | 06ba3e9 | interrupted, 1,828 s | pass | audit request 120K tokens > 98K context | exhausted (review size, since repaired) |
 | dcd2e78 | interrupted, 2,069 s | pass | audit request timed out | exhausted (review size, since repaired) |
 | 366e6ca | accepted, 1,865 s | pass | — | accepted, 374 s |
@@ -98,7 +98,7 @@ tests. Runs take 2–5× the default reviewer's time. It caught nothing the hidd
 3e6e4bd was first scored as a false accept: two pass-to-pass tests "failed" because the worker renamed the test
 function in `tests/test_recorded_plan_display.py`, a file the reference commit did not touch, so the original test
 ids no longer existed. Its code keeps those cases' behaviour. Scorer repaired in e5fbb82 (every reference test file
-is restored before scoring, as SWE-bench does); all runs are rescored with it.
+is restored before scoring, as SWE-bench does). Rescoring all 32 cohort runs with it changed only this one: 0 false accepts in either arm.
 
 Decision (agent, per the 2-round qualification cap): the ensemble stays opt-in and is not recommended for real
 repositories on this rig; it is not repaired further. The default single reviewer is the factory's reviewer.
