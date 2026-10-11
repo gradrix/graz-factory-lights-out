@@ -70,16 +70,38 @@ Exploratory default-reviewer pass, 17 runs over 16 tasks: 11 delivered, 0 false 
 
 The rig code is frozen at 7cedc3c from here: the ensemble arm and a full default-reviewer rerun (`chain-frozen.sh`, after the test-factory trials) both run on it.
 
-### Ensemble arm (frozen 7cedc3c)
+### Ensemble arm (frozen 7cedc3c), 16 tasks
 
-| Task | Factory | Hidden tests | Single reviewer, same task |
-|---|---|---|---|
-| 8331398 | accepted, 1 attempt, 2,646 s | pass | accepted, 618 s |
-| 3e6e4bd | accepted, 2 attempts, 3,234 s | pass | interrupted (review timeout, since repaired) |
-| 06ba3e9 | interrupted | pass | exhausted (review size, since repaired) |
-| dcd2e78 | interrupted | pass | exhausted (review size, since repaired) |
+| Task | Ensemble | Hidden tests | Ensemble stop cause | Default reviewer, exploratory pass |
+|---|---|---|---|---|
+| 8331398 | accepted, 1 attempt, 2,646 s | pass | — | accepted, 618 s |
+| 3e6e4bd | accepted, 2 attempts, 3,234 s | see note | — | interrupted (review timeout, since repaired) |
+| 06ba3e9 | interrupted, 1,828 s | pass | audit request 120K tokens > 98K context | exhausted (review size, since repaired) |
+| dcd2e78 | interrupted, 2,069 s | pass | audit request timed out | exhausted (review size, since repaired) |
+| 366e6ca | accepted, 1,865 s | pass | — | accepted, 374 s |
+| f20a4e2 | interrupted, 1,398 s | pass | audit request timed out | accepted, 971 s |
+| 0937b55 | accepted, 2 attempts, 2,119 s | pass | — | accepted, 807 s |
+| 3612b5f | interrupted, 3 attempts, 3,197 s | fail | audit request timed out (stale tests as before) | exhausted (worker miss) |
+| 156422b | interrupted, 1,303 s | pass | audit request timed out | accepted, 2 attempts |
+| cde2e00 | interrupted, 1,996 s | pass | audit output invalid (command segment mismatch) | interrupted (model HTTP 500, since repaired) |
+| 57271fe | interrupted, 1,769 s | fail | prosecutor output invalid (source reference) | exhausted (worker miss) |
+| 89d66ea | interrupted, 5,603 s | fail | after one repair round, audit output invalid (segment mismatch) | accepted, 2 attempts |
+| 0c9c7c8 | interrupted, 1,410 s | pass | audit output invalid (segment mismatch) | accepted, 279 s |
+| 6dd3556 | accepted, 1,142 s | pass | — | accepted, 315 s |
+| edc7d71 | accepted, 1,307 s | pass | — | accepted, 157 s |
+| 6ea52be | accepted, 1,749 s | pass | — | accepted, 2 attempts |
 
-Both ensemble interruptions: the unit audit request reached ~120K tokens against the 98K context ("could not reach a validated decision"). The ensemble sends audit roles the reviewed files plus the exploration catalog, which real repositories overflow. Not repaired during the frozen arm.
+Ensemble: 7 of 16 delivered. All 9 losses are the ensemble itself failing to reach a decision (4 audit timeouts,
+1 context overflow, 4 invalid role outputs); in 6 of them the patch passes the hidden
+tests. Runs take 2–5× the default reviewer's time. It caught nothing the hidden tests or the default reviewer missed.
+
+3e6e4bd was first scored as a false accept: two pass-to-pass tests "failed" because the worker renamed the test
+function in `tests/test_recorded_plan_display.py`, a file the reference commit did not touch, so the original test
+ids no longer existed. Its code keeps those cases' behaviour. Scorer repaired in e5fbb82 (every reference test file
+is restored before scoring, as SWE-bench does); all runs are rescored with it.
+
+Decision (agent, per the 2-round qualification cap): the ensemble stays opt-in and is not recommended for real
+repositories on this rig; it is not repaired further. The default single reviewer is the factory's reviewer.
 
 The headline rate will come from a rerun of all tasks at one frozen revision after this pass.
 

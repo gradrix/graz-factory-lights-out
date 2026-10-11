@@ -26,3 +26,9 @@ Status: accepted as opt-in, 2026-10-10. Blind run 2 failed 23/24 on a temperatur
 ## Consequences
 
 The single-request `review.py` remains the default. The ensemble is the recommended reviewer for unattended Python coding runs once promoted.
+
+## Update 2026-10-11: real repositories (agent decision)
+
+On 16 tasks mined from two real repositories (roadmap phase 1, frozen 7cedc3c), the ensemble delivered 7. All 9 losses were the ensemble failing to reach a decision: 4 audit requests timed out, 1 audit request reached ~120K tokens against the 98K context, 4 role outputs failed validation. In 6 of the 9 the patch passes the hidden tests. Each run took 2–5× as long as with the default reviewer, and it caught no defect that the hidden tests or the default reviewer missed. Details: `.scratch/.sflo/11-delivery-rate/run.md`.
+
+The ensemble has used its qualification rounds. It stays opt-in and is **not** promoted: the "recommended once promoted" consequence above is withdrawn, and the single-request reviewer is the factory's reviewer. Reopening it would need serving parallelism and audit inputs sized for real repositories. Both are out of scope until the delivery rate earns phase 4.

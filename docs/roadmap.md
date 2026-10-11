@@ -12,7 +12,7 @@ All inference stays local. No cloud fallback, no automatic push/merge/deploy of 
 
 Durable runs, offline Docker sandbox, read-only operator acceptance, repair loop, resume, evidence, three fixed environment profiles, document evidence and local browser checks as separate CLIs, the single-request reviewer (default) and the role-ensemble reviewer (opt-in, decision 010). Evidence per capability: [autonomy stages](evidence/autonomy-stages.md).
 
-Measured limits: small single-module tasks succeed (12/12 cohort D); multi-file increments did not complete (decision 008); ensemble review costs 17–31 minutes per ~95-line project. The fixed profiles cannot run the user's real projects (pytest, pandas, SQLAlchemy, …).
+Measured limits: small single-module tasks succeed (12/12 cohort D); multi-file increments did not complete (decision 008); ensemble review costs 17–31 minutes per ~95-line project, and on real repositories it delivered 7/16 against its own timeouts, context overflow and invalid outputs (decision 010 update: not promoted). The fixed profiles cannot run the user's real projects (pytest, pandas, SQLAlchemy, …).
 
 ## Phases
 

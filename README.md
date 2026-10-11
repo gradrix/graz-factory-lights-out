@@ -55,7 +55,7 @@ Exit codes: `0` accepted/read-only command success, `2` not accepted (including 
 
 ## Inspect the result
 
-`.gflo/runs/RUN_ID/` contains the frozen task, acceptance files, candidate workspace, per-attempt conversation and verification results, and `change.patch`. New CLI runs require the configured checks, discovered Python regression tests and a fresh local review to pass. Set `"review": "ensemble"` in the config to use the slower executable role-ensemble review for Python projects (roughly 17–31 minutes per review on one serving slot; see [decision 010](docs/decisions/architecture/010-ensemble-review-integration.md)); the default is `"single"`. Acceptance remains limited by the quality of those checks and review; inspect the qualification evidence before relying on unattended results.
+`.gflo/runs/RUN_ID/` contains the frozen task, acceptance files, candidate workspace, per-attempt conversation and verification results, and `change.patch`. New CLI runs require the configured checks, discovered Python regression tests and a fresh local review to pass. Set `"review": "ensemble"` in the config to use the slower executable role-ensemble review for Python projects (roughly 17–31 minutes per review on one serving slot; on real repositories it often fails to reach a decision, so it is not recommended there; see [decision 010](docs/decisions/architecture/010-ensemble-review-integration.md)); the default is `"single"`. Acceptance remains limited by the quality of those checks and review; inspect the qualification evidence before relying on unattended results.
 
 Review the patch before applying it to the source repository at the recorded base commit:
 
