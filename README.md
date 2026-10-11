@@ -4,15 +4,15 @@ GFLO is a software factory that runs entirely on your own machine. You give it a
 
 ## What it does today
 
-Measured on the author's rig (one RTX 5090 serving a pruned Flash-Next Coder GGUF through llama.cpp with a 96K context; [operations](docs/operations.md)), with failures kept in the record:
+Measured on the author's rig: one RTX 5090 serving a pruned Flash-Next Coder GGUF through llama.cpp ([operations](docs/operations.md)). Failures are kept in the record.
 
 | Job | How | Measured | Typical time |
 |---|---|---|---|
-| Fix a bug or make a bounded change in a Python project that has a pytest suite | `gflo task init` + `gflo run` | 14 of 16 real tasks delivered, judged against the project's own later tests ([run note](.scratch/.sflo/11-delivery-rate/run.md)); 1 accepted patch was wrong | ~10 min, up to 45 |
+| Fix a bug or make a bounded change in a Python project that has a pytest suite | `gflo task init` + `gflo run` | 14 of 16 tasks delivered: past commits of two of the author's projects (one is GFLO itself), redone from their parent commit and judged by the tests those commits added ([run note](.scratch/.sflo/11-delivery-rate/run.md)). 1 accepted patch was wrong | ~10 min, up to 42 |
 | Write tests for existing modules | `gflo tests init`, or `gflo tests overnight` for a queue | 2 of 2 modules accepted on a real project; on one, the new tests caught 17 of the 18 code mutations the existing tests missed | ~12 min per module |
 | Build a small program from a written spec, with your own acceptance checks | `gflo run` | 12 of 12 small single-module tasks ([evidence](docs/evidence/autonomy-stages.md)) | minutes |
 
-These numbers come from changes of 2–137 source lines, with objectives that name the functions involved and the exact behaviour wanted. Whether it works as well from a one-line request is being measured now.
+These numbers come from changes of 2–137 source lines. Their objectives were written for the measurement from the original commits: they name the functions involved and the exact behaviour wanted. A rerun with objectives about half as long is in progress.
 
 **Not yet:**
 - features that span several modules ([decision 008](docs/decisions/architecture/008-planning-pilot-outcome.md));
@@ -25,12 +25,13 @@ Every accepted patch still needs your review.
 ## Change an existing Python project
 
 ```sh
+# illustrative objective; describe your own change
 python3 -m gflo task init path/to/repo --out .gflo/tasks/fix-1 \
   --objective "parse_duration() in app/time.py rejects '1h30m'; it should return 5400. Add regression tests."
 python3 -m gflo run .gflo/tasks/fix-1/task.json --environment ENV_ID   # the exact command is printed by task init
 ```
 
-`task init` prepares the project's dependencies once (from `pyproject.toml` / `requirements*.txt`; the only online step) and runs the project's suite on the clean base commit. It records which tests already fail there. Acceptance then needs no hand-written checks: the full suite may gain no new failures, new regression tests must exist, and a fresh model review must pass. Use `--pytest-args` (default `tests`) and `--env K=V` when the suite needs markers or environment variables, as in `--pytest-args "-m 'not db' tests" --env APP_TEST=1`. When the run is accepted, review `change.patch` and apply it yourself (see [Inspect the result](#inspect-the-result)).
+`task init` prepares the project's dependencies once (from `pyproject.toml` / `requirements*.txt`; the only online step) and runs the project's suite on the clean base commit. It records which tests already fail or are skipped there. Acceptance then needs no hand-written checks: the full suite may gain no new failures, and a fresh model review must pass. The review blocks a patch that leaves out tests the objective asked for, so ask for regression tests in the objective. The suite must finish within about 12 minutes, the acceptance limit with room for the change; narrow it with markers if it is slower. Use `--pytest-args` (default `tests`) and `--env K=V` when the suite needs markers or environment variables, as in `--pytest-args "-m 'not db' tests" --env APP_TEST=1`. When the run is accepted, review `change.patch` and apply it yourself (see [Inspect the result](#inspect-the-result)).
 
 A good objective is one a careful colleague could implement without asking questions. These rules come from what went wrong on real tasks:
 
@@ -39,6 +40,7 @@ A good objective is one a careful colleague could implement without asking quest
 - **Spell out any term with two plausible readings.** One wrong delivery came from "index of the first step": the worker took a list position, the project meant the file format's own step numbering.
 - **Say what must not change.** If behaviour changes on purpose, say which existing tests should change with it; the worker is reluctant to edit tests it did not write.
 - **Leave out how to implement it** unless the approach matters.
+
 ## Run on MONSTER-GAMING-PC
 
 The prepared installation is `/home/gradrix/gflo-runtime`. The model and sandbox image are already on disk. Once installed, these commands need no Internet connection:
