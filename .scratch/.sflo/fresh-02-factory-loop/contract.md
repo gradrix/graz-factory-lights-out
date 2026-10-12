@@ -1,1 +1,0 @@
-Provide doctor/run/status/resume CLI; preserve original repository; snapshot acceptance; isolated offline worker and verification; durable bounded repair and crash recovery; patch and evidence output; behavior tests.

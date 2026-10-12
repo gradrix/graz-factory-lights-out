@@ -1,1 +1,0 @@
-Run all three documented realistic scenarios using the real local model; demonstrate failure/repair and recovery; measure coverage; obtain fresh-context QA; document commands, limitations, deployment and results.

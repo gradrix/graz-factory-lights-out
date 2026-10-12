@@ -1,1 +1,0 @@
-Pinned local Flash Coder runs on the 5090 with verified actual context, a restart policy, loopback-only access, no startup downloads and a tested explicit original-vLLM rollback. Capture model/runtime identity and smoke evidence.

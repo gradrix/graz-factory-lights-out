@@ -1,4 +1,0 @@
-{
-  "error": "Local assessment returned a malformed JSON verdict",
-  "type": "RuntimeError"
-}

@@ -1,6 +1,0 @@
-{
-  "configured_context": 131072,
-  "actual_completed_probe": 32000,
-  "larger_probe_cancelled": true,
-  "reason": "Slow 32K prefill; next compare 64K with larger microbatch before considering larger Flash contexts."
-}
