@@ -132,16 +132,19 @@ class WorkerTests(unittest.TestCase):
             workspace = Path(directory) / 'workspace'
             workspace.mkdir()
             worker = ModelWorker({'endpoint': 'http://127.0.0.1:18000', 'model': 'test'}, FakeSandbox())
-            seen = []
+            seen, budgets = [], []
             def malformed(path, body, **kwargs):
                 seen.append(body['messages'][-1]['content'])
+                budgets.append(body['max_tokens'])
                 raise ModelHTTPError(500, 'Failed to parse tool call arguments as JSON: missing closing quote')
             worker.request = malformed
             result = worker(workspace, {'objective': 'Fix', 'max_turns': 8, 'checks': []}, None, 1)
             self.assertTrue(result['limited'])
             self.assertIn('malformed', result['summary'])
             self.assertEqual(len(seen), 3)
-            self.assertIn('shorter', seen[1])
+            self.assertIn('cut off at the output limit', seen[1])
+            self.assertIn('cat >>', seen[1])
+            self.assertEqual(budgets, [4096, 8192, 16384])  # a cut-off call gets room to finish; normal turns keep 4096
             replies = iter([ModelHTTPError(500, 'Failed to parse tool call arguments as JSON'), {'choices': [{'message': {'role': 'assistant', 'content': 'Done'}}]}])
             def recovers(*args, **kwargs):
                 reply = next(replies)

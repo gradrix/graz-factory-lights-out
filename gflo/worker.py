@@ -139,7 +139,7 @@ class ModelWorker:
         started = time.monotonic()
         repeats = {}
         calls_total = 0
-        malformed = 0
+        malformed = streak = 0  # streak: consecutive unparseable calls, each retried with a doubled output budget
         unchanged = tree_state(workspace) if aids['checkpoint'] else None
         for turn in range(1, max_turns + 1):
             if aids['checkpoint'] and turn == aids['checkpoint'] + 1 and tree_state(workspace) == unchanged:
@@ -150,7 +150,7 @@ class ModelWorker:
                 return {'summary': '30-minute attempt budget exhausted', 'turns': turn - 1, 'limited': True}
             reasoning = self.config.get('reasoning', 'none')
             body = {'model': self.config['model'], 'messages': messages, 'tools': tools,
-                    'tool_choice': 'auto', 'temperature': 0, 'max_tokens': 4096,
+                    'tool_choice': 'auto', 'temperature': 0, 'max_tokens': 4096 * 2 ** min(streak, 2),
                     'reasoning_effort': reasoning,
                     'chat_template_kwargs': {'enable_thinking': reasoning != 'none'}}
             if reasoning != 'none':
@@ -166,11 +166,16 @@ class ModelWorker:
                 if MALFORMED_CALL not in error.detail:
                     raise
                 malformed += 1
+                streak += 1
                 record({'event': 'malformed_call', 'turn': turn, 'error': error.detail[:2000]})
                 if malformed > MALFORMED_RETRIES:
                     return {'summary': 'Model produced malformed tool calls; attempt ended', 'turns': turn, 'limited': True}
-                messages.append({'role': 'user', 'content': 'Your last tool call could not be parsed (it was truncated or repeated itself). Issue one shorter, well-formed tool call; write long content to files in several steps.'})
+                messages.append({'role': 'user', 'content': (
+                    'Your last tool call could not be parsed: it was cut off at the output limit (about 10,000 characters) or '
+                    'repeated itself. Issue one shorter, well-formed tool call. Write a long file in parts of at most about 150 '
+                    "lines: create it with cat > file <<'EOF', then add each further part with cat >> file <<'EOF'.")})
                 continue
+            streak = 0
             self.observe('model_response', attempt=attempt, turn=turn, usage=response.get('usage', {}))
             record({'event': 'response', 'turn': turn, 'body': response})
             choice = response['choices'][0]

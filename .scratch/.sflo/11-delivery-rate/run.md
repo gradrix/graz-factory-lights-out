@@ -257,3 +257,26 @@ Repeat queued: `~/gflo-pp/chain-hard.sh` (after TERSE DONE), code 0002cbf in `~/
 | gflo/web.py | 811b1f7e1cf0 | 2 | 1690 | 12 | 25/25 (existing tests kill 0) | edit needed: bound the real default port 8787 |
 
 Phase 3 total: 2 of 4 mergeable unchanged (running-coach), 4 of 4 after a few-line edit. Both gflo patches are merged with the edits marked "Edited on merge". Repair to the factory: test acceptance rejects new test string literals that share a 200-character stretch with a target's string literal. It flags the original refs patch, and gives no false positives on the merged refs and web tests or on the two running-coach accepted runs (checked on the rig). The objective now says so, and says to bind port 0. The prompt typo "at most8 claims,1–4 spans" in `gflo/document_references.py` is left as is: it is part of a measured prompt.
+
+## Phase 3: overnight trial (2026-10-12)
+
+`gflo tests overnight` on running-coach, `--include running_coach/ --limit 3 --hours 4`, code 8591076 (`~/gflo-ov`):
+0 of 3 modules accepted. The three modules were performance_coach_continuous (301 mutation sites), delivery/state and
+performance_phases, none directly tested.
+
+| module | attempts | seconds | how they ended |
+|---|---|---|---|
+| performance_coach_continuous | 3 | 2310 | all 3: malformed tool calls |
+| delivery/state | 3 | 1984 | 1: turn budget, left `tmp_probe.db` in the repo root; 2–3: malformed tool calls |
+| performance_phases | 3 | 925 | all 3: malformed tool calls |
+
+Cause, 8 of 9 attempts: the worker wrote the whole test file (about 11 KB) in one heredoc tool call. The turn's
+4,096-token output cap (1,024 of it thinking) cut it off (`finish_reason: length`), llama.cpp answered HTTP 500
+"Failed to parse tool call ... missing closing quote" at column ~10,900, and at temperature 0 the model regenerated
+the identical call after the generic retry message. The same failure appears in 2 of 82 delivery-run attempts. Its
+smaller files usually fit.
+
+Repair: a cut-off call is retried with the output budget doubled (8,192, then 16,384; normal turns unchanged at
+4,096, so delivery runs are unaffected unless they hit this). The retry message names the cut-off and asks for the
+file in parts with `cat >>`. The test objective also tells the worker to delete scratch files outside tests/.
+Verification is queued: the same 3 modules rerun after HARD DONE (`~/gflo-pp/chain-overnight2.sh`).
