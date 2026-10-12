@@ -27,6 +27,7 @@ User direction, 2026-10-02: push the first version, delete previous implementati
 - [Delivery-rate route](../../docs/decisions/architecture/011-delivery-rate-route.md): user chose (2026-10-10) to stop review requalification and measure end-to-end delivery on tasks mined from their own repositories; [roadmap](../../docs/roadmap.md) replaced by five gated phases.
 
 - [Project-resolved Python](../../docs/decisions/architecture/012-project-resolved-python.md): explicit `python-project` profile resolves a repository's own dependencies once online; worker stays offline.
+- [Worker head-to-head](../../docs/decisions/architecture/013-worker-head-to-head.md): agent decided (2026-10-12, provisional): keep the gflo worker with mini-swe-agent opt-in; navigation aids together delivered 16/16 but separate from no aids on only three hard tasks, so a 3×3×3 repeat decides the default.
 
 ## Not yet specified
 

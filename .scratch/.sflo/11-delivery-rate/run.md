@@ -233,3 +233,16 @@ harness decision waits for the nav, notes, plan and map arms on the same 8123102
 | 156422b | accepted | 1 | yes | 500 |
 | cde2e00 | accepted | 1 | yes | 251 |
 | 57271fe | accepted | 2 | yes | 1316 |
+
+### Phase 2 result, all arms (2026-10-12)
+
+| arm | delivered | false accepts | losses | median s |
+|---|---|---|---|---|
+| mini | 15/16 | 0 | 06ba3e9 reviewer stop | 485 |
+| nav (all aids) | 16/16 | 0 | none | 909 |
+| notes | 13/16 | 3 | 06ba3e9, 3612b5f, 57271fe accepted but fail hidden F2P | 662 |
+| plan | 13/16 | 2 | 3612b5f, 57271fe false accepts; 89d66ea context overflow at turn 39 (98,886 > 98,304 tokens) | 649 |
+| map | 14/16 | 0 | 3612b5f, 57271fe reviewer stops ("Review finding needs a valid source location") | 807 |
+
+All arms delivered the same 13 tasks. Reviewer stops: 3 of 80 runs, all repaired by 8b33c5e. Decision: [013](../../../docs/decisions/architecture/013-worker-head-to-head.md) (provisional).
+Repeat queued: `~/gflo-pp/chain-hard.sh` (after TERSE DONE), code 0002cbf in `~/gflo-p3`, tasks 06ba3e9, 3612b5f, 57271fe × reps 1–3 × arms single, nav, mini; results `~/gflo-pp/hard/rep*/results.jsonl`, marker "HARD DONE" in `~/gflo-pp/chain-hard.log`.
