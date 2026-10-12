@@ -14,6 +14,8 @@ Measured on the author's rig: one RTX 5090 serving a pruned Flash-Next Coder GGU
 
 These numbers come from changes of 2–137 source lines. Their objectives were written for the measurement from the original commits: they name the functions involved and the exact behaviour wanted. A rerun with objectives about half as long is in progress.
 
+On the same 16 tasks, the gflo worker with all navigation aids on (`"navigation"` in the config) delivered 16 of 16. The standard mini-swe-agent harness (`"worker": "mini-swe-agent"`) delivered 15 of 16. Each was run once per task. Both arms delivered the same 13 tasks as the other variants, so the differences come from three hard tasks, and a repeat on those decides the default ([decision 013](docs/decisions/architecture/013-worker-head-to-head.md)).
+
 **Not yet:**
 - features that span several modules ([decision 008](docs/decisions/architecture/008-planning-pilot-outcome.md));
 - vague requests;
