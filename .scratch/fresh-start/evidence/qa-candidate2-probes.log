@@ -1,0 +1,10 @@
+MANIFEST_OK 13c94ac78c706752d190bbee8d066cab82c3bc36dcfeb4b742d03a0499260acf
+QA-01 PASS crash= False
+QA-01 PASS crash= True
+QA-02 PASS artifact= None
+QA-02 PASS artifact= workspace/app.py
+QA-02 PASS artifact= change.patch
+QA-02 PASS artifact= task.json
+QA-03 PASS orphan stopped by resume
+PATCH_APPLIES PASS
+CLI_STATUS PASS

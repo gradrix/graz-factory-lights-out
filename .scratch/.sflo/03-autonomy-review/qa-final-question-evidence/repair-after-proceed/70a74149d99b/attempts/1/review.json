@@ -1,0 +1,13 @@
+{
+  "decision": "repair",
+  "findings": [
+    {
+      "severity": "major",
+      "path": "app.py",
+      "line": 1,
+      "evidence": "Review requests another check",
+      "repair": "Inspect value"
+    }
+  ],
+  "question": ""
+}

@@ -280,3 +280,11 @@ Repair: a cut-off call is retried with the output budget doubled (8,192, then 16
 4,096, so delivery runs are unaffected unless they hit this). The retry message names the cut-off and asks for the
 file in parts with `cat >>`. The test objective also tells the worker to delete scratch files outside tests/.
 Verification is queued: the same 3 modules rerun after HARD DONE (`~/gflo-pp/chain-overnight2.sh`).
+
+## Terse-objective arm (2026-10-12)
+
+Frozen 7cedc3c, default reviewer, objectives cut to about half their length (`~/gflo-pp/tasks-terse*`), rescored with
+the e5fbb82 scorer: **13/16 delivered, 1 false accept, median 796 s** (detailed: 14/16, 1, ~620 s).
+Losses: 3612b5f exhausted (as in the detailed arm); 3e6e4bd exhausted (delivered with the detailed objective; F2P
+`test_mixed_session_headlines_use_recorded_reps_when_prescription_differs`); 57271fe false accept again (same
+ambiguous "index"). Five tasks needed 2 attempts. Phase 4 decision: [014](../../../docs/decisions/architecture/014-phase-4-start.md).

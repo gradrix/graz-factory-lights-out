@@ -1,0 +1,14 @@
+[
+  {
+    "type": "file",
+    "oid": "8d0823f96b78839696c57d6ee544160444f956f7",
+    "size": 7206168928,
+    "lfs": {
+      "oid": "3907dc1658db1f78a9826bf8d5bcb8dc65db0d466388937af57f2294fae62ec1",
+      "size": 7206168928,
+      "pointerSize": 135
+    },
+    "xetHash": "432efa3ff2ce28e4ee6532fe39d70036a7ff8213aef8c002ab762fcf16d1e19e",
+    "path": "Ternary-Bonsai-2-27B-PQ2_0.gguf"
+  }
+]

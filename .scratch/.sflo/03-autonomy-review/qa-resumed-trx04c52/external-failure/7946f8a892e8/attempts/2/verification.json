@@ -1,0 +1,34 @@
+{
+  "passed": false,
+  "checks": [
+    {
+      "command": [
+        "python",
+        "-I",
+        "/acceptance/check.py"
+      ],
+      "exit_code": 1,
+      "timed_out": false,
+      "output": "Traceback (most recent call last):\n  File \"/acceptance/check.py\", line 2, in <module>\n    assert Path('/workspace/app.py').read_text() == 'value=2\\n'\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAssertionError\n",
+      "elapsed_s": 0.4165298780426383,
+      "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578"
+    },
+    {
+      "command": [
+        "python",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "output": ".\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nOK\n",
+      "elapsed_s": 0.5680510499514639,
+      "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578"
+    }
+  ],
+  "candidate": "8794b35bec72db723cb47f60942724e28ff165e77c51e976eb37b65bc0005eb7"
+}

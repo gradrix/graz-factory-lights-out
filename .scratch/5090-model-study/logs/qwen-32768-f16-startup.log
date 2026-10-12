@@ -1,0 +1,27 @@
+0.00.150.217 I cmn  common_param: common_params_print_info: verbosity = 3 (adjust with the `-lv N` CLI arg)
+0.00.150.567 W srv  llama_server: -----------------
+0.00.150.586 W srv  llama_server: CORS is set to allow all origins ('*') and no API key is set
+0.00.150.586 W srv  llama_server: this can be a security risk (cross-origin attacks)
+0.00.150.587 W srv  llama_server: more info: https://github.com/ggml-org/llama.cpp/pull/25655
+0.00.150.587 W srv  llama_server: -----------------
+0.00.152.448 I srv    load_model: loading model '/study/qwen/Qwen3.8-27B-UD-Q4_K_M.gguf'
+0.00.489.408 W model has unused tensor blk.64.attn_norm.weight (size = 20480 bytes) -- ignoring
+0.00.489.436 W model has unused tensor blk.64.post_attention_norm.weight (size = 20480 bytes) -- ignoring
+0.00.489.441 W model has unused tensor blk.64.attn_q.weight (size = 51609600 bytes) -- ignoring
+0.00.489.445 W model has unused tensor blk.64.attn_k.weight (size = 5570560 bytes) -- ignoring
+0.00.489.446 W model has unused tensor blk.64.attn_v.weight (size = 5570560 bytes) -- ignoring
+0.00.489.451 W model has unused tensor blk.64.attn_output.weight (size = 25804800 bytes) -- ignoring
+0.00.489.453 W model has unused tensor blk.64.attn_q_norm.weight (size = 1024 bytes) -- ignoring
+0.00.489.456 W model has unused tensor blk.64.attn_k_norm.weight (size = 1024 bytes) -- ignoring
+0.00.489.457 W model has unused tensor blk.64.ffn_gate.weight (size = 73113600 bytes) -- ignoring
+0.00.489.459 W model has unused tensor blk.64.ffn_down.weight (size = 73113600 bytes) -- ignoring
+0.00.489.461 W model has unused tensor blk.64.ffn_up.weight (size = 73113600 bytes) -- ignoring
+0.00.489.463 W model has unused tensor blk.64.nextn.eh_proj.weight (size = 43008000 bytes) -- ignoring
+0.00.489.464 W model has unused tensor blk.64.nextn.enorm.weight (size = 20480 bytes) -- ignoring
+0.00.489.466 W model has unused tensor blk.64.nextn.hnorm.weight (size = 20480 bytes) -- ignoring
+0.00.489.472 W model has unused tensor blk.64.nextn.shared_head_norm.weight (size = 20480 bytes) -- ignoring
+0.12.236.884 I cmn          init: llama threadpool init, n_threads = 4
+0.12.350.158 I srv    load_model: initializing, n_slots = 1, n_ctx_slot = 32768, kv_unified = 'false'
+0.12.353.400 I srv          init: chat template supports preserving reasoning, consider enabling it via --reasoning-preserve
+0.12.353.454 I srv  llama_server: model loaded
+0.12.353.474 I srv  llama_server: listening on http://0.0.0.0:8000

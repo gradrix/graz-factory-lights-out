@@ -1,0 +1,17 @@
+{
+  "repo": "/home/gradrix/repos/gflo/.scratch/.sflo/03-autonomy-review/qa-recheck-evidence/repo",
+  "acceptance": "/home/gradrix/repos/gflo/.scratch/.sflo/03-autonomy-review/qa-recheck-evidence/acceptance",
+  "objective": "Set value to 2",
+  "checks": [
+    [
+      "python",
+      "-I",
+      "/acceptance/check.py"
+    ]
+  ],
+  "max_attempts": 2,
+  "max_turns": 24,
+  "review_required": true,
+  "base_commit": "dbdacae9a5e8b0c85959a9dd9bea51f5fb3bcf52",
+  "acceptance_hash": "5cc0799f41f945f93b9044de25772750395debb17883dfb1aa30a3ab6c90ac94"
+}

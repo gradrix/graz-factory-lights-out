@@ -1,0 +1,23 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "command": [
+        "python",
+        "-I",
+        "/acceptance/check.py"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "output": "",
+      "elapsed_s": 0.3153790859505534,
+      "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578"
+    }
+  ],
+  "review": {
+    "decision": "pass",
+    "findings": [],
+    "question": ""
+  },
+  "candidate": "286136ccf1361c47b0e468283a4cdcdf9cfb3ccb5af3fa4e3af59f1ca2ce6a5e"
+}

@@ -1,0 +1,27 @@
+{
+  "repo": "/home/gradrix/gflo-runtime/.gflo/final-invoice-review/source",
+  "objective": "Make one narrowly scoped correction: summarize(stream) currently returns {} when CSV has no header at all. Required customer and amount columns must exist, so empty input must produce a clear stderr error and exit 2 without traceback. A header-only CSV must still return {}. Change the missing-header branch, add a discoverable regression test, and keep every other behavior unchanged. Run acceptance checks; do not add unrelated handling or refactoring.",
+  "acceptance": "acceptance",
+  "checks": [
+    [
+      "python",
+      "-I",
+      "/acceptance/check.py"
+    ],
+    [
+      "python",
+      "-I",
+      "/acceptance/quality.py"
+    ],
+    [
+      "python",
+      "-I",
+      "/acceptance/edges.py"
+    ]
+  ],
+  "max_attempts": 3,
+  "max_turns": 24,
+  "review_of": "08187f980bed",
+  "base_commit": "e66056c733a0c82a3867bfec905c8a1b4fdae508",
+  "acceptance_hash": "517bbeb0ade6018a18934e1464fa264c0b46c8b083650193584c4b360ce174a9"
+}

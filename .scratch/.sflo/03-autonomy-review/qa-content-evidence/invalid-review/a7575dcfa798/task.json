@@ -1,0 +1,17 @@
+{
+  "repo": "/home/gradrix/repos/gflo/.scratch/.sflo/03-autonomy-review/qa-content-evidence/repo",
+  "acceptance": "/home/gradrix/repos/gflo/.scratch/.sflo/03-autonomy-review/qa-content-evidence/acceptance",
+  "objective": "Set value to 2; remove temporary build artifacts",
+  "checks": [
+    [
+      "python",
+      "-I",
+      "/acceptance/check.py"
+    ]
+  ],
+  "max_attempts": 2,
+  "max_turns": 24,
+  "review_required": true,
+  "base_commit": "b98b0d7d612fca55e7fa1f6de4d12bf4934130b9",
+  "acceptance_hash": "d65f7001c08933449b2c0db38db187b602c504326855170f062c2021b007e387"
+}

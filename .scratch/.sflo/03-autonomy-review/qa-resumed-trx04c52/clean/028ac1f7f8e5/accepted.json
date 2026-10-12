@@ -1,0 +1,8 @@
+{
+  "candidate": "df12b23e4da68ac18d6065003df8f75173f948e434074547102bc20d93d083d4",
+  "patch_sha256": "7dc835a4d97deaebf0748805f953770ac1bb4f688875013b65309e6cee6742a7",
+  "artifacts": {
+    "attempts/1/verification.json": "847d3c916fbaea235b59981d41bf028b05e8fe03adaf6b223d25a8bf0a13853d",
+    "attempts/1/review.json": "7929beebaf45b89055b587364ba7f368db75c6de355aa888eed7536a02eccd45"
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "requested_context": 1000000,
+  "served_context": 1000000,
+  "native_context": 262144,
+  "experimental_metadata_override": true
+}

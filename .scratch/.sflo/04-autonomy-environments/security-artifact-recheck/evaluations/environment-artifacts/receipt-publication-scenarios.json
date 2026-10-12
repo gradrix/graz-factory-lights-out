@@ -1,0 +1,174 @@
+{
+  "status": "acceptance-plan inputs, not executed implementation tests",
+  "scenarios": [
+    {
+      "id": "receipt-good",
+      "precondition": "Prepare and smoke-check 00-valid-package through future public seam using an approved fixed recipe. Save returned opaque receipt ID and evidence hashes.",
+      "operations": [
+        "inspect and verify the returned receipt ID",
+        "repeat two fresh offline executions using the same frozen binding"
+      ],
+      "expected": [
+        "same immutable image/dependency binding and actual runtime facts",
+        "successful independent recipe smoke checks",
+        "no fetch or model call during inspect/verification/execution"
+      ]
+    },
+    {
+      "id": "tamper-file-bytes",
+      "precondition": "Start from a separately prepared valid receipt/tree.",
+      "operations": [
+        "using trusted test control, append one byte to package/data.json after publication",
+        "inspect or execute through the public receipt-ID seam"
+      ],
+      "expected": [
+        "integrity failure before any generated command executes",
+        "prior artifact is not silently rehashed or repaired"
+      ]
+    },
+    {
+      "id": "tamper-path-membership",
+      "precondition": "Start from independent valid receipt copies.",
+      "operations": [
+        "in one copy remove package/data.json",
+        "in another add an otherwise harmless extra regular file",
+        "inspect each receipt"
+      ],
+      "expected": [
+        "both trees fail integrity verification",
+        "tree digest covers path membership as well as existing-file bytes"
+      ]
+    },
+    {
+      "id": "tamper-execution-mode",
+      "precondition": "Prepare a valid tree whose controller-selected meaningful execution mode is recorded.",
+      "operations": [
+        "toggle an execution bit on a regular file without changing its bytes",
+        "inspect or execute by receipt ID"
+      ],
+      "expected": [
+        "integrity failure because meaningful execution mode changed"
+      ]
+    },
+    {
+      "id": "tamper-symlink-replacement",
+      "precondition": "Use disposable paths only; do not execute this plan as part of corpus construction.",
+      "operations": [
+        "replace one regular dependency file with a symlink to another test-owned file",
+        "inspect receipt"
+      ],
+      "expected": [
+        "reject link and do not use target contents to satisfy the original file digest"
+      ]
+    },
+    {
+      "id": "tamper-receipt-binding",
+      "precondition": "Start each variant with independently valid published receipt and tree.",
+      "operations": [
+        "alter the bound base image identity without changing tree bytes",
+        "separately alter normalized request/lock identity",
+        "separately alter recorded tree binding",
+        "inspect or resolve each variant"
+      ],
+      "expected": [
+        "receipt integrity or binding failure",
+        "no substitution of current configured image or unverified tree"
+      ]
+    },
+    {
+      "id": "untrusted-receipt-path",
+      "precondition": "Use future documented receipt-ID seam.",
+      "operations": [
+        "supply ../outside as the receipt ID",
+        "supply an absolute path as the receipt ID",
+        "supply a forged receipt containing an external mount path if receipt import exists"
+      ],
+      "expected": [
+        "reject path-like IDs or unsupported receipt input",
+        "all mount paths remain controller-derived beneath owned artifact root"
+      ]
+    },
+    {
+      "id": "failed-validation-preserves-good",
+      "precondition": "Publish valid baseline receipt G; record G receipt/tree evidence.",
+      "operations": [
+        "prepare each rejecting archive as a new attempt in the same private store",
+        "inspect G after every failure",
+        "attempt to resolve any reported failed attempt ID"
+      ],
+      "expected": [
+        "G remains usable with unchanged identity",
+        "failed attempt never becomes runnable",
+        "private staging is removed after cleanup succeeds",
+        "no outside-file or preexisting-destination write"
+      ]
+    },
+    {
+      "id": "publication-failure",
+      "precondition": "Publish G, then prepare valid candidate H in fresh staging on same filesystem.",
+      "operations": [
+        "use a bounded test-owned fault at atomic publication before successful completion",
+        "inspect G and try resolving H"
+      ],
+      "expected": [
+        "G remains unchanged and usable",
+        "H is absent or explicitly failed, never half-published",
+        "incomplete receipt/tree cannot pass inspection"
+      ]
+    },
+    {
+      "id": "cancel-before-publication",
+      "precondition": "Prepare valid H through completed smoke check but before publication.",
+      "operations": [
+        "revoke eligibility by cancellation or supersession",
+        "allow delayed producer/completion callback to arrive",
+        "inspect store and G"
+      ],
+      "expected": [
+        "H cannot publish after cancellation even when smoke passed",
+        "G remains unchanged",
+        "executor removal and staging cleanup evidence are required before reuse"
+      ]
+    },
+    {
+      "id": "cancel-mid-transport",
+      "precondition": "Start bounded streaming receipt of a valid package using a disposable test producer.",
+      "operations": [
+        "pause after header and cancel owner",
+        "separately exercise owner death",
+        "attempt delayed completion"
+      ],
+      "expected": [
+        "publication eligibility is revoked before cleanup",
+        "producer/executor removal is confirmed",
+        "staging is discarded and no late receipt appears"
+      ]
+    },
+    {
+      "id": "cleanup-failure-blocks-reuse",
+      "precondition": "Have a valid G and an in-flight failed preparation.",
+      "operations": [
+        "simulate cleanup/daemon unavailability through a future narrow fault seam",
+        "attempt reuse of the failed attempt"
+      ],
+      "expected": [
+        "explicit cleanup failure and blocked failed-attempt reuse until reconciliation",
+        "no false claim of removed executors",
+        "G identity retained"
+      ]
+    },
+    {
+      "id": "preexisting-destination-symlink",
+      "precondition": "All sentinels and links live in a disposable test-owned directory.",
+      "operations": [
+        "place a symlink in an existing unrelated destination that points to a test sentinel",
+        "prepare 00-valid-package through public seam"
+      ],
+      "expected": [
+        "implementation uses fresh private staging or refuses unsafe reuse",
+        "sentinel bytes remain unchanged",
+        "no extraction path follows preexisting links"
+      ]
+    }
+  ]
+}

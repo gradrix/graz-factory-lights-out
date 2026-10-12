@@ -1,0 +1,18 @@
+{
+  "root": "/tmp/gflo-review-candidate1",
+  "identity": "e46e8c0ea1f0494dc1bc36c8243541d5d49e6eb9d4a56c08bc20a48d19cab439",
+  "files": {
+    "config.example.json": "80aa42c20cbedb2ccfe2be1912bd9a36a9587dc436e73282bb3e9ab02e3f3306",
+    "docs/decisions/architecture/001-fresh-local-core.md": "f3e25b84864f69dbd6a6f36461493f8a5048113f4b22c779ca752ee35673b808",
+    "docs/decisions/product/001-initial-acceptance.md": "a4dd216bb22330f7708877983a28138ca217cd6ec9b7b0b7f0727fa409145b01",
+    "gflo/__init__.py": "6cbddf667328e01dd8f766ea554f7e0c10e19d6618b1eaa688e3e6548b8f275e",
+    "gflo/__main__.py": "6256a21e56d1105bb53286aac808c101a6071d5b61819eb6c3dd0d3fca2b4972",
+    "gflo/runner.py": "f55c6f64988330574ffa5f37e1b841ae444dce328de5f61c24ec06da8872e0a8",
+    "gflo/sandbox.py": "e225c195d0737d4b48829b2c7ff6643b7d0b2d4c3fa72a07494441c8f655063b",
+    "gflo/worker.py": "b528c15af5489d59b694a8e17ab6b5595be544787f4f6097f7acbcdfa96c423b",
+    "ops/model.py": "4b4dac26451b4d75781dc85dafb4afa460a296a4ef83edd6d52e08a5fb3a89e1",
+    "tests/test_runner.py": "e72415e579b1b54e74bd89979a565a8d38a68f4e4ff51233126019cc06713a7f",
+    "tests/test_sandbox.py": "7f9adf72e42b3196287ac5800d52dca93190177aa50d3d944886e8eceb1269aa",
+    "tests/test_worker.py": "3bc4331f793cb62b4205931494a416748a3b291e70aa572c0d2fbb6628b2a6ad"
+  }
+}

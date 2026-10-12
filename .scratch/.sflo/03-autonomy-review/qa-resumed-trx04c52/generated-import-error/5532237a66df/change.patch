@@ -1,0 +1,7 @@
+diff --git a/tests/test_value.py b/tests/test_value.py
+new file mode 100644
+index 0000000..e6f250b
+--- /dev/null
++++ b/tests/test_value.py
+@@ -0,0 +1 @@
++raise RuntimeError("import failed")

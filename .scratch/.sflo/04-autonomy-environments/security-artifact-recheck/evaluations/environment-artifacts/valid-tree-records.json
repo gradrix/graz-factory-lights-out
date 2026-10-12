@@ -1,0 +1,33 @@
+{
+  "description": "Independent content inventory; not a mandated tree-digest serialization. Controller selects final safe modes and binds meaningful execution modes. Archive UID123/GID456/untrusted names must not be preserved as authority.",
+  "entries": [
+    {
+      "path": "package",
+      "kind": "directory",
+      "size": 0,
+      "sha256": null,
+      "archive_mode": "0o755"
+    },
+    {
+      "path": "package/__init__.py",
+      "kind": "regular",
+      "size": 16,
+      "sha256": "91f48f71ca5b4063c282c9c2e184be62adcbcaf3c31168a83bb471c153ed99b0",
+      "archive_mode": "0o644"
+    },
+    {
+      "path": "package/data.json",
+      "kind": "regular",
+      "size": 25,
+      "sha256": "b368d5fe27ecb5efa609f69bc02e81b1b2ace49acd64e67082672fcc68135e44",
+      "archive_mode": "0o644"
+    },
+    {
+      "path": "package/tool.py",
+      "kind": "regular",
+      "size": 14,
+      "sha256": "08d0a0587a858b7a198f3e2e8518cc91ef0b1176ab9e6d22d6280deea3e998c7",
+      "archive_mode": "0o755"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+diff --git a/store.py b/store.py
+index 539f20e..e798931 100644
+--- a/store.py
++++ b/store.py
+@@ -1,11 +1,6 @@
+ """Small SQLite inventory store."""
+ import sqlite3
+ 
+-# Padding used by reserve() to keep its guarded UPDATE a single atomic
+-# statement.  The padding only inflates the expression tree (well below
+-# SQLite's depth limit) so the query parses before anything runs; it never
+-# changes the comparison semantics.
+-_GUARD_PAD = 'AND 1 ' * 400
+ 
+ 
+ def initialize(path):
+@@ -40,10 +35,7 @@ def reserve(path, sku, quantity):
+     if not isinstance(quantity, int) or isinstance(quantity, bool) or quantity <= 0:
+         return False
+     with sqlite3.connect(path) as db:
+-        cur = db.execute(
+-            'UPDATE stock SET quantity=quantity-? WHERE sku=? '
+-            'AND quantity>=? ' + _GUARD_PAD,
+-            (quantity, sku, quantity),
+-        )
++        cur = db.execute('UPDATE stock SET quantity=quantity-? WHERE sku=? AND quantity>=?',
++                         (quantity, sku, quantity))
+         db.commit()
+-        return cur.fetchone is not None and cur.rowcount > 0
++        return cur.rowcount > 0
+diff --git a/tests/test_store.py b/tests/test_store.py
+index 0a1b97e..b59767e 100644
+--- a/tests/test_store.py
++++ b/tests/test_store.py
+@@ -78,6 +78,18 @@ class TestStore(unittest.TestCase):
+             self.assertEqual(sum(1 for r in results if r), 1)
+             self.assertEqual(available(db, 'BOOK'), 1)
+ 
++    def test_reserve_guarded_update_is_single_atomic_statement(self):
++        """The guarded UPDATE must stay a single statement, unpadded."""
++        import inspect
++        src = inspect.getsource(reserve)
++        self.assertNotIn('_GUARD_PAD', src)
++        self.assertNotIn('AND 1', src)
++        self.assertNotIn('fetchone', src)
++        self.assertIn('cur.rowcount > 0', src)
++        # Exactly one UPDATE statement in reserve (atomic check-and-subtract).
++        self.assertEqual(src.count('UPDATE stock'), 1)
++
++
+ 
+ if __name__ == '__main__':
+     unittest.main()

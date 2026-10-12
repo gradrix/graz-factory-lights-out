@@ -1,0 +1,928 @@
+[
+  {
+    "id": "00-valid-package",
+    "expected_result": "accept",
+    "reason": "ordinary regular files and directory",
+    "consequence": "Complete validated package can be staged and published after all remaining recipe/smoke checks.",
+    "bounds": {
+      "transport_bytes": 32768,
+      "entries": 8,
+      "expanded_bytes": 4096,
+      "path_bytes": 100
+    },
+    "notes": "",
+    "archive": "archives/00-valid-package.tar",
+    "sha256": "afd8edffe985260efeb6854f967abeb2dde6108c2d366c02c36ab3282fad6405",
+    "transport_size": 4608,
+    "raw_entries": [
+      {
+        "name": "package/",
+        "type": "5",
+        "size": 0,
+        "link": "",
+        "mode": "0o755",
+        "stored_body_size": 0,
+        "stored_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "package/__init__.py",
+        "type": "0",
+        "size": 16,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 16,
+        "stored_body_sha256": "91f48f71ca5b4063c282c9c2e184be62adcbcaf3c31168a83bb471c153ed99b0"
+      },
+      {
+        "name": "package/data.json",
+        "type": "0",
+        "size": 25,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 25,
+        "stored_body_sha256": "b368d5fe27ecb5efa609f69bc02e81b1b2ace49acd64e67082672fcc68135e44"
+      },
+      {
+        "name": "package/tool.py",
+        "type": "0",
+        "size": 14,
+        "link": "",
+        "mode": "0o755",
+        "stored_body_size": 14,
+        "stored_body_sha256": "08d0a0587a858b7a198f3e2e8518cc91ef0b1176ab9e6d22d6280deea3e998c7"
+      }
+    ]
+  },
+  {
+    "id": "01-duplicate-name",
+    "expected_result": "reject",
+    "reason": "duplicate path",
+    "consequence": "No last-entry-wins overwrite; no published receipt or artifact from the attempt.",
+    "bounds": {
+      "transport_bytes": 32768,
+      "entries": 8,
+      "expanded_bytes": 4096,
+      "path_bytes": 100
+    },
+    "notes": "",
+    "archive": "archives/01-duplicate-name.tar",
+    "sha256": "df4c25237af063a9c90a4711b871e92214fa0c0bd9f19b7175e9b2033bdcd67d",
+    "transport_size": 3072,
+    "raw_entries": [
+      {
+        "name": "package/x",
+        "type": "0",
+        "size": 5,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 5,
+        "stored_body_sha256": "a7937b64b8caa58f03721bb6bacf5c78cb235febe0e70b1b84cd99541461a08e"
+      },
+      {
+        "name": "package/x",
+        "type": "0",
+        "size": 6,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 6,
+        "stored_body_sha256": "16367aacb67a4a017c8da8ab95682ccb390863780f7114dda0a0e0c55644c7c4"
+      }
+    ]
+  },
+  {
+    "id": "02-normalized-dot-duplicate",
+    "expected_result": "reject",
+    "reason": "duplicate after POSIX path normalization",
+    "consequence": "Canonical path identity must prevent alias overwrite.",
+    "bounds": {
+      "transport_bytes": 32768,
+      "entries": 8,
+      "expanded_bytes": 4096,
+      "path_bytes": 100
+    },
+    "notes": "",
+    "archive": "archives/02-normalized-dot-duplicate.tar",
+    "sha256": "a15e6caa6b04945fbd419539ad40efc17a06f8dfc093424281bc1e395d66961a",
+    "transport_size": 3072,
+    "raw_entries": [
+      {
+        "name": "package/x",
+        "type": "0",
+        "size": 5,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 5,
+        "stored_body_sha256": "a7937b64b8caa58f03721bb6bacf5c78cb235febe0e70b1b84cd99541461a08e"
+      },
+      {
+        "name": "./package/x",
+        "type": "0",
+        "size": 6,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 6,
+        "stored_body_sha256": "16367aacb67a4a017c8da8ab95682ccb390863780f7114dda0a0e0c55644c7c4"
+      }
+    ]
+  },
+  {
+    "id": "03-normalized-slash-duplicate",
+    "expected_result": "reject",
+    "reason": "duplicate after repeated slash normalization",
+    "consequence": "Alternate separator spelling cannot bypass duplicate protection.",
+    "bounds": {
+      "transport_bytes": 32768,
+      "entries": 8,
+      "expanded_bytes": 4096,
+      "path_bytes": 100
+    },
+    "notes": "",
+    "archive": "archives/03-normalized-slash-duplicate.tar",
+    "sha256": "8f80f97bd00821025dc8bc04cb84481ac750eef27bacc64ce3c316f6ddb07aef",
+    "transport_size": 3072,
+    "raw_entries": [
+      {
+        "name": "package/x",
+        "type": "0",
+        "size": 5,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 5,
+        "stored_body_sha256": "a7937b64b8caa58f03721bb6bacf5c78cb235febe0e70b1b84cd99541461a08e"
+      },
+      {
+        "name": "package//x",
+        "type": "0",
+        "size": 6,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 6,
+        "stored_body_sha256": "16367aacb67a4a017c8da8ab95682ccb390863780f7114dda0a0e0c55644c7c4"
+      }
+    ]
+  },
+  {
+    "id": "04-file-ancestor-first",
+    "expected_result": "reject",
+    "reason": "regular file is ancestor of another path",
+    "consequence": "Reject complete tree before writing; no order-dependent partial extraction.",
+    "bounds": {
+      "transport_bytes": 32768,
+      "entries": 8,
+      "expanded_bytes": 4096,
+      "path_bytes": 100
+    },
+    "notes": "",
+    "archive": "archives/04-file-ancestor-first.tar",
+    "sha256": "bde9996ad93adb838ec3c7c9fb3a9c858b2a3506be24a45d0c2c86f083381db4",
+    "transport_size": 3072,
+    "raw_entries": [
+      {
+        "name": "package",
+        "type": "0",
+        "size": 4,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 4,
+        "stored_body_sha256": "3b9c358f36f0a31b6ad3e14f309c7cf198ac9246e8316f9ce543d5b19ac02b80"
+      },
+      {
+        "name": "package/child",
+        "type": "0",
+        "size": 5,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 5,
+        "stored_body_sha256": "ddc9e669194254cef019a29d3619a2c16592e5d52e1a81e98b01bd52319149a3"
+      }
+    ]
+  },
+  {
+    "id": "05-file-ancestor-last",
+    "expected_result": "reject",
+    "reason": "regular file conflicts with already named descendant",
+    "consequence": "Reverse entry order must not bypass prefix-conflict validation.",
+    "bounds": {
+      "transport_bytes": 32768,
+      "entries": 8,
+      "expanded_bytes": 4096,
+      "path_bytes": 100
+    },
+    "notes": "",
+    "archive": "archives/05-file-ancestor-last.tar",
+    "sha256": "7445ef50807a181a08b02ff52c78662e4cd4fed35cf80c301c9a214fff9c0ce2",
+    "transport_size": 3072,
+    "raw_entries": [
+      {
+        "name": "package/child",
+        "type": "0",
+        "size": 5,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 5,
+        "stored_body_sha256": "ddc9e669194254cef019a29d3619a2c16592e5d52e1a81e98b01bd52319149a3"
+      },
+      {
+        "name": "package",
+        "type": "0",
+        "size": 4,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 4,
+        "stored_body_sha256": "3b9c358f36f0a31b6ad3e14f309c7cf198ac9246e8316f9ce543d5b19ac02b80"
+      }
+    ]
+  },
+  {
+    "id": "06-traversal-parent",
+    "expected_result": "reject",
+    "reason": "parent traversal",
+    "consequence": "No artifact writes outside controller-private staging.",
+    "bounds": {
+      "transport_bytes": 32768,
+      "entries": 8,
+      "expanded_bytes": 4096,
+      "path_bytes": 100
+    },
+    "notes": "",
+    "archive": "archives/06-traversal-parent.tar",
+    "sha256": "f5f806c7d04d7f24f0e21c47b9657787bdab075b6bead1a35157efd962b7c563",
+    "transport_size": 2048,
+    "raw_entries": [
+      {
+        "name": "../outside",
+        "type": "0",
+        "size": 6,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 6,
+        "stored_body_sha256": "b3140286ac71ad2acf69681f4f2a907b0b83d8edfbffdd4e0a38c05a23180495"
+      }
+    ]
+  },
+  {
+    "id": "07-traversal-nested",
+    "expected_result": "reject",
+    "reason": "nested parent traversal",
+    "consequence": "Normalization cannot conceal an escaping path.",
+    "bounds": {
+      "transport_bytes": 32768,
+      "entries": 8,
+      "expanded_bytes": 4096,
+      "path_bytes": 100
+    },
+    "notes": "",
+    "archive": "archives/07-traversal-nested.tar",
+    "sha256": "6c42f78189acaaa705651e652e36d47881a7e5bb2f42556c557b48558423a6d9",
+    "transport_size": 2048,
+    "raw_entries": [
+      {
+        "name": "package/../../outside",
+        "type": "0",
+        "size": 6,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 6,
+        "stored_body_sha256": "b3140286ac71ad2acf69681f4f2a907b0b83d8edfbffdd4e0a38c05a23180495"
+      }
+    ]
+  },
+  {
+    "id": "08-absolute",
+    "expected_result": "reject",
+    "reason": "absolute archive path",
+    "consequence": "Archive names cannot select host destinations.",
+    "bounds": {
+      "transport_bytes": 32768,
+      "entries": 8,
+      "expanded_bytes": 4096,
+      "path_bytes": 100
+    },
+    "notes": "",
+    "archive": "archives/08-absolute.tar",
+    "sha256": "88586cf808957670acd353297469d054c6c859b7201a6df91b88d9f2b8160420",
+    "transport_size": 2048,
+    "raw_entries": [
+      {
+        "name": "/outside",
+        "type": "0",
+        "size": 6,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 6,
+        "stored_body_sha256": "b3140286ac71ad2acf69681f4f2a907b0b83d8edfbffdd4e0a38c05a23180495"
+      }
+    ]
+  },
+  {
+    "id": "09-symlink",
+    "expected_result": "reject",
+    "reason": "symbolic link",
+    "consequence": "No link-following writes or runtime dependency escape.",
+    "bounds": {
+      "transport_bytes": 32768,
+      "entries": 8,
+      "expanded_bytes": 4096,
+      "path_bytes": 100
+    },
+    "notes": "",
+    "archive": "archives/09-symlink.tar",
+    "sha256": "90e24287a20403903b0d194bad69a46b7f9dfe6abbc798c1469ae4caab49b4ee",
+    "transport_size": 1536,
+    "raw_entries": [
+      {
+        "name": "package/link",
+        "type": "2",
+        "size": 0,
+        "link": "../../outside",
+        "mode": "0o644",
+        "stored_body_size": 0,
+        "stored_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ]
+  },
+  {
+    "id": "10-hardlink",
+    "expected_result": "reject",
+    "reason": "hard link",
+    "consequence": "Only regular files/directories are allowed in this bounded profile.",
+    "bounds": {
+      "transport_bytes": 32768,
+      "entries": 8,
+      "expanded_bytes": 4096,
+      "path_bytes": 100
+    },
+    "notes": "",
+    "archive": "archives/10-hardlink.tar",
+    "sha256": "a74015478e1f46179e5ffc53efeca527f30c98ca441db851d8fa0b6a2e55d55b",
+    "transport_size": 2560,
+    "raw_entries": [
+      {
+        "name": "package/base",
+        "type": "0",
+        "size": 7,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 7,
+        "stored_body_sha256": "ed7002b439e9ac845f22357d822bac1444730fbdb6016d3ec9432297b9ec9f73"
+      },
+      {
+        "name": "package/alias",
+        "type": "1",
+        "size": 0,
+        "link": "package/base",
+        "mode": "0o644",
+        "stored_body_size": 0,
+        "stored_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ]
+  },
+  {
+    "id": "11-arbitrary-bin-symlink",
+    "expected_result": "reject",
+    "reason": "arbitrary .bin link is not an approved npm omission",
+    "consequence": "Never skip every path containing .bin; only a separately defined precise npm layout may be omitted.",
+    "bounds": {
+      "transport_bytes": 32768,
+      "entries": 8,
+      "expanded_bytes": 4096,
+      "path_bytes": 100
+    },
+    "notes": "",
+    "archive": "archives/11-arbitrary-bin-symlink.tar",
+    "sha256": "9b5df1f7651fd26085153d3c425132a9ea0980d90769caa077413706f30a35e5",
+    "transport_size": 1536,
+    "raw_entries": [
+      {
+        "name": "unrelated/.bin/tool",
+        "type": "2",
+        "size": 0,
+        "link": "../../../outside",
+        "mode": "0o644",
+        "stored_body_size": 0,
+        "stored_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ]
+  },
+  {
+    "id": "12-character-device",
+    "expected_result": "reject",
+    "reason": "character device entry",
+    "consequence": "Never materialize device nodes.",
+    "bounds": {
+      "transport_bytes": 32768,
+      "entries": 8,
+      "expanded_bytes": 4096,
+      "path_bytes": 100
+    },
+    "notes": "",
+    "archive": "archives/12-character-device.tar",
+    "sha256": "e31af3d8e2f874d3f44030d0b0be635d31837509f71b1214349113ac75bc5510",
+    "transport_size": 1536,
+    "raw_entries": [
+      {
+        "name": "package/device",
+        "type": "3",
+        "size": 0,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 0,
+        "stored_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ]
+  },
+  {
+    "id": "13-block-device",
+    "expected_result": "reject",
+    "reason": "block device entry",
+    "consequence": "Never materialize device nodes.",
+    "bounds": {
+      "transport_bytes": 32768,
+      "entries": 8,
+      "expanded_bytes": 4096,
+      "path_bytes": 100
+    },
+    "notes": "",
+    "archive": "archives/13-block-device.tar",
+    "sha256": "b2cad04791a282db5a286d0f7dc47be1518474c92b4bac43f2ee77530a660c34",
+    "transport_size": 1536,
+    "raw_entries": [
+      {
+        "name": "package/device",
+        "type": "4",
+        "size": 0,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 0,
+        "stored_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ]
+  },
+  {
+    "id": "14-fifo",
+    "expected_result": "reject",
+    "reason": "FIFO entry",
+    "consequence": "Never create filesystem IPC endpoints from package bytes.",
+    "bounds": {
+      "transport_bytes": 32768,
+      "entries": 8,
+      "expanded_bytes": 4096,
+      "path_bytes": 100
+    },
+    "notes": "",
+    "archive": "archives/14-fifo.tar",
+    "sha256": "c35f1d3d4dfecba4f2c32389ba21910998b531ced48ee67b93733296afddec8c",
+    "transport_size": 1536,
+    "raw_entries": [
+      {
+        "name": "package/pipe",
+        "type": "6",
+        "size": 0,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 0,
+        "stored_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ]
+  },
+  {
+    "id": "15-gnu-sparse-type",
+    "expected_result": "reject",
+    "reason": "GNU sparse type encoding",
+    "consequence": "Reject sparse representations before allocation or materialization.",
+    "bounds": {
+      "transport_bytes": 32768,
+      "entries": 8,
+      "expanded_bytes": 4096,
+      "path_bytes": 100
+    },
+    "notes": "Synthetic old-GNU sparse discriminator; no enormous backing body is present.",
+    "archive": "archives/15-gnu-sparse-type.tar",
+    "sha256": "13f07b02b1ea6a4985b62fe12f53fb4f59595cea1c887373bdfbbcdf83210881",
+    "transport_size": 1536,
+    "raw_entries": [
+      {
+        "name": "package/sparse",
+        "type": "S",
+        "size": 0,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 0,
+        "stored_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ]
+  },
+  {
+    "id": "16-pax-sparse",
+    "expected_result": "reject",
+    "reason": "PAX GNU sparse metadata",
+    "consequence": "Reject sparse/unsupported extensions; tiny encoded payload must not trigger large expansion.",
+    "bounds": {
+      "transport_bytes": 32768,
+      "entries": 8,
+      "expanded_bytes": 4096,
+      "path_bytes": 100
+    },
+    "notes": "",
+    "archive": "archives/16-pax-sparse.tar",
+    "sha256": "161f54e87e1b8b470eeba08b61bac9c42d8ad23a012c9238f3c5f7a65106c280",
+    "transport_size": 3072,
+    "raw_entries": [
+      {
+        "name": "PaxHeaders/sparse",
+        "type": "x",
+        "size": 63,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 63,
+        "stored_body_sha256": "a79b0e108cbfc54e8a086f400e7549c321f029f608cb1433dfdd6eed6480d962"
+      },
+      {
+        "name": "package/sparse",
+        "type": "0",
+        "size": 2,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 2,
+        "stored_body_sha256": "38164fbd17603d73f696b8b4d72664d735bb6a7c88577687fd2ae33fd6964153"
+      }
+    ]
+  },
+  {
+    "id": "17-pax-path-override",
+    "expected_result": "reject",
+    "reason": "unsupported PAX path override with traversal",
+    "consequence": "Validation must not inspect only the harmless USTAR name while extraction honors an override.",
+    "bounds": {
+      "transport_bytes": 32768,
+      "entries": 8,
+      "expanded_bytes": 4096,
+      "path_bytes": 100
+    },
+    "notes": "",
+    "archive": "archives/17-pax-path-override.tar",
+    "sha256": "4b008465c8a30c70950bbfe6313c37984bb2eb3971ee3cd8f85f53b1fead1389",
+    "transport_size": 3072,
+    "raw_entries": [
+      {
+        "name": "PaxHeaders/name",
+        "type": "x",
+        "size": 19,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 19,
+        "stored_body_sha256": "2bf96a0fe570423a1c97caadda997ef51c5588143244d3a364cc60ff46f9017b"
+      },
+      {
+        "name": "safe-name",
+        "type": "0",
+        "size": 6,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 6,
+        "stored_body_sha256": "b3140286ac71ad2acf69681f4f2a907b0b83d8edfbffdd4e0a38c05a23180495"
+      }
+    ]
+  },
+  {
+    "id": "18-gnu-longname-override",
+    "expected_result": "reject",
+    "reason": "unsupported GNU longname override",
+    "consequence": "Unsupported name extensions cannot bypass path validation.",
+    "bounds": {
+      "transport_bytes": 32768,
+      "entries": 8,
+      "expanded_bytes": 4096,
+      "path_bytes": 100
+    },
+    "notes": "",
+    "archive": "archives/18-gnu-longname-override.tar",
+    "sha256": "97a379c6bea52b8de2e698cff110d717de691c9d9042398b7bd82e0a037d8367",
+    "transport_size": 3072,
+    "raw_entries": [
+      {
+        "name": "././@LongLink",
+        "type": "L",
+        "size": 11,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 11,
+        "stored_body_sha256": "207b3057e30701f171f2f6d3d92701f024cbc560d6f70431b5e0a2ace6d0b421"
+      },
+      {
+        "name": "safe-name",
+        "type": "0",
+        "size": 6,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 6,
+        "stored_body_sha256": "b3140286ac71ad2acf69681f4f2a907b0b83d8edfbffdd4e0a38c05a23180495"
+      }
+    ]
+  },
+  {
+    "id": "19-over-entry-count",
+    "expected_result": "reject",
+    "reason": "nine entries exceed bound eight",
+    "consequence": "Stop bounded enumeration; discard staging without publication.",
+    "bounds": {
+      "transport_bytes": 32768,
+      "entries": 8,
+      "expanded_bytes": 4096,
+      "path_bytes": 100
+    },
+    "notes": "",
+    "archive": "archives/19-over-entry-count.tar",
+    "sha256": "d36aa7a7b48ab29678ad8c5d8b38db3591fc7ce21ee3c66d4f48b4966253ea68",
+    "transport_size": 5632,
+    "raw_entries": [
+      {
+        "name": "package/f0",
+        "type": "0",
+        "size": 0,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 0,
+        "stored_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "package/f1",
+        "type": "0",
+        "size": 0,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 0,
+        "stored_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "package/f2",
+        "type": "0",
+        "size": 0,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 0,
+        "stored_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "package/f3",
+        "type": "0",
+        "size": 0,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 0,
+        "stored_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "package/f4",
+        "type": "0",
+        "size": 0,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 0,
+        "stored_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "package/f5",
+        "type": "0",
+        "size": 0,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 0,
+        "stored_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "package/f6",
+        "type": "0",
+        "size": 0,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 0,
+        "stored_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "package/f7",
+        "type": "0",
+        "size": 0,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 0,
+        "stored_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "name": "package/f8",
+        "type": "0",
+        "size": 0,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 0,
+        "stored_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ]
+  },
+  {
+    "id": "20-expanded-total",
+    "expected_result": "reject",
+    "reason": "4097 regular-file bytes exceed expanded bound 4096",
+    "consequence": "Aggregate expanded limit must apply, not merely a per-file cap.",
+    "bounds": {
+      "transport_bytes": 32768,
+      "entries": 8,
+      "expanded_bytes": 4096,
+      "path_bytes": 100
+    },
+    "notes": "",
+    "archive": "archives/20-expanded-total.tar",
+    "sha256": "b6cced3a4fffb34fcc07088120aff7a97ffec9f3e16d8e8c26d6c3b838a5028d",
+    "transport_size": 7168,
+    "raw_entries": [
+      {
+        "name": "package/a",
+        "type": "0",
+        "size": 2048,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 2048,
+        "stored_body_sha256": "b2a3a502fdfc34f4e3edfa94b7f3109cd972d87a4fec63ab21a6673379ccf7ad"
+      },
+      {
+        "name": "package/b",
+        "type": "0",
+        "size": 2048,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 2048,
+        "stored_body_sha256": "80c58fc1932767b113819b033e1874d8de05e8809534590db9d01510abc8ed6b"
+      },
+      {
+        "name": "package/c",
+        "type": "0",
+        "size": 1,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 1,
+        "stored_body_sha256": "2e7d2c03a9507ae265ecf5b5356885a53393a2029d241394997265a1a25aefc6"
+      }
+    ]
+  },
+  {
+    "id": "21-declared-huge",
+    "expected_result": "reject",
+    "reason": "declared file size exceeds expanded limit before payload arrives",
+    "consequence": "Reject from header without allocating declared size or waiting for its bytes.",
+    "bounds": {
+      "transport_bytes": 32768,
+      "entries": 8,
+      "expanded_bytes": 4096,
+      "path_bytes": 100
+    },
+    "notes": "Only one 512-byte header exists. Also incomplete transport; rejection must occur without consuming a huge payload. A short fixture alone cannot prove bounded memory or early-read behavior.",
+    "archive": "archives/21-declared-huge.tar",
+    "sha256": "2f05ea9bad1b3999bc21c4992e3aca9ba7faa9b756fc8c4939cdc80f4f45715d",
+    "transport_size": 512,
+    "raw_entries": [
+      {
+        "name": "package/huge",
+        "type": "0",
+        "size": 134217729,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 0,
+        "stored_body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ]
+  },
+  {
+    "id": "22-transport-overlimit",
+    "expected_result": "reject",
+    "reason": "transport bytes exceed explicit bound 2048",
+    "consequence": "Enforce total incoming bytes including headers/padding/trailer.",
+    "bounds": {
+      "transport_bytes": 2048,
+      "entries": 8,
+      "expanded_bytes": 4096,
+      "path_bytes": 100
+    },
+    "notes": "",
+    "archive": "archives/22-transport-overlimit.tar",
+    "sha256": "e767d64c5724a845743c07d0fd555b1ebdc37c09fca8c81c6b6af7d512c915a8",
+    "transport_size": 3584,
+    "raw_entries": [
+      {
+        "name": "package/a",
+        "type": "0",
+        "size": 2048,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 2048,
+        "stored_body_sha256": "b2a3a502fdfc34f4e3edfa94b7f3109cd972d87a4fec63ab21a6673379ccf7ad"
+      }
+    ]
+  },
+  {
+    "id": "23-truncated-header",
+    "expected_result": "reject",
+    "reason": "stream ends after 100 bytes of a 512-byte header",
+    "consequence": "Incomplete transport cannot become a complete receipt.",
+    "bounds": {
+      "transport_bytes": 32768,
+      "entries": 8,
+      "expanded_bytes": 4096,
+      "path_bytes": 100
+    },
+    "notes": "",
+    "archive": "archives/23-truncated-header.tar",
+    "sha256": "90522cd416c2e87f866ce2cae13223fd2ae5a746bf97fa01e03308714be9ab8d",
+    "transport_size": 100,
+    "raw_entries": []
+  },
+  {
+    "id": "24-truncated-payload",
+    "expected_result": "reject",
+    "reason": "header declares 32 bytes but only 8 payload bytes arrive",
+    "consequence": "Do not accept a partially transferred regular file.",
+    "bounds": {
+      "transport_bytes": 32768,
+      "entries": 8,
+      "expanded_bytes": 4096,
+      "path_bytes": 100
+    },
+    "notes": "",
+    "archive": "archives/24-truncated-payload.tar",
+    "sha256": "2a610562b149a259775b0a86e567bde6acdab8f8f98d1cb01ddcf30efc30a101",
+    "transport_size": 520,
+    "raw_entries": [
+      {
+        "name": "package/x",
+        "type": "0",
+        "size": 32,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 8,
+        "stored_body_sha256": "ef797c8118f02dfb649607dd5d3f8c7623048c9c063d532cc95c5ed7a898a64f"
+      }
+    ]
+  },
+  {
+    "id": "25-valid-limit-boundary",
+    "expected_result": "accept",
+    "reason": "expanded output equals bound exactly",
+    "consequence": "Inclusive limits must not reject a valid ordinary package at the configured bound.",
+    "bounds": {
+      "transport_bytes": 32768,
+      "entries": 8,
+      "expanded_bytes": 4096,
+      "path_bytes": 100
+    },
+    "notes": "",
+    "archive": "archives/25-valid-limit-boundary.tar",
+    "sha256": "7b54cd4f3712daaa87c157290e06881c04458828c71145d885993172b0eedd0a",
+    "transport_size": 5632,
+    "raw_entries": [
+      {
+        "name": "package/data",
+        "type": "0",
+        "size": 4096,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 4096,
+        "stored_body_sha256": "a2e659dacb4691e887ac0139f8893d04764ee197d70fb73d3190d56113d18e3e"
+      }
+    ]
+  },
+  {
+    "id": "26-late-bad-entry",
+    "expected_result": "reject",
+    "reason": "late traversal after valid entry",
+    "consequence": "Full validation must precede extraction; failure leaves no published partial tree.",
+    "bounds": {
+      "transport_bytes": 32768,
+      "entries": 8,
+      "expanded_bytes": 4096,
+      "path_bytes": 100
+    },
+    "notes": "",
+    "archive": "archives/26-late-bad-entry.tar",
+    "sha256": "36a63f5af0f277469bfff8613f07bcda191d4d2469462cf6dd4340b84c14e59e",
+    "transport_size": 3072,
+    "raw_entries": [
+      {
+        "name": "package/good",
+        "type": "0",
+        "size": 5,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 5,
+        "stored_body_sha256": "ec654fac9599f62e79e2706abef23dfb7c07c08185aa86db4d8695f0b718d1b3"
+      },
+      {
+        "name": "../outside",
+        "type": "0",
+        "size": 3,
+        "link": "",
+        "mode": "0o644",
+        "stored_body_size": 3,
+        "stored_body_sha256": "2f05d4b689d270cafb02285f35f44866f7dc8a2d368a3f9d1124373eeab31fb1"
+      }
+    ]
+  }
+]

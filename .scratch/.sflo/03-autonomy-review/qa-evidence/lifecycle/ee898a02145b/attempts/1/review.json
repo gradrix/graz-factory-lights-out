@@ -1,0 +1,13 @@
+{
+  "decision": "repair",
+  "findings": [
+    {
+      "severity": "major",
+      "path": "app.py",
+      "line": 1,
+      "evidence": "Objective mismatch",
+      "repair": "Correct value"
+    }
+  ],
+  "question": ""
+}

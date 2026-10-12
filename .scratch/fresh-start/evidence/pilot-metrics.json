@@ -1,0 +1,87 @@
+[
+  {
+    "id": "0b179de9a58a",
+    "status": "accepted",
+    "attempts": 1,
+    "contract_hash": "c798347c35e9887d65bc8e5ee56a112f2cb29d74680d4e6d3cf0ffd680372f9f",
+    "message": "",
+    "directory": "/home/gradrix/gflo-runtime/.gflo/runs/0b179de9a58a",
+    "workspace": "/home/gradrix/gflo-runtime/.gflo/runs/0b179de9a58a/workspace",
+    "patch": "/home/gradrix/gflo-runtime/.gflo/runs/0b179de9a58a/change.patch",
+    "scenario": "invoice",
+    "elapsed_s": 71.67257590100053,
+    "turns": 12,
+    "max_prompt_tokens": 11809,
+    "completion_tokens": 4058,
+    "check_requests": [
+      true
+    ],
+    "test_counts": [
+      [
+        "4"
+      ],
+      [
+        "17"
+      ]
+    ],
+    "candidate": "c4131afdb8238e316aa8c07e63ef926e54449ac6273a1dd0f1a32697b1975877",
+    "model_time_s": 62.49748199999999
+  },
+  {
+    "id": "1ed0f9902508",
+    "status": "accepted",
+    "attempts": 1,
+    "contract_hash": "6575ab3060c665a3ae357842117133f125b41a80711d6d5bae1761be2d94190b",
+    "message": "",
+    "directory": "/home/gradrix/gflo-runtime/.gflo/runs/1ed0f9902508",
+    "workspace": "/home/gradrix/gflo-runtime/.gflo/runs/1ed0f9902508/workspace",
+    "patch": "/home/gradrix/gflo-runtime/.gflo/runs/1ed0f9902508/change.patch",
+    "scenario": "inventory",
+    "elapsed_s": 96.98904934100574,
+    "turns": 17,
+    "max_prompt_tokens": 14824,
+    "completion_tokens": 5201,
+    "check_requests": [
+      true
+    ],
+    "test_counts": [
+      [
+        "2"
+      ],
+      [
+        "11"
+      ]
+    ],
+    "candidate": "2897697f267b53344e2c319d520d628e297d1d20445571ba3c75621c5f059f02",
+    "model_time_s": 79.94543500000002
+  },
+  {
+    "id": "cb7453d0b5d0",
+    "status": "accepted",
+    "attempts": 1,
+    "contract_hash": "61914e4dba8d843aa95f2365fe5cc126baba5187a04ab2fcc51a1d9504f8ca81",
+    "message": "",
+    "directory": "/home/gradrix/gflo-runtime/.gflo/runs/cb7453d0b5d0",
+    "workspace": "/home/gradrix/gflo-runtime/.gflo/runs/cb7453d0b5d0/workspace",
+    "patch": "/home/gradrix/gflo-runtime/.gflo/runs/cb7453d0b5d0/change.patch",
+    "scenario": "log-summary",
+    "elapsed_s": 100.67703788800281,
+    "turns": 17,
+    "max_prompt_tokens": 16928,
+    "completion_tokens": 5608,
+    "check_requests": [
+      false,
+      true
+    ],
+    "test_counts": [
+      [
+        "3"
+      ],
+      [
+        "8"
+      ]
+    ],
+    "candidate": "a953b6b13e0c519b91dad3e426359b657eb1dc22badd53ee7f6c0f1be89915ec",
+    "model_time_s": 86.17297400000001
+  }
+]

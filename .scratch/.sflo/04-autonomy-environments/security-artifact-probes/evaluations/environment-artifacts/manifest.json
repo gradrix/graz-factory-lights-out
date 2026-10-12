@@ -1,0 +1,494 @@
+{
+  "corpus": "environment-artifact-qualification",
+  "version": 1,
+  "status": "frozen independent fixtures; future Stage3 acceptance only",
+  "implementation_acceptance_granted": false,
+  "stage3_still_gated": true,
+  "grounding": {
+    "docs/decisions/architecture/004-environment-snapshots.md": "2e399e4d77f2b85165180f9be438f323e14d367d0de655bb717be04080f8210e",
+    "docs/research/environment-security-boundary.md": "82197bab61236ba47ac78c2d485e1b563f9087a8d13ed62eb0763481a8db4a19",
+    ".scratch/autonomy/environment-implementation-handoff.md": "f0201be21caee1565abfe1f84aff9366939a577a913798cf0e36ba07aeb143b1"
+  },
+  "archive_cases": [
+    {
+      "id": "00-valid-package",
+      "expected_result": "accept",
+      "reason": "ordinary regular files and directory",
+      "consequence": "Complete validated package can be staged and published after all remaining recipe/smoke checks.",
+      "bounds": {
+        "transport_bytes": 32768,
+        "entries": 8,
+        "expanded_bytes": 4096,
+        "path_bytes": 100
+      },
+      "notes": "",
+      "archive": "archives/00-valid-package.tar",
+      "sha256": "afd8edffe985260efeb6854f967abeb2dde6108c2d366c02c36ab3282fad6405",
+      "transport_size": 4608
+    },
+    {
+      "id": "01-duplicate-name",
+      "expected_result": "reject",
+      "reason": "duplicate path",
+      "consequence": "No last-entry-wins overwrite; no published receipt or artifact from the attempt.",
+      "bounds": {
+        "transport_bytes": 32768,
+        "entries": 8,
+        "expanded_bytes": 4096,
+        "path_bytes": 100
+      },
+      "notes": "",
+      "archive": "archives/01-duplicate-name.tar",
+      "sha256": "df4c25237af063a9c90a4711b871e92214fa0c0bd9f19b7175e9b2033bdcd67d",
+      "transport_size": 3072
+    },
+    {
+      "id": "02-normalized-dot-duplicate",
+      "expected_result": "reject",
+      "reason": "duplicate after POSIX path normalization",
+      "consequence": "Canonical path identity must prevent alias overwrite.",
+      "bounds": {
+        "transport_bytes": 32768,
+        "entries": 8,
+        "expanded_bytes": 4096,
+        "path_bytes": 100
+      },
+      "notes": "",
+      "archive": "archives/02-normalized-dot-duplicate.tar",
+      "sha256": "a15e6caa6b04945fbd419539ad40efc17a06f8dfc093424281bc1e395d66961a",
+      "transport_size": 3072
+    },
+    {
+      "id": "03-normalized-slash-duplicate",
+      "expected_result": "reject",
+      "reason": "duplicate after repeated slash normalization",
+      "consequence": "Alternate separator spelling cannot bypass duplicate protection.",
+      "bounds": {
+        "transport_bytes": 32768,
+        "entries": 8,
+        "expanded_bytes": 4096,
+        "path_bytes": 100
+      },
+      "notes": "",
+      "archive": "archives/03-normalized-slash-duplicate.tar",
+      "sha256": "8f80f97bd00821025dc8bc04cb84481ac750eef27bacc64ce3c316f6ddb07aef",
+      "transport_size": 3072
+    },
+    {
+      "id": "04-file-ancestor-first",
+      "expected_result": "reject",
+      "reason": "regular file is ancestor of another path",
+      "consequence": "Reject complete tree before writing; no order-dependent partial extraction.",
+      "bounds": {
+        "transport_bytes": 32768,
+        "entries": 8,
+        "expanded_bytes": 4096,
+        "path_bytes": 100
+      },
+      "notes": "",
+      "archive": "archives/04-file-ancestor-first.tar",
+      "sha256": "bde9996ad93adb838ec3c7c9fb3a9c858b2a3506be24a45d0c2c86f083381db4",
+      "transport_size": 3072
+    },
+    {
+      "id": "05-file-ancestor-last",
+      "expected_result": "reject",
+      "reason": "regular file conflicts with already named descendant",
+      "consequence": "Reverse entry order must not bypass prefix-conflict validation.",
+      "bounds": {
+        "transport_bytes": 32768,
+        "entries": 8,
+        "expanded_bytes": 4096,
+        "path_bytes": 100
+      },
+      "notes": "",
+      "archive": "archives/05-file-ancestor-last.tar",
+      "sha256": "7445ef50807a181a08b02ff52c78662e4cd4fed35cf80c301c9a214fff9c0ce2",
+      "transport_size": 3072
+    },
+    {
+      "id": "06-traversal-parent",
+      "expected_result": "reject",
+      "reason": "parent traversal",
+      "consequence": "No artifact writes outside controller-private staging.",
+      "bounds": {
+        "transport_bytes": 32768,
+        "entries": 8,
+        "expanded_bytes": 4096,
+        "path_bytes": 100
+      },
+      "notes": "",
+      "archive": "archives/06-traversal-parent.tar",
+      "sha256": "f5f806c7d04d7f24f0e21c47b9657787bdab075b6bead1a35157efd962b7c563",
+      "transport_size": 2048
+    },
+    {
+      "id": "07-traversal-nested",
+      "expected_result": "reject",
+      "reason": "nested parent traversal",
+      "consequence": "Normalization cannot conceal an escaping path.",
+      "bounds": {
+        "transport_bytes": 32768,
+        "entries": 8,
+        "expanded_bytes": 4096,
+        "path_bytes": 100
+      },
+      "notes": "",
+      "archive": "archives/07-traversal-nested.tar",
+      "sha256": "6c42f78189acaaa705651e652e36d47881a7e5bb2f42556c557b48558423a6d9",
+      "transport_size": 2048
+    },
+    {
+      "id": "08-absolute",
+      "expected_result": "reject",
+      "reason": "absolute archive path",
+      "consequence": "Archive names cannot select host destinations.",
+      "bounds": {
+        "transport_bytes": 32768,
+        "entries": 8,
+        "expanded_bytes": 4096,
+        "path_bytes": 100
+      },
+      "notes": "",
+      "archive": "archives/08-absolute.tar",
+      "sha256": "88586cf808957670acd353297469d054c6c859b7201a6df91b88d9f2b8160420",
+      "transport_size": 2048
+    },
+    {
+      "id": "09-symlink",
+      "expected_result": "reject",
+      "reason": "symbolic link",
+      "consequence": "No link-following writes or runtime dependency escape.",
+      "bounds": {
+        "transport_bytes": 32768,
+        "entries": 8,
+        "expanded_bytes": 4096,
+        "path_bytes": 100
+      },
+      "notes": "",
+      "archive": "archives/09-symlink.tar",
+      "sha256": "90e24287a20403903b0d194bad69a46b7f9dfe6abbc798c1469ae4caab49b4ee",
+      "transport_size": 1536
+    },
+    {
+      "id": "10-hardlink",
+      "expected_result": "reject",
+      "reason": "hard link",
+      "consequence": "Only regular files/directories are allowed in this bounded profile.",
+      "bounds": {
+        "transport_bytes": 32768,
+        "entries": 8,
+        "expanded_bytes": 4096,
+        "path_bytes": 100
+      },
+      "notes": "",
+      "archive": "archives/10-hardlink.tar",
+      "sha256": "a74015478e1f46179e5ffc53efeca527f30c98ca441db851d8fa0b6a2e55d55b",
+      "transport_size": 2560
+    },
+    {
+      "id": "11-arbitrary-bin-symlink",
+      "expected_result": "reject",
+      "reason": "arbitrary .bin link is not an approved npm omission",
+      "consequence": "Never skip every path containing .bin; only a separately defined precise npm layout may be omitted.",
+      "bounds": {
+        "transport_bytes": 32768,
+        "entries": 8,
+        "expanded_bytes": 4096,
+        "path_bytes": 100
+      },
+      "notes": "",
+      "archive": "archives/11-arbitrary-bin-symlink.tar",
+      "sha256": "9b5df1f7651fd26085153d3c425132a9ea0980d90769caa077413706f30a35e5",
+      "transport_size": 1536
+    },
+    {
+      "id": "12-character-device",
+      "expected_result": "reject",
+      "reason": "character device entry",
+      "consequence": "Never materialize device nodes.",
+      "bounds": {
+        "transport_bytes": 32768,
+        "entries": 8,
+        "expanded_bytes": 4096,
+        "path_bytes": 100
+      },
+      "notes": "",
+      "archive": "archives/12-character-device.tar",
+      "sha256": "e31af3d8e2f874d3f44030d0b0be635d31837509f71b1214349113ac75bc5510",
+      "transport_size": 1536
+    },
+    {
+      "id": "13-block-device",
+      "expected_result": "reject",
+      "reason": "block device entry",
+      "consequence": "Never materialize device nodes.",
+      "bounds": {
+        "transport_bytes": 32768,
+        "entries": 8,
+        "expanded_bytes": 4096,
+        "path_bytes": 100
+      },
+      "notes": "",
+      "archive": "archives/13-block-device.tar",
+      "sha256": "b2cad04791a282db5a286d0f7dc47be1518474c92b4bac43f2ee77530a660c34",
+      "transport_size": 1536
+    },
+    {
+      "id": "14-fifo",
+      "expected_result": "reject",
+      "reason": "FIFO entry",
+      "consequence": "Never create filesystem IPC endpoints from package bytes.",
+      "bounds": {
+        "transport_bytes": 32768,
+        "entries": 8,
+        "expanded_bytes": 4096,
+        "path_bytes": 100
+      },
+      "notes": "",
+      "archive": "archives/14-fifo.tar",
+      "sha256": "c35f1d3d4dfecba4f2c32389ba21910998b531ced48ee67b93733296afddec8c",
+      "transport_size": 1536
+    },
+    {
+      "id": "15-gnu-sparse-type",
+      "expected_result": "reject",
+      "reason": "GNU sparse type encoding",
+      "consequence": "Reject sparse representations before allocation or materialization.",
+      "bounds": {
+        "transport_bytes": 32768,
+        "entries": 8,
+        "expanded_bytes": 4096,
+        "path_bytes": 100
+      },
+      "notes": "Synthetic old-GNU sparse discriminator; no enormous backing body is present.",
+      "archive": "archives/15-gnu-sparse-type.tar",
+      "sha256": "13f07b02b1ea6a4985b62fe12f53fb4f59595cea1c887373bdfbbcdf83210881",
+      "transport_size": 1536
+    },
+    {
+      "id": "16-pax-sparse",
+      "expected_result": "reject",
+      "reason": "PAX GNU sparse metadata",
+      "consequence": "Reject sparse/unsupported extensions; tiny encoded payload must not trigger large expansion.",
+      "bounds": {
+        "transport_bytes": 32768,
+        "entries": 8,
+        "expanded_bytes": 4096,
+        "path_bytes": 100
+      },
+      "notes": "",
+      "archive": "archives/16-pax-sparse.tar",
+      "sha256": "161f54e87e1b8b470eeba08b61bac9c42d8ad23a012c9238f3c5f7a65106c280",
+      "transport_size": 3072
+    },
+    {
+      "id": "17-pax-path-override",
+      "expected_result": "reject",
+      "reason": "unsupported PAX path override with traversal",
+      "consequence": "Validation must not inspect only the harmless USTAR name while extraction honors an override.",
+      "bounds": {
+        "transport_bytes": 32768,
+        "entries": 8,
+        "expanded_bytes": 4096,
+        "path_bytes": 100
+      },
+      "notes": "",
+      "archive": "archives/17-pax-path-override.tar",
+      "sha256": "4b008465c8a30c70950bbfe6313c37984bb2eb3971ee3cd8f85f53b1fead1389",
+      "transport_size": 3072
+    },
+    {
+      "id": "18-gnu-longname-override",
+      "expected_result": "reject",
+      "reason": "unsupported GNU longname override",
+      "consequence": "Unsupported name extensions cannot bypass path validation.",
+      "bounds": {
+        "transport_bytes": 32768,
+        "entries": 8,
+        "expanded_bytes": 4096,
+        "path_bytes": 100
+      },
+      "notes": "",
+      "archive": "archives/18-gnu-longname-override.tar",
+      "sha256": "97a379c6bea52b8de2e698cff110d717de691c9d9042398b7bd82e0a037d8367",
+      "transport_size": 3072
+    },
+    {
+      "id": "19-over-entry-count",
+      "expected_result": "reject",
+      "reason": "nine entries exceed bound eight",
+      "consequence": "Stop bounded enumeration; discard staging without publication.",
+      "bounds": {
+        "transport_bytes": 32768,
+        "entries": 8,
+        "expanded_bytes": 4096,
+        "path_bytes": 100
+      },
+      "notes": "",
+      "archive": "archives/19-over-entry-count.tar",
+      "sha256": "d36aa7a7b48ab29678ad8c5d8b38db3591fc7ce21ee3c66d4f48b4966253ea68",
+      "transport_size": 5632
+    },
+    {
+      "id": "20-expanded-total",
+      "expected_result": "reject",
+      "reason": "4097 regular-file bytes exceed expanded bound 4096",
+      "consequence": "Aggregate expanded limit must apply, not merely a per-file cap.",
+      "bounds": {
+        "transport_bytes": 32768,
+        "entries": 8,
+        "expanded_bytes": 4096,
+        "path_bytes": 100
+      },
+      "notes": "",
+      "archive": "archives/20-expanded-total.tar",
+      "sha256": "b6cced3a4fffb34fcc07088120aff7a97ffec9f3e16d8e8c26d6c3b838a5028d",
+      "transport_size": 7168
+    },
+    {
+      "id": "21-declared-huge",
+      "expected_result": "reject",
+      "reason": "declared file size exceeds expanded limit before payload arrives",
+      "consequence": "Reject from header without allocating declared size or waiting for its bytes.",
+      "bounds": {
+        "transport_bytes": 32768,
+        "entries": 8,
+        "expanded_bytes": 4096,
+        "path_bytes": 100
+      },
+      "notes": "Only one 512-byte header exists. Also incomplete transport; rejection must occur without consuming a huge payload. A short fixture alone cannot prove bounded memory or early-read behavior.",
+      "archive": "archives/21-declared-huge.tar",
+      "sha256": "2f05ea9bad1b3999bc21c4992e3aca9ba7faa9b756fc8c4939cdc80f4f45715d",
+      "transport_size": 512
+    },
+    {
+      "id": "22-transport-overlimit",
+      "expected_result": "reject",
+      "reason": "transport bytes exceed explicit bound 2048",
+      "consequence": "Enforce total incoming bytes including headers/padding/trailer.",
+      "bounds": {
+        "transport_bytes": 2048,
+        "entries": 8,
+        "expanded_bytes": 4096,
+        "path_bytes": 100
+      },
+      "notes": "",
+      "archive": "archives/22-transport-overlimit.tar",
+      "sha256": "e767d64c5724a845743c07d0fd555b1ebdc37c09fca8c81c6b6af7d512c915a8",
+      "transport_size": 3584
+    },
+    {
+      "id": "23-truncated-header",
+      "expected_result": "reject",
+      "reason": "stream ends after 100 bytes of a 512-byte header",
+      "consequence": "Incomplete transport cannot become a complete receipt.",
+      "bounds": {
+        "transport_bytes": 32768,
+        "entries": 8,
+        "expanded_bytes": 4096,
+        "path_bytes": 100
+      },
+      "notes": "",
+      "archive": "archives/23-truncated-header.tar",
+      "sha256": "90522cd416c2e87f866ce2cae13223fd2ae5a746bf97fa01e03308714be9ab8d",
+      "transport_size": 100
+    },
+    {
+      "id": "24-truncated-payload",
+      "expected_result": "reject",
+      "reason": "header declares 32 bytes but only 8 payload bytes arrive",
+      "consequence": "Do not accept a partially transferred regular file.",
+      "bounds": {
+        "transport_bytes": 32768,
+        "entries": 8,
+        "expanded_bytes": 4096,
+        "path_bytes": 100
+      },
+      "notes": "",
+      "archive": "archives/24-truncated-payload.tar",
+      "sha256": "2a610562b149a259775b0a86e567bde6acdab8f8f98d1cb01ddcf30efc30a101",
+      "transport_size": 520
+    },
+    {
+      "id": "25-valid-limit-boundary",
+      "expected_result": "accept",
+      "reason": "expanded output equals bound exactly",
+      "consequence": "Inclusive limits must not reject a valid ordinary package at the configured bound.",
+      "bounds": {
+        "transport_bytes": 32768,
+        "entries": 8,
+        "expanded_bytes": 4096,
+        "path_bytes": 100
+      },
+      "notes": "",
+      "archive": "archives/25-valid-limit-boundary.tar",
+      "sha256": "7b54cd4f3712daaa87c157290e06881c04458828c71145d885993172b0eedd0a",
+      "transport_size": 5632
+    },
+    {
+      "id": "26-late-bad-entry",
+      "expected_result": "reject",
+      "reason": "late traversal after valid entry",
+      "consequence": "Full validation must precede extraction; failure leaves no published partial tree.",
+      "bounds": {
+        "transport_bytes": 32768,
+        "entries": 8,
+        "expanded_bytes": 4096,
+        "path_bytes": 100
+      },
+      "notes": "",
+      "archive": "archives/26-late-bad-entry.tar",
+      "sha256": "36a63f5af0f277469bfff8613f07bcda191d4d2469462cf6dd4340b84c14e59e",
+      "transport_size": 3072
+    }
+  ],
+  "receipt_scenarios": 13,
+  "validation": {
+    "validation_scope": "raw byte hashes, checksums, bounded header inventory, intended truncation, deterministic regeneration; no extraction or product acceptance",
+    "archive_count": 27,
+    "total_archive_bytes": 73324,
+    "largest_archive_bytes": 7168,
+    "max_declared_file_bytes": 134217729,
+    "all_inventories_matched": true,
+    "deterministic_regeneration": true,
+    "extract_calls": 0,
+    "container_calls": 0
+  },
+  "sha256": {
+    "README.md": "9f52214ace475bc453afe15a800c0b29066fee5508a1a8b07d812d1ac36a0126",
+    "archives/00-valid-package.tar": "afd8edffe985260efeb6854f967abeb2dde6108c2d366c02c36ab3282fad6405",
+    "archives/01-duplicate-name.tar": "df4c25237af063a9c90a4711b871e92214fa0c0bd9f19b7175e9b2033bdcd67d",
+    "archives/02-normalized-dot-duplicate.tar": "a15e6caa6b04945fbd419539ad40efc17a06f8dfc093424281bc1e395d66961a",
+    "archives/03-normalized-slash-duplicate.tar": "8f80f97bd00821025dc8bc04cb84481ac750eef27bacc64ce3c316f6ddb07aef",
+    "archives/04-file-ancestor-first.tar": "bde9996ad93adb838ec3c7c9fb3a9c858b2a3506be24a45d0c2c86f083381db4",
+    "archives/05-file-ancestor-last.tar": "7445ef50807a181a08b02ff52c78662e4cd4fed35cf80c301c9a214fff9c0ce2",
+    "archives/06-traversal-parent.tar": "f5f806c7d04d7f24f0e21c47b9657787bdab075b6bead1a35157efd962b7c563",
+    "archives/07-traversal-nested.tar": "6c42f78189acaaa705651e652e36d47881a7e5bb2f42556c557b48558423a6d9",
+    "archives/08-absolute.tar": "88586cf808957670acd353297469d054c6c859b7201a6df91b88d9f2b8160420",
+    "archives/09-symlink.tar": "90e24287a20403903b0d194bad69a46b7f9dfe6abbc798c1469ae4caab49b4ee",
+    "archives/10-hardlink.tar": "a74015478e1f46179e5ffc53efeca527f30c98ca441db851d8fa0b6a2e55d55b",
+    "archives/11-arbitrary-bin-symlink.tar": "9b5df1f7651fd26085153d3c425132a9ea0980d90769caa077413706f30a35e5",
+    "archives/12-character-device.tar": "e31af3d8e2f874d3f44030d0b0be635d31837509f71b1214349113ac75bc5510",
+    "archives/13-block-device.tar": "b2cad04791a282db5a286d0f7dc47be1518474c92b4bac43f2ee77530a660c34",
+    "archives/14-fifo.tar": "c35f1d3d4dfecba4f2c32389ba21910998b531ced48ee67b93733296afddec8c",
+    "archives/15-gnu-sparse-type.tar": "13f07b02b1ea6a4985b62fe12f53fb4f59595cea1c887373bdfbbcdf83210881",
+    "archives/16-pax-sparse.tar": "161f54e87e1b8b470eeba08b61bac9c42d8ad23a012c9238f3c5f7a65106c280",
+    "archives/17-pax-path-override.tar": "4b008465c8a30c70950bbfe6313c37984bb2eb3971ee3cd8f85f53b1fead1389",
+    "archives/18-gnu-longname-override.tar": "97a379c6bea52b8de2e698cff110d717de691c9d9042398b7bd82e0a037d8367",
+    "archives/19-over-entry-count.tar": "d36aa7a7b48ab29678ad8c5d8b38db3591fc7ce21ee3c66d4f48b4966253ea68",
+    "archives/20-expanded-total.tar": "b6cced3a4fffb34fcc07088120aff7a97ffec9f3e16d8e8c26d6c3b838a5028d",
+    "archives/21-declared-huge.tar": "2f05ea9bad1b3999bc21c4992e3aca9ba7faa9b756fc8c4939cdc80f4f45715d",
+    "archives/22-transport-overlimit.tar": "e767d64c5724a845743c07d0fd555b1ebdc37c09fca8c81c6b6af7d512c915a8",
+    "archives/23-truncated-header.tar": "90522cd416c2e87f866ce2cae13223fd2ae5a746bf97fa01e03308714be9ab8d",
+    "archives/24-truncated-payload.tar": "2a610562b149a259775b0a86e567bde6acdab8f8f98d1cb01ddcf30efc30a101",
+    "archives/25-valid-limit-boundary.tar": "7b54cd4f3712daaa87c157290e06881c04458828c71145d885993172b0eedd0a",
+    "archives/26-late-bad-entry.tar": "36a63f5af0f277469bfff8613f07bcda191d4d2469462cf6dd4340b84c14e59e",
+    "cases.json": "806e904988ceb33b8bb2796a51582c180a18414198ed3b0d5d087760d6fa0158",
+    "private/generate.py": "bc7fa9a555b5a78a23f531fccaf3b0082732d1f0c6a03ae3daecb21b8e41b98d",
+    "private/header-validation.json": "c40ff22a3fb4baa7eef92c68f8f77f2e7bd895f659f3f80d46397a685b258f01",
+    "private/validate_headers.py": "a3d629287754ccd6c6df3c1667a5512927a98a3a9c51947fd9d6257564bf4c1d",
+    "receipt-publication-scenarios.json": "dc5f6e171ecaf40ab1df90453bf6936be9f73ae965f6b7b0e72b5d37484d4531",
+    "valid-tree-records.json": "24c8827e77caa4d6b54ef4879026b03531db5001c78136f13d41c9ad1322de0c"
+  }
+}

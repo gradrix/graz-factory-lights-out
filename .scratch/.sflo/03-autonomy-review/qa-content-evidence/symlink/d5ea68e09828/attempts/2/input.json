@@ -1,0 +1,25 @@
+{
+  "previous": {
+    "passed": false,
+    "checks": [
+      {
+        "command": [
+          "python",
+          "-I",
+          "/acceptance/check.py"
+        ],
+        "exit_code": 0,
+        "timed_out": false,
+        "output": "",
+        "elapsed_s": 0.3157458230853081,
+        "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578"
+      }
+    ],
+    "reviewability": {
+      "passed": false,
+      "error": "Independent review cannot inspect symlink: link.py"
+    },
+    "candidate": "97ba54223b0b45aad8c552fd96b71697213a42f28c686106d6cfcf8bf3481e11"
+  },
+  "candidate": "97ba54223b0b45aad8c552fd96b71697213a42f28c686106d6cfcf8bf3481e11"
+}

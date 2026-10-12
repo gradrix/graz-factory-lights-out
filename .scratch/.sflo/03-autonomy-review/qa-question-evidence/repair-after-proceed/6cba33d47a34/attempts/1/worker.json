@@ -1,0 +1,7 @@
+{
+  "summary": "\"Done\"",
+  "turns": 2,
+  "tool_calls": 1,
+  "elapsed_s": 0.033144563902169466,
+  "finish_reason": null
+}

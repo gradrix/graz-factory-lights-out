@@ -1,0 +1,17 @@
+{
+  "repo": "/home/gradrix/repos/gflo/.scratch/.sflo/03-autonomy-review/qa-final-question-evidence/repo",
+  "acceptance": "/home/gradrix/repos/gflo/.scratch/.sflo/03-autonomy-review/qa-final-question-evidence/acceptance",
+  "objective": "Set value to 2. Inputs are integers. The subscription price is explicitly undecided.",
+  "checks": [
+    [
+      "python",
+      "-I",
+      "/acceptance/check.py"
+    ]
+  ],
+  "max_attempts": 2,
+  "max_turns": 5,
+  "review_required": true,
+  "base_commit": "64de042c0b698ef36ec2a6556fca0b3f1e39f120",
+  "acceptance_hash": "34f3e9428016ff6877cf8ae85ee68c167a79bcaa31ce6b9d1f6ed6d6c983b860"
+}

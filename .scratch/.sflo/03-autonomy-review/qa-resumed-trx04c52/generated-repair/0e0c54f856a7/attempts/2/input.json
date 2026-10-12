@@ -1,0 +1,37 @@
+{
+  "previous": {
+    "passed": false,
+    "checks": [
+      {
+        "command": [
+          "python",
+          "-I",
+          "/acceptance/check.py"
+        ],
+        "exit_code": 0,
+        "timed_out": false,
+        "output": "",
+        "elapsed_s": 0.31555187283083797,
+        "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578"
+      },
+      {
+        "command": [
+          "python",
+          "-B",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "tests"
+        ],
+        "exit_code": 1,
+        "timed_out": false,
+        "output": "F\n======================================================================\nFAIL: test_value (test_value.Value.test_value)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/tests/test_value.py\", line 3, in test_value\n    def test_value(self): self.assertEqual(2, 3)\n                          ^^^^^^^^^^^^^^^^^^^^^^\nAssertionError: 2 != 3\n\n----------------------------------------------------------------------\nRan 1 test in 0.000s\n\nFAILED (failures=1)\n",
+        "elapsed_s": 0.5685264756903052,
+        "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578"
+      }
+    ],
+    "candidate": "afdfbcbb76adee0b0efdaeb7b81a835e5e2d03226345f681c098ffd5f8877fae"
+  },
+  "candidate": "afdfbcbb76adee0b0efdaeb7b81a835e5e2d03226345f681c098ffd5f8877fae"
+}

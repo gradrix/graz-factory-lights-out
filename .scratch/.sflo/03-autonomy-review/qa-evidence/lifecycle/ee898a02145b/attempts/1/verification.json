@@ -1,0 +1,31 @@
+{
+  "passed": false,
+  "checks": [
+    {
+      "command": [
+        "python",
+        "-I",
+        "/acceptance/check.py"
+      ],
+      "exit_code": 0,
+      "timed_out": false,
+      "output": "",
+      "elapsed_s": 0.41596402879804373,
+      "image": "sha256:a8a3e0a84b0d5fab2b3b4b32e89715a7384b7af2f81b5e82d203d12828cb2578"
+    }
+  ],
+  "review": {
+    "decision": "repair",
+    "findings": [
+      {
+        "severity": "major",
+        "path": "app.py",
+        "line": 1,
+        "evidence": "Objective mismatch",
+        "repair": "Correct value"
+      }
+    ],
+    "question": ""
+  },
+  "candidate": "3dcb78a00e3ec0dd498a9e2f6578f36d6e359811bc1c51cdd6d0475a17aa5320"
+}

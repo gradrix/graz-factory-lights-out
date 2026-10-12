@@ -1,0 +1,14 @@
+{
+  "release": "7c89eec07b0b5e1c4710d468beb5770861f35386dbafc69e5e6db44d0c515c50",
+  "local_hashes_match": true,
+  "deployed_hashes_match": true,
+  "documentation_links_pass": true,
+  "model_ready": true,
+  "model_context": 131072,
+  "worker_containers_remaining": 0,
+  "runtime_tests": 23,
+  "combined_coverage_percent": 90.09345794392523,
+  "final_semantic_review": "passed within pilot scope",
+  "active_model": "flash-next-coder",
+  "original_vllm": "preserved and stopped; rollback tested"
+}

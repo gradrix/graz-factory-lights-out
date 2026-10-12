@@ -1,0 +1,305 @@
+diff --git a/README.md b/README.md
+index 0674071..a9491df 100644
+--- a/README.md
++++ b/README.md
+@@ -1,3 +1,51 @@
+-# Log summary
++# log_summary
+ 
+-Implement a small Python command-line utility here. No application code exists yet.
++Summarize JSON Lines logs with a small standard-library CLI.
++
++## Usage
++
++```
++python log_summary.py PATH [--strict]
++```
++
++- `PATH` — log file, or `-` to read from stdin.
++- Each nonblank line must be a JSON object with nonempty string fields
++  `service` and `level`. `service` is whitespace-trimmed; `level` is
++  trimmed and uppercased. Any nonempty level name is accepted.
++- Blank lines are ignored entirely.
++- Default mode: invalid records are skipped and counted in `invalid`.
++- `--strict`: stop on the first invalid record, exit code 2, print a
++  line-number error to stderr, and print nothing on stdout.
++- Missing/unreadable files: exit code 2 with a clear stderr message.
++
++## Output
++
++One JSON object on stdout:
++
++```json
++{"total": <valid_count>, "invalid": <invalid_count>,
++ "by_service": {"<service>": <count>, ...},
++ "by_level": {"<LEVEL>": <count>, ...}}
++```
++
++## Examples
++
++```sh
++$ printf '{"service":" alpha ","level":" info "}\nnot json\n{"service":"beta","level":"warn"}\n' > log.jsonl
++$ python log_summary.py log.jsonl
++{"total": 2, "invalid": 1, "by_service": {"alpha": 1, "beta": 1}, "by_level": {"INFO": 1, "WARN": 1}}
++
++$ cat log.jsonl | python log_summary.py -
++{"total": 2, "invalid": 1, "by_service": {"alpha": 1, "beta": 1}, "by_level": {"INFO": 1, "WARN": 1}}
++
++$ python log_summary.py --strict log.jsonl
++error: invalid record on line 2: not valid JSON
++$ echo $?
++2
++```
++
++## Tests
++
++```sh
++python -m unittest discover -s tests -v
++```
+diff --git a/log_summary.py b/log_summary.py
+new file mode 100644
+index 0000000..40c4e6c
+--- /dev/null
++++ b/log_summary.py
+@@ -0,0 +1,113 @@
++#!/usr/bin/env python3
++"""Summarize JSON Lines logs.
++
++Usage: python log_summary.py PATH [--strict]
++       PATH may be '-' to read from stdin.
++"""
++import argparse
++import json
++import sys
++
++
++def validate_record(obj):
++    """Return (service, level) for a valid record, or None if invalid.
++
++    A record is valid when obj is a dict with string "service" and
++    string "level" that are nonempty after trimming (level is also
++    uppercased).
++    """
++    if not isinstance(obj, dict):
++        return None
++    service = obj.get("service")
++    level = obj.get("level")
++    if not isinstance(service, str) or not isinstance(level, str):
++        return None
++    service = service.strip()
++    level = level.strip().upper()
++    if not service or not level:
++        return None
++    return service, level
++
++
++def summarize(lines, strict=False):
++    """Consume an iterable of raw lines and return the summary dict.
++
++    Blank lines are ignored entirely. Invalid records are counted in
++    "invalid" unless strict=True, in which case a ValueError with an
++    explanatory message naming the line number is raised on the first
++    invalid record.
++    """
++    total = 0
++    invalid = 0
++    by_service = {}
++    by_level = {}
++    for lineno, raw in enumerate(lines, start=1):
++        line = raw.strip()
++        if not line:
++            continue  # blank lines are ignored entirely
++        try:
++            obj = json.loads(line)
++        except json.JSONDecodeError:
++            if strict:
++                raise ValueError(
++                    "invalid record on line %d: not valid JSON" % lineno
++                )
++            invalid += 1
++            continue
++        result = validate_record(obj)
++        if result is None:
++            if strict:
++                raise ValueError(
++                    "invalid record on line %d: expected a JSON object "
++                    "with nonempty string fields \"service\" and "
++                    "\"level\"" % lineno
++                )
++            invalid += 1
++            continue
++        service, level = result
++        total += 1
++        by_service[service] = by_service.get(service, 0) + 1
++        by_level[level] = by_level.get(level, 0) + 1
++    return {
++        "total": total,
++        "invalid": invalid,
++        "by_service": by_service,
++        "by_level": by_level,
++    }
++
++
++def main(argv=None):
++    parser = argparse.ArgumentParser(
++        description="Summarize JSON Lines logs (one JSON object per line)."
++    )
++    parser.add_argument(
++        "path",
++        help='path to the log file, or "-" to read from stdin',
++    )
++    parser.add_argument(
++        "--strict",
++        action="store_true",
++        help="stop on the first invalid record (exit code 2)",
++    )
++    args = parser.parse_args(argv)
++
++    try:
++        if args.path == "-":
++            summary = summarize(sys.stdin, strict=args.strict)
++        else:
++            with open(args.path, "r") as fh:
++                summary = summarize(fh, strict=args.strict)
++    except OSError as exc:
++        print("error: cannot open %s: %s" % (args.path, exc), file=sys.stderr)
++        return 2
++    except ValueError as exc:
++        print("error: %s" % exc, file=sys.stderr)
++        return 2
++
++    json.dump(summary, sys.stdout, ensure_ascii=False)
++    sys.stdout.write("\n")
++    return 0
++
++
++if __name__ == "__main__":
++    sys.exit(main())
+diff --git a/tests/test_log_summary.py b/tests/test_log_summary.py
+new file mode 100644
+index 0000000..90f0435
+--- /dev/null
++++ b/tests/test_log_summary.py
+@@ -0,0 +1,122 @@
++"""Regression tests for log_summary.py (run with: python -m unittest tests.test_log_summary)."""
++import io
++import json
++import os
++import subprocess
++import sys
++import tempfile
++import unittest
++
++sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
++
++import log_summary
++
++
++class TestSummarize(unittest.TestCase):
++    def test_counts_valid_records_with_trimming_and_uppercasing(self):
++        lines = [
++            '{"service": " alpha ", "level": " info "}\n',
++            '{"service": "beta", "level": "warn"}\n',
++            '{"service": "beta", "level": "error"}\n',
++        ]
++        summary = log_summary.summarize(lines)
++        self.assertEqual(
++            summary,
++            {
++                "total": 3,
++                "invalid": 0,
++                "by_service": {"alpha": 1, "beta": 2},
++                "by_level": {"INFO": 1, "WARN": 1, "ERROR": 1},
++            },
++        )
++
++    def test_blank_lines_are_ignored_and_invalid_records_counted(self):
++        lines = [
++            '{"service": "a", "level": "x"}\n',
++            "\n",
++            "   \n",
++            "not json\n",
++            '{"service": "", "level": "x"}\n',
++            '{"level": "x"}\n',
++            '{"service": "a", "level": 3}\n',
++            '["service", "level"]\n',
++            '{"service": "b", "level": " y "}\n',
++        ]
++        summary = log_summary.summarize(lines)
++        self.assertEqual(summary["total"], 2)
++        self.assertEqual(summary["invalid"], 5)
++        self.assertEqual(summary["by_service"], {"a": 1, "b": 1})
++        self.assertEqual(summary["by_level"], {"X": 1, "Y": 1})
++
++    def test_strict_mode_raises_on_first_invalid_record_with_line_number(self):
++        lines = io.StringIO(
++            '{"service": "a", "level": "x"}\n'
++            "\n"
++            "oops\n"
++            '{"service": "b", "level": "y"}\n'
++        )
++        with self.assertRaises(ValueError) as cm:
++            log_summary.summarize(lines, strict=True)
++        message = str(cm.exception)
++        self.assertIn("line 3", message)
++
++    def test_strict_mode_accepts_all_valid_input(self):
++        lines = ['{"service": "s", "level": "any name"}\n']
++        summary = log_summary.summarize(lines, strict=True)
++        self.assertEqual(summary["total"], 1)
++        self.assertEqual(summary["by_level"], {"ANY NAME": 1})
++
++
++class TestCli(unittest.TestCase):
++    def run_cli(self, args, stdin=None):
++        proc = subprocess.run(
++            [sys.executable,
++             os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
++                         "log_summary.py")] + args,
++            input=stdin,
++            capture_output=True,
++            text=True,
++        )
++        return proc
++
++    def test_cli_summary_on_file(self):
++        tmpdir = tempfile.TemporaryDirectory()
++        path = os.path.join(tmpdir.name, "sample.jsonl")
++        try:
++            with open(path, "w") as fh:
++                fh.write('{"service": "svc", "level": "info"}\n')
++                fh.write('garbage\n')
++            proc = self.run_cli([path])
++        finally:
++            tmpdir.cleanup()
++        self.assertEqual(proc.returncode, 0)
++        self.assertEqual(
++            json.loads(proc.stdout),
++            {"total": 1, "invalid": 1, "by_service": {"svc": 1}, "by_level": {"INFO": 1}},
++        )
++        self.assertEqual(proc.stderr, "")
++
++    def test_cli_stdin_dash(self):
++        proc = self.run_cli(["-"], stdin='{"service": "s", "level": "debug"}\n')
++        self.assertEqual(proc.returncode, 0)
++        self.assertEqual(
++            json.loads(proc.stdout),
++            {"total": 1, "invalid": 0, "by_service": {"s": 1}, "by_level": {"DEBUG": 1}},
++        )
++
++    def test_cli_strict_first_invalid_exits_2_with_line_error(self):
++        proc = self.run_cli(["--strict", "-"],
++                            stdin='{"service": "a", "level": "x"}\nbad line\n')
++        self.assertEqual(proc.returncode, 2)
++        self.assertEqual(proc.stdout, "")
++        self.assertIn("line 2", proc.stderr)
++
++    def test_cli_missing_file_exits_2_with_clear_stderr(self):
++        proc = self.run_cli(["/definitely/not/a/real/file.jsonl"])
++        self.assertEqual(proc.returncode, 2)
++        self.assertEqual(proc.stdout, "")
++        self.assertIn("cannot open", proc.stderr)
++
++
++if __name__ == "__main__":
++    unittest.main()

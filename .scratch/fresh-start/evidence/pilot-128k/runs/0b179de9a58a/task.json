@@ -1,0 +1,21 @@
+{
+  "repo": "/home/gradrix/gflo-runtime/.gflo/examples/invoice/source",
+  "objective": "Fix this invoice CSV utility for decimal money. Keep the CLI python invoice.py PATH and summarize(stream). Parse amounts with Decimal, reject non-finite/invalid amounts with a clear stderr message and exit 2 (no traceback). Round each row to cents using ROUND_HALF_UP before summing; support negative refunds. Return JSON customer-to-amount strings with exactly two decimal digits, including zero. Keep quoted customer names intact. A header-only CSV returns {}. Reject missing customer/amount columns, empty customer names and empty amounts. Add regression tests and update the README. Use Python standard library only. Put at least three discoverable regression tests under tests/ (test_* methods). Remove scratch files; deliver only Python source/tests and Markdown documentation.",
+  "acceptance": "acceptance",
+  "checks": [
+    [
+      "python",
+      "-I",
+      "/acceptance/check.py"
+    ],
+    [
+      "python",
+      "-I",
+      "/acceptance/quality.py"
+    ]
+  ],
+  "max_attempts": 3,
+  "max_turns": 24,
+  "base_commit": "35c820bb142c0ae943b570d70fa6ef518831c336",
+  "acceptance_hash": "5f3219e2c337e63c620197a694ea986c3e552d58db4733329f6c4a6055152b8a"
+}

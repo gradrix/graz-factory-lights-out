@@ -28,6 +28,7 @@ User direction, 2026-10-02: push the first version, delete previous implementati
 
 - [Project-resolved Python](../../docs/decisions/architecture/012-project-resolved-python.md): explicit `python-project` profile resolves a repository's own dependencies once online; worker stays offline.
 - [Worker head-to-head](../../docs/decisions/architecture/013-worker-head-to-head.md): agent decided (2026-10-12, provisional): keep the gflo worker with mini-swe-agent opt-in; navigation aids together delivered 16/16 but separate from no aids on only three hard tasks, so a 3×3×3 repeat decides the default.
+- [Phase 4 start](../../docs/decisions/architecture/014-phase-4-start.md): agent decided (2026-10-12): gate met (terse 13/16, detailed 14/16); first unit measures queued vs direct delivery on mined commit chains before building more.
 
 ## Not yet specified
 

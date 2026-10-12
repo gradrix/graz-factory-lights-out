@@ -1,0 +1,7 @@
+{
+  "summary": "All acceptance checks pass. Summary of the narrowly scoped fix:\n\n**Change in `invoice.py` (`summarize`)**\n- The missing-header branch (`reader.fieldnames is None`, i.e. CSV with no header at all) previously returned `{}`; it now raises `ValueError('missing header: required columns customer, amount')`. Since `main()` already catches `ValueError`, this yields a clear stderr message and exit code 2 with no traceback.\n- Docstring updated to mention the missing-header case; no other code paths touched.\n\n**Regression test (`tests/test_invoice.py`)**\n- Replaced the now-obsolete `test_empty_input_returns_empty_dict` with `test_empty_input_missing_header_rejected`, which asserts `summarize('')` raises `ValueError` containing \"missing header\". The header-only case (`'customer,amount\\n'` \u2192 `{}`) was already covered by `test_header_only_returns_empty_dict` and still passes.\n\n**README**\n- Error list updated: \"no header at all (empty input file), or a header missing the `customer` or `amount` column\".\n\n**Verification**\n- Empty file: `error: missing header: required columns customer, amount`, exit 2, no traceback.\n- Header-only file: prints `{}`, exit 0.\n- Full unittest suite (24 tests) passes; all three acceptance commands (`check.py`, `quality.py`, `edges.py`) pass.\n\nNo other behavior was changed.",
+  "turns": 8,
+  "tool_calls": 7,
+  "elapsed_s": 32.05390432901913,
+  "finish_reason": "stop"
+}

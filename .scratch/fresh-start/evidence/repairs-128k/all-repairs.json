@@ -1,0 +1,38 @@
+[
+  {
+    "id": "08187f980bed",
+    "status": "accepted",
+    "attempts": 1,
+    "contract_hash": "88e2b3c061e8e08f1406a54528ae5aaf146eb6afab9bed6e4ec02492ad4b326a",
+    "message": "",
+    "directory": "/home/gradrix/gflo-runtime/.gflo/runs/08187f980bed",
+    "workspace": "/home/gradrix/gflo-runtime/.gflo/runs/08187f980bed/workspace",
+    "patch": "/home/gradrix/gflo-runtime/.gflo/runs/08187f980bed/change.patch",
+    "scenario": "invoice",
+    "elapsed_s": 82.57772344199475
+  },
+  {
+    "id": "ff554c2e0dfd",
+    "status": "accepted",
+    "attempts": 1,
+    "contract_hash": "1491e147fee853886b1e22abe38f4a22560647d2d2f13489516a563f4a8868ff",
+    "message": "",
+    "directory": "/home/gradrix/gflo-runtime/.gflo/runs/ff554c2e0dfd",
+    "workspace": "/home/gradrix/gflo-runtime/.gflo/runs/ff554c2e0dfd/workspace",
+    "patch": "/home/gradrix/gflo-runtime/.gflo/runs/ff554c2e0dfd/change.patch",
+    "scenario": "inventory",
+    "elapsed_s": 47.45759995302069
+  },
+  {
+    "id": "41fbdafe38ff",
+    "status": "accepted",
+    "attempts": 1,
+    "contract_hash": "90d6ab541e614fe5b963eae70b9e97e35d27594883735ccc658b740360b283ec",
+    "message": "",
+    "directory": "/home/gradrix/gflo-runtime/.gflo/runs/41fbdafe38ff",
+    "workspace": "/home/gradrix/gflo-runtime/.gflo/runs/41fbdafe38ff/workspace",
+    "patch": "/home/gradrix/gflo-runtime/.gflo/runs/41fbdafe38ff/change.patch",
+    "scenario": "invoice-header-review",
+    "elapsed_s": 33.90321507799672
+  }
+]
