@@ -36,8 +36,10 @@ def load(spec):
     return spec, [dict(step, id=name) for name, step in zip(ids, steps)]
 
 
-def fingerprint(steps):
-    return hashlib.sha256(json.dumps([[step['id'], step['objective']] for step in steps]).encode()).hexdigest()
+def fingerprint(spec, steps):
+    """What a running queue may not change: its steps and how their tests run."""
+    pinned = [[step['id'], step['objective']] for step in steps], spec.get('pytest_args', 'tests'), spec.get('env', [])
+    return hashlib.sha256(json.dumps(pinned).encode()).hexdigest()
 
 
 def integration(repo, out, base):
@@ -89,9 +91,9 @@ def run_queue(spec_path, out, *, state, config, environment_store, environment=N
     else:
         if git(repo, 'status', '--porcelain'):
             raise ValueError('Repository must be clean; commit the intended base first')
-        queue = {'repo': str(repo), 'base': git(repo, 'rev-parse', 'HEAD'), 'steps': fingerprint(steps), 'done': {}}
-    if queue.get('steps') != fingerprint(steps):
-        raise ValueError(f'The steps in {spec_path} changed since this queue started; use a new --out directory')
+        queue = {'repo': str(repo), 'base': git(repo, 'rev-parse', 'HEAD'), 'steps': fingerprint(spec, steps), 'done': {}}
+    if queue.get('steps') != fingerprint(spec, steps):
+        raise ValueError(f'The steps or test settings in {spec_path} changed since this queue started; use a new --out directory')
     clone = integration(repo, out, queue['base'])
     pending = [done for done in queue['done'].values() if done.get('status') == 'accepted' and not done.get('commit')]
     if git(clone, 'status', '--porcelain', '--untracked-files=no') and not pending:

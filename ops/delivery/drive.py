@@ -84,11 +84,13 @@ def run(args, commit, arm):
             exit_code = process.wait(timeout=limit)
         except subprocess.TimeoutExpired:
             exit_code = 'timeout'
-            os.killpg(process.pid, signal.SIGINT)  # gflo records the interruption and stops its sandbox
             try:
+                os.killpg(process.pid, signal.SIGINT)  # gflo records the interruption and stops its sandbox
                 process.wait(timeout=120)
             except subprocess.TimeoutExpired:
                 os.killpg(process.pid, signal.SIGKILL)
+                process.wait()
+            except ProcessLookupError:  # it exited as the limit fired
                 process.wait()
     elapsed = round(time.monotonic() - started, 1)
     row = {'commit': commit, 'arm': arm, 'exit_code': exit_code, 'elapsed_s': elapsed, 'scored': False}
