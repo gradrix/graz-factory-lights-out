@@ -41,6 +41,8 @@ These callables also enable deterministic fault injection in tests. Production u
 
 Test-writing tasks reuse this whole loop: `testfactory.py` only writes a task whose operator check is the controller-owned `recipes/test_acceptance.py` (unchanged non-test source, assertion smells, no copied source text, repeated passes, mutation score of the new tests). The worker never sees or edits that check.
 
+The change queue (`queue.py`, `gflo queue run`) also reuses the loop unchanged. It runs ordered `task init` tasks as subprocesses and commits each accepted patch onto a branch of a controller-owned clone. Each step starts from the previous step's commit, so the suite run of a step's acceptance covers exactly the tree that gets committed. The queue owns order, integration and resume; it does not plan or split work.
+
 Automatic planning/delegation is a later stage. First accumulate real-task completion, repair, interruption and regression evidence. SFLO inspired explicit acceptance/repair stages; Gas City inspired work state that survives disposable sessions. Neither is a runtime dependency. The new [roadmap](roadmap.md) describes the staged autonomy work; the [feasibility research](research/autonomy-feasibility.md) supplies current primary sources.
 
 ## Execution observation

@@ -51,6 +51,10 @@ A good objective is one a careful colleague could implement without asking quest
 - **Say what must not change.** If behaviour changes on purpose, say which existing tests should change with it; the worker is reluctant to edit tests it did not write.
 - **Leave out how to implement it** unless the approach matters.
 
+### Several dependent changes (experimental)
+
+`gflo queue run QUEUE.json --out DIR [--environment ID]` runs a feature as ordered change tasks. The queue file looks like `{"repo": "path/to/repo", "steps": [{"id": "parse", "objective": "..."}, {"id": "store", "objective": "..."}], "pytest_args": "tests", "env": []}`. GFLO clones the repository into `DIR/integration`, removes the clone's remote, and builds each step with `task init` acceptance from the branch `gflo/queue` as left by the previous step. It runs each step as an ordinary `gflo run` and commits each accepted patch onto that branch. A step that ends without acceptance stops the queue. Rerunning the same command continues the queue and retries runs that could not start. `DIR/report.md` lists the steps; `DIR/feature.patch` is the whole change from the base commit. The source repository is never changed. Whether a queue of steps delivers more than one task with the combined objective is being measured ([decision 014](docs/decisions/architecture/014-phase-4-start.md)).
+
 ## Run on MONSTER-GAMING-PC
 
 The prepared installation is `/home/gradrix/gflo-runtime`. The model and sandbox image are already on disk. Once installed, these commands need no Internet connection:

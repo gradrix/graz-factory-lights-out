@@ -87,6 +87,13 @@ def main(argv=None):
     overnight.add_argument('--profile', default='python-project', choices=['python-project', 'python-stdlib'])
     overnight.add_argument('--environment', help='Prepared environment ID passed to each run')
     overnight.add_argument('--environment-store', default='.gflo/environments')
+    queue_command = sub.add_parser('queue', help='Run ordered change tasks on an integration branch in a controller-owned clone')
+    queue_actions = queue_command.add_subparsers(dest='queue_action', required=True)
+    queue_run = queue_actions.add_parser('run')
+    queue_run.add_argument('spec', help='Queue JSON: {"repo", "steps": [{"id", "objective"}], "pytest_args", "env"}')
+    queue_run.add_argument('--out', required=True, help='Queue directory (rerun the same command to continue)')
+    queue_run.add_argument('--environment', help='Prepared environment ID; otherwise prepare one from the project manifests')
+    queue_run.add_argument('--environment-store', default='.gflo/environments')
     documents = sub.add_parser('documents', help='Approved historical document evidence and saved local answers')
     documents.add_argument('--store', default='.gflo/documents')
     document_actions = documents.add_subparsers(dest='document_action', required=True)
@@ -124,18 +131,33 @@ def main(argv=None):
                 result = {'cleaned': True}
             print(json.dumps(result, indent=2))
             return 1 if result.get('receipt', {}).get('outcome', {}).get('status') == 'failed' else 0
-        if args.command == 'task':
-            from .taskinit import build as build_change_task
+        def project_sandbox(repo):
             store = EnvironmentStore(args.environment_store)
             if args.environment:
                 prepared = store.resolve(args.environment)
             else:
-                validate_project(store, 'python-project', args.repo)
-                prepared = prepare(store, 'python-project', project=args.repo)
+                validate_project(store, 'python-project', repo)
+                prepared = prepare(store, 'python-project', project=repo)
             config_path = Path(args.config)
             image = json.loads(config_path.read_text()).get('image', DEFAULT_IMAGE) if config_path.exists() else DEFAULT_IMAGE
             sandbox = Sandbox(image)
             sandbox.bind(prepared)
+            return sandbox, prepared
+        if args.command == 'queue':
+            from .queue import load, run_queue
+            from .taskinit import build as build_change_task
+            spec, _ = load(args.spec)
+            sandbox, prepared = project_sandbox((Path(args.spec).parent / spec['repo']).resolve())
+            def build_step(repo, objective, out):
+                build_change_task(repo, objective, out, sandbox, pytest_args=spec.get('pytest_args', 'tests'), env=spec.get('env', []))
+            report = run_queue(args.spec, args.out, state=Path(args.state).resolve(), config=Path(args.config).resolve(),
+                               environment_store=Path(args.environment_store).resolve(), environment=prepared.id,
+                               build_task=build_step)
+            print(json.dumps(report, indent=2))
+            return 0 if report['committed'] == report['steps'] else 2
+        if args.command == 'task':
+            from .taskinit import build as build_change_task
+            sandbox, prepared = project_sandbox(args.repo)
             text = Path(args.objective_file).read_text() if args.objective_file else args.objective
             result = build_change_task(args.repo, text, args.out, sandbox, pytest_args=args.pytest_args,
                                        env=args.env)

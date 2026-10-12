@@ -84,14 +84,21 @@ def build(mined, objectives, tasks, store):
 
 
 def score(mined, tasks, state, store, commit, run_id):
-    record = json.loads((Path(mined) / commit / 'record.json').read_text())
-    run = Path(state) / run_id
     from gflo.runner import Factory
     status = Factory(state, None, None).status(run_id)
+    return score_tree(mined, tasks, store, commit, Path(state) / run_id / 'workspace', run_id,
+                      status.get('status'), status.get('attempts'))
+
+
+def score_tree(mined, tasks, store, commit, tree, name, factory_status, attempts):
+    """Score the final tree of a run or a queue (NAME labels the score file) against the record's hidden tests."""
+    record = json.loads((Path(mined) / commit / 'record.json').read_text())
+    run_id = name
+    status = {'status': factory_status, 'attempts': attempts}
     work = Path(tasks) / commit / 'score' / run_id
     if work.exists():
         shutil.rmtree(work)
-    shutil.copytree(run / 'workspace', work)
+    shutil.copytree(tree, work, ignore=shutil.ignore_patterns('.git'))
     after = Path(mined) / commit / 'commit'
     for change, path in record['hidden']:
         if change == 'D':

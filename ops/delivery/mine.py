@@ -5,8 +5,11 @@ acceptance is the commit's test files. The task is valid when some hidden tests 
 (with the hidden test files overlaid) and pass on the commit (fail-to-pass, F2P). The full suite
 passing on both base and commit is the regression guard (pass-to-pass, P2P).
 
-usage: mine.py SOURCE_GIT SUBDIR OUT --store STORE --commits C1,C2,... [--env K=V ...] [--marker EXPR]
-Writes OUT/<commit>/{base,commit}/ and OUT/<commit>/record.json; prints one summary line per commit.
+A chain entry BASE..COMMIT (phase 4) mines the commits after BASE up to COMMIT as one task: its base is BASE, its
+hidden acceptance every test file the chain changed, and record.json lists the chain's commits as "steps".
+
+usage: mine.py SOURCE_GIT SUBDIR OUT --store STORE --commits C1,BASE..C2,... [--env K=V ...] [--marker EXPR]
+Writes OUT/<commit>/{base,commit}/ and OUT/<commit>/record.json; prints one summary line per entry.
 """
 import argparse
 import hashlib
@@ -40,10 +43,10 @@ def export(source, commit, subdir, destination):
         archive.extractall(destination, filter='data')
 
 
-def changed(source, commit, subdir):
-    """(status, path relative to subdir) for every file the commit touched under subdir."""
+def changed(source, base, commit, subdir):
+    """(status, path relative to subdir) for every file changed from BASE to COMMIT under subdir."""
     lines = git(source, 'diff-tree', '--no-commit-id', '-r', '--name-status', '--no-renames',
-                f'{commit}^', commit, '--', subdir or '.').decode().splitlines()
+                base, commit, '--', subdir or '.').decode().splitlines()
     strip = 0 if subdir in ('', '.') else len(subdir) + 1
     return [(line.split('\t')[0], line.split('\t')[1][strip:]) for line in lines]
 
@@ -70,19 +73,24 @@ def pytest(store, environment, workspace, env, marker, targets, timeout=1500):
     return pytest_outcomes(store, environment, workspace, command, timeout)
 
 
-def mine(source, subdir, out, store, commit, env, marker, cache):
+def mine(source, subdir, out, store, commit, env, marker, cache, start=None):
+    """Mine COMMIT against its parent, or the chain START..COMMIT against START."""
     root = out / commit
     if root.exists():
         shutil.rmtree(root)
     base, after = root / 'base', root / 'commit'
-    export(source, commit + '^', subdir, base)
+    export(source, start or commit + '^', subdir, base)
     export(source, commit, subdir, after)
-    touched = changed(source, commit, subdir)
+    touched = changed(source, start or commit + '^', commit, subdir)
     hidden = [(status, path) for status, path in touched if HIDDEN.match(path)]
     source_files = [path for status, path in touched if not HIDDEN.match(path) and path.endswith('.py')]
     record = {'commit': commit, 'subject': git(source, 'log', '-1', '--format=%s', commit).decode().strip(),
               'subdir': subdir, 'hidden': hidden, 'source_files': source_files,
               'manifests_changed': any(MANIFESTS.match(path) for _, path in touched)}
+    if start:
+        record['base'] = start
+        record['steps'] = [dict(zip(('commit', 'subject'), line.split(' ', 1))) for line in git(
+            source, 'log', '--reverse', '--format=%h %s', f'{start}..{commit}', '--', subdir or '.').decode().splitlines()]
     overlay = root / 'base-hidden'
     shutil.copytree(base, overlay)
     for status, path in hidden:
@@ -128,9 +136,10 @@ if __name__ == '__main__':
     args.out.mkdir(parents=True, exist_ok=True)
     cache_path = args.out / 'environments.json'
     cache = json.loads(cache_path.read_text()) if cache_path.exists() else {}
-    for commit in args.commits.split(','):
+    for entry in args.commits.split(','):
+        start, _, commit = entry.rpartition('..')
         try:
-            record = mine(args.source, args.subdir, args.out, args.store, commit, args.env, args.marker, cache)
+            record = mine(args.source, args.subdir, args.out, args.store, commit, args.env, args.marker, cache, start or None)
         except Exception as error:  # one bad candidate must not stop the batch
             record = {'commit': commit, 'valid': False, 'reason': f'{type(error).__name__}: {error}'[:500]}
             (args.out / commit).mkdir(parents=True, exist_ok=True)
