@@ -288,3 +288,15 @@ the e5fbb82 scorer: **13/16 delivered, 1 false accept, median 796 s** (detailed:
 Losses: 3612b5f exhausted (as in the detailed arm); 3e6e4bd exhausted (delivered with the detailed objective; F2P
 `test_mixed_session_headlines_use_recorded_reps_when_prescription_differs`); 57271fe false accept again (same
 ambiguous "index"). Five tasks needed 2 attempts. Phase 4 decision: [014](../../../docs/decisions/architecture/014-phase-4-start.md).
+
+## Hard-task repeat (2026-10-12, code 0002cbf)
+
+Three hard tasks (06ba3e9, 3612b5f, 57271fe) × three runs × three arms, default single reviewer with retry. Results: `~/gflo-pp/hard/rep*/results.jsonl`.
+
+| arm | delivered | false accepts | other |
+|---|---|---|---|
+| single (no aids) | 8/9 | 0 | 3612b5f exhausted once |
+| nav (all aids) | 5/9 | 2 (57271fe rep1, 3612b5f rep2) | interrupted: 3612b5f rep1 context overflow (100,906 > 98,304 tokens, turn ~60); 57271fe rep3 question assessment had no grounded decision |
+| mini | 4/9 | 2 (06ba3e9 rep1, 57271fe rep2) | 3612b5f and 57271fe exhausted once each; 57271fe needs_input once |
+
+Decision 013 is accepted: no aids by default. The phase 2 nav 16/16 was single-run noise.
