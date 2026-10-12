@@ -98,7 +98,7 @@ def score_tree(mined, tasks, store, commit, tree, name, factory_status, attempts
     work = Path(tasks) / commit / 'score' / run_id
     if work.exists():
         shutil.rmtree(work)
-    shutil.copytree(tree, work, ignore=shutil.ignore_patterns('.git'))
+    shutil.copytree(tree, work, ignore=lambda directory, names: ['.git'] if Path(directory) == Path(tree) else [])
     after = Path(mined) / commit / 'commit'
     for change, path in record['hidden']:
         if change == 'D':

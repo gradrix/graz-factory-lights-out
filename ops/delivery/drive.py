@@ -11,9 +11,11 @@ One factory run at a time (one model slot). Results append to RESULTS (JSON line
 """
 import argparse
 import json
+import os
 from pathlib import Path
 import re
 import shlex
+import signal
 import subprocess
 import sys
 import time
@@ -74,12 +76,20 @@ def run(args, commit, arm):
     log = Path(args.state) / 'logs' / f'{commit}-{arm}.log'
     log.parent.mkdir(parents=True, exist_ok=True)
     with log.open('w') as output:
+        # Own process group: a timeout must also stop the queue's inner `gflo run`, which holds the model slot.
+        process = subprocess.Popen(command, stdout=output, stderr=subprocess.STDOUT, cwd=Path(__file__).resolve().parents[2],
+                                   start_new_session=True)
+        limit = args.timeout * (len(json.loads(Path(args.steps).read_text())[commit]) if arm == 'queued' else 1)
         try:
-            completed = subprocess.run(command, stdout=output, stderr=subprocess.STDOUT, timeout=args.timeout,
-                                       cwd=Path(__file__).resolve().parents[2])
-            exit_code = completed.returncode
+            exit_code = process.wait(timeout=limit)
         except subprocess.TimeoutExpired:
             exit_code = 'timeout'
+            os.killpg(process.pid, signal.SIGINT)  # gflo records the interruption and stops its sandbox
+            try:
+                process.wait(timeout=120)
+            except subprocess.TimeoutExpired:
+                os.killpg(process.pid, signal.SIGKILL)
+                process.wait()
     elapsed = round(time.monotonic() - started, 1)
     row = {'commit': commit, 'arm': arm, 'exit_code': exit_code, 'elapsed_s': elapsed, 'scored': False}
     if arm == 'queued':
@@ -92,9 +102,10 @@ def run(args, commit, arm):
         row.update(run=str(queue), steps=steps, committed=committed, step_runs=[value.get('run') for value in done.values()])
         try:
             row.update(score_tree(args.mined, args.tasks, args.store, commit, queue / 'integration', 'queued',
-                                  'accepted' if committed == steps else (stopped or ['not started'])[0], len(done)))
+                                  'accepted' if committed == steps else (stopped or ['not started'])[0],
+                                  sum(value.get('attempts', 0) for value in done.values())))
             row.pop('tail', None)
-            row['scored'] = committed == steps or bool(stopped) and stopped[0] in FINAL
+            row['scored'] = committed == steps or bool(stopped) and stopped[0] in FINAL | {'not integrated'}
         except Exception as error:  # keep the row; a scoring failure is evidence too
             row['score_error'] = f'{type(error).__name__}: {error}'[:500]
         return row

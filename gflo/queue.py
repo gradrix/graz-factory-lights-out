@@ -7,6 +7,7 @@ state, so its acceptance (no new suite failures, review) ran on exactly the tree
 ends without acceptance stops the queue; a run that could not start or was interrupted is retried by the next
 invocation. The source repository is only read.
 """
+import hashlib
 import json
 from pathlib import Path
 import re
@@ -17,6 +18,7 @@ import sys
 from .overnight import FINAL, outcome
 
 BRANCH = 'gflo/queue'
+MANIFEST = re.compile(r'pyproject\.toml|uv\.lock|(requirements|constraints)[^/]*\.txt')  # prepare.manifest_names
 
 
 def git(repo, *args, **kwargs):
@@ -34,6 +36,10 @@ def load(spec):
     return spec, [dict(step, id=name) for name, step in zip(ids, steps)]
 
 
+def fingerprint(steps):
+    return hashlib.sha256(json.dumps([[step['id'], step['objective']] for step in steps]).encode()).hexdigest()
+
+
 def integration(repo, out, base):
     """OUT/integration: a clone of REPO with BRANCH at BASE (created once) and no remote."""
     clone = out / 'integration'
@@ -42,9 +48,30 @@ def integration(repo, out, base):
         subprocess.run(['git', 'clone', '-q', '--no-hardlinks', str(repo), str(clone)], check=True, capture_output=True)
         git(clone, 'checkout', '-q', '-B', BRANCH, base)
         git(clone, 'remote', 'remove', 'origin')
-    if git(clone, 'status', '--porcelain'):
-        raise ValueError(f'{clone} has uncommitted changes; the controller owns this clone')
     return clone
+
+
+def merge(clone, step, result):
+    """Commit RESULT's accepted patch for STEP on the branch; returns the commit, or a final refusal in RESULT."""
+    marker = f'(run {result["run"]})'
+    if marker in git(clone, 'log', '-1', '--format=%s'):
+        return git(clone, 'rev-parse', 'HEAD')  # committed before an interruption, not yet recorded
+    git(clone, 'reset', '-q', '--hard')  # discard a half-applied patch from an interruption
+    patch = Path(result['patch'])
+    if patch.read_bytes().strip():
+        applied = subprocess.run(['git', '-C', str(clone), 'apply', '--index', '--binary', str(patch)], capture_output=True, text=True)
+        if applied.returncode:
+            result.update(status='not integrated', detail=('git apply failed: ' + applied.stderr.strip())[:300])
+            return None
+    manifests = [name for name in git(clone, 'diff', '--cached', '--name-only').splitlines() if MANIFEST.fullmatch(name)]
+    if manifests:
+        git(clone, 'reset', '-q', '--hard')
+        result.update(status='not integrated', detail=f'changes dependency manifests ({", ".join(manifests)}); a queue runs in one '
+                      'prepared environment, so make this change by hand and start a new queue from it')
+        return None
+    git(clone, '-c', 'user.name=gflo', '-c', 'user.email=gflo@local', 'commit', '-q', '--allow-empty',
+        '-m', f'gflo queue step {step["id"]} {marker}', '-m', step['objective'].strip())
+    return git(clone, 'rev-parse', 'HEAD')
 
 
 def run_queue(spec_path, out, *, state, config, environment_store, environment=None, build_task=None, command=None,
@@ -62,16 +89,24 @@ def run_queue(spec_path, out, *, state, config, environment_store, environment=N
     else:
         if git(repo, 'status', '--porcelain'):
             raise ValueError('Repository must be clean; commit the intended base first')
-        queue = {'repo': str(repo), 'base': git(repo, 'rev-parse', 'HEAD'), 'done': {}}
+        queue = {'repo': str(repo), 'base': git(repo, 'rev-parse', 'HEAD'), 'steps': fingerprint(steps), 'done': {}}
+    if queue.get('steps') != fingerprint(steps):
+        raise ValueError(f'The steps in {spec_path} changed since this queue started; use a new --out directory')
     clone = integration(repo, out, queue['base'])
+    pending = [done for done in queue['done'].values() if done.get('status') == 'accepted' and not done.get('commit')]
+    if git(clone, 'status', '--porcelain', '--untracked-files=no') and not pending:
+        raise ValueError(f'{clone} has uncommitted changes; the controller owns this clone')
     command = command or [sys.executable, '-m', 'gflo']
     report = out / 'report.md'
     try:
         for step in steps:
             done = queue['done'].get(step['id'], {})
+            if done.get('status') == 'accepted' and not done.get('commit'):  # interrupted while integrating
+                done['commit'] = merge(clone, step, done)
+                queue_path.write_text(json.dumps(queue, indent=1) + '\n')
             if done.get('commit'):
                 continue
-            if done.get('status') in FINAL:
+            if done.get('status') in FINAL | {'not integrated'}:
                 break  # ended without acceptance: later steps depend on it
             directory = out / 'steps' / step['id']
             if not (directory / 'task.json').exists():
@@ -88,16 +123,11 @@ def run_queue(spec_path, out, *, state, config, environment_store, environment=N
             log = completed.stdout + completed.stderr
             (directory / 'run.log').write_text(log)
             result = outcome(state, log, status)
-            if result['status'] == 'accepted':
-                patch = Path(result['patch'])
-                if patch.read_bytes().strip():
-                    subprocess.run(['git', '-C', str(clone), 'apply', '--index', '--binary', str(patch)], check=True,
-                                   capture_output=True)
-                git(clone, '-c', 'user.name=gflo', '-c', 'user.email=gflo@local', 'commit', '-q', '--allow-empty',
-                    '-m', f'gflo queue step {step["id"]} (run {result["run"]})', '-m', step['objective'].strip())
-                result['commit'] = git(clone, 'rev-parse', 'HEAD')
             queue['done'][step['id']] = result
-            queue_path.write_text(json.dumps(queue, indent=1) + '\n')
+            queue_path.write_text(json.dumps(queue, indent=1) + '\n')  # an accepted run is recorded before integration
+            if result['status'] == 'accepted':
+                result['commit'] = merge(clone, step, result)
+                queue_path.write_text(json.dumps(queue, indent=1) + '\n')
             if not result.get('commit'):
                 break
         head = git(clone, 'rev-parse', 'HEAD')
@@ -128,8 +158,8 @@ def queue_report(queue, steps, clone):
                 result += f': {value["detail"]}'
             cells = [step['id'], result, value.get('run', '—'), f'`{value["commit"][:12]}`' if value.get('commit') else '—']
         lines.append('| ' + ' | '.join(str(cell).replace('|', '\\|').replace('\n', ' ') for cell in cells) + ' |')
-    stopped = [step['id'] for step in steps if queue['done'].get(step['id'], {}).get('status') in FINAL - {'accepted'}]
+    stopped = [step['id'] for step in steps if queue['done'].get(step['id'], {}).get('status') in (FINAL - {'accepted'}) | {'not integrated'}]
     if stopped:
-        lines += ['', f'Step {stopped[0]} ended without acceptance, so the later steps did not run. '
+        lines += ['', f'Step {stopped[0]} ended without acceptance or integration, so the later steps did not run. '
                   'Revise its objective, then remove its entry from queue.json and its directory under steps/ to retry it.']
     return '\n'.join(lines) + '\n'
