@@ -8,7 +8,7 @@ python /acceptance/test_acceptance.py  — configuration in /acceptance/test_tas
 
 The candidate passes when every tracked file outside the test directories is unchanged (no new ones either),
 no base test file is removed, it adds at least one test function, its new or changed tests contain real
-assertions, pass `runs` times in a row and also on a behaviour-preserving reformatting of each target, and
+assertions and share no stretch of 200+ characters with a string literal of a target, pass `runs` times in a row and also on a behaviour-preserving reformatting of each target, and
 they kill at least `threshold` of the sampled mutants that the base versions of those modules do not kill.
 """
 import ast
@@ -174,6 +174,30 @@ def imports_target(source, names):
     return False
 
 
+COPIED = 200  # characters: a literal this long copied from a target pins its wording, not its behaviour
+
+
+def strings(source):
+    return {node.value for node in ast.walk(ast.parse(source)) if isinstance(node, ast.Constant) and isinstance(node.value, str)}
+
+
+def copied_text(path, source, base_source, targets):
+    """String literals new in a test module that share a stretch of at least COPIED characters with a string literal
+    of a target (TARGETS: {path: source})."""
+    known = strings(base_source) if base_source else set()
+    stretches = {target: {literal[start:start + COPIED] for literal in strings(target_source)
+                          for start in range(len(literal) - COPIED + 1)}
+                 for target, target_source in targets.items()}
+    found = []
+    for text in sorted(strings(source) - known, key=len, reverse=True):
+        for target, shared in stretches.items():
+            if any(text[start:start + COPIED] in shared for start in range(len(text) - COPIED + 1)):
+                found.append(f'{path}: a test string of {len(text)} characters copies {COPIED} or more characters of source '
+                             f'text from {target}; assert the rules or behaviour, not the wording')
+                break
+    return found
+
+
 def main(config_path='/acceptance/test_task.json', workspace=WORKSPACE):
     config_path = Path(config_path)
     config = json.loads(config_path.read_text())
@@ -209,6 +233,10 @@ def main(config_path='/acceptance/test_task.json', workspace=WORKSPACE):
         problems += [f'{path}: existing test removed: {name}' for name in sorted(set(old) - set(new))]
         problems += [problem for problem in smells(workspace / path) if problem.rsplit('::', 1)[1].split(' ')[0] in
                      {name.rsplit('.', 1)[-1] for name in fresh}]
+        problems += copied_text(path, (workspace / path).read_text(),
+                                (base_tests / path).read_text() if (base_tests / path).is_file() else '',
+                                {target: (workspace / target).read_text() for target in config['targets']
+                                 if (workspace / target).is_file()})  # a removed target is reported above
     if not changed or not added:
         problems.append('no new test function in a test_*.py module under tests/')
     if problems:

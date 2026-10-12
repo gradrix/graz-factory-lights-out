@@ -1,4 +1,6 @@
 import ast
+import contextlib
+import io
 import hashlib
 import importlib.util
 import json
@@ -91,14 +93,14 @@ class MutationTests(unittest.TestCase):
 
 
 class AcceptanceTests(unittest.TestCase):
-    def project(self, tests=None, source=SOURCE, base_tests=None, extra=None):
+    def project(self, tests=None, source=SOURCE, base_tests=None, extra=None, base_source=SOURCE):
         """Config path and candidate workspace; base_tests are test modules already at the base commit."""
         directory = tempfile.TemporaryDirectory()
         self.addCleanup(directory.cleanup)
         root = Path(directory.name)
         workspace = root / 'workspace'
         base_files = {'tests/__init__.py': '', **(base_tests or {})}
-        for name, text in {'calc.py': SOURCE, **base_files}.items():
+        for name, text in {'calc.py': base_source, **base_files}.items():
             for place in (workspace, root / 'base_tests') if name != 'calc.py' else (workspace,):
                 (place / name).parent.mkdir(parents=True, exist_ok=True)
                 (place / name).write_text(text)
@@ -206,6 +208,23 @@ class AcceptanceTests(unittest.TestCase):
         self.assertEqual(acceptance.main(str(root / 'test_task.json'), workspace), 1)
         self.assertEqual(acceptance.module_name('src/pkg/core.py'), 'pkg.core')
         self.assertTrue(acceptance.imports_target('from pkg import clamp\n', {'pkg.core'}))
+
+    def test_tests_may_not_copy_long_source_text(self):
+        prompt = 'Answer only from the supplied evidence. ' * 6
+        source = SOURCE + f'\nPROMPT = {prompt!r}\n'
+        copied = STRONG + f'\n\nclass Prompt(unittest.TestCase):\n    def test_prompt(self):\n        from calc import PROMPT\n        self.assertEqual(PROMPT, {prompt!r})\n'
+        config, workspace = self.project(copied, source=source, base_source=source)
+        output = io.StringIO()
+        with contextlib.redirect_stdout(output):
+            self.assertEqual(acceptance.main(config, workspace), 1)
+        self.assertIn('tests/test_calc.py: a test string of 240 characters copies 200 or more characters of source text from calc.py', output.getvalue())
+        self.assertEqual(acceptance.copied_text('t.py', f'X = {prompt[:200]!r}\n', '', {'calc.py': source}), [
+            't.py: a test string of 200 characters copies 200 or more characters of source text from calc.py; '
+            'assert the rules or behaviour, not the wording'])
+        found = acceptance.copied_text('t.py', f'X = {"intro " + prompt[10:220] + " fixture"!r}\n', '', {'calc.py': source})
+        self.assertEqual(len(found), 1)  # a slice embedded in other text is still a copy
+        self.assertEqual(acceptance.copied_text('t.py', f'X = {prompt[:199]!r}\n', '', {'calc.py': source}), [])
+        self.assertEqual(acceptance.copied_text('t.py', f'X = {prompt!r}\n', f'Y = {prompt!r}\n', {'calc.py': source}), [])  # already at the base
 
     def test_only_new_test_functions_are_smell_checked(self):
         smoke = 'import unittest\nfrom calc import clamp\n\nclass Smoke(unittest.TestCase):\n    def test_smoke(self):\n        clamp(1, 0, 2)\n'

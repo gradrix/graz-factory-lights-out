@@ -246,3 +246,14 @@ harness decision waits for the nav, notes, plan and map arms on the same 8123102
 
 All arms delivered the same 13 tasks. Reviewer stops: 3 of 80 runs, all repaired by 8b33c5e. Decision: [013](../../../docs/decisions/architecture/013-worker-head-to-head.md) (provisional).
 Repeat queued: `~/gflo-pp/chain-hard.sh` (after TERSE DONE), code 0002cbf in `~/gflo-p3`, tasks 06ba3e9, 3612b5f, 57271fe × reps 1–3 × arms single, nav, mini; results `~/gflo-pp/hard/rep*/results.jsonl`, marker "HARD DONE" in `~/gflo-pp/chain-hard.log`.
+
+## Phase 3: gflo test-factory trials (2026-10-12)
+
+`~/gflo-pp/tf`, code 7cedc3c, gflo at origin/main in `tf/gflo-repo`. Runs in `tf/runs`.
+
+| target | run | attempts | seconds | new tests | mutation result | merge judgement |
+|---|---|---|---|---|---|---|
+| gflo/document_references.py | e3d62e98cb46 | 1 | 1051 | 25 | 3/4 of the mutants existing tests miss (they already kill 26); survivor at line 30, a constant | edit needed: copied the 1,219-char model prompt into an equality assertion |
+| gflo/web.py | 811b1f7e1cf0 | 2 | 1690 | 12 | 25/25 (existing tests kill 0) | edit needed: bound the real default port 8787 |
+
+Phase 3 total: 2 of 4 mergeable unchanged (running-coach), 4 of 4 after a few-line edit. Both gflo patches are merged with the edits marked "Edited on merge". Repair to the factory: test acceptance rejects new test string literals that share a 200-character stretch with a target's string literal. It flags the original refs patch, and gives no false positives on the merged refs and web tests or on the two running-coach accepted runs (checked on the rig). The objective now says so, and says to bind port 0. The prompt typo "at most8 claims,1–4 spans" in `gflo/document_references.py` is left as is: it is part of a measured prompt.

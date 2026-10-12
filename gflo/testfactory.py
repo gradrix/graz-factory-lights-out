@@ -13,7 +13,9 @@ OBJECTIVE = ('Write focused, meaningful tests for {targets} as new test function
              '{targets} (flipped comparisons and operators, changed constants, removed negations, returns replaced by '
              'None) and requires your new tests to detect at least {percent}% of the mutants the existing tests miss. '
              'Test behaviour through the public interface, not the source text. Cover normal behaviour, boundaries and '
-             'error paths; every test needs real assertions, and trivial or tautological tests are rejected. If a '
+             'error paths; every test needs real assertions, and trivial or tautological tests are rejected. Do not copy long '
+             'text such as prompts or templates from the target (string literals of 200 or more characters copied from it '
+             'are rejected); assert the parts that matter. Bind servers to port 0, never a fixed port. If a '
              'target behaviour looks like a bug, test the current behaviour and mention it in your summary.')
 # Mutant runs must finish inside the sandbox's per-check limit (sandbox.verify: 900 s python-project, 120 s otherwise).
 BUDGET = {'python-project': 600, 'python-stdlib': 60}
