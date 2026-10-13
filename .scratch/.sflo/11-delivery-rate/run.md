@@ -322,3 +322,18 @@ Three hard tasks (06ba3e9, 3612b5f, 57271fe) × three runs × three arms, defaul
 | mini | 4/9 | 2 (06ba3e9 rep1, 57271fe rep2) | 3612b5f and 57271fe exhausted once each; 57271fe needs_input once |
 
 Decision 013 is accepted: no aids by default. The phase 2 nav 16/16 was single-run noise.
+
+### Third run with the truncated-call repair (2026-10-13, code 149d6af, `~/gflo-pp/ov3`)
+
+1 of 3 accepted again: performance_phases, 9 tests, kill 20/22 (0.91), 1074 s; same two surviving comparisons.
+The repair works: 4 cut-off calls were each dropped and recovered on the next turn, and no attempt ended on
+malformed calls (it was 4 of 6 before).
+
+| module | how it ended |
+|---|---|
+| delivery/state | exhausted: attempt 1 wrote no test function; attempt 2 hit the 40-turn budget with tests failing on the unmodified code; attempt 3 hit the 40-turn budget and left `scratch_harness.py` in the repo root |
+| performance_coach_continuous (301 mutation sites) | interrupted at turn 38 of attempt 1: request of 99,368 tokens > 98,304 context |
+
+The remaining losses on large untested modules are the turn budget and the context window, not tool-call handling.
+This component has had its two repair rounds. The test factory stays recommended for modules of moderate size;
+large modules (hundreds of mutation sites) are a known limit. Not repaired further.
