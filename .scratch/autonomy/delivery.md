@@ -4,7 +4,7 @@ Route: [roadmap](../../docs/roadmap.md), [decision 011](../../docs/decisions/arc
 
 ## Frontier
 
-- [Phase 4 — queue and integration](delivery/12-queue-integration.md) — active (decision 014).
+- [Phase 4 — queue and integration](delivery/12-queue-integration.md) — measured 2026-10-13: direct and queued tie at 2/6 chains, 3 false accepts each; queue stays opt-in. Next: route choice on acceptance for feature-sized work (pending user).
 - [Phases 1–3 — delivery rate, worker, test factory](delivery/11-delivery-rate.md) — measured; open tail: overnight third run (truncated-call repair), queued after phase 4. Run note: `.scratch/.sflo/11-delivery-rate/run.md`.
 
 ## Later

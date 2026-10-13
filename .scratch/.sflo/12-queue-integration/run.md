@@ -30,6 +30,28 @@ Six chains, 14 steps. Objectives:
 
 Queued after the overnight rerun (`~/gflo-pp/chain-p4.sh`, results `~/gflo-pp/p4/results.jsonl`).
 
-## Results
+## Results (2026-10-13, code 60d6e0d, `~/gflo-pp/p4/results.jsonl`)
 
-Pending.
+One run per chain and arm. Hidden tests are the final commit's; F2P / P2P counts are failures.
+
+| chain | direct | queued (steps committed) |
+|---|---|---|
+| e7d7f18 (rc, 2) | false accept: F2P 13/132, P2P 6 | false accept (2/2): a hidden test module fails to import at collection, so the whole suite is scored failed |
+| 8331398 (rc, 2) | false accept: F2P 2/4 | false accept (2/2): F2P 3/4 (the same warmup-laps effort test) |
+| dcd2e78 (rc, 3) | **delivered** | **delivered** (3/3) |
+| cde2e00 (rc, 2) | exhausted (F2P 1/2) | exhausted at step 1 (0/2) |
+| 80400b0 (gflo, 3) | **delivered** | false accept (3/3): F2P 3/10, resolver parsing |
+| 44ae332 (gflo, 2) | false accept: F2P 1/3, uv.lock interpreter version | **delivered** (2/2) |
+| **total** | **2/6 delivered, 3 false accepts, 9,113 s** | **2/6 delivered, 3 false accepts, 16,021 s** |
+
+- The queue machinery worked: 13 steps ran, every accepted step was integrated and committed, and the stop on the
+  exhausted first step of cde2e00 behaved as designed. There were no wiring failures.
+- The arms tie. Decision 014's bar ("at least as many chains, no more false accepts") is met only as a tie. The two
+  arms traded the gflo chains (80400b0, 44ae332), which is the noise level seen in decision 013, and queued took 1.8×
+  the time. The queue earns no default role; it stays experimental and opt-in.
+- The finding that matters: **6 of 10 accepted chains were wrong.** On single mined commits (phase 1) it was 1 of 15.
+  Feature-sized work passes "no new failures" plus the worker's own tests far more often than it meets the
+  reference behaviour. Splitting the work into steps did not help, because each step's acceptance has the same blind spot.
+- Phase 1 delivery was 14/16 on single commits; on 2–3 commit features it is 2/6 in either arm.
+
+Decision: [014](../../../docs/decisions/architecture/014-phase-4-start.md) (Result section).

@@ -29,3 +29,16 @@ Phase 4 starts, and its first unit measures before it builds broadly:
 
 - Chains mined from history are human-decomposed. The queued arm measures executing a good decomposition, not producing one. Model-planned decomposition is a later arm.
 - One run per chain and arm, on one model and one rig.
+
+## Result (2026-10-13)
+
+Six mined chains (2–3 commits each; running-coach 4, gflo 2), one run per arm, code 60d6e0d. Run note: `.scratch/.sflo/12-queue-integration/run.md`.
+
+| arm | chains delivered | false accepts | exhausted | total time |
+|---|---|---|---|---|
+| direct (one task, combined objective) | 2/6 | 3 | 1 | 9,113 s |
+| queued (`gflo queue run`, one step per commit) | 2/6 | 3 | 1 | 16,021 s |
+
+- The queued arm meets the bar only as a tie, and the two arms traded the two gflo chains, which is within the run-to-run noise decision 013 measured. It took 1.8× the time. **The queue earns no default role**: `gflo queue run` stays experimental and opt-in. Agent decision, under the same delegation.
+- The queue itself worked end to end on the rig (13 steps run, integrated and committed; the stop after an exhausted step behaved as designed).
+- **New limit:** 6 of 10 accepted chains failed the reference tests, against 1 of 15 accepted single commits in phase 1. On feature-sized work, "no new failures plus the worker's own tests" does not certify the behaviour. Splitting into steps does not help, because every step shares that blind spot. Feature delivery is 2/6 in either arm, below phase 4's own 50% gate. Phase 5 is not earned. The next step is a route choice about acceptance for feature-sized work, which is put to the user.
