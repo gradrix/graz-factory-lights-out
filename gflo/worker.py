@@ -162,12 +162,25 @@ class ModelWorker:
             self.observe('model_wait', attempt=attempt, turn=turn, max_turns=max_turns, timeout_s=min(300, remaining), model=self.config['model'])
             try:
                 response = self.request('/v1/chat/completions', body, timeout=min(300, remaining))
+                cut_off = None
             except ModelHTTPError as error:
                 if MALFORMED_CALL not in error.detail:
                     raise
+                response, cut_off = None, error.detail[:2000]
+            if response is not None:
+                self.observe('model_response', attempt=attempt, turn=turn, usage=response.get('usage', {}))
+                record({'event': 'response', 'turn': turn, 'body': response})
+                choice = response['choices'][0]
+                message = choice['message']
+                calls = message.get('tool_calls') or []
+                if calls and choice.get('finish_reason') == 'length':
+                    # A call truncated at the output cap is dropped, not kept: llama.cpp re-parses the history's tool
+                    # call arguments on every later request and would reject each one at the same character.
+                    cut_off = 'tool call cut off at max_tokens %s' % body['max_tokens']
+            if cut_off:
                 malformed += 1
                 streak += 1
-                record({'event': 'malformed_call', 'turn': turn, 'error': error.detail[:2000]})
+                record({'event': 'malformed_call', 'turn': turn, 'error': cut_off})
                 if malformed > MALFORMED_RETRIES:
                     return {'summary': 'Model produced malformed tool calls; attempt ended', 'turns': turn, 'limited': True}
                 messages.append({'role': 'user', 'content': (
@@ -176,11 +189,6 @@ class ModelWorker:
                     "lines: create it with cat > file <<'EOF', then add each further part with cat >> file <<'EOF'.")})
                 continue
             streak = 0
-            self.observe('model_response', attempt=attempt, turn=turn, usage=response.get('usage', {}))
-            record({'event': 'response', 'turn': turn, 'body': response})
-            choice = response['choices'][0]
-            message = choice['message']
-            calls = message.get('tool_calls') or []
             messages.append({k: v for k, v in message.items()
                              if k in ('role', 'content', 'tool_calls', 'reasoning_content', 'reasoning')})
             if not calls:

@@ -1,3 +1,4 @@
+import json
 import tempfile
 from pathlib import Path
 import unittest
@@ -153,6 +154,19 @@ class WorkerTests(unittest.TestCase):
                 return reply
             worker.request = recovers
             self.assertEqual(worker(workspace, {'objective': 'Fix', 'max_turns': 8, 'checks': []}, None, 2)['summary'], 'Done')
+            # A call returned truncated (finish_reason "length") is dropped from the history and retried with more room.
+            truncated = {'role': 'assistant', 'tool_calls': [{'id': 't', 'function': {'name': 'run', 'arguments': '{"command": "cat > f <<EOF\\nx'}}]}
+            replies = iter([{'choices': [{'message': truncated, 'finish_reason': 'length'}]},
+                            {'choices': [{'message': {'role': 'assistant', 'content': 'Done'}, 'finish_reason': 'stop'}]}])
+            bodies = []
+            def cut(path, body, **kwargs):
+                bodies.append(json.loads(json.dumps(body)))
+                return next(replies)
+            worker.request = cut
+            self.assertEqual(worker(workspace, {'objective': 'Fix', 'max_turns': 8, 'checks': []}, None, 4)['summary'], 'Done')
+            self.assertEqual([body['max_tokens'] for body in bodies], [4096, 8192])
+            self.assertNotIn('tool_calls', json.dumps(bodies[1]['messages']))
+            self.assertIn('cut off at the output limit', bodies[1]['messages'][-1]['content'])
             worker.request = lambda *a, **k: (_ for _ in ()).throw(ModelHTTPError(500, 'out of memory'))
             with self.assertRaisesRegex(RuntimeError, 'HTTP 500: out of memory'):  # other server errors still stop the run
                 worker(workspace, {'objective': 'Fix', 'max_turns': 8, 'checks': []}, None, 3)

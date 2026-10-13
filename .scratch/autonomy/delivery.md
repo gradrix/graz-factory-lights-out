@@ -5,7 +5,7 @@ Route: [roadmap](../../docs/roadmap.md), [decision 011](../../docs/decisions/arc
 ## Frontier
 
 - [Phase 4 — queue and integration](delivery/12-queue-integration.md) — active (decision 014).
-- [Phases 1–3 — delivery rate, worker, test factory](delivery/11-delivery-rate.md) — measured; open tails: phase 2 hard-task repeat (decision 013), overnight rerun. Run note: `.scratch/.sflo/11-delivery-rate/run.md`.
+- [Phases 1–3 — delivery rate, worker, test factory](delivery/11-delivery-rate.md) — measured; open tail: overnight third run (truncated-call repair), queued after phase 4. Run note: `.scratch/.sflo/11-delivery-rate/run.md`.
 
 ## Later
 

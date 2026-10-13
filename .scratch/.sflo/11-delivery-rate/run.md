@@ -281,6 +281,28 @@ Repair: a cut-off call is retried with the output budget doubled (8,192, then 16
 file in parts with `cat >>`. The test objective also tells the worker to delete scratch files outside tests/.
 Verification is queued: the same 3 modules rerun after HARD DONE (`~/gflo-pp/chain-overnight2.sh`).
 
+### Rerun with the budget repair (2026-10-12/13, code c63cc16, `~/gflo-pp/ov2`)
+
+1 of 3 accepted: performance_phases, 23 tests, kill 20/22 (0.91), 1334 s; surviving mutants are two comparisons
+(lines 59, 61). performance_coach_continuous and delivery/state were exhausted, 3 attempts each, ~2,050 s each. The
+rejection was "no new test function in a test_*.py module under tests/" (and scratch files left in the repo root once).
+
+| ended by | attempts |
+|---|---|
+| truncated call kept in the history, then three identical HTTP 500s | 4 of 6 |
+| 40-turn budget (20–28 turns reading and probing before the first test write) | 2 of 6 |
+
+The diagnosis above was incomplete. The 500 is not the model repeating itself. When the cut-off reply comes back as
+an ordinary response (`finish_reason: length`), the worker kept the truncated call in the history. llama.cpp
+re-parses history tool-call arguments on every request, so each retry failed at the same column (7170, 12213,
+12362, 16624). The doubled budget never got a chance. Repair: a tool call returned with `finish_reason: length` is
+dropped from the history and goes through the same retry (doubled budget, write-in-parts message)
+(`gflo/worker.py`, test in `tests/test_worker.py`). Delivery runs had 3 malformed-call attempts in all (phase2 2,
+hard 1). Third run of the same 3 modules queued after P4 DONE (`~/gflo-pp/chain-ov3.sh`, `~/gflo-pp/ov3`).
+
+Rig note: `chain-overnight2.sh` wrote its DONE marker into `ov2/overnight.log`, not `chain-overnight2.log`, so
+`chain-p4.sh` waited about 7 hours idle until the marker was copied by hand (2026-10-13 07:39).
+
 ## Terse-objective arm (2026-10-12)
 
 Frozen 7cedc3c, default reviewer, objectives cut to about half their length (`~/gflo-pp/tasks-terse*`), rescored with
