@@ -1,0 +1,16 @@
+{
+ "about": "Model gate (docs/model-upgrade.md, decision 016). Baseline: the installed Flash-Next GSQ-RCO Coder (IQ1_M GGUF, llama.cpp b11284, 96K context, Q4 KV). A suite within one task of a gate's minimum, or one false accept over its maximum, is borderline: repeat that suite once before deciding.",
+ "baseline": {
+  "small": {"delivered": 14, "false_accepts": 1, "of": 16, "code": "7cedc3c", "measured": "2026-10-11"},
+  "features": {"delivered": 2, "false_accepts": 3, "of": 6, "code": "60d6e0d", "measured": "2026-10-13"},
+  "tests": {"accepted": 1, "of": 3, "code": "149d6af", "measured": "2026-10-13"}
+ },
+ "gates": [
+  {"id": "adopt", "suite": "small", "min_delivered": 14, "max_false_accepts": 1,
+   "opens": "Make the new model the default (no worse than the baseline on small changes)."},
+  {"id": "features", "suite": "features", "min_delivered": 4, "max_false_accepts": 1,
+   "opens": "Reopen feature development: phase 4 (queue, decomposition, objective-check round 2), then phase 5."},
+  {"id": "tests", "suite": "tests", "min_accepted": 2,
+   "opens": "Widen the test factory to large modules."}
+ ]
+}

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Manage the pinned, local Flash Coder service on MONSTER-GAMING-PC."""
+"""Manage the local model service (gflo-model) on MONSTER-GAMING-PC: the installed Flash Coder by default."""
 import argparse
 import json
 from pathlib import Path
@@ -12,6 +12,12 @@ NAME = 'gflo-model'
 IMAGE = 'sha256:249ed60fdd67b96db472e16f945af5aaba565b20159d192ba378035b6d136a1c'
 ROOT = Path.home() / 'benchmark-5090/flash'
 STATE = Path.home() / '.local/state/gflo-model'
+# The served model, relative to ROOT (`up --weights/--runtime` override them; docs/model-upgrade.md).
+# WEIGHTS[0] is loaded; further parts of a split GGUF must sit next to it. ALIAS is the fixed service name
+# that factory configs request as "model", so it stays the same whichever weights are served.
+RUNTIME = 'runtime/llama-b11284/llama-server'
+WEIGHTS = ['Qwen3.8-Flash-Next-GSQ-RCO-IQ1_M-00001-of-00002.gguf', 'Qwen3.8-Flash-Next-GSQ-RCO-IQ1_M-00002-of-00002.gguf']
+ALIAS = 'flash-next-coder'
 
 
 def docker(*args, check=True):
@@ -54,12 +60,10 @@ def restore():
     print('Original vLLM container started; allow its model to load.')
 
 
-def up(context, cache=None):
-    required = [ROOT / 'runtime/llama-b11284/llama-server',
-                ROOT / 'Qwen3.8-Flash-Next-GSQ-RCO-IQ1_M-00001-of-00002.gguf',
-                ROOT / 'Qwen3.8-Flash-Next-GSQ-RCO-IQ1_M-00002-of-00002.gguf']
+def up(context, cache=None, runtime=RUNTIME, weights=WEIGHTS):
+    required = [ROOT / runtime, *(ROOT / name for name in weights)]
     if not all(p.is_file() for p in required):
-        raise RuntimeError('Pinned runtime/weights missing; install study artifacts first')
+        raise RuntimeError(f'Runtime or weights missing under {ROOT}: ' + ', '.join(str(p) for p in required if not p.is_file()))
     docker('image', 'inspect', IMAGE)
     original = inspect('local-vllm')
     if not original:
@@ -84,8 +88,8 @@ def up(context, cache=None):
             '--label', 'gflo.owner=model-service', '--restart', 'unless-stopped',
             '--network', 'bridge', '--gpus', 'all', '--shm-size', '8g',
             '-p', '127.0.0.1:18000:8000', '-v', str(ROOT) + ':/model:ro', '-v', str(key) + ':/run/model-key:ro',
-            '--entrypoint', '/model/runtime/llama-b11284/llama-server', IMAGE,
-            '--model', '/model/' + required[1].name, '--alias', 'flash-next-coder',
+            '--entrypoint', '/model/' + runtime, IMAGE,
+            '--model', '/model/' + weights[0], '--alias', ALIAS,
             '--host', '0.0.0.0', '--port', '8000', '-ngl', '99', '-fa', 'on',
             '-c', str(context), '-np', '1', '--cache-type-k', cache, '--cache-type-v', cache,
             '--offline', '--api-key-file', '/run/model-key', '--reasoning', 'auto', '--jinja', '--fit', 'off', '-b', '512', '-ub', '512',
@@ -102,7 +106,7 @@ def up(context, cache=None):
                 actual = props['default_generation_settings']['n_ctx']
                 if actual != context:
                     raise RuntimeError(f'Context mismatch: {actual}')
-                result = {'context': actual, 'cache': cache, 'image': IMAGE,
+                result = {'context': actual, 'cache': cache, 'image': IMAGE, 'runtime': runtime, 'weights': list(weights),
                           'container_id': current['Id'], 'endpoint': 'http://127.0.0.1:18000',
                           'model': get('/v1/models')['data'][0]['id'], 'command': args}
                 (STATE / 'profile.json').write_text(json.dumps(result, indent=2))
@@ -122,9 +126,12 @@ def main():
     parser.add_argument('--context', type=int, choices=[65536, 98304, 131072], default=98304)
     parser.add_argument('--cache-type', choices=['q4_0', 'q8_0'],
                         help='Explicit KV type for controlled comparisons; defaults to Q4 at 96K/128K, Q8 at 64K')
+    parser.add_argument('--weights', nargs='+', default=WEIGHTS,
+                        help=f'GGUF file(s) relative to {ROOT}, first part first (default: the installed model)')
+    parser.add_argument('--runtime', default=RUNTIME, help=f'llama-server binary relative to {ROOT}')
     args = parser.parse_args()
     if args.action == 'up':
-        up(args.context, args.cache_type)
+        up(args.context, args.cache_type, args.runtime, args.weights)
     elif args.action == 'rollback':
         restore()
     else:

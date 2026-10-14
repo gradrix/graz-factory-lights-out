@@ -1,4 +1,4 @@
-.PHONY: test check rig-check coverage doctor
+.PHONY: test check rig-check rig-gate coverage doctor
 
 test:  # host Python: rig/runtime only; use `make check` on the development machine
 	python3 -m unittest discover -s tests -v
@@ -8,6 +8,9 @@ check:
 
 rig-check:
 	ops/rig_check.sh
+
+rig-gate:  # LABEL=name [ARGS="--smoke"]; docs/model-upgrade.md
+	ops/rig_gate.sh $(LABEL) $(ARGS)
 
 coverage:
 	.venv/bin/coverage erase
