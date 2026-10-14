@@ -10,4 +10,4 @@ Owner: Claude Code coordinator. Decision: [015](../../../docs/decisions/architec
 ## State
 
 - 2026-10-14: tooling at ec432b8 (`tests/test_objcheck.py`); smoke run accepted.
-- 2026-10-14: measured. 11/20 generators accepted; 3 of 4 covered false accepts caught (3/7 overall); 8/9 correct deliveries pass; 3 of 11 sets hold wrong checks. Not a hard gate (decision 015). Unit closed. Open: round 2 (repair feedback plus a human-review flag, opt-in), pending the user.
+- 2026-10-14: measured. 11/20 generators accepted; 3 of 4 covered false accepts caught (3/7 overall); 8/9 correct deliveries pass; 3 of 11 sets hold wrong checks. Not a hard gate (decision 015). Unit closed. Round 2 (repair feedback plus a human-review flag, opt-in) deferred by maintenance mode (decision 016).

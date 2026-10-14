@@ -162,6 +162,8 @@ def report(out):
         now = summary.get(suite)
         median = f" (median {now['median_s']} s)" if now and now.get('median_s') else ''
         lines.append(f"| {suite} | {show(now) if now else 'not run'}{median} | {show(gates['baseline'][suite])} |")
+    if 'smoke' in summary:
+        lines.append(f"| smoke | {show(summary['smoke'])} | (pipeline check only) |")
     lines += ['', '| gate | verdict | opens |', '|---|---|---|']
     lines += [f"| {r['id']} | **{r['verdict']}** | {r['opens']} |" for r in results]
     lines += ['', 'Borderline: repeat that suite once into a new OUT before deciding. Next steps: docs/model-upgrade.md.', '']

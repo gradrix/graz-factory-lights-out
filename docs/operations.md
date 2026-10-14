@@ -17,7 +17,11 @@ python3 /home/gradrix/gflo-runtime/ops/model.py up
 python3 /home/gradrix/gflo-runtime/ops/model.py up --context 65536
 # Restore the original container and its original restart policy:
 python3 /home/gradrix/gflo-runtime/ops/model.py rollback
+# Serve other weights (paths relative to ~/benchmark-5090/flash); no options returns to the installed model:
+python3 /home/gradrix/gflo-runtime/ops/model.py up --weights NEW-00001-of-00002.gguf NEW-00002-of-00002.gguf --runtime runtime/llama-bNNNN/llama-server
 ```
+
+To re-test GFLO on another model, follow [model upgrade](model-upgrade.md): the service name stays `flash-next-coder`, and `profile.json` in the state directory records the served weights.
 
 `up` defaults to 96K/Q4; 64K uses Q8 unless `--cache-type q4_0` is supplied. The 128K/Q4 profile remains available with `--context 131072`. At the current rig load, the fixed 16.9K prompt decoded at about 74 tokens/s on 96K versus 16.5 on 128K. Fresh API and TypeScript trials passed with independent semantic review; larger-project reliability remains unqualified. Loading takes time and can evict host file cache. Replacing the model disrupts active requests, so change profiles only when runs are idle. Failed setup restores original vLLM automatically for caught failures; after abrupt process/host death, inspect status and run the explicit rollback if needed.
 

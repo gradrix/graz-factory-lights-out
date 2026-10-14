@@ -27,7 +27,7 @@ Generated checks **do not join acceptance as a hard gate**:
 
 The tooling stays in `ops/delivery/` as an experiment, not a product feature.
 
-Within the cap of two qualification rounds, a second round would test a weaker role. A delivery that fails generated checks gets one repair turn with the failures as feedback. If any still fail, the delivery is accepted but flagged for human review with the failing checks listed. That turns a wrong check into one wasted repair, not a rejection. The prompt would also say that existing modules may be imported at the top of the file (one generator was lost to that). Round 2 needs runner integration and a rig re-run, so it is put to the user before it starts.
+Within the cap of two qualification rounds, a second round would test a weaker role. A delivery that fails generated checks gets one repair turn with the failures as feedback. If any still fail, the delivery is accepted but flagged for human review with the failing checks listed. That turns a wrong check into one wasted repair, not a rejection. The prompt would also say that existing modules may be imported at the top of the file (one generator was lost to that). Round 2 needs runner integration and a rig re-run, so it was put to the user. It is deferred by maintenance mode (decision 016, 2026-10-14) and reopens if a new model passes the features gate.
 
 ## Remaining assumptions
 

@@ -30,6 +30,7 @@ User direction, 2026-10-02: push the first version, delete previous implementati
 - [Worker head-to-head](../../docs/decisions/architecture/013-worker-head-to-head.md): agent decided (2026-10-12): keep the gflo worker with no navigation aids by default, with mini-swe-agent and the aids opt-in. On a 3×3 hard-task repeat, no aids delivered 8/9 with 0 false accepts, all aids 5/9 with 2, mini-swe-agent 4/9 with 2.
 - [Phase 4 start](../../docs/decisions/architecture/014-phase-4-start.md): agent decided (2026-10-12): gate met (terse 13/16, detailed 14/16); first unit measures queued vs direct delivery on mined commit chains before building more. Result (2026-10-13): tie at 2/6, 3 false accepts each, queued 1.8× slower; queue stays opt-in; 6 of 10 accepted chains wrong.
 - [Objective-derived checks](../../docs/decisions/architecture/015-objective-checks.md): agent decided (2026-10-14): not a hard acceptance gate. Generated checks caught 3 of 4 covered false accepts and passed 8/9 correct deliveries, but only 11/20 generators succeeded and 3/11 sets held wrong checks. Round 2 (feedback plus review flag) pending user.
+- [Maintenance mode](../../docs/decisions/architecture/016-maintenance-mode.md): user decided (2026-10-14): no new components until a stronger local model passes the gates (`ops/benchmark/gates.json`); re-test with `make rig-gate` per [model upgrade](../../docs/model-upgrade.md).
 
 ## Not yet specified
 

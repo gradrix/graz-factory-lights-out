@@ -2,6 +2,8 @@
 
 GFLO is a software factory that runs entirely on your own machine. You give it a Git repository and a precisely described change; a local model makes the change in an offline Docker sandbox, the project's tests and a fresh model review check it, and you get a patch with its evidence. Your repository is never modified, and GFLO never pushes, merges or deploys. There is no cloud API, no subscription and no hosted fallback.
 
+**Status: maintenance mode** (2026-10-14). GFLO is used as it is for the jobs below and gets no new components until a stronger local model passes the recorded gates. [Model upgrade](docs/model-upgrade.md) is the one-command re-test and the plan that follows it.
+
 ## What it does today
 
 Measured on the author's rig: one RTX 5090 serving a pruned Flash-Next Coder GGUF through llama.cpp ([operations](docs/operations.md)). Failures are kept in the record.

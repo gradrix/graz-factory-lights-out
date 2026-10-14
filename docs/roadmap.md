@@ -2,6 +2,8 @@
 
 Status: accepted route, 2026-10-10 ([decision 011](decisions/architecture/011-delivery-rate-route.md)). Supersedes the six-stage plan of 2026-10-02, which is recoverable from git history (`git show 831c9ef:docs/roadmap.md`).
 
+**Maintenance mode since 2026-10-14** ([decision 016](decisions/architecture/016-maintenance-mode.md)): no new components until a stronger local model passes the gates. Re-test with `make rig-gate`, following [model upgrade](model-upgrade.md).
+
 ## Destination
 
 A local factory that takes a repository and a well-specified task, works slowly and unattended on the RTX 5090, and hands back patches a person would merge. Tests with mechanically checkable value come first, because mutation score and coverage are objective acceptance a local model cannot talk its way past. Brief-to-product delivery is the long-term destination, attempted only when the measured numbers below earn it.
@@ -43,7 +45,7 @@ Status: `gflo tests init` and its mutation-score acceptance are implemented (202
 
 ### 4. Queue, decomposition and integration
 
-Started 2026-10-12 ([decision 014](decisions/architecture/014-phase-4-start.md)): the gate (about 50%) is met, and the terse-objective arm delivered 13/16. First unit: mined commit chains, direct against queued with branch integration. Originally gated on phase 1/2 delivery of about 50%. Durable task queue with dependencies, integration onto a branch with a full suite after each merge, environment and browser tools offered to the worker. Decomposition is re-tested against direct execution on real multi-file tasks. Result (2026-10-13): direct and queued both delivered 2 of 6 mined features with 3 false accepts each; queued took 1.8× the time. The queue stays opt-in. Acceptance, not execution, limits feature-sized work: 6 of 10 accepted chains failed the reference tests. Objective-derived checks (2026-10-14, [decision 015](decisions/architecture/015-objective-checks.md)): checks written from the objective alone caught 3 of the 4 false accepts they covered and passed 8 of 9 correct deliveries, but only 11 of 20 generators produced a set and 3 of 11 sets held wrong checks, so they are not a hard gate. Round 2 (repair feedback plus a human-review flag) waits on the user.
+Started 2026-10-12 ([decision 014](decisions/architecture/014-phase-4-start.md)): the gate (about 50%) is met, and the terse-objective arm delivered 13/16. First unit: mined commit chains, direct against queued with branch integration. Originally gated on phase 1/2 delivery of about 50%. Durable task queue with dependencies, integration onto a branch with a full suite after each merge, environment and browser tools offered to the worker. Decomposition is re-tested against direct execution on real multi-file tasks. Result (2026-10-13): direct and queued both delivered 2 of 6 mined features with 3 false accepts each; queued took 1.8× the time. The queue stays opt-in. Acceptance, not execution, limits feature-sized work: 6 of 10 accepted chains failed the reference tests. Objective-derived checks (2026-10-14, [decision 015](decisions/architecture/015-objective-checks.md)): checks written from the objective alone caught 3 of the 4 false accepts they covered and passed 8 of 9 correct deliveries, but only 11 of 20 generators produced a set and 3 of 11 sets held wrong checks, so they are not a hard gate. Round 2 (repair feedback plus a human-review flag) is deferred by maintenance mode.
 
 ### 5. Brief to small product
 
