@@ -8,6 +8,8 @@ Route: [roadmap](../../docs/roadmap.md), [decision 011](../../docs/decisions/arc
 - [Phase 4 — queue and integration](delivery/12-queue-integration.md) — measured 2026-10-13: direct and queued tie at 2/6 chains, 3 false accepts each; queue stays opt-in. Route option 3 (objective checks) chosen 2026-10-14, unit 13.
 - [Phases 1–3 — delivery rate, worker, test factory](delivery/11-delivery-rate.md) — measured; closed 2026-10-13: overnight third run 1 of 3; large modules are a known limit. Run note: `.scratch/.sflo/11-delivery-rate/run.md`.
 
+- Route check (2026-10-14, user asked whether further development is worth it): agent recommends maintenance mode. Use the factory for small, precisely described changes and moderate test-writing; keep the delivery-rate cohort as a benchmark for new local models; stop building new components (queue, decomposition, objective-check round 2). The unmeasured question is delivery on objectives the user writes before knowing the solution. Pending the user's choice.
+
 ## Later
 
 Phase 5 in the roadmap, only after phase 4 shows steady gains.
