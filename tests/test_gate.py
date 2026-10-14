@@ -55,11 +55,29 @@ class ModelGateTests(unittest.TestCase):
                       (self.out / 'report.md').read_text())
         self.assertEqual(json.loads((self.out / 'summary.json').read_text())['summary']['tests']['accepted'], 2)
 
-    def test_an_out_directory_belongs_to_one_model(self):
-        gate.claim(self.out, {'id': 'flash-next-coder', 'weights': ['old.gguf']})
-        gate.claim(self.out, {'id': 'flash-next-coder', 'weights': ['old.gguf']})
-        with self.assertRaises(SystemExit):
-            gate.claim(self.out, {'id': 'flash-next-coder', 'weights': ['new.gguf']})
+    def test_an_out_directory_belongs_to_one_model_profile_and_code(self):
+        model = {'id': 'flash-next-coder', 'weights': ['old.gguf'], 'runtime': 'r', 'context': 98304, 'cache': 'q4_0'}
+        with patch.dict('os.environ', {'GFLO_CODE': 'abc'}):
+            gate.claim(self.out, model)
+            gate.claim(self.out, dict(model))
+            for change in ({'weights': ['new.gguf']}, {'context': 131072}):
+                with self.assertRaises(SystemExit):
+                    gate.claim(self.out, dict(model, **change))
+        with patch.dict('os.environ', {'GFLO_CODE': 'def'}), self.assertRaises(SystemExit):
+            gate.claim(self.out, model)
+
+    def test_tests_suite_counts_only_finished_modules(self):
+        (self.out / 'tests' / 'queue').mkdir(parents=True)
+        (self.out / 'tests' / 'queue' / 'queue.json').write_text(json.dumps({'done': {
+            'a.py': {'status': 'accepted'}, 'b.py': {'status': 'interrupted', 'detail': 'Local model HTTP 400: exceeds context'},
+            'c.py': {'status': 'interrupted', 'detail': 'Connection refused'}}}))
+        found = gate.summarize(self.out)['tests']
+        self.assertEqual((found['accepted'], found['of'], found['unscored']), (1, 2, 1))
+        self.assertEqual(gate.verdicts({'tests': found}, self.gates, {'tests': 3})[-1]['verdict'], 'incomplete')
+
+    def test_final_statuses_match_the_overnight_queue(self):
+        from gflo.overnight import FINAL
+        self.assertEqual(gate.FINAL, FINAL)
 
 
 if __name__ == '__main__':

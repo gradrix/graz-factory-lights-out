@@ -34,18 +34,21 @@ Results are scored by the hidden tests: `delivered` means accepted by GFLO and p
 | features | features: ≥4/6 delivered, ≤1 false accept | feature development (below) |
 | tests | tests: ≥2/3 accepted | test factory widened to large modules |
 
-A result within one task of a gate's minimum, or one false accept over its maximum, is **borderline**. Repeat that suite once into a new results directory before deciding. One run per task is noisy: decision 013 measured run-to-run swings of 2–3 tasks out of 16.
+A gate is **borderline** when it misses by at most one on each count: at most one task short of the minimum and at most one false accept over the maximum, including both at once. Repeat that suite once into a new results directory before deciding. One run per task is noisy. In decision 013 the default worker delivered the 3 hard tasks 8 times in 9 runs, not 9 of 9. The current model's 1/3 on tests is itself borderline for that gate.
+
+Incomplete means the suite did not finish: fewer tasks scored than planned, or a test-writing module still waiting to be retried. Rerun the same command. A module stopped because the model rejected its request (HTTP 400, for example context overflow) counts as finished and not accepted.
 
 ## Steps
 
-1. **Check the slot is free.** `ssh monster-gaming-pc.lan 'ps -eo pid,etime,cmd | grep -E "gflo|drive|gate"'` should list nothing.
+1. **Check the slot is free.** `ssh monster-gaming-pc.lan 'pgrep -af "python3 -m gflo|drive.py|gate.py|chain-"'` should print nothing except possibly its own `zsh -c` line. `make rig-gate` runs the same check and refuses to start if the slot is busy.
 2. **Install the model.** Put the GGUF under `~/benchmark-5090/flash/` on the rig. If its architecture is newer than llama.cpp b11284, also put a newer `llama-server` build under `~/benchmark-5090/flash/runtime/llama-bNNNN/`. Record the source and SHA256 in [model profile](model-profile.md).
 3. **Serve it.** On the rig: `python3 ~/gflo-runtime/ops/model.py up --weights NEW-00001-of-0000N.gguf [--runtime runtime/llama-bNNNN/llama-server] [--context 131072]`. The service name stays `flash-next-coder`, so factory configs need no change. Check it with `python3 ~/gflo-runtime/ops/model.py status`. `python3 ~/gflo-runtime/ops/model.py up` with no options returns to the old model.
    - If the CUDA base image (`IMAGE` in `ops/model.py`) is too old for the new build, pin a newer image ID there.
    - If the model needs different server flags (chat template, reasoning), change them in `up()` and note them in the model profile.
+   - `~/gflo-runtime` on the rig is a plain copy, not a git checkout. After any change to `ops/model.py` here, commit it, then copy it over: `scp ops/model.py monster-gaming-pc.lan:gflo-runtime/ops/model.py`. Otherwise the rig keeps serving with the old flags.
 4. **Smoke test.** From this checkout: `make rig-gate LABEL=<model>-smoke ARGS=--smoke`. It runs one small task (about 10 minutes). Read `~/gflo-bench/runs/<model>-smoke/gate.log` on the rig; the task should be accepted and scored.
    - If the worker's tool calls fail to parse, or the model loops, fix that before the full run. The likely places are the chat template or reasoning setting in `ops/model.py`, and the tool-call handling in `gflo/worker.py`. A fix to `gflo/` must pass `make check`.
-5. **Full gate.** `make rig-gate LABEL=<model>`, overnight, about 8–10 hours. Rerun the same command to resume after an interruption. Results: `~/gflo-bench/runs/<model>/report.md` and `summary.json`. `python3 ops/benchmark/gate.py report OUT` on the rig rebuilds them.
+5. **Full gate.** `make rig-gate LABEL=<model>`, overnight, about 8–10 hours. It runs committed `HEAD` only and refuses uncommitted changes, so commit any fix from step 4 first. Rerun the same command at the same commit to resume after an interruption. A label holds one model profile and one code revision; after a code change, use a new label. Results: `~/gflo-bench/runs/<model>/report.md` and `summary.json`. To rebuild them: `cd ~/gflo-gate-<rev> && python3 ops/benchmark/gate.py report ~/gflo-bench/runs/<model>` on the rig.
 6. **Record the result.** Add a section to this page's history and the numbers to the roadmap and README. Update decision 016 with the gate verdicts and the decision taken. Commit only aggregate numbers.
 
 ## What each verdict opens
@@ -53,7 +56,7 @@ A result within one task of a gate's minimum, or one false accept over its maxim
 - **adopt fails:** keep the old model; record the numbers and stop.
 - **adopt passes:** make the new model the default. Change `WEIGHTS` and `RUNTIME` in `ops/model.py`, update `docs/model-profile.md`, the README numbers and `ops/benchmark/gates.json` (the new baseline). A faster model on the same rate is still a gain; note the median times.
 - **features passes:** end maintenance mode for feature work, in this order, with the same kind of measurement before building more:
-  1. Re-measure the queued arm (`gflo queue run`; decision 014). Use `drive.py --arms queued` with the chain step objectives, as in the rig's `chain-p4.sh`.
+  1. Re-measure the queued arm (`gflo queue run`; decision 014). Use `drive.py --arms queued` with the chain step objectives, as in `~/gflo-pp/chain-p4.sh` on the rig. The step objectives are in `~/gflo-bench/features/obj/`.
   2. Objective-check round 2 (decision 015): failing generated checks go back to the worker as repair feedback, then are listed for human review instead of rejecting.
   3. Model-planned decomposition (decision 008 failed on the old model).
   4. Phase 5, brief to small product (roadmap), only after features hold on a repeat.

@@ -12,4 +12,6 @@ Owner: Claude Code coordinator. Decision: [016](../../../docs/decisions/architec
 
 ## State
 
-- 2026-10-14: built at 4b0c5fd. Benchmark frozen (7.1 GB). The model restarted through the new `ops/model.py`, which `~/gflo-runtime/ops/model.py` now matches. Smoke run `flash-smoke` started.
+- 2026-10-14: built at 4b0c5fd. Benchmark frozen (7.1 GB). The model restarted through the new `ops/model.py`, which `~/gflo-runtime/ops/model.py` now matches. Smoke run `flash-smoke`: task 0937b55 delivered, hidden tests pass, 820 s.
+- 2026-10-14: QA round 1 (fresh reviewer, c5e4576): repair. Fixed: the tests suite counts only finished modules, one results label holds one model profile and code revision, `rig_gate.sh` refuses uncommitted changes, doc fixes (slot check, rig `model.py` copy, borderline wording, paths).
+- 2026-10-14: full gate `flash-baseline` on the current model started (code c5e4576), as the end-to-end proof and a reference on current code.

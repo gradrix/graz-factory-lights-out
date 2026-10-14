@@ -1,5 +1,5 @@
 {
- "about": "Model gate (docs/model-upgrade.md, decision 016). Baseline: the installed Flash-Next GSQ-RCO Coder (IQ1_M GGUF, llama.cpp b11284, 96K context, Q4 KV). A suite within one task of a gate's minimum, or one false accept over its maximum, is borderline: repeat that suite once before deciding.",
+ "about": "Model gate (docs/model-upgrade.md, decision 016). Baseline: the installed Flash-Next GSQ-RCO Coder (IQ1_M GGUF, llama.cpp b11284, 96K context, Q4 KV). A gate missing by at most one task and at most one false accept is borderline: repeat that suite once before deciding.",
  "baseline": {
   "small": {"delivered": 14, "false_accepts": 1, "of": 16, "code": "7cedc3c", "measured": "2026-10-11"},
   "features": {"delivered": 2, "false_accepts": 3, "of": 6, "code": "60d6e0d", "measured": "2026-10-13"},

@@ -13,12 +13,12 @@ Status: accepted, 2026-10-14. Decision maker: the user ("ok, let's put it in mai
 - Stop building new components: no queue or decomposition work, no objective-check round 2, no phase 5, no self-improvement loop.
 - Keep the product as it is for its measured jobs: small precisely described changes and test-writing for moderate modules, with every patch reviewed. Keep fixing bugs found in use.
 - Prepare re-measurement for the next model instead. The private benchmark is frozen on the rig (`~/gflo-bench`), and `make rig-gate` reruns all three suites and compares them with `ops/benchmark/gates.json`. The to-do list for that day is [model upgrade](../../model-upgrade.md).
-- Gates (agent-proposed, user-approved direction): adopt a new model when small ≥14/16 with ≤1 false accept. Resume feature development when features ≥4/6 with ≤1 false accept. Widen the test factory when large-module tests ≥2/3.
+- Gates (thresholds proposed by the agent; the user asked for gate-driven re-testing, 2026-10-14): adopt a new model when small ≥14/16 with ≤1 false accept. Resume feature development when features ≥4/6 with ≤1 false accept. Widen the test factory when large-module tests ≥2/3.
 
 ## Remaining assumptions
 
 - The benchmark objectives were written from the reference commits; delivery on objectives the user writes before knowing the solution is unmeasured.
-- One run per task is noisy (2–3 tasks of 16 between repeats); borderline results are repeated before a decision.
+- One run per task is noisy (in decision 013 the 3 hard tasks were delivered 8 of 9 times, not every time); borderline results are repeated before a decision.
 - The baseline numbers come from three code revisions (7cedc3c, 60d6e0d, 149d6af); the gate runs whatever revision is current.
 
 ## Result

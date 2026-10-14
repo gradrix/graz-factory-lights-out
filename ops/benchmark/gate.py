@@ -24,6 +24,7 @@ REPO = HERE.parents[1]
 GATES = HERE / 'gates.json'
 PROFILE = Path.home() / '.local/state/gflo-model/profile.json'
 SUITES = ('small', 'features', 'tests')
+FINAL = {'accepted', 'exhausted', 'needs_input', 'cancelled'}  # gflo.overnight.FINAL; kept literal so report needs no gflo import
 
 
 def served_model(config):
@@ -40,20 +41,29 @@ def served_model(config):
     return model
 
 
-def claim(out, model):
-    """Record OUT's model, or refuse when OUT already holds results for another one."""
-    out.mkdir(parents=True, exist_ok=True)
-    path = out / 'model.json'
-    if path.exists():
-        recorded = json.loads(path.read_text())
-        if (recorded.get('weights') or recorded['id']) != (model.get('weights') or model['id']):
-            raise SystemExit(f'{out} holds results for {recorded}; use a new OUT for {model}')
-        return
+IDENTITY = ('id', 'weights', 'runtime', 'context', 'cache', 'code')
+
+
+def code_revision():
     code = os.environ.get('GFLO_CODE')
     if not code:
         found = subprocess.run(['git', '-C', str(REPO), 'rev-parse', '--short', 'HEAD'], capture_output=True, text=True)
         code = found.stdout.strip() or 'unknown'
-    path.write_text(json.dumps(dict(model, code=code), indent=1) + '\n')
+    return code
+
+
+def claim(out, model):
+    """Record OUT's model and code, or refuse when OUT already holds results for another model, profile or code."""
+    out.mkdir(parents=True, exist_ok=True)
+    path = out / 'model.json'
+    current = dict(model, code=code_revision())
+    if path.exists():
+        recorded = json.loads(path.read_text())
+        changed = [name for name in IDENTITY if recorded.get(name) != current.get(name)]
+        if changed:
+            raise SystemExit(f'{out} holds results for another {", ".join(changed)} ({recorded}); use a new OUT for {current}')
+        return
+    path.write_text(json.dumps(current, indent=1) + '\n')
 
 
 def drive(bench, group, out, config, commits, arm, steps=None):
@@ -103,6 +113,13 @@ def rows(path):
     return list(latest.values())
 
 
+def tests_finished(value):
+    """A module counts once its run ended for good. The overnight queue retries other statuses on a rerun, except
+    that a run stopped by the model rejecting its request (HTTP 400, e.g. context overflow) fails the same way again."""
+    status = value.get('status')
+    return status in FINAL or status == 'interrupted' and 'HTTP 400' in value.get('detail', '')
+
+
 def summarize(out):
     out = Path(out)
     summary = {}
@@ -120,7 +137,9 @@ def summarize(out):
     queue = out / 'tests' / 'queue' / 'queue.json'
     if queue.exists():
         done = json.loads(queue.read_text())['done']
-        summary['tests'] = {'accepted': sum(value.get('status') == 'accepted' for value in done.values()), 'of': len(done),
+        finished = {target: value for target, value in done.items() if tests_finished(value)}
+        summary['tests'] = {'accepted': sum(value['status'] == 'accepted' for value in finished.values()), 'of': len(finished),
+                            'unscored': len(done) - len(finished),
                             'modules': {target: value.get('status') for target, value in done.items()}}
     return summary
 
