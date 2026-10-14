@@ -55,3 +55,29 @@ One run per chain and arm. Hidden tests are the final commit's; F2P / P2P counts
 - Phase 1 delivery was 14/16 on single commits; on 2–3 commit features it is 2/6 in either arm.
 
 Decision: [014](../../../docs/decisions/architecture/014-phase-4-start.md) (Result section).
+
+## False-accept triage (2026-10-14)
+
+Each false accept's failing hidden tests were rerun on the delivered tree (`~/gflo-pp/p4/triage/`, script
+`.gflo/p4/triage.py`) and compared with the objective the worker got.
+
+| case | what failed | in the objective? |
+|---|---|---|
+| e7d7f18 direct | 8+ items of a 10-item objective missing: a required helper function never created, exact output strings and a badge not changed, caveat lines absent | yes, each one, with exact strings |
+| e7d7f18 queued | a required new module (item 2) never created, so the hidden test module fails to import | yes, step 1 objective |
+| 8331398 direct | step 2 lap labels ('· RECOVERY RUN', '· AEROBIC') not rendered | yes, verbatim |
+| 8331398 queued | run identity stays 'run' instead of following recorded effort (recovery / easy / long aerobic) | yes, step 1 |
+| 44ae332 direct | the objective's own worked example (numpy pins with interpreter markers on CPython 3.12) returns [] | yes, as a literal example |
+| 80400b0 queued | marker requirement 'tomli; python_version < "3.11"' rejected; constraints not sorted; 'pytest==8.*' rejected | first two yes (verbatim / via the example); third implied ("a named PyPI requirement") |
+
+All 6 are the worker not meeting requirements the objective stated, mostly verbatim. None comes from an unstated
+detail of the reference tests. Acceptance never compared the result to the objective: the suite only checks for new
+failures, the worker's own tests covered what it built, and the reviewer did not flag missing items.
+
+Caveat: these objectives were written for the measurement from the reference commits, so they are more precise
+than a typical request (exact strings, worked examples). For real requests the share of stated-and-checkable
+behaviour will be lower.
+
+Consequence for the route: an objective-derived check (option 3) targets exactly this failure mode. Cheapest test:
+generate executable checks from each objective alone (fresh context, no code), then run them on the already
+delivered trees: catch rate on these 6 false accepts, and false-reject rate on the delivered runs. No worker reruns are needed.
