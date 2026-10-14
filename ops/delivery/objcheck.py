@@ -102,6 +102,8 @@ def evaluate(cases, store, out):
     if Path(out).exists():
         done = {(row['key'], row['tree']) for row in map(json.loads, Path(out).read_text().splitlines())}
     for case in json.loads(Path(cases).read_text()):
+        if case.get('generator', 'accepted') != 'accepted':
+            continue  # only accepted check sets exist to score
         for label, tree in case['trees'].items():
             if (case['key'], label) in done:
                 continue
