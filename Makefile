@@ -1,4 +1,4 @@
-.PHONY: test check rig-check rig-gate coverage doctor
+.PHONY: test check rig-check rig-gate rig-bench coverage doctor
 
 test:  # host Python: rig/runtime only; use `make check` on the development machine
 	python3 -m unittest discover -s tests -v
@@ -11,6 +11,9 @@ rig-check:
 
 rig-gate:  # LABEL=name [ARGS="--smoke"]; docs/model-upgrade.md
 	ops/rig_gate.sh $(LABEL) $(ARGS)
+
+rig-bench:  # [NAME=gflo-bench] rebuild the private benchmark on the rig from ops/benchmark/seed
+	ops/rig_bench.sh $(NAME)
 
 coverage:
 	.venv/bin/coverage erase

@@ -1,0 +1,84 @@
+{
+ "about": "Model-gate benchmark manifest (gflo docs/model-upgrade.md), frozen 2026-10-14. Task content is private: rebuild the benchmark from the seed in ops/benchmark/seed/ with ops/benchmark/bench.py build; never commit the built benchmark.",
+ "small": [
+  {
+   "tasks": "small/tasks-rc",
+   "mined": "small/mined-rc",
+   "commits": [
+    "8331398",
+    "3e6e4bd",
+    "06ba3e9",
+    "dcd2e78",
+    "366e6ca",
+    "f20a4e2",
+    "0937b55",
+    "3612b5f",
+    "156422b",
+    "cde2e00",
+    "57271fe"
+   ],
+   "source": "home-lab"
+  },
+  {
+   "tasks": "small/tasks-gflo",
+   "mined": "small/mined-gflo",
+   "commits": [
+    "89d66ea",
+    "0c9c7c8",
+    "6dd3556",
+    "edc7d71",
+    "6ea52be"
+   ],
+   "source": "gflo"
+  }
+ ],
+ "features": [
+  {
+   "tasks": "features/tasks-rc",
+   "mined": "features/mined-rc",
+   "steps": "features/obj/rc-steps.json",
+   "commits": [
+    "e7d7f18",
+    "8331398",
+    "dcd2e78",
+    "cde2e00"
+   ],
+   "source": "home-lab"
+  },
+  {
+   "tasks": "features/tasks-gflo",
+   "mined": "features/mined-gflo",
+   "steps": "features/obj/gflo-steps.json",
+   "commits": [
+    "80400b0",
+    "44ae332"
+   ],
+   "source": "gflo"
+  }
+ ],
+ "tests": {
+  "repo": "tests/rc-repo",
+  "include": [
+   "running_coach/"
+  ],
+  "limit": 3,
+  "hours": 4,
+  "env": [
+   "RUNNING_COACH_TEST_ISOLATED=1",
+   "POSTGRES_HOST=127.0.0.1",
+   "POSTGRES_PORT=5432",
+   "POSTGRES_USER=coach_test",
+   "POSTGRES_DB=coach_test",
+   "POSTGRES_PASSWORD=disposable_test_only",
+   "DISCORD_BOT_TOKEN=fake-test-token",
+   "GARMIN_TOKENSTORE=/tmp/garmin_tokens"
+  ],
+  "source": "home-lab",
+  "commit": "2d313814865db1b1a7cae55d1bf9303540e211e7",
+  "subdir": "services/running-coach"
+ },
+ "smoke": {
+  "suite": "small",
+  "commit": "0937b55"
+ }
+}
