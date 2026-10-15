@@ -4,15 +4,15 @@ Local software factory: task + repo + acceptance checks → sandboxed local-mode
 
 ## Where things are
 
-- **Maintenance mode** (decision 016): build no new components; on a new local model follow `docs/model-upgrade.md` (`make rig-gate`, private benchmark `~/gflo-bench` on the rig with a backup in `.gflo/bench-backup/`, gates and per-task baseline `ops/benchmark/gates.json`).
+- **Maintenance mode** (decision 016): build no new components; on a new local model follow `docs/model-upgrade.md` (`make rig-gate`, private benchmark `~/gflo-bench` on the rig, rebuilt by `make rig-bench` from the committed seed `ops/benchmark/seed/` (home-lab part encrypted; passphrase `.gflo/bench-passphrase`), gates and per-task baseline `ops/benchmark/gates.json`).
 - Route and phase gates: `docs/roadmap.md`; current frontier: `.scratch/autonomy/delivery.md`; decisions index: `.scratch/autonomy/map.md`, records in `docs/decisions/`.
 - Core loop: `gflo/runner.py` (state, acceptance), `gflo/worker.py` (model/tool loop; opt-in navigation aids, map tool `gflo/recipes/repo_map.py`), `gflo/mini_worker.py` (mini-swe-agent alternative worker), `gflo/sandbox.py` (Docker execution), `gflo/__main__.py` (CLI), `gflo/taskinit.py` (`gflo task init`: change task with no-new-failures acceptance, `gflo/recipes/suite_acceptance.py`). Reviewers: `gflo/review.py` (default), `gflo/ensemble.py` (opt-in). Test factory: `gflo/testfactory.py` + `gflo/recipes/test_acceptance.py`, overnight queue `gflo/overnight.py`. Change queue (phase 4): `gflo/queue.py` (`gflo queue run`). Environments: `gflo/prepare.py`, `gflo/environment.py`, recipes in `gflo/recipes/` (`python-project/resolve.py` resolves real repositories).
-- Rig operations, model serving, rollback: `docs/operations.md`, `ops/`. Delivery-rate tooling: `ops/delivery/`; model gate: `ops/benchmark/gate.py`, `ops/rig_gate.sh`.
+- Rig operations, model serving, rollback: `docs/operations.md`, `ops/`. Delivery-rate tooling: `ops/delivery/`; model gate: `ops/benchmark/gate.py`, `ops/rig_gate.sh`; benchmark seed: `ops/benchmark/bench.py`, `ops/rig_bench.sh`.
 
 ## Checks
 
 - Never run Python on this host. `make check` runs the suite in a `python:3.12` container; Docker-executing tests skip there (`tests/docker_support.py`).
-- `make rig-check` runs the full suite on `monster-gaming-pc.lan` from a `git archive` snapshot. `make rig-gate LABEL=name [ARGS=--smoke]` runs the model gate there in the background (`docs/model-upgrade.md`). Two `test_browser` seed-reader subtests fail there by known issue 10.
+- `make rig-check` runs the full suite on `monster-gaming-pc.lan` from a `git archive` snapshot. `make rig-gate LABEL=name [ARGS=--smoke]` runs the model gate there in the background; `make rig-bench` rebuilds its benchmark (`docs/model-upgrade.md`). Two `test_browser` seed-reader subtests fail there by known issue 10.
 - Pre-commit hook: `git config core.hooksPath .githooks` (runs `make check` when Python files change).
 
 ## Working rules

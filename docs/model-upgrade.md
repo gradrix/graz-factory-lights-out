@@ -18,7 +18,17 @@ The limit is the model, not the harness. On features the model finishes, passes 
 
 ## The benchmark
 
-The benchmark is private, so it lives on the rig at `~/gflo-bench` (7 GB), frozen 2026-10-14. It holds tasks mined from the author's private repositories, their hidden tests, prepared environments and `manifest.json`. Never copy its contents into this public repository; commit only aggregate numbers. Keep the Python sandbox image (`docs/operations.md`, Sandbox image) on the rig, because the environments depend on it. A copy without run transcripts (1.9 GB, zstd tar of everything else, verified entry count against the rig) is on the development host at `.gflo/bench-backup/gflo-bench-2026-10-15.tar.zst` (ignored by git). To restore it on a rebuilt rig: `zstd -dc gflo-bench-2026-10-15.tar.zst | ssh monster-gaming-pc.lan "tar -x -C ~"`. Make a fresh copy after any change to the benchmark.
+The built benchmark lives on the rig at `~/gflo-bench` (7 GB): tasks mined from the author's repositories, their hidden tests, code snapshots, prepared environments and `manifest.json`. It is disposable. Everything needed to rebuild it is committed in `ops/benchmark/seed/`:
+
+| File | Holds |
+|---|---|
+| `manifest.json` | suites, mined commits, source repository per group, the tests-suite snapshot commit |
+| `gflo.json` | the 7 gflo tasks (objectives, mined records with hidden test lists, baseline failures, step objectives); gflo is public, so plain text |
+| `home-lab.json.gpg` | the same for the 15 running-coach tasks, encrypted (AES256, gpg symmetric) because it describes private code |
+
+Code snapshots and hidden test files come from the source repositories at the recorded commits; environments are prepared again. To rebuild (about 30 minutes): keep the passphrase in `.gflo/bench-passphrase` (git-ignored; the owner also keeps it in a password manager), have `~/repos/home-lab` on this machine (`GFLO_HOME_LAB` overrides), commit, then `make rig-bench` (`NAME=other-dir` for a side copy). It refuses to overwrite an existing directory. Keep the Python sandbox image (`docs/operations.md`, Sandbox image) on the rig, because preparing environments needs it. After the benchmark itself changes, refresh the seed: `python3 ops/benchmark/bench.py pack ~/gflo-bench ~/gflo-seed` on the rig, copy `manifest.json` and `gflo.json` here, and encrypt `home-lab.json` with `gpg --batch --pinentry-mode loopback --passphrase-file .gflo/bench-passphrase --symmetric --cipher-algo AES256 -o ops/benchmark/seed/home-lab.json.gpg home-lab.json`.
+
+Never commit the built benchmark or a decrypted seed. Results are committed as numbers: per suite and per task in `ops/benchmark/gates.json` and the history below.
 
 | Suite | Content | Time on the current model |
 |---|---|---|
@@ -40,7 +50,7 @@ Incomplete means the suite did not finish: fewer tasks scored than planned, or a
 
 ## Steps
 
-1. **Check the slot is free.** `ssh monster-gaming-pc.lan 'pgrep -af "python3 -m gflo|drive.py|gate.py|chain-"'` should print nothing except possibly its own `zsh -c` line. `make rig-gate` runs the same check and refuses to start if the slot is busy.
+1. **Check the benchmark and the slot.** If `~/gflo-bench` is missing on the rig, rebuild it first with `make rig-bench` (above). Then check the slot is free: `ssh monster-gaming-pc.lan 'pgrep -af "python3 -m gflo|drive.py|gate.py|chain-"'` should print nothing except possibly its own `zsh -c` line. `make rig-gate` runs the same check and refuses to start if the slot is busy.
 2. **Install the model.** Put the GGUF under `~/benchmark-5090/flash/` on the rig. If its architecture is newer than llama.cpp b11284, also put a newer `llama-server` build under `~/benchmark-5090/flash/runtime/llama-bNNNN/`. Record the source and SHA256 in [model profile](model-profile.md).
 3. **Serve it.** On the rig: `python3 ~/gflo-runtime/ops/model.py up --weights NEW-00001-of-0000N.gguf [--runtime runtime/llama-bNNNN/llama-server] [--context 131072]`. The service name stays `flash-next-coder`, so factory configs need no change. Check it with `python3 ~/gflo-runtime/ops/model.py status`. `python3 ~/gflo-runtime/ops/model.py up` with no options returns to the old model.
    - If the CUDA base image (`IMAGE` in `ops/model.py`) is too old for the new build, pin a newer image ID there.
