@@ -68,6 +68,7 @@ def build(seed, bench, sources):
     manifest = json.loads((seed / 'manifest.json').read_text())
     store = bench / 'envs'
     store.mkdir(parents=True)
+    store.chmod(0o700)  # gflo.environment refuses a store others can write
     for source in {group['source'] for group in groups(manifest)}:
         for path, text in json.loads((seed / f'{source}.json').read_text()).items():
             (bench / path).parent.mkdir(parents=True, exist_ok=True)
