@@ -168,6 +168,17 @@ def show(result):
     return f"{result['delivered']}/{result['of']} delivered, {result['false_accepts']} false accepts"
 
 
+def changed_tasks(summary, baseline):
+    """(suite, task, baseline outcome, this outcome) for every task or module whose outcome differs from the baseline."""
+    changes = []
+    for suite in SUITES:
+        key = 'modules' if suite == 'tests' else 'tasks'
+        before, now = baseline.get(suite, {}).get(key, {}), summary.get(suite, {}).get(key, {})
+        changes += [(suite, task, before.get(task, '-'), now.get(task, 'not run'))
+                    for task in sorted(set(before) | set(now)) if before.get(task) != now.get(task)]
+    return changes
+
+
 def report(out):
     out = Path(out)
     gates = json.loads(GATES.read_text())
@@ -185,6 +196,10 @@ def report(out):
         lines.append(f"| smoke | {show(summary['smoke'])} | (pipeline check only) |")
     lines += ['', '| gate | verdict | opens |', '|---|---|---|']
     lines += [f"| {r['id']} | **{r['verdict']}** | {r['opens']} |" for r in results]
+    changes = changed_tasks(summary, gates['baseline'])
+    lines += ['', 'Tasks whose outcome changed from the baseline:', '']
+    lines += ['| suite | task | baseline | this model |', '|---|---|---|---|'] + [
+        f'| {suite} | {task} | {before} | {after} |' for suite, task, before, after in changes] if changes else ['(none)']
     lines += ['', 'Borderline: repeat that suite once into a new OUT before deciding. Next steps: docs/model-upgrade.md.', '']
     (out / 'report.md').write_text('\n'.join(lines))
     print('\n'.join(lines))

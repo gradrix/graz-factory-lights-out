@@ -18,7 +18,7 @@ The limit is the model, not the harness. On features the model finishes, passes 
 
 ## The benchmark
 
-The benchmark is private, so it lives only on the rig at `~/gflo-bench` (7 GB), frozen 2026-10-14. It holds tasks mined from the author's private repositories, their hidden tests, prepared environments and `manifest.json`. Never copy its contents into this public repository; commit only aggregate numbers. Keep the Python sandbox image (`docs/operations.md`, Sandbox image) on the rig, because the environments depend on it. Back the directory up before any rig rebuild.
+The benchmark is private, so it lives on the rig at `~/gflo-bench` (7 GB), frozen 2026-10-14. It holds tasks mined from the author's private repositories, their hidden tests, prepared environments and `manifest.json`. Never copy its contents into this public repository; commit only aggregate numbers. Keep the Python sandbox image (`docs/operations.md`, Sandbox image) on the rig, because the environments depend on it. A copy without run transcripts (1.9 GB, zstd tar of everything else, verified entry count against the rig) is on the development host at `.gflo/bench-backup/gflo-bench-2026-10-15.tar.zst` (ignored by git). To restore it on a rebuilt rig: `zstd -dc gflo-bench-2026-10-15.tar.zst | ssh monster-gaming-pc.lan "tar -x -C ~"`. Make a fresh copy after any change to the benchmark.
 
 | Suite | Content | Time on the current model |
 |---|---|---|
@@ -26,7 +26,7 @@ The benchmark is private, so it lives only on the rig at `~/gflo-bench` (7 GB), 
 | features | 6 commit chains (2–3 commits), one task each with the combined objective | ~2.5 h |
 | tests | `gflo tests overnight` on the 3 largest untested running-coach modules, 4 h cap | ~1–4 h |
 
-Results are scored by the hidden tests: `delivered` means accepted by GFLO and passing them; `false accept` means accepted but failing them. Gates and the baseline are in `ops/benchmark/gates.json`:
+Results are scored by the hidden tests: `delivered` means accepted by GFLO and passing them; `false accept` means accepted but failing them. Gates and the baseline, with each task's baseline outcome (by mined commit or module only), are in `ops/benchmark/gates.json`; the report lists every task whose outcome changed from the baseline:
 
 | Gate | Pass when | Opens |
 |---|---|---|

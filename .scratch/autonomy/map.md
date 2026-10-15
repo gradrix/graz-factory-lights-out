@@ -8,6 +8,8 @@ Plan an eventually autonomous local software factory: accepted product intent to
 
 User direction, 2026-10-02: push the first version, delete previous implementation/docs instead of archiving, and plan local end-to-end autonomy with small reasoning tasks, environment setup, process visibility, logs, search and a headless browser. Superseded by user direction on 2026-10-02: proceed with incremental implementation toward self-sufficiency, with testing stages, actual 5090 trials and progressively more complex acceptance. Generated production deployments still need a preauthorized target. Current source: this checkout; running copy: MONSTER-GAMING-PC ~/gflo-runtime. Tracker: version-controlled local Markdown, consistent with repository practice. Research uses primary sources. No paid/cloud inference fallback. Latest user continuation: continue without an arbitrary milestone stop; keep advancing the authorized destination through accepted increments. Runtime resource/recovery bounds remain engineering controls, not a session stopping rule.
 
+Raw evidence (scripts, JSON, logs) under `.scratch/.sflo/` was removed from the tree on 2026-10-15 in maintenance mode; the markdown run notes stay. A link to a removed file resolves in history: `git show $(git log -1 --format=%H --diff-filter=D -- <path>)^:<path>`.
+
 ## Decisions so far
 
 - [First release evidence](../../docs/pilot-results.md): bounded execution/recovery works; semantic review caught defects executable checks missed.

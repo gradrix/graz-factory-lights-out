@@ -55,6 +55,17 @@ class ModelGateTests(unittest.TestCase):
                       (self.out / 'report.md').read_text())
         self.assertEqual(json.loads((self.out / 'summary.json').read_text())['summary']['tests']['accepted'], 2)
 
+    def test_report_lists_tasks_whose_outcome_changed_from_the_baseline(self):
+        tasks = dict(self.gates['baseline']['small']['tasks'], **{'3612b5f': 'delivered', '0937b55': 'false accept'})
+        self.write('small', [row(commit, outcome == 'delivered', outcome == 'false accept') for commit, outcome in tasks.items()])
+        with patch('builtins.print'):
+            gate.report(self.out)
+        text = (self.out / 'report.md').read_text()
+        self.assertIn('| small | 0937b55 | delivered | false accept |', text)
+        self.assertIn('| small | 3612b5f | exhausted | delivered |', text)
+        self.assertNotIn('| small | 8331398 |', text)
+        self.assertIn('| features | e7d7f18 | exhausted | not run |', text)
+
     def test_an_out_directory_belongs_to_one_model_profile_and_code(self):
         model = {'id': 'flash-next-coder', 'weights': ['old.gguf'], 'runtime': 'r', 'context': 98304, 'cache': 'q4_0'}
         with patch.dict('os.environ', {'GFLO_CODE': 'abc'}):

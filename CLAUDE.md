@@ -4,7 +4,7 @@ Local software factory: task + repo + acceptance checks → sandboxed local-mode
 
 ## Where things are
 
-- **Maintenance mode** (decision 016): build no new components; on a new local model follow `docs/model-upgrade.md` (`make rig-gate`, private benchmark `~/gflo-bench` on the rig, gates `ops/benchmark/gates.json`).
+- **Maintenance mode** (decision 016): build no new components; on a new local model follow `docs/model-upgrade.md` (`make rig-gate`, private benchmark `~/gflo-bench` on the rig with a backup in `.gflo/bench-backup/`, gates and per-task baseline `ops/benchmark/gates.json`).
 - Route and phase gates: `docs/roadmap.md`; current frontier: `.scratch/autonomy/delivery.md`; decisions index: `.scratch/autonomy/map.md`, records in `docs/decisions/`.
 - Core loop: `gflo/runner.py` (state, acceptance), `gflo/worker.py` (model/tool loop; opt-in navigation aids, map tool `gflo/recipes/repo_map.py`), `gflo/mini_worker.py` (mini-swe-agent alternative worker), `gflo/sandbox.py` (Docker execution), `gflo/__main__.py` (CLI), `gflo/taskinit.py` (`gflo task init`: change task with no-new-failures acceptance, `gflo/recipes/suite_acceptance.py`). Reviewers: `gflo/review.py` (default), `gflo/ensemble.py` (opt-in). Test factory: `gflo/testfactory.py` + `gflo/recipes/test_acceptance.py`, overnight queue `gflo/overnight.py`. Change queue (phase 4): `gflo/queue.py` (`gflo queue run`). Environments: `gflo/prepare.py`, `gflo/environment.py`, recipes in `gflo/recipes/` (`python-project/resolve.py` resolves real repositories).
 - Rig operations, model serving, rollback: `docs/operations.md`, `ops/`. Delivery-rate tooling: `ops/delivery/`; model gate: `ops/benchmark/gate.py`, `ops/rig_gate.sh`.
