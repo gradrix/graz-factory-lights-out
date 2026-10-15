@@ -107,3 +107,7 @@ A worker can call `question` for a consequential missing product decision; a rev
 ### Project regression checks
 
 The current Python stdlib sandbox runs `python -B -m unittest discover -s tests` whenever the candidate contains a `tests/` directory, in addition to the immutable external acceptance commands. Both run read-only and offline with bounded execution. A failing generated test blocks acceptance and returns its output to repair; a model's claim that its tests passed is not evidence. External acceptance and fresh review are still required. Other stack profiles must supply their own test execution when introduced.
+
+## Idle state (maintenance mode)
+
+Since 2026-10-15 the `gflo-model` container is stopped so the GPU is free; start it with `docker start gflo-model` (current model) or `ops/model.py up` (any weights). Old experiment directories, trial images and stopped vLLM containers were removed from the rig. `local-vllm`, the rollback target, was removed by mistake that day and recreated stopped from the recorded definition (`.scratch/5090-model-study/inventory.json`: same image, command, volumes, port and restart policy); `~/.local/state/gflo-model/rollback.json` now names the new container id. Flags not captured in that inventory, if any, are not reproduced. Old branches are kept as `archive/*` tags on GitHub.
