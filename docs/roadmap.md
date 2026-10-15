@@ -2,7 +2,7 @@
 
 Status: accepted route, 2026-10-10 ([decision 011](decisions/architecture/011-delivery-rate-route.md)). Supersedes the six-stage plan of 2026-10-02, which is recoverable from git history (`git show 831c9ef:docs/roadmap.md`).
 
-**Maintenance mode since 2026-10-14** ([decision 016](decisions/architecture/016-maintenance-mode.md)): no new components until a stronger local model passes the gates. Re-test with `make rig-gate`, following [model upgrade](model-upgrade.md).
+**Maintenance mode since 2026-10-14** ([decision 016](decisions/architecture/016-maintenance-mode.md)): no new components until a stronger local model passes the gates. Re-test with `make rig-gate`, following [model upgrade](model-upgrade.md). The reference gate run on the current model (2026-10-15) reproduced the baseline: small 14/16, features 2/6, tests 1/3.
 
 ## Destination
 

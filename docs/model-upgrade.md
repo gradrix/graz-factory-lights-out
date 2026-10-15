@@ -10,7 +10,7 @@ Model: Flash-Next GSQ-RCO Coder (pruned IQ1_M GGUF, llama.cpp b11284, 96K contex
 |---|---|---|
 | Small change (2–137 lines), precise objective | 14/16 delivered, 1 false accept; the 3 hard tasks 8/9 over three runs | Works; retries converge |
 | Tests for a moderate module | 4/4 accepted | Works |
-| Tests for a large module (overnight) | 1/3 per run, three runs | Runs out of turns or context |
+| Tests for a large module (overnight) | 1/3 per run, four runs | Runs out of turns or context |
 | Feature spanning 2–3 commits | 2/6 delivered, 3 false accepts (queue: the same, 1.8× slower) | Does not work: accepted features are often wrong |
 | Objective-derived checks as a safety net | caught 3/4 covered false accepts; 3/11 check sets wrong; 11/20 generated | Not a gate ([decision 015](decisions/architecture/015-objective-checks.md)) |
 
@@ -48,7 +48,7 @@ Incomplete means the suite did not finish: fewer tasks scored than planned, or a
    - `~/gflo-runtime` on the rig is a plain copy, not a git checkout. After any change to `ops/model.py` here, commit it, then copy it over: `scp ops/model.py monster-gaming-pc.lan:gflo-runtime/ops/model.py`. Otherwise the rig keeps serving with the old flags.
 4. **Smoke test.** From this checkout: `make rig-gate LABEL=<model>-smoke ARGS=--smoke`. It runs one small task (about 10 minutes). Read `~/gflo-bench/runs/<model>-smoke/gate.log` on the rig; the task should be accepted and scored.
    - If the worker's tool calls fail to parse, or the model loops, fix that before the full run. The likely places are the chat template or reasoning setting in `ops/model.py`, and the tool-call handling in `gflo/worker.py`. A fix to `gflo/` must pass `make check`.
-5. **Full gate.** `make rig-gate LABEL=<model>`, overnight, about 8–10 hours. It runs committed `HEAD` only and refuses uncommitted changes, so commit any fix from step 4 first. Rerun the same command at the same commit to resume after an interruption. A label holds one model profile and one code revision; after a code change, use a new label. Results: `~/gflo-bench/runs/<model>/report.md` and `summary.json`. To rebuild them: `cd ~/gflo-gate-<rev> && python3 ops/benchmark/gate.py report ~/gflo-bench/runs/<model>` on the rig.
+5. **Full gate.** `make rig-gate LABEL=<model>`, overnight, about 8–10 hours of awake time. The rig runs the factory in WSL2, so Windows sleep pauses the run (it resumes on wake, but a model request or review in flight can be affected); disable sleep on the rig first. A sleep shows as a long gap between events in the run's `state.sqlite`; check that any failed task did not straddle one. It runs committed `HEAD` only and refuses uncommitted changes, so commit any fix from step 4 first. Rerun the same command at the same commit to resume after an interruption. A label holds one model profile and one code revision; after a code change, use a new label. Results: `~/gflo-bench/runs/<model>/report.md` and `summary.json`. To rebuild them: `cd ~/gflo-gate-<rev> && python3 ops/benchmark/gate.py report ~/gflo-bench/runs/<model>` on the rig.
 6. **Record the result.** Add a section to this page's history and the numbers to the roadmap and README. Update decision 016 with the gate verdicts and the decision taken. Commit only aggregate numbers.
 
 ## What each verdict opens
@@ -77,3 +77,4 @@ Incomplete means the suite did not finish: fewer tasks scored than planned, or a
 | Date | Model | small | features | tests | Decision |
 |---|---|---|---|---|---|
 | 2026-10-11/13 | Flash-Next GSQ-RCO Coder IQ1_M (baseline, mixed code revisions) | 14/16, 1 FA | 2/6, 3 FA | 1/3 | maintenance mode (016) |
+| 2026-10-15 | Same model, full gate `flash-baseline` at c5e4576 (reference) | 14/16, 1 FA (median 650 s) | 2/6, 3 FA (median 905 s) | 1/3 | adopt pass, features fail, tests borderline; no repeat: same model, 1/3 in all four runs. Now the baseline in `gates.json` |

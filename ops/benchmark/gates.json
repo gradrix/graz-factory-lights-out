@@ -1,9 +1,9 @@
 {
- "about": "Model gate (docs/model-upgrade.md, decision 016). Baseline: the installed Flash-Next GSQ-RCO Coder (IQ1_M GGUF, llama.cpp b11284, 96K context, Q4 KV). A gate missing by at most one task and at most one false accept is borderline: repeat that suite once before deciding.",
+ "about": "Model gate (docs/model-upgrade.md, decision 016). Baseline: the installed Flash-Next GSQ-RCO Coder (IQ1_M GGUF, llama.cpp b11284, 96K context, Q4 KV), full gate run flash-baseline on one code revision; it matched the earlier mixed-revision measurements exactly. A gate missing by at most one task and at most one false accept is borderline: repeat that suite once before deciding.",
  "baseline": {
-  "small": {"delivered": 14, "false_accepts": 1, "of": 16, "code": "7cedc3c", "measured": "2026-10-11"},
-  "features": {"delivered": 2, "false_accepts": 3, "of": 6, "code": "60d6e0d", "measured": "2026-10-13"},
-  "tests": {"accepted": 1, "of": 3, "code": "149d6af", "measured": "2026-10-13"}
+  "small": {"delivered": 14, "false_accepts": 1, "of": 16, "code": "c5e4576", "measured": "2026-10-15"},
+  "features": {"delivered": 2, "false_accepts": 3, "of": 6, "code": "c5e4576", "measured": "2026-10-15"},
+  "tests": {"accepted": 1, "of": 3, "code": "c5e4576", "measured": "2026-10-15"}
  },
  "gates": [
   {"id": "adopt", "suite": "small", "min_delivered": 14, "max_false_accepts": 1,

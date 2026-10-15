@@ -19,8 +19,10 @@ Status: accepted, 2026-10-14. Decision maker: the user ("ok, let's put it in mai
 
 - The benchmark objectives were written from the reference commits; delivery on objectives the user writes before knowing the solution is unmeasured.
 - One run per task is noisy (in decision 013 the 3 hard tasks were delivered 8 of 9 times, not every time); borderline results are repeated before a decision.
-- The baseline numbers come from three code revisions (7cedc3c, 60d6e0d, 149d6af); the gate runs whatever revision is current.
+- The gate runs whatever code revision is current; a new model is compared with the reference measured at c5e4576.
 
 ## Result
 
 (Gate runs are added here and in the history table of [model upgrade](../../model-upgrade.md).)
+
+- 2026-10-15, reference run `flash-baseline` (current model, code c5e4576, through `make rig-gate`): small 14/16 with 1 false accept, features 2/6 with 3 false accepts, tests 1/3. Identical to the earlier mixed-revision baseline, which it replaces in `ops/benchmark/gates.json`. Verdicts: adopt pass, features fail, tests borderline. No repeat (agent): it is the same model, and the tests suite gave 1/3 in all four runs; one module stopped on context overflow (99K tokens over 96K). Maintenance mode stands. The rig slept for 10 hours during one small task's final review; that task (3612b5f, a known hard one) failed the hidden tests regardless, so the count stands.
